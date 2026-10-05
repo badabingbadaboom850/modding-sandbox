@@ -602,5 +602,7 @@
 #define P_FAMILY_IRON_CROWN              P_GEN_9_POKEMON
 #define P_FAMILY_TERAPAGOS               P_GEN_9_POKEMON
 #define P_FAMILY_PECHARUNT               P_GEN_9_POKEMON
+#define P_FAMILY_RIKO                    TRUE
+#define P_FAMILY_BIJUU                   TRUE
 
 #endif // GUARD_CONFIG_SPECIES_ENABLED_H
