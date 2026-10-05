@@ -1,5973 +1,54 @@
-Warning: truncated output (original token count: 200365)
-Total output lines: 23146
-
-#include "battle_dynamax.h"
-#include "battle_anim_scripts.h"
-#include "constants/battle.h"
-#include "constants/battle_move_effects.h"
-#include "constants/battle_script_commands.h"
-#include "constants/battle_string_ids.h"
-#include "constants/hold_effects.h"
-#include "constants/moves.h"
-#include "constants/contest.h"
-
-// The Gen. 4+ contest data comes from urpg's contest movedex.
-
-#if B_BINDING_TURNS >= GEN_5
-#define BINDING_TURNS "4 or 5"
-#else
-#define BINDING_TURNS "2 to 5"
-#endif
-
-// Shared Move Description entries
-
-const u8 gNotDoneYetDescription[] = _(
-    "This move can't be used. Its\n"
-    "effect is in development.");
-
-static const u8 sNullDescription[] = _("");
-
-static const u8 sMegaDrainDescription[] = _(
-    "An attack that absorbs\n"
-    "half the damage inflicted.");
-
-#if B_SKIP_RECHARGE != GEN_1
-static const u8 sHyperBeamDescription[] = _(
-    "Powerful, but leaves the\n"
-    "user immobile the next turn.");
-#else
-static const u8 sHyperBeamDescription[] = _(
-    "Leaves the user immobile\n"
-    "if target is not KO'd.");
-#endif
-
-static const u8 sRevengeDescription[] = _(
-    "An attack that moves last\n"
-    "and gains power if hit.");
-
-static const u8 sPluckDescription[] = _(
-    "Eats the foe's held Berry\n"
-    "gaining its effect.");
-
-static const u8 sHealingWishDescription[] = _(
-    "The user faints to heal up\n"
-    "the recipient.");
-
-static const u8 sWringOutDescription[] = _(
-    "The higher the foe's HP\n"
-    "the more damage caused.");
-
-static const u8 sUTurnDescription[] = _(
-    "Does damage then switches\n"
-    "out the user.");
-
-static const u8 sStormThrowDescription[] = _(
-    "This attack always results\n"
-    "in a critical hit.");
-
-static const u8 sCircleThrowDescription[] = _(
-    "Knocks foe away to switch\n"
-    "it out or end wild battle.");
-
-static const u8 sChipAwayDescription[] = _(
-    "Strikes through the foe's\n"
-    "stat changes.");
-
-static const u8 sHeavySlamDescription[] = _(
-    "Does more damage if the\n"
-    "user outweighs the foe.");
-
-static const u8 sPsyshockDescription[] = _(
-    "Attacks with a psychic wave\n"
-    "that does physical damage.");
-
-static const u8 sLavaPlumeDescription[] = _(
-    "Scarlet flames torch\n"
-    "everything around the user.");
-
-static const u8 sShadowForceDescription[] = _(
-    "Vanishes on the first turn\n"
-    "then strikes the next turn.");
-
-static const u8 sFalseSwipeDescription[] = _(
-    "An attack that leaves the\n"
-    "foe with at least 1 HP.");
-
-static const u8 sDrainingKissDescription[] = _(
-    "An attack that absorbs over\n"
-    "half the damage inflicted.");
-
-static const u8 sCloseCombatDescription[] = _(
-    "A strong attack but lowers\n"
-    "the defensive stats.");
-
-static const u8 sHyperspaceHoleDescription[] = _(
-    "Uses a warp hole to attack.\n"
-    "Can't be evaded.");
-
-static const u8 sSuckerPunchDescription[] = _(
-    "Strikes first if the foe\n"
-    "is preparing an attack.");
-
-static const u8 sFeintDescription[] = _(
-    "An attack that hits foes\n"
-    "using moves like Protect.");
-
-static const u8 sProtectDescription[] = _(
-    "Evades attack, but may fail\n"
-    "if used in succession.");
-
-static const u8 sGMaxOneBlowDescription[] = _(
-    "G-max Urshifu attack.\n"
-    "Ignores Max Guard.");
-
-const struct MoveInfo gMovesInfo[MOVES_COUNT_ALL] =
-{
-    [MOVE_NONE] =
-    {
-        .name = COMPOUND_STRING("-"),
-        .description = COMPOUND_STRING(""),
-        .effect = EFFECT_HIT,
-        .power = 0,
-        .type = TYPE_NORMAL,
-        .accuracy = 0,
-        .pp = 0,
-        .target = TARGET_SELECTED,
-        .priority = 0,
-        .category = DAMAGE_CATEGORY_PHYSICAL,
-        .metronomeBanned = TRUE,
-        .mirrorMoveBanned = TRUE,
-        .sketchBanned = TRUE,
-        .assistBanned = TRUE,
-        .battleAnimScript = gBattleAnimMove_None,
-    },
-
-    [MOVE_POUND] =
-    {
-        .name = COMPOUND_STRING("Pound"),
-        .description = COMPOUND_STRING(
-            "Pounds the foe with\n"
-            "forelegs or tail."),
-        .effect = EFFECT_HIT,
-        .power = 40,
-        .type = TYPE_NORMAL,
-        .accuracy = 100,
-        .pp = 35,
-        .target = TARGET_SELECTED,
-        .priority = 0,
-        .category = DAMAGE_CATEGORY_PHYSICAL,
-        .makesContact = TRUE,
-        .ignoresKingsRock = B_UPDATED_MOVE_FLAGS == GEN_4,
-        .contestEffect = CONTEST_EFFECT_HIGHLY_APPEALING,
-        .contestCategory = CONTEST_CATEGORY_TOUGH,
-        .contestComboStarterId = COMBO_STARTER_POUND,
-        .contestComboMoves = {0},
-        .battleAnimScript = gBattleAnimMove_Pound,
-    },
-
-    [MOVE_KARATE_CHOP] =
-    {
-        .name = COMPOUND_STRING("Karate Chop"),
-        .description = COMPOUND_STRING(
-            "A chopping attack with a\n"
-            "high critical-hit ratio."),
-        .effect = EFFECT_HIT,
-        .power = 50,
-        .type = B_UPDATED_MOVE_TYPES >= GEN_2 ? TYPE_FIGHTING : TYPE_NORMAL,
-        .accuracy = 100,
-        .criticalHitStage = B_UPDATED_MOVE_DATA >= GEN_3 ? 1 : 2,
-        .pp = 25,
-        .target = TARGET_SELECTED,
-        .priority = 0,
-        .category = DAMAGE_CATEGORY_PHYSICAL,
-        .makesContact = TRUE,
-        .contestEffect = C_UPDATED_MOVE_EFFECTS >= GEN_6 ? CONTEST_EFFECT_HIGHLY_APPEALING : CONTEST_EFFECT_AFFECTED_BY_PREV_APPEAL,
-        .contestCategory = CONTEST_CATEGORY_TOUGH,
-        .contestComboStarterId = 0,
-        .contestComboMoves = {COMBO_STARTER_FOCUS_ENERGY},
-        .battleAnimScript = gBattleAnimMove_KarateChop,
-        .validApprenticeMove = TRUE,
-    },
-
-    [MOVE_DOUBLE_SLAP] =
-    {
-        .name = COMPOUND_STRING("Double Slap"),
-        .description = COMPOUND_STRING(
-            "Repeatedly slaps the foe\n"
-            "2 to 5 times."),
-        .effect = EFFECT_HIT,
-        .power = 15,
-        .type = TYPE_NORMAL,
-        .accuracy = 85,
-        .pp = 10,
-        .target = TARGET_SELECTED,
-        .priority = 0,
-        .category = DAMAGE_CATEGORY_PHYSICAL,
-        .multiHit = TRUE,
-        .makesContact = TRUE,
-        .contestEffect = C_UPDATED_MOVE_EFFECTS >= GEN_6 ? CONTEST_EFFECT_QUALITY_DEPENDS_ON_TIMING : CONTEST_EFFECT_STARTLE_MON_WITH_JUDGES_ATTENTION,
-        .contestCategory = C_UPDATED_MOVE_CATEGORIES >= GEN_6 ? CONTEST_CATEGORY_CUTE : CONTEST_CATEGORY_TOUGH,
-        .contestComboStarterId = 0,
-        .contestComboMoves = {COMBO_STARTER_POUND},
-        .battleAnimScript = gBattleAnimMove_DoubleSlap,
-        .validApprenticeMove = TRUE,
-    },
-
-    [MOVE_COMET_PUNCH] =
-    {
-        .name = COMPOUND_STRING("Comet Punch"),
-        .description = COMPOUND_STRING(
-            "Repeatedly punches the foe\n"
-            "2 to 5 times."),
-        .effect = EFFECT_HIT,
-        .power = 18,
-        .type = TYPE_NORMAL,
-        .accuracy = 85,
-        .pp = 15,
-        .target = TARGET_SELECTED,
-        .priority = 0,
-        .category = DAMAGE_CATEGORY_PHYSICAL,
-        .multiHit = TRUE,
-        .makesContact = TRUE,
-        .punchingMove = TRUE,
-        .contestEffect = C_UPDATED_MOVE_EFFECTS >= GEN_6 ? CONTEST_EFFECT_QUALITY_DEPENDS_ON_TIMING : CONTEST_EFFECT_BETTER_IF_SAME_TYPE,
-        .contestCategory = CONTEST_CATEGORY_TOUGH,
-        .contestComboStarterId = 0,
-        .contestComboMoves = {0},
-        .battleAnimScript = gBattleAnimMove_CometPunch,
-    },
-
-    [MOVE_MEGA_PUNCH] =
-    {
-        .name = COMPOUND_STRING("Mega Punch"),
-        .description = COMPOUND_STRING(
-            "A strong punch thrown with\n"
-            "incredible power."),
-        .effect = EFFECT_HIT,
-        .power = 80,
-        .type = TYPE_NORMAL,
-        .accuracy = 85,
-        .pp = 20,
-        .target = TARGET_SELECTED,
-        .priority = 0,
-        .category = DAMAGE_CATEGORY_PHYSICAL,
-        .makesContact = TRUE,
-        .punchingMove = TRUE,
-        .contestEffect = C_UPDATED_MOVE_EFFECTS >= GEN_6 ? CONTEST_EFFECT_REPETITION_NOT_BORING : CONTEST_EFFECT_HIGHLY_APPEALING,
-        .contestCategory = CONTEST_CATEGORY_TOUGH,
-        .contestComboStarterId = 0,
-        .contestComboMoves = {COMBO_STARTER_FOCUS_ENERGY, COMBO_STARTER_MIND_READER},
-        .battleAnimScript = gBattleAnimMove_MegaPunch,
-        .validApprenticeMove = TRUE,
-    },
-
-    [MOVE_PAY_DAY] =
-    {
-        .name = COMPOUND_STRING("Pay Day"),
-        .description = COMPOUND_STRING(
-            "Throws coins at the foe.\n"
-            "Money is recovered after."),
-        .effect = EFFECT_HIT,
-        .power = 40,
-        .type = TYPE_NORMAL,
-        .accuracy = 100,
-        .pp = 20,
-        .target = TARGET_SELECTED,
-        .priority = 0,
-        .category = DAMAGE_CATEGORY_PHYSICAL,
-        .additionalEffects = ADDITIONAL_EFFECTS({
-            .moveEffect = MOVE_EFFECT_PAYDAY,
-        }),
-        .contestEffect = C_UPDATED_MOVE_EFFECTS >= GEN_6 ? CONTEST_EFFECT_EXCITE_AUDIENCE_IN_ANY_CONTEST : CONTEST_EFFECT_BETTER_WHEN_AUDIENCE_EXCITED,
-        .contestCategory = CONTEST_CATEGORY_SMART,
-        .contestComboStarterId = 0,
-        .contestComboMoves = {0},
-        .battleAnimScript = gBattleAnimMove_PayDay,
-    },
-
-    [MOVE_FIRE_PUNCH] =
-    {
-        .name = COMPOUND_STRING("Fire Punch"),
-        .description = COMPOUND_STRING(
-            "A fiery punch that may burn\n"
-            "the foe."),
-        .effect = EFFECT_HIT,
-        .power = 75,
-        .type = TYPE_FIRE,
-        .accuracy = 100,
-        .pp = 15,
-        .target = TARGET_SELECTED,
-        .priority = 0,
-        .category = DAMAGE_CATEGORY_PHYSICAL,
-        .makesContact = TRUE,
-        .punchingMove = TRUE,
-        .additionalEffects = ADDITIONAL_EFFECTS({
-            .moveEffect = MOVE_EFFECT_BURN,
-            .chance = 10,
-        }),
-        .contestEffect = CONTEST_EFFECT_HIGHLY_APPEALING,
-        .contestCategory = C_UPDATED_MOVE_CATEGORIES >= GEN_6 ? CONTEST_CATEGORY_COOL : CONTEST_CATEGORY_BEAUTY,
-        .contestComboStarterId = COMBO_STARTER_FIRE_PUNCH,
-        .contestComboMoves = {COMBO_STARTER_ICE_PUNCH, COMBO_STARTER_SUNNY_DAY, COMBO_STARTER_THUNDER_PUNCH},
-        .battleAnimScript = gBattleAnimMove_FirePunch,
-        .validApprenticeMove = TRUE,
-    },
-
-    [MOVE_ICE_PUNCH] =
-    {
-        .name = COMPOUND_STRING("Ice Punch"),
-        .description = COMPOUND_STRING(
-            "An icy punch that may\n"
-        #if B_USE_FROSTBITE == TRUE
-            "leave the foe with frostbite."),
-        #else
-            "freeze the foe."),
-        #endif
-        .effect = EFFECT_HIT,
-        .power = 75,
-        .type = TYPE_ICE,
-        .accuracy = 100,
-        .pp = 15,
-        .target = TARGET_SELECTED,
-        .priority = 0,
-        .category = DAMAGE_CATEGORY_PHYSICAL,
-        .makesContact = TRUE,
-        .punchingMove = TRUE,
-        .additionalEffects = ADDITIONAL_EFFECTS({
-            .moveEffect = MOVE_EFFECT_FREEZE_OR_FROSTBITE,
-            .chance = 10,
-        }),
-        .contestEffect = CONTEST_EFFECT_HIGHLY_APPEALING,
-        .contestCategory = CONTEST_CATEGORY_BEAUTY,
-        .contestComboStarterId = COMBO_STARTER_ICE_PUNCH,
-        .contestComboMoves = {COMBO_STARTER_FIRE_PUNCH, COMBO_STARTER_THUNDER_PUNCH},
-        .battleAnimScript = gBattleAnimMove_IcePunch,
-        .validApprenticeMove = TRUE,
-    },
-
-    [MOVE_THUNDER_PUNCH] =
-    {
-        .name = COMPOUND_STRING("Thunder Punch"),
-        .description = COMPOUND_STRING(
-            "An electrified punch that\n"
-            "may paralyze the foe."),
-        .effect = EFFECT_HIT,
-        .power = 75,
-        .type = TYPE_ELECTRIC,
-        .accuracy = 100,
-        .pp = 15,
-        .target = TARGET_SELECTED,
-        .priority = 0,
-        .category = DAMAGE_CATEGORY_PHYSICAL,
-        .makesContact = TRUE,
-        .punchingMove = TRUE,
-        .additionalEffects = ADDITIONAL_EFFECTS({
-            .moveEffect = MOVE_EFFECT_PARALYSIS,
-            .chance = 10,
-        }),
-        .contestEffect = CONTEST_EFFECT_HIGHLY_APPEALING,
-        .contestCategory = CONTEST_CATEGORY_COOL,
-        .contestComboStarterId = COMBO_STARTER_THUNDER_PUNCH,
-        .contestComboMoves = {COMBO_STARTER_CHARGE, COMBO_STARTER_FIRE_PUNCH, COMBO_STARTER_ICE_PUNCH},
-        .battleAnimScript = gBattleAnimMove_ThunderPunch,
-        .validApprenticeMove = TRUE,
-    },
-
-    [MOVE_SCRATCH] =
-    {
-        .name = COMPOUND_STRING("Scratch"),
-        .description = COMPOUND_STRING(
-            "Scratches the foe with\n"
-            "sharp claws."),
-        .effect = EFFECT_HIT,
-        .power = 40,
-        .type = TYPE_NORMAL,
-        .accuracy = 100,
-        .pp = 35,
-        .target = TARGET_SELECTED,
-        .priority = 0,
-        .category = DAMAGE_CATEGORY_PHYSICAL,
-        .slicingMove = TRUE,
-        .makesContact = TRUE,
-        .contestEffect = CONTEST_EFFECT_HIGHLY_APPEALING,
-        .contestCategory = CONTEST_CATEGORY_TOUGH,
-        .contestComboStarterId = COMBO_STARTER_SCRATCH,
-        .contestComboMoves = {COMBO_STARTER_LEER},
-        .battleAnimScript = gBattleAnimMove_Scratch,
-    },
-
-    [MOVE_VISE_GRIP] =
-    {
-        .name = COMPOUND_STRING("Vise Grip"),
-        .description = COMPOUND_STRING(
-            "Grips the foe with large and\n"
-            "powerful pincers."),
-        .effect = EFFECT_HIT,
-        .power = 55,
-        .type = TYPE_NORMAL,
-        .accuracy = 100,
-        .pp = 30,
-        .target = TARGET_SELECTED,
-        .priority = 0,
-        .category = DAMAGE_CATEGORY_PHYSICAL,
-        .makesContact = TRUE,
-        .contestEffect = CONTEST_EFFECT_HIGHLY_APPEALING,
-        .contestCategory = CONTEST_CATEGORY_TOUGH,
-        .contestComboStarterId = COMBO_STARTER_VICE_GRIP,
-        .contestComboMoves = {0},
-        .battleAnimScript = gBattleAnimMove_ViseGrip,
-    },
-
-    [MOVE_GUILLOTINE] =
-    {
-        .name = COMPOUND_STRING("Guillotine"),
-        .description = COMPOUND_STRING(
-            "A crushing pincer attack.\n"
-            "The user must then recharge."),
-        .effect = EFFECT_HIT,
-        .power = 150,
-        .type = TYPE_NORMAL,
-        .accuracy = 90,
-        .pp = 5,
-        .target = TARGET_SELECTED,
-        .priority = 0,
-        .category = DAMAGE_CATEGORY_PHYSICAL,
-        .makesContact = TRUE,
-        .additionalEffects = ADDITIONAL_EFFECTS({
-            .moveEffect = MOVE_EFFECT_RECHARGE,
-            .self = TRUE,
-        }),
-        .contestEffect = CONTEST_EFFECT_BADLY_STARTLE_MONS_WITH_GOOD_APPEALS,
-        .contestCategory = CONTEST_CATEGORY_COOL,
-        .contestComboStarterId = 0,
-        .contestComboMoves = {COMBO_STARTER_VICE_GRIP},
-        .battleAnimScript = gBattleAnimMove_Guillotine,
-        .validApprenticeMove = TRUE,
-    },
-
-    [MOVE_RAZOR_WIND] =
-    {
-        .name = COMPOUND_STRING("Razor Wind"),
-        #if B_UPDATED_MOVE_DATA == GEN_3 || B_UPDATED_MOVE_DATA == GEN_1
-            .description = COMPOUND_STRING(
-                "A 2-turn move that strikes\n"
-                "the foe on the 2nd turn."),
-        #else
-            .description = COMPOUND_STRING(
-                "A 2-turn move with a high\n"
-                "critical-hit ratio."),
-        #endif
-        .effect = EFFECT_TWO_TURNS_ATTACK,
-        .power = 80,
-        .type = TYPE_NORMAL,
-        .accuracy = B_UPDATED_MOVE_DATA >= GEN_3 ? 100 : 75,
-        #if B_UPDATED_MOVE_DATA >= GEN_4
-            .criticalHitStage = 1,
-        #elif B_UPDATED_MOVE_DATA == GEN_2
-            .criticalHitStage = 2,
-        #else
-            .criticalHitStage = 0,
-        #endif
-        .pp = 10,
-        .target = TARGET_BOTH,
-        .priority = 0,
-        .category = DAMAGE_CATEGORY_SPECIAL,
-        .sleepTalkBanned = TRUE,
-        .instructBanned = TRUE,
-        .windMove = B_EXTRAPOLATED_MOVE_FLAGS,
-        .argument.twoTurnAttack = { .stringId =  STRINGID_PKMNWHIPPEDWHIRLWIND },
-        .contestEffect = CONTEST_EFFECT_AFFECTED_BY_PREV_APPEAL,
-        .contestCategory = CONTEST_CATEGORY_COOL,
-        .contestComboStarterId = 0,
-        .contestComboMoves = {0},
-        .battleAnimScript = gBattleAnimMove_RazorWind,
-    },
-
-    [MOVE_SWORDS_DANCE] =
-    {
-        .name = COMPOUND_STRING("Swords Dance"),
-        .description = COMPOUND_STRING(
-            "A fighting dance that\n"
-            "sharply raises Attack."),
-        .effect = EFFECT_ATTACK_UP_2,
-        .power = 0,
-        .type = TYPE_NORMAL,
-        .accuracy = 0,
-        .pp = B_UPDATED_MOVE_DATA >= GEN_6 ? 20 : 30,
-        .target = TARGET_USER,
-        .priority = 0,
-        .category = DAMAGE_CATEGORY_STATUS,
-        .zMove = { .effect = Z_EFFECT_RESET_STATS },
-        .ignoresProtect = TRUE,
-        .mirrorMoveBanned = TRUE,
-        .danceMove = TRUE,
-        .snatchAffected = TRUE,
-        .contestEffect = CONTEST_EFFECT_IMPROVE_CONDITION_PREVENT_NERVOUSNESS,
-        .contestCategory = CONTEST_CATEGORY_BEAUTY,
-        .contestComboStarterId = COMBO_STARTER_SWORDS_DANCE,
-        .contestComboMoves = {0},
-        .battleAnimScript = gBattleAnimMove_SwordsDance,
-        .validApprenticeMove = TRUE,
-    },
-
-    [MOVE_CUT] =
-    {
-        .name = COMPOUND_STRING("Cut"),
-        .description = COMPOUND_STRING(
-            "Cuts the foe with sharp\n"
-            "scythes, claws, etc."),
-        .effect = EFFECT_HIT,
-        .power = 50,
-        .type = TYPE_STEEL,
-        .accuracy = 95,
-        .pp = 30,
-        .target = TARGET_SELECTED,
-        .priority = 0,
-        .category = DAMAGE_CATEGORY_PHYSICAL,
-        .makesContact = TRUE,
-        .slicingMove = TRUE,
-        .contestEffect = C_UPDATED_MOVE_EFFECTS >= GEN_6 ? CONTEST_EFFECT_HIGHLY_APPEALING : CONTEST_EFFECT_BADLY_STARTLE_MONS_WITH_GOOD_APPEALS,
-        .contestCategory = CONTEST_CATEGORY_COOL,
-        .contestComboStarterId = 0,
-        .contestComboMoves = {COMBO_STARTER_SWORDS_DANCE},
-        .battleAnimScript = gBattleAnimMove_Cut,
-    },
-
-    [MOVE_GUST] =
-    {
-        .name = COMPOUND_STRING("Gust"),
-        .description = COMPOUND_STRING(
-            "Strikes the foe with a gust\n"
-            "of wind whipped up by wings."),
-        .effect = EFFECT_HIT,
-        .power = 40,
-        .type = B_UPDATED_MOVE_TYPES >= GEN_2 ? TYPE_FLYING : TYPE_NORMAL,
-        .accuracy = 100,
-        .pp = 35,
-        .target = TARGET_SELECTED,
-        .priority = 0,
-        .category = DAMAGE_CATEGORY_SPECIAL,
-        .ignoresKingsRock = (B_UPDATED_MOVE_FLAGS == GEN_4) || (B_UPDATED_MOVE_FLAGS < GEN_3),
-        .damagesAirborneDoubleDamage = B_UPDATED_MOVE_FLAGS >= GEN_2,
-        .windMove = TRUE,
-        .contestEffect = C_UPDATED_MOVE_EFFECTS >= GEN_6 ? CONTEST_EFFECT_STARTLE_PREV_MON : CONTEST_EFFECT_SCRAMBLE_NEXT_TURN_ORDER,
-        .contestCategory = CONTEST_CATEGORY_SMART,
-        .contestComboStarterId = 0,
-        .contestComboMoves = {0},
-        .battleAnimScript = gBattleAnimMove_Gust,
-    },
-
-    [MOVE_WING_ATTACK] =
-    {
-        .name = COMPOUND_STRING("Wing Attack"),
-        .description = COMPOUND_STRING(
-            "Strikes the foe with wings\n"
-            "spread wide."),
-        .effect = EFFECT_HIT,
-        .power = B_UPDATED_MOVE_DATA >= GEN_2 ? 60 : 35,
-        .type = TYPE_FLYING,
-        .accuracy = 100,
-        .pp = 35,
-        .target = TARGET_SELECTED,
-        .priority = 0,
-        .category = DAMAGE_CATEGORY_PHYSICAL,
-        .makesContact = TRUE,
-        .contestEffect = C_UPDATED_MOVE_EFFECTS >= GEN_6 ? CONTEST_EFFECT_HIGHLY_APPEALING : CONTEST_EFFECT_BETTER_IF_SAME_TYPE,
-        .contestCategory = CONTEST_CATEGORY_COOL,
-        .contestComboStarterId = 0,
-        .contestComboMoves = {0},
-        .battleAnimScript = gBattleAnimMove_WingAttack,
-    },
-
-    [MOVE_WHIRLWIND] =
-    {
-        .name = COMPOUND_STRING("Whirlwind"),
-        .description = COMPOUND_STRING(
-            "Blows away the foe, switches\n"
-            "it out or ends wild battle."),
-        .effect = EFFECT_ROAR,
-        .power = 0,
-        .type = TYPE_NORMAL,
-        #if B_UPDATED_MOVE_DATA >= GEN_6
-            .accuracy = 0,
-            .priority = -6,
-        #elif B_UPDATED_MOVE_DATA >= GEN_3
-            .accuracy = 100,
-            .priority = -6,
-        #elif B_UPDATED_MOVE_DATA == GEN_2
-            .accuracy = 100,
-            .priority = -1,
-        #else
-            .accuracy = 85,
-            .priority = 0,
-        #endif
-        .pp = 20,
-        .target = TARGET_SELECTED,
-        .category = DAMAGE_CATEGORY_STATUS,
-        .zMove = { .effect = Z_EFFECT_SPDEF_UP_1 },
-        .windMove = TRUE,
-        .ignoresProtect = B_UPDATED_MOVE_FLAGS >= GEN_6,
-        .ignoresSubstitute = TRUE,
-        .magicCoatAffected = B_UPDATED_MOVE_FLAGS >= GEN_5,
-        .copycatBanned = B_UPDATED_MOVE_FLAGS >= GEN_6,
-        .assistBanned = B_UPDATED_MOVE_FLAGS >= GEN_6,
-        .contestEffect = C_UPDATED_MOVE_EFFECTS >= GEN_6 ? CONTEST_EFFECT_NEXT_APPEAL_LATER : CONTEST_EFFECT_SCRAMBLE_NEXT_TURN_ORDER,
-        .contestCategory = CONTEST_CATEGORY_SMART,
-        .contestComboStarterId = 0,
-        .contestComboMoves = {COMBO_STARTER_STEALTH_ROCK, COMBO_STARTER_SPIKES, COMBO_STARTER_TOXIC_SPIKES},
-        .battleAnimScript = gBattleAnimMove_Whirlwind,
-        .validApprenticeMove = TRUE,
-    },
-
-    [MOVE_FLY] =
-    {
-        .name = COMPOUND_STRING("Fly"),
-        .description = COMPOUND_STRING(
-            "Flies up on the first turn,\n"
-            "then strikes the next turn."),
-        .effect = EFFECT_SEMI_INVULNERABLE,
-        .power = B_UPDATED_MOVE_DATA >= GEN_4 ? 90 : 70,
-        .type = TYPE_FLYING,
-        .accuracy = 95,
-        .pp = 15,
-        .target = TARGET_SELECTED,
-        .priority = 0,
-        .category = DAMAGE_CATEGORY_PHYSICAL,
-        .makesContact = TRUE,
-        .gravityBanned = TRUE,
-        .sleepTalkBanned = TRUE,
-        .instructBanned = TRUE,
-        .assistBanned = B_UPDATED_MOVE_FLAGS >= GEN_6,
-        .argument.twoTurnAttack = { .stringId =  STRINGID_PKMNFLEWHIGH, .status = STATE_ON_AIR },
-        .contestEffect = C_UPDATED_MOVE_EFFECTS >= GEN_6 ? CONTEST_EFFECT_AVOID_STARTLE_ONCE : CONTEST_EFFECT_AVOID_STARTLE,
-        .contestCategory = CONTEST_CATEGORY_SMART,
-        .contestComboStarterId = 0,
-        .contestComboMoves = {0},
-        .battleAnimScript = gBattleAnimMove_Fly,
-        .validApprenticeMove = TRUE,
-    },
-
-    [MOVE_BIND] =
-    {
-        .name = COMPOUND_STRING("Bind"),
-        .description = COMPOUND_STRING(
-            "Binds and squeezes the foe\n"
-            "for "BINDING_TURNS" turns."),
-        .effect = EFFECT_HIT,
-        .power = 15,
-        .type = TYPE_NORMAL,
-        .accuracy = B_UPDATED_MOVE_DATA >= GEN_5 ? 85 : 75,
-        .pp = 20,
-        .target = TARGET_SELECTED,
-        .priority = 0,
-        .category = DAMAGE_CATEGORY_PHYSICAL,
-        .makesContact = TRUE,
-        .ignoresKingsRock = B_UPDATED_MOVE_FLAGS < GEN_3,
-        .additionalEffects = ADDITIONAL_EFFECTS({
-            .moveEffect = MOVE_EFFECT_WRAP,
-            .multistring.wrapped = B_MSG_WRAPPED_BIND,
-        }),
-        .contestEffect = CONTEST_EFFECT_DONT_EXCITE_AUDIENCE,
-        .contestCategory = CONTEST_CATEGORY_TOUGH,
-        .contestComboStarterId = 0,
-        .contestComboMoves = {COMBO_STARTER_VICE_GRIP},
-        .battleAnimScript = gBattleAnimMove_Bind,
-        .validApprenticeMove = TRUE,
-    },
-
-    [MOVE_SLAM] =
-    {
-        .name = COMPOUND_STRING("Slam"),
-        .description = COMPOUND_STRING(
-            "Slams the foe with a long\n"
-            "tail, vine, etc."),
-        .effect = EFFECT_HIT,
-        .power = 80,
-        .type = TYPE_NORMAL,
-        .accuracy = 75,
-        .pp = 20,
-        .target = TARGET_SELECTED,
-        .priority = 0,
-        .category = DAMAGE_CATEGORY_PHYSICAL,
-        .makesContact = TRUE,
-        .skyBattleBanned = TRUE,
-        .contestEffect = C_UPDATED_MOVE_EFFECTS >= GEN_6 ? CONTEST_EFFECT_HIGHLY_APPEALING : CONTEST_EFFECT_STARTLE_MONS_SAME_TYPE_APPEAL,
-        .contestCategory = CONTEST_CATEGORY_TOUGH,
-        .contestComboStarterId = 0,
-        .contestComboMoves = {COMBO_STARTER_POUND},
-        .battleAnimScript = gBattleAnimMove_Slam,
-        .validApprenticeMove = TRUE,
-    },
-
-    [MOVE_VINE_WHIP] =
-    {
-        .name = COMPOUND_STRING("Vine Whip"),
-        .description = COMPOUND_STRING(
-            "Strikes the foe with\n"
-            "slender, whiplike vines."),
-        #if B_UPDATED_MOVE_DATA >= GEN_6
-            .pp = 25,
-        #elif B_UPDATED_MOVE_DATA >= GEN_4
-            .pp = 15,
-        #else
-            .pp = 10,
-        #endif
-        .effect = EFFECT_HIT,
-        .power = B_UPDATED_MOVE_DATA >= GEN_6 ? 45 : 35,
-        .type = TYPE_GRASS,
-        .accuracy = 100,
-        .target = TARGET_SELECTED,
-        .priority = 0,
-        .category = DAMAGE_CATEGORY_PHYSICAL,
-        .makesContact = TRUE,
-        .contestEffect = CONTEST_EFFECT_HIGHLY_APPEALING,
-        .contestCategory = CONTEST_CATEGORY_COOL,
-        .contestComboStarterId = 0,
-        .contestComboMoves = {COMBO_STARTER_GROWTH},
-        .battleAnimScript = gBattleAnimMove_VineWhip,
-    },
-
-    [MOVE_STOMP] =
-    {
-        .name = COMPOUND_STRING("Stomp"),
-        .description = COMPOUND_STRING(
-            "Stomps the enemy with a big\n"
-            "foot. May cause flinching."),
-        .effect = EFFECT_HIT,
-        .power = 65,
-        .type = TYPE_NORMAL,
-        .accuracy = 100,
-        .pp = 20,
-        .target = TARGET_SELECTED,
-        .priority = 0,
-        .category = DAMAGE_CATEGORY_PHYSICAL,
-        .makesContact = TRUE,
-        .kickingMove = TRUE,
-        .minimizeDoubleDamage = B_UPDATED_MOVE_FLAGS >= GEN_2,
-        .skyBattleBanned = TRUE,
-        .additionalEffects = ADDITIONAL_EFFECTS({
-            .moveEffect = MOVE_EFFECT_FLINCH,
-            .chance = 30,
-        }),
-        .contestEffect = C_UPDATED_MOVE_EFFECTS >= GEN_6 ? CONTEST_EFFECT_HIGHLY_APPEALING : CONTEST_EFFECT_BADLY_STARTLE_FRONT_MON,
-        .contestCategory = CONTEST_CATEGORY_TOUGH,
-        .contestComboStarterId = 0,
-        .contestComboMoves = {COMBO_STARTER_LEER},
-        .battleAnimScript = gBattleAnimMove_Stomp,
-        .validApprenticeMove = TRUE,
-    },
-
-    [MOVE_DOUBLE_KICK] =
-    {
-        .name = COMPOUND_STRING("Double Kick"),
-        .description = COMPOUND_STRING(
-            "A double-kicking attack\n"
-            "that strikes the foe twice."),
-        .effect = EFFECT_HIT,
-        .power = 30,
-        .type = TYPE_FIGHTING,
-        .accuracy = 100,
-        .pp = 30,
-        .target = TARGET_SELECTED,
-        .priority = 0,
-        .category = DAMAGE_CATEGORY_PHYSICAL,
-        .makesContact = TRUE,
-        .kickingMove = TRUE,
-        .strikeCount = 2,
-        .contestEffect = C_UPDATED_MOVE_EFFECTS >= GEN_6 ? CONTEST_EFFECT_STARTLE_MONS_SAME_TYPE_APPEAL : CONTEST_EFFECT_BETTER_IF_SAME_TYPE,
-        .contestCategory = CONTEST_CATEGORY_COOL,
-        .contestComboStarterId = 0,
-        .contestComboMoves = {0},
-        .battleAnimScript = gBattleAnimMove_DoubleKick,
-        .validApprenticeMove = TRUE,
-    },
-
-    [MOVE_MEGA_KICK] =
-    {
-        .name = COMPOUND_STRING("Mega Kick"),
-        .description = COMPOUND_STRING(
-            "An extremely powerful kick\n"
-            "with intense force."),
-        .effect = EFFECT_HIT,
-        .power = 120,
-        .type = TYPE_NORMAL,
-        .accuracy = 75,
-        .pp = 5,
-        .target = TARGET_SELECTED,
-        .priority = 0,
-        .category = DAMAGE_CATEGORY_PHYSICAL,
-        .makesContact = TRUE,
-        .kickingMove = TRUE,
-        .contestEffect = C_UPDATED_MOVE_EFFECTS >= GEN_6 ? CONTEST_EFFECT_BETTER_WHEN_AUDIENCE_EXCITED : CONTEST_EFFECT_HIGHLY_APPEALING,
-        .contestCategory = CONTEST_CATEGORY_COOL,
-        .contestComboStarterId = 0,
-        .contestComboMoves = {COMBO_STARTER_FOCUS_ENERGY, COMBO_STARTER_MIND_READER},
-        .battleAnimScript = gBattleAnimMove_MegaKick,
-        .validApprenticeMove = TRUE,
-    },
-
-    [MOVE_JUMP_KICK] =
-    {
-        .name = COMPOUND_STRING("Jump Kick"),
-        .description = COMPOUND_STRING(
-            "A strong jumping kick. May\n"
-            "miss and hurt the kicker."),
-        #if B_UPDATED_MOVE_DATA >= GEN_5
-            .power = 100,
-        #elif B_UPDATED_MOVE_DATA == GEN_4
-            .power = 85,
-        #else
-            .power = 70,
-        #endif
-        .effect = EFFECT_RECOIL_IF_MISS,
-        .type = TYPE_FIGHTING,
-        .accuracy = 95,
-        .pp = B_UPDATED_MOVE_DATA >= GEN_5 ? 10 : 25,
-        .target = TARGET_SELECTED,
-        .priority = 0,
-        .category = DAMAGE_CATEGORY_PHYSICAL,
-        .makesContact = TRUE,
-        .kickingMove = TRUE,
-        .gravityBanned = TRUE,
-        .contestEffect = CONTEST_EFFECT_USER_MORE_EASILY_STARTLED,
-        .contestCategory = CONTEST_CATEGORY_COOL,
-        .contestComboStarterId = 0,
-        .contestComboMoves = {COMBO_STARTER_MIND_READER},
-        .battleAnimScript = gBattleAnimMove_JumpKick,
-        .validApprenticeMove = TRUE,
-    },
-
-    [MOVE_ROLLING_KICK] =
-    {
-        .name = COMPOUND_STRING("Rolling Kick"),
-        .description = COMPOUND_STRING(
-            "A fast kick delivered from\n"
-            "a rapid spin. May flinch."),
-        .effect = EFFECT_HIT,
-        .power = 60,
-        .type = TYPE_FIGHTING,
-        .accuracy = 85,
-        .pp = 15,
-        .target = TARGET_SELECTED,
-        .priority = 0,
-        .category = DAMAGE_CATEGORY_PHYSICAL,
-        .makesContact = TRUE,
-        .kickingMove = TRUE,
-        .ignoresKingsRock = B_UPDATED_MOVE_FLAGS < GEN_3,
-        .additionalEffects = ADDITIONAL_EFFECTS({
-            .moveEffect = MOVE_EFFECT_FLINCH,
-            .chance = 30,
-        }),
-        .contestEffect = C_UPDATED_MOVE_EFFECTS >= GEN_6 ? CONTEST_EFFECT_HIGHLY_APPEALING : CONTEST_EFFECT_BADLY_STARTLE_PREV_MONS,
-        .contestCategory = CONTEST_CATEGORY_COOL,
-        .contestComboStarterId = 0,
-        .contestComboMoves = {0},
-        .battleAnimScript = gBattleAnimMove_RollingKick,
-        .validApprenticeMove = TRUE,
-    },
-
-    [MOVE_SAND_ATTACK] =
-    {
-        .name = COMPOUND_STRING("Sand Attack"),
-        .description = COMPOUND_STRING(
-            "Reduces the foe's accuracy\n"
-            "by hurling sand in its face."),
-        .effect = EFFECT_ACCURACY_DOWN,
-        .power = 0,
-        .type = B_UPDATED_MOVE_TYPES >= GEN_2 ? TYPE_GROUND : TYPE_NORMAL,
-        .accuracy = 100,
-        .pp = 15,
-        .target = TARGET_SELECTED,
-        .priority = 0,
-        .category = DAMAGE_CATEGORY_STATUS,
-        .zMove = { .effect = Z_EFFECT_EVSN_UP_1 },
-        .magicCoatAffected = TRUE,
-        .contestEffect = C_UPDATED_MOVE_EFFECTS >= GEN_6 ? CONTEST_EFFECT_SHIFT_JUDGE_ATTENTION : CONTEST_EFFECT_STARTLE_MON_WITH_JUDGES_ATTENTION,
-        .contestCategory = CONTEST_CATEGORY_CUTE,
-        .contestComboStarterId = COMBO_STARTER_SAND_ATTACK,
-        .contestComboMoves = {COMBO_STARTER_MUD_SLAP, COMBO_STARTER_SANDSTORM},
-        .battleAnimScript = gBattleAnimMove_SandAttack,
-        .validApprenticeMove = TRUE,
-    },
-
-    [MOVE_HEADBUTT] =
-    {
-        .name = COMPOUND_STRING("Headbutt"),
-        .description = COMPOUND_STRING(
-            "A ramming attack that may\n"
-            "cause flinching."),
-        .effect = EFFECT_HIT,
-        .power = 70,
-        .type = TYPE_NORMAL,
-        .accuracy = 100,
-        .pp = 15,
-        .target = TARGET_SELECTED,
-        .priority = 0,
-        .category = DAMAGE_CATEGORY_PHYSICAL,
-        .makesContact = TRUE,
-        .additionalEffects = ADDITIONAL_EFFECTS({
-            .moveEffect = MOVE_EFFECT_FLINCH,
-            .chance = 30,
-        }),
-        .contestEffect = C_UPDATED_MOVE_EFFECTS >= GEN_6 ? CONTEST_EFFECT_HIGHLY_APPEALING : CONTEST_EFFECT_STARTLE_PREV_MON,
-        .contestCategory = CONTEST_CATEGORY_TOUGH,
-        .contestComboStarterId = 0,
-        .contestComboMoves = {COMBO_STARTER_FOCUS_ENERGY},
-        .battleAnimScript = gBattleAnimMove_Headbutt,
-        .validApprenticeMove = TRUE,
-    },
-
-    [MOVE_HORN_ATTACK] =
-    {
-        .name = COMPOUND_STRING("Horn Attack"),
-        .description = COMPOUND_STRING(
-            "Jabs the foe with sharp\n"
-            "horns."),
-        .effect = EFFECT_HIT,
-        .power = 65,
-        .type = TYPE_NORMAL,
-        .accuracy = 100,
-        .pp = 25,
-        .target = TARGET_SELECTED,
-        .priority = 0,
-        .category = DAMAGE_CATEGORY_PHYSICAL,
-        .makesContact = TRUE,
-        .contestEffect = CONTEST_EFFECT_HIGHLY_APPEALING,
-        .contestCategory = CONTEST_CATEGORY_COOL,
-        .contestComboStarterId = COMBO_STARTER_HORN_ATTACK,
-        .contestComboMoves = {COMBO_STARTER_LEER},
-        .battleAnimScript = gBattleAnimMove_HornAttack,
-    },
-
-    [MOVE_FURY_ATTACK] =
-    {
-        .name = COMPOUND_STRING("Fury Attack"),
-        .description = COMPOUND_STRING(
-            "Jabs the foe 2 to 5 times\n"
-            "with sharp horns, etc."),
-        .effect = EFFECT_HIT,
-        .power = 15,
-        .type = TYPE_NORMAL,
-        .accuracy = 85,
-        .pp = 20,
-        .target = TARGET_SELECTED,
-        .priority = 0,
-        .category = DAMAGE_CATEGORY_PHYSICAL,
-        .multiHit = TRUE,
-        .makesContact = TRUE,
-        .contestEffect = C_UPDATED_MOVE_EFFECTS >= GEN_6 ? CONTEST_EFFECT_QUALITY_DEPENDS_ON_TIMING : CONTEST_EFFECT_STARTLE_MON_WITH_JUDGES_ATTENTION,
-        .contestCategory = CONTEST_CATEGORY_COOL,
-        .contestComboStarterId = 0,
-        .contestComboMoves = {COMBO_STARTER_HORN_ATTACK, COMBO_STARTER_PECK},
-        .battleAnimScript = gBattleAnimMove_FuryAttack,
-    },
-
-    [MOVE_HORN_DRILL] =
-    {
-        .name = COMPOUND_STRING("Horn Drill"),
-        .description = COMPOUND_STRING(
-            "A powerful drilling attack.\n"
-            "The user must then recharge."),
-        .effect = EFFECT_HIT,
-        .power = 150,
-        .type = TYPE_NORMAL,
-        .accuracy = 90,
-        .pp = 5,
-        .target = TARGET_SELECTED,
-        .priority = 0,
-        .category = DAMAGE_CATEGORY_PHYSICAL,
-        .makesContact = TRUE,
-        .additionalEffects = ADDITIONAL_EFFECTS({
-            .moveEffect = MOVE_EFFECT_RECHARGE,
-            .self = TRUE,
-        }),
-        .contestEffect = CONTEST_EFFECT_BADLY_STARTLE_MONS_WITH_GOOD_APPEALS,
-        .contestCategory = CONTEST_CATEGORY_COOL,
-        .contestComboStarterId = 0,
-        .contestComboMoves = {COMBO_STARTER_HORN_ATTACK},
-        .battleAnimScript = gBattleAnimMove_HornDrill,
-        .validApprenticeMove = TRUE,
-    },
-
-    [MOVE_TACKLE] =
-    {
-        .name = COMPOUND_STRING("Tackle"),
-        .description = COMPOUND_STRING(
-            "Charges the foe with a full-\n"
-            "body tackle."),
-        #if B_UPDATED_MOVE_DATA >= GEN_7
-            .power = 40,
-        #elif B_UPDATED_MOVE_DATA >= GEN_5
-            .power = 50,
-        #else
-            .power = 35,
-        #endif
-        .effect = EFFECT_HIT,
-        .type = TYPE_NORMAL,
-        .accuracy = B_UPDATED_MOVE_DATA >= GEN_5 ? 100 : 95,
-        .pp = 35,
-        .target = TARGET_SELECTED,
-        .priority = 0,
-        .category = DAMAGE_CATEGORY_PHYSICAL,
-        .makesContact = TRUE,
-        .contestEffect = CONTEST_EFFECT_HIGHLY_APPEALING,
-        .contestCategory = CONTEST_CATEGORY_TOUGH,
-        .contestComboStarterId = 0,
-        .contestComboMoves = {COMBO_STARTER_DEFENSE_CURL, COMBO_STARTER_HARDEN, COMBO_STARTER_LEER},
-        .battleAnimScript = gBattleAnimMove_Tackle,
-    },
-
-    [MOVE_BODY_SLAM] =
-    {
-        .name = COMPOUND_STRING("Body Slam"),
-        .description = COMPOUND_STRING(
-            "A full-body slam that may\n"
-            "cause paralysis."),
-        .effect = EFFECT_HIT,
-        .power = 85,
-        .type = TYPE_NORMAL,
-        .accuracy = 100,
-        .pp = 15,
-        .target = TARGET_SELECTED,
-        .priority = 0,
-        .category = DAMAGE_CATEGORY_PHYSICAL,
-        .makesContact = TRUE,
-        .minimizeDoubleDamage = B_UPDATED_MOVE_FLAGS >= GEN_6,
-        .skyBattleBanned = TRUE,
-        .additionalEffects = ADDITIONAL_EFFECTS({
-            .moveEffect = MOVE_EFFECT_PARALYSIS,
-            .chance = 30,
-        }),
-        .contestEffect = CONTEST_EFFECT_BADLY_STARTLE_FRONT_MON,
-        .contestCategory = CONTEST_CATEGORY_TOUGH,
-        .contestComboStarterId = 0,
-        .contestComboMoves = {0},
-        .battleAnimScript = gBattleAnimMove_BodySlam,
-        .validApprenticeMove = TRUE,
-    },
-
-    [MOVE_WRAP] =
-    {
-        .name = COMPOUND_STRING("Wrap"),
-        .description = COMPOUND_STRING(
-            "Wraps and squeezes the foe\n"
-            BINDING_TURNS" times with vines, etc."),
-        .effect = EFFECT_HIT,
-        .power = 15,
-        .type = TYPE_NORMAL,
-        .accuracy = B_UPDATED_MOVE_DATA >= GEN_5 ? 90 : 85,
-        .pp = 20,
-        .target = TARGET_SELECTED,
-        .priority = 0,
-        .category = DAMAGE_CATEGORY_PHYSICAL,
-        .makesContact = TRUE,
-        .ignoresKingsRock = B_UPDATED_MOVE_FLAGS < GEN_3,
-        .additionalEffects = ADDITIONAL_EFFECTS({
-            .moveEffect = MOVE_EFFECT_WRAP,
-            .multistring.wrapped = B_MSG_WRAPPED_WRAP,
-        }),
-        .contestEffect = CONTEST_EFFECT_DONT_EXCITE_AUDIENCE,
-        .contestCategory = CONTEST_CATEGORY_TOUGH,
-        .contestComboStarterId = 0,
-        .contestComboMoves = {0},
-        .battleAnimScript = gBattleAnimMove_Wrap,
-        .validApprenticeMove = TRUE,
-    },
-
-    [MOVE_TAKE_DOWN] =
-    {
-        .name = COMPOUND_STRING("Take Down"),
-        .description = COMPOUND_STRING(
-            "A reckless charge attack\n"
-            "that also hurts the user."),
-        .effect = EFFECT_RECOIL,
-        .power = 90,
-        .type = TYPE_NORMAL,
-        .accuracy = 85,
-        .pp = 20,
-        .target = TARGET_SELECTED,
-        .priority = 0,
-        .category = DAMAGE_CATEGORY_PHYSICAL,
-        .argument = { .recoilPercentage = 25 },
-        .makesContact = TRUE,
-        .contestEffect = CONTEST_EFFECT_USER_MORE_EASILY_STARTLED,
-        .contestCategory = CONTEST_CATEGORY_TOUGH,
-        .contestComboStarterId = 0,
-        .contestComboMoves = {COMBO_STARTER_FOCUS_ENERGY, COMBO_STARTER_HARDEN},
-        .battleAnimScript = gBattleAnimMove_TakeDown,
-        .validApprenticeMove = TRUE,
-    },
-
-    [MOVE_THRASH] =
-    {
-        .name = COMPOUND_STRING("Thrash"),
-        .description = COMPOUND_STRING(
-            "A rampage of 2 to 3 turns\n"
-            "that confuses the user."),
-        .effect = EFFECT_HIT,
-        .power = B_UPDATED_MOVE_DATA >= GEN_5 ? 120 : 90,
-        .type = TYPE_NORMAL,
-        .accuracy = 100,
-        .pp = B_UPDATED_MOVE_DATA >= GEN_5 ? 10 : 20,
-        .target = TARGET_RANDOM,
-        .priority = 0,
-        .category = DAMAGE_CATEGORY_PHYSICAL,
-        .makesContact = TRUE,
-        .instructBanned = TRUE,
-        .additionalEffects = ADDITIONAL_EFFECTS({
-            .moveEffect = MOVE_EFFECT_THRASH,
-            .self = TRUE,
-        }),
-        .contestEffect = C_UPDATED_MOVE_EFFECTS >= GEN_6 ? CONTEST_EFFECT_USER_MORE_EASILY_STARTLED : CONTEST_EFFECT_JAMS_OTHERS_BUT_MISS_ONE_TURN,
-        .contestCategory = CONTEST_CATEGORY_TOUGH,
-        .contestComboStarterId = 0,
-        .contestComboMoves = {COMBO_STARTER_RAGE},
-        .battleAnimScript = gBattleAnimMove_Thrash,
-        .validApprenticeMove = TRUE,
-    },
-
-    [MOVE_DOUBLE_EDGE] =
-    {
-        .name = COMPOUND_STRING("Double-Edge"),
-        .description = COMPOUND_STRING(
-            "A life-risking tackle that\n"
-            "also hurts the user."),
-        .effect = EFFECT_RECOIL,
-        .power = B_UPDATED_MOVE_DATA >= GEN_2 ? 120 : 100,
-        .type = TYPE_NORMAL,
-        .accuracy = 100,
-        .pp = 15,
-        .target = TARGET_SELECTED,
-        .priority = 0,
-        .category = DAMAGE_CATEGORY_PHYSICAL,
-        .argument = { .recoilPercentage = B_UPDATED_MOVE_DATA >= GEN_3 ? 33 : 25 },
-        .makesContact = TRUE,
-        .contestEffect = CONTEST_EFFECT_USER_MORE_EASILY_STARTLED,
-        .contestCategory = CONTEST_CATEGORY_TOUGH,
-        .contestComboStarterId = 0,
-        .contestComboMoves = {COMBO_STARTER_FOCUS_ENERGY, COMBO_STARTER_HARDEN},
-        .battleAnimScript = gBattleAnimMove_DoubleEdge,
-        .validApprenticeMove = TRUE,
-    },
-
-    [MOVE_TAIL_WHIP] =
-    {
-        .name = COMPOUND_STRING("Tail Whip"),
-        .description = COMPOUND_STRING(
-            "Wags the tail to lower the\n"
-            "foe's Defense."),
-        .effect = EFFECT_DEFENSE_DOWN,
-        .power = 0,
-        .type = TYPE_NORMAL,
-        .accuracy = 100,
-        .pp = 30,
-        .target = TARGET_BOTH,
-        .priority = 0,
-        .category = DAMAGE_CATEGORY_STATUS,
-        .zMove = { .effect = Z_EFFECT_ATK_UP_1 },
-        .magicCoatAffected = TRUE,
-        .contestEffect = CONTEST_EFFECT_BETTER_IF_LAST,
-        .contestCategory = CONTEST_CATEGORY_CUTE,
-        .contestComboStarterId = 0,
-        .contestComboMoves = {COMBO_STARTER_CHARM},
-        .battleAnimScript = gBattleAnimMove_TailWhip,
-    },
-
-    [MOVE_POISON_STING] =
-    {
-        .name = COMPOUND_STRING("Poison Sting"),
-        .description = COMPOUND_STRING(
-            "A toxic attack with barbs,\n"
-            "etc., that may poison."),
-        .effect = EFFECT_HIT,
-        .power = 15,
-        .type = TYPE_POISON,
-        .accuracy = 100,
-        .pp = 35,
-        .target = TARGET_SELECTED,
-        .priority = 0,
-        .category = DAMAGE_CATEGORY_PHYSICAL,
-        .additionalEffects = ADDITIONAL_EFFECTS({
-            .moveEffect = MOVE_EFFECT_POISON,
-            .chance = B_UPDATED_MOVE_DATA >= GEN_2 ? 30 : 20,
-        }),
-        .contestEffect = CONTEST_EFFECT_STARTLE_PREV_MON,
-        .contestCategory = CONTEST_CATEGORY_SMART,
-        .contestComboStarterId = 0,
-        .contestComboMoves = {0},
-        .battleAnimScript = gBattleAnimMove_PoisonSting,
-    },
-
-    [MOVE_TWINEEDLE] =
-    {
-        .name = COMPOUND_STRING("Twineedle"),
-        .description = COMPOUND_STRING(
-            "Foreleg stingers jab foe\n"
-            "twice. May poison."),
-        .effect = EFFECT_HIT,
-        .power = 25,
-        .type = TYPE_BUG,
-        .accuracy = 100,
-        .pp = 20,
-        .target = TARGET_SELECTED,
-        .priority = 0,
-        .category = DAMAGE_CATEGORY_PHYSICAL,
-        .ignoresKingsRock = (B_UPDATED_MOVE_FLAGS == GEN_3 || B_UPDATED_MOVE_FLAGS == GEN_4),
-        .strikeCount = 2,
-        .additionalEffects = ADDITIONAL_EFFECTS({
-            .moveEffect = MOVE_EFFECT_POISON,
-            .chance = 20,
-        }),
-        .contestEffect = C_UPDATED_MOVE_EFFECTS >= GEN_6 ? CONTEST_EFFECT_BETTER_IF_SAME_TYPE : CONTEST_EFFECT_STARTLE_PREV_MON,
-        .contestCategory = CONTEST_CATEGORY_COOL,
-        .contestComboStarterId = 0,
-        .contestComboMoves = {0},
-        .battleAnimScript = gBattleAnimMove_Twineedle,
-        .validApprenticeMove = TRUE,
-    },
-
-    [MOVE_PIN_MISSILE] =
-    {
-        .name = COMPOUND_STRING("Pin Missile"),
-        .description = COMPOUND_STRING(
-            "Sharp pins are fired to\n"
-            "strike 2 to 5 times."),
-        .effect = EFFECT_HIT,
-        .power = B_UPDATED_MOVE_DATA >= GEN_6 ? 25 : 14,
-        .type = TYPE_BUG,
-        .accuracy = B_UPDATED_MOVE_DATA >= GEN_6 ? 95 : 85,
-        .pp = 20,
-        .target = TARGET_SELECTED,
-        .priority = 0,
-        .category = DAMAGE_CATEGORY_PHYSICAL,
-        .multiHit = TRUE,
-        .contestEffect = C_UPDATED_MOVE_EFFECTS >= GEN_6 ? CONTEST_EFFECT_QUALITY_DEPENDS_ON_TIMING : CONTEST_EFFECT_STARTLE_MON_WITH_JUDGES_ATTENTION,
-        .contestCategory = CONTEST_CATEGORY_COOL,
-        .contestComboStarterId = 0,
-        .contestComboMoves = {0},
-        .battleAnimScript = gBattleAnimMove_PinMissile,
-    },
-
-    [MOVE_LEER] =
-    {
-        .name = COMPOUND_STRING("Leer"),
-        .description = COMPOUND_STRING(
-            "Frightens the foes with a\n"
-            "leer to lower Defense."),
-        .effect = EFFECT_DEFENSE_DOWN,
-        .power = 0,
-        .type = TYPE_NORMAL,
-        .accuracy = 100,
-        .pp = 30,
-        .target = TARGET_BOTH,
-        .priority = 0,
-        .category = DAMAGE_CATEGORY_STATUS,
-        .zMove = { .effect = Z_EFFECT_ATK_UP_1 },
-        .magicCoatAffected = TRUE,
-        .contestEffect = C_UPDATED_MOVE_EFFECTS >= GEN_6 ? CONTEST_EFFECT_STARTLE_MON_WITH_JUDGES_ATTENTION : CONTEST_EFFECT_DONT_EXCITE_AUDIENCE,
-        .contestCategory = CONTEST_CATEGORY_COOL,
-        .contestComboStarterId = COMBO_STARTER_LEER,
-        .contestComboMoves = {COMBO_STARTER_RAGE, COMBO_STARTER_SCARY_FACE},
-        .battleAnimScript = gBattleAnimMove_Leer,
-    },
-
-    [MOVE_BITE] =
-    {
-        .name = COMPOUND_STRING("Bite"),
-        .description = COMPOUND_STRING(
-            "Bites with vicious fangs.\n"
-            "May cause flinching."),
-        .effect = EFFECT_HIT,
-        .power = 60,
-        .type = B_UPDATED_MOVE_TYPES >= GEN_2 ? TYPE_DARK : TYPE_NORMAL,
-        .accuracy = 100,
-        .pp = 25,
-        .target = TARGET_SELECTED,
-        .priority = 0,
-        .category = DAMAGE_CATEGORY_PHYSICAL,
-        .makesContact = TRUE,
-        .bitingMove = TRUE,
-        .additionalEffects = ADDITIONAL_EFFECTS({
-            .moveEffect = MOVE_EFFECT_FLINCH,
-            .chance = B_UPDATED_MOVE_DATA >= GEN_2 ? 30 : 10,
-        }),
-        .contestEffect = C_UPDATED_MOVE_EFFECTS >= GEN_6 ? CONTEST_EFFECT_STARTLE_PREV_MON : CONTEST_EFFECT_BADLY_STARTLE_PREV_MONS,
-        .contestCategory = CONTEST_CATEGORY_TOUGH,
-        .contestComboStarterId = 0,
-        .contestComboMoves = {COMBO_STARTER_LEER, COMBO_STARTER_SCARY_FACE},
-        .battleAnimScript = gBattleAnimMove_Bite,
-        .validApprenticeMove = TRUE,
-    },
-
-    [MOVE_GROWL] =
-    {
-        .name = COMPOUND_STRING("Growl"),
-        .description = COMPOUND_STRING(
-            "Growls cutely to reduce the\n"
-            "foe's Attack."),
-        .effect = EFFECT_ATTACK_DOWN,
-        .power = 0,
-        .type = TYPE_NORMAL,
-        .accuracy = 100,
-        .pp = 40,
-        .target = TARGET_BOTH,
-        .priority = 0,
-        .category = DAMAGE_CATEGORY_STATUS,
-        .zMove = { .effect = Z_EFFECT_DEF_UP_1 },
-        .magicCoatAffected = TRUE,
-        .soundMove = TRUE,
-        .ignoresSubstitute = B_UPDATED_MOVE_FLAGS >= GEN_6,
-        .contestEffect = CONTEST_EFFECT_BETTER_IF_LAST,
-        .contestCategory = CONTEST_CATEGORY_CUTE,
-        .contestComboStarterId = 0,
-        .contestComboMoves = {COMBO_STARTER_CHARM},
-        .battleAnimScript = gBattleAnimMove_Growl,
-    },
-
-    [MOVE_ROAR] =
-    {
-        .name = COMPOUND_STRING("Roar"),
-        .description = COMPOUND_STRING(
-            "Switches the foe out\n"
-            "or ends wild battle."),
-        .effect = EFFECT_ROAR,
-        .power = 0,
-        .type = TYPE_NORMAL,
-        .accuracy = B_UPDATED_MOVE_DATA >= GEN_6 ? 0 : 100,
-        .pp = 20,
-        .target = TARGET_SELECTED,
-        #if B_UPDATED_MOVE_DATA >= GEN_3
-            .priority = -6,
-        #elif B_UPDATED_MOVE_DATA == GEN_2
-            .priority = -1,
-        #else
-            .priority = 0,
-        #endif
-        .category = DAMAGE_CATEGORY_STATUS,
-        .zMove = { .effect = Z_EFFECT_DEF_UP_1 },
-        .ignoresProtect = B_UPDATED_MOVE_FLAGS >= GEN_6,
-        .ignoresSubstitute = B_UPDATED_MOVE_FLAGS >= GEN_6,
-        .magicCoatAffected = B_UPDATED_MOVE_FLAGS >= GEN_5,
-        .soundMove = TRUE,
-        .copycatBanned = B_UPDATED_MOVE_FLAGS >= GEN_6,
-        .assistBanned = B_UPDATED_MOVE_FLAGS >= GEN_6,
-        .contestEffect = C_UPDATED_MOVE_EFFECTS >= GEN_6 ? CONTEST_EFFECT_NEXT_APPEAL_LATER : CONTEST_EFFECT_SCRAMBLE_NEXT_TURN_ORDER,
-        .contestCategory = CONTEST_CATEGORY_COOL,
-        .contestComboStarterId = 0,
-        .contestComboMoves = {COMBO_STARTER_STEALTH_ROCK, COMBO_STARTER_ENTRAINMENT, COMBO_STARTER_PLAY_NICE, COMBO_STARTER_SPIKES, COMBO_STARTER_TOXIC_SPIKES},
-        .battleAnimScript = gBattleAnimMove_Roar,
-        .validApprenticeMove = TRUE,
-    },
-
-    [MOVE_SING] =
-    {
-        .name = COMPOUND_STRING("Sing"),
-        .description = COMPOUND_STRING(
-            "A soothing song lulls the\n"
-            "foe into a deep slumber."),
-        .effect = EFFECT_NON_VOLATILE_STATUS,
-        .power = 0,
-        .type = TYPE_NORMAL,
-        .accuracy = 55,
-        .pp = 15,
-        .target = TARGET_SELECTED,
-        .priority = 0,
-        .category = DAMAGE_CATEGORY_STATUS,
-        .argument = { .nonVolatileStatus = MOVE_EFFECT_SLEEP },
-        .zMove = { .effect = Z_EFFECT_SPD_UP_1 },
-        .ignoresSubstitute = B_UPDATED_MOVE_FLAGS >= GEN_6,
-        .magicCoatAffected = TRUE,
-        .soundMove = TRUE,
-        .contestEffect = CONTEST_EFFECT_MAKE_FOLLOWING_MONS_NERVOUS,
-        .contestCategory = CONTEST_CATEGORY_CUTE,
-        .contestComboStarterId = COMBO_STARTER_SING,
-        .contestComboMoves = {0},
-        .battleAnimScript = gBattleAnimMove_Sing,
-        .validApprenticeMove = TRUE,
-    },
-
-    [MOVE_SUPERSONIC] =
-    {
-        .name = COMPOUND_STRING("Supersonic"),
-        .description = COMPOUND_STRING(
-            "Emits bizarre sound waves\n"
-            "that may confuse the foe."),
-        .effect = EFFECT_CONFUSE,
-        .power = 0,
-        .type = TYPE_NORMAL,
-        .accuracy = 55,
-        .pp = 20,
-        .target = TARGET_SELECTED,
-        .priority = 0,
-        .category = DAMAGE_CATEGORY_STATUS,
-        .zMove = { .effect = Z_EFFECT_SPD_UP_1 },
-        .ignoresSubstitute = B_UPDATED_MOVE_FLAGS >= GEN_6,
-        .magicCoatAffected = TRUE,
-        .soundMove = TRUE,
-        .contestEffect = C_UPDATED_MOVE_EFFECTS >= GEN_6 ? CONTEST_EFFECT_SHIFT_JUDGE_ATTENTION : CONTEST_EFFECT_SCRAMBLE_NEXT_TURN_ORDER,
-        .contestCategory = CONTEST_CATEGORY_SMART,
-        .contestComboStarterId = 0,
-        .contestComboMoves = {0},
-        .battleAnimScript = gBattleAnimMove_Supersonic,
-        .validApprenticeMove = TRUE,
-    },
-
-    [MOVE_SONIC_BOOM] =
-    {
-        .name = COMPOUND_STRING("Sonic Boom"),
-        .description = COMPOUND_STRING(
-            "Launches shock waves that\n"
-            "always inflict 20 HP damage."),
-        .effect = EFFECT_FIXED_HP_DAMAGE,
-        .power = 1,
-        .type = TYPE_NORMAL,
-        .accuracy = 90,
-        .pp = 20,
-        .target = TARGET_SELECTED,
-        .priority = 0,
-        .category = DAMAGE_CATEGORY_SPECIAL,
-        .argument = { .fixedDamage = 20 },
-        .contestEffect = C_UPDATED_MOVE_EFFECTS >= GEN_6 ? CONTEST_EFFECT_REPETITION_NOT_BORING : CONTEST_EFFECT_BETTER_IF_SAME_TYPE,
-        .contestCategory = CONTEST_CATEGORY_COOL,
-        .contestComboStarterId = 0,
-        .contestComboMoves = {0},
-        .battleAnimScript = gBattleAnimMove_SonicBoom,
-        .validApprenticeMove = TRUE,
-    },
-
-    [MOVE_DISABLE] =
-    {
-        .name = COMPOUND_STRING("Disable"),
-        .description = COMPOUND_STRING(
-        #if B_DISABLE_TURNS >= GEN_5
-            "For 4 turns, prevents foe\n"
-        #elif B_DISABLE_TURNS == GEN_4
-            "For 4-7 turns, prevents foe\n"
-        #else
-            "For 2-5 turns, prevents foe\n"
-        #endif
-            "from using last used move."),
-        #if B_UPDATED_MOVE_DATA >= GEN_5
-            .accuracy = 100,
-        #elif B_UPDATED_MOVE_DATA == GEN_4
-            .accuracy = 80,
-        #else
-            .accuracy = 55,
-        #endif
-        .effect = EFFECT_DISABLE,
-        .power = 0,
-        .type = TYPE_NORMAL,
-        .pp = 20,
-        .target = TARGET_SELECTED,
-        .priority = 0,
-        .category = DAMAGE_CATEGORY_STATUS,
-        .zMove = { .effect = Z_EFFECT_RESET_STATS },
-        .ignoresSubstitute = TRUE,
-        .magicCoatAffected = B_UPDATED_MOVE_FLAGS >= GEN_5,
-        .contestEffect = CONTEST_EFFECT_MAKE_FOLLOWING_MONS_NERVOUS,
-        .contestCategory = CONTEST_CATEGORY_SMART,
-        .contestComboStarterId = 0,
-        .contestComboMoves = {0},
-        .battleAnimScript = gBattleAnimMove_Disable,
-        .validApprenticeMove = TRUE,
-    },
-
-    [MOVE_ACID] =
-    {
-        .name = COMPOUND_STRING("Acid"),
-        .description = COMPOUND_STRING(
-            "Sprays a hide-melting acid.\n"
-        #if B_UPDATED_MOVE_DATA >= GEN_4
-            "May lower Sp. Def."),
-        #else
-            "May lower Defense."),
-        #endif
-        .effect = EFFECT_HIT,
-        .power = 40,
-        .type = TYPE_POISON,
-        .accuracy = 100,
-        .pp = 30,
-        .target = TARGET_BOTH,
-        .priority = 0,
-        .category = DAMAGE_CATEGORY_SPECIAL,
-            .additionalEffects = ADDITIONAL_EFFECTS({
-            .moveEffect = B_UPDATED_MOVE_DATA >= GEN_4 ? MOVE_EFFECT_SP_DEF_MINUS_1 : MOVE_EFFECT_DEF_MINUS_1,
-            .chance = B_UPDATED_MOVE_DATA >= GEN_2 ? 10 : 33,
-        }),
-        .contestEffect = C_UPDATED_MOVE_EFFECTS >= GEN_6 ? CONTEST_EFFECT_WORSEN_CONDITION_OF_PREV_MONS : CONTEST_EFFECT_BADLY_STARTLE_FRONT_MON,
-        .contestCategory = CONTEST_CATEGORY_SMART,
-        .contestComboStarterId = 0,
-        .contestComboMoves = {0},
-        .battleAnimScript = gBattleAnimMove_Acid,
-    },
-
-    [MOVE_EMBER] =
-    {
-        .name = COMPOUND_STRING("Ember"),
-        .description = COMPOUND_STRING(
-            "A weak fire attack that may\n"
-            "inflict a burn."),
-        .effect = EFFECT_HIT,
-        .power = 40,
-        .type = TYPE_FIRE,
-        .accuracy = 100,
-        .pp = 25,
-        .target = TARGET_SELECTED,
-        .priority = 0,
-        .category = DAMAGE_CATEGORY_SPECIAL,
-        .additionalEffects = ADDITIONAL_EFFECTS({
-            .moveEffect = MOVE_EFFECT_BURN,
-            .chance = 10,
-        }),
-        .contestEffect = CONTEST_EFFECT_HIGHLY_APPEALING,
-        .contestCategory = C_UPDATED_MOVE_CATEGORIES >= GEN_6 ? CONTEST_CATEGORY_CUTE : CONTEST_CATEGORY_BEAUTY,
-        .contestComboStarterId = 0,
-        .contestComboMoves = {COMBO_STARTER_SUNNY_DAY},
-        .battleAnimScript = gBattleAnimMove_Ember,
-    },
-
-    [MOVE_FLAMETHROWER] =
-    {
-        .name = COMPOUND_STRING("Flamethrower"),
-        .description = COMPOUND_STRING(
-            "A powerful fire attack that\n"
-            "may inflict a burn."),
-        .effect = EFFECT_HIT,
-        .power = B_UPDATED_MOVE_DATA >= GEN_6 ? 90 : 95,
-        .type = TYPE_FIRE,
-        .accuracy = 100,
-        .pp = 15,
-        .target = TARGET_SELECTED,
-        .priority = 0,
-        .category = DAMAGE_CATEGORY_SPECIAL,
-        .additionalEffects = ADDITIONAL_EFFECTS({
-            .moveEffect = MOVE_EFFECT_BURN,
-            .chance = 10,
-        }),
-        .contestEffect = CONTEST_EFFECT_HIGHLY_APPEALING,
-        .contestCategory = CONTEST_CATEGORY_BEAUTY,
-        .contestComboStarterId = 0,
-        .contestComboMoves = {COMBO_STARTER_SUNNY_DAY},
-        .battleAnimScript = gBattleAnimMove_Flamethrower,
-        .validApprenticeMove = TRUE,
-    },
-
-    [MOVE_MIST] =
-    {
-        .name = COMPOUND_STRING("Mist"),
-        .description = COMPOUND_STRING(
-            "Creates a mist that stops\n"
-            "reduction of stats."),
-        .effect = EFFECT_MIST,
-        .power = 0,
-        .type = TYPE_ICE,
-        .accuracy = 0,
-        .pp = 30,
-        .target = TARGET_USER,
-        .priority = 0,
-        .category = DAMAGE_CATEGORY_STATUS,
-        .zMove = { .effect = Z_EFFECT_RECOVER_HP },
-        .ignoresProtect = TRUE,
-        .mirrorMoveBanned = TRUE,
-        .snatchAffected = TRUE,
-        .contestEffect = CONTEST_EFFECT_AVOID_STARTLE,
-        .contestCategory = CONTEST_CATEGORY_BEAUTY,
-        .contestComboStarterId = 0,
-        .contestComboMoves = {0},
-        .battleAnimScript = gBattleAnimMove_Mist,
-        .validApprenticeMove = TRUE,
-    },
-
-    [MOVE_WATER_GUN] =
-    {
-        .name = COMPOUND_STRING("Water Gun"),
-        .description = COMPOUND_STRING(
-            "Squirts water to attack\n"
-            "the foe."),
-        .effect = EFFECT_HIT,
-        .power = 40,
-        .type = TYPE_WATER,
-        .accuracy = 100,
-        .pp = 25,
-        .target = TARGET_SELECTED,
-        .priority = 0,
-        .category = DAMAGE_CATEGORY_SPECIAL,
-        .contestEffect = CONTEST_EFFECT_HIGHLY_APPEALING,
-        .contestCategory = CONTEST_CATEGORY_CUTE,
-        .contestComboStarterId = 0,
-        .contestComboMoves = {COMBO_STARTER_MUD_SPORT, COMBO_STARTER_RAIN_DANCE, COMBO_STARTER_WATER_SPORT},
-        .battleAnimScript = gBattleAnimMove_WaterGun,
-    },
-
-    [MOVE_HYDRO_PUMP] =
-    {
-        .name = COMPOUND_STRING("Hydro Pump"),
-        .description = COMPOUND_STRING(
-            "Blasts water at high power\n"
-            "to strike the foe."),
-        .effect = EFFECT_HIT,
-        .power = B_UPDATED_MOVE_DATA >= GEN_6 ? 110 : 120,
-        .type = TYPE_WATER,
-        .accuracy = 80,
-        .pp = 5,
-        .target = TARGET_SELECTED,
-        .priority = 0,
-        .category = DAMAGE_CATEGORY_SPECIAL,
-        .contestEffect = C_UPDATED_MOVE_EFFECTS >= GEN_6 ? CONTEST_EFFECT_BETTER_WHEN_AUDIENCE_EXCITED : CONTEST_EFFECT_HIGHLY_APPEALING,
-        .contestCategory = CONTEST_CATEGORY_BEAUTY,
-        .contestComboStarterId = 0,
-        .contestComboMoves = {COMBO_STARTER_RAIN_DANCE},
-        .battleAnimScript = gBattleAnimMove_HydroPump,
-        .validApprenticeMove = TRUE,
-    },
-
-    [MOVE_SURF] =
-    {
-        .name = COMPOUND_STRING("Surf"),
-        .description = COMPOUND_STRING(
-            "Creates a huge wave, then\n"
-        #if B_UPDATED_MOVE_DATA >= GEN_4
-            "crashes it down on the field."),
-        #else
-            "crashes it down on the foes."),
-        #endif
-        .effect = EFFECT_HIT,
-        .power = B_UPDATED_MOVE_DATA >= GEN_6 ? 90 : 95,
-        .type = TYPE_WATER,
-        .accuracy = 100,
-        .pp = 15,
-        .target = B_UPDATED_MOVE_DATA >= GEN_4 ? TARGET_FOES_AND_ALLY : TARGET_BOTH,
-        .priority = 0,
-        .category = DAMAGE_CATEGORY_SPECIAL,
-        .damagesUnderwater = TRUE,
-        .skyBattleBanned = TRUE,
-        .contestEffect = C_UPDATED_MOVE_EFFECTS >= GEN_6 ? CONTEST_EFFECT_STARTLE_PREV_MONS : CONTEST_EFFECT_AFFECTED_BY_PREV_APPEAL,
-        .contestCategory = CONTEST_CATEGORY_BEAUTY,
-        .contestComboStarterId = COMBO_STARTER_SURF,
-        .contestComboMoves = {COMBO_STARTER_DIVE, COMBO_STARTER_RAIN_DANCE},
-        .battleAnimScript = gBattleAnimMove_Surf,
-        .validApprenticeMove = TRUE,
-    },
-
-    [MOVE_ICE_BEAM] =
-    {
-        .name = COMPOUND_STRING("Ice Beam"),
-        .description = COMPOUND_STRING(
-            "Blasts the foe with an icy\n"
-        #if B_USE_FROSTBITE == TRUE
-            "beam. May cause frostbite."),
-        #else
-            "beam that may freeze it."),
-        #endif
-        .effect = EFFECT_HIT,
-        .power = B_UPDATED_MOVE_DATA >= GEN_6 ? 90 : 95,
-        .type = TYPE_ICE,
-        .accuracy = 100,
-        .pp = 10,
-        .target = TARGET_SELECTED,
-        .priority = 0,
-        .category = DAMAGE_CATEGORY_SPECIAL,
-        .additionalEffects = ADDITIONAL_EFFECTS({
-            // The following effect is also relevant in battle_Pike.c
-            // If you cherry-pick this to use something other than the config, make sure to update it there too
-            .moveEffect = MOVE_EFFECT_FREEZE_OR_FROSTBITE,
-            .chance = 10,
-        }),
-        .contestEffect = C_UPDATED_MOVE_EFFECTS >= GEN_6 ? CONTEST_EFFECT_BADLY_STARTLE_FRONT_MON : CONTEST_EFFECT_STARTLE_MONS_SAME_TYPE_APPEAL,
-        .contestCategory = CONTEST_CATEGORY_BEAUTY,
-        .contestComboStarterId = 0,
-        .contestComboMoves = {COMBO_STARTER_HAIL},
-        .battleAnimScript = gBattleAnimMove_IceBeam,
-        .validApprenticeMove = TRUE,
-    },
-
-    [MOVE_BLIZZARD] =
-    {
-        .name = COMPOUND_STRING("Blizzard"),
-        .description = COMPOUND_STRING(
-            "Hits the foes with an icy\n"
-        #if B_USE_FROSTBITE == TRUE
-            "storm. May cause frostbite."),
-        #else
-            "storm that may freeze it."),
-        #endif
-        .effect = EFFECT_HIT,
-        .power = B_UPDATED_MOVE_DATA >= GEN_6 ? 110 : 120,
-        .type = TYPE_ICE,
-        .accuracy = B_UPDATED_MOVE_DATA >= GEN_2 ? 70 : 90,
-        .pp = 5,
-        .target = TARGET_BOTH,
-        .priority = 0,
-        .category = DAMAGE_CATEGORY_SPECIAL,
-        .windMove = TRUE,
-        .alwaysHitsInHailSnow = B_BLIZZARD_HAIL >= GEN_4,
-        .additionalEffects = ADDITIONAL_EFFECTS({
-            .moveEffect = MOVE_EFFECT_FREEZE_OR_FROSTBITE,
-            .chance = 10,
-        }),
-        .contestEffect = C_UPDATED_MOVE_EFFECTS >= GEN_6 ? CONTEST_EFFECT_BADLY_STARTLE_PREV_MONS : CONTEST_EFFECT_HIGHLY_APPEALING,
-        .contestCategory = CONTEST_CATEGORY_BEAUTY,
-        .contestComboStarterId = 0,
-        .contestComboMoves = {COMBO_STARTER_HAIL, COMBO_STARTER_POWDER_SNOW},
-        .battleAnimScript = gBattleAnimMove_Blizzard,
-        .validApprenticeMove = TRUE,
-    },
-
-    [MOVE_PSYBEAM] =
-    {
-        .name = COMPOUND_STRING("Psybeam"),
-        .description = COMPOUND_STRING(
-            "Fires a peculiar ray that\n"
-            "may confuse the foe."),
-        .effect = EFFECT_HIT,
-        .power = 65,
-        .type = TYPE_PSYCHIC,
-        .accuracy = 100,
-        .pp = 20,
-        .target = TARGET_SELECTED,
-        .priority = 0,
-        .category = DAMAGE_CATEGORY_SPECIAL,
-        .additionalEffects = ADDITIONAL_EFFECTS({
-            .moveEffect = MOVE_EFFECT_CONFUSION,
-            .chance = 10,
-        }),
-        .contestEffect = C_UPDATED_MOVE_EFFECTS >= GEN_6 ? CONTEST_EFFECT_SHIFT_JUDGE_ATTENTION : CONTEST_EFFECT_SCRAMBLE_NEXT_TURN_ORDER,
-        .contestCategory = CONTEST_CATEGORY_BEAUTY,
-        .contestComboStarterId = 0,
-        .contestComboMoves = {COMBO_STARTER_CALM_MIND},
-        .battleAnimScript = gBattleAnimMove_Psybeam,
-        .validApprenticeMove = TRUE,
-    },
-
-    [MOVE_BUBBLE_BEAM] =
-    {
-        .name = COMPOUND_STRING("Bubble Beam"),
-        .description = COMPOUND_STRING(
-            "Forcefully sprays bubbles\n"
-            "that may lower Speed."),
-        .effect = EFFECT_HIT,
-        .power = 65,
-        .type = TYPE_WATER,
-        .accuracy = 100,
-        .pp = 20,
-        .target = TARGET_SELECTED,
-        .priority = 0,
-        .category = DAMAGE_CATEGORY_SPECIAL,
-        .additionalEffects = ADDITIONAL_EFFECTS({
-            .moveEffect = MOVE_EFFECT_SPD_MINUS_1,
-            .chance = B_UPDATED_MOVE_DATA >= GEN_2 ? 10 : 33,
-        }),
-        .contestEffect = C_UPDATED_MOVE_EFFECTS >= GEN_6 ? CONTEST_EFFECT_STARTLE_PREV_MON : CONTEST_EFFECT_BADLY_STARTLE_PREV_MONS,
-        .contestCategory = CONTEST_CATEGORY_BEAUTY,
-        .contestComboStarterId = 0,
-        .contestComboMoves = {COMBO_STARTER_RAIN_DANCE},
-        .battleAnimScript = gBattleAnimMove_BubbleBeam,
-    },
-
-    [MOVE_AURORA_BEAM] =
-    {
-        .name = COMPOUND_STRING("Aurora Beam"),
-        .description = COMPOUND_STRING(
-            "Fires a rainbow-colored\n"
-            "beam that may lower Attack."),
-        .effect = EFFECT_HIT,
-        .power = 65,
-        .type = TYPE_ICE,
-        .accuracy = 100,
-        .pp = 20,
-        .target = TARGET_SELECTED,
-        .priority = 0,
-        .category = DAMAGE_CATEGORY_SPECIAL,
-        .additionalEffects = ADDITIONAL_EFFECTS({
-            .moveEffect = MOVE_EFFECT_ATK_MINUS_1,
-            .chance = B_UPDATED_MOVE_DATA >= GEN_2 ? 10 : 33,
-        }),
-        .contestEffect = C_UPDATED_MOVE_EFFECTS >= GEN_6 ? CONTEST_EFFECT_STARTLE_PREV_MON : CONTEST_EFFECT_STARTLE_MONS_SAME_TYPE_APPEAL,
-        .contestCategory = CONTEST_CATEGORY_BEAUTY,
-        .contestComboStarterId = 0,
-        .contestComboMoves = {COMBO_STARTER_HAIL},
-        .battleAnimScript = gBattleAnimMove_AuroraBeam,
-    },
-
-    [MOVE_HYPER_BEAM] =
-    {
-        .name = COMPOUND_STRING("Hyper Beam"),
-        .description = sHyperBeamDescription,
-        .effect = EFFECT_HIT,
-        .power = 150,
-        .type = TYPE_NORMAL,
-        .accuracy = 90,
-        .pp = 5,
-        .target = TARGET_SELECTED,
-        .priority = 0,
-        .category = DAMAGE_CATEGORY_SPECIAL,
-        .ignoresKingsRock = B_UPDATED_MOVE_FLAGS < GEN_3,
-        .additionalEffects = ADDITIONAL_EFFECTS({
-            .moveEffect = MOVE_EFFECT_RECHARGE,
-            .self = TRUE,
-        }),
-        .contestEffect = CONTEST_EFFECT_JAMS_OTHERS_BUT_MISS_ONE_TURN,
-        .contestCategory = CONTEST_CATEGORY_COOL,
-        .contestComboStarterId = 0,
-        .contestComboMoves = {0},
-        .battleAnimScript = gBattleAnimMove_HyperBeam,
-        .validApprenticeMove = TRUE,
-    },
-
-    [MOVE_PECK] =
-    {
-        .name = COMPOUND_STRING("Peck"),
-        .description = COMPOUND_STRING(
-            "Attacks the foe with a\n"
-            "jabbing beak, etc."),
-        .effect = EFFECT_HIT,
-        .power = 35,
-        .type = TYPE_FLYING,
-        .accuracy = 100,
-        .pp = 35,
-        .target = TARGET_SELECTED,
-        .priority = 0,
-        .category = DAMAGE_CATEGORY_PHYSICAL,
-        .makesContact = TRUE,
-        .contestEffect = CONTEST_EFFECT_HIGHLY_APPEALING,
-        .contestCategory = CONTEST_CATEGORY_COOL,
-        .contestComboStarterId = COMBO_STARTER_PECK,
-        .contestComboMoves = {0},
-        .battleAnimScript = gBattleAnimMove_Peck,
-    },
-
-    [MOVE_DRILL_PECK] =
-    {
-        .name = COMPOUND_STRING("Drill Peck"),
-        .description = COMPOUND_STRING(
-            "A corkscrewing attack with\n"
-            "the beak acting as a drill."),
-        .effect = EFFECT_HIT,
-        .power = 80,
-        .type = TYPE_FLYING,
-        .accuracy = 100,
-        .pp = 20,
-        .target = TARGET_SELECTED,
-        .priority = 0,
-        .category = DAMAGE_CATEGORY_PHYSICAL,
-        .makesContact = TRUE,
-        .contestEffect = C_UPDATED_MOVE_EFFECTS >= GEN_6 ? CONTEST_EFFECT_AFFECTED_BY_PREV_APPEAL : CONTEST_EFFECT_HIGHLY_APPEALING,
-        .contestCategory = CONTEST_CATEGORY_COOL,
-        .contestComboStarterId = 0,
-        .contestComboMoves = {COMBO_STARTER_PECK},
-        .battleAnimScript = gBattleAnimMove_DrillPeck,
-        .validApprenticeMove = TRUE,
-    },
-
-    [MOVE_SUBMISSION] =
-    {
-        .name = COMPOUND_STRING("Submission"),
-        .description = COMPOUND_STRING(
-            "A reckless body slam that\n"
-            "also hurts the user."),
-        .effect = EFFECT_RECOIL,
-        .power = 80,
-        .type = TYPE_FIGHTING,
-        .accuracy = 80,
-        .pp = B_UPDATED_MOVE_DATA >= GEN_6 ? 20 : 25,
-        .target = TARGET_SELECTED,
-        .priority = 0,
-        .category = DAMAGE_CATEGORY_PHYSICAL,
-        .makesContact = TRUE,
-        .argument = { .recoilPercentage = 25 },
-        .contestEffect = CONTEST_EFFECT_USER_MORE_EASILY_STARTLED,
-        .contestCategory = CONTEST_CATEGORY_COOL,
-        .contestComboStarterId = 0,
-        .contestComboMoves = {COMBO_STARTER_MIND_READER},
-        .battleAnimScript = gBattleAnimMove_Submission,
-        .validApprenticeMove = TRUE,
-    },
-
-    [MOVE_LOW_KICK] =
-    {
-        .name = COMPOUND_STRING("Low Kick"),
-        #if B_UPDATED_MOVE_DATA >= GEN_3
-            .description = COMPOUND_STRING(
-                "A kick that inflicts more\n"
-                "damage on heavier foes."),
-            .effect = EFFECT_LOW_KICK,
-        #else
-            .description = COMPOUND_STRING(
-                "A low, tripping kick that\n"
-                "may cause flinching."),
-            .effect = EFFECT_HIT,
-            .additionalEffects = ADDITIONAL_EFFECTS({
-                .moveEffect = MOVE_EFFECT_FLINCH,
-                .chance = 30,
-            }),
-        #endif
-        .power = B_UPDATED_MOVE_DATA >= GEN_3 ? 1 : 50,
-        .type = TYPE_FIGHTING,
-        .accuracy = B_UPDATED_MOVE_DATA >= GEN_3 ? 100 : 90,
-        .pp = 20,
-        .target = TARGET_SELECTED,
-        .priority = 0,
-        .category = DAMAGE_CATEGORY_PHYSICAL,
-        .makesContact = TRUE,
-        .kickingMove = TRUE,
-        .contestEffect = C_UPDATED_MOVE_EFFECTS >= GEN_6 ? CONTEST_EFFECT_BETTER_WHEN_LATER : CONTEST_EFFECT_BADLY_STARTLE_FRONT_MON,
-        .contestCategory = CONTEST_CATEGORY_TOUGH,
-        .contestComboStarterId = 0,
-        .contestComboMoves = {0},
-        .battleAnimScript = gBattleAnimMove_LowKick,
-        .validApprenticeMove = TRUE,
-    },
-
-    [MOVE_COUNTER] =
-    {
-        .name = COMPOUND_STRING("Counter"),
-        .description = COMPOUND_STRING(
-            "Retaliates any physical hit\n"
-            "with double the power."),
-        .effect = EFFECT_REFLECT_DAMAGE,
-        .power = 1,
-        .type = TYPE_FIGHTING,
-        .accuracy = 100,
-        .pp = 20,
-        .target = TARGET_DEPENDS,
-        .priority = -5,
-        .category = DAMAGE_CATEGORY_PHYSICAL,
-        .makesContact = TRUE,
-        .argument = {
-            .reflectDamage.damagePercent = 200,
-            .reflectDamage.damageCategories = 1u << DAMAGE_CATEGORY_PHYSICAL,
-        },
-        .ignoresProtect = B_UPDATED_MOVE_FLAGS < GEN_5,
-        .ignoresKingsRock = (B_UPDATED_MOVE_FLAGS == GEN_3 || B_UPDATED_MOVE_FLAGS == GEN_4),
-        .mirrorMoveBanned = B_UPDATED_MOVE_FLAGS >= GEN_4,
-        .meFirstBanned = TRUE,
-        .metronomeBanned = B_UPDATED_MOVE_FLAGS >= GEN_2,
-        .copycatBanned = TRUE,
-        .assistBanned = TRUE,
-        .contestEffect = C_UPDATED_MOVE_EFFECTS >= GEN_6 ? CONTEST_EFFECT_BETTER_IF_LAST : CONTEST_EFFECT_AVOID_STARTLE_ONCE,
-        .contestCategory = CONTEST_CATEGORY_TOUGH,
-        .contestComboStarterId = 0,
-        .contestComboMoves = {COMBO_STARTER_TAUNT, COMBO_STARTER_ENCORE, COMBO_STARTER_TORMENT},
-        .battleAnimScript = gBattleAnimMove_Counter,
-        .validApprenticeMove = TRUE,
-    },
-
-    [MOVE_SEISMIC_TOSS] =
-    {
-        .name = COMPOUND_STRING("Seismic Toss"),
-        .description = COMPOUND_STRING(
-            "Inflicts damage identical\n"
-            "to the user's level."),
-        .effect = EFFECT_LEVEL_DAMAGE,
-        .power = 1,
-        .type = TYPE_FIGHTING,
-        .accuracy = 100,
-        .pp = 20,
-        .target = TARGET_SELECTED,
-        .priority = 0,
-        .category = DAMAGE_CATEGORY_PHYSICAL,
-        .makesContact = TRUE,
-        .skyBattleBanned = TRUE,
-        .contestEffect = C_UPDATED_MOVE_EFFECTS >= GEN_6 ? CONTEST_EFFECT_REPETITION_NOT_BORING : CONTEST_EFFECT_STARTLE_MONS_SAME_TYPE_APPEAL,
-        .contestCategory = CONTEST_CATEGORY_TOUGH,
-        .contestComboStarterId = 0,
-        .contestComboMoves = {COMBO_STARTER_FAKE_OUT, COMBO_STARTER_ENTRAINMENT, COMBO_STARTER_PLAY_NICE},
-        .battleAnimScript = gBattleAnimMove_SeismicToss,
-        .validApprenticeMove = TRUE,
-    },
-
-    [MOVE_STRENGTH] =
-    {
-        .name = COMPOUND_STRING("Strength"),
-        .description = COMPOUND_STRING(
-            "Builds enormous power,\n"
-            "then slams the foe."),
-        .effect = EFFECT_HIT,
-        .power = 80,
-        .type = TYPE_NORMAL,
-        .accuracy = 100,
-        .pp = 15,
-        .target = TARGET_SELECTED,
-        .priority = 0,
-        .category = DAMAGE_CATEGORY_PHYSICAL,
-        .makesContact = TRUE,
-        .contestEffect = C_UPDATED_MOVE_EFFECTS >= GEN_6 ? CONTEST_EFFECT_HIGHLY_APPEALING : CONTEST_EFFECT_STARTLE_MONS_SAME_TYPE_APPEAL,
-        .contestCategory = CONTEST_CATEGORY_TOUGH,
-        .contestComboStarterId = 0,
-        .contestComboMoves = {0},
-        .battleAnimScript = gBattleAnimMove_Strength,
-        .validApprenticeMove = TRUE,
-    },
-
-    [MOVE_ABSORB] =
-    {
-        .name = COMPOUND_STRING("Absorb"),
-        .description = COMPOUND_STRING(
-            "An attack that absorbs\n"
-            "half the damage inflicted."),
-        .effect = EFFECT_ABSORB,
-        .power = 20,
-        .type = TYPE_GRASS,
-        .accuracy = 100,
-        .pp = B_UPDATED_MOVE_DATA >= GEN_4 ? 25 : 20,
-        .target = TARGET_SELECTED,
-        .priority = 0,
-        .category = DAMAGE_CATEGORY_SPECIAL,
-        .argument = { .absorbPercentage = 50 },
-        .ignoresKingsRock = (B_UPDATED_MOVE_FLAGS == GEN_3 || B_UPDATED_MOVE_FLAGS == GEN_4),
-        .healingMove = B_HEAL_BLOCKING >= GEN_6,
-        .contestEffect = C_UPDATED_MOVE_EFFECTS >= GEN_6 ? CONTEST_EFFECT_HIGHLY_APPEALING : CONTEST_EFFECT_STARTLE_PREV_MON,
-        .contestCategory = CONTEST_CATEGORY_SMART,
-        .contestComboStarterId = 0,
-        .contestComboMoves = {COMBO_STARTER_GROWTH},
-        .battleAnimScript = gBattleAnimMove_Absorb,
-    },
-
-    [MOVE_MEGA_DRAIN] =
-    {
-        .name = COMPOUND_STRING("Mega Drain"),
-        .description = sMegaDrainDescription,
-        .effect = EFFECT_ABSORB,
-        .power = 40,
-        .type = TYPE_GRASS,
-        .accuracy = 100,
-        .pp = B_UPDATED_MOVE_DATA >= GEN_4 ? 15 : 10,
-        .target = TARGET_SELECTED,
-        .priority = 0,
-        .category = DAMAGE_CATEGORY_SPECIAL,
-        .argument = { .absorbPercentage = 50 },
-        .zMove = { .powerOverride = 120 },
-        .ignoresKingsRock = (B_UPDATED_MOVE_FLAGS == GEN_3 || B_UPDATED_MOVE_FLAGS == GEN_4),
-        .healingMove = B_HEAL_BLOCKING >= GEN_6,
-        .contestEffect = C_UPDATED_MOVE_EFFECTS >= GEN_6 ? CONTEST_EFFECT_STARTLE_PREV_MON : CONTEST_EFFECT_BADLY_STARTLE_FRONT_MON,
-        .contestCategory = CONTEST_CATEGORY_SMART,
-        .contestComboStarterId = 0,
-        .contestComboMoves = {COMBO_STARTER_GROWTH},
-        .battleAnimScript = gBattleAnimMove_MegaDrain,
-    },
-
-    [MOVE_LEECH_SEED] =
-    {
-        .name = COMPOUND_STRING("Leech Seed"),
-        .description = COMPOUND_STRING(
-            "Plants a seed on the foe to\n"
-            "steal HP on every turn."),
-        .effect = EFFECT_LEECH_SEED,
-        .power = 0,
-        .type = TYPE_GRASS,
-        .accuracy = 90,
-        .pp = 10,
-        .target = TARGET_SELECTED,
-        .priority = 0,
-        .category = DAMAGE_CATEGORY_STATUS,
-        .zMove = { .effect = Z_EFFECT_RESET_STATS },
-        .magicCoatAffected = TRUE,
-        .contestEffect = C_UPDATED_MOVE_EFFECTS >= GEN_6 ? CONTEST_EFFECT_IMPROVE_CONDITION_PREVENT_NERVOUSNESS : CONTEST_EFFECT_STARTLE_PREV_MONS,
-        .contestCategory = CONTEST_CATEGORY_SMART,
-        .contestComboStarterId = COMBO_STARTER_LEECH_SEED,
-        .contestComboMoves = {COMBO_STARTER_GROWTH, COMBO_STARTER_WORRY_SEED, COMBO_STARTER_ROTOTILLER},
-        .battleAnimScript = gBattleAnimMove_LeechSeed,
-        .validApprenticeMove = TRUE,
-    },
-
-    [MOVE_GROWTH] =
-    {
-        .name = COMPOUND_STRING("Growth"),
-        .description = COMPOUND_STRING(
-        #if B_GROWTH_STAT_RAISE >= GEN_5
-            "Forces the body to grow,\n"
-            "raising Attack and Sp. Atk."),
-        #else
-            "Forces the body to grow\n"
-            "and heightens Sp. Atk."),
-        #endif
-        .effect = B_GROWTH_STAT_RAISE >= GEN_5 ? EFFECT_GROWTH : EFFECT_SPECIAL_ATTACK_UP,
-        .power = 0,
-        .type = TYPE_NORMAL,
-        .accuracy = 0,
-        .pp = B_UPDATED_MOVE_DATA >= GEN_6 ? 20 : 40,
-        .target = TARGET_USER,
-        .priority = 0,
-        .category = DAMAGE_CATEGORY_STATUS,
-        .zMove = { .effect = Z_EFFECT_SPATK_UP_1 },
-        .ignoresProtect = TRUE,
-        .mirrorMoveBanned = TRUE,
-        .snatchAffected = TRUE,
-        .contestEffect = CONTEST_EFFECT_IMPROVE_CONDITION_PREVENT_NERVOUSNESS,
-        .contestCategory = CONTEST_CATEGORY_BEAUTY,
-        .contestComboStarterId = COMBO_STARTER_GROWTH,
-        .contestComboMoves = {COMBO_STARTER_SUNNY_DAY},
-        .battleAnimScript = gBattleAnimMove_Growth,
-        .validApprenticeMove = TRUE,
-    },
-
-    [MOVE_RAZOR_LEAF] =
-    {
-        .name = COMPOUND_STRING("Razor Leaf"),
-        .description = COMPOUND_STRING(
-            "Cuts enemies with leaves.\n"
-            "High critical-hit ratio."),
-        .effect = EFFECT_HIT,
-        .power = 55,
-        .type = TYPE_GRASS,
-        .accuracy = 95,
-        .criticalHitStage = B_UPDATED_MOVE_DATA >= GEN_3 ? 1 : 2,
-        .pp = 25,
-        .target = TARGET_BOTH,
-        .priority = 0,
-        .category = DAMAGE_CATEGORY_PHYSICAL,
-        .slicingMove = TRUE,
-        .contestEffect = C_UPDATED_MOVE_EFFECTS >= GEN_6 ? CONTEST_EFFECT_HIGHLY_APPEALING : CONTEST_EFFECT_AFFECTED_BY_PREV_APPEAL,
-        .contestCategory = CONTEST_CATEGORY_COOL,
-        .contestComboStarterId = 0,
-        .contestComboMoves = {COMBO_STARTER_GROWTH},
-        .battleAnimScript = gBattleAnimMove_RazorLeaf,
-        .validApprenticeMove = TRUE,
-    },
-
-    [MOVE_SOLAR_BEAM] =
-    {
-        .name = COMPOUND_STRING("Solar Beam"),
-        .description = COMPOUND_STRING(
-            "Absorbs light in one turn,\n"
-            "then attacks next turn."),
-        .effect = EFFECT_SOLAR_BEAM,
-        .power = 120,
-        .type = TYPE_GRASS,
-        .accuracy = 100,
-        .pp = 10,
-        .target = TARGET_SELECTED,
-        .priority = 0,
-        .category = DAMAGE_CATEGORY_SPECIAL,
-        .sleepTalkBanned = TRUE,
-        .instructBanned = TRUE,
-        .argument.twoTurnAttack = { .stringId =  STRINGID_PKMNTOOKSUNLIGHT, .weather = B_WEATHER_SUN },
-        .contestEffect = C_UPDATED_MOVE_EFFECTS >= GEN_6 ? CONTEST_EFFECT_AFFECTED_BY_PREV_APPEAL : CONTEST_EFFECT_HIGHLY_APPEALING,
-        .contestCategory = CONTEST_CATEGORY_COOL,
-        .contestComboStarterId = 0,
-        .contestComboMoves = {COMBO_STARTER_GROWTH, COMBO_STARTER_SUNNY_DAY},
-        .battleAnimScript = gBattleAnimMove_SolarBeam,
-        .validApprenticeMove = TRUE,
-    },
-
-    [MOVE_POISON_POWDER] =
-    {
-        .name = COMPOUND_STRING("Poison Powder"),
-        .description = COMPOUND_STRING(
-            "Scatters a toxic powder\n"
-            "that may poison the foe."),
-        .effect = EFFECT_NON_VOLATILE_STATUS,
-        .power = 0,
-        .type = TYPE_POISON,
-        .accuracy = 75,
-        .pp = 35,
-        .target = TARGET_SELECTED,
-        .priority = 0,
-        .category = DAMAGE_CATEGORY_STATUS,
-        .argument = { .nonVolatileStatus = MOVE_EFFECT_POISON },
-        .zMove = { .effect = Z_EFFECT_DEF_UP_1 },
-        .magicCoatAffected = TRUE,
-        .powderMove = TRUE,
-        .contestEffect = CONTEST_EFFECT_WORSEN_CONDITION_OF_PREV_MONS,
-        .contestCategory = CONTEST_CATEGORY_SMART,
-        .contestComboStarterId = COMBO_STARTER_POISON_POWDER,
-        .contestComboMoves = {COMBO_STARTER_SWEET_SCENT},
-        .battleAnimScript = gBattleAnimMove_PoisonPowder,
-        .validApprenticeMove = TRUE,
-    },
-
-    [MOVE_STUN_SPORE] =
-    {
-        .name = COMPOUND_STRING("Stun Spore"),
-        .description = COMPOUND_STRING(
-            "Scatters a powder that may\n"
-            "paralyze the foe."),
-        .effect = EFFECT_NON_VOLATILE_STATUS,
-        .power = 0,
-        .type = TYPE_GRASS,
-        .accuracy = 75,
-        .pp = 30,
-        .target = TARGET_SELECTED,
-        .priority = 0,
-        .category = DAMAGE_CATEGORY_STATUS,
-        .zMove = { .effect = Z_EFFECT_SPDEF_UP_1 },
-        .magicCoatAffected = TRUE,
-        .argument = { .nonVolatileStatus = MOVE_EFFECT_PARALYSIS },
-        .powderMove = TRUE,
-        .contestEffect = CONTEST_EFFECT_BADLY_STARTLE_MONS_WITH_GOOD_APPEALS,
-        .contestCategory = CONTEST_CATEGORY_SMART,
-        .contestComboStarterId = 0,
-        .contestComboMoves = {COMBO_STARTER_SWEET_SCENT},
-        .battleAnimScript = gBattleAnimMove_StunSpore,
-        .validApprenticeMove = TRUE,
-    },
-
-    [MOVE_SLEEP_POWDER] =
-    {
-        .name = COMPOUND_STRING("Sleep Powder"),
-        .description = COMPOUND_STRING(
-            "Scatters a powder that may\n"
-            "cause the foe to sleep."),
-        .effect = EFFECT_NON_VOLATILE_STATUS,
-        .power = 0,
-        .type = TYPE_GRASS,
-        .accuracy = 75,
-        .pp = 15,
-        .target = TARGET_SELECTED,
-        .priority = 0,
-        .category = DAMAGE_CATEGORY_STATUS,
-        .argument = { .nonVolatileStatus = MOVE_EFFECT_SLEEP },
-        .zMove = { .effect = Z_EFFECT_SPD_UP_1 },
-        .magicCoatAffected = TRUE,
-        .powderMove = TRUE,
-        .contestEffect = CONTEST_EFFECT_BADLY_STARTLE_PREV_MONS,
-        .contestCategory = CONTEST_CATEGORY_SMART,
-        .contestComboStarterId = COMBO_STARTER_SLEEP_POWDER,
-        .contestComboMoves = {COMBO_STARTER_SWEET_SCENT},
-        .battleAnimScript = gBattleAnimMove_SleepPowder,
-        .validApprenticeMove = TRUE,
-    },
-
-    [MOVE_PETAL_DANCE] =
-    {
-        .name = COMPOUND_STRING("Petal Dance"),
-        .description = COMPOUND_STRING(
-            "A rampage of 2 to 3 turns\n"
-            "that confuses the user."),
-        #if B_UPDATED_MOVE_DATA >= GEN_5
-            .power = 120,
-        #elif B_UPDATED_MOVE_DATA == GEN_4
-            .power = 90,
-        #else
-            .power = 70,
-        #endif
-        .effect = EFFECT_HIT,
-        .type = TYPE_GRASS,
-        .accuracy = 100,
-        .pp = B_UPDATED_MOVE_DATA >= GEN_5 ? 10 : 20,
-        .target = TARGET_RANDOM,
-        .priority = 0,
-        .category = DAMAGE_CATEGORY_SPECIAL,
-        .makesContact = TRUE,
-        .danceMove = TRUE,
-        .instructBanned = TRUE,
-        .additionalEffects = ADDITIONAL_EFFECTS({
-            .moveEffect = MOVE_EFFECT_THRASH,
-            .self = TRUE,
-        }),
-        .contestEffect = C_UPDATED_MOVE_EFFECTS >= GEN_6 ? CONTEST_EFFECT_USER_MORE_EASILY_STARTLED : CONTEST_EFFECT_JAMS_OTHERS_BUT_MISS_ONE_TURN,
-        .contestCategory = CONTEST_CATEGORY_BEAUTY,
-        .contestComboStarterId = 0,
-        .contestComboMoves = {COMBO_STARTER_GROWTH},
-        .battleAnimScript = gBattleAnimMove_PetalDance,
-        .validApprenticeMove = TRUE,
-    },
-
-    [MOVE_STRING_SHOT] =
-    {
-        .name = COMPOUND_STRING("String Shot"),
-        .description = COMPOUND_STRING(
-            "Binds the foe with string\n"
-            "to reduce its Speed."),
-        .effect = B_UPDATED_MOVE_DATA >= GEN_6 ? EFFECT_SPEED_DOWN_2 : EFFECT_SPEED_DOWN,
-        .power = 0,
-        .type = TYPE_BUG,
-        .accuracy = 95,
-        .pp = 40,
-        .target = TARGET_BOTH,
-        .priority = 0,
-        .category = DAMAGE_CATEGORY_STATUS,
-        .zMove = { .effect = Z_EFFECT_SPD_UP_1 },
-        .magicCoatAffected = TRUE,
-        .contestEffect = CONTEST_EFFECT_STARTLE_PREV_MON,
-        .contestCategory = CONTEST_CATEGORY_SMART,
-        .contestComboStarterId = COMBO_STARTER_STRING_SHOT,
-        .contestComboMoves = {0},
-        .battleAnimScript = gBattleAnimMove_StringShot,
-    },
-
-    [MOVE_DRAGON_RAGE] =
-    {
-        .name = COMPOUND_STRING("Dragon Rage"),
-        .description = COMPOUND_STRING(
-            "Launches shock waves that\n"
-            "always inflict 40 HP damage."),
-        .effect = EFFECT_FIXED_HP_DAMAGE,
-        .power = 1,
-        .type = TYPE_DRAGON,
-        .accuracy = 100,
-        .pp = 10,
-        .target = TARGET_SELECTED,
-        .priority = 0,
-        .category = DAMAGE_CATEGORY_SPECIAL,
-        .ignoresKingsRock = (B_UPDATED_MOVE_FLAGS == GEN_4) || (B_UPDATED_MOVE_FLAGS < GEN_3),
-        .argument = { .fixedDamage = 40 },
-        .contestEffect = C_UPDATED_MOVE_EFFECTS >= GEN_6 ? CONTEST_EFFECT_REPETITION_NOT_BORING : CONTEST_EFFECT_BETTER_WHEN_LATER,
-        .contestCategory = CONTEST_CATEGORY_COOL,
-        .contestComboStarterId = COMBO_STARTER_DRAGON_RAGE,
-        .contestComboMoves = {COMBO_STARTER_DRAGON_BREATH, COMBO_STARTER_DRAGON_DANCE, COMBO_STARTER_DRAGON_RUSH, COMBO_STARTER_DRAGON_TAIL},
-        .battleAnimScript = gBattleAnimMove_DragonRage,
-        .validApprenticeMove = TRUE,
-    },
-
-    [MOVE_FIRE_SPIN] =
-    {
-        .name = COMPOUND_STRING("Fire Spin"),
-        .description = COMPOUND_STRING(
-            "Traps the foe in a ring of\n"
-            "fire for "BINDING_TURNS" turns."),
-        .effect = EFFECT_HIT,
-        .power = B_UPDATED_MOVE_DATA >= GEN_5 ? 35 : 15,
-        .type = TYPE_FIRE,
-        .accuracy = B_UPDATED_MOVE_DATA >= GEN_5 ? 85 : 70,
-        .pp = 15,
-        .target = TARGET_SELECTED,
-        .priority = 0,
-        .category = DAMAGE_CATEGORY_SPECIAL,
-        .ignoresKingsRock = B_UPDATED_MOVE_FLAGS < GEN_3,
-        .additionalEffects = ADDITIONAL_EFFECTS({
-            .moveEffect = MOVE_EFFECT_WRAP,
-            .multistring.wrapped = B_MSG_WRAPPED_FIRE_SPIN,
-        }),
-        .contestEffect = CONTEST_EFFECT_DONT_EXCITE_AUDIENCE,
-        .contestCategory = CONTEST_CATEGORY_BEAUTY,
-        .contestComboStarterId = 0,
-        .contestComboMoves = {COMBO_STARTER_SUNNY_DAY},
-        .battleAnimScript = gBattleAnimMove_FireSpin,
-        .validApprenticeMove = TRUE,
-    },
-
-    [MOVE_THUNDER_SHOCK] =
-    {
-        .name = COMPOUND_STRING("Thunder Shock"),
-        .description = COMPOUND_STRING(
-            "An electrical attack that\n"
-            "may paralyze the foe."),
-        .effect = EFFECT_HIT,
-        .power = 40,
-        .type = TYPE_ELECTRIC,
-        .accuracy = 100,
-        .pp = 30,
-        .target = TARGET_SELECTED,
-        .priority = 0,
-        .category = DAMAGE_CATEGORY_SPECIAL,
-        .additionalEffects = ADDITIONAL_EFFECTS({
-            .moveEffect = MOVE_EFFECT_PARALYSIS,
-            .chance = 10,
-        }),
-        .contestEffect = CONTEST_EFFECT_HIGHLY_APPEALING,
-        .contestCategory = CONTEST_CATEGORY_COOL,
-        .contestComboStarterId = 0,
-        .contestComboMoves = {COMBO_STARTER_CHARGE},
-        .battleAnimScript = gBattleAnimMove_ThunderShock,
-    },
-
-    [MOVE_THUNDERBOLT] =
-    {
-        .name = COMPOUND_STRING("Thunderbolt"),
-        .description = COMPOUND_STRING(
-            "A strong electrical attack\n"
-            "that may paralyze the foe."),
-        .effect = EFFECT_HIT,
-        .power = B_UPDATED_MOVE_DATA >= GEN_6 ? 90 : 95,
-        .type = TYPE_ELECTRIC,
-        .accuracy = 100,
-        .pp = 15,
-        .target = TARGET_SELECTED,
-        .priority = 0,
-        .category = DAMAGE_CATEGORY_SPECIAL,
-        .additionalEffects = ADDITIONAL_EFFECTS({
-            .moveEffect = MOVE_EFFECT_PARALYSIS,
-            .chance = 10,
-        }),
-        .contestEffect = CONTEST_EFFECT_HIGHLY_APPEALING,
-        .contestCategory = CONTEST_CATEGORY_COOL,
-        .contestComboStarterId = 0,
-        .contestComboMoves = {COMBO_STARTER_CHARGE},
-        .battleAnimScript = gBattleAnimMove_Thunderbolt,
-        .validApprenticeMove = TRUE,
-    },
-
-    [MOVE_THUNDER_WAVE] =
-    {
-        .name = COMPOUND_STRING("Thunder Wave"),
-        .description = COMPOUND_STRING(
-            "A weak jolt of electricity\n"
-            "that paralyzes the foe."),
-        .effect = EFFECT_NON_VOLATILE_STATUS,
-        .power = 0,
-        .type = TYPE_ELECTRIC,
-        .accuracy = B_UPDATED_MOVE_DATA >= GEN_7 ? 90 : 100,
-        .pp = 20,
-        .target = TARGET_SELECTED,
-        .priority = 0,
-        .category = DAMAGE_CATEGORY_STATUS,
-        .argument = { .nonVolatileStatus = MOVE_EFFECT_PARALYSIS },
-        .zMove = { .effect = Z_EFFECT_SPDEF_UP_1 },
-        .magicCoatAffected = TRUE,
-        .contestEffect = C_UPDATED_MOVE_EFFECTS >= GEN_6 ? CONTEST_EFFECT_BADLY_STARTLE_PREV_MONS : CONTEST_EFFECT_BADLY_STARTLE_MONS_WITH_GOOD_APPEALS,
-        .contestCategory = CONTEST_CATEGORY_COOL,
-        .contestComboStarterId = COMBO_STARTER_THUNDER_WAVE,
-        .contestComboMoves = {COMBO_STARTER_CHARGE},
-        .battleAnimScript = gBattleAnimMove_ThunderWave,
-        .validApprenticeMove = TRUE,
-    },
-
-    [MOVE_THUNDER] =
-    {
-        .name = COMPOUND_STRING("Thunder"),
-        .description = COMPOUND_STRING(
-            "A lightning attack that may\n"
-            "cause paralysis."),
-        .effect = EFFECT_HIT,
-        .power = B_UPDATED_MOVE_DATA >= GEN_6 ? 110 : 120,
-        .type = TYPE_ELECTRIC,
-        .accuracy = 70,
-        .pp = 10,
-        .target = TARGET_SELECTED,
-        .priority = 0,
-        .category = DAMAGE_CATEGORY_SPECIAL,
-        .damagesAirborne = B_UPDATED_MOVE_FLAGS >= GEN_2,
-        .alwaysHitsInRain = TRUE,
-        .accuracy50InSun = TRUE,
-        .additionalEffects = ADDITIONAL_EFFECTS({
-            .moveEffect = MOVE_EFFECT_PARALYSIS,
-            .chance = B_UPDATED_MOVE_DATA >= GEN_2 ? 30 : 10,
-        }),
-        .contestEffect = C_UPDATED_MOVE_EFFECTS >= GEN_6 ? CONTEST_EFFECT_BETTER_WHEN_AUDIENCE_EXCITED : CONTEST_EFFECT_STARTLE_PREV_MONS,
-        .contestCategory = CONTEST_CATEGORY_COOL,
-        .contestComboStarterId = 0,
-        .contestComboMoves = {COMBO_STARTER_CHARGE, COMBO_STARTER_LOCK_ON, COMBO_STARTER_RAIN_DANCE},
-        .battleAnimScript = gBattleAnimMove_Thunder,
-        .validApprenticeMove = TRUE,
-    },
-
-    [MOVE_ROCK_THROW] =
-    {
-        .name = COMPOUND_STRING("Rock Throw"),
-        .description = COMPOUND_STRING(
-            "Throws small rocks to\n"
-            "strike the foe."),
-        .effect = EFFECT_HIT,
-        .power = 50,
-        .type = TYPE_ROCK,
-        .accuracy = B_UPDATED_MOVE_DATA >= GEN_2 ? 90 : 65,
-        .pp = 15,
-        .target = TARGET_SELECTED,
-        .priority = 0,
-        .category = DAMAGE_CATEGORY_PHYSICAL,
-        .contestEffect = C_UPDATED_MOVE_EFFECTS >= GEN_6 ? CONTEST_EFFECT_HIGHLY_APPEALING : CONTEST_EFFECT_BETTER_IF_SAME_TYPE,
-        .contestCategory = CONTEST_CATEGORY_TOUGH,
-        .contestComboStarterId = COMBO_STARTER_ROCK_THROW,
-        .contestComboMoves = {0},
-        .battleAnimScript = gBattleAnimMove_RockThrow,
-    },
-
-    [MOVE_EARTHQUAKE] =
-    {
-        .name = COMPOUND_STRING("Earthquake"),
-        .description = COMPOUND_STRING(
-            "A powerful quake that\n"
-            "hits all other PokГ©mon."),
-        .effect = EFFECT_EARTHQUAKE,
-        .power = 100,
-        .type = TYPE_GROUND,
-        .accuracy = 100,
-        .pp = 10,
-        .target = TARGET_FOES_AND_ALLY,
-        .priority = 0,
-        .category = DAMAGE_CATEGORY_PHYSICAL,
-        .ignoresKingsRock = B_UPDATED_MOVE_FLAGS < GEN_3,
-        .damagesUnderground = B_UPDATED_MOVE_FLAGS >= GEN_2,
-        .skyBattleBanned = TRUE,
-        .contestEffect = C_UPDATED_MOVE_EFFECTS >= GEN_6 ? CONTEST_EFFECT_BADLY_STARTLE_MONS_WITH_GOOD_APPEALS : CONTEST_EFFECT_BADLY_STARTLE_PREV_MONS,
-        .contestCategory = CONTEST_CATEGORY_TOUGH,
-        .contestComboStarterId = COMBO_STARTER_EARTHQUAKE,
-        .contestComboMoves = {0},
-        .battleAnimScript = gBattleAnimMove_Earthquake,
-        .validApprenticeMove = TRUE,
-    },
-
-    [MOVE_FISSURE] =
-    {
-        .name = COMPOUND_STRING("Fissure"),
-        .description = COMPOUND_STRING(
-            "Drops the foe in a fissure.\n"
-            "The user must then recharge."),
-        .effect = EFFECT_HIT,
-        .power = 150,
-        .type = TYPE_GROUND,
-        .accuracy = 90,
-        .pp = 5,
-        .target = TARGET_SELECTED,
-        .priority = 0,
-        .category = DAMAGE_CATEGORY_PHYSICAL,
-        .damagesUnderground = TRUE,
-        .skyBattleBanned = TRUE,
-        .additionalEffects = ADDITIONAL_EFFECTS({
-            .moveEffect = MOVE_EFFECT_RECHARGE,
-            .self = TRUE,
-        }),
-        .contestEffect = CONTEST_EFFECT_BADLY_STARTLE_MONS_WITH_GOOD_APPEALS,
-        .contestCategory = CONTEST_CATEGORY_TOUGH,
-        .contestComboStarterId = 0,
-        .contestComboMoves = {COMBO_STARTER_EARTHQUAKE},
-        .battleAnimScript = gBattleAnimMove_Fissure,
-        .validApprenticeMove = TRUE,
-    },
-
-    [MOVE_DIG] =
-    {
-        .name = COMPOUND_STRING("Dig"),
-        .description = COMPOUND_STRING(
-            "Digs underground the first\n"
-            "turn and strikes next turn."),
-        .effect = EFFECT_SEMI_INVULNERABLE,
-        #if B_UPDATED_MOVE_DATA >= GEN_4
-            .power = 80,
-        #elif B_UPDATED_MOVE_DATA >= GEN_2
-            .power = 60,
-        #else
-            .power = 100,
-        #endif
-        .type = TYPE_GROUND,
-        .accuracy = 100,
-        .pp = 10,
-        .target = TARGET_SELECTED,
-        .priority = 0,
-        .category = DAMAGE_CATEGORY_PHYSICAL,
-        .makesContact = TRUE,
-        .sleepTalkBanned = TRUE,
-        .instructBanned = TRUE,
-        .assistBanned = B_UPDATED_MOVE_FLAGS >= GEN_6,
-        .skyBattleBanned = TRUE,
-        .argument.twoTurnAttack = { .stringId = STRINGID_PKMNDUGHOLE, .status = STATE_UNDERGROUND },
-        .contestEffect = C_UPDATED_MOVE_EFFECTS >= GEN_6 ? CONTEST_EFFECT_AVOID_STARTLE_ONCE : CONTEST_EFFECT_AVOID_STARTLE,
-        .contestCategory = C_UPDATED_MOVE_CATEGORIES >= GEN_6 ? CONTEST_CATEGORY_TOUGH : CONTEST_CATEGORY_SMART,
-        .contestComboStarterId = 0,
-        .contestComboMoves = {0},
-        .battleAnimScript = gBattleAnimMove_Dig,
-        .validApprenticeMove = TRUE,
-    },
-
-    [MOVE_TOXIC] =
-    {
-        .name = COMPOUND_STRING("Toxic"),
-        .description = COMPOUND_STRING(
-            "Poisons the foe with an\n"
-            "intensifying toxin."),
-        .effect = EFFECT_NON_VOLATILE_STATUS,
-        .power = 0,
-        .type = TYPE_POISON,
-        .accuracy = B_UPDATED_MOVE_DATA >= GEN_5 ? 90 : 85,
-        .pp = 10,
-        .target = TARGET_SELECTED,
-        .priority = 0,
-        .category = DAMAGE_CATEGORY_STATUS,
-        .argument = { .nonVolatileStatus = MOVE_EFFECT_TOXIC },
-        .zMove = { .effect = Z_EFFECT_DEF_UP_1 },
-        .magicCoatAffected = TRUE,
-        .alwaysHitsOnSameType = B_TOXIC_NEVER_MISS >= GEN_6,
-        .contestEffect = CONTEST_EFFECT_WORSEN_CONDITION_OF_PREV_MONS,
-        .contestCategory = CONTEST_CATEGORY_SMART,
-        .contestComboStarterId = COMBO_STARTER_TOXIC,
-        .contestComboMoves = {0},
-        .battleAnimScript = gBattleAnimMove_Toxic,
-        .validApprenticeMove = TRUE,
-    },
-
-    [MOVE_CONFUSION] =
-    {
-        .name = COMPOUND_STRING("Confusion"),
-        .description = COMPOUND_STRING(
-            "A psychic attack that may\n"
-            "cause confusion."),
-        .effect = EFFECT_HIT,
-        .power = 50,
-        .type = TYPE_PSYCHIC,
-        .accuracy = 100,
-        .pp = 25,
-        .target = TARGET_SELECTED,
-        .priority = 0,
-        .category = DAMAGE_CATEGORY_SPECIAL,
-        .additionalEffects = ADDITIONAL_EFFECTS({
-            .moveEffect = MOVE_EFFECT_CONFUSION,
-            .chance = 10,
-        }),
-        .contestEffect = C_UPDATED_MOVE_EFFECTS >= GEN_6 ? CONTEST_EFFECT_HIGHLY_APPEALING : CONTEST_EFFECT_STARTLE_PREV_MON,
-        .contestCategory = CONTEST_CATEGORY_SMART,
-        .contestComboStarterId = COMBO_STARTER_CONFUSION,
-        .contestComboMoves = {COMBO_STARTER_CALM_MIND, COMBO_STARTER_KINESIS, COMBO_STARTER_PSYCHIC},
-        .battleAnimScript = gBattleAnimMove_Confusion,
-    },
-
-    [MOVE_PSYCHIC] =
-    {
-        .name = COMPOUND_STRING("Psychic"),
-        .description = COMPOUND_STRING(
-            "A powerful psychic attack\n"
-            "that may lower Sp. Def."),
-        .effect = EFFECT_HIT,
-        .power = 90,
-        .type = TYPE_PSYCHIC,
-        .accuracy = 100,
-        .pp = 10,
-        .target = TARGET_SELECTED,
-        .priority = 0,
-        .category = DAMAGE_CATEGORY_SPECIAL,
-        .additionalEffects = ADDITIONAL_EFFECTS({
-            .moveEffect = MOVE_EFFECT_SP_DEF_MINUS_1,
-            .chance = B_UPDATED_MOVE_DATA >= GEN_2 ? 10 : 33,
-        }),
-        .contestEffect = C_UPDATED_MOVE_EFFECTS >= GEN_6 ? CONTEST_EFFECT_HIGHLY_APPEALING : CONTEST_EFFECT_BADLY_STARTLE_PREV_MONS,
-        .contestCategory = CONTEST_CATEGORY_SMART,
-        .contestComboStarterId = COMBO_STARTER_PSYCHIC,
-        .contestComboMoves = {COMBO_STARTER_CALM_MIND, COMBO_STARTER_CONFUSION, COMBO_STARTER_KINESIS},
-        .battleAnimScript = gBattleAnimMove_Psychic,
-        .validApprenticeMove = TRUE,
-    },
-
-    [MOVE_HYPNOSIS] =
-    {
-        .name = COMPOUND_STRING("Hypnosis"),
-        .description = COMPOUND_STRING(
-            "A hypnotizing move that\n"
-            "may induce sleep."),
-        .effect = EFFECT_NON_VOLATILE_STATUS,
-        .power = 0,
-        .type = TYPE_PSYCHIC,
-        .accuracy = 60,
-        .pp = 20,
-        .target = TARGET_SELECTED,
-        .priority = 0,
-        .category = DAMAGE_CATEGORY_STATUS,
-        .argument = { .nonVolatileStatus = MOVE_EFFECT_SLEEP },
-        .zMove = { .effect = Z_EFFECT_SPD_UP_1 },
-        .magicCoatAffected = TRUE,
-        .contestEffect = CONTEST_EFFECT_BADLY_STARTLE_PREV_MONS,
-        .contestCategory = CONTEST_CATEGORY_SMART,
-        .contestComboStarterId = COMBO_STARTER_HYPNOSIS,
-        .contestComboMoves = {0},
-        .battleAnimScript = gBattleAnimMove_Hypnosis,
-        .validApprenticeMove = TRUE,
-    },
-
-    [MOVE_MEDITATE] =
-    {
-        .name = COMPOUND_STRING("Meditate"),
-        .description = COMPOUND_STRING(
-            "Meditates in a peaceful\n"
-            "fashion to raise Attack."),
-        .effect = EFFECT_ATTACK_UP,
-        .power = 0,
-        .type = TYPE_PSYCHIC,
-        .accuracy = 0,
-        .pp = 40,
-        .target = TARGET_USER,
-        .priority = 0,
-        .category = DAMAGE_CATEGORY_STATUS,
-        .zMove = { .effect = Z_EFFECT_ATK_UP_1 },
-        .ignoresProtect = TRUE,
-        .mirrorMoveBanned = TRUE,
-        .snatchAffected = TRUE,
-        .contestEffect = CONTEST_EFFECT_IMPROVE_CONDITION_PREVENT_NERVOUSNESS,
-        .contestCategory = CONTEST_CATEGORY_BEAUTY,
-        .contestComboStarterId = 0,
-        .contestComboMoves = {COMBO_STARTER_CALM_MIND},
-        .battleAnimScript = gBattleAnimMove_Meditate,
-        .validApprenticeMove = TRUE,
-    },
-
-    [MOVE_AGILITY] =
-    {
-        .name = COMPOUND_STRING("Agility"),
-        .description = COMPOUND_STRING(
-            "Relaxes the body to sharply\n"
-            "boost Speed."),
-        .effect = EFFECT_SPEED_UP_2,
-        .power = 0,
-        .type = TYPE_PSYCHIC,
-        .accuracy = 0,
-        .pp = 30,
-        .target = TARGET_USER,
-        .priority = 0,
-        .category = DAMAGE_CATEGORY_STATUS,
-        .zMove = { .effect = Z_EFFECT_RESET_STATS },
-        .ignoresProtect = TRUE,
-        .mirrorMoveBanned = TRUE,
-        .snatchAffected = TRUE,
-        .contestEffect = CONTEST_EFFECT_NEXT_APPEAL_EARLIER,
-        .contestCategory = CONTEST_CATEGORY_COOL,
-        .contestComboStarterId = COMBO_STARTER_AGILITY,
-        .contestComboMoves = {COMBO_STARTER_DOUBLE_TEAM},
-        .battleAnimScript = gBattleAnimMove_Agility,
-        .validApprenticeMove = TRUE,
-    },
-
-    [MOVE_QUICK_ATTACK] =
-    {
-        .name = COMPOUND_STRING("Quick Attack"),
-        .description = COMPOUND_STRING(
-            "An extremely fast attack\n"
-            "that always strikes first."),
-        .effect = EFFECT_HIT,
-        .power = 40,
-        .type = TYPE_NORMAL,
-        .accuracy = 100,
-        .pp = 30,
-        .target = TARGET_SELECTED,
-        .priority = 1,
-        .category = DAMAGE_CATEGORY_PHYSICAL,
-        .makesContact = TRUE,
-        .contestEffect = CONTEST_EFFECT_NEXT_APPEAL_EARLIER,
-        .contestCategory = CONTEST_CATEGORY_COOL,
-        .contestComboStarterId = 0,
-        .contestComboMoves = {COMBO_STARTER_DOUBLE_TEAM},
-        .battleAnimScript = gBattleAnimMove_QuickAttack,
-        .validApprenticeMove = TRUE,
-    },
-
-    [MOVE_RAGE] =
-    {
-        .name = COMPOUND_STRING("Rage"),
-        .description = COMPOUND_STRING(
-            "Raises the user's Attack\n"
-            "every time it is hit."),
-        .effect = EFFECT_HIT,
-        .power = 20,
-        .type = TYPE_NORMAL,
-        .accuracy = 100,
-        .pp = 20,
-        .target = TARGET_SELECTED,
-        .priority = 0,
-        .category = DAMAGE_CATEGORY_PHYSICAL,
-        .additionalEffects = ADDITIONAL_EFFECTS({
-            .moveEffect = MOVE_EFFECT_RAGE,
-        }),
-        .makesContact = TRUE,
-        .contestEffect = C_UPDATED_MOVE_EFFECTS >= GEN_6 ? CONTEST_EFFECT_BADLY_STARTLE_PREV_MONS : CONTEST_EFFECT_REPETITION_NOT_BORING,
-        .contestCategory = C_UPDATED_MOVE_CATEGORIES >= GEN_6 ? CONTEST_CATEGORY_TOUGH : CONTEST_CATEGORY_COOL,
-        .contestComboStarterId = COMBO_STARTER_RAGE,
-        .contestComboMoves = {0},
-        .battleAnimScript = gBattleAnimMove_Rage,
-    },
-
-    [MOVE_TELEPORT] =
-    {
-        .name = COMPOUND_STRING("Teleport"),
-        #if B_TELEPORT_BEHAVIOR >= GEN_8
-        .description = COMPOUND_STRING(
-            "Switches the user out last.\n"
-            "Flees when used by wild {PKMN}."),
-        #else
-        .description = COMPOUND_STRING(
-            "A psychic move for fleeing\n"
-            "from battle instantly."),
-        #endif
-        .effect = EFFECT_TELEPORT,
-        .power = 0,
-        .type = TYPE_PSYCHIC,
-        .accuracy = 0,
-        .pp = 20,
-        .target = TARGET_USER,
-        .priority = B_UPDATED_MOVE_DATA >= GEN_8 ? -6 : 0,
-        .category = DAMAGE_CATEGORY_STATUS,
-        .zMove = { .effect = Z_EFFECT_RECOVER_HP },
-        .ignoresProtect = TRUE,
-        .mirrorMoveBanned = TRUE,
-        .contвЂ¦150365 tokens truncatedвЂ¦= COMPOUND_STRING("Tera Blast"),
-        .description = COMPOUND_STRING(
-            "If the user's Terastallized,\n"
-            "it hits with its Tera type."),
-        .effect = EFFECT_TERA_BLAST,
-        .power = 80,
-        .type = TYPE_NORMAL,
-        .accuracy = 100,
-        .pp = 10,
-        .target = TARGET_SELECTED,
-        .priority = 0,
-        .category = DAMAGE_CATEGORY_SPECIAL,
-        .forcePressure = TRUE,
-        .additionalEffects = ADDITIONAL_EFFECTS({
-            .moveEffect = MOVE_EFFECT_TERA_BLAST,
-            .self = TRUE,
-        }),
-        .battleAnimScript = gBattleAnimMove_TeraBlast,
-    },
-
-    [MOVE_SILK_TRAP] =
-    {
-        .name = COMPOUND_STRING("Silk Trap"),
-        .description = COMPOUND_STRING(
-            "Protects itself, lowering\n"
-            "Speed on contact."),
-        .effect = EFFECT_PROTECT,
-        .power = 0,
-        .type = TYPE_BUG,
-        .accuracy = 0,
-        .pp = 10,
-        .target = TARGET_USER,
-        .priority = 4,
-        .category = DAMAGE_CATEGORY_STATUS,
-        .argument = { .protectMethod = PROTECT_SILK_TRAP },
-        .ignoresProtect = TRUE,
-        .mirrorMoveBanned = TRUE,
-        .metronomeBanned = TRUE,
-        .battleAnimScript = gBattleAnimMove_SilkTrap,
-    },
-
-    [MOVE_AXE_KICK] =
-    {
-        .name = COMPOUND_STRING("Axe Kick"),
-        .description = COMPOUND_STRING(
-            "May miss and hurt the kicker.\n"
-            "May cause confusion."),
-        .effect = EFFECT_RECOIL_IF_MISS,
-        .power = 120,
-        .type = TYPE_FIGHTING,
-        .accuracy = 90,
-        .pp = 10,
-        .target = TARGET_SELECTED,
-        .priority = 0,
-        .category = DAMAGE_CATEGORY_PHYSICAL,
-        .makesContact = TRUE,
-        .kickingMove = TRUE,
-        .additionalEffects = ADDITIONAL_EFFECTS({
-            .moveEffect = MOVE_EFFECT_CONFUSION,
-            .chance = 30,
-        }),
-        .battleAnimScript = gBattleAnimMove_AxeKick,
-    },
-
-    [MOVE_LAST_RESPECTS] =
-    {
-        .name = COMPOUND_STRING("Last Respects"),
-        .description = COMPOUND_STRING(
-            "This move deals more damage\n"
-            "for each defeated ally."),
-        .effect = EFFECT_LAST_RESPECTS,
-        .power = 50,
-        .type = TYPE_GHOST,
-        .accuracy = 100,
-        .pp = 10,
-        .target = TARGET_SELECTED,
-        .priority = 0,
-        .category = DAMAGE_CATEGORY_PHYSICAL,
-        .battleAnimScript = gBattleAnimMove_LastRespects,
-    },
-
-    [MOVE_LUMINA_CRASH] =
-    {
-        .name = COMPOUND_STRING("Lumina Crash"),
-        .description = COMPOUND_STRING(
-            "A mind-affecting light\n"
-            "harshly lowers Sp. Def."),
-        .effect = EFFECT_HIT,
-        .power = 80,
-        .type = TYPE_PSYCHIC,
-        .accuracy = 100,
-        .pp = 10,
-        .target = TARGET_SELECTED,
-        .priority = 0,
-        .category = DAMAGE_CATEGORY_SPECIAL,
-        .additionalEffects = ADDITIONAL_EFFECTS({
-            .moveEffect = MOVE_EFFECT_SP_DEF_MINUS_2,
-            .chance = 100,
-        }),
-        .battleAnimScript = gBattleAnimMove_LuminaCrash,
-    },
-
-    [MOVE_ORDER_UP] =
-    {
-        .name = COMPOUND_STRING("Order Up"),
-        .description = COMPOUND_STRING(
-            "Boosts a user's stats\n"
-            "depending on Tatsugiri."),
-        .effect = EFFECT_HIT,
-        .power = 80,
-        .type = TYPE_DRAGON,
-        .accuracy = 100,
-        .pp = 10,
-        .target = TARGET_SELECTED,
-        .priority = 0,
-        .category = DAMAGE_CATEGORY_PHYSICAL,
-        .mirrorMoveBanned = TRUE,
-        .metronomeBanned = TRUE,
-        .additionalEffects = ADDITIONAL_EFFECTS({
-            .moveEffect = MOVE_EFFECT_ORDER_UP,
-            .self = TRUE,
-            .chance = 100,
-        }),
-        .battleAnimScript = gBattleAnimMove_OrderUp,
-    },
-
-    [MOVE_JET_PUNCH] =
-    {
-        .name = COMPOUND_STRING("Jet Punch"),
-        .description = COMPOUND_STRING(
-            "A punch is thrown at blinding\n"
-            "speed to strike first."),
-        .effect = EFFECT_HIT,
-        .power = 60,
-        .type = TYPE_WATER,
-        .accuracy = 100,
-        .pp = 15,
-        .target = TARGET_SELECTED,
-        .priority = 1,
-        .category = DAMAGE_CATEGORY_PHYSICAL,
-        .makesContact = TRUE,
-        .punchingMove = TRUE,
-        .metronomeBanned = TRUE,
-        .contestEffect = CONTEST_EFFECT_NEXT_APPEAL_EARLIER,
-        .contestComboStarterId = 0,
-        .contestComboMoves = {0},
-        .battleAnimScript = gBattleAnimMove_JetPunch,
-    },
-
-    [MOVE_SPICY_EXTRACT] =
-    {
-        .name = COMPOUND_STRING("Spicy Extract"),
-        .description = COMPOUND_STRING(
-            "Sharply ups target's Attack,\n"
-            "harshly lowers its Defense."),
-        .effect = EFFECT_SPICY_EXTRACT,
-        .power = 0,
-        .type = TYPE_GRASS,
-        .accuracy = 0,
-        .pp = 15,
-        .target = TARGET_SELECTED,
-        .priority = 0,
-        .category = DAMAGE_CATEGORY_STATUS,
-        .magicCoatAffected = TRUE,
-        .metronomeBanned = TRUE,
-        .battleAnimScript = gBattleAnimMove_SpicyExtract,
-    },
-
-    [MOVE_SPIN_OUT] =
-    {
-        .name = COMPOUND_STRING("Spin Out"),
-        .description = COMPOUND_STRING(
-            "Furiously strains its legs.\n"
-            "Harshly lowers user's Speed."),
-        .effect = EFFECT_HIT,
-        .power = 100,
-        .type = TYPE_STEEL,
-        .accuracy = 100,
-        .pp = 5,
-        .target = TARGET_SELECTED,
-        .priority = 0,
-        .category = DAMAGE_CATEGORY_PHYSICAL,
-        .makesContact = TRUE,
-        .skyBattleBanned = B_EXTRAPOLATED_MOVE_FLAGS,
-        .additionalEffects = ADDITIONAL_EFFECTS({
-            .moveEffect = MOVE_EFFECT_SPD_MINUS_2,
-            .self = TRUE,
-        }),
-        .battleAnimScript = gBattleAnimMove_SpinOut,
-    },
-
-    [MOVE_POPULATION_BOMB] =
-    {
-        .name = COMPOUND_STRING("Population Bomb"),
-        .description = COMPOUND_STRING(
-            "The user's fellows hit one\n"
-            "to ten times in a row."),
-        .effect = EFFECT_POPULATION_BOMB,
-        .power = 20,
-        .type = TYPE_NORMAL,
-        .accuracy = 90,
-        .pp = 10,
-        .target = TARGET_SELECTED,
-        .priority = 0,
-        .category = DAMAGE_CATEGORY_PHYSICAL,
-        .makesContact = TRUE,
-        .slicingMove = TRUE,
-        .metronomeBanned = TRUE,
-        .strikeCount = 10,
-        .battleAnimScript = gBattleAnimMove_PopulationBomb,
-    },
-
-    [MOVE_ICE_SPINNER] =
-    {
-        .name = COMPOUND_STRING("Ice Spinner"),
-        .description = COMPOUND_STRING(
-            "Ice-covered feet hit a foe\n"
-            "and destroy the terrain."),
-        .effect = EFFECT_ICE_SPINNER,
-        .power = 80,
-        .type = TYPE_ICE,
-        .accuracy = 100,
-        .pp = 15,
-        .target = TARGET_SELECTED,
-        .priority = 0,
-        .category = DAMAGE_CATEGORY_PHYSICAL,
-        .makesContact = TRUE,
-        .skyBattleBanned = B_EXTRAPOLATED_MOVE_FLAGS,
-        .battleAnimScript = gBattleAnimMove_IceSpinner,
-    },
-
-    [MOVE_GLAIVE_RUSH] =
-    {
-        .name = COMPOUND_STRING("Glaive Rush"),
-        .description = COMPOUND_STRING(
-            "Foe attacks next turn can't\n"
-            "miss and do double damage."),
-        .effect = EFFECT_HIT,
-        .power = 120,
-        .type = TYPE_DRAGON,
-        .accuracy = 100,
-        .pp = 5,
-        .target = TARGET_SELECTED,
-        .priority = 0,
-        .category = DAMAGE_CATEGORY_PHYSICAL,
-        .makesContact = TRUE,
-        .additionalEffects = ADDITIONAL_EFFECTS({
-            .moveEffect = MOVE_EFFECT_GLAIVE_RUSH,
-            .self = TRUE,
-        }),
-        .battleAnimScript = gBattleAnimMove_GlaiveRush,
-    },
-
-    [MOVE_REVIVAL_BLESSING] =
-    {
-        .name = COMPOUND_STRING("Revival Blessing"),
-        .description = COMPOUND_STRING(
-            "Revives a fainted party {PKMN}\n"
-            "and restores half of its HP."),
-        .effect = EFFECT_REVIVAL_BLESSING,
-        .power = 0,
-        .type = TYPE_NORMAL,
-        .accuracy = 0,
-        .pp = 1,
-        .target = TARGET_USER,
-        .priority = 0,
-        .category = DAMAGE_CATEGORY_STATUS,
-        .ignoresProtect = TRUE,
-        .mirrorMoveBanned = TRUE,
-        .metronomeBanned = TRUE,
-        .healingMove = TRUE,
-        .sketchBanned = (B_SKETCH_BANS >= GEN_9),
-        .battleAnimScript = gBattleAnimMove_RevivalBlessing,
-    },
-
-    [MOVE_SALT_CURE] =
-    {
-        .name = COMPOUND_STRING("Salt Cure"),
-        .description = COMPOUND_STRING(
-            "Hurts foe every turn. Double\n"
-            "damage to Steel and Water."),
-        .effect = EFFECT_HIT,
-        .power = 40,
-        .type = TYPE_ROCK,
-        .accuracy = 100,
-        .pp = 15,
-        .target = TARGET_SELECTED,
-        .priority = 0,
-        .category = DAMAGE_CATEGORY_PHYSICAL,
-        .metronomeBanned = TRUE,
-        .additionalEffects = ADDITIONAL_EFFECTS({
-            .moveEffect = MOVE_EFFECT_SALT_CURE,
-            .chance = 100,
-        }),
-        .battleAnimScript = gBattleAnimMove_SaltCure,
-    },
-
-    [MOVE_TRIPLE_DIVE] =
-    {
-        .name = COMPOUND_STRING("Triple Dive"),
-        .description = COMPOUND_STRING(
-            "Hits target with splashes\n"
-            "of water 3 times in a row."),
-        .effect = EFFECT_HIT,
-        .power = 30,
-        .type = TYPE_WATER,
-        .accuracy = 95,
-        .pp = 10,
-        .target = TARGET_SELECTED,
-        .priority = 0,
-        .category = DAMAGE_CATEGORY_PHYSICAL,
-        .makesContact = TRUE,
-        .strikeCount = 3,
-        .battleAnimScript = gBattleAnimMove_TripleDive,
-    },
-
-    [MOVE_MORTAL_SPIN] =
-    {
-        .name = COMPOUND_STRING("Mortal Spin"),
-        .description = COMPOUND_STRING(
-            "Erases trap moves and Leech\n"
-            "Seed. Poisons adjacent foes."),
-        .effect = EFFECT_RAPID_SPIN,
-        .power = 30,
-        .type = TYPE_POISON,
-        .accuracy = 100,
-        .pp = 15,
-        .target = TARGET_BOTH,
-        .priority = 0,
-        .category = DAMAGE_CATEGORY_PHYSICAL,
-        .makesContact = TRUE,
-        .additionalEffects = ADDITIONAL_EFFECTS({
-            .moveEffect = MOVE_EFFECT_POISON,
-            .chance = 100,
-        }),
-        .battleAnimScript = gBattleAnimMove_MortalSpin,
-    },
-
-    [MOVE_DOODLE] =
-    {
-        .name = COMPOUND_STRING("Doodle"),
-        .description = COMPOUND_STRING(
-            "Changes user's and ally's\n"
-            "Ability into the target's."),
-        .effect = EFFECT_DOODLE,
-        .power = 0,
-        .type = TYPE_NORMAL,
-        .accuracy = 100,
-        .pp = 10,
-        .target = TARGET_SELECTED,
-        .priority = 0,
-        .category = DAMAGE_CATEGORY_STATUS,
-        .ignoresProtect = TRUE,
-        .mirrorMoveBanned = TRUE,
-        .metronomeBanned = TRUE,
-        .battleAnimScript = gBattleAnimMove_Doodle,
-    },
-
-    [MOVE_FILLET_AWAY] =
-    {
-        .name = COMPOUND_STRING("Fillet Away"),
-        .description = COMPOUND_STRING(
-            "Sharply boosts offenses and\n"
-            "Speed by using its own HP."),
-        .effect = EFFECT_FILLET_AWAY,
-        .power = 0,
-        .type = TYPE_NORMAL,
-        .accuracy = 0,
-        .pp = 10,
-        .target = TARGET_USER,
-        .priority = 0,
-        .category = DAMAGE_CATEGORY_STATUS,
-        .zMove = { .effect = Z_EFFECT_RECOVER_HP },
-        .snatchAffected = TRUE,
-        .ignoresProtect = TRUE,
-        .mirrorMoveBanned = TRUE,
-        .metronomeBanned = TRUE,
-        .battleAnimScript = gBattleAnimMove_FilletAway,
-    },
-
-    [MOVE_KOWTOW_CLEAVE] =
-    {
-        .name = COMPOUND_STRING("Kowtow Cleave"),
-        .description = COMPOUND_STRING(
-            "User slashes the foe after\n"
-            "kowtowing. It never misses."),
-        .effect = EFFECT_HIT,
-        .power = 85,
-        .type = TYPE_DARK,
-        .accuracy = 0,
-        .pp = 10,
-        .target = TARGET_SELECTED,
-        .priority = 0,
-        .category = DAMAGE_CATEGORY_PHYSICAL,
-        .makesContact = TRUE,
-        .slicingMove = TRUE,
-        .battleAnimScript = gBattleAnimMove_KowtowCleave,
-    },
-
-    [MOVE_FLOWER_TRICK] =
-    {
-        .name = COMPOUND_STRING("Flower Trick"),
-        .description = COMPOUND_STRING(
-            "Rigged bouquet. Always gets\n"
-            "a critical hit, never missing."),
-        .effect = EFFECT_HIT,
-        .power = 70,
-        .type = TYPE_GRASS,
-        .accuracy = 0,
-        .pp = 10,
-        .target = TARGET_SELECTED,
-        .priority = 0,
-        .category = DAMAGE_CATEGORY_PHYSICAL,
-        .alwaysCriticalHit = TRUE,
-        .battleAnimScript = gBattleAnimMove_FlowerTrick,
-    },
-
-    [MOVE_TORCH_SONG] =
-    {
-        .name = COMPOUND_STRING("Torch Song"),
-        .description = COMPOUND_STRING(
-            "Flames scorch the target.\n"
-            "Boosts the user's Sp. Atk."),
-        .effect = EFFECT_HIT,
-        .power = 80,
-        .type = TYPE_FIRE,
-        .accuracy = 100,
-        .pp = 10,
-        .target = TARGET_SELECTED,
-        .priority = 0,
-        .category = DAMAGE_CATEGORY_SPECIAL,
-        .soundMove = TRUE,
-        .ignoresSubstitute = B_UPDATED_MOVE_FLAGS >= GEN_6,
-        .additionalEffects = ADDITIONAL_EFFECTS({
-            .moveEffect = MOVE_EFFECT_SP_ATK_PLUS_1,
-            .self = TRUE,
-            .chance = 100,
-        }),
-        .battleAnimScript = gBattleAnimMove_TorchSong,
-    },
-
-    [MOVE_AQUA_STEP] =
-    {
-        .name = COMPOUND_STRING("Aqua Step"),
-        .description = COMPOUND_STRING(
-            "Hits with light, fluid dance\n"
-            "steps. Ups the user's Speed."),
-        .effect = EFFECT_HIT,
-        .power = 80,
-        .type = TYPE_WATER,
-        .accuracy = 100,
-        .pp = 10,
-        .target = TARGET_SELECTED,
-        .priority = 0,
-        .category = DAMAGE_CATEGORY_PHYSICAL,
-        .makesContact = TRUE,
-        .danceMove = TRUE,
-        .additionalEffects = ADDITIONAL_EFFECTS({
-            .moveEffect = MOVE_EFFECT_SPD_PLUS_1,
-            .self = TRUE,
-            .chance = 100,
-        }),
-        .battleAnimScript = gBattleAnimMove_AquaStep,
-    },
-
-    [MOVE_RAGING_BULL] =
-    {
-        .name = COMPOUND_STRING("Raging Bull"),
-        .description = COMPOUND_STRING(
-            "Tackle that breaks barriers.\n"
-            "User's form determines type."),
-        .effect = EFFECT_RAGING_BULL,
-        .power = 90,
-        .type = TYPE_NORMAL,
-        .accuracy = 100,
-        .pp = 10,
-        .target = TARGET_SELECTED,
-        .priority = 0,
-        .category = DAMAGE_CATEGORY_PHYSICAL,
-        .additionalEffects = ADDITIONAL_EFFECTS({
-            .moveEffect = MOVE_EFFECT_BREAK_SCREEN,
-            .preAttackEffect = TRUE,
-        }),
-        .makesContact = TRUE,
-        .metronomeBanned = TRUE,
-        .battleAnimScript = gBattleAnimMove_RagingBull,
-    },
-
-    [MOVE_MAKE_IT_RAIN] =
-    {
-        .name = COMPOUND_STRING("Make It Rain"),
-        .description = COMPOUND_STRING(
-            "Lowers the user's Sp. Atk.\n"
-            "Money is recovered after."),
-        .effect = EFFECT_HIT,
-        .power = 120,
-        .type = TYPE_STEEL,
-        .accuracy = 100,
-        .pp = 5,
-        .target = TARGET_BOTH,
-        .priority = 0,
-        .category = DAMAGE_CATEGORY_SPECIAL,
-        .metronomeBanned = TRUE,
-        .additionalEffects = ADDITIONAL_EFFECTS({
-            .moveEffect = MOVE_EFFECT_PAYDAY,
-        },
-        {
-            .moveEffect = MOVE_EFFECT_SP_ATK_MINUS_1,
-            .self = TRUE,
-        }),
-        .battleAnimScript = gBattleAnimMove_MakeItRain,
-    },
-
-    [MOVE_RUINATION] =
-    {
-        .name = COMPOUND_STRING("Ruination"),
-        .description = COMPOUND_STRING(
-            "Summons a ruinous disaster\n"
-            "and cuts half the foe's HP."),
-        .effect = EFFECT_FIXED_PERCENT_DAMAGE,
-        .power = 1,
-        .type = TYPE_DARK,
-        .accuracy = 90,
-        .pp = 10,
-        .target = TARGET_SELECTED,
-        .priority = 0,
-        .category = DAMAGE_CATEGORY_SPECIAL,
-        .argument = { .damagePercentage = 50 },
-        .metronomeBanned = TRUE,
-        .contestEffect = CONTEST_EFFECT_BADLY_STARTLE_MONS_WITH_GOOD_APPEALS,
-        .contestComboStarterId = 0,
-        .contestComboMoves = {0},
-        .battleAnimScript = gBattleAnimMove_Ruination,
-    },
-
-    [MOVE_COLLISION_COURSE] =
-    {
-        .name = COMPOUND_STRING("Collision Course"),
-        .description = COMPOUND_STRING(
-            "Prehistoric explosion that's\n"
-            "stronger if super effective."),
-        .effect = EFFECT_COLLISION_COURSE,
-        .power = 100,
-        .type = TYPE_FIGHTING,
-        .accuracy = 100,
-        .pp = 5,
-        .target = TARGET_SELECTED,
-        .priority = 0,
-        .category = DAMAGE_CATEGORY_PHYSICAL,
-        .makesContact = TRUE,
-        .metronomeBanned = TRUE,
-        .battleAnimScript = gBattleAnimMove_CollisionCourse,
-    },
-
-    [MOVE_ELECTRO_DRIFT] =
-    {
-        .name = COMPOUND_STRING("Electro Drift"),
-        .description = COMPOUND_STRING(
-            "Futuristic electricity. It's\n"
-            "stronger if super effective."),
-        .effect = EFFECT_COLLISION_COURSE,
-        .power = 100,
-        .type = TYPE_ELECTRIC,
-        .accuracy = 100,
-        .pp = 5,
-        .target = TARGET_SELECTED,
-        .priority = 0,
-        .category = DAMAGE_CATEGORY_SPECIAL,
-        .makesContact = TRUE,
-        .metronomeBanned = TRUE,
-        .battleAnimScript = gBattleAnimMove_ElectroDrift,
-    },
-
-    [MOVE_SHED_TAIL] =
-    {
-        .name = COMPOUND_STRING("Shed Tail"),
-        .description = COMPOUND_STRING(
-            "Creates a Substitute for\n"
-            "itself before switching out."),
-        .effect = EFFECT_SHED_TAIL,
-        .power = 0,
-        .type = TYPE_NORMAL,
-        .accuracy = 0,
-        .pp = 10,
-        .target = TARGET_USER,
-        .priority = 0,
-        .category = DAMAGE_CATEGORY_STATUS,
-        .zMove = { .effect = Z_EFFECT_RESET_STATS },
-        .ignoresProtect = TRUE,
-        .mirrorMoveBanned = TRUE,
-        .metronomeBanned = TRUE,
-        .battleAnimScript = gBattleAnimMove_ShedTail,
-    },
-
-    [MOVE_CHILLY_RECEPTION] =
-    {
-        .name = COMPOUND_STRING("Chilly Reception"),
-        #if B_PREFERRED_ICE_WEATHER == B_ICE_WEATHER_HAIL
-        .description = COMPOUND_STRING(
-            "Bad joke summons hailstorm.\n"
-            "The user also switches out."),
-        #else
-        .description = COMPOUND_STRING(
-            "Bad joke summons snowstorm.\n"
-            "The user also switches out."),
-        #endif
-        .effect = EFFECT_WEATHER_AND_SWITCH,
-        .power = 0,
-        .type = TYPE_ICE,
-        .accuracy = 0,
-        .pp = 10,
-        .target = TARGET_FIELD,
-        .priority = 0,
-        .category = DAMAGE_CATEGORY_STATUS,
-        .zMove = { .effect = Z_EFFECT_SPD_UP_1 },
-        .ignoresProtect = TRUE,
-        .mirrorMoveBanned = TRUE,
-        .metronomeBanned = TRUE,
-        .argument = { .weatherType = (B_PREFERRED_ICE_WEATHER == B_ICE_WEATHER_HAIL) ? BATTLE_WEATHER_HAIL : BATTLE_WEATHER_SNOW },
-        .battleAnimScript = gBattleAnimMove_ChillyReception,
-    },
-
-    [MOVE_TIDY_UP] =
-    {
-        .name = COMPOUND_STRING("Tidy Up"),
-        .description = COMPOUND_STRING(
-            "User tidies up hazards and\n"
-            "raises its Attack and Speed."),
-        .effect = EFFECT_TIDY_UP,
-        .power = 0,
-        .type = TYPE_NORMAL,
-        .accuracy = 0,
-        .pp = 10,
-        .target = TARGET_USER,
-        .priority = 0,
-        .category = DAMAGE_CATEGORY_STATUS,
-        .ignoresProtect = TRUE,
-        .mirrorMoveBanned = TRUE,
-        .metronomeBanned = TRUE,
-        .battleAnimScript = gBattleAnimMove_TidyUp,
-    },
-
-    [MOVE_SNOWSCAPE] =
-    {
-        .name = COMPOUND_STRING("Snowscape"),
-        #if B_PREFERRED_ICE_WEATHER == B_ICE_WEATHER_HAIL
-            .description = COMPOUND_STRING(
-                "Summons a hailstorm that\n"
-                "strikes every turn."),
-        #else
-            .description = COMPOUND_STRING(
-                "Summons a snowstorm that\n"
-                "lasts for five turns."),
-        #endif
-        .effect = EFFECT_WEATHER,
-        .power = 0,
-        .type = TYPE_ICE,
-        .accuracy = 0,
-        .pp = 10,
-        .target = TARGET_FIELD,
-        .priority = 0,
-        .category = DAMAGE_CATEGORY_STATUS,
-        .argument = { .weatherType = (B_PREFERRED_ICE_WEATHER == B_ICE_WEATHER_HAIL) ? BATTLE_WEATHER_HAIL : BATTLE_WEATHER_SNOW },
-        .zMove = { .effect = Z_EFFECT_SPD_UP_1 },
-        .ignoresProtect = TRUE,
-        .mirrorMoveBanned = TRUE,
-        .metronomeBanned = TRUE,
-        .contestEffect = C_UPDATED_MOVE_EFFECTS >= GEN_6 ? CONTEST_EFFECT_BADLY_STARTLE_MONS_WITH_GOOD_APPEALS : CONTEST_EFFECT_BADLY_STARTLE_PREV_MONS,
-        .contestCategory = CONTEST_CATEGORY_BEAUTY,
-        .contestComboStarterId = 0,
-        .contestComboMoves = {0},
-        .battleAnimScript = (B_PREFERRED_ICE_WEATHER == B_ICE_WEATHER_HAIL) ? gBattleAnimMove_Hail : gBattleAnimMove_Snowscape,
-    },
-
-    [MOVE_POUNCE] =
-    {
-        .name = COMPOUND_STRING("Pounce"),
-        .description = COMPOUND_STRING(
-            "The user pounces on the foe,\n"
-            "lowering its Speed."),
-        .effect = EFFECT_HIT,
-        .power = 50,
-        .type = TYPE_BUG,
-        .accuracy = 100,
-        .pp = 20,
-        .target = TARGET_SELECTED,
-        .priority = 0,
-        .category = DAMAGE_CATEGORY_PHYSICAL,
-        .makesContact = TRUE,
-        .metronomeBanned = TRUE,
-        .additionalEffects = ADDITIONAL_EFFECTS({
-            .moveEffect = MOVE_EFFECT_SPD_MINUS_1,
-            .chance = 100,
-        }),
-        .battleAnimScript = gBattleAnimMove_Pounce,
-    },
-
-    [MOVE_TRAILBLAZE] =
-    {
-        .name = COMPOUND_STRING("Trailblaze"),
-        .description = COMPOUND_STRING(
-            "The user attacks suddenly,\n"
-            "raising its Speed."),
-        .effect = EFFECT_HIT,
-        .power = 50,
-        .type = TYPE_GRASS,
-        .accuracy = 100,
-        .pp = 20,
-        .target = TARGET_SELECTED,
-        .priority = 0,
-        .category = DAMAGE_CATEGORY_PHYSICAL,
-        .makesContact = TRUE,
-        .metronomeBanned = TRUE,
-        .additionalEffects = ADDITIONAL_EFFECTS({
-            .moveEffect = MOVE_EFFECT_SPD_PLUS_1,
-            .self = TRUE,
-            .chance = 100,
-        }),
-        .contestEffect = CONTEST_EFFECT_BETTER_WITH_GOOD_CONDITION,
-        .contestComboStarterId = 0,
-        .contestComboMoves = {0},
-        .battleAnimScript = gBattleAnimMove_Trailblaze,
-    },
-
-    [MOVE_CHILLING_WATER] =
-    {
-        .name = COMPOUND_STRING("Chilling Water"),
-        .description = COMPOUND_STRING(
-            "A shower with ice-cold water\n"
-            "lowers the target's Attack."),
-        .effect = EFFECT_HIT,
-        .power = 50,
-        .type = TYPE_WATER,
-        .accuracy = 100,
-        .pp = 20,
-        .target = TARGET_SELECTED,
-        .priority = 0,
-        .category = DAMAGE_CATEGORY_SPECIAL,
-        .metronomeBanned = TRUE,
-        .additionalEffects = ADDITIONAL_EFFECTS({
-            .moveEffect = MOVE_EFFECT_ATK_MINUS_1,
-            .chance = 100,
-        }),
-        .contestEffect = CONTEST_EFFECT_BETTER_IF_LAST,
-        .contestComboStarterId = 0,
-        .contestComboMoves = {0},
-        .battleAnimScript = gBattleAnimMove_ChillingWater,
-    },
-
-    [MOVE_HYPER_DRILL] =
-    {
-        .name = COMPOUND_STRING("Hyper Drill"),
-        .description = COMPOUND_STRING(
-            "A spinning pointed part\n"
-            "bypasses a foe's Protect."),
-        .effect = EFFECT_HIT,
-        .power = 100,
-        .type = TYPE_NORMAL,
-        .accuracy = 100,
-        .pp = 5,
-        .target = TARGET_SELECTED,
-        .priority = 0,
-        .category = DAMAGE_CATEGORY_PHYSICAL,
-        .makesContact = TRUE,
-        .ignoresProtect = TRUE,
-        .metronomeBanned = TRUE,
-        .battleAnimScript = gBattleAnimMove_HyperDrill,
-    },
-
-    [MOVE_TWIN_BEAM] =
-    {
-        .name = COMPOUND_STRING("Twin Beam"),
-        .description = COMPOUND_STRING(
-            "Mystical eye-beams that hit\n"
-            "the target twice in a row."),
-        .effect = EFFECT_HIT,
-        .power = 40,
-        .type = TYPE_PSYCHIC,
-        .accuracy = 100,
-        .pp = 10,
-        .target = TARGET_SELECTED,
-        .priority = 0,
-        .category = DAMAGE_CATEGORY_SPECIAL,
-        .strikeCount = 2,
-        .metronomeBanned = TRUE,
-        .battleAnimScript = gBattleAnimMove_TwinBeam,
-    },
-
-    [MOVE_RAGE_FIST] =
-    {
-        .name = COMPOUND_STRING("Rage Fist"),
-        .description = COMPOUND_STRING(
-            "The more the user has been\n"
-            "hit, the stronger the move."),
-        .effect = EFFECT_RAGE_FIST,
-        .power = 50,
-        .type = TYPE_GHOST,
-        .accuracy = 100,
-        .pp = 10,
-        .target = TARGET_SELECTED,
-        .priority = 0,
-        .category = DAMAGE_CATEGORY_PHYSICAL,
-        .makesContact = TRUE,
-        .punchingMove = TRUE,
-        .metronomeBanned = TRUE,
-        .battleAnimScript = gBattleAnimMove_RageFist,
-    },
-
-    [MOVE_ARMOR_CANNON] =
-    {
-        .name = COMPOUND_STRING("Armor Cannon"),
-        .description = COMPOUND_STRING(
-            "A strong attack but lowers\n"
-            "the defensive stats."),
-        .effect = EFFECT_HIT,
-        .power = 120,
-        .type = TYPE_FIRE,
-        .accuracy = 100,
-        .pp = 5,
-        .target = TARGET_SELECTED,
-        .priority = 0,
-        .category = DAMAGE_CATEGORY_SPECIAL,
-        .metronomeBanned = TRUE,
-        .additionalEffects = ADDITIONAL_EFFECTS({
-            .moveEffect = MOVE_EFFECT_DEF_SPDEF_DOWN,
-            .self = TRUE,
-        }),
-        .contestEffect = CONTEST_EFFECT_USER_MORE_EASILY_STARTLED,
-        .contestComboStarterId = 0,
-        .contestComboMoves = {0},
-        .battleAnimScript = gBattleAnimMove_ArmorCannon,
-    },
-
-    [MOVE_BITTER_BLADE] =
-    {
-        .name = COMPOUND_STRING("Bitter Blade"),
-        .description = COMPOUND_STRING(
-            "An attack that absorbs\n"
-            "half the damage inflicted."),
-        .effect = EFFECT_ABSORB,
-        .power = 90,
-        .type = TYPE_FIRE,
-        .accuracy = 100,
-        .pp = 10,
-        .target = TARGET_SELECTED,
-        .priority = 0,
-        .category = DAMAGE_CATEGORY_PHYSICAL,
-        .argument = { .absorbPercentage = 50 },
-        .makesContact = TRUE,
-        .slicingMove = TRUE,
-        .healingMove = TRUE,
-        .battleAnimScript = gBattleAnimMove_BitterBlade,
-    },
-
-    [MOVE_DOUBLE_SHOCK] =
-    {
-        .name = COMPOUND_STRING("Double Shock"),
-        .description = COMPOUND_STRING(
-            "Discharges all electricity,\n"
-            "losing the Electric type."),
-        .effect = EFFECT_FAIL_IF_NOT_ARG_TYPE,
-        .power = 120,
-        .type = TYPE_ELECTRIC,
-        .accuracy = 100,
-        .pp = 5,
-        .target = TARGET_SELECTED,
-        .priority = 0,
-        .category = DAMAGE_CATEGORY_PHYSICAL,
-        .makesContact = TRUE,
-        .punchingMove = TRUE,
-        .metronomeBanned = TRUE,
-        .argument = { .type = TYPE_ELECTRIC },
-        .additionalEffects = ADDITIONAL_EFFECTS({
-            .moveEffect = MOVE_EFFECT_REMOVE_ARG_TYPE,
-            .self = TRUE,
-        }),
-        .battleAnimScript = gBattleAnimMove_DoubleShock,
-    },
-
-    [MOVE_GIGATON_HAMMER] =
-    {
-        .name = COMPOUND_STRING("Gigaton Hammer"),
-        .description = COMPOUND_STRING(
-            "Swings a huge hammer. Can't\n"
-            "be used twice in a row."),
-        .effect = EFFECT_HIT,
-        .power = 160,
-        .type = TYPE_STEEL,
-        .accuracy = 100,
-        .pp = 5,
-        .target = TARGET_SELECTED,
-        .priority = 0,
-        .category = DAMAGE_CATEGORY_PHYSICAL,
-        .cantUseTwice = TRUE,
-        .battleAnimScript = gBattleAnimMove_GigatonHammer,
-    },
-
-    [MOVE_COMEUPPANCE] =
-    {
-        .name = COMPOUND_STRING("Comeuppance"),
-        .description = COMPOUND_STRING(
-            "Retaliates strongly against\n"
-            "who last hurt the user."),
-        .effect = EFFECT_REFLECT_DAMAGE,
-        .power = 1,
-        .type = TYPE_DARK,
-        .accuracy = 100,
-        .pp = 10,
-        .target = TARGET_DEPENDS,
-        .priority = 0,
-        .category = DAMAGE_CATEGORY_PHYSICAL,
-        .argument = {
-            .reflectDamage.damagePercent = 150,
-            .reflectDamage.damageCategories = 1u << DAMAGE_CATEGORY_PHYSICAL | 1u << DAMAGE_CATEGORY_SPECIAL,
-        },
-        .makesContact = TRUE,
-        .meFirstBanned = TRUE,
-        .metronomeBanned = TRUE,
-        .contestEffect = CONTEST_EFFECT_BETTER_IF_LAST,
-        .contestComboStarterId = 0,
-        .contestComboMoves = {0},
-        .battleAnimScript = gBattleAnimMove_Comeuppance,
-    },
-
-    [MOVE_AQUA_CUTTER] =
-    {
-        .name = COMPOUND_STRING("Aqua Cutter"),
-        .description = COMPOUND_STRING(
-            "Pressurized water cut with a\n"
-            "high critical-hit ratio."),
-        .effect = EFFECT_HIT,
-        .power = 70,
-        .type = TYPE_WATER,
-        .accuracy = 100,
-        .criticalHitStage = B_UPDATED_MOVE_DATA >= GEN_3 ? 1 : 2,
-        .pp = 20,
-        .target = TARGET_SELECTED,
-        .priority = 0,
-        .category = DAMAGE_CATEGORY_PHYSICAL,
-        .slicingMove = TRUE,
-        .battleAnimScript = gBattleAnimMove_AquaCutter,
-    },
-
-    [MOVE_BLAZING_TORQUE] =
-    {
-        .name = COMPOUND_STRING("Blazing Torque"),
-        .description = COMPOUND_STRING("---"),
-        .effect = EFFECT_HIT,
-        .power = 80,
-        .type = TYPE_FIRE,
-        .accuracy = 100,
-        .pp = 10,
-        .target = TARGET_SELECTED,
-        .priority = 0,
-        .category = DAMAGE_CATEGORY_PHYSICAL,
-        .mirrorMoveBanned = TRUE,
-        .meFirstBanned = TRUE,
-        .mimicBanned = TRUE,
-        .metronomeBanned = TRUE,
-        .copycatBanned = TRUE,
-        .sleepTalkBanned = TRUE,
-        .instructBanned = TRUE,
-        .encoreBanned = TRUE,
-        .assistBanned = TRUE,
-        .sketchBanned = (B_SKETCH_BANS >= GEN_9),
-        .additionalEffects = ADDITIONAL_EFFECTS({
-            .moveEffect = MOVE_EFFECT_BURN,
-            .chance = 30,
-        }),
-        .battleAnimScript = gBattleAnimMove_BlazingTorque,
-    },
-
-    [MOVE_WICKED_TORQUE] =
-    {
-        .name = COMPOUND_STRING("Wicked Torque"),
-        .description = COMPOUND_STRING("---"),
-        .effect = EFFECT_HIT,
-        .power = 80,
-        .type = TYPE_DARK,
-        .accuracy = 100,
-        .pp = 10,
-        .target = TARGET_SELECTED,
-        .priority = 0,
-        .category = DAMAGE_CATEGORY_PHYSICAL,
-        .mirrorMoveBanned = TRUE,
-        .meFirstBanned = TRUE,
-        .mimicBanned = TRUE,
-        .metronomeBanned = TRUE,
-        .copycatBanned = TRUE,
-        .sleepTalkBanned = TRUE,
-        .instructBanned = TRUE,
-        .encoreBanned = TRUE,
-        .assistBanned = TRUE,
-        .sketchBanned = (B_SKETCH_BANS >= GEN_9),
-        .additionalEffects = ADDITIONAL_EFFECTS({
-            .moveEffect = MOVE_EFFECT_SLEEP,
-            .chance = 10,
-        }),
-        .battleAnimScript = gBattleAnimMove_WickedTorque,
-    },
-
-    [MOVE_NOXIOUS_TORQUE] =
-    {
-        .name = COMPOUND_STRING("Noxious Torque"),
-        .description = COMPOUND_STRING("---"),
-        .effect = EFFECT_HIT,
-        .power = 100,
-        .type = TYPE_POISON,
-        .accuracy = 100,
-        .pp = 10,
-        .target = TARGET_SELECTED,
-        .priority = 0,
-        .category = DAMAGE_CATEGORY_PHYSICAL,
-        .mirrorMoveBanned = TRUE,
-        .meFirstBanned = TRUE,
-        .mimicBanned = TRUE,
-        .metronomeBanned = TRUE,
-        .copycatBanned = TRUE,
-        .sleepTalkBanned = TRUE,
-        .instructBanned = TRUE,
-        .encoreBanned = TRUE,
-        .assistBanned = TRUE,
-        .sketchBanned = (B_SKETCH_BANS >= GEN_9),
-        .additionalEffects = ADDITIONAL_EFFECTS({
-            .moveEffect = MOVE_EFFECT_POISON,
-            .chance = 30,
-        }),
-        .battleAnimScript = gBattleAnimMove_NoxiousTorque,
-    },
-
-    [MOVE_COMBAT_TORQUE] =
-    {
-        .name = COMPOUND_STRING("Combat Torque"),
-        .description = COMPOUND_STRING("---"),
-        .effect = EFFECT_HIT,
-        .power = 100,
-        .type = TYPE_FIGHTING,
-        .accuracy = 100,
-        .pp = 10,
-        .target = TARGET_SELECTED,
-        .priority = 0,
-        .category = DAMAGE_CATEGORY_PHYSICAL,
-        .mirrorMoveBanned = TRUE,
-        .meFirstBanned = TRUE,
-        .mimicBanned = TRUE,
-        .metronomeBanned = TRUE,
-        .copycatBanned = TRUE,
-        .sleepTalkBanned = TRUE,
-        .instructBanned = TRUE,
-        .encoreBanned = TRUE,
-        .assistBanned = TRUE,
-        .sketchBanned = (B_SKETCH_BANS >= GEN_9),
-        .additionalEffects = ADDITIONAL_EFFECTS({
-            .moveEffect = MOVE_EFFECT_PARALYSIS,
-            .chance = 30,
-        }),
-        .battleAnimScript = gBattleAnimMove_CombatTorque,
-    },
-
-    [MOVE_MAGICAL_TORQUE] =
-    {
-        .name = COMPOUND_STRING("Magical Torque"),
-        .description = COMPOUND_STRING("---"),
-        .effect = EFFECT_HIT,
-        .power = 100,
-        .type = TYPE_FAIRY,
-        .accuracy = 100,
-        .pp = 10,
-        .target = TARGET_SELECTED,
-        .priority = 0,
-        .category = DAMAGE_CATEGORY_PHYSICAL,
-        .mirrorMoveBanned = TRUE,
-        .meFirstBanned = TRUE,
-        .mimicBanned = TRUE,
-        .metronomeBanned = TRUE,
-        .copycatBanned = TRUE,
-        .sleepTalkBanned = TRUE,
-        .instructBanned = TRUE,
-        .encoreBanned = TRUE,
-        .assistBanned = TRUE,
-        .sketchBanned = (B_SKETCH_BANS >= GEN_9),
-        .additionalEffects = ADDITIONAL_EFFECTS({
-            .moveEffect = MOVE_EFFECT_CONFUSION,
-            .chance = 30,
-        }),
-        .battleAnimScript = gBattleAnimMove_MagicalTorque,
-    },
-
-    [MOVE_PSYBLADE] =
-    {
-        .name = COMPOUND_STRING("Psyblade"),
-        .description = COMPOUND_STRING(
-            "This move's power increases\n"
-            "when on Electric Terrain."),
-        .effect = EFFECT_TERRAIN_BOOST,
-        .power = 80,
-        .type = TYPE_PSYCHIC,
-        .accuracy = 100,
-        .pp = 15,
-        .target = TARGET_SELECTED,
-        .priority = 0,
-        .category = DAMAGE_CATEGORY_PHYSICAL,
-        .argument.terrainBoost = {
-            .terrain = STATUS_FIELD_ELECTRIC_TERRAIN,
-            .percent = 50,
-            .groundCheck = GROUND_CHECK_NONE,
-        },
-        .makesContact = TRUE,
-        .slicingMove = TRUE,
-        .battleAnimScript = gBattleAnimMove_Psyblade,
-    },
-
-    [MOVE_HYDRO_STEAM] =
-    {
-        .name = COMPOUND_STRING("Hydro Steam"),
-        .description = COMPOUND_STRING(
-            "This move's power increases\n"
-            "under harsh sunlight."),
-        .effect = EFFECT_HYDRO_STEAM,
-        .power = 80,
-        .type = TYPE_WATER,
-        .accuracy = 100,
-        .pp = 15,
-        .target = TARGET_SELECTED,
-        .priority = 0,
-        .category = DAMAGE_CATEGORY_SPECIAL,
-        .thawsUser = TRUE,
-        .battleAnimScript = gBattleAnimMove_HydroSteam,
-    },
-
-    [MOVE_BLOOD_MOON] =
-    {
-        .name = COMPOUND_STRING("Blood Moon"),
-        .description = COMPOUND_STRING(
-            "Unleashes the blood moon.\n"
-            "Can't be used twice in a row."),
-        .effect = EFFECT_HIT,
-        .power = 140,
-        .type = TYPE_NORMAL,
-        .accuracy = 100,
-        .pp = 5,
-        .target = TARGET_SELECTED,
-        .priority = 0,
-        .category = DAMAGE_CATEGORY_SPECIAL,
-        .cantUseTwice = TRUE,
-        .battleAnimScript = gBattleAnimMove_BloodMoon,
-    },
-
-    [MOVE_MATCHA_GOTCHA] =
-    {
-        .name = COMPOUND_STRING("Matcha Gotcha"),
-        .description = COMPOUND_STRING(
-            "Absorbs half the damage\n"
-            "inflicted. May cause a burn."),
-        .effect = EFFECT_ABSORB,
-        .power = 80,
-        .type = TYPE_GRASS,
-        .accuracy = 90,
-        .pp = 15,
-        .target = TARGET_BOTH,
-        .priority = 0,
-        .category = DAMAGE_CATEGORY_SPECIAL,
-        .argument = { .absorbPercentage = 50 },
-        .thawsUser = TRUE,
-        .healingMove = TRUE,
-        .additionalEffects = ADDITIONAL_EFFECTS({
-            .moveEffect = MOVE_EFFECT_BURN,
-            .chance = 20,
-        }),
-        .battleAnimScript = gBattleAnimMove_MatchaGotcha,
-    },
-
-    [MOVE_SYRUP_BOMB] =
-    {
-        .name = COMPOUND_STRING("Syrup Bomb"),
-        .description = COMPOUND_STRING(
-            "Lowers the foe's speed\n"
-            "each turn for 3 turns."),
-        .effect = EFFECT_HIT,
-        .power = 60,
-        .type = TYPE_GRASS,
-        .accuracy = 85,
-        .pp = 10,
-        .target = TARGET_SELECTED,
-        .priority = 0,
-        .category = DAMAGE_CATEGORY_SPECIAL,
-        .ballisticMove = TRUE,
-        .additionalEffects = ADDITIONAL_EFFECTS({
-            .moveEffect = MOVE_EFFECT_SYRUP_BOMB,
-            .chance = 100,
-        }),
-        .battleAnimScript = gBattleAnimMove_SyrupBomb,
-    },
-
-    [MOVE_IVY_CUDGEL] =
-    {
-        .name = COMPOUND_STRING("Ivy Cudgel"),
-        .description = COMPOUND_STRING(
-            "Type changes with held mask.\n"
-            "High critical-hit ratio."),
-        .effect = EFFECT_IVY_CUDGEL,
-        .power = 100,
-        .type = TYPE_GRASS,
-        .accuracy = 100,
-        .pp = 10,
-        .criticalHitStage = B_UPDATED_MOVE_DATA >= GEN_3 ? 1 : 2,
-        .target = TARGET_SELECTED,
-        .priority = 0,
-        .category = DAMAGE_CATEGORY_PHYSICAL,
-        .battleAnimScript = gBattleAnimMove_IvyCudgel,
-    },
-
-    [MOVE_ELECTRO_SHOT] =
-    {
-        .name = COMPOUND_STRING("Electro Shot"),
-        .description = COMPOUND_STRING(
-            "Gathers electricity, then\n"
-            "fires a high-voltage shot."),
-        .effect = EFFECT_TWO_TURNS_ATTACK,
-        .power = 130,
-        .type = TYPE_ELECTRIC,
-        .accuracy = 100,
-        .pp = 10,
-        .target = TARGET_SELECTED,
-        .priority = 0,
-        .category = DAMAGE_CATEGORY_SPECIAL,
-        .sleepTalkBanned = TRUE,
-        .instructBanned = TRUE,
-        .argument.twoTurnAttack = { .stringId = STRINGID_ELECTROSHOTCHARGING, .weather = B_WEATHER_RAIN },
-        .additionalEffects = ADDITIONAL_EFFECTS({
-            .moveEffect = MOVE_EFFECT_SP_ATK_PLUS_1,
-            .self = TRUE,
-            .onChargeTurnOnly = TRUE,
-            .sheerForceOverride = TRUE,
-        }),
-        .battleAnimScript = gBattleAnimMove_ElectroShot,
-    },
-
-    [MOVE_TERA_STARSTORM] =
-    {
-        .name = COMPOUND_STRING("Tera Starstorm"),
-        .description = COMPOUND_STRING(
-            "In Terapagos's Stellar\n"
-            "Form, it hits all foes."),
-        .effect = EFFECT_TERA_STARSTORM,
-        .power = 120,
-        .type = TYPE_NORMAL,
-        .accuracy = 100,
-        .pp = 5,
-        .target = TARGET_SELECTED,
-        .priority = 0,
-        .category = DAMAGE_CATEGORY_SPECIAL,
-        .assistBanned = TRUE,
-        .copycatBanned = TRUE,
-        .mimicBanned = TRUE,
-        .sketchBanned = (B_SKETCH_BANS >= GEN_9),
-        .battleAnimScript = gBattleAnimMove_TeraStarstorm,
-    },
-
-    [MOVE_FICKLE_BEAM] =
-    {
-        .name = COMPOUND_STRING("Fickle Beam"),
-        .description = COMPOUND_STRING(
-            "Shoots a beam of light.\n"
-            "Sometimes twice as strong."),
-        .effect = EFFECT_FICKLE_BEAM,
-        .power = 80,
-        .type = TYPE_DRAGON,
-        .accuracy = 100,
-        .pp = 5,
-        .target = TARGET_SELECTED,
-        .priority = 0,
-        .category = DAMAGE_CATEGORY_SPECIAL,
-        .battleAnimScript = gBattleAnimMove_FickleBeam,
-    },
-
-    [MOVE_BURNING_BULWARK] =
-    {
-        .name = COMPOUND_STRING("Burning Bulwark"),
-        .description = COMPOUND_STRING(
-            "Evades attack, and burns\n"
-            "the foe if struck."),
-        .effect = EFFECT_PROTECT,
-        .power = 0,
-        .type = TYPE_FIRE,
-        .accuracy = 0,
-        .pp = 10,
-        .target = TARGET_USER,
-        .priority = 4,
-        .category = DAMAGE_CATEGORY_STATUS,
-        .argument = { .protectMethod = PROTECT_BURNING_BULWARK },
-        .zMove = { .effect = Z_EFFECT_RESET_STATS },
-        .ignoresProtect = TRUE,
-        .mirrorMoveBanned = TRUE,
-        .copycatBanned = TRUE,
-        .assistBanned = TRUE,
-        .battleAnimScript = gBattleAnimMove_BurningBulwark,
-    },
-
-    [MOVE_THUNDERCLAP] =
-    {
-        .name = COMPOUND_STRING("Thunderclap"),
-        .description = sSuckerPunchDescription,
-        .effect = EFFECT_SUCKER_PUNCH,
-        .power = 70,
-        .type = TYPE_ELECTRIC,
-        .accuracy = 100,
-        .pp = 5,
-        .target = TARGET_SELECTED,
-        .priority = 1,
-        .category = DAMAGE_CATEGORY_SPECIAL,
-        .contestEffect = CONTEST_EFFECT_BETTER_IF_FIRST,
-        .contestComboStarterId = 0,
-        .contestComboMoves = {0},
-        .battleAnimScript = gBattleAnimMove_Thunderclap,
-    },
-
-    [MOVE_MIGHTY_CLEAVE] =
-    {
-        .name = COMPOUND_STRING("Mighty Cleave"),
-        .description = sFeintDescription,
-        .effect = EFFECT_HIT,
-        .power = 95,
-        .type = TYPE_ROCK,
-        .accuracy = 100,
-        .pp = 5,
-        .target = TARGET_SELECTED,
-        .priority = 0,
-        .category = DAMAGE_CATEGORY_PHYSICAL,
-        .makesContact = TRUE,
-        .ignoresProtect = TRUE,
-        .slicingMove = TRUE,
-        .battleAnimScript = gBattleAnimMove_MightyCleave,
-    },
-
-    [MOVE_TACHYON_CUTTER] =
-    {
-        .name = COMPOUND_STRING("Tachyon Cutter"),
-        .description = COMPOUND_STRING(
-            "Launches particle blades at\n"
-            "the target. Strikes twice."),
-        .effect = EFFECT_HIT,
-        .power = 50,
-        .type = TYPE_STEEL,
-        .accuracy = 0,
-        .pp = 10,
-        .target = TARGET_SELECTED,
-        .priority = 0,
-        .category = DAMAGE_CATEGORY_SPECIAL,
-        .strikeCount = 2,
-        .slicingMove = TRUE,
-        .battleAnimScript = gBattleAnimMove_TachyonCutter,
-    },
-
-    [MOVE_HARD_PRESS] =
-    {
-        .name = COMPOUND_STRING("Hard Press"),
-        .description = sWringOutDescription,
-        .effect = EFFECT_POWER_BASED_ON_TARGET_HP,
-        .power = 100,
-        .type = TYPE_STEEL,
-        .accuracy = 100,
-        .pp = 10,
-        .target = TARGET_SELECTED,
-        .priority = 0,
-        .category = DAMAGE_CATEGORY_PHYSICAL,
-        .makesContact = TRUE,
-        .battleAnimScript = gBattleAnimMove_HardPress,
-    },
-
-    [MOVE_DRAGON_CHEER] =
-    {
-        .name = COMPOUND_STRING("Dragon Cheer"),
-        .description = COMPOUND_STRING(
-            "Increases allies' critical hit\n"
-            "ratio, especially if Dragons."),
-        .effect = EFFECT_DRAGON_CHEER,
-        .power = 0,
-        .type = TYPE_DRAGON,
-        .accuracy = 0,
-        .pp = 15,
-        .target = TARGET_ALLY,
-        .priority = 0,
-        .category = DAMAGE_CATEGORY_STATUS,
-        .ignoresSubstitute = TRUE,
-        .battleAnimScript = gBattleAnimMove_DragonCheer,
-    },
-
-    [MOVE_ALLURING_VOICE] =
-    {
-        .name = COMPOUND_STRING("Alluring Voice"),
-        .description = COMPOUND_STRING(
-            "Confuses foe if its stats\n"
-            "were boosted this turn."),
-        .effect = EFFECT_HIT,
-        .power = 80,
-        .type = TYPE_FAIRY,
-        .accuracy = 100,
-        .pp = 10,
-        .target = TARGET_SELECTED,
-        .priority = 0,
-        .category = DAMAGE_CATEGORY_SPECIAL,
-        .soundMove = TRUE,
-        .ignoresSubstitute = B_UPDATED_MOVE_FLAGS >= GEN_6,
-        .additionalEffects = ADDITIONAL_EFFECTS({
-            .moveEffect = MOVE_EFFECT_CONFUSION,
-            .onlyIfTargetRaisedStats = TRUE,
-            .chance = 100,
-        }),
-        .battleAnimScript = gBattleAnimMove_AlluringVoice,
-    },
-
-    [MOVE_TEMPER_FLARE] =
-    {
-        .name = COMPOUND_STRING("Temper Flare"),
-        .description = COMPOUND_STRING(
-            "A desperation attack. Power\n"
-            "doubles if last move failed."),
-        .effect = EFFECT_STOMPING_TANTRUM,
-        .power = 75,
-        .type = TYPE_FIRE,
-        .accuracy = 100,
-        .pp = 10,
-        .target = TARGET_SELECTED,
-        .priority = 0,
-        .category = DAMAGE_CATEGORY_PHYSICAL,
-        .makesContact = TRUE,
-        .battleAnimScript = gBattleAnimMove_TemperFlare,
-    },
-
-    [MOVE_SUPERCELL_SLAM] =
-    {
-        .name = COMPOUND_STRING("Supercell Slam"),
-        .description = COMPOUND_STRING(
-            "An electrified slam. If it\n"
-            "misses, the user is hurt."),
-        .effect = EFFECT_RECOIL_IF_MISS,
-        .power = 100,
-        .type = TYPE_ELECTRIC,
-        .accuracy = 95,
-        .pp = 15,
-        .target = TARGET_SELECTED,
-        .priority = 0,
-        .category = DAMAGE_CATEGORY_PHYSICAL,
-        .makesContact = TRUE,
-        .minimizeDoubleDamage = TRUE,
-        .contestEffect = CONTEST_EFFECT_USER_MORE_EASILY_STARTLED,
-        .contestComboStarterId = 0,
-        .contestComboMoves = {0},
-        .battleAnimScript = gBattleAnimMove_SupercellSlam,
-    },
-
-    [MOVE_PSYCHIC_NOISE] =
-    {
-        .name = COMPOUND_STRING("Psychic Noise"),
-        .description = COMPOUND_STRING(
-            "Sound waves that damage and\n"
-            "prevent healing for 2 turns."),
-        .effect = EFFECT_HIT,
-        .power = 75,
-        .type = TYPE_PSYCHIC,
-        .accuracy = 100,
-        .pp = 10,
-        .target = TARGET_SELECTED,
-        .priority = 0,
-        .category = DAMAGE_CATEGORY_SPECIAL,
-        .soundMove = TRUE,
-        .ignoresSubstitute = B_UPDATED_MOVE_FLAGS >= GEN_6,
-        .additionalEffects = ADDITIONAL_EFFECTS({
-            .moveEffect = MOVE_EFFECT_PSYCHIC_NOISE,
-            .chance = 100,
-        }),
-        .battleAnimScript = gBattleAnimMove_PsychicNoise,
-    },
-
-    [MOVE_UPPER_HAND] =
-    {
-        .effect = EFFECT_UPPER_HAND,
-        .name = COMPOUND_STRING("Upper Hand"),
-        .description = COMPOUND_STRING(
-            "Makes the target flinch if\n"
-            "readying a priority move."),
-        .power = 65,
-        .type = TYPE_FIGHTING,
-        .accuracy = 100,
-        .pp = 15,
-        .target = TARGET_SELECTED,
-        .priority = 3,
-        .category = DAMAGE_CATEGORY_PHYSICAL,
-        .makesContact = TRUE,
-        .additionalEffects = ADDITIONAL_EFFECTS({
-            .moveEffect = MOVE_EFFECT_FLINCH,
-            .chance = 100,
-        }),
-        .battleAnimScript = gBattleAnimMove_UpperHand,
-    },
-
-    [MOVE_MALIGNANT_CHAIN] =
-    {
-        .name = COMPOUND_STRING("Malignant Chain"),
-        .description = COMPOUND_STRING(
-            "A corrosive chain attack\n"
-            "that may badly poison."),
-        .effect = EFFECT_HIT,
-        .power = 100,
-        .type = TYPE_POISON,
-        .accuracy = 100,
-        .pp = 5,
-        .target = TARGET_SELECTED,
-        .priority = 0,
-        .category = DAMAGE_CATEGORY_SPECIAL,
-        .additionalEffects = ADDITIONAL_EFFECTS({
-            .moveEffect = MOVE_EFFECT_TOXIC,
-            .chance = 50,
-        }),
-        .battleAnimScript = gBattleAnimMove_MalignantChain,
-    },
-
-    // Z-Moves
-    [MOVE_BREAKNECK_BLITZ] =
-    {
-        .name = COMPOUND_STRING("Breakneck Blitz"),
-        .description = COMPOUND_STRING(
-            "Builds momentum and crashes\n"
-            "into the foe. Power varies."),
-        .effect = EFFECT_HIT,
-        .power = 1,
-        .type = TYPE_NORMAL,
-        .accuracy = 0,
-        .pp = 1,
-        .target = TARGET_SELECTED,
-        .priority = 0,
-        .category = DAMAGE_CATEGORY_PHYSICAL,    //determined from move type
-        .battleAnimScript = gBattleAnimMove_BreakneckBlitz,
-    },
-    [MOVE_ALL_OUT_PUMMELING] =
-    {
-        .name = COMPOUND_STRING("All-Out Pummeling"),
-        .description = COMPOUND_STRING(
-            "Rams an energy orb into\n"
-            "the target. Power varies."),
-        .effect = EFFECT_HIT,
-        .power = 1,
-        .type = TYPE_FIGHTING,
-        .accuracy = 0,
-        .pp = 1,
-        .target = TARGET_SELECTED,
-        .priority = 0,
-        .category = DAMAGE_CATEGORY_PHYSICAL,
-        .battleAnimScript = gBattleAnimMove_AllOutPummeling,
-    },
-    [MOVE_SUPERSONIC_SKYSTRIKE] =
-    {
-        .name = COMPOUND_STRING("Supersonic Skystrike"),
-        .description = COMPOUND_STRING(
-            "Soars up and plummets toward\n"
-            "the target. Power varies."),
-        .effect = EFFECT_HIT,
-        .power = 1,
-        .type = TYPE_FLYING,
-        .accuracy = 0,
-        .pp = 1,
-        .target = TARGET_SELECTED,
-        .priority = 0,
-        .category = DAMAGE_CATEGORY_PHYSICAL,
-        .battleAnimScript = gBattleAnimMove_SupersonicSkystrike,
-    },
-    [MOVE_ACID_DOWNPOUR] =
-    {
-        .name = COMPOUND_STRING("Acid Downpour"),
-        .description = COMPOUND_STRING(
-            "Sinks the target in a poison\n"
-            "swamp. Power varies."),
-        .effect = EFFECT_HIT,
-        .power = 1,
-        .type = TYPE_POISON,
-        .accuracy = 0,
-        .pp = 1,
-        .target = TARGET_SELECTED,
-        .priority = 0,
-        .category = DAMAGE_CATEGORY_PHYSICAL,
-        .battleAnimScript = gBattleAnimMove_AcidDownpour,
-    },
-    [MOVE_TECTONIC_RAGE] =
-    {
-        .name = COMPOUND_STRING("Tectonic Rage"),
-        .description = COMPOUND_STRING(
-            "Burrows deep and slams into\n"
-            "the target. Power varies."),
-        .effect = EFFECT_HIT,
-        .power = 1,
-        .type = TYPE_GROUND,
-        .accuracy = 0,
-        .pp = 1,
-        .target = TARGET_SELECTED,
-        .priority = 0,
-        .category = DAMAGE_CATEGORY_PHYSICAL,
-        .skyBattleBanned = B_EXTRAPOLATED_MOVE_FLAGS,
-        .battleAnimScript = gBattleAnimMove_TectonicRage,
-    },
-    [MOVE_CONTINENTAL_CRUSH] =
-    {
-        .name = COMPOUND_STRING("Continental Crush"),
-        .description = COMPOUND_STRING(
-            "Drops a huge rock mountain\n"
-            "on the foe. Power varies."),
-        .effect = EFFECT_HIT,
-        .power = 1,
-        .type = TYPE_ROCK,
-        .accuracy = 0,
-        .pp = 1,
-        .target = TARGET_SELECTED,
-        .priority = 0,
-        .category = DAMAGE_CATEGORY_PHYSICAL,
-        .battleAnimScript = gBattleAnimMove_ContinentalCrush,
-    },
-    [MOVE_SAVAGE_SPIN_OUT] =
-    {
-        .name = COMPOUND_STRING("Savage Spin-Out"),
-        .description = COMPOUND_STRING(
-            "Spits threads of silk to\n"
-            "bind the foe. Power varies."),
-        .effect = EFFECT_HIT,
-        .power = 1,
-        .type = TYPE_BUG,
-        .accuracy = 0,
-        .pp = 1,
-        .target = TARGET_SELECTED,
-        .priority = 0,
-        .category = DAMAGE_CATEGORY_PHYSICAL,
-        .battleAnimScript = gBattleAnimMove_SavageSpinOut,
-    },
-    [MOVE_NEVER_ENDING_NIGHTMARE] =
-    {
-        .name = COMPOUND_STRING("Never-Ending Nightmare"),
-        .description = COMPOUND_STRING(
-            "Deep-seated grudges trap\n"
-            "the target. Power varies."),
-        .effect = EFFECT_HIT,
-        .power = 1,
-        .type = TYPE_GHOST,
-        .accuracy = 0,
-        .pp = 1,
-        .target = TARGET_SELECTED,
-        .priority = 0,
-        .category = DAMAGE_CATEGORY_PHYSICAL,
-        .battleAnimScript = gBattleAnimMove_NeverEndingNightmare,
-    },
-    [MOVE_CORKSCREW_CRASH] =
-    {
-        .name = COMPOUND_STRING("Corkscrew Crash"),
-        .description = COMPOUND_STRING(
-            "Spins very fast and rams\n"
-            "the target. Power varies."),
-        .effect = EFFECT_HIT,
-        .power = 1,
-        .type = TYPE_STEEL,
-        .accuracy = 0,
-        .pp = 1,
-        .target = TARGET_SELECTED,
-        .priority = 0,
-        .category = DAMAGE_CATEGORY_PHYSICAL,
-        .battleAnimScript = gBattleAnimMove_CorkscrewCrash,
-    },
-    [MOVE_INFERNO_OVERDRIVE] =
-    {
-        .name = COMPOUND_STRING("Inferno Overdrive"),
-        .description = COMPOUND_STRING(
-            "Breathes intense fire at\n"
-            "the target. Power varies."),
-        .effect = EFFECT_HIT,
-        .power = 1,
-        .type = TYPE_FIRE,
-        .accuracy = 0,
-        .pp = 1,
-        .target = TARGET_SELECTED,
-        .priority = 0,
-        .category = DAMAGE_CATEGORY_PHYSICAL,
-        .battleAnimScript = gBattleAnimMove_InfernoOverdrive,
-    },
-    [MOVE_HYDRO_VORTEX] =
-    {
-        .name = COMPOUND_STRING("Hydro Vortex"),
-        .description = COMPOUND_STRING(
-            "A huge whirlpool swallows\n"
-            "the target. Power varies."),
-        .effect = EFFECT_HIT,
-        .power = 1,
-        .type = TYPE_WATER,
-        .accuracy = 0,
-        .pp = 1,
-        .target = TARGET_SELECTED,
-        .priority = 0,
-        .category = DAMAGE_CATEGORY_PHYSICAL,
-        .battleAnimScript = gBattleAnimMove_HydroVortex,
-    },
-    [MOVE_BLOOM_DOOM] =
-    {
-        .name = COMPOUND_STRING("Bloom Doom"),
-        .description = COMPOUND_STRING(
-            "Uses plant energy to attack\n"
-            "the target. Power varies."),
-        .effect = EFFECT_HIT,
-        .power = 1,
-        .type = TYPE_GRASS,
-        .accuracy = 0,
-        .pp = 1,
-        .target = TARGET_SELECTED,
-        .priority = 0,
-        .category = DAMAGE_CATEGORY_PHYSICAL,
-        .battleAnimScript = gBattleAnimMove_BloomDoom,
-    },
-    [MOVE_GIGAVOLT_HAVOC] =
-    {
-        .name = COMPOUND_STRING("Gigavolt Havoc"),
-        .description = COMPOUND_STRING(
-            "Hits the foe with powerful\n"
-            "electricity. Power varies."),
-        .effect = EFFECT_HIT,
-        .power = 1,
-        .type = TYPE_ELECTRIC,
-        .accuracy = 0,
-        .pp = 1,
-        .target = TARGET_SELECTED,
-        .priority = 0,
-        .category = DAMAGE_CATEGORY_PHYSICAL,
-        .battleAnimScript = gBattleAnimMove_GigavoltHavoc,
-    },
-    [MOVE_SHATTERED_PSYCHE] =
-    {
-        .name = COMPOUND_STRING("Shattered Psyche"),
-        .description = COMPOUND_STRING(
-            "Controls the target to\n"
-            "hurt it. Power varies."),
-        .effect = EFFECT_HIT,
-        .power = 1,
-        .type = TYPE_PSYCHIC,
-        .accuracy = 0,
-        .pp = 1,
-        .target = TARGET_SELECTED,
-        .priority = 0,
-        .category = DAMAGE_CATEGORY_PHYSICAL,
-        .battleAnimScript = gBattleAnimMove_ShatteredPsyche,
-    },
-    [MOVE_SUBZERO_SLAMMER] =
-    {
-        .name = COMPOUND_STRING("Subzero Slammer"),
-        .description = COMPOUND_STRING(
-            "Drops the temp and freezes\n"
-            "the target. Power varies."),
-        .effect = EFFECT_HIT,
-        .power = 1,
-        .type = TYPE_ICE,
-        .accuracy = 0,
-        .pp = 1,
-        .target = TARGET_SELECTED,
-        .priority = 0,
-        .category = DAMAGE_CATEGORY_PHYSICAL,
-        .battleAnimScript = gBattleAnimMove_SubzeroSlammer,
-    },
-    [MOVE_DEVASTATING_DRAKE] =
-    {
-        .name = COMPOUND_STRING("Devastating Drake"),
-        .description = COMPOUND_STRING(
-            "Develops aura and attacks\n"
-            "the target. Power varies."),
-        .effect = EFFECT_HIT,
-        .power = 1,
-        .type = TYPE_DRAGON,
-        .accuracy = 0,
-        .pp = 1,
-        .target = TARGET_SELECTED,
-        .priority = 0,
-        .category = DAMAGE_CATEGORY_PHYSICAL,
-        .battleAnimScript = gBattleAnimMove_DevastatingDrake,
-    },
-    [MOVE_BLACK_HOLE_ECLIPSE] =
-    {
-        .name = COMPOUND_STRING("Black Hole Eclipse"),
-        .description = COMPOUND_STRING(
-            "Sucks the target into dark\n"
-            "energy. Power varies."),
-        .effect = EFFECT_HIT,
-        .power = 1,
-        .type = TYPE_DARK,
-        .accuracy = 0,
-        .pp = 1,
-        .target = TARGET_SELECTED,
-        .priority = 0,
-        .category = DAMAGE_CATEGORY_PHYSICAL,
-        .battleAnimScript = gBattleAnimMove_BlackHoleEclipse,
-    },
-    [MOVE_TWINKLE_TACKLE] =
-    {
-        .name = COMPOUND_STRING("Twinkle Tackle"),
-        .description = COMPOUND_STRING(
-            "Toys with the target in a\n"
-            "charming space. Power varies."),
-        .effect = EFFECT_HIT,
-        .power = 1,
-        .type = TYPE_FAIRY,
-        .accuracy = 0,
-        .pp = 1,
-        .target = TARGET_SELECTED,
-        .priority = 0,
-        .category = DAMAGE_CATEGORY_PHYSICAL,
-        .battleAnimScript = gBattleAnimMove_TwinkleTackle,
-    },
-    [MOVE_CATASTROPIKA] =
-    {
-        .name = COMPOUND_STRING("Catastropika"),
-        .description = COMPOUND_STRING(
-            "Pikachu uses the max amount\n"
-            "of electricity and pounces."),
-        .effect = EFFECT_HIT,
-        .power = 210,
-        .type = TYPE_ELECTRIC,
-        .accuracy = 0,
-        .pp = 1,
-        .target = TARGET_SELECTED,
-        .priority = 0,
-        .category = DAMAGE_CATEGORY_PHYSICAL,
-        .battleAnimScript = gBattleAnimMove_Catastropika,
-    },
-    [MOVE_10000000_VOLT_THUNDERBOLT] =
-    {
-        .name = COMPOUND_STRING("10,000,000 Volt Thunderbolt"),
-        .description = COMPOUND_STRING(
-            "Cap Pikachu unleashes jolt.\n"
-            "High critical-hit ratio."),
-        .effect = EFFECT_HIT,
-        .power = 195,
-        .type = TYPE_ELECTRIC,
-        .accuracy = 0,
-        .criticalHitStage = 2,
-        .pp = 1,
-        .target = TARGET_SELECTED,
-        .priority = 0,
-        .category = DAMAGE_CATEGORY_SPECIAL,
-        .battleAnimScript = gBattleAnimMove_10000000VoltThunderbolt,
-    },
-    [MOVE_STOKED_SPARKSURFER] =
-    {
-        .name = COMPOUND_STRING("Stoked Sparksurfer"),
-        .description = COMPOUND_STRING(
-            "Alolan Raichu attacks with\n"
-            "full force. Causes paralysis."),
-        .effect = EFFECT_HIT,
-        .power = 175,
-        .type = TYPE_ELECTRIC,
-        .accuracy = 0,
-        .pp = 1,
-        .target = TARGET_SELECTED,
-        .priority = 0,
-        .category = DAMAGE_CATEGORY_SPECIAL,
-        .additionalEffects = ADDITIONAL_EFFECTS({
-            .moveEffect = MOVE_EFFECT_PARALYSIS,
-            .chance = 100,
-        }),
-        .battleAnimScript = gBattleAnimMove_StokedSparksurfer,
-    },
-    [MOVE_EXTREME_EVOBOOST] =
-    {
-        .name = COMPOUND_STRING("Extreme Evoboost"),
-        .description = COMPOUND_STRING(
-            "Eevee gets energy from\n"
-            "its friends. Boosts stats."),
-        .effect = EFFECT_EXTREME_EVOBOOST,
-        .power = 0,
-        .type = TYPE_NORMAL,
-        .accuracy = 0,
-        .pp = 1,
-        .target = TARGET_USER,
-        .priority = 0,
-        .category = DAMAGE_CATEGORY_STATUS,
-        .battleAnimScript = gBattleAnimMove_ExtremeEvoboost,
-    },
-    [MOVE_PULVERIZING_PANCAKE] =
-    {
-        .name = COMPOUND_STRING("Pulverizing Pancake"),
-        .description = COMPOUND_STRING(
-            "Snorlax energetically moves\n"
-            "and attacks with full force."),
-        .effect = EFFECT_HIT,
-        .power = 210,
-        .type = TYPE_NORMAL,
-        .accuracy = 0,
-        .pp = 1,
-        .target = TARGET_SELECTED,
-        .priority = 0,
-        .category = DAMAGE_CATEGORY_PHYSICAL,
-        .battleAnimScript = gBattleAnimMove_PulverizingPancake,
-    },
-    [MOVE_GENESIS_SUPERNOVA] =
-    {
-        .name = COMPOUND_STRING("Genesis Supernova"),
-        .description = COMPOUND_STRING(
-            "Mew attacks with full force.\n"
-            "Psychically charges terrain."),
-        .effect = EFFECT_HIT,
-        .power = 185,
-        .type = TYPE_PSYCHIC,
-        .accuracy = 0,
-        .pp = 1,
-        .target = TARGET_SELECTED,
-        .priority = 0,
-        .category = DAMAGE_CATEGORY_SPECIAL,
-        .battleAnimScript = gBattleAnimMove_GenesisSupernova,
-        .additionalEffects = ADDITIONAL_EFFECTS({
-            .moveEffect = MOVE_EFFECT_PSYCHIC_TERRAIN,
-            .chance = 100,
-        }),
-    },
-    [MOVE_SINISTER_ARROW_RAID] =
-    {
-        .name = COMPOUND_STRING("Sinister Arrow Raid"),
-        .description = COMPOUND_STRING(
-            "Decidueye shoots countless\n"
-            "arrows with full force."),
-        .effect = EFFECT_HIT,
-        .power = 180,
-        .type = TYPE_GHOST,
-        .accuracy = 0,
-        .pp = 1,
-        .target = TARGET_SELECTED,
-        .priority = 0,
-        .category = DAMAGE_CATEGORY_PHYSICAL,
-        .battleAnimScript = gBattleAnimMove_SinisterArrowRaid,
-    },
-    [MOVE_MALICIOUS_MOONSAULT] =
-    {
-        .name = COMPOUND_STRING("Malicious Moonsault"),
-        .description = COMPOUND_STRING(
-            "Incineroar crashes into\n"
-            "the target with full force."),
-        .effect = EFFECT_HIT,
-        .power = 180,
-        .type = TYPE_DARK,
-        .accuracy = 0,
-        .pp = 1,
-        .target = TARGET_SELECTED,
-        .priority = 0,
-        .category = DAMAGE_CATEGORY_PHYSICAL,
-        .minimizeDoubleDamage = TRUE,
-        .battleAnimScript = gBattleAnimMove_MaliciousMoonsault,
-    },
-    [MOVE_OCEANIC_OPERETTA] =
-    {
-        .name = COMPOUND_STRING("Oceanic Operetta"),
-        .description = COMPOUND_STRING(
-            "Primarina summons a massive\n"
-            "amount of water at the foe."),
-        .effect = EFFECT_HIT,
-        .power = 195,
-        .type = TYPE_WATER,
-        .accuracy = 0,
-        .pp = 1,
-        .target = TARGET_SELECTED,
-        .priority = 0,
-        .category = DAMAGE_CATEGORY_SPECIAL,
-        .battleAnimScript = gBattleAnimMove_OceanicOperetta,
-    },
-    [MOVE_SPLINTERED_STORMSHARDS] =
-    {
-        .name = COMPOUND_STRING("Splintered Stormshards"),
-        .description = COMPOUND_STRING(
-            "Lycanroc attacks with full\n"
-            "force. Removes all terrain."),
-        .effect = EFFECT_ICE_SPINNER,
-        .power = 190,
-        .type = TYPE_ROCK,
-        .accuracy = 0,
-        .pp = 1,
-        .target = TARGET_SELECTED,
-        .priority = 0,
-        .category = DAMAGE_CATEGORY_PHYSICAL,
-        .battleAnimScript = gBattleAnimMove_SplinteredStormshards,
-    },
-    [MOVE_LETS_SNUGGLE_FOREVER] =
-    {
-        .name = COMPOUND_STRING("Let's Snuggle Forever"),
-        .description = COMPOUND_STRING(
-            "Mimikyu punches the target\n"
-            "with full force."),
-        .effect = EFFECT_HIT,
-        .power = 190,
-        .type = TYPE_FAIRY,
-        .accuracy = 0,
-        .pp = 1,
-        .target = TARGET_SELECTED,
-        .priority = 0,
-        .category = DAMAGE_CATEGORY_PHYSICAL,
-        .battleAnimScript = gBattleAnimMove_LetsSnuggleForever,
-    },
-    [MOVE_CLANGOROUS_SOULBLAZE] =
-    {
-        .name = COMPOUND_STRING("Clangorous Soulblaze"),
-        .description = COMPOUND_STRING(
-            "Kommo-o attacks with full\n"
-            "force. Boosts all stats."),
-        .effect = EFFECT_HIT,
-        .power = 185,
-        .type = TYPE_DRAGON,
-        .accuracy = 0,
-        .pp = 1,
-        .target = TARGET_BOTH,
-        .priority = 0,
-        .category = DAMAGE_CATEGORY_SPECIAL,
-        .soundMove = TRUE,
-        .ignoresSubstitute = B_UPDATED_MOVE_FLAGS >= GEN_6,
-        .additionalEffects = ADDITIONAL_EFFECTS({
-            .moveEffect = MOVE_EFFECT_ALL_STATS_UP,
-            .self = TRUE,
-            .chance = 100,
-        }),
-        .battleAnimScript = gBattleAnimMove_ClangorousSoulblaze,
-    },
-    [MOVE_GUARDIAN_OF_ALOLA] =
-    {
-        .name = COMPOUND_STRING("Guardian of Alola"),
-        .description = COMPOUND_STRING(
-            "The Land Spirit PokГ©mon\n"
-            "greatly reduces the foe's HP."),
-        .effect = EFFECT_FIXED_PERCENT_DAMAGE,
-        .power = 1,
-        .type = TYPE_FAIRY,
-        .accuracy = 0,
-        .pp = 1,
-        .target = TARGET_SELECTED,
-        .priority = 0,
-        .category = DAMAGE_CATEGORY_SPECIAL,
-        .argument = { .damagePercentage = 75 },
-        .battleAnimScript = gBattleAnimMove_GuardianOfAlola,
-    },
-    [MOVE_SEARING_SUNRAZE_SMASH] =
-    {
-        .name = COMPOUND_STRING("Searing Sunraze Smash"),
-        .description = COMPOUND_STRING(
-            "Solgaleo attacks with full\n"
-            "force. Ignores abilities."),
-        .effect = EFFECT_HIT,
-        .power = 200,
-        .type = TYPE_STEEL,
-        .accuracy = 0,
-        .pp = 1,
-        .target = TARGET_SELECTED,
-        .priority = 0,
-        .category = DAMAGE_CATEGORY_PHYSICAL,
-        .ignoresTargetAbility = TRUE,
-        .battleAnimScript = gBattleAnimMove_SearingSunrazeSmash,
-    },
-    [MOVE_MENACING_MOONRAZE_MAELSTROM] =
-    {
-        .name = COMPOUND_STRING("Menacing Moonraze Maelstrom"),
-        .description = COMPOUND_STRING(
-            "Lunala attacks with full\n"
-            "force. Ignores abilities."),
-        .effect = EFFECT_HIT,
-        .power = 200,
-        .type = TYPE_GHOST,
-        .accuracy = 0,
-        .pp = 1,
-        .target = TARGET_SELECTED,
-        .priority = 0,
-        .category = DAMAGE_CATEGORY_SPECIAL,
-        .ignoresTargetAbility = TRUE,
-        .battleAnimScript = gBattleAnimMove_MenacingMoonrazeMaelstrom,
-    },
-    [MOVE_LIGHT_THAT_BURNS_THE_SKY] =
-    {
-        .name = COMPOUND_STRING("Light That Burns the Sky"),
-        .description = COMPOUND_STRING(
-            "Uses Necrozma's highest\n"
-            "attack. Ignores abilities."),
-        .effect = EFFECT_PHOTON_GEYSER,
-        .power = 200,
-        .type = TYPE_PSYCHIC,
-        .accuracy = 0,
-        .pp = 1,
-        .target = TARGET_SELECTED,
-        .priority = 0,
-        .category = DAMAGE_CATEGORY_SPECIAL,
-        .ignoresTargetAbility = TRUE,
-        .battleAnimScript = gBattleAnimMove_LightThatBurnsTheSky,
-    },
-    [MOVE_SOUL_STEALING_7_STAR_STRIKE] =
-    {
-        .name = COMPOUND_STRING("Soul-Stealing 7-Star Strike"),
-        .description = COMPOUND_STRING(
-            "Marshadow punches and\n"
-            "kicks with full force."),
-        .effect = EFFECT_HIT,
-        .power = 195,
-        .type = TYPE_GHOST,
-        .accuracy = 0,
-        .pp = 1,
-        .target = TARGET_SELECTED,
-        .priority = 0,
-        .category = DAMAGE_CATEGORY_PHYSICAL,
-        .battleAnimScript = gBattleAnimMove_SoulStealing7StarStrike,
-    },
-
-    [MOVE_MAX_GUARD] =
-    {
-        .name = COMPOUND_STRING("Max Guard"),
-        .description = sProtectDescription,
-        .effect = EFFECT_PROTECT,
-        .power = 0,
-        .type = TYPE_NORMAL,
-        .accuracy = 0,
-        .pp = 10,
-        .target = TARGET_USER,
-        .priority = 4,
-        .category = DAMAGE_CATEGORY_STATUS,
-        .argument = { .protectMethod = PROTECT_MAX_GUARD },
-        .battleAnimScript = gBattleAnimMove_MaxGuard,
-    },
-
-    [MOVE_MAX_FLARE] =
-    {
-        .name = COMPOUND_STRING("Max Flare"),
-        .description = COMPOUND_STRING(
-            "Fire Dynamax attack.\n"
-            "Intensifies sun for 5 turns."),
-        .effect = EFFECT_MAX_MOVE,
-        .power = 1,
-        .type = TYPE_FIRE,
-        .accuracy = 0,
-        .pp = 10,
-        .target = TARGET_SELECTED,
-        .priority = 0,
-        .category = DAMAGE_CATEGORY_PHYSICAL,
-        .battleAnimScript = gBattleAnimMove_MaxFlare,
-        .additionalEffects = ADDITIONAL_EFFECTS({
-            .moveEffect = MOVE_EFFECT_SUN,
-        }),
-    },
-
-    [MOVE_MAX_FLUTTERBY] =
-    {
-        .name = COMPOUND_STRING("Max Flutterby"),
-        .description = COMPOUND_STRING(
-            "Bug Dynamax attack.\n"
-            "Lowers foe's Sp. Atk stat."),
-        .effect = EFFECT_MAX_MOVE,
-        .power = 1,
-        .type = TYPE_BUG,
-        .accuracy = 0,
-        .pp = 10,
-        .target = TARGET_SELECTED,
-        .priority = 0,
-        .category = DAMAGE_CATEGORY_PHYSICAL,
-        .battleAnimScript = gBattleAnimMove_MaxFlutterby,
-        .additionalEffects = ADDITIONAL_EFFECTS({
-            .moveEffect = MOVE_EFFECT_LOWER_SP_ATK_SIDE,
-        }),
-    },
-
-    [MOVE_MAX_LIGHTNING] =
-    {
-        .name = COMPOUND_STRING("Max Lightning"),
-        .description = COMPOUND_STRING(
-            "Electric Dynamax attack.\n"
-            "Turns the terrain electric."),
-        .effect = EFFECT_MAX_MOVE,
-        .power = 1,
-        .type = TYPE_ELECTRIC,
-        .accuracy = 0,
-        .pp = 10,
-        .target = TARGET_SELECTED,
-        .priority = 0,
-        .category = DAMAGE_CATEGORY_PHYSICAL,
-        .battleAnimScript = gBattleAnimMove_MaxLightning,
-        .additionalEffects = ADDITIONAL_EFFECTS({
-            .moveEffect = MOVE_EFFECT_ELECTRIC_TERRAIN,
-        }),
-    },
-
-    [MOVE_MAX_STRIKE] =
-    {
-        .name = COMPOUND_STRING("Max Strike"),
-        .description = COMPOUND_STRING(
-            "Normal Dynamax attack.\n"
-            "Lowers foe's Speed stat."),
-        .effect = EFFECT_MAX_MOVE,
-        .power = 1,
-        .type = TYPE_NORMAL,
-        .accuracy = 0,
-        .pp = 10,
-        .target = TARGET_SELECTED,
-        .priority = 0,
-        .category = DAMAGE_CATEGORY_PHYSICAL,
-        .battleAnimScript = gBattleAnimMove_MaxStrike,
-        .additionalEffects = ADDITIONAL_EFFECTS({
-            .moveEffect = MOVE_EFFECT_LOWER_SPEED_SIDE,
-        }),
-    },
-
-    [MOVE_MAX_KNUCKLE] =
-    {
-        .name = COMPOUND_STRING("Max Knuckle"),
-        .description = COMPOUND_STRING(
-            "Fighting Dynamax attack.\n"
-            "Boosts ally Attack stats."),
-        .effect = EFFECT_MAX_MOVE,
-        .power = 1,
-        .type = TYPE_FIGHTING,
-        .accuracy = 0,
-        .pp = 10,
-        .target = TARGET_SELECTED,
-        .priority = 0,
-        .category = DAMAGE_CATEGORY_PHYSICAL,
-        .battleAnimScript = gBattleAnimMove_MaxKnuckle,
-        .additionalEffects = ADDITIONAL_EFFECTS({
-            .moveEffect = MOVE_EFFECT_RAISE_TEAM_ATTACK,
-        }),
-    },
-
-    [MOVE_MAX_PHANTASM] =
-    {
-        .name = COMPOUND_STRING("Max Phantasm"),
-        .description = COMPOUND_STRING(
-            "Ghost Dynamax attack.\n"
-            "Lowers foe's Defense stat."),
-        .effect = EFFECT_MAX_MOVE,
-        .power = 1,
-        .type = TYPE_GHOST,
-        .accuracy = 0,
-        .pp = 10,
-        .target = TARGET_SELECTED,
-        .priority = 0,
-        .category = DAMAGE_CATEGORY_PHYSICAL,
-        .battleAnimScript = gBattleAnimMove_MaxPhantasm,
-        .additionalEffects = ADDITIONAL_EFFECTS({
-            .moveEffect = MOVE_EFFECT_LOWER_DEFENSE_SIDE,
-        }),
-    },
-
-    [MOVE_MAX_HAILSTORM] =
-    {
-        .name = COMPOUND_STRING("Max Hailstorm"),
-        .description = COMPOUND_STRING(
-            "Ice Dynamax attack.\n"
-            "Summons hail for 5 turns."),
-        .effect = EFFECT_MAX_MOVE,
-        .power = 1,
-        .type = TYPE_ICE,
-        .accuracy = 0,
-        .pp = 10,
-        .target = TARGET_SELECTED,
-        .priority = 0,
-        .category = DAMAGE_CATEGORY_PHYSICAL,
-        .battleAnimScript = gBattleAnimMove_MaxHailstorm,
-        .additionalEffects = ADDITIONAL_EFFECTS({
-            .moveEffect = MOVE_EFFECT_HAIL,
-        }),
-    },
-
-    [MOVE_MAX_OOZE] =
-    {
-        .name = COMPOUND_STRING("Max Ooze"),
-        .description = COMPOUND_STRING(
-            "Poison Dynamax attack.\n"
-            "Boosts ally Sp. Atk stats."),
-        .effect = EFFECT_MAX_MOVE,
-        .power = 1,
-        .type = TYPE_POISON,
-        .accuracy = 0,
-        .pp = 10,
-        .target = TARGET_SELECTED,
-        .priority = 0,
-        .category = DAMAGE_CATEGORY_PHYSICAL,
-        .battleAnimScript = gBattleAnimMove_MaxOoze,
-        .additionalEffects = ADDITIONAL_EFFECTS({
-            .moveEffect = MOVE_EFFECT_RAISE_TEAM_SP_ATK,
-        }),
-    },
-
-    [MOVE_MAX_GEYSER] =
-    {
-        .name = COMPOUND_STRING("Max Geyser"),
-        .description = COMPOUND_STRING(
-            "Water Dynamax attack.\n"
-            "Summons rain for 5 turns."),
-        .effect = EFFECT_MAX_MOVE,
-        .power = 1,
-        .type = TYPE_WATER,
-        .accuracy = 0,
-        .pp = 10,
-        .target = TARGET_SELECTED,
-        .priority = 0,
-        .category = DAMAGE_CATEGORY_PHYSICAL,
-        .battleAnimScript = gBattleAnimMove_MaxGeyser,
-        .additionalEffects = ADDITIONAL_EFFECTS({
-            .moveEffect = MOVE_EFFECT_RAIN,
-        }),
-    },
-
-    [MOVE_MAX_AIRSTREAM] =
-    {
-        .name = COMPOUND_STRING("Max Airstream"),
-        .description = COMPOUND_STRING(
-            "Flying Dynamax attack.\n"
-            "Boosts ally Speed stats."),
-        .effect = EFFECT_MAX_MOVE,
-        .power = 1,
-        .type = TYPE_FLYING,
-        .accuracy = 0,
-        .pp = 10,
-        .target = TARGET_SELECTED,
-        .priority = 0,
-        .category = DAMAGE_CATEGORY_PHYSICAL,
-        .battleAnimScript = gBattleAnimMove_MaxAirstream,
-        .additionalEffects = ADDITIONAL_EFFECTS({
-            .moveEffect = MOVE_EFFECT_RAISE_TEAM_SPEED,
-        }),
-    },
-
-    [MOVE_MAX_STARFALL] =
-    {
-        .name = COMPOUND_STRING("Max Starfall"),
-        .description = COMPOUND_STRING(
-            "Fairy Dynamax attack.\n"
-            "Turns the terrain misty."),
-        .effect = EFFECT_MAX_MOVE,
-        .power = 1,
-        .type = TYPE_FAIRY,
-        .accuracy = 0,
-        .pp = 10,
-        .target = TARGET_SELECTED,
-        .priority = 0,
-        .category = DAMAGE_CATEGORY_PHYSICAL,
-        .battleAnimScript = gBattleAnimMove_MaxStarfall,
-        .additionalEffects = ADDITIONAL_EFFECTS({
-            .moveEffect = MOVE_EFFECT_MISTY_TERRAIN,
-        }),
-    },
-
-    [MOVE_MAX_WYRMWIND] =
-    {
-        .name = COMPOUND_STRING("Max Wyrmwind"),
-        .description = COMPOUND_STRING(
-            "Dragon Dynamax attack.\n"
-            "Lowers foe's Attack stat."),
-        .effect = EFFECT_MAX_MOVE,
-        .power = 1,
-        .type = TYPE_DRAGON,
-        .accuracy = 0,
-        .pp = 10,
-        .target = TARGET_SELECTED,
-        .priority = 0,
-        .category = DAMAGE_CATEGORY_PHYSICAL,
-        .battleAnimScript = gBattleAnimMove_MaxWyrmwind,
-        .additionalEffects = ADDITIONAL_EFFECTS({
-            .moveEffect = MOVE_EFFECT_LOWER_ATTACK_SIDE,
-        }),
-    },
-
-    [MOVE_MAX_MINDSTORM] =
-    {
-        .name = COMPOUND_STRING("Max Mindstorm"),
-        .description = COMPOUND_STRING(
-            "Psychic Dynamax attack.\n"
-            "Turns the terrain psychic."),
-        .effect = EFFECT_MAX_MOVE,
-        .power = 1,
-        .type = TYPE_PSYCHIC,
-        .accuracy = 0,
-        .pp = 10,
-        .target = TARGET_SELECTED,
-        .priority = 0,
-        .category = DAMAGE_CATEGORY_PHYSICAL,
-        .battleAnimScript = gBattleAnimMove_MaxMindstorm,
-        .additionalEffects = ADDITIONAL_EFFECTS({
-            .moveEffect = MOVE_EFFECT_PSYCHIC_TERRAIN,
-        }),
-    },
-
-    [MOVE_MAX_ROCKFALL] =
-    {
-        .name = COMPOUND_STRING("Max Rockfall"),
-        .description = COMPOUND_STRING(
-            "Rock Dynamax attack.\n"
-            "Summons a sandstorm."),
-        .effect = EFFECT_MAX_MOVE,
-        .power = 1,
-        .type = TYPE_ROCK,
-        .accuracy = 0,
-        .pp = 10,
-        .target = TARGET_SELECTED,
-        .priority = 0,
-        .category = DAMAGE_CATEGORY_PHYSICAL,
-        .battleAnimScript = gBattleAnimMove_MaxRockfall,
-        .additionalEffects = ADDITIONAL_EFFECTS({
-            .moveEffect = MOVE_EFFECT_SANDSTORM,
-        }),
-    },
-
-    [MOVE_MAX_QUAKE] =
-    {
-        .name = COMPOUND_STRING("Max Quake"),
-        .description = COMPOUND_STRING(
-            "Ground Dynamax attack.\n"
-            "Boosts ally Sp. Def stats."),
-        .effect = EFFECT_MAX_MOVE,
-        .power = 1,
-        .type = TYPE_GROUND,
-        .accuracy = 0,
-        .pp = 10,
-        .target = TARGET_SELECTED,
-        .priority = 0,
-        .category = DAMAGE_CATEGORY_PHYSICAL,
-        .skyBattleBanned = B_EXTRAPOLATED_MOVE_FLAGS,
-        .battleAnimScript = gBattleAnimMove_MaxQuake,
-        .additionalEffects = ADDITIONAL_EFFECTS({
-            .moveEffect = MOVE_EFFECT_RAISE_TEAM_SP_DEF,
-        }),
-    },
-
-    [MOVE_MAX_DARKNESS] =
-    {
-        .name = COMPOUND_STRING("Max Darkness"),
-        .description = COMPOUND_STRING(
-            "Dark Dynamax attack.\n"
-            "Lowers foe's Sp. Def stat."),
-        .effect = EFFECT_MAX_MOVE,
-        .power = 1,
-        .type = TYPE_DARK,
-        .accuracy = 0,
-        .pp = 10,
-        .target = TARGET_SELECTED,
-        .priority = 0,
-        .category = DAMAGE_CATEGORY_PHYSICAL,
-        .battleAnimScript = gBattleAnimMove_MaxDarkness,
-        .additionalEffects = ADDITIONAL_EFFECTS({
-            .moveEffect = MOVE_EFFECT_LOWER_SP_DEF_SIDE,
-        }),
-    },
-
-    [MOVE_MAX_OVERGROWTH] =
-    {
-        .name = COMPOUND_STRING("Max Overgrowth"),
-        .description = COMPOUND_STRING(
-            "Grass Dynamax attack.\n"
-            "Turns the terrain grassy."),
-        .effect = EFFECT_MAX_MOVE,
-        .power = 10,
-        .type = TYPE_GRASS,
-        .accuracy = 0,
-        .pp = 10,
-        .target = TARGET_SELECTED,
-        .priority = 0,
-        .category = DAMAGE_CATEGORY_PHYSICAL,
-        .battleAnimScript = gBattleAnimMove_MaxOvergrowth,
-        .additionalEffects = ADDITIONAL_EFFECTS({
-            .moveEffect = MOVE_EFFECT_GRASSY_TERRAIN,
-        }),
-    },
-
-    [MOVE_MAX_STEELSPIKE] =
-    {
-        .name = COMPOUND_STRING("Max Steelspike"),
-        .description = COMPOUND_STRING(
-            "Steel Dynamax attack.\n"
-            "Boosts ally Defense stats."),
-        .effect = EFFECT_MAX_MOVE,
-        .power = 10,
-        .type = TYPE_STEEL,
-        .accuracy = 0,
-        .pp = 10,
-        .target = TARGET_SELECTED,
-        .priority = 0,
-        .category = DAMAGE_CATEGORY_PHYSICAL,
-        .battleAnimScript = gBattleAnimMove_MaxSteelspike,
-        .additionalEffects = ADDITIONAL_EFFECTS({
-            .moveEffect = MOVE_EFFECT_RAISE_TEAM_DEFENSE,
-        }),
-    },
-
-    [MOVE_G_MAX_VINE_LASH] =
-    {
-        .name = COMPOUND_STRING("G-Max Vine Lash"),
-        .description = COMPOUND_STRING(
-            "G-max Venusaur attack.\n"
-            "Damages for 4 turns."),    //ANIM TODO
-        .effect = EFFECT_MAX_MOVE,
-        .power = 10,
-        .type = TYPE_GRASS,
-        .accuracy = 0,
-        .pp = 10,
-        .target = TARGET_SELECTED,
-        .priority = 0,
-        .category = DAMAGE_CATEGORY_PHYSICAL,
-        .battleAnimScript = gBattleAnimMove_GMaxVineLash,
-        .additionalEffects = ADDITIONAL_EFFECTS({
-            .moveEffect = MOVE_EFFECT_VINE_LASH,
-        }),
-    },
-
-    [MOVE_G_MAX_WILDFIRE] =
-    {
-        .name = COMPOUND_STRING("G-Max Wildfire"),
-        .description = COMPOUND_STRING(
-            "G-max Charizard attack.\n"
-            "Damages for 4 turns."),    //ANIM TODO
-        .effect = EFFECT_MAX_MOVE,
-        .power = 10,
-        .type = TYPE_FIRE,
-        .accuracy = 0,
-        .pp = 10,
-        .target = TARGET_SELECTED,
-        .priority = 0,
-        .category = DAMAGE_CATEGORY_PHYSICAL,
-        .battleAnimScript = gBattleAnimMove_GMaxWildfire,
-        .additionalEffects = ADDITIONAL_EFFECTS({
-            .moveEffect = MOVE_EFFECT_WILDFIRE,
-        }),
-    },
-
-    [MOVE_G_MAX_CANNONADE] =
-    {
-        .name = COMPOUND_STRING("G-Max Cannonade"),
-        .description = COMPOUND_STRING(
-            "G-max Blastoise attack.\n"
-            "Damages for 4 turns."),    //ANIM TODO
-        .effect = EFFECT_MAX_MOVE,
-        .power = 10,
-        .type = TYPE_WATER,
-        .accuracy = 0,
-        .pp = 10,
-        .target = TARGET_SELECTED,
-        .priority = 0,
-        .category = DAMAGE_CATEGORY_PHYSICAL,
-        .battleAnimScript = gBattleAnimMove_GMaxCannonade,
-        .additionalEffects = ADDITIONAL_EFFECTS({
-            .moveEffect = MOVE_EFFECT_CANNONADE,
-        }),
-    },
-
-    [MOVE_G_MAX_BEFUDDLE] =
-    {
-        .name = COMPOUND_STRING("G-Max Befuddle"),
-        .description = COMPOUND_STRING(
-            "G-max Butterfree attack.\n"
-            "Poison, paralysis, or sleep."),    //ANIM TODO
-        .effect = EFFECT_MAX_MOVE,
-        .power = 10,
-        .type = TYPE_BUG,
-        .accuracy = 0,
-        .pp = 10,
-        .target = TARGET_SELECTED,
-        .priority = 0,
-        .category = DAMAGE_CATEGORY_PHYSICAL,
-        .battleAnimScript = gBattleAnimMove_GMaxBefuddle,
-        .additionalEffects = ADDITIONAL_EFFECTS({
-            .moveEffect = MOVE_EFFECT_EFFECT_SPORE_SIDE,
-        }),
-    },
-
-    [MOVE_G_MAX_VOLT_CRASH] =
-    {
-        .name = COMPOUND_STRING("G-Max Volt Crash"),
-        .description = COMPOUND_STRING(
-            "G-max Pikachu attack.\n"
-            "Paralyzes opponents."),    //ANIM TODO
-        .effect = EFFECT_MAX_MOVE,
-        .power = 10,
-        .type = TYPE_ELECTRIC,
-        .accuracy = 0,
-        .pp = 10,
-        .target = TARGET_SELECTED,
-        .priority = 0,
-        .category = DAMAGE_CATEGORY_PHYSICAL,
-        .battleAnimScript = gBattleAnimMove_GMaxVoltCrash,
-        .additionalEffects = ADDITIONAL_EFFECTS({
-            .moveEffect = MOVE_EFFECT_PARALYZE_SIDE,
-        }),
-    },
-
-    [MOVE_G_MAX_GOLD_RUSH] =
-    {
-        .name = COMPOUND_STRING("G-Max Gold Rush"),
-        .description = COMPOUND_STRING(
-            "G-max Meowth attack.\n"
-            "Confuses and earns money."),    //ANIM TODO
-        .effect = EFFECT_MAX_MOVE,
-        .power = 10,
-        .type = TYPE_NORMAL,
-        .accuracy = 0,
-        .pp = 10,
-        .target = TARGET_SELECTED,
-        .priority = 0,
-        .category = DAMAGE_CATEGORY_PHYSICAL,
-        .battleAnimScript = gBattleAnimMove_GMaxGoldRush,
-        .additionalEffects = ADDITIONAL_EFFECTS({
-            .moveEffect = MOVE_EFFECT_CONFUSE_PAY_DAY_SIDE,
-        }),
-    },
-
-    [MOVE_G_MAX_CHI_STRIKE] =
-    {
-        .name = COMPOUND_STRING("G-Max Chi Strike"),
-        .description = COMPOUND_STRING(
-            "G-max Machamp attack.\n"
-            "Boosts critical-hit ratio."),    //ANIM TODO
-        .effect = EFFECT_MAX_MOVE,
-        .power = 10,
-        .type = TYPE_FIGHTING,
-        .accuracy = 0,
-        .pp = 10,
-        .target = TARGET_SELECTED,
-        .priority = 0,
-        .category = DAMAGE_CATEGORY_PHYSICAL,
-        .battleAnimScript = gBattleAnimMove_GMaxChiStrike,
-        .additionalEffects = ADDITIONAL_EFFECTS({
-            .moveEffect = MOVE_EFFECT_CRIT_PLUS_SIDE,
-        }),
-    },
-
-    [MOVE_G_MAX_TERROR] =
-    {
-        .name = COMPOUND_STRING("G-Max Terror"),
-        .description = COMPOUND_STRING(
-            "G-max Gengar attack.\n"
-            "Prevents foes from escaping."),    //ANIM TODO
-        .effect = EFFECT_MAX_MOVE,
-        .power = 10,
-        .type = TYPE_GHOST,
-        .accuracy = 0,
-        .pp = 10,
-        .target = TARGET_SELECTED,
-        .priority = 0,
-        .category = DAMAGE_CATEGORY_PHYSICAL,
-        .battleAnimScript = gBattleAnimMove_GMaxTerror,
-        .additionalEffects = ADDITIONAL_EFFECTS({
-            .moveEffect = MOVE_EFFECT_PREVENT_ESCAPE_SIDE,
-        }),
-    },
-
-    [MOVE_G_MAX_FOAM_BURST] =
-    {
-        .name = COMPOUND_STRING("G-Max Foam Burst"),
-        .description = COMPOUND_STRING(
-            "G-max Kingler attack.\n"
-            "Harshly lowers foe's Speed."),    //ANIM TODO
-        .effect = EFFECT_MAX_MOVE,
-        .power = 10,
-        .type = TYPE_WATER,
-        .accuracy = 0,
-        .pp = 10,
-        .target = TARGET_SELECTED,
-        .priority = 0,
-        .category = DAMAGE_CATEGORY_PHYSICAL,
-        .battleAnimScript = gBattleAnimMove_GMaxFoamBurst,
-        .additionalEffects = ADDITIONAL_EFFECTS({
-            .moveEffect = MOVE_EFFECT_LOWER_SPEED_2_SIDE,
-        }),
-    },
-
-    [MOVE_G_MAX_RESONANCE] =
-    {
-        .name = COMPOUND_STRING("G-Max Resonance"),
-        .description = COMPOUND_STRING(
-            "G-max Lapras attack.\n"
-            "Reduces damage for 5 turns."),    //ANIM TODO
-        .effect = EFFECT_MAX_MOVE,
-        .power = 10,
-        .type = TYPE_ICE,
-        .accuracy = 0,
-        .pp = 10,
-        .target = TARGET_SELECTED,
-        .priority = 0,
-        .category = DAMAGE_CATEGORY_PHYSICAL,
-        .battleAnimScript = gBattleAnimMove_GMaxResonance,
-        .additionalEffects = ADDITIONAL_EFFECTS({
-            .moveEffect = MOVE_EFFECT_AURORA_VEIL,
-        }),
-    },
-
-    [MOVE_G_MAX_CUDDLE] =
-    {
-        .name = COMPOUND_STRING("G-Max Cuddle"),
-        .description = COMPOUND_STRING(
-            "G-max Eevee attack.\n"
-            "Infatuates opponents."),    //ANIM TODO
-        .effect = EFFECT_MAX_MOVE,
-        .power = 10,
-        .type = TYPE_NORMAL,
-        .accuracy = 0,
-        .pp = 10,
-        .target = TARGET_SELECTED,
-        .priority = 0,
-        .category = DAMAGE_CATEGORY_PHYSICAL,
-        .battleAnimScript = gBattleAnimMove_GMaxCuddle,
-        .additionalEffects = ADDITIONAL_EFFECTS({
-            .moveEffect = MOVE_EFFECT_INFATUATE_SIDE,
-        }),
-    },
-
-    [MOVE_G_MAX_REPLENISH] =
-    {
-        .name = COMPOUND_STRING("G-Max Replenish"),
-        .description = COMPOUND_STRING(
-            "G-max Snorlax attack.\n"
-            "Restores eaten Berries."),    //ANIM TODO
-        .effect = EFFECT_MAX_MOVE,
-        .power = 10,
-        .type = TYPE_NORMAL,
-        .accuracy = 0,
-        .pp = 10,
-        .target = TARGET_SELECTED,
-        .priority = 0,
-        .category = DAMAGE_CATEGORY_PHYSICAL,
-        .battleAnimScript = gBattleAnimMove_GMaxReplenish,
-        .additionalEffects = ADDITIONAL_EFFECTS({
-            .moveEffect = MOVE_EFFECT_RECYCLE_BERRIES,
-        }),
-    },
-
-    [MOVE_G_MAX_MALODOR] =
-    {
-        .name = COMPOUND_STRING("G-Max Malodor"),
-        .description = COMPOUND_STRING(
-            "G-max Garbodor attack.\n"
-            "Poisons opponents."),    //ANIM TODO
-        .effect = EFFECT_MAX_MOVE,
-        .power = 10,
-        .type = TYPE_POISON,
-        .accuracy = 0,
-        .pp = 10,
-        .target = TARGET_SELECTED,
-        .priority = 0,
-        .category = DAMAGE_CATEGORY_PHYSICAL,
-        .battleAnimScript = gBattleAnimMove_GMaxMalodor,
-        .additionalEffects = ADDITIONAL_EFFECTS({
-            .moveEffect = MOVE_EFFECT_POISON_SIDE,
-        }),
-    },
-
-    [MOVE_G_MAX_MELTDOWN] =
-    {
-        .name = COMPOUND_STRING("G-Max Meltdown"),
-        .description = COMPOUND_STRING(
-            "G-max Melmetal attack.\n"
-            "Prevents repeat move use."),    //ANIM TODO
-        .effect = EFFECT_MAX_MOVE,
-        .power = 10,
-        .type = TYPE_STEEL,
-        .accuracy = 0,
-        .pp = 10,
-        .target = TARGET_SELECTED,
-        .priority = 0,
-        .category = DAMAGE_CATEGORY_PHYSICAL,
-        .battleAnimScript = gBattleAnimMove_GMaxMeltdown,
-        .additionalEffects = ADDITIONAL_EFFECTS({
-            .moveEffect = MOVE_EFFECT_TORMENT_SIDE,
-        }),
-    },
-
-    [MOVE_G_MAX_DRUM_SOLO] =
-    {
-        .name = COMPOUND_STRING("G-Max Drum Solo"),
-        .description = COMPOUND_STRING(
-            "G-max Rillaboom attack.\n"
-            "Ignores target's abilities."),    //ANIM TODO
-        .effect = EFFECT_MAX_MOVE,
-        .power = 10,
-        .type = TYPE_GRASS,
-        .accuracy = 0,
-        .pp = 10,
-        .target = TARGET_SELECTED,
-        .priority = 0,
-        .category = DAMAGE_CATEGORY_PHYSICAL,
-        .ignoresTargetAbility = TRUE,
-        .battleAnimScript = gBattleAnimMove_GMaxDrumSolo,
-        .additionalEffects = ADDITIONAL_EFFECTS({
-            .moveEffect = MOVE_EFFECT_FIXED_POWER,
-        }),
-    },
-
-    [MOVE_G_MAX_FIREBALL] =
-    {
-        .name = COMPOUND_STRING("G-Max Fireball"),
-        .description = COMPOUND_STRING(
-            "G-max Cinderace attack.\n"
-            "Ignores target's abilities."),    //ANIM TODO
-        .effect = EFFECT_MAX_MOVE,
-        .power = 10,
-        .type = TYPE_FIRE,
-        .accuracy = 0,
-        .pp = 10,
-        .target = TARGET_SELECTED,
-        .priority = 0,
-        .category = DAMAGE_CATEGORY_PHYSICAL,
-        .ignoresTargetAbility = TRUE,
-        .battleAnimScript = gBattleAnimMove_GMaxFireball,
-        .additionalEffects = ADDITIONAL_EFFECTS({
-            .moveEffect = MOVE_EFFECT_FIXED_POWER,
-        }),
-    },
-
-    [MOVE_G_MAX_HYDROSNIPE] =
-    {
-        .name = COMPOUND_STRING("G-Max Hydrosnipe"),
-        .description = COMPOUND_STRING(
-            "G-max Inteleon attack.\n"
-            "Ignores target's abilities."),    //ANIM TODO
-        .effect = EFFECT_MAX_MOVE,
-        .power = 10,
-        .type = TYPE_WATER,
-        .accuracy = 0,
-        .pp = 10,
-        .target = TARGET_SELECTED,
-        .priority = 0,
-        .category = DAMAGE_CATEGORY_PHYSICAL,
-        .ignoresTargetAbility = TRUE,
-        .battleAnimScript = gBattleAnimMove_GMaxHydrosnipe,
-        .additionalEffects = ADDITIONAL_EFFECTS({
-            .moveEffect = MOVE_EFFECT_FIXED_POWER,
-        }),
-    },
-
-    [MOVE_G_MAX_WIND_RAGE] =
-    {
-        .name = COMPOUND_STRING("G-Max Wind Rage"),
-        .description = COMPOUND_STRING(
-            "G-max Corviknight attack.\n"
-            "Removes opponent screens."),    //ANIM TODO
-        .effect = EFFECT_MAX_MOVE,
-        .power = 10,
-        .type = TYPE_FLYING,
-        .accuracy = 0,
-        .pp = 10,
-        .target = TARGET_SELECTED,
-        .priority = 0,
-        .category = DAMAGE_CATEGORY_PHYSICAL,
-        .battleAnimScript = gBattleAnimMove_GMaxWindRage,
-        .additionalEffects = ADDITIONAL_EFFECTS({
-            .moveEffect = MOVE_EFFECT_DEFOG,
-        }),
-    },
-
-    [MOVE_G_MAX_GRAVITAS] =
-    {
-        .name = COMPOUND_STRING("G-Max Gravitas"),
-        .description = COMPOUND_STRING(
-            "G-max Orbeetle attack.\n"
-            "Changes gravity for 5 turns."),    //ANIM TODO
-        .effect = EFFECT_MAX_MOVE,
-        .power = 10,
-        .type = TYPE_PSYCHIC,
-        .accuracy = 0,
-        .pp = 10,
-        .target = TARGET_SELECTED,
-        .priority = 0,
-        .category = DAMAGE_CATEGORY_PHYSICAL,
-        .battleAnimScript = gBattleAnimMove_GMaxGravitas,
-        .additionalEffects = ADDITIONAL_EFFECTS({
-            .moveEffect = MOVE_EFFECT_GRAVITY,
-        }),
-    },
-
-    [MOVE_G_MAX_STONESURGE] =
-    {
-        .name = COMPOUND_STRING("G-Max Stonesurge"),
-        .description = COMPOUND_STRING(
-            "G-max Drednaw attack.\n"
-            "Scatters sharp rocks."),    //ANIM TODO
-        .effect = EFFECT_MAX_MOVE,
-        .power = 10,
-        .type = TYPE_WATER,
-        .accuracy = 0,
-        .pp = 10,
-        .target = TARGET_SELECTED,
-        .priority = 0,
-        .category = DAMAGE_CATEGORY_PHYSICAL,
-        .battleAnimScript = gBattleAnimMove_GMaxStonesurge,
-        .additionalEffects = ADDITIONAL_EFFECTS({
-            .moveEffect = MOVE_EFFECT_STEALTH_ROCK,
-        }),
-    },
-
-    [MOVE_G_MAX_VOLCALITH] =
-    {
-        .name = COMPOUND_STRING("G-Max Volcalith"),
-        .description = COMPOUND_STRING(
-            "G-max Coalossal attack.\n"
-            "Damages for 4 turns."),    //ANIM TODO
-        .effect = EFFECT_MAX_MOVE,
-        .power = 10,
-        .type = TYPE_ROCK,
-        .accuracy = 0,
-        .pp = 10,
-        .target = TARGET_SELECTED,
-        .priority = 0,
-        .category = DAMAGE_CATEGORY_PHYSICAL,
-        .battleAnimScript = gBattleAnimMove_GMaxVolcalith,
-        .additionalEffects = ADDITIONAL_EFFECTS({
-            .moveEffect = MOVE_EFFECT_VOLCALITH,
-        }),
-    },
-
-    [MOVE_G_MAX_TARTNESS] =
-    {
-        .name = COMPOUND_STRING("G-Max Tartness"),
-        .description = COMPOUND_STRING(
-            "G-max Flapple attack.\n"
-            "Lowers foe's evasiveness."),    //ANIM TODO
-        .effect = EFFECT_MAX_MOVE,
-        .power = 10,
-        .type = TYPE_GRASS,
-        .accuracy = 0,
-        .pp = 10,
-        .target = TARGET_SELECTED,
-        .priority = 0,
-        .category = DAMAGE_CATEGORY_PHYSICAL,
-        .battleAnimScript = gBattleAnimMove_GMaxTartness,
-        .additionalEffects = ADDITIONAL_EFFECTS({
-            .moveEffect = MOVE_EFFECT_LOWER_EVASIVENESS_SIDE,
-        }),
-    },
-
-    [MOVE_G_MAX_SWEETNESS] =
-    {
-        .name = COMPOUND_STRING("G-Max Sweetness"),
-        .description = COMPOUND_STRING(
-            "G-max Appletun attack.\n"
-            "Heals ally status conditions."),    //ANIM TODO
-        .effect = EFFECT_MAX_MOVE,
-        .power = 10,
-        .type = TYPE_GRASS,
-        .accuracy = 0,
-        .pp = 10,
-        .target = TARGET_SELECTED,
-        .priority = 0,
-        .category = DAMAGE_CATEGORY_PHYSICAL,
-        .battleAnimScript = gBattleAnimMove_GMaxSweetness,
-        .additionalEffects = ADDITIONAL_EFFECTS({
-            .moveEffect = MOVE_EFFECT_AROMATHERAPY,
-        }),
-    },
-
-    [MOVE_G_MAX_SANDBLAST] =
-    {
-        .name = COMPOUND_STRING("G-Max Sandblast"),
-        .description = COMPOUND_STRING(
-            "G-max Sandaconda attack.\n"
-            "Traps foes in a sandstorm."),    //ANIM TODO
-        .effect = EFFECT_MAX_MOVE,
-        .power = 10,
-        .type = TYPE_GROUND,
-        .accuracy = 0,
-        .pp = 10,
-        .target = TARGET_SELECTED,
-        .priority = 0,
-        .category = DAMAGE_CATEGORY_PHYSICAL,
-        .battleAnimScript = gBattleAnimMove_GMaxSandblast,
-        .additionalEffects = ADDITIONAL_EFFECTS({
-            .moveEffect = MOVE_EFFECT_SANDBLAST_SIDE,
-        }),
-    },
-
-    [MOVE_G_MAX_STUN_SHOCK] =
-    {
-        .name = COMPOUND_STRING("G-Max Stun Shock"),
-        .description = COMPOUND_STRING(
-            "G-max Toxtricity attack.\n"
-            "Poisons or paralyzes foes."),    //ANIM TODO
-        .effect = EFFECT_MAX_MOVE,
-        .power = 10,
-        .type = TYPE_ELECTRIC,
-        .accuracy = 0,
-        .pp = 10,
-        .target = TARGET_SELECTED,
-        .priority = 0,
-        .category = DAMAGE_CATEGORY_PHYSICAL,
-        .battleAnimScript = gBattleAnimMove_GMaxStunShock,
-        .additionalEffects = ADDITIONAL_EFFECTS({
-            .moveEffect = MOVE_EFFECT_POISON_PARALYZE_SIDE,
-        }),
-    },
-
-    [MOVE_G_MAX_CENTIFERNO] =
-    {
-        .name = COMPOUND_STRING("G-Max Centiferno"),
-        .description = COMPOUND_STRING(
-            "G-max Centiskorch attack.\n"
-            "Traps foes in flames."),    //ANIM TODO
-        .effect = EFFECT_MAX_MOVE,
-        .power = 10,
-        .type = TYPE_FIRE,
-        .accuracy = 0,
-        .pp = 10,
-        .target = TARGET_SELECTED,
-        .priority = 0,
-        .category = DAMAGE_CATEGORY_PHYSICAL,
-        .battleAnimScript = gBattleAnimMove_GMaxCentiferno,
-        .additionalEffects = ADDITIONAL_EFFECTS({
-            .moveEffect = MOVE_EFFECT_FIRE_SPIN_SIDE,
-        }),
-    },
-
-    [MOVE_G_MAX_SMITE] =
-    {
-        .name = COMPOUND_STRING("G-Max Smite"),
-        .description = COMPOUND_STRING(
-            "G-max Hatterene attack.\n"
-            "Confuses opponents."),    //ANIM TODO
-        .effect = EFFECT_MAX_MOVE,
-        .power = 10,
-        .type = TYPE_FAIRY,
-        .accuracy = 0,
-        .pp = 10,
-        .target = TARGET_SELECTED,
-        .priority = 0,
-        .category = DAMAGE_CATEGORY_PHYSICAL,
-        .battleAnimScript = gBattleAnimMove_GMaxSmite,
-        .additionalEffects = ADDITIONAL_EFFECTS({
-            .moveEffect = MOVE_EFFECT_CONFUSE_SIDE,
-        }),
-    },
-
-
-    [MOVE_G_MAX_SNOOZE] =
-    {
-        .name = COMPOUND_STRING("G-Max Snooze"),
-        .description = COMPOUND_STRING(
-            "G-max Grimmsnarl attack.\n"
-            "Lulls foes into sleep."),    //ANIM TODO
-        .effect = EFFECT_MAX_MOVE,
-        .power = 10,
-        .type = TYPE_DARK,
-        .accuracy = 0,
-        .pp = 10,
-        .target = TARGET_SELECTED,
-        .priority = 0,
-        .category = DAMAGE_CATEGORY_PHYSICAL,
-        .battleAnimScript = gBattleAnimMove_GMaxSnooze,
-        .additionalEffects = ADDITIONAL_EFFECTS({
-            .moveEffect = MOVE_EFFECT_YAWN_FOE,
-        }),
-    },
-
-    [MOVE_G_MAX_FINALE] =
-    {
-        .name = COMPOUND_STRING("G-Max Finale"),
-        .description = COMPOUND_STRING(
-            "G-max Alcremie attack.\n"
-            "Heals ally HP."),    //ANIM TODO
-        .effect = EFFECT_MAX_MOVE,
-        .power = 10,
-        .type = TYPE_FAIRY,
-        .accuracy = 0,
-        .pp = 10,
-        .target = TARGET_SELECTED,
-        .priority = 0,
-        .category = DAMAGE_CATEGORY_PHYSICAL,
-        .battleAnimScript = gBattleAnimMove_GMaxFinale,
-        .additionalEffects = ADDITIONAL_EFFECTS({
-            .moveEffect = MOVE_EFFECT_HEAL_TEAM,
-        }),
-    },
-
-    [MOVE_G_MAX_STEELSURGE] =
-    {
-        .name = COMPOUND_STRING("G-Max Steelsurge"),
-        .description = COMPOUND_STRING(
-            "G-max Copperajah attack.\n"
-            "Scatters sharp spikes."),    //ANIM TODO
-        .effect = EFFECT_MAX_MOVE,
-        .power = 10,
-        .type = TYPE_STEEL,
-        .accuracy = 0,
-        .pp = 10,
-        .target = TARGET_SELECTED,
-        .priority = 0,
-        .category = DAMAGE_CATEGORY_PHYSICAL,
-        .battleAnimScript = gBattleAnimMove_GMaxSteelsurge,
-        .additionalEffects = ADDITIONAL_EFFECTS({
-            .moveEffect = MOVE_EFFECT_STEELSURGE,
-        }),
-    },
-
-    [MOVE_G_MAX_DEPLETION] =
-    {
-        .name = COMPOUND_STRING("G-Max Depletion"),
-        .description = COMPOUND_STRING(
-            "G-max Duraludon attack.\n"
-            "Reduces target's PP."),    //ANIM TODO
-        .effect = EFFECT_MAX_MOVE,
-        .power = 10,
-        .type = TYPE_DRAGON,
-        .accuracy = 0,
-        .pp = 10,
-        .target = TARGET_SELECTED,
-        .priority = 0,
-        .category = DAMAGE_CATEGORY_PHYSICAL,
-        .battleAnimScript = gBattleAnimMove_GMaxDepletion,
-        .additionalEffects = ADDITIONAL_EFFECTS({
-            .moveEffect = MOVE_EFFECT_SPITE,
-        }),
-    },
-
-    [MOVE_G_MAX_ONE_BLOW] =
-    {
-        .name = COMPOUND_STRING("G-Max One Blow"),
-        .description = sGMaxOneBlowDescription,    //ANIM TODO
-        .effect = EFFECT_MAX_MOVE,
-        .power = 10,
-        .type = TYPE_DARK,
-        .accuracy = 0,
-        .pp = 10,
-        .target = TARGET_SELECTED,
-        .priority = 0,
-        .category = DAMAGE_CATEGORY_PHYSICAL,
-        .ignoresProtect = TRUE,
-        .battleAnimScript = gBattleAnimMove_GMaxOneBlow,
-    },
-
-    [MOVE_G_MAX_RAPID_FLOW] =
-    {
-        .name = COMPOUND_STRING("G-Max Rapid Flow"),
-        .description = sGMaxOneBlowDescription,    //ANIM TODO
-        .effect = EFFECT_MAX_MOVE,
-        .power = 10,
-        .type = TYPE_WATER,
-        .accuracy = 0,
-        .pp = 10,
-        .target = TARGET_SELECTED,
-        .priority = 0,
-        .category = DAMAGE_CATEGORY_PHYSICAL,
-        .ignoresProtect = TRUE,
-        .battleAnimScript = gBattleAnimMove_GMaxRapidFlow,
-    },
-
-    [MOVE_FLOOF_FURY] =
-    {
-        .name = COMPOUND_STRING("Floof Fury"),
-        .description = COMPOUND_STRING("A furious flurry of fluff.\nMay lower the target's Speed."),
-        .effect = EFFECT_HIT,
-        .power = 100,
-        .type = TYPE_FAIRY,
-        .accuracy = 100,
-        .pp = 10,
-        .target = TARGET_SELECTED,
-        .priority = 0,
-        .category = DAMAGE_CATEGORY_SPECIAL,
-        .additionalEffects = ADDITIONAL_EFFECTS({
-            .moveEffect = MOVE_EFFECT_SPD_MINUS_1,
-            .chance = 20,
-        }),
-        .contestEffect = CONTEST_EFFECT_BADLY_STARTLE_FRONT_MON,
-        .contestCategory = CONTEST_CATEGORY_CUTE,
-        .battleAnimScript = gBattleAnimMove_DazzlingGleam,
-    },
-
-    [MOVE_MEGA_RIKO] =
-    {
-        .name = COMPOUND_STRING("Mega Riko"),
-        .description = COMPOUND_STRING("Builds power with fluff,\nraising Sp. Atk, Sp. Def\nand Speed."),
-        .effect = EFFECT_QUIVER_DANCE,
-        .power = 0,
-        .type = TYPE_FAIRY,
-        .accuracy = 0,
-        .pp = 5,
-        .target = TARGET_USER,
-        .priority = 0,
-        .category = DAMAGE_CATEGORY_STATUS,
-        .zMove = { .effect = Z_EFFECT_RESET_STATS },
-        .snatchAffected = TRUE,
-        .ignoresProtect = TRUE,
-        .mirrorMoveBanned = TRUE,
-        .contestEffect = CONTEST_EFFECT_IMPROVE_CONDITION_PREVENT_NERVOUSNESS,
-        .contestCategory = CONTEST_CATEGORY_CUTE,
-        .battleAnimScript = gBattleAnimMove_QuiverDance,
-    },
-
-    [MOVE_MEOWTH_MIMIC] =
-    {
-        .name = COMPOUND_STRING("Meowth Mimic"),
-        .description = COMPOUND_STRING("Copies Meowth's moves and\nfights with them until\nBijuu is switched out."),
-        .effect = EFFECT_DO_NOTHING,
-        .power = 0,
-        .type = TYPE_NORMAL,
-        .accuracy = 0,
-        .pp = 10,
-        .target = TARGET_USER,
-        .priority = 0,
-        .category = DAMAGE_CATEGORY_STATUS,
-        .ignoresProtect = TRUE,
-        .mirrorMoveBanned = TRUE,
-        .contestEffect = CONTEST_EFFECT_IMPROVE_CONDITION_PREVENT_NERVOUSNESS,
-        .contestCategory = CONTEST_CATEGORY_CUTE,
-        .battleAnimScript = gBattleAnimMove_Mimic,
-    },
-};
+YЄзЉx-®йЬjЧќўлiєЪ+Љ§j[h‘йЬўйнЫ®хз}ґУ~›КЧ¬ўh­µзHЪ[ЫYH]WЩ[[X^љ‚€Ъ[ЫYH]WШ[љ[WЬШЬљ\Лљ‚€Ъ[ЫYHЫЫњЭ[ќЛШ]Kљ‚€Ъ[ЫYHЫЫњЭ[ќЛШ]WЫ[Э™WЩY™™XЭЛљ‚€Ъ[ЫYHЫЫњЭ[ќЛШ]WЬШЬљ\ШЫЫ[X[™Лљ‚€Ъ[ЫYHЫЫњЭ[ќЛШ]WЬЭљ[™ЧЪYЛљ‚€Ъ[ЫYHЫЫњЭ[ќЛЪЫЩY™™XЭЛљ‚€Ъ[ЫYHЫЫњЭ[ќЛЫ[Э™\Лљ‚€Ъ[ЫYHЫЫњЭ[ќЛШЫЫќ\Эљ‚‚‹ЛИHЩ[‹€
+ИЫЫќ\Э]HЫЫY\Ињ›ЫH\њЙЬИЫЫќ\Э[Э™Y^‚‚€ЪY€—Р’S‘S‘ЧХT“”ИЏHСS—НB€ЩYљ[™H’S‘S‘ЧХT“”ИЌЬ€H‚€Щ[ЩB€ЩYљ[™H’S‘S‘ЧХT“”ИЊ€ИH‚€Щ[™Y‚‚‹ЛИЪ\™Y[Э™H\ШЬљ\[Ы€[ќљY\В‚ЫЫњЭNУ›ЭЫ™VY]\ШЬљ\[Ы–ЧHHК€•\И[Э™HШ[‰Э™H\ЩY€]Ч€‚€™Y™™XЭ\И[€]™[ЬY[ќ€ЉNВ‚њЭ]XИЫЫњЭNУќ[\ШЬљ\[Ы–ЧHHК€ЉNВ‚њЭ]XИЫЫњЭNУYYШQZ[‘\ШЬљ\[Ы–ЧHHК€ђ[€]XЪИ]XњЫЬњЧ€‚€љ[€H[XYЩH[™›XЭY€ЉNВ‚€ЪY€—ФТТTФ‘PТT‘СHOHСS—МBњЭ]XИЫЫњЭNТ\\ђ™X[Q\ШЬљ\[Ы–ЧHHК€”ЭЩ\™ќ[ќ]X]™\ИW€‚€ќ\Щ\€[[[Шљ[HH™^\›‹€ЉNВ€Щ[ЩBњЭ]XИЫЫњЭNТ\\ђ™X[Q\ШЬљ\[Ы–ЧHHК€“X]™\ИH\Щ\€[[[Шљ[W€‚€љY€\™Щ]\И›ЭУЙЩ€ЉNВ€Щ[™Y‚‚њЭ]XИЫЫњЭNФ™]™[™ЩQ\ШЬљ\[Ы–ЧHHК€ђ[€]XЪИ][Э™\И\Э€‚€[™ШZ[њИЭЩ\€Y€]€ЉNВ‚њЭ]XИЫЫњЭNФXЪС\ШЬљ\[Ы–ЧHHК€‘X]ИH›ЩIЬИ[™\њћW€‚€™ШZ[љ[™И]ИY™™XЭ€ЉNВ‚њЭ]XИЫЫњЭNТX[[™ХЪ\Ъ\ШЬљ\[Ы–ЧHHК€•H\Щ\€Z[ќИИX[\€‚€ќH™XЪ\Y[ќ€ЉNВ‚њЭ]XИЫЫњЭNХЬљ[™УЭ]\ШЬљ\[Ы–ЧHHК€•HYЪ\€H›ЩIЬИ€‚€ќH[Ь™H[XYЩHШ]\ЩY€ЉNВ‚њЭ]XИЫЫњЭNХU\›‘\ШЬљ\[Ы–ЧHHК€‘Щ\И[XYЩH[€ЭЪ]Ъ\Ч€‚€›Э]H\Щ\‹€ЉNВ‚њЭ]XИЫЫњЭNФЭЬ›U›ЭС\ШЬљ\[Ы–ЧHHК€•\И]XЪИ[Ш^\И™\Э[Ч€‚€љ[€HЬљ]XШ[]€ЉNВ‚њЭ]XИЫЫњЭNРЪ\ЫU›ЭС\ШЬљ\[Ы–ЧHHК€’Ы›ШЪЬИ›ЩH]Ш^HИЭЪ]Ъ€‚€љ]Э]Ь€[™Ъ[]K€ЉNВ‚њЭ]XИЫЫњЭNРЪ\]Ш^Q\ШЬљ\[Ы–ЧHHК€”ЭљZЩ\И›ЭYЪH›ЩIЬЧ€‚€њЭ]Ъ[™Щ\Л€ЉNВ‚њЭ]XИЫЫњЭNТX]ћTЫ[Q\ШЬљ\[Ы–ЧHHК€‘Щ\И[Ь™H[XYЩHY€W€‚€ќ\Щ\€Э]ЩZYЪИH›ЩK€ЉNВ‚њЭ]XИЫЫњЭNФЮ\ЪШЪС\ШЬљ\[Ы–ЧHHК€ђ]XЪЬИЪ]HЮXЪXИШ]™W€‚€ќ]Щ\И\ЪXШ[[XYЩK€ЉNВ‚њЭ]XИЫЫњЭNУ]T[YQ\ШЬљ\[Ы–ЧHHК€”ШШ\›]›[Y\ИЬЪ€‚€™]™\ћ][™И\›Э[™H\Щ\‹€ЉNВ‚њЭ]XИЫЫњЭNФЪYЭС›ЬЩQ\ШЬљ\[Ы–ЧHHК€•[љ\Ъ\ИЫ€Hљ\њЭ\›—€‚€ќ[€ЭљZЩ\ИH™^\›‹€ЉNВ‚њЭ]XИЫЫњЭNС[ЩTЭЪ\Q\ШЬљ\[Ы–ЧHHК€ђ[€]XЪИ]X]™\ИW€‚€™›ЩHЪ]]X\ЭH€ЉNВ‚њЭ]XИЫЫњЭNСZ[љ[™ТЪ\ЬС\ШЬљ\[Ы–ЧHHК€ђ[€]XЪИ]XњЫЬњИЭ™\—€‚€љ[€H[XYЩH[™›XЭY€ЉNВ‚њЭ]XИЫЫњЭNРЫЬЩPЫЫX]\ШЬљ\[Ы–ЧHHК€ђHЭ›Ы™И]XЪИќ]ЭЩ\њЧ€‚€ќHY™[њЪ]™HЭ]Л€ЉNВ‚њЭ]XИЫЫњЭNТ\\њЬXЩRЫQ\ШЬљ\[Ы–ЧHHК€•\Щ\ИHШ\њЫHИ]XЪЛ—€‚€ђШ[‰Э™H]YY€ЉNВ‚њЭ]XИЫЫњЭNФЭXЪЩ\”[Ъ\ШЬљ\[Ы–ЧHHК€”ЭљZЩ\Иљ\њЭY€H›ЩW€‚€љ\И™\\љ[™И[€]XЪЛ€ЉNВ‚њЭ]XИЫЫњЭNС™Z[ќ\ШЬљ\[Ы–ЧHHК€ђ[€]XЪИ]]И›Щ\Ч€‚€ќ\Ъ[™И[Э™\ИZЩH›ЭXЭ€ЉNВ‚њЭ]XИЫЫњЭNФ›ЭXЭ\ШЬљ\[Ы–ЧHHК€‘]Y\И]XЪЛќ]X^HZ[€‚€љY€\ЩY[€ЭXШЩ\ЬЪ[Ы‹€ЉNВ‚њЭ]XИЫЫњЭNСУX^Ы™P›ЭС\ШЬљ\[Ы–ЧHHК€‘Л[X^\њЪYќH]XЪЛ—€‚€’YЫ›Ь™\ИX^ЭX\™€ЉNВ‚ЫЫњЭЭќXЭ[Э™R[™›ИУ[Э™\Т[™›ЦУSХ‘TЧРУХS•РSHBћВ€УSХ‘WУ“У‘WHB€В€›[YHHУУTХS‘ФХ’S‘К‹HЉK€™\ШЬљ\[Ы€HУУTХS‘ФХ’S‘К€ЉK€™Y™™XЭHQ‘‘PХТU€њЭЩ\€H€ќ\HHTWУ“Ф“PS€XШЭ\XЮHH€њH€ќ\™Щ]HT‘СUФСSPХQ€њљ[Ьљ]HH€Ш]YЫЬћHHSPQСWРРUQУФ–WФTТPРS€›Y]›Ы›ЫYP[›™YH•QK€›Z\њ›Ь“[Э™P[›™YH•QK€њЪЩ]Ъ[›™YH•QK€\ЬЪ\Э[›™YH•QK€]P[љ[TШЬљ\HР]P[љ[S[Э™WУ›Ы™K€K‚€УSХ‘WФХS‘HB€В€›[YHHУУTХS‘ФХ’S‘К”Э[™ЉK€™\ШЬљ\[Ы€HУУTХS‘ФХ’S‘К€”Э[™ИH›ЩHЪ]€‚€™›Ь™[YЬИЬ€Z[€ЉK€™Y™™XЭHQ‘‘PХТU€њЭЩ\€H€ќ\HHTWУ“Ф“PS€XШЭ\XЮHHL€њHНK€ќ\™Щ]HT‘СUФСSPХQ€њљ[Ьљ]HH€Ш]YЫЬћHHSPQСWРРUQУФ–WФTТPРS€›XZЩ\РЫЫќXЭH•QK€љYЫ›Ь™\ТЪ[™ЬФ›ШЪИH—ХTUQУSХ‘WС“QФИOHСS—Н€ЫЫќ\ЭY™™XЭHУУ•TХСQ‘‘PХТQТWРTPSS‘Л€ЫЫќ\ЭШ]YЫЬћHHУУ•TХРРUQУФ–WХХQТ€ЫЫќ\ЭЫЫX›ФЭ\ќ\’YHУУP“ЧФХT•T—ФХS‘€ЫЫќ\ЭЫЫX›У[Э™\ИHМK€]P[љ[TШЬљ\HР]P[љ[S[Э™WФЭ[™€K‚€УSХ‘WТРTђUWРТФHB€В€›[YHHУУTХS‘ФХ’S‘К’Ш\]HЪЬЉK€™\ШЬљ\[Ы€HУУTХS‘ФХ’S‘К€ђHЪЬ[™И]XЪИЪ]W€‚€љYЪЬљ]XШ[Z]][Л€ЉK€™Y™™XЭHQ‘‘PХТU€њЭЩ\€HL€ќ\HH—ХTUQУSХ‘WХTTИЏHСS—М€ИTWС’QТS‘И€TWУ“Ф“PS€XШЭ\XЮHHL€Ьљ]XШ[]ЭYЩHH—ХTUQУSХ‘WСUHЏHСS—МИИH€‹€њHЌK€ќ\™Щ]HT‘СUФСSPХQ€њљ[Ьљ]HH€Ш]YЫЬћHHSPQСWРРUQУФ–WФTТPРS€›XZЩ\РЫЫќXЭH•QK€ЫЫќ\ЭY™™XЭHЧХTUQУSХ‘WСQ‘‘PХИЏHСS—Н€ИУУ•TХСQ‘‘PХТQТWРTPSS‘И€УУ•TХСQ‘‘PХРQ‘‘PХQР–WФ‘U—РTPS€ЫЫќ\ЭШ]YЫЬћHHУУ•TХРРUQУФ–WХХQТ€ЫЫќ\ЭЫЫX›ФЭ\ќ\’YH€ЫЫќ\ЭЫЫX›У[Э™\ИHРУУP“ЧФХT•T—С“РХTЧСS‘T‘Ц_K€]P[љ[TШЬљ\HР]P[љ[S[Э™WТШ\]PЪЬ€ќ[Y\™[ќXЩS[Э™HH•QK€K‚€УSХ‘WСХP“WФУTHB€В€›[YHHУУTХS‘ФХ’S‘К‘ЭX›HЫ\ЉK€™\ШЬљ\[Ы€HУУTХS‘ФХ’S‘К€”™\X]YHЫ\ИH›ЩW€‚€Њ€ИH[Y\Л€ЉK€™Y™™XЭHQ‘‘PХТU€њЭЩ\€HMK€ќ\HHTWУ“Ф“PS€XШЭ\XЮHHK€њHL€ќ\™Щ]HT‘СUФСSPХQ€њљ[Ьљ]HH€Ш]YЫЬћHHSPQСWРРUQУФ–WФTТPРS€›][R]H•QK€›XZЩ\РЫЫќXЭH•QK€ЫЫќ\ЭY™™XЭHЧХTUQУSХ‘WСQ‘‘PХИЏHСS—Н€ИУУ•TХСQ‘‘PХФUPSUWСTS‘ЧУУ—ХSRS‘И€УУ•TХСQ‘‘PХФХT•WУSУ—ХТUТ•QСTЧРUS•SУ‹€ЫЫќ\ЭШ]YЫЬћHHЧХTUQУSХ‘WРРUQУФ’QTИЏHСS—Н€ИУУ•TХРРUQУФ–WРХUH€УУ•TХРРUQУФ–WХХQТ€ЫЫќ\ЭЫЫX›ФЭ\ќ\’YH€ЫЫќ\ЭЫЫX›У[Э™\ИHРУУP“ЧФХT•T—ФХS‘K€]P[љ[TШЬљ\HР]P[љ[S[Э™WСЭX›TЫ\€ќ[Y\™[ќXЩS[Э™HH•QK€K‚€УSХ‘WРУУQUФSђТHB€В€›[YHHУУTХS‘ФХ’S‘КђЫЫY][ЪЉK€™\ШЬљ\[Ы€HУУTХS‘ФХ’S‘К€”™\X]YH[Ъ\ИH›ЩW€‚€Њ€ИH[Y\Л€ЉK€™Y™™XЭHQ‘‘PХТU€њЭЩ\€HN€ќ\HHTWУ“Ф“PS€XШЭ\XЮHHK€њHMK€ќ\™Щ]HT‘СUФСSPХQ€њљ[Ьљ]HH€Ш]YЫЬћHHSPQСWРРUQУФ–WФTТPРS€›][R]H•QK€›XZЩ\РЫЫќXЭH•QK€њ[Ъ[™У[Э™HH•QK€ЫЫќ\ЭY™™XЭHЧХTUQУSХ‘WСQ‘‘PХИЏHСS—Н€ИУУ•TХСQ‘‘PХФUPSUWСTS‘ЧУУ—ХSRS‘И€УУ•TХСQ‘‘PХР‘UT—ТQ—ФРSQWХTK€ЫЫќ\ЭШ]YЫЬћHHУУ•TХРРUQУФ–WХХQТ€ЫЫќ\ЭЫЫX›ФЭ\ќ\’YH€ЫЫќ\ЭЫЫX›У[Э™\ИHМK€]P[љ[TШЬљ\HР]P[љ[S[Э™WРЫЫY][Ъ€K‚€УSХ‘WУQQРWФSђТHB€В€›[YHHУУTХS‘ФХ’S‘К“YYШH[ЪЉK€™\ШЬљ\[Ы€HУУTХS‘ФХ’S‘К€ђHЭ›Ы™И[Ъ›ЭЫ€Ъ]€‚€љ[Ь™YX›HЭЩ\‹€ЉK€™Y™™XЭHQ‘‘PХТU€њЭЩ\€H€ќ\HHTWУ“Ф“PS€XШЭ\XЮHHK€њHЊ€ќ\™Щ]HT‘СUФСSPХQ€њљ[Ьљ]HH€Ш]YЫЬћHHSPQСWРРUQУФ–WФTТPРS€›XZЩ\РЫЫќXЭH•QK€њ[Ъ[™У[Э™HH•QK€ЫЫќ\ЭY™™XЭHЧХTUQУSХ‘WСQ‘‘PХИЏHСS—Н€ИУУ•TХСQ‘‘PХФ‘TUUSУ—У“ХР“Ф’S‘И€УУ•TХСQ‘‘PХТQТWРTPSS‘Л€ЫЫќ\ЭШ]YЫЬћHHУУ•TХРРUQУФ–WХХQТ€ЫЫќ\ЭЫЫX›ФЭ\ќ\’YH€ЫЫќ\ЭЫЫX›У[Э™\ИHРУУP“ЧФХT•T—С“РХTЧСS‘T‘ЦKУУP“ЧФХT•T—УRS‘Ф‘PQTџK€]P[љ[TШЬљ\HР]P[љ[S[Э™WУYYШT[Ъ€ќ[Y\™[ќXЩS[Э™HH•QK€K‚€УSХ‘WФVWСVWHB€В€›[YHHУУTХS‘ФХ’S‘К”^H^HЉK€™\ШЬљ\[Ы€HУУTХS‘ФХ’S‘К€•›ЭЬИЫЪ[њИ]H›ЩK—€‚€“[Ы™^H\И™XЫЭ™\™YYќ\‹€ЉK€™Y™™XЭHQ‘‘PХТU€њЭЩ\€H€ќ\HHTWУ“Ф“PS€XШЭ\XЮHHL€њHЊ€ќ\™Щ]HT‘СUФСSPХQ€њљ[Ьљ]HH€Ш]YЫЬћHHSPQСWРРUQУФ–WФTТPРS€Y][Ы[Y™™XЭИHQUSУђSСQ‘‘PХКВ€›[Э™QY™™XЭHSХ‘WСQ‘‘PХФVQVK€JK€ЫЫќ\ЭY™™XЭHЧХTUQУSХ‘WСQ‘‘PХИЏHСS—Н€ИУУ•TХСQ‘‘PХСVТUWРUQQSђСWТS—РS–WРУУ•TХ€УУ•TХСQ‘‘PХР‘UT—ХТS—РUQQSђСWСVТUQ€ЫЫќ\ЭШ]YЫЬћHHУУ•TХРРUQУФ–WФУPT•€ЫЫќ\ЭЫЫX›ФЭ\ќ\’YH€ЫЫќ\ЭЫЫX›У[Э™\ИHМK€]P[љ[TШЬљ\HР]P[љ[S[Э™WФ^Q^K€K‚€УSХ‘WС’T‘WФSђТHB€В€›[YHHУУTХS‘ФХ’S‘К‘љ\™H[ЪЉK€™\ШЬљ\[Ы€HУУTХS‘ФХ’S‘К€ђHљY\ћH[Ъ]X^Hќ\›—€‚€ќH›ЩK€ЉK€™Y™™XЭHQ‘‘PХТU€њЭЩ\€HНK€ќ\HHTWС’T‘K€XШЭ\XЮHHL€њHMK€ќ\™Щ]HT‘СUФСSPХQ€њљ[Ьљ]HH€Ш]YЫЬћHHSPQСWРРUQУФ–WФTТPРS€›XZЩ\РЫЫќXЭH•QK€њ[Ъ[™У[Э™HH•QK€Y][Ы[Y™™XЭИHQUSУђSСQ‘‘PХКВ€›[Э™QY™™XЭHSХ‘WСQ‘‘PХР•T“‹€Ъ[ЩHHL€JK€ЫЫќ\ЭY™™XЭHУУ•TХСQ‘‘PХТQТWРTPSS‘Л€ЫЫќ\ЭШ]YЫЬћHHЧХTUQУSХ‘WРРUQУФ’QTИЏHСS—Н€ИУУ•TХРРUQУФ–WРУУУ€УУ•TХРРUQУФ–WР‘PUUK€ЫЫќ\ЭЫЫX›ФЭ\ќ\’YHУУP“ЧФХT•T—С’T‘WФSђТ€ЫЫќ\ЭЫЫX›У[Э™\ИHРУУP“ЧФХT•T—ТPСWФSђТУУP“ЧФХT•T—ФХS“–WСVKУУP“ЧФХT•T—ХS‘T—ФSђТK€]P[љ[TШЬљ\HР]P[љ[S[Э™WСљ\™T[Ъ€ќ[Y\™[ќXЩS[Э™HH•QK€K‚€УSХ‘WТPСWФSђТHB€В€›[YHHУУTХS‘ФХ’S‘К’XЩH[ЪЉK€™\ШЬљ\[Ы€HУУTХS‘ФХ’S‘К€ђ[€XЮH[Ъ]X^W€‚€ЪY€—ХTСWС”“ФХ’UHOH•QB€›X]™HH›ЩHЪ]њ›ЬЭљ]K€ЉK€Щ[ЩB€™њ™Y^™HH›ЩK€ЉK€Щ[™Y‚€™Y™™XЭHQ‘‘PХТU€њЭЩ\€HНK€ќ\HHTWТPСK€XШЭ\XЮHHL€њHMK€ќ\™Щ]HT‘СUФСSPХQ€њљ[Ьљ]HH€Ш]YЫЬћHHSPQСWРРUQУФ–WФTТPРS€›XZЩ\РЫЫќXЭH•QK€њ[Ъ[™У[Э™HH•QK€Y][Ы[Y™™XЭИHQUSУђSСQ‘‘PХКВ€›[Э™QY™™XЭHSХ‘WСQ‘‘PХС”‘QV‘WУФ—С”“ФХ’UK€Ъ[ЩHHL€JK€ЫЫќ\ЭY™™XЭHУУ•TХСQ‘‘PХТQТWРTPSS‘Л€ЫЫќ\ЭШ]YЫЬћHHУУ•TХРРUQУФ–WР‘PUUK€ЫЫќ\ЭЫЫX›ФЭ\ќ\’YHУУP“ЧФХT•T—ТPСWФSђТ€ЫЫќ\ЭЫЫX›У[Э™\ИHРУУP“ЧФХT•T—С’T‘WФSђТУУP“ЧФХT•T—ХS‘T—ФSђТK€]P[љ[TШЬљ\HР]P[љ[S[Э™WТXЩT[Ъ€ќ[Y\™[ќXЩS[Э™HH•QK€K‚€УSХ‘WХS‘T—ФSђТHB€В€›[YHHУУTХS‘ФХ’S‘К•[™\€[ЪЉK€™\ШЬљ\[Ы€HУУTХS‘ФХ’S‘К€ђ[€[XЭљYљYY[Ъ]€‚€›X^H\[^™HH›ЩK€ЉK€™Y™™XЭHQ‘‘PХТU€њЭЩ\€HНK€ќ\HHTWСSPХ’PЛ€XШЭ\XЮHHL€њHMK€ќ\™Щ]HT‘СUФСSPХQ€њљ[Ьљ]HH€Ш]YЫЬћHHSPQСWРРUQУФ–WФTТPРS€›XZЩ\РЫЫќXЭH•QK€њ[Ъ[™У[Э™HH•QK€Y][Ы[Y™™XЭИHQUSУђSСQ‘‘PХКВ€›[Э™QY™™XЭHSХ‘WСQ‘‘PХФTђSTТTЛ€Ъ[ЩHHL€JK€ЫЫќ\ЭY™™XЭHУУ•TХСQ‘‘PХТQТWРTPSS‘Л€ЫЫќ\ЭШ]YЫЬћHHУУ•TХРРUQУФ–WРУУУ€ЫЫќ\ЭЫЫX›ФЭ\ќ\’YHУУP“ЧФХT•T—ХS‘T—ФSђТ€ЫЫќ\ЭЫЫX›У[Э™\ИHРУУP“ЧФХT•T—РТT‘СKУУP“ЧФХT•T—С’T‘WФSђТУУP“ЧФХT•T—ТPСWФSђТK€]P[љ[TШЬљ\HР]P[љ[S[Э™WХ[™\”[Ъ€ќ[Y\™[ќXЩS[Э™HH•QK€K‚€УSХ‘WФРФђUТHB€В€›[YHHУУTХS‘ФХ’S‘К”ШЬ]ЪЉK€™\ШЬљ\[Ы€HУУTХS‘ФХ’S‘К€”ШЬ]Ъ\ИH›ЩHЪ]€‚€њЪ\њЫ]ЬЛ€ЉK€™Y™™XЭHQ‘‘PХТU€њЭЩ\€H€ќ\HHTWУ“Ф“PS€XШЭ\XЮHHL€њHНK€ќ\™Щ]HT‘СUФСSPХQ€њљ[Ьљ]HH€Ш]YЫЬћHHSPQСWРРUQУФ–WФTТPРS€њЫXЪ[™У[Э™HH•QK€›XZЩ\РЫЫќXЭH•QK€ЫЫќ\ЭY™™XЭHУУ•TХСQ‘‘PХТQТWРTPSS‘Л€ЫЫќ\ЭШ]YЫЬћHHУУ•TХРРUQУФ–WХХQТ€ЫЫќ\ЭЫЫX›ФЭ\ќ\’YHУУP“ЧФХT•T—ФРФђUТ€ЫЫќ\ЭЫЫX›У[Э™\ИHРУУP“ЧФХT•T—УQTџK€]P[љ[TШЬљ\HР]P[љ[S[Э™WФШЬ]Ъ€K‚€УSХ‘WХ’TСWСФ’THB€В€›[YHHУУTХS‘ФХ’S‘К•љ\ЩHЬљ\ЉK€™\ШЬљ\[Ы€HУУTХS‘ФХ’S‘К€‘Ьљ\ИH›ЩHЪ]\™ЩH[™€‚€њЭЩ\™ќ[[Щ\њЛ€ЉK€™Y™™XЭHQ‘‘PХТU€њЭЩ\€HMK€ќ\HHTWУ“Ф“PS€XШЭ\XЮHHL€њHМ€ќ\™Щ]HT‘СUФСSPХQ€њљ[Ьљ]HH€Ш]YЫЬћHHSPQСWРРUQУФ–WФTТPРS€›XZЩ\РЫЫќXЭH•QK€ЫЫќ\ЭY™™XЭHУУ•TХСQ‘‘PХТQТWРTPSS‘Л€ЫЫќ\ЭШ]YЫЬћHHУУ•TХРРUQУФ–WХХQТ€ЫЫќ\ЭЫЫX›ФЭ\ќ\’YHУУP“ЧФХT•T—Х’PСWСФ’T€ЫЫќ\ЭЫЫX›У[Э™\ИHМK€]P[љ[TШЬљ\HР]P[љ[S[Э™WХљ\ЩQЬљ\€K‚€УSХ‘WСХRSХS‘WHB€В€›[YHHУУTХS‘ФХ’S‘К‘ЭZ[Э[™HЉK€™\ШЬљ\[Ы€HУУTХS‘ФХ’S‘К€ђHЬќ\Ъ[™И[Щ\€]XЪЛ—€‚€•H\Щ\€]\Э[€™XЪ\™ЩK€ЉK€™Y™™XЭHQ‘‘PХТU€њЭЩ\€HML€ќ\HHTWУ“Ф“PS€XШЭ\XЮHHL€њHK€ќ\™Щ]HT‘СUФСSPХQ€њљ[Ьљ]HH€Ш]YЫЬћHHSPQСWРРUQУФ–WФTТPРS€›XZЩ\РЫЫќXЭH•QK€Y][Ы[Y™™XЭИHQUSУђSСQ‘‘PХКВ€›[Э™QY™™XЭHSХ‘WСQ‘‘PХФ‘PТT‘СK€њЩ[€H•QK€JK€ЫЫќ\ЭY™™XЭHУУ•TХСQ‘‘PХРђQWФХT•WУSУ”ЧХТUСУУСРTPSЛ€ЫЫќ\ЭШ]YЫЬћHHУУ•TХРРUQУФ–WРУУУ€ЫЫќ\ЭЫЫX›ФЭ\ќ\’YH€ЫЫќ\ЭЫЫX›У[Э™\ИHРУУP“ЧФХT•T—Х’PСWСФ’TK€]P[љ[TШЬљ\HР]P[љ[S[Э™WСЭZ[Э[™K€ќ[Y\™[ќXЩS[Э™HH•QK€K‚€УSХ‘WФђV“Ф—ХТS‘HB€В€›[YHHУУTХS‘ФХ’S‘К”^›Ь€Ъ[™ЉK€ЪY€—ХTUQУSХ‘WСUHOHСS—МИ—ХTUQУSХ‘WСUHOHСS—МB€™\ШЬљ\[Ы€HУУTХS‘ФХ’S‘К€ђH‹]\›€[Э™H]ЭљZЩ\Ч€‚€ќH›ЩHЫ€H›™\›‹€ЉK€Щ[ЩB€™\ШЬљ\[Ы€HУУTХS‘ФХ’S‘К€ђH‹]\›€[Э™HЪ]HYЪ€‚€Ьљ]XШ[Z]][Л€ЉK€Щ[™Y‚€™Y™™XЭHQ‘‘PХХУЧХT“”ЧРUPТЛ€њЭЩ\€H€ќ\HHTWУ“Ф“PS€XШЭ\XЮHH—ХTUQУSХ‘WСUHЏHСS—МИИL€НK€ЪY€—ХTUQУSХ‘WСUHЏHСS—Н€Ьљ]XШ[]ЭYЩHHK€Щ[Y€—ХTUQУSХ‘WСUHOHСS—М‚€Ьљ]XШ[]ЭYЩHH‹€Щ[ЩB€Ьљ]XШ[]ЭYЩHH€Щ[™Y‚€њHL€ќ\™Щ]HT‘СUР“Х€њљ[Ьљ]HH€Ш]YЫЬћHHSPQСWРРUQУФ–WФФPТPS€њЫY\[Р[›™YH•QK€љ[њЭќXЭ[›™YH•QK€ќЪ[™[Э™HH—СVђTУUQУSХ‘WС“QФЛ€\™Э[Y[ќќЫХ\›ђ]XЪИHИњЭљ[™ТYHХ’S‘ТQФУS•ТTQТT“ТS‘K€ЫЫќ\ЭY™™XЭHУУ•TХСQ‘‘PХРQ‘‘PХQР–WФ‘U—РTPS€ЫЫќ\ЭШ]YЫЬћHHУУ•TХРРUQУФ–WРУУУ€ЫЫќ\ЭЫЫX›ФЭ\ќ\’YH€ЫЫќ\ЭЫЫX›У[Э™\ИHМK€]P[љ[TШЬљ\HР]P[љ[S[Э™WФ^›Ь•Ъ[™€K‚€УSХ‘WФХУФ‘ЧСSђСWHB€В€›[YHHУУTХS‘ФХ’S‘К”ЭЫЬ™И[ЩHЉK€™\ШЬљ\[Ы€HУУTХS‘ФХ’S‘К€ђHљYЪ[™И[ЩH]€‚€њЪ\њHZ\Щ\И]XЪЛ€ЉK€™Y™™XЭHQ‘‘PХРUPТЧХTМ‹€њЭЩ\€H€ќ\HHTWУ“Ф“PS€XШЭ\XЮHH€њH—ХTUQУSХ‘WСUHЏHСS—Н€ИЊ€М€ќ\™Щ]HT‘СUХTСT‹€њљ[Ьљ]HH€Ш]YЫЬћHHSPQСWРРUQУФ–WФХUTЛ€ћ“[Э™HHИ™Y™™XЭH—СQ‘‘PХФ‘TСUФХUИK€љYЫ›Ь™\Ф›ЭXЭH•QK€›Z\њ›Ь“[Э™P[›™YH•QK€™[ЩS[Э™HH•QK€њЫ]ЪY™™XЭYH•QK€ЫЫќ\ЭY™™XЭHУУ•TХСQ‘‘PХТST“Х‘WРУУ‘USУ—Ф‘U‘S•У‘T•“ХTУ‘TФЛ€ЫЫќ\ЭШ]YЫЬћHHУУ•TХРРUQУФ–WР‘PUUK€ЫЫќ\ЭЫЫX›ФЭ\ќ\’YHУУP“ЧФХT•T—ФХУФ‘ЧСSђСK€ЫЫќ\ЭЫЫX›У[Э™\ИHМK€]P[љ[TШЬљ\HР]P[љ[S[Э™WФЭЫЬ™С[ЩK€ќ[Y\™[ќXЩS[Э™HH•QK€K‚€УSХ‘WРХUHB€В€›[YHHУУTХS‘ФХ’S‘КђЭ]ЉK€™\ШЬљ\[Ы€HУУTХS‘ФХ’S‘К€ђЭ]ИH›ЩHЪ]Ъ\њ€‚€њШЮ]\ЛЫ]ЬЛ]Л€ЉK€™Y™™XЭHQ‘‘PХТU€њЭЩ\€HL€ќ\HHTWФХQS€XШЭ\XЮHHMK€њHМ€ќ\™Щ]HT‘СUФСSPХQ€њљ[Ьљ]HH€Ш]YЫЬћHHSPQСWРРUQУФ–WФTТPРS€›XZЩ\РЫЫќXЭH•QK€њЫXЪ[™У[Э™HH•QK€ЫЫќ\ЭY™™XЭHЧХTUQУSХ‘WСQ‘‘PХИЏHСS—Н€ИУУ•TХСQ‘‘PХТQТWРTPSS‘И€УУ•TХСQ‘‘PХРђQWФХT•WУSУ”ЧХТUСУУСРTPSЛ€ЫЫќ\ЭШ]YЫЬћHHУУ•TХРРUQУФ–WРУУУ€ЫЫќ\ЭЫЫX›ФЭ\ќ\’YH€ЫЫќ\ЭЫЫX›У[Э™\ИHРУУP“ЧФХT•T—ФХУФ‘ЧСSђС_K€]P[љ[TШЬљ\HР]P[љ[S[Э™WРЭ]€K‚€УSХ‘WСХTХHB€В€›[YHHУУTХS‘ФХ’S‘К‘Э\ЭЉK€™\ШЬљ\[Ы€HУУTХS‘ФХ’S‘К€”ЭљZЩ\ИH›ЩHЪ]HЭ\Э€‚€›Щ€Ъ[™Ъ\Y\ћHЪ[™ЬЛ€ЉK€™Y™™XЭHQ‘‘PХТU€њЭЩ\€H€ќ\HH—ХTUQУSХ‘WХTTИЏHСS—М€ИTWС“RS‘И€TWУ“Ф“PS€XШЭ\XЮHHL€њHНK€ќ\™Щ]HT‘СUФСSPХQ€њљ[Ьљ]HH€Ш]YЫЬћHHSPQСWРРUQУФ–WФФPТPS€љYЫ›Ь™\ТЪ[™ЬФ›ШЪИH
+—ХTUQУSХ‘WС“QФИOHСS—Н
+H
+—ХTUQУSХ‘WС“QФИСS—МКK€™[XYЩ\РZ\›Ь›™QЭX›Q[XYЩHH—ХTUQУSХ‘WС“QФИЏHСS—М‹€ќЪ[™[Э™HH•QK€ЫЫќ\ЭY™™XЭHЧХTUQУSХ‘WСQ‘‘PХИЏHСS—Н€ИУУ•TХСQ‘‘PХФХT•WФ‘U—УSУ€€УУ•TХСQ‘‘PХФРФђSP“WУ‘VХT“—УФ‘T‹€ЫЫќ\ЭШ]YЫЬћHHУУ•TХРРUQУФ–WФУPT•€ЫЫќ\ЭЫЫX›ФЭ\ќ\’YH€ЫЫќ\ЭЫЫX›У[Э™\ИHМK€]P[љ[TШЬљ\HР]P[љ[S[Э™WСЭ\Э€K‚€УSХ‘WХТS‘ЧРUPТЧHB€В€›[YHHУУTХS‘ФХ’S‘К•Ъ[™И]XЪИЉK€™\ШЬљ\[Ы€HУУTХS‘ФХ’S‘К€”ЭљZЩ\ИH›ЩHЪ]Ъ[™ЬЧ€‚€њЬ™XYЪYK€ЉK€™Y™™XЭHQ‘‘PХТU€њЭЩ\€H—ХTUQУSХ‘WСUHЏHСS—М€ИЊ€НK€ќ\HHTWС“RS‘Л€XШЭ\XЮHHL€њHНK€ќ\™Щ]HT‘СUФСSPХQ€њљ[Ьљ]HH€Ш]YЫЬћHHSPQСWРРUQУФ–WФTТPРS€›XZЩ\РЫЫќXЭH•QK€ЫЫќ\ЭY™™XЭHЧХTUQУSХ‘WСQ‘‘PХИЏHСS—Н€ИУУ•TХСQ‘‘PХТQТWРTPSS‘И€УУ•TХСQ‘‘PХР‘UT—ТQ—ФРSQWХTK€ЫЫќ\ЭШ]YЫЬћHHУУ•TХРРUQУФ–WРУУУ€ЫЫќ\ЭЫЫX›ФЭ\ќ\’YH€ЫЫќ\ЭЫЫX›У[Э™\ИHМK€]P[љ[TШЬљ\HР]P[љ[S[Э™WХЪ[™Р]XЪЛ€K‚€УSХ‘WХТT“ТS‘HB€В€›[YHHУУTХS‘ФХ’S‘К•Ъ\›Ъ[™ЉK€™\ШЬљ\[Ы€HУУTХS‘ФХ’S‘К€ђ›ЭЬИ]Ш^HH›ЩKЭЪ]Ъ\Ч€‚€љ]Э]Ь€[™ИЪ[]K€ЉK€™Y™™XЭHQ‘‘PХФ“РT‹€њЭЩ\€H€ќ\HHTWУ“Ф“PS€ЪY€—ХTUQУSХ‘WСUHЏHСS—Н‚€XШЭ\XЮHH€њљ[Ьљ]HHM‹€Щ[Y€—ХTUQУSХ‘WСUHЏHСS—МВ€XШЭ\XЮHHL€њљ[Ьљ]HHM‹€Щ[Y€—ХTUQУSХ‘WСUHOHСS—М‚€XШЭ\XЮHHL€њљ[Ьљ]HHLK€Щ[ЩB€XШЭ\XЮHHK€њљ[Ьљ]HH€Щ[™Y‚€њHЊ€ќ\™Щ]HT‘СUФСSPХQ€Ш]YЫЬћHHSPQСWРРUQУФ–WФХUTЛ€ћ“[Э™HHИ™Y™™XЭH—СQ‘‘PХФФQ—ХTМHK€ќЪ[™[Э™HH•QK€љYЫ›Ь™\Ф›ЭXЭH—ХTUQУSХ‘WС“QФИЏHСS—Н‹€љYЫ›Ь™\ФЭXњЭ]]HH•QK€›XYЪXРЫШ]Y™™XЭYH—ХTUQУSХ‘WС“QФИЏHСS—НK€ЫЬXШ][›™YH—ХTUQУSХ‘WС“QФИЏHСS—Н‹€\ЬЪ\Э[›™YH—ХTUQУSХ‘WС“QФИЏHСS—Н‹€ЫЫќ\ЭY™™XЭHЧХTUQУSХ‘WСQ‘‘PХИЏHСS—Н€ИУУ•TХСQ‘‘PХУ‘VРTPSУUT€€УУ•TХСQ‘‘PХФРФђSP“WУ‘VХT“—УФ‘T‹€ЫЫќ\ЭШ]YЫЬћHHУУ•TХРРUQУФ–WФУPT•€ЫЫќ\ЭЫЫX›ФЭ\ќ\’YH€ЫЫќ\ЭЫЫX›У[Э™\ИHРУУP“ЧФХT•T—ФХPSФ“РТЛУУP“ЧФХT•T—ФФRСTЛУУP“ЧФХT•T—ХЦPЧФФRСTЯK€]P[љ[TШЬљ\HР]P[љ[S[Э™WХЪ\›Ъ[™€ќ[Y\™[ќXЩS[Э™HH•QK€K‚€УSХ‘WС“WHB€В€›[YHHУУTХS‘ФХ’S‘К‘›HЉK€™\ШЬљ\[Ы€HУУTХS‘ФХ’S‘К€‘›Y\И\Ы€Hљ\њЭ\›‹€‚€ќ[€ЭљZЩ\ИH™^\›‹€ЉK€™Y™™XЭHQ‘‘PХФСSRWТS••S‘TђP“K€њЭЩ\€H—ХTUQУSХ‘WСUHЏHСS—НИL€М€ќ\HHTWС“RS‘Л€XШЭ\XЮHHMK€њHMK€ќ\™Щ]HT‘СUФСSPХQ€њљ[Ьљ]HH€Ш]YЫЬћHHSPQСWРРUQУФ–WФTТPРS€›XZЩ\РЫЫќXЭH•QK€™Ь]љ]P[›™YH•QK€њЫY\[Р[›™YH•QK€љ[њЭќXЭ[›™YH•QK€\ЬЪ\Э[›™YH—ХTUQУSХ‘WС“QФИЏHСS—Н‹€\™Э[Y[ќќЫХ\›ђ]XЪИHИњЭљ[™ТYHХ’S‘ТQФУS‘“UТQТњЭ]\ИHХUWУУ—РRT€K€ЫЫќ\ЭY™™XЭHЧХTUQУSХ‘WСQ‘‘PХИЏHСS—Н€ИУУ•TХСQ‘‘PХРU“ТQФХT•WУУђСH€УУ•TХСQ‘‘PХРU“ТQФХT•K€ЫЫќ\ЭШ]YЫЬћHHУУ•TХРРUQУФ–WФУPT•€ЫЫќ\ЭЫЫX›ФЭ\ќ\’YH€ЫЫќ\ЭЫЫX›У[Э™\ИHМK€]P[љ[TШЬљ\HР]P[љ[S[Э™WС›K€ќ[Y\™[ќXЩS[Э™HH•QK€K‚€УSХ‘WР’S‘HB€В€›[YHHУУTХS‘ФХ’S‘Кђљ[™ЉK€™\ШЬљ\[Ы€HУУTХS‘ФХ’S‘К€ђљ[™И[™Ь]YY^™\ИH›ЩW€‚€™›Ь€ђ’S‘S‘ЧХT“”И€\›њЛ€ЉK€™Y™™XЭHQ‘‘PХТU€њЭЩ\€HMK€ќ\HHTWУ“Ф“PS€XШЭ\XЮHH—ХTUQУSХ‘WСUHЏHСS—НHИH€НK€њHЊ€ќ\™Щ]HT‘СUФСSPХQ€њљ[Ьљ]HH€Ш]YЫЬћHHSPQСWРРUQУФ–WФTТPРS€›XZЩ\РЫЫќXЭH•QK€љYЫ›Ь™\ТЪ[™ЬФ›ШЪИH—ХTUQУSХ‘WС“QФИСS—МЛ€Y][Ы[Y™™XЭИHQUSУђSСQ‘‘PХКВ€›[Э™QY™™XЭHSХ‘WСQ‘‘PХХФђT€›][\Эљ[™ЛќЬ\YH—УTСЧХФђTQР’S‘€JK€ЫЫќ\ЭY™™XЭHУУ•TХСQ‘‘PХСУ•СVТUWРUQQSђСK€ЫЫќ\ЭШ]YЫЬћHHУУ•TХРРUQУФ–WХХQТ€ЫЫќ\ЭЫЫX›ФЭ\ќ\’YH€ЫЫќ\ЭЫЫX›У[Э™\ИHРУУP“ЧФХT•T—Х’PСWСФ’TK€]P[љ[TШЬљ\HР]P[љ[S[Э™WРљ[™€ќ[Y\™[ќXЩS[Э™HH•QK€K‚€УSХ‘WФУSWHB€В€›[YHHУУTХS‘ФХ’S‘К”Ы[HЉK€™\ШЬљ\[Ы€HУУTХS‘ФХ’S‘К€”Ы[\ИH›ЩHЪ]HЫ™Ч€‚€ќZ[љ[™K]Л€ЉK€™Y™™XЭHQ‘‘PХТU€њЭЩ\€H€ќ\HHTWУ“Ф“PS€XШЭ\XЮHHНK€њHЊ€ќ\™Щ]HT‘СUФСSPХQ€њљ[Ьљ]HH€Ш]YЫЬћHHSPQСWРРUQУФ–WФTТPРS€›XZЩ\РЫЫќXЭH•QK€њЪЮP]P[›™YH•QK€ЫЫќ\ЭY™™XЭHЧХTUQУSХ‘WСQ‘‘PХИЏHСS—Н€ИУУ•TХСQ‘‘PХТQТWРTPSS‘И€УУ•TХСQ‘‘PХФХT•WУSУ”ЧФРSQWХTWРTPS€ЫЫќ\ЭШ]YЫЬћHHУУ•TХРРUQУФ–WХХQТ€ЫЫќ\ЭЫЫX›ФЭ\ќ\’YH€ЫЫќ\ЭЫЫX›У[Э™\ИHРУУP“ЧФХT•T—ФХS‘K€]P[љ[TШЬљ\HР]P[љ[S[Э™WФЫ[K€ќ[Y\™[ќXЩS[Э™HH•QK€K‚€УSХ‘WХ’S‘WХТTHB€В€›[YHHУУTХS‘ФХ’S‘К•љ[™HЪ\ЉK€™\ШЬљ\[Ы€HУУTХS‘ФХ’S‘К€”ЭљZЩ\ИH›ЩHЪ]€‚€њЫ[™\‹Ъ\ZЩHљ[™\Л€ЉK€ЪY€—ХTUQУSХ‘WСUHЏHСS—Н‚€њHЌK€Щ[Y€—ХTUQУSХ‘WСUHЏHСS—Н€њHMK€Щ[ЩB€њHL€Щ[™Y‚€™Y™™XЭHQ‘‘PХТU€њЭЩ\€H—ХTUQУSХ‘WСUHЏHСS—Н€ИH€НK€ќ\HHTWСФђTФЛ€XШЭ\XЮHHL€ќ\™Щ]HT‘СUФСSPХQ€њљ[Ьљ]HH€Ш]YЫЬћHHSPQСWРРUQУФ–WФTТPРS€›XZЩ\РЫЫќXЭH•QK€ЫЫќ\ЭY™™XЭHУУ•TХСQ‘‘PХТQТWРTPSS‘Л€ЫЫќ\ЭШ]YЫЬћHHУУ•TХРРUQУФ–WРУУУ€ЫЫќ\ЭЫЫX›ФЭ\ќ\’YH€ЫЫќ\ЭЫЫX›У[Э™\ИHРУУP“ЧФХT•T—СФ“ХХK€]P[љ[TШЬљ\HР]P[љ[S[Э™WХљ[™UЪ\€K‚€УSХ‘WФХУTHB€В€›[YHHУУTХS‘ФХ’S‘К”ЭЫ\ЉK€™\ШЬљ\[Ы€HУУTХS‘ФХ’S‘К€”ЭЫ\ИH[™[^HЪ]HљYЧ€‚€™›ЫЭ€X^HШ]\ЩH›[Ъ[™Л€ЉK€™Y™™XЭHQ‘‘PХТU€њЭЩ\€HЌK€ќ\HHTWУ“Ф“PS€XШЭ\XЮHHL€њHЊ€ќ\™Щ]HT‘СUФСSPХQ€њљ[Ьљ]HH€Ш]YЫЬћHHSPQСWРРUQУФ–WФTТPРS€›XZЩ\РЫЫќXЭH•QK€љЪXЪЪ[™У[Э™HH•QK€›Z[љ[Z^™QЭX›Q[XYЩHH—ХTUQУSХ‘WС“QФИЏHСS—М‹€њЪЮP]P[›™YH•QK€Y][Ы[Y™™XЭИHQUSУђSСQ‘‘PХКВ€›[Э™QY™™XЭHSХ‘WСQ‘‘PХС“SђТ€Ъ[ЩHHМ€JK€ЫЫќ\ЭY™™XЭHЧХTUQУSХ‘WСQ‘‘PХИЏHСS—Н€ИУУ•TХСQ‘‘PХТQТWРTPSS‘И€УУ•TХСQ‘‘PХРђQWФХT•WС”“У•УSУ‹€ЫЫќ\ЭШ]YЫЬћHHУУ•TХРРUQУФ–WХХQТ€ЫЫќ\ЭЫЫX›ФЭ\ќ\’YH€ЫЫќ\ЭЫЫX›У[Э™\ИHРУУP“ЧФХT•T—УQTџK€]P[љ[TШЬљ\HР]P[љ[S[Э™WФЭЫ\€ќ[Y\™[ќXЩS[Э™HH•QK€K‚€УSХ‘WСХP“WТТPТЧHB€В€›[YHHУУTХS‘ФХ’S‘К‘ЭX›HЪXЪИЉK€™\ШЬљ\[Ы€HУУTХS‘ФХ’S‘К€ђHЭX›KZЪXЪЪ[™И]XЪЧ€‚€ќ]ЭљZЩ\ИH›ЩHЪXЩK€ЉK€™Y™™XЭHQ‘‘PХТU€њЭЩ\€HМ€ќ\HHTWС’QТS‘Л€XШЭ\XЮHHL€њHМ€ќ\™Щ]HT‘СUФСSPХQ€њљ[Ьљ]HH€Ш]YЫЬћHHSPQСWРРUQУФ–WФTТPРS€›XZЩ\РЫЫќXЭH•QK€љЪXЪЪ[™У[Э™HH•QK€њЭљZЩPЫЭ[ќH‹€ЫЫќ\ЭY™™XЭHЧХTUQУSХ‘WСQ‘‘PХИЏHСS—Н€ИУУ•TХСQ‘‘PХФХT•WУSУ”ЧФРSQWХTWРTPS€УУ•TХСQ‘‘PХР‘UT—ТQ—ФРSQWХTK€ЫЫќ\ЭШ]YЫЬћHHУУ•TХРРUQУФ–WРУУУ€ЫЫќ\ЭЫЫX›ФЭ\ќ\’YH€ЫЫќ\ЭЫЫX›У[Э™\ИHМK€]P[љ[TШЬљ\HР]P[љ[S[Э™WСЭX›RЪXЪЛ€ќ[Y\™[ќXЩS[Э™HH•QK€K‚€УSХ‘WУQQРWТТPТЧHB€В€›[YHHУУTХS‘ФХ’S‘К“YYШHЪXЪИЉK€™\ШЬљ\[Ы€HУУTХS‘ФХ’S‘К€ђ[€^™[Y[HЭЩ\™ќ[ЪXЪЧ€‚€ќЪ][ќ[њЩH›ЬЩK€ЉK€™Y™™XЭHQ‘‘PХТU€њЭЩ\€HLЊ€ќ\HHTWУ“Ф“PS€XШЭ\XЮHHНK€њHK€ќ\™Щ]HT‘СUФСSPХQ€њљ[Ьљ]HH€Ш]YЫЬћHHSPQСWРРUQУФ–WФTТPРS€›XZЩ\РЫЫќXЭH•QK€љЪXЪЪ[™У[Э™HH•QK€ЫЫќ\ЭY™™XЭHЧХTUQУSХ‘WСQ‘‘PХИЏHСS—Н€ИУУ•TХСQ‘‘PХР‘UT—ХТS—РUQQSђСWСVТUQ€УУ•TХСQ‘‘PХТQТWРTPSS‘Л€ЫЫќ\ЭШ]YЫЬћHHУУ•TХРРUQУФ–WРУУУ€ЫЫќ\ЭЫЫX›ФЭ\ќ\’YH€ЫЫќ\ЭЫЫX›У[Э™\ИHРУУP“ЧФХT•T—С“РХTЧСS‘T‘ЦKУУP“ЧФХT•T—УRS‘Ф‘PQTџK€]P[љ[TШЬљ\HР]P[љ[S[Э™WУYYШRЪXЪЛ€ќ[Y\™[ќXЩS[Э™HH•QK€K‚€УSХ‘WТ•STТТPТЧHB€В€›[YHHУУTХS‘ФХ’S‘К’ќ[\ЪXЪИЉK€™\ШЬљ\[Ы€HУУTХS‘ФХ’S‘К€ђHЭ›Ы™Иќ[\[™ИЪXЪЛ€X^W€‚€›Z\ЬИ[™\ќHЪXЪЩ\‹€ЉK€ЪY€—ХTUQУSХ‘WСUHЏHСS—НB€њЭЩ\€HL€Щ[Y€—ХTUQУSХ‘WСUHOHСS—Н€њЭЩ\€HK€Щ[ЩB€њЭЩ\€HМ€Щ[™Y‚€™Y™™XЭHQ‘‘PХФ‘PУТSТQ—УRTФЛ€ќ\HHTWС’QТS‘Л€XШЭ\XЮHHMK€њH—ХTUQУSХ‘WСUHЏHСS—НHИL€ЌK€ќ\™Щ]HT‘СUФСSPХQ€њљ[Ьљ]HH€Ш]YЫЬћHHSPQСWРРUQУФ–WФTТPРS€›XZЩ\РЫЫќXЭH•QK€љЪXЪЪ[™У[Э™HH•QK€™Ь]љ]P[›™YH•QK€ЫЫќ\ЭY™™XЭHУУ•TХСQ‘‘PХХTСT—УSФ‘WСPTТSWФХT•Q€ЫЫќ\ЭШ]YЫЬћHHУУ•TХРРUQУФ–WРУУУ€ЫЫќ\ЭЫЫX›ФЭ\ќ\’YH€ЫЫќ\ЭЫЫX›У[Э™\ИHРУУP“ЧФХT•T—УRS‘Ф‘PQTџK€]P[љ[TШЬљ\HР]P[љ[S[Э™WТќ[\ЪXЪЛ€ќ[Y\™[ќXЩS[Э™HH•QK€K‚€УSХ‘WФ“УS‘ЧТТPТЧHB€В€›[YHHУУTХS‘ФХ’S‘К”›Ы[™ИЪXЪИЉK€™\ШЬљ\[Ы€HУУTХS‘ФХ’S‘К€ђH\ЭЪXЪИ[]™\™Yњ›ЫW€‚€H\YЬ[‹€X^H›[Ъ€ЉK€™Y™™XЭHQ‘‘PХТU€њЭЩ\€HЊ€ќ\HHTWС’QТS‘Л€XШЭ\XЮHHK€њHMK€ќ\™Щ]HT‘СUФСSPХQ€њљ[Ьљ]HH€Ш]YЫЬћHHSPQСWРРUQУФ–WФTТPРS€›XZЩ\РЫЫќXЭH•QK€љЪXЪЪ[™У[Э™HH•QK€љYЫ›Ь™\ТЪ[™ЬФ›ШЪИH—ХTUQУSХ‘WС“QФИСS—МЛ€Y][Ы[Y™™XЭИHQUSУђSСQ‘‘PХКВ€›[Э™QY™™XЭHSХ‘WСQ‘‘PХС“SђТ€Ъ[ЩHHМ€JK€ЫЫќ\ЭY™™XЭHЧХTUQУSХ‘WСQ‘‘PХИЏHСS—Н€ИУУ•TХСQ‘‘PХТQТWРTPSS‘И€УУ•TХСQ‘‘PХРђQWФХT•WФ‘U—УSУ”Л€ЫЫќ\ЭШ]YЫЬћHHУУ•TХРРUQУФ–WРУУУ€ЫЫќ\ЭЫЫX›ФЭ\ќ\’YH€ЫЫќ\ЭЫЫX›У[Э™\ИHМK€]P[љ[TШЬљ\HР]P[љ[S[Э™WФ›Ы[™ТЪXЪЛ€ќ[Y\™[ќXЩS[Э™HH•QK€K‚€УSХ‘WФРS‘РUPТЧHB€В€›[YHHУУTХS‘ФХ’S‘К”Ш[™]XЪИЉK€™\ШЬљ\[Ы€HУУTХS‘ФХ’S‘К€”™YXЩ\ИH›ЩIЬИXШЭ\XЮW€‚€ћH\›[™ИШ[™[€]ИXЩK€ЉK€™Y™™XЭHQ‘‘PХРPРХTђPЦWСХУ‹€њЭЩ\€H€ќ\HH—ХTUQУSХ‘WХTTИЏHСS—М€ИTWСФ“ХS‘€TWУ“Ф“PS€XШЭ\XЮHHL€њHMK€ќ\™Щ]HT‘СUФСSPХQ€њљ[Ьљ]HH€Ш]YЫЬћHHSPQСWРРUQУФ–WФХUTЛ€ћ“[Э™HHИ™Y™™XЭH—СQ‘‘PХСU”У—ХTМHK€›XYЪXРЫШ]Y™™XЭYH•QK€ЫЫќ\ЭY™™XЭHЧХTUQУSХ‘WСQ‘‘PХИЏHСS—Н€ИУУ•TХСQ‘‘PХФТQ•Т•QСWРUS•SУ€€УУ•TХСQ‘‘PХФХT•WУSУ—ХТUТ•QСTЧРUS•SУ‹€ЫЫќ\ЭШ]YЫЬћHHУУ•TХРРUQУФ–WРХUK€ЫЫќ\ЭЫЫX›ФЭ\ќ\’YHУУP“ЧФХT•T—ФРS‘РUPТЛ€ЫЫќ\ЭЫЫX›У[Э™\ИHРУУP“ЧФХT•T—УUQФУTУУP“ЧФХT•T—ФРS‘ХФ“_K€]P[љ[TШЬљ\HР]P[љ[S[Э™WФШ[™]XЪЛ€ќ[Y\™[ќXЩS[Э™HH•QK€K‚€УSХ‘WТPQ•UHB€В€›[YHHУУTХS‘ФХ’S‘К’XYќ]ЉK€™\ШЬљ\[Ы€HУУTХS‘ФХ’S‘К€ђH[[Z[™И]XЪИ]X^W€‚€Ш]\ЩH›[Ъ[™Л€ЉK€™Y™™XЭHQ‘‘PХТU€њЭЩ\€HМ€ќ\HHTWУ“Ф“PS€XШЭ\XЮHHL€њHMK€ќ\™Щ]HT‘СUФСSPХQ€њљ[Ьљ]HH€Ш]YЫЬћHHSPQСWРРUQУФ–WФTТPРS€›XZЩ\РЫЫќXЭH•QK€Y][Ы[Y™™XЭИHQUSУђSСQ‘‘PХКВ€›[Э™QY™™XЭHSХ‘WСQ‘‘PХС“SђТ€Ъ[ЩHHМ€JK€ЫЫќ\ЭY™™XЭHЧХTUQУSХ‘WСQ‘‘PХИЏHСS—Н€ИУУ•TХСQ‘‘PХТQТWРTPSS‘И€УУ•TХСQ‘‘PХФХT•WФ‘U—УSУ‹€ЫЫќ\ЭШ]YЫЬћHHУУ•TХРРUQУФ–WХХQТ€ЫЫќ\ЭЫЫX›ФЭ\ќ\’YH€ЫЫќ\ЭЫЫX›У[Э™\ИHРУУP“ЧФХT•T—С“РХTЧСS‘T‘Ц_K€]P[љ[TШЬљ\HР]P[љ[S[Э™WТXYќ]€ќ[Y\™[ќXЩS[Э™HH•QK€K‚€УSХ‘WТФ“—РUPТЧHB€В€›[YHHУУTХS‘ФХ’S‘К’Ь›€]XЪИЉK€™\ШЬљ\[Ы€HУУTХS‘ФХ’S‘К€’XњИH›ЩHЪ]Ъ\њ€‚€љЬ›њЛ€ЉK€™Y™™XЭHQ‘‘PХТU€њЭЩ\€HЌK€ќ\HHTWУ“Ф“PS€XШЭ\XЮHHL€њHЌK€ќ\™Щ]HT‘СUФСSPХQ€њљ[Ьљ]HH€Ш]YЫЬћHHSPQСWРРUQУФ–WФTТPРS€›XZЩ\РЫЫќXЭH•QK€ЫЫќ\ЭY™™XЭHУУ•TХСQ‘‘PХТQТWРTPSS‘Л€ЫЫќ\ЭШ]YЫЬћHHУУ•TХРРUQУФ–WРУУУ€ЫЫќ\ЭЫЫX›ФЭ\ќ\’YHУУP“ЧФХT•T—ТФ“—РUPТЛ€ЫЫќ\ЭЫЫX›У[Э™\ИHРУУP“ЧФХT•T—УQTџK€]P[љ[TШЬљ\HР]P[љ[S[Э™WТЬ›ђ]XЪЛ€K‚€УSХ‘WС•T–WРUPТЧHB€В€›[YHHУУTХS‘ФХ’S‘К‘ќ\ћH]XЪИЉK€™\ШЬљ\[Ы€HУУTХS‘ФХ’S‘К€’XњИH›ЩH€ИH[Y\Ч€‚€ќЪ]Ъ\њЬ›њЛ]Л€ЉK€™Y™™XЭHQ‘‘PХТU€њЭЩ\€HMK€ќ\HHTWУ“Ф“PS€XШЭ\XЮHHK€њHЊ€ќ\™Щ]HT‘СUФСSPХQ€њљ[Ьљ]HH€Ш]YЫЬћHHSPQСWРРUQУФ–WФTТPРS€›][R]H•QK€›XZЩ\РЫЫќXЭH•QK€ЫЫќ\ЭY™™XЭHЧХTUQУSХ‘WСQ‘‘PХИЏHСS—Н€ИУУ•TХСQ‘‘PХФUPSUWСTS‘ЧУУ—ХSRS‘И€УУ•TХСQ‘‘PХФХT•WУSУ—ХТUТ•QСTЧРUS•SУ‹€ЫЫќ\ЭШ]YЫЬћHHУУ•TХРРUQУФ–WРУУУ€ЫЫќ\ЭЫЫX›ФЭ\ќ\’YH€ЫЫќ\ЭЫЫX›У[Э™\ИHРУУP“ЧФХT•T—ТФ“—РUPТЛУУP“ЧФХT•T—ФPТЯK€]P[љ[TШЬљ\HР]P[љ[S[Э™WСќ\ћP]XЪЛ€K‚€УSХ‘WТФ“—С’SHB€В€›[YHHУУTХS‘ФХ’S‘К’Ь›€љ[ЉK€™\ШЬљ\[Ы€HУУTХS‘ФХ’S‘К€ђHЭЩ\™ќ[љ[[™И]XЪЛ—€‚€•H\Щ\€]\Э[€™XЪ\™ЩK€ЉK€™Y™™XЭHQ‘‘PХТU€њЭЩ\€HML€ќ\HHTWУ“Ф“PS€XШЭ\XЮHHL€њHK€ќ\™Щ]HT‘СUФСSPХQ€њљ[Ьљ]HH€Ш]YЫЬћHHSPQСWРРUQУФ–WФTТPРS€›XZЩ\РЫЫќXЭH•QK€Y][Ы[Y™™XЭИHQUSУђSСQ‘‘PХКВ€›[Э™QY™™XЭHSХ‘WСQ‘‘PХФ‘PТT‘СK€њЩ[€H•QK€JK€ЫЫќ\ЭY™™XЭHУУ•TХСQ‘‘PХРђQWФХT•WУSУ”ЧХТUСУУСРTPSЛ€ЫЫќ\ЭШ]YЫЬћHHУУ•TХРРUQУФ–WРУУУ€ЫЫќ\ЭЫЫX›ФЭ\ќ\’YH€ЫЫќ\ЭЫЫX›У[Э™\ИHРУУP“ЧФХT•T—ТФ“—РUPТЯK€]P[љ[TШЬљ\HР]P[љ[S[Э™WТЬ›‘љ[€ќ[Y\™[ќXЩS[Э™HH•QK€K‚€УSХ‘WХPТУWHB€В€›[YHHУУTХS‘ФХ’S‘К•XЪЫHЉK€™\ШЬљ\[Ы€HУУTХS‘ФХ’S‘К€ђЪ\™Щ\ИH›ЩHЪ]Hќ[W€‚€›ЩHXЪЫK€ЉK€ЪY€—ХTUQУSХ‘WСUHЏHСS—НВ€њЭЩ\€H€Щ[Y€—ХTUQУSХ‘WСUHЏHСS—НB€њЭЩ\€HL€Щ[ЩB€њЭЩ\€HНK€Щ[™Y‚€™Y™™XЭHQ‘‘PХТU€ќ\HHTWУ“Ф“PS€XШЭ\XЮHH—ХTUQУSХ‘WСUHЏHСS—НHИL€MK€њHНK€ќ\™Щ]HT‘СUФСSPХQ€њљ[Ьљ]HH€Ш]YЫЬћHHSPQСWРРUQУФ–WФTТPРS€›XZЩ\РЫЫќXЭH•QK€ЫЫќ\ЭY™™XЭHУУ•TХСQ‘‘PХТQТWРTPSS‘Л€ЫЫќ\ЭШ]YЫЬћHHУУ•TХРРUQУФ–WХХQТ€ЫЫќ\ЭЫЫX›ФЭ\ќ\’YH€ЫЫќ\ЭЫЫX›У[Э™\ИHРУУP“ЧФХT•T—СQ‘S”СWРХT“УУP“ЧФХT•T—ТT‘S‹УУP“ЧФХT•T—УQTџK€]P[љ[TШЬљ\HР]P[љ[S[Э™WХXЪЫK€K‚€УSХ‘WР“СWФУSWHB€В€›[YHHУУTХS‘ФХ’S‘Кђ›ЩHЫ[HЉK€™\ШЬљ\[Ы€HУУTХS‘ФХ’S‘К€ђHќ[X›ЩHЫ[H]X^W€‚€Ш]\ЩH\[\Ъ\Л€ЉK€™Y™™XЭHQ‘‘PХТU€њЭЩ\€HK€ќ\HHTWУ“Ф“PS€XШЭ\XЮHHL€њHMK€ќ\™Щ]HT‘СUФСSPХQ€њљ[Ьљ]HH€Ш]YЫЬћHHSPQСWРРUQУФ–WФTТPРS€›XZЩ\РЫЫќXЭH•QK€›Z[љ[Z^™QЭX›Q[XYЩHH—ХTUQУSХ‘WС“QФИЏHСS—Н‹€њЪЮP]P[›™YH•QK€Y][Ы[Y™™XЭИHQUSУђSСQ‘‘PХКВ€›[Э™QY™™XЭHSХ‘WСQ‘‘PХФTђSTТTЛ€Ъ[ЩHHМ€JK€ЫЫќ\ЭY™™XЭHУУ•TХСQ‘‘PХРђQWФХT•WС”“У•УSУ‹€ЫЫќ\ЭШ]YЫЬћHHУУ•TХРРUQУФ–WХХQТ€ЫЫќ\ЭЫЫX›ФЭ\ќ\’YH€ЫЫќ\ЭЫЫX›У[Э™\ИHМK€]P[љ[TШЬљ\HР]P[љ[S[Э™WР›ЩTЫ[K€ќ[Y\™[ќXЩS[Э™HH•QK€K‚€УSХ‘WХФђTHB€В€›[YHHУУTХS‘ФХ’S‘К•Ь\ЉK€™\ШЬљ\[Ы€HУУTХS‘ФХ’S‘К€•Ь\И[™Ь]YY^™\ИH›ЩW€‚€’S‘S‘ЧХT“”И€[Y\ИЪ]љ[™\Л]Л€ЉK€™Y™™XЭHQ‘‘PХТU€њЭЩ\€HMK€ќ\HHTWУ“Ф“PS€XШЭ\XЮHH—ХTUQУSХ‘WСUHЏHСS—НHИL€K€њHЊ€ќ\™Щ]HT‘СUФСSPХQ€њљ[Ьљ]HH€Ш]YЫЬћHHSPQСWРРUQУФ–WФTТPРS€›XZЩ\РЫЫќXЭH•QK€љYЫ›Ь™\ТЪ[™ЬФ›ШЪИH—ХTUQУSХ‘WС“QФИСS—МЛ€Y][Ы[Y™™XЭИHQUSУђSСQ‘‘PХКВ€›[Э™QY™™XЭHSХ‘WСQ‘‘PХХФђT€›][\Эљ[™ЛќЬ\YH—УTСЧХФђTQХФђT€JK€ЫЫќ\ЭY™™XЭHУУ•TХСQ‘‘PХСУ•СVТUWРUQQSђСK€ЫЫќ\ЭШ]YЫЬћHHУУ•TХРРUQУФ–WХХQТ€ЫЫќ\ЭЫЫX›ФЭ\ќ\’YH€ЫЫќ\ЭЫЫX›У[Э™\ИHМK€]P[љ[TШЬљ\HР]P[љ[S[Э™WХЬ\€ќ[Y\™[ќXЩS[Э™HH•QK€K‚€УSХ‘WХRСWСХУ—HB€В€›[YHHУУTХS‘ФХ’S‘К•ZЩHЭЫ€ЉK€™\ШЬљ\[Ы€HУУTХS‘ФХ’S‘К€ђH™XЪЫ\ЬИЪ\™ЩH]XЪЧ€‚€ќ][ЫИ\ќИH\Щ\‹€ЉK€™Y™™XЭHQ‘‘PХФ‘PУТS€њЭЩ\€HL€ќ\HHTWУ“Ф“PS€XШЭ\XЮHHK€њHЊ€ќ\™Щ]HT‘СUФСSPХQ€њљ[Ьљ]HH€Ш]YЫЬћHHSPQСWРРUQУФ–WФTТPРS€\™Э[Y[ќHИњ™XЫЪ[\Щ[ќYЩHHЌHK€›XZЩ\РЫЫќXЭH•QK€ЫЫќ\ЭY™™XЭHУУ•TХСQ‘‘PХХTСT—УSФ‘WСPTТSWФХT•Q€ЫЫќ\ЭШ]YЫЬћHHУУ•TХРРUQУФ–WХХQТ€ЫЫќ\ЭЫЫX›ФЭ\ќ\’YH€ЫЫќ\ЭЫЫX›У[Э™\ИHРУУP“ЧФХT•T—С“РХTЧСS‘T‘ЦKУУP“ЧФХT•T—ТT‘SџK€]P[љ[TШЬљ\HР]P[љ[S[Э™WХZЩQЭЫ‹€ќ[Y\™[ќXЩS[Э™HH•QK€K‚€УSХ‘WХђTТHB€В€›[YHHУУTХS‘ФХ’S‘К•\ЪЉK€™\ШЬљ\[Ы€HУУTХS‘ФХ’S‘К€ђH[\YЩHЩ€€ИИ\›њЧ€‚€ќ]ЫЫ™ќ\Щ\ИH\Щ\‹€ЉK€™Y™™XЭHQ‘‘PХТU€њЭЩ\€H—ХTUQУSХ‘WСUHЏHСS—НHИLЊ€L€ќ\HHTWУ“Ф“PS€XШЭ\XЮHHL€њH—ХTUQУSХ‘WСUHЏHСS—НHИL€Њ€ќ\™Щ]HT‘СUФђS‘УK€њљ[Ьљ]HH€Ш]YЫЬћHHSPQСWРРUQУФ–WФTТPРS€›XZЩ\РЫЫќXЭH•QK€љ[њЭќXЭ[›™YH•QK€Y][Ы[Y™™XЭИHQUSУђSСQ‘‘PХКВ€›[Э™QY™™XЭHSХ‘WСQ‘‘PХХђTТ€њЩ[€H•QK€JK€ЫЫќ\ЭY™™XЭHЧХTUQУSХ‘WСQ‘‘PХИЏHСS—Н€ИУУ•TХСQ‘‘PХХTСT—УSФ‘WСPTТSWФХT•Q€УУ•TХСQ‘‘PХТђSTЧУХT”ЧР•UУRTФЧУУ‘WХT“‹€ЫЫќ\ЭШ]YЫЬћHHУУ•TХРРUQУФ–WХХQТ€ЫЫќ\ЭЫЫX›ФЭ\ќ\’YH€ЫЫќ\ЭЫЫX›У[Э™\ИHРУУP“ЧФХT•T—ФђQС_K€]P[љ[TШЬљ\HР]P[љ[S[Э™WХ\Ъ€ќ[Y\™[ќXЩS[Э™HH•QK€K‚€УSХ‘WСХP“WСQСWHB€В€›[YHHУУTХS‘ФХ’S‘К‘ЭX›KQYЩHЉK€™\ШЬљ\[Ы€HУУTХS‘ФХ’S‘К€ђHY™K\љ\ЪЪ[™ИXЪЫH]€‚€[ЫИ\ќИH\Щ\‹€ЉK€™Y™™XЭHQ‘‘PХФ‘PУТS€њЭЩ\€H—ХTUQУSХ‘WСUHЏHСS—М€ИLЊ€L€ќ\HHTWУ“Ф“PS€XШЭ\XЮHHL€њHMK€ќ\™Щ]HT‘СUФСSPХQ€њљ[Ьљ]HH€Ш]YЫЬћHHSPQСWРРUQУФ–WФTТPРS€\™Э[Y[ќHИњ™XЫЪ[\Щ[ќYЩHH—ХTUQУSХ‘WСUHЏHСS—МИИМИ€ЌHK€›XZЩ\РЫЫќXЭH•QK€ЫЫќ\ЭY™™XЭHУУ•TХСQ‘‘PХХTСT—УSФ‘WСPTТSWФХT•Q€ЫЫќ\ЭШ]YЫЬћHHУУ•TХРРUQУФ–WХХQТ€ЫЫќ\ЭЫЫX›ФЭ\ќ\’YH€ЫЫќ\ЭЫЫX›У[Э™\ИHРУУP“ЧФХT•T—С“РХTЧСS‘T‘ЦKУУP“ЧФХT•T—ТT‘SџK€]P[љ[TШЬљ\HР]P[љ[S[Э™WСЭX›QYЩK€ќ[Y\™[ќXЩS[Э™HH•QK€K‚€УSХ‘WХRSХТTHB€В€›[YHHУУTХS‘ФХ’S‘К•Z[Ъ\ЉK€™\ШЬљ\[Ы€HУУTХS‘ФХ’S‘К€•ШYЬИHZ[ИЭЩ\€W€‚€™›ЩIЬИY™[њЩK€ЉK€™Y™™XЭHQ‘‘PХСQ‘S”СWСХУ‹€њЭЩ\€H€ќ\HHTWУ“Ф“PS€XШЭ\XЮHHL€њHМ€ќ\™Щ]HT‘СUР“Х€њљ[Ьљ]HH€Ш]YЫЬћHHSPQСWРРUQУФ–WФХUTЛ€ћ“[Э™HHИ™Y™™XЭH—СQ‘‘PХРUЧХTМHK€›XYЪXРЫШ]Y™™XЭYH•QK€ЫЫќ\ЭY™™XЭHУУ•TХСQ‘‘PХР‘UT—ТQ—УTХ€ЫЫќ\ЭШ]YЫЬћHHУУ•TХРРUQУФ–WРХUK€ЫЫќ\ЭЫЫX›ФЭ\ќ\’YH€ЫЫќ\ЭЫЫX›У[Э™\ИHРУУP“ЧФХT•T—РТT“_K€]P[љ[TШЬљ\HР]P[љ[S[Э™WХZ[Ъ\€K‚€УSХ‘WФТTУУ—ФХS‘ЧHB€В€›[YHHУУTХS‘ФХ’S‘К”Ъ\ЫЫ€Э[™ИЉK€™\ШЬљ\[Ы€HУУTХS‘ФХ’S‘К€ђHЮXИ]XЪИЪ]\њЛ€‚€™]Л‹]X^HЪ\ЫЫ‹€ЉK€™Y™™XЭHQ‘‘PХТU€њЭЩ\€HMK€ќ\HHTWФТTУУ‹€XШЭ\XЮHHL€њHНK€ќ\™Щ]HT‘СUФСSPХQ€њљ[Ьљ]HH€Ш]YЫЬћHHSPQСWРРUQУФ–WФTТPРS€Y][Ы[Y™™XЭИHQUSУђSСQ‘‘PХКВ€›[Э™QY™™XЭHSХ‘WСQ‘‘PХФТTУУ‹€Ъ[ЩHH—ХTUQУSХ‘WСUHЏHСS—М€ИМ€Њ€JK€ЫЫќ\ЭY™™XЭHУУ•TХСQ‘‘PХФХT•WФ‘U—УSУ‹€ЫЫќ\ЭШ]YЫЬћHHУУ•TХРРUQУФ–WФУPT•€ЫЫќ\ЭЫЫX›ФЭ\ќ\’YH€ЫЫќ\ЭЫЫX›У[Э™\ИHМK€]P[љ[TШЬљ\HР]P[љ[S[Э™WФЪ\ЫЫ”Э[™Л€K‚€УSХ‘WХТS‘QQWHB€В€›[YHHУУTХS‘ФХ’S‘К•Ъ[™YYHЉK€™\ШЬљ\[Ы€HУУTХS‘ФХ’S‘К€‘›Ь™[YИЭ[™Щ\њИX€›ЩW€‚€ќЪXЩK€X^HЪ\ЫЫ‹€ЉK€™Y™™XЭHQ‘‘PХТU€њЭЩ\€HЌK€ќ\HHTWР•QЛ€XШЭ\XЮHHL€њHЊ€ќ\™Щ]HT‘СUФСSPХQ€њљ[Ьљ]HH€Ш]YЫЬћHHSPQСWРРUQУФ–WФTТPРS€љYЫ›Ь™\ТЪ[™ЬФ›ШЪИH
+—ХTUQУSХ‘WС“QФИOHСS—МИ—ХTUQУSХ‘WС“QФИOHСS—Н
+K€њЭљZЩPЫЭ[ќH‹€Y][Ы[Y™™XЭИHQUSУђSСQ‘‘PХКВ€›[Э™QY™™XЭHSХ‘WСQ‘‘PХФТTУУ‹€Ъ[ЩHHЊ€JK€ЫЫќ\ЭY™™XЭHЧХTUQУSХ‘WСQ‘‘PХИЏHСS—Н€ИУУ•TХСQ‘‘PХР‘UT—ТQ—ФРSQWХTH€УУ•TХСQ‘‘PХФХT•WФ‘U—УSУ‹€ЫЫќ\ЭШ]YЫЬћHHУУ•TХРРUQУФ–WРУУУ€ЫЫќ\ЭЫЫX›ФЭ\ќ\’YH€ЫЫќ\ЭЫЫX›У[Э™\ИHМK€]P[љ[TШЬљ\HР]P[љ[S[Э™WХЪ[™YYK€ќ[Y\™[ќXЩS[Э™HH•QK€K‚€УSХ‘WФS—УRTФТSWHB€В€›[YHHУУTХS‘ФХ’S‘К”[€Z\ЬЪ[HЉK€™\ШЬљ\[Ы€HУУTХS‘ФХ’S‘К€”Ъ\њ[њИ\™Hљ\™YЧ€‚€њЭљZЩH€ИH[Y\Л€ЉK€™Y™™XЭHQ‘‘PХТU€њЭЩ\€H—ХTUQУSХ‘WСUHЏHСS—Н€ИЌH€M€ќ\HHTWР•QЛ€XШЭ\XЮHH—ХTUQУSХ‘WСUHЏHСS—Н€ИMH€K€њHЊ€ќ\™Щ]HT‘СUФСSPХQ€њљ[Ьљ]HH€Ш]YЫЬћHHSPQСWРРUQУФ–WФTТPРS€›][R]H•QK€ЫЫќ\ЭY™™XЭHЧХTUQУSХ‘WСQ‘‘PХИЏHСS—Н€ИУУ•TХСQ‘‘PХФUPSUWСTS‘ЧУУ—ХSRS‘И€УУ•TХСQ‘‘PХФХT•WУSУ—ХТUТ•QСTЧРUS•SУ‹€ЫЫќ\ЭШ]YЫЬћHHУУ•TХРРUQУФ–WРУУУ€ЫЫќ\ЭЫЫX›ФЭ\ќ\’YH€ЫЫќ\ЭЫЫX›У[Э™\ИHМK€]P[љ[TШЬљ\HР]P[љ[S[Э™WФ[“Z\ЬЪ[K€K‚€УSХ‘WУQT—HB€В€›[YHHУУTХS‘ФХ’S‘К“Y\€ЉK€™\ШЬљ\[Ы€HУУTХS‘ФХ’S‘К€‘њљYЪ[њИH›Щ\ИЪ]W€‚€›Y\€ИЭЩ\€Y™[њЩK€ЉK€™Y™™XЭHQ‘‘PХСQ‘S”СWСХУ‹€њЭЩ\€H€ќ\HHTWУ“Ф“PS€XШЭ\XЮHHL€њHМ€ќ\™Щ]HT‘СUР“Х€њљ[Ьљ]HH€Ш]YЫЬћHHSPQСWРРUQУФ–WФХUTЛ€ћ“[Э™HHИ™Y™™XЭH—СQ‘‘PХРUЧХTМHK€›XYЪXРЫШ]Y™™XЭYH•QK€ЫЫќ\ЭY™™XЭHЧХTUQУSХ‘WСQ‘‘PХИЏHСS—Н€ИУУ•TХСQ‘‘PХФХT•WУSУ—ХТUТ•QСTЧРUS•SУ€€УУ•TХСQ‘‘PХСУ•СVТUWРUQQSђСK€ЫЫќ\ЭШ]YЫЬћHHУУ•TХРРUQУФ–WРУУУ€ЫЫќ\ЭЫЫX›ФЭ\ќ\’YHУУP“ЧФХT•T—УQT‹€ЫЫќ\ЭЫЫX›У[Э™\ИHРУУP“ЧФХT•T—ФђQСKУУP“ЧФХT•T—ФРРT–WСђPС_K€]P[љ[TШЬљ\HР]P[љ[S[Э™WУY\‹€K‚€УSХ‘WР’UWHB€В€›[YHHУУTХS‘ФХ’S‘Кђљ]HЉK€™\ШЬљ\[Ы€HУУTХS‘ФХ’S‘К€ђљ]\ИЪ]љXЪ[Э\И[™ЬЛ—€‚€“X^HШ]\ЩH›[Ъ[™Л€ЉK€™Y™™XЭHQ‘‘PХТU€њЭЩ\€HЊ€ќ\HH—ХTUQУSХ‘WХTTИЏHСS—М€ИTWСT’И€TWУ“Ф“PS€XШЭ\XЮHHL€њHЌK€ќ\™Щ]HT‘СUФСSPХQ€њљ[Ьљ]HH€Ш]YЫЬћHHSPQСWРРUQУФ–WФTТPРS€›XZЩ\РЫЫќXЭH•QK€љ][™У[Э™HH•QK€Y][Ы[Y™™XЭИHQUSУђSСQ‘‘PХКВ€›[Э™QY™™XЭHSХ‘WСQ‘‘PХС“SђТ€Ъ[ЩHH—ХTUQУSХ‘WСUHЏHСS—М€ИМ€L€JK€ЫЫќ\ЭY™™XЭHЧХTUQУSХ‘WСQ‘‘PХИЏHСS—Н€ИУУ•TХСQ‘‘PХФХT•WФ‘U—УSУ€€УУ•TХСQ‘‘PХРђQWФХT•WФ‘U—УSУ”Л€ЫЫќ\ЭШ]YЫЬћHHУУ•TХРРUQУФ–WХХQТ€ЫЫќ\ЭЫЫX›ФЭ\ќ\’YH€ЫЫќ\ЭЫЫX›У[Э™\ИHРУУP“ЧФХT•T—УQT‹УУP“ЧФХT•T—ФРРT–WСђPС_K€]P[љ[TШЬљ\HР]P[љ[S[Э™WРљ]K€ќ[Y\™[ќXЩS[Э™HH•QK€K‚€УSХ‘WСФ“ХУHB€В€›[YHHУУTХS‘ФХ’S‘К‘Ь›ЭЫЉK€™\ШЬљ\[Ы€HУУTХS‘ФХ’S‘К€‘Ь›ЭЫИЭ][HИ™YXЩHW€‚€™›ЩIЬИ]XЪЛ€ЉK€™Y™™XЭHQ‘‘PХРUPТЧСХУ‹€њЭЩ\€H€ќ\HHTWУ“Ф“PS€XШЭ\XЮHHL€њH€ќ\™Щ]HT‘СUР“Х€њљ[Ьљ]HH€Ш]YЫЬћHHSPQСWРРUQУФ–WФХUTЛ€ћ“[Э™HHИ™Y™™XЭH—СQ‘‘PХСQ—ХTМHK€›XYЪXРЫШ]Y™™XЭYH•QK€њЫЭ[™[Э™HH•QK€љYЫ›Ь™\ФЭXњЭ]]HH—ХTUQУSХ‘WС“QФИЏHСS—Н‹€ЫЫќ\ЭY™™XЭHУУ•TХСQ‘‘PХР‘UT—ТQ—УTХ€ЫЫќ\ЭШ]YЫЬћHHУУ•TХРРUQУФ–WРХUK€ЫЫќ\ЭЫЫX›ФЭ\ќ\’YH€ЫЫќ\ЭЫЫX›У[Э™\ИHРУУP“ЧФХT•T—РТT“_K€]P[љ[TШЬљ\HР]P[љ[S[Э™WСЬ›ЭЫ€K‚€УSХ‘WФ“РT—HB€В€›[YHHУУTХS‘ФХ’S‘К”›Ш\€ЉK€™\ШЬљ\[Ы€HУУTХS‘ФХ’S‘К€”ЭЪ]Ъ\ИH›ЩHЭ]€‚€›Ь€[™ИЪ[]K€ЉK€™Y™™XЭHQ‘‘PХФ“РT‹€њЭЩ\€H€ќ\HHTWУ“Ф“PS€XШЭ\XЮHH—ХTUQУSХ‘WСUHЏHСS—Н€И€L€њHЊ€ќ\™Щ]HT‘СUФСSPХQ€ЪY€—ХTUQУSХ‘WСUHЏHСS—МВ€њљ[Ьљ]HHM‹€Щ[Y€—ХTUQУSХ‘WСUHOHСS—М‚€њљ[Ьљ]HHLK€Щ[ЩB€њљ[Ьљ]HH€Щ[™Y‚€Ш]YЫЬћHHSPQСWРРUQУФ–WФХUTЛ€ћ“[Э™HHИ™Y™™XЭH—СQ‘‘PХСQ—ХTМHK€љYЫ›Ь™\Ф›ЭXЭH—ХTUQУSХ‘WС“QФИЏHСS—Н‹€љYЫ›Ь™\ФЭXњЭ]]HH—ХTUQУSХ‘WС“QФИЏHСS—Н‹€›XYЪXРЫШ]Y™™XЭYH—ХTUQУSХ‘WС“QФИЏHСS—НK€њЫЭ[™[Э™HH•QK€ЫЬXШ][›™YH—ХTUQУSХ‘WС“QФИЏHСS—Н‹€\ЬЪ\Э[›™YH—ХTUQУSХ‘WС“QФИЏHСS—Н‹€ЫЫќ\ЭY™™XЭHЧХTUQУSХ‘WСQ‘‘PХИЏHСS—Н€ИУУ•TХСQ‘‘PХУ‘VРTPSУUT€€УУ•TХСQ‘‘PХФРФђSP“WУ‘VХT“—УФ‘T‹€ЫЫќ\ЭШ]YЫЬћHHУУ•TХРРUQУФ–WРУУУ€ЫЫќ\ЭЫЫX›ФЭ\ќ\’YH€ЫЫќ\ЭЫЫX›У[Э™\ИHРУУP“ЧФХT•T—ФХPSФ“РТЛУУP“ЧФХT•T—СS•ђRS“QS•УУP“ЧФХT•T—ФVWУ’PСKУУP“ЧФХT•T—ФФRСTЛУУP“ЧФХT•T—ХЦPЧФФRСTЯK€]P[љ[TШЬљ\HР]P[љ[S[Э™WФ›Ш\‹€ќ[Y\™[ќXЩS[Э™HH•QK€K‚€УSХ‘WФТS‘ЧHB€В€›[YHHУУTХS‘ФХ’S‘К”Ъ[™ИЉK€™\ШЬљ\[Ы€HУУTХS‘ФХ’S‘К€ђHЫЫЭ[™ИЫЫ™И[ИW€‚€™›ЩH[ќИHY\Ы[X™\‹€ЉK€™Y™™XЭHQ‘‘PХУ“У—Х“УUSWФХUTЛ€њЭЩ\€H€ќ\HHTWУ“Ф“PS€XШЭ\XЮHHMK€њHMK€ќ\™Щ]HT‘СUФСSPХQ€њљ[Ьљ]HH€Ш]YЫЬћHHSPQСWРРUQУФ–WФХUTЛ€\™Э[Y[ќHИ››Ы•›Ы][TЭ]\ИHSХ‘WСQ‘‘PХФУQTK€ћ“[Э™HHИ™Y™™XЭH—СQ‘‘PХФФХTМHK€љYЫ›Ь™\ФЭXњЭ]]HH—ХTUQУSХ‘WС“QФИЏHСS—Н‹€›XYЪXРЫШ]Y™™XЭYH•QK€њЫЭ[™[Э™HH•QK€ЫЫќ\ЭY™™XЭHУУ•TХСQ‘‘PХУPRСWС“УХТS‘ЧУSУ”ЧУ‘T•“ХTЛ€ЫЫќ\ЭШ]YЫЬћHHУУ•TХРРUQУФ–WРХUK€ЫЫќ\ЭЫЫX›ФЭ\ќ\’YHУУP“ЧФХT•T—ФТS‘Л€ЫЫќ\ЭЫЫX›У[Э™\ИHМK€]P[љ[TШЬљ\HР]P[љ[S[Э™WФЪ[™Л€ќ[Y\™[ќXЩS[Э™HH•QK€K‚€УSХ‘WФХTT”УУ’PЧHB€В€›[YHHУУTХS‘ФХ’S‘К”Э\\њЫЫљXИЉK€™\ШЬљ\[Ы€HУУTХS‘ФХ’S‘К€‘[Z]Иљ^\њ™HЫЭ[™Ш]™\Ч€‚€ќ]X^HЫЫ™ќ\ЩHH›ЩK€ЉK€™Y™™XЭHQ‘‘PХРУУ‘•TСK€њЭЩ\€H€ќ\HHTWУ“Ф“PS€XШЭ\XЮHHMK€њHЊ€ќ\™Щ]HT‘СUФСSPХQ€њљ[Ьљ]HH€Ш]YЫЬћHHSPQСWРРUQУФ–WФХUTЛ€ћ“[Э™HHИ™Y™™XЭH—СQ‘‘PХФФХTМHK€љYЫ›Ь™\ФЭXњЭ]]HH—ХTUQУSХ‘WС“QФИЏHСS—Н‹€›XYЪXРЫШ]Y™™XЭYH•QK€њЫЭ[™[Э™HH•QK€ЫЫќ\ЭY™™XЭHЧХTUQУSХ‘WСQ‘‘PХИЏHСS—Н€ИУУ•TХСQ‘‘PХФТQ•Т•QСWРUS•SУ€€УУ•TХСQ‘‘PХФРФђSP“WУ‘VХT“—УФ‘T‹€ЫЫќ\ЭШ]YЫЬћHHУУ•TХРРUQУФ–WФУPT•€ЫЫќ\ЭЫЫX›ФЭ\ќ\’YH€ЫЫќ\ЭЫЫX›У[Э™\ИHМK€]P[љ[TШЬљ\HР]P[љ[S[Э™WФЭ\\њЫЫљXЛ€ќ[Y\™[ќXЩS[Э™HH•QK€K‚€УSХ‘WФУУ’PЧР“УУWHB€В€›[YHHУУTХS‘ФХ’S‘К”ЫЫљXИ›ЫЫHЉK€™\ШЬљ\[Ы€HУУTХS‘ФХ’S‘К€“][Ъ\ИЪШЪИШ]™\И]€‚€[Ш^\И[™›XЭЊ[XYЩK€ЉK€™Y™™XЭHQ‘‘PХС’VQТСSPQСK€њЭЩ\€HK€ќ\HHTWУ“Ф“PS€XШЭ\XЮHHL€њHЊ€ќ\™Щ]HT‘СUФСSPХQ€њљ[Ьљ]HH€Ш]YЫЬћHHSPQСWРРUQУФ–WФФPТPS€\™Э[Y[ќHИ™љ^Y[XYЩHHЊK€ЫЫќ\ЭY™™XЭHЧХTUQУSХ‘WСQ‘‘PХИЏHСS—Н€ИУУ•TХСQ‘‘PХФ‘TUUSУ—У“ХР“Ф’S‘И€УУ•TХСQ‘‘PХР‘UT—ТQ—ФРSQWХTK€ЫЫќ\ЭШ]YЫЬћHHУУ•TХРРUQУФ–WРУУУ€ЫЫќ\ЭЫЫX›ФЭ\ќ\’YH€ЫЫќ\ЭЫЫX›У[Э™\ИHМK€]P[љ[TШЬљ\HР]P[љ[S[Э™WФЫЫљXР›ЫЫK€ќ[Y\™[ќXЩS[Э™HH•QK€K‚€УSХ‘WСTРP“WHB€В€›[YHHУУTХS‘ФХ’S‘К‘\ШX›HЉK€™\ШЬљ\[Ы€HУУTХS‘ФХ’S‘К€ЪY€—СTРP“WХT“”ИЏHСS—НB€‘›Ь€\›њЛ™]™[ќИ›ЩW€‚€Щ[Y€—СTРP“WХT“”ИOHСS—Н€‘›Ь€MИ\›њЛ™]™[ќИ›ЩW€‚€Щ[ЩB€‘›Ь€‹MH\›њЛ™]™[ќИ›ЩW€‚€Щ[™Y‚€™њ›ЫH\Ъ[™И\Э\ЩY[Э™K€ЉK€ЪY€—ХTUQУSХ‘WСUHЏHСS—НB€XШЭ\XЮHHL€Щ[Y€—ХTUQУSХ‘WСUHOHСS—Н€XШЭ\XЮHH€Щ[ЩB€XШЭ\XЮHHMK€Щ[™Y‚€™Y™™XЭHQ‘‘PХСTРP“K€њЭЩ\€H€ќ\HHTWУ“Ф“PS€њHЊ€ќ\™Щ]HT‘СUФСSPХQ€њљ[Ьљ]HH€Ш]YЫЬћHHSPQСWРРUQУФ–WФХUTЛ€ћ“[Э™HHИ™Y™™XЭH—СQ‘‘PХФ‘TСUФХUИK€љYЫ›Ь™\ФЭXњЭ]]HH•QK€›XYЪXРЫШ]Y™™XЭYH—ХTUQУSХ‘WС“QФИЏHСS—НK€ЫЫќ\ЭY™™XЭHУУ•TХСQ‘‘PХУPRСWС“УХТS‘ЧУSУ”ЧУ‘T•“ХTЛ€ЫЫќ\ЭШ]YЫЬћHHУУ•TХРРUQУФ–WФУPT•€ЫЫќ\ЭЫЫX›ФЭ\ќ\’YH€ЫЫќ\ЭЫЫX›У[Э™\ИHМK€]P[љ[TШЬљ\HР]P[љ[S[Э™WС\ШX›K€ќ[Y\™[ќXЩS[Э™HH•QK€K‚€УSХ‘WРPТQHB€В€›[YHHУУTХS‘ФХ’S‘КђXЪYЉK€™\ШЬљ\[Ы€HУУTХS‘ФХ’S‘К€”Ь^\ИHYK[Y[[™ИXЪY—€‚€ЪY€—ХTUQУSХ‘WСUHЏHСS—Н€“X^HЭЩ\€Ь€Y‹€ЉK€Щ[ЩB€“X^HЭЩ\€Y™[њЩK€ЉK€Щ[™Y‚€™Y™™XЭHQ‘‘PХТU€њЭЩ\€H€ќ\HHTWФТTУУ‹€XШЭ\XЮHHL€њHМ€ќ\™Щ]HT‘СUР“Х€њљ[Ьљ]HH€Ш]YЫЬћHHSPQСWРРUQУФ–WФФPТPS€Y][Ы[Y™™XЭИHQUSУђSСQ‘‘PХКВ€›[Э™QY™™XЭH—ХTUQУSХ‘WСUHЏHСS—НИSХ‘WСQ‘‘PХФФСQ—УRS•TЧМH€SХ‘WСQ‘‘PХСQ—УRS•TЧМK€Ъ[ЩHH—ХTUQУSХ‘WСUHЏHСS—М€ИL€МЛ€JK€ЫЫќ\ЭY™™XЭHЧХTUQУSХ‘WСQ‘‘PХИЏHСS—Н€ИУУ•TХСQ‘‘PХХУФ”СS—РУУ‘USУ—УС—Ф‘U—УSУ”И€УУ•TХСQ‘‘PХРђQWФХT•WС”“У•УSУ‹€ЫЫќ\ЭШ]YЫЬћHHУУ•TХРРUQУФ–WФУPT•€ЫЫќ\ЭЫЫX›ФЭ\ќ\’YH€ЫЫќ\ЭЫЫX›У[Э™\ИHМK€]P[љ[TШЬљ\HР]P[љ[S[Э™WРXЪY€K‚€УSХ‘WСSP‘T—HB€В€›[YHHУУTХS‘ФХ’S‘К‘[X™\€ЉK€™\ШЬљ\[Ы€HУУTХS‘ФХ’S‘К€ђHЩXZИљ\™H]XЪИ]X^W€‚€љ[™›XЭHќ\›‹€ЉK€™Y™™XЭHQ‘‘PХТU€њЭЩ\€H€ќ\HHTWС’T‘K€XШЭ\XЮHHL€њHЌK€ќ\™Щ]HT‘СUФСSPХQ€њљ[Ьљ]HH€Ш]YЫЬћHHSPQСWРРUQУФ–WФФPТPS€Y][Ы[Y™™XЭИHQUSУђSСQ‘‘PХКВ€›[Э™QY™™XЭHSХ‘WСQ‘‘PХР•T“‹€Ъ[ЩHHL€JK€ЫЫќ\ЭY™™XЭHУУ•TХСQ‘‘PХТQТWРTPSS‘Л€ЫЫќ\ЭШ]YЫЬћHHЧХTUQУSХ‘WРРUQУФ’QTИЏHСS—Н€ИУУ•TХРРUQУФ–WРХUH€УУ•TХРРUQУФ–WР‘PUUK€ЫЫќ\ЭЫЫX›ФЭ\ќ\’YH€ЫЫќ\ЭЫЫX›У[Э™\ИHРУУP“ЧФХT•T—ФХS“–WСV_K€]P[љ[TШЬљ\HР]P[љ[S[Э™WС[X™\‹€K‚€УSХ‘WС“SQU“ХСT—HB€В€›[YHHУУTХS‘ФХ’S‘К‘›[Y]›ЭЩ\€ЉK€™\ШЬљ\[Ы€HУУTХS‘ФХ’S‘К€ђHЭЩ\™ќ[љ\™H]XЪИ]€‚€›X^H[™›XЭHќ\›‹€ЉK€™Y™™XЭHQ‘‘PХТU€њЭЩ\€H—ХTUQУSХ‘WСUHЏHСS—Н€ИL€MK€ќ\HHTWС’T‘K€XШЭ\XЮHHL€њHMK€ќ\™Щ]HT‘СUФСSPХQ€њљ[Ьљ]HH€Ш]YЫЬћHHSPQСWРРUQУФ–WФФPТPS€Y][Ы[Y™™XЭИHQUSУђSСQ‘‘PХКВ€›[Э™QY™™XЭHSХ‘WСQ‘‘PХР•T“‹€Ъ[ЩHHL€JK€ЫЫќ\ЭY™™XЭHУУ•TХСQ‘‘PХТQТWРTPSS‘Л€ЫЫќ\ЭШ]YЫЬћHHУУ•TХРРUQУФ–WР‘PUUK€ЫЫќ\ЭЫЫX›ФЭ\ќ\’YH€ЫЫќ\ЭЫЫX›У[Э™\ИHРУУP“ЧФХT•T—ФХS“–WСV_K€]P[љ[TШЬљ\HР]P[љ[S[Э™WС›[Y]›ЭЩ\‹€ќ[Y\™[ќXЩS[Э™HH•QK€K‚€УSХ‘WУRTХHB€В€›[YHHУУTХS‘ФХ’S‘К“Z\ЭЉK€™\ШЬљ\[Ы€HУУTХS‘ФХ’S‘К€ђЬ™X]\ИHZ\Э]ЭЬЧ€‚€њ™YXЭ[Ы€Щ€Э]Л€ЉK€™Y™™XЭHQ‘‘PХУRTХ€њЭЩ\€H€ќ\HHTWТPСK€XШЭ\XЮHH€њHМ€ќ\™Щ]HT‘СUХTСT‹€њљ[Ьљ]HH€Ш]YЫЬћHHSPQСWРРUQУФ–WФХUTЛ€ћ“[Э™HHИ™Y™™XЭH—СQ‘‘PХФ‘PУХ‘T—ТK€љYЫ›Ь™\Ф›ЭXЭH•QK€›Z\њ›Ь“[Э™P[›™YH•QK€њЫ]ЪY™™XЭYH•QK€ЫЫќ\ЭY™™XЭHУУ•TХСQ‘‘PХРU“ТQФХT•K€ЫЫќ\ЭШ]YЫЬћHHУУ•TХРРUQУФ–WР‘PUUK€ЫЫќ\ЭЫЫX›ФЭ\ќ\’YH€ЫЫќ\ЭЫЫX›У[Э™\ИHМK€]P[љ[TШЬљ\HР]P[љ[S[Э™WУZ\Э€ќ[Y\™[ќXЩS[Э™HH•QK€K‚€УSХ‘WХРUT—СХS—HB€В€›[YHHУУTХS‘ФХ’S‘К•Ш]\€Э[€ЉK€™\ШЬљ\[Ы€HУУTХS‘ФХ’S‘К€”Ь]Z\ќИШ]\€И]XЪЧ€‚€ќH›ЩK€ЉK€™Y™™XЭHQ‘‘PХТU€њЭЩ\€H€ќ\HHTWХРUT‹€XШЭ\XЮHHL€њHЌK€ќ\™Щ]HT‘СUФСSPХQ€њљ[Ьљ]HH€Ш]YЫЬћHHSPQСWРРUQУФ–WФФPТPS€ЫЫќ\ЭY™™XЭHУУ•TХСQ‘‘PХТQТWРTPSS‘Л€ЫЫќ\ЭШ]YЫЬћHHУУ•TХРРUQУФ–WРХUK€ЫЫќ\ЭЫЫX›ФЭ\ќ\’YH€ЫЫќ\ЭЫЫX›У[Э™\ИHРУУP“ЧФХT•T—УUQФФФ•УУP“ЧФХT•T—ФђRS—СSђСKУУP“ЧФХT•T—ХРUT—ФФФ•K€]P[љ[TШЬљ\HР]P[љ[S[Э™WХШ]\‘Э[‹€K‚€УSХ‘WТQ“ЧФSTHB€В€›[YHHУУTХS‘ФХ’S‘К’Y›И[\ЉK€™\ШЬљ\[Ы€HУУTХS‘ФХ’S‘К€ђ›\ЭИШ]\€]YЪЭЩ\—€‚€ќИЭљZЩHH›ЩK€ЉK€™Y™™XЭHQ‘‘PХТU€њЭЩ\€H—ХTUQУSХ‘WСUHЏHСS—Н€ИLL€LЊ€ќ\HHTWХРUT‹€XШЭ\XЮHH€њHK€ќ\™Щ]HT‘СUФСSPХQ€њљ[Ьљ]HH€Ш]YЫЬћHHSPQСWРРUQУФ–WФФPТPS€ЫЫќ\ЭY™™XЭHЧХTUQУSХ‘WСQ‘‘PХИЏHСS—Н€ИУУ•TХСQ‘‘PХР‘UT—ХТS—РUQQSђСWСVТUQ€УУ•TХСQ‘‘PХТQТWРTPSS‘Л€ЫЫќ\ЭШ]YЫЬћHHУУ•TХРРUQУФ–WР‘PUUK€ЫЫќ\ЭЫЫX›ФЭ\ќ\’YH€ЫЫќ\ЭЫЫX›У[Э™\ИHРУУP“ЧФХT•T—ФђRS—СSђС_K€]P[љ[TШЬљ\HР]P[љ[S[Э™WТY›Ф[\€ќ[Y\™[ќXЩS[Э™HH•QK€K‚€УSХ‘WФХT‘—HB€В€›[YHHУУTХS‘ФХ’S‘К”Э\™€ЉK€™\ШЬљ\[Ы€HУУTХS‘ФХ’S‘К€ђЬ™X]\ИHYЩHШ]™K[—€‚€ЪY€—ХTUQУSХ‘WСUHЏHСS—Н€Ь\Ъ\И]ЭЫ€Ы€HљY[€ЉK€Щ[ЩB€Ь\Ъ\И]ЭЫ€Ы€H›Щ\Л€ЉK€Щ[™Y‚€™Y™™XЭHQ‘‘PХТU€њЭЩ\€H—ХTUQУSХ‘WСUHЏHСS—Н€ИL€MK€ќ\HHTWХРUT‹€XШЭ\XЮHHL€њHMK€ќ\™Щ]H—ХTUQУSХ‘WСUHЏHСS—НИT‘СUС“СTЧРS‘РSH€T‘СUР“Х€њљ[Ьљ]HH€Ш]YЫЬћHHSPQСWРРUQУФ–WФФPТPS€™[XYЩ\Х[™\ќШ]\€H•QK€њЪЮP]P[›™YH•QK€ЫЫќ\ЭY™™XЭHЧХTUQУSХ‘WСQ‘‘PХИЏHСS—Н€ИУУ•TХСQ‘‘PХФХT•WФ‘U—УSУ”И€УУ•TХСQ‘‘PХРQ‘‘PХQР–WФ‘U—РTPS€ЫЫќ\ЭШ]YЫЬћHHУУ•TХРРUQУФ–WР‘PUUK€ЫЫќ\ЭЫЫX›ФЭ\ќ\’YHУУP“ЧФХT•T—ФХT‘‹€ЫЫќ\ЭЫЫX›У[Э™\ИHРУУP“ЧФХT•T—СU‘KУУP“ЧФХT•T—ФђRS—СSђС_K€]P[љ[TШЬљ\HР]P[љ[S[Э™WФЭ\™‹€ќ[Y\™[ќXЩS[Э™HH•QK€K‚€УSХ‘WТPСWР‘PSWHB€В€›[YHHУУTХS‘ФХ’S‘К’XЩH™X[HЉK€™\ШЬљ\[Ы€HУУTХS‘ФХ’S‘К€ђ›\ЭИH›ЩHЪ][€XЮW€‚€ЪY€—ХTСWС”“ФХ’UHOH•QB€™X[K€X^HШ]\ЩHњ›ЬЭљ]K€ЉK€Щ[ЩB€™X[H]X^Hњ™Y^™H]€ЉK€Щ[™Y‚€™Y™™XЭHQ‘‘PХТU€њЭЩ\€H—ХTUQУSХ‘WСUHЏHСS—Н€ИL€MK€ќ\HHTWТPСK€XШЭ\XЮHHL€њHL€ќ\™Щ]HT‘СUФСSPХQ€њљ[Ьљ]HH€Ш]YЫЬћHHSPQСWРРUQУФ–WФФPТPS€Y][Ы[Y™™XЭИHQUSУђSСQ‘‘PХКВ€ЛИH›ЫЭЪ[™ИY™™XЭ\И[ЫИ™[][ќ[€]WФZЩKВ€ЛИY€[ЭHЪ\њћK\XЪИ\ИИ\ЩHЫЫY][™ИЭ\€[€HЫЫ™љYЛXZЩHЭ\™HИ\]H]\™HЫВ€›[Э™QY™™XЭHSХ‘WСQ‘‘PХС”‘QV‘WУФ—С”“ФХ’UK€Ъ[ЩHHL€JK€ЫЫќ\ЭY™™XЭHЧХTUQУSХ‘WСQ‘‘PХИЏHСS—Н€ИУУ•TХСQ‘‘PХРђQWФХT•WС”“У•УSУ€€УУ•TХСQ‘‘PХФХT•WУSУ”ЧФРSQWХTWРTPS€ЫЫќ\ЭШ]YЫЬћHHУУ•TХРРUQУФ–WР‘PUUK€ЫЫќ\ЭЫЫX›ФЭ\ќ\’YH€ЫЫќ\ЭЫЫX›У[Э™\ИHРУУP“ЧФХT•T—ТRSK€]P[љ[TШЬљ\HР]P[љ[S[Э™WТXЩP™X[K€ќ[Y\™[ќXЩS[Э™HH•QK€K‚€УSХ‘WР“V–ђT‘HB€В€›[YHHУУTХS‘ФХ’S‘Кђ›^ћ\™ЉK€™\ШЬљ\[Ы€HУУTХS‘ФХ’S‘К€’]ИH›Щ\ИЪ][€XЮW€‚€ЪY€—ХTСWС”“ФХ’UHOH•QB€њЭЬ›K€X^HШ]\ЩHњ›ЬЭљ]K€ЉK€Щ[ЩB€њЭЬ›H]X^Hњ™Y^™H]€ЉK€Щ[™Y‚€™Y™™XЭHQ‘‘PХТU€њЭЩ\€H—ХTUQУSХ‘WСUHЏHСS—Н€ИLL€LЊ€ќ\HHTWТPСK€XШЭ\XЮHH—ХTUQУSХ‘WСUHЏHСS—М€ИМ€L€њHK€ќ\™Щ]HT‘СUР“Х€њљ[Ьљ]HH€Ш]YЫЬћHHSPQСWРРUQУФ–WФФPТPS€ќЪ[™[Э™HH•QK€[Ш^\Т]Т[’Z[Ы›ЭИH—Р“V–ђT‘ТRSЏHСS—Н€Y][Ы[Y™™XЭИHQUSУђSСQ‘‘PХКВ€›[Э™QY™™XЭHSХ‘WСQ‘‘PХС”‘QV‘WУФ—С”“ФХ’UK€Ъ[ЩHHL€JK€ЫЫќ\ЭY™™XЭHЧХTUQУSХ‘WСQ‘‘PХИЏHСS—Н€ИУУ•TХСQ‘‘PХРђQWФХT•WФ‘U—УSУ”И€УУ•TХСQ‘‘PХТQТWРTPSS‘Л€ЫЫќ\ЭШ]YЫЬћHHУУ•TХРРUQУФ–WР‘PUUK€ЫЫќ\ЭЫЫX›ФЭ\ќ\’YH€ЫЫќ\ЭЫЫX›У[Э™\ИHРУУP“ЧФХT•T—ТRSУУP“ЧФХT•T—ФХСT—ФУ“ХЯK€]P[љ[TШЬљ\HР]P[љ[S[Э™WР›^ћ\™€ќ[Y\™[ќXЩS[Э™HH•QK€K‚€УSХ‘WФЦP‘PSWHB€В€›[YHHУУTХS‘ФХ’S‘К”ЮX™X[HЉK€™\ШЬљ\[Ы€HУУTХS‘ФХ’S‘К€‘љ\™\ИHXЭ[X\€^H]€‚€›X^HЫЫ™ќ\ЩHH›ЩK€ЉK€™Y™™XЭHQ‘‘PХТU€њЭЩ\€HЌK€ќ\HHTWФЦPТPЛ€XШЭ\XЮHHL€њHЊ€ќ\™Щ]HT‘СUФСSPХQ€њљ[Ьљ]HH€Ш]YЫЬћHHSPQСWРРUQУФ–WФФPТPS€Y][Ы[Y™™XЭИHQUSУђSСQ‘‘PХКВ€›[Э™QY™™XЭHSХ‘WСQ‘‘PХРУУ‘•TТSУ‹€Ъ[ЩHHL€JK€ЫЫќ\ЭY™™XЭHЧХTUQУSХ‘WСQ‘‘PХИЏHСS—Н€ИУУ•TХСQ‘‘PХФТQ•Т•QСWРUS•SУ€€УУ•TХСQ‘‘PХФРФђSP“WУ‘VХT“—УФ‘T‹€ЫЫќ\ЭШ]YЫЬћHHУУ•TХРРUQУФ–WР‘PUUK€ЫЫќ\ЭЫЫX›ФЭ\ќ\’YH€ЫЫќ\ЭЫЫX›У[Э™\ИHРУУP“ЧФХT•T—РРSWУRS‘K€]P[љ[TШЬљ\HР]P[љ[S[Э™WФЮX™X[K€ќ[Y\™[ќXЩS[Э™HH•QK€K‚€УSХ‘WР•Pђ“WР‘PSWHB€В€›[YHHУУTХS‘ФХ’S‘КђќX›H™X[HЉK€™\ШЬљ\[Ы€HУУTХS‘ФХ’S‘К€‘›ЬЩYќ[HЬ^\ИќX›\Ч€‚€ќ]X^HЭЩ\€ЬYY€ЉK€™Y™™XЭHQ‘‘PХТU€њЭЩ\€HЌK€ќ\HHTWХРUT‹€XШЭ\XЮHHL€њHЊ€ќ\™Щ]HT‘СUФСSPХQ€њљ[Ьљ]HH€Ш]YЫЬћHHSPQСWРРUQУФ–WФФPТPS€Y][Ы[Y™™XЭИHQUSУђSСQ‘‘PХКВ€›[Э™QY™™XЭHSХ‘WСQ‘‘PХФФУRS•TЧМK€Ъ[ЩHH—ХTUQУSХ‘WСUHЏHСS—М€ИL€МЛ€JK€ЫЫќ\ЭY™™XЭHЧХTUQУSХ‘WСQ‘‘PХИЏHСS—Н€ИУУ•TХСQ‘‘PХФХT•WФ‘U—УSУ€€УУ•TХСQ‘‘PХРђQWФХT•WФ‘U—УSУ”Л€ЫЫќ\ЭШ]YЫЬћHHУУ•TХРРUQУФ–WР‘PUUK€ЫЫќ\ЭЫЫX›ФЭ\ќ\’YH€ЫЫќ\ЭЫЫX›У[Э™\ИHРУУP“ЧФХT•T—ФђRS—СSђС_K€]P[љ[TШЬљ\HР]P[љ[S[Э™WРќX›P™X[K€K‚€УSХ‘WРUT“ФђWР‘PSWHB€В€›[YHHУУTХS‘ФХ’S‘Кђ]\›ЬH™X[HЉK€™\ШЬљ\[Ы€HУУTХS‘ФХ’S‘К€‘љ\™\ИHZ[›ЭЛXЫЫЬ™Y€‚€™X[H]X^HЭЩ\€]XЪЛ€ЉK€™Y™™XЭHQ‘‘PХТU€њЭЩ\€HЌK€ќ\HHTWТPСK€XШЭ\XЮHHL€њHЊ€ќ\™Щ]HT‘СUФСSPХQ€њљ[Ьљ]HH€Ш]YЫЬћHHSPQСWРРUQУФ–WФФPТPS€Y][Ы[Y™™XЭИHQUSУђSСQ‘‘PХКВ€›[Э™QY™™XЭHSХ‘WСQ‘‘PХРUЧУRS•TЧМK€Ъ[ЩHH—ХTUQУSХ‘WСUHЏHСS—М€ИL€МЛ€JK€ЫЫќ\ЭY™™XЭHЧХTUQУSХ‘WСQ‘‘PХИЏHСS—Н€ИУУ•TХСQ‘‘PХФХT•WФ‘U—УSУ€€УУ•TХСQ‘‘PХФХT•WУSУ”ЧФРSQWХTWРTPS€ЫЫќ\ЭШ]YЫЬћHHУУ•TХРРUQУФ–WР‘PUUK€ЫЫќ\ЭЫЫX›ФЭ\ќ\’YH€ЫЫќ\ЭЫЫX›У[Э™\ИHРУУP“ЧФХT•T—ТRSK€]P[љ[TШЬљ\HР]P[љ[S[Э™WР]\›ЬP™X[K€K‚€УSХ‘WТTT—Р‘PSWHB€В€›[YHHУУTХS‘ФХ’S‘К’\\€™X[HЉK€™\ШЬљ\[Ы€HТ\\ђ™X[Q\ШЬљ\[Ы‹€™Y™™XЭHQ‘‘PХТU€њЭЩ\€HML€ќ\HHTWУ“Ф“PS€XШЭ\XЮHHL€њHK€ќ\™Щ]HT‘СUФСSPХQ€њљ[Ьљ]HH€Ш]YЫЬћHHSPQСWРРUQУФ–WФФPТPS€љYЫ›Ь™\ТЪ[™ЬФ›ШЪИH—ХTUQУSХ‘WС“QФИСS—МЛ€Y][Ы[Y™™XЭИHQUSУђSСQ‘‘PХКВ€›[Э™QY™™XЭHSХ‘WСQ‘‘PХФ‘PТT‘СK€њЩ[€H•QK€JK€ЫЫќ\ЭY™™XЭHУУ•TХСQ‘‘PХТђSTЧУХT”ЧР•UУRTФЧУУ‘WХT“‹€ЫЫќ\ЭШ]YЫЬћHHУУ•TХРРUQУФ–WРУУУ€ЫЫќ\ЭЫЫX›ФЭ\ќ\’YH€ЫЫќ\ЭЫЫX›У[Э™\ИHМK€]P[љ[TШЬљ\HР]P[љ[S[Э™WТ\\ђ™X[K€ќ[Y\™[ќXЩS[Э™HH•QK€K‚€УSХ‘WФPТЧHB€В€›[YHHУУTХS‘ФХ’S‘К”XЪИЉK€™\ШЬљ\[Ы€HУУTХS‘ФХ’S‘К€ђ]XЪЬИH›ЩHЪ]W€‚€љXљ[™И™XZЛ]Л€ЉK€™Y™™XЭHQ‘‘PХТU€њЭЩ\€HНK€ќ\HHTWС“RS‘Л€XШЭ\XЮHHL€њHНK€ќ\™Щ]HT‘СUФСSPХQ€њљ[Ьљ]HH€Ш]YЫЬћHHSPQСWРРUQУФ–WФTТPРS€›XZЩ\РЫЫќXЭH•QK€ЫЫќ\ЭY™™XЭHУУ•TХСQ‘‘PХТQТWРTPSS‘Л€ЫЫќ\ЭШ]YЫЬћHHУУ•TХРРUQУФ–WРУУУ€ЫЫќ\ЭЫЫX›ФЭ\ќ\’YHУУP“ЧФХT•T—ФPТЛ€ЫЫќ\ЭЫЫX›У[Э™\ИHМK€]P[љ[TШЬљ\HР]P[љ[S[Э™WФXЪЛ€K‚€УSХ‘WС’SФPТЧHB€В€›[YHHУУTХS‘ФХ’S‘К‘љ[XЪИЉK€™\ШЬљ\[Ы€HУУTХS‘ФХ’S‘К€ђHЫЬљЬШЬ™]Ъ[™И]XЪИЪ]€‚€ќH™XZИXЭ[™И\ИHљ[€ЉK€™Y™™XЭHQ‘‘PХТU€њЭЩ\€H€ќ\HHTWС“RS‘Л€XШЭ\XЮHHL€њHЊ€ќ\™Щ]HT‘СUФСSPХQ€њљ[Ьљ]HH€Ш]YЫЬћHHSPQСWРРUQУФ–WФTТPРS€›XZЩ\РЫЫќXЭH•QK€ЫЫќ\ЭY™™XЭHЧХTUQУSХ‘WСQ‘‘PХИЏHСS—Н€ИУУ•TХСQ‘‘PХРQ‘‘PХQР–WФ‘U—РTPS€УУ•TХСQ‘‘PХТQТWРTPSS‘Л€ЫЫќ\ЭШ]YЫЬћHHУУ•TХРРUQУФ–WРУУУ€ЫЫќ\ЭЫЫX›ФЭ\ќ\’YH€ЫЫќ\ЭЫЫX›У[Э™\ИHРУУP“ЧФХT•T—ФPТЯK€]P[љ[TШЬљ\HР]P[љ[S[Э™WСљ[XЪЛ€ќ[Y\™[ќXЩS[Э™HH•QK€K‚€УSХ‘WФХP“RTФТSУ—HB€В€›[YHHУУTХS‘ФХ’S‘К”ЭX›Z\ЬЪ[Ы€ЉK€™\ШЬљ\[Ы€HУУTХS‘ФХ’S‘К€ђH™XЪЫ\ЬИ›ЩHЫ[H]€‚€[ЫИ\ќИH\Щ\‹€ЉK€™Y™™XЭHQ‘‘PХФ‘PУТS€њЭЩ\€H€ќ\HHTWС’QТS‘Л€XШЭ\XЮHH€њH—ХTUQУSХ‘WСUHЏHСS—Н€ИЊ€ЌK€ќ\™Щ]HT‘СUФСSPХQ€њљ[Ьљ]HH€Ш]YЫЬћHHSPQСWРРUQУФ–WФTТPРS€›XZЩ\РЫЫќXЭH•QK€\™Э[Y[ќHИњ™XЫЪ[\Щ[ќYЩHHЌHK€ЫЫќ\ЭY™™XЭHУУ•TХСQ‘‘PХХTСT—УSФ‘WСPTТSWФХT•Q€ЫЫќ\ЭШ]YЫЬћHHУУ•TХРРUQУФ–WРУУУ€ЫЫќ\ЭЫЫX›ФЭ\ќ\’YH€ЫЫќ\ЭЫЫX›У[Э™\ИHРУУP“ЧФХT•T—УRS‘Ф‘PQTџK€]P[љ[TШЬљ\HР]P[љ[S[Э™WФЭX›Z\ЬЪ[Ы‹€ќ[Y\™[ќXЩS[Э™HH•QK€K‚€УSХ‘WУХЧТТPТЧHB€В€›[YHHУУTХS‘ФХ’S‘К“ЭИЪXЪИЉK€ЪY€—ХTUQУSХ‘WСUHЏHСS—МВ€™\ШЬљ\[Ы€HУУTХS‘ФХ’S‘К€ђHЪXЪИ][™›XЭИ[Ь™W€‚€™[XYЩHЫ€X]љY\€›Щ\Л€ЉK€™Y™™XЭHQ‘‘PХУХЧТТPТЛ€Щ[ЩB€™\ШЬљ\[Ы€HУУTХS‘ФХ’S‘К€ђHЭЛљ\[™ИЪXЪИ]€‚€›X^HШ]\ЩH›[Ъ[™Л€ЉK€™Y™™XЭHQ‘‘PХТU€Y][Ы[Y™™XЭИHQUSУђSСQ‘‘PХКВ€›[Э™QY™™XЭHSХ‘WСQ‘‘PХС“SђТ€Ъ[ЩHHМ€JK€Щ[™Y‚€њЭЩ\€H—ХTUQУSХ‘WСUHЏHСS—МИИH€L€ќ\HHTWС’QТS‘Л€XШЭ\XЮHH—ХTUQУSХ‘WСUHЏHСS—МИИL€L€њHЊ€ќ\™Щ]HT‘СUФСSPХQ€њљ[Ьљ]HH€Ш]YЫЬћHHSPQСWРРUQУФ–WФTТPРS€›XZЩ\РЫЫќXЭH•QK€љЪXЪЪ[™У[Э™HH•QK€ЫЫќ\ЭY™™XЭHЧХTUQУSХ‘WСQ‘‘PХИЏHСS—Н€ИУУ•TХСQ‘‘PХР‘UT—ХТS—УUT€€УУ•TХСQ‘‘PХРђQWФХT•WС”“У•УSУ‹€ЫЫќ\ЭШ]YЫЬћHHУУ•TХРРUQУФ–WХХQТ€ЫЫќ\ЭЫЫX›ФЭ\ќ\’YH€ЫЫќ\ЭЫЫX›У[Э™\ИHМK€]P[љ[TШЬљ\HР]P[љ[S[Э™WУЭТЪXЪЛ€ќ[Y\™[ќXЩS[Э™HH•QK€K‚€УSХ‘WРУХS•T—HB€В€›[YHHУУTХS‘ФХ’S‘КђЫЭ[ќ\€ЉK€™\ШЬљ\[Ы€HУУTХS‘ФХ’S‘К€”™][X]\И[ћH\ЪXШ[]€‚€ќЪ]ЭX›HHЭЩ\‹€ЉK€™Y™™XЭHQ‘‘PХФ‘Q“PХСSPQСK€њЭЩ\€HK€ќ\HHTWС’QТS‘Л€XШЭ\XЮHHL€њHЊ€ќ\™Щ]HT‘СUСTS‘Л€њљ[Ьљ]HHMK€Ш]YЫЬћHHSPQСWРРUQУФ–WФTТPРS€›XZЩ\РЫЫќXЭH•QK€\™Э[Y[ќHВ€њ™Y›XЭ[XYЩK™[XYЩT\Щ[ќHЊ€њ™Y›XЭ[XYЩK™[XYЩPШ]YЫЬљY\ИH]HSPQСWРРUQУФ–WФTТPРS€K€љYЫ›Ь™\Ф›ЭXЭH—ХTUQУSХ‘WС“QФИСS—НK€љYЫ›Ь™\ТЪ[™ЬФ›ШЪИH
+—ХTUQУSХ‘WС“QФИOHСS—МИ—ХTUQУSХ‘WС“QФИOHСS—Н
+K€›Z\њ›Ь“[Э™P[›™YH—ХTUQУSХ‘WС“QФИЏHСS—Н€›YQљ\њЭ[›™YH•QK€›Y]›Ы›ЫYP[›™YH—ХTUQУSХ‘WС“QФИЏHСS—М‹€ЫЬXШ][›™YH•QK€\ЬЪ\Э[›™YH•QK€ЫЫќ\ЭY™™XЭHЧХTUQУSХ‘WСQ‘‘PХИЏHСS—Н€ИУУ•TХСQ‘‘PХР‘UT—ТQ—УTХ€УУ•TХСQ‘‘PХРU“ТQФХT•WУУђСK€ЫЫќ\ЭШ]YЫЬћHHУУ•TХРРUQУФ–WХХQТ€ЫЫќ\ЭЫЫX›ФЭ\ќ\’YH€ЫЫќ\ЭЫЫX›У[Э™\ИHРУУP“ЧФХT•T—ХUS•УУP“ЧФХT•T—СSђУФ‘KУУP“ЧФХT•T—ХФ“QS•K€]P[љ[TШЬљ\HР]P[љ[S[Э™WРЫЭ[ќ\‹€ќ[Y\™[ќXЩS[Э™HH•QK€K‚€УSХ‘WФСRTУRPЧХФФЧHB€В€›[YHHУУTХS‘ФХ’S‘К”ЩZ\ЫZXИЬЬИЉK€™\ШЬљ\[Ы€HУУTХS‘ФХ’S‘К€’[™›XЭИ[XYЩHY[ќXШ[€‚€ќИH\Щ\‰ЬИ]™[€ЉK€™Y™™XЭHQ‘‘PХУU‘SСSPQСK€њЭЩ\€HK€ќ\HHTWС’QТS‘Л€XШЭ\XЮHHL€њHЊ€ќ\™Щ]HT‘СUФСSPХQ€њљ[Ьљ]HH€Ш]YЫЬћHHSPQСWРРUQУФ–WФTТPРS€›XZЩ\РЫЫќXЭH•QK€њЪЮP]P[›™YH•QK€ЫЫќ\ЭY™™XЭHЧХTUQУSХ‘WСQ‘‘PХИЏHСS—Н€ИУУ•TХСQ‘‘PХФ‘TUUSУ—У“ХР“Ф’S‘И€УУ•TХСQ‘‘PХФХT•WУSУ”ЧФРSQWХTWРTPS€ЫЫќ\ЭШ]YЫЬћHHУУ•TХРРUQУФ–WХХQТ€ЫЫќ\ЭЫЫX›ФЭ\ќ\’YH€ЫЫќ\ЭЫЫX›У[Э™\ИHРУУP“ЧФХT•T—СђRСWУХUУУP“ЧФХT•T—СS•ђRS“QS•УУP“ЧФХT•T—ФVWУ’PС_K€]P[љ[TШЬљ\HР]P[љ[S[Э™WФЩZ\ЫZXХЬЬЛ€ќ[Y\™[ќXЩS[Э™HH•QK€K‚€УSХ‘WФХ‘S‘ХHB€В€›[YHHУУTХS‘ФХ’S‘К”Э™[™ЭЉK€™\ШЬљ\[Ы€HУУTХS‘ФХ’S‘К€ђќZ[И[›Ь›[Э\ИЭЩ\‹€‚€ќ[€Ы[\ИH›ЩK€ЉK€™Y™™XЭHQ‘‘PХТU€њЭЩ\€H€ќ\HHTWУ“Ф“PS€XШЭ\XЮHHL€њHMK€ќ\™Щ]HT‘СUФСSPХQ€њљ[Ьљ]HH€Ш]YЫЬћHHSPQСWРРUQУФ–WФTТPРS€›XZЩ\РЫЫќXЭH•QK€ЫЫќ\ЭY™™XЭHЧХTUQУSХ‘WСQ‘‘PХИЏHСS—Н€ИУУ•TХСQ‘‘PХТQТWРTPSS‘И€УУ•TХСQ‘‘PХФХT•WУSУ”ЧФРSQWХTWРTPS€ЫЫќ\ЭШ]YЫЬћHHУУ•TХРРUQУФ–WХХQТ€ЫЫќ\ЭЫЫX›ФЭ\ќ\’YH€ЫЫќ\ЭЫЫX›У[Э™\ИHМK€]P[љ[TШЬљ\HР]P[љ[S[Э™WФЭ™[™Э€ќ[Y\™[ќXЩS[Э™HH•QK€K‚€УSХ‘WРP”УФђ—HB€В€›[YHHУУTХS‘ФХ’S‘КђXњЫЬ€ЉK€™\ШЬљ\[Ы€HУУTХS‘ФХ’S‘К€ђ[€]XЪИ]XњЫЬњЧ€‚€љ[€H[XYЩH[™›XЭY€ЉK€™Y™™XЭHQ‘‘PХРP”УФђ‹€њЭЩ\€HЊ€ќ\HHTWСФђTФЛ€XШЭ\XЮHHL€њH—ХTUQУSХ‘WСUHЏHСS—НИЌH€Њ€ќ\™Щ]HT‘СUФСSPХQ€њљ[Ьљ]HH€Ш]YЫЬћHHSPQСWРРUQУФ–WФФPТPS€\™Э[Y[ќHИXњЫЬ”\Щ[ќYЩHHLK€љYЫ›Ь™\ТЪ[™ЬФ›ШЪИH
+—ХTUQУSХ‘WС“QФИOHСS—МИ—ХTUQУSХ‘WС“QФИOHСS—Н
+K€љX[[™У[Э™HH—ТPSР“РТТS‘ИЏHСS—Н‹€ЫЫќ\ЭY™™XЭHЧХTUQУSХ‘WСQ‘‘PХИЏHСS—Н€ИУУ•TХСQ‘‘PХТQТWРTPSS‘И€УУ•TХСQ‘‘PХФХT•WФ‘U—УSУ‹€ЫЫќ\ЭШ]YЫЬћHHУУ•TХРРUQУФ–WФУPT•€ЫЫќ\ЭЫЫX›ФЭ\ќ\’YH€ЫЫќ\ЭЫЫX›У[Э™\ИHРУУP“ЧФХT•T—СФ“ХХK€]P[љ[TШЬљ\HР]P[љ[S[Э™WРXњЫЬ‹€K‚€УSХ‘WУQQРWСђRS—HB€В€›[YHHУУTХS‘ФХ’S‘К“YYШHZ[€ЉK€™\ШЬљ\[Ы€HУYYШQZ[‘\ШЬљ\[Ы‹€™Y™™XЭHQ‘‘PХРP”УФђ‹€њЭЩ\€H€ќ\HHTWСФђTФЛ€XШЭ\XЮHHL€њH—ХTUQУSХ‘WСUHЏHСS—НИMH€L€ќ\™Щ]HT‘СUФСSPХQ€њљ[Ьљ]HH€Ш]YЫЬћHHSPQСWРРUQУФ–WФФPТPS€\™Э[Y[ќHИXњЫЬ”\Щ[ќYЩHHLK€ћ“[Э™HHИњЭЩ\“Э™\њљYHHLЊK€љYЫ›Ь™\ТЪ[™ЬФ›ШЪИH
+—ХTUQУSХ‘WС“QФИOHСS—МИ—ХTUQУSХ‘WС“QФИOHСS—Н
+K€љX[[™У[Э™HH—ТPSР“РТТS‘ИЏHСS—Н‹€ЫЫќ\ЭY™™XЭHЧХTUQУSХ‘WСQ‘‘PХИЏHСS—Н€ИУУ•TХСQ‘‘PХФХT•WФ‘U—УSУ€€УУ•TХСQ‘‘PХРђQWФХT•WС”“У•УSУ‹€ЫЫќ\ЭШ]YЫЬћHHУУ•TХРРUQУФ–WФУPT•€ЫЫќ\ЭЫЫX›ФЭ\ќ\’YH€ЫЫќ\ЭЫЫX›У[Э™\ИHРУУP“ЧФХT•T—СФ“ХХK€]P[љ[TШЬљ\HР]P[љ[S[Э™WУYYШQZ[‹€K‚€УSХ‘WУQPТФСQQHB€В€›[YHHУУTХS‘ФХ’S‘К“YXЪЩYYЉK€™\ШЬљ\[Ы€HУУTХS‘ФХ’S‘К€”[ќИHЩYYЫ€H›ЩHЧ€‚€њЭX[Ы€]™\ћH\›‹€ЉK€™Y™™XЭHQ‘‘PХУQPТФСQQ€њЭЩ\€H€ќ\HHTWСФђTФЛ€XШЭ\XЮHHL€њHL€ќ\™Щ]HT‘СUФСSPХQ€њљ[Ьљ]HH€Ш]YЫЬћHHSPQСWРРUQУФ–WФХUTЛ€ћ“[Э™HHИ™Y™™XЭH—СQ‘‘PХФ‘TСUФХUИK€›XYЪXРЫШ]Y™™XЭYH•QK€ЫЫќ\ЭY™™XЭHЧХTUQУSХ‘WСQ‘‘PХИЏHСS—Н€ИУУ•TХСQ‘‘PХТST“Х‘WРУУ‘USУ—Ф‘U‘S•У‘T•“ХTУ‘TФИ€УУ•TХСQ‘‘PХФХT•WФ‘U—УSУ”Л€ЫЫќ\ЭШ]YЫЬћHHУУ•TХРРUQУФ–WФУPT•€ЫЫќ\ЭЫЫX›ФЭ\ќ\’YHУУP“ЧФХT•T—УQPТФСQQ€ЫЫќ\ЭЫЫX›У[Э™\ИHРУУP“ЧФХT•T—СФ“ХХУУP“ЧФХT•T—ХУФ”–WФСQQУУP“ЧФХT•T—Ф“ХХSTџK€]P[љ[TШЬљ\HР]P[љ[S[Э™WУYXЪЩYY€ќ[Y\™[ќXЩS[Э™HH•QK€K‚€УSХ‘WСФ“ХХHB€В€›[YHHУУTХS‘ФХ’S‘К‘Ь›ЭЭЉK€™\ШЬљ\[Ы€HУУTХS‘ФХ’S‘К€ЪY€—СФ“ХХФХUФђRTСHЏHСS—НB€‘›ЬЩ\ИH›ЩHИЬ›ЭЛ€‚€њZ\Ъ[™И]XЪИ[™Ь€]Л€ЉK€Щ[ЩB€‘›ЬЩ\ИH›ЩHИЬ›ЭЧ€‚€[™ZYЪ[њИЬ€]Л€ЉK€Щ[™Y‚€™Y™™XЭH—СФ“ХХФХUФђRTСHЏHСS—НHИQ‘‘PХСФ“ХХ€Q‘‘PХФФPТPSРUPТЧХT€њЭЩ\€H€ќ\HHTWУ“Ф“PS€XШЭ\XЮHH€њH—ХTUQУSХ‘WСUHЏHСS—Н€ИЊ€€ќ\™Щ]HT‘СUХTСT‹€њљ[Ьљ]HH€Ш]YЫЬћHHSPQСWРРUQУФ–WФХUTЛ€ћ“[Э™HHИ™Y™™XЭH—СQ‘‘PХФФUЧХTМHK€љYЫ›Ь™\Ф›ЭXЭH•QK€›Z\њ›Ь“[Э™P[›™YH•QK€њЫ]ЪY™™XЭYH•QK€ЫЫќ\ЭY™™XЭHУУ•TХСQ‘‘PХТST“Х‘WРУУ‘USУ—Ф‘U‘S•У‘T•“ХTУ‘TФЛ€ЫЫќ\ЭШ]YЫЬћHHУУ•TХРРUQУФ–WР‘PUUK€ЫЫќ\ЭЫЫX›ФЭ\ќ\’YHУУP“ЧФХT•T—СФ“ХХ€ЫЫќ\ЭЫЫX›У[Э™\ИHРУУP“ЧФХT•T—ФХS“–WСV_K€]P[љ[TШЬљ\HР]P[љ[S[Э™WСЬ›ЭЭ€ќ[Y\™[ќXЩS[Э™HH•QK€K‚€УSХ‘WФђV“Ф—УPQ—HB€В€›[YHHУУTХS‘ФХ’S‘К”^›Ь€XY€ЉK€™\ШЬљ\[Ы€HУУTХS‘ФХ’S‘К€ђЭ]И[™[ZY\ИЪ]X]™\Л—€‚€’YЪЬљ]XШ[Z]][Л€ЉK€™Y™™XЭHQ‘‘PХТU€њЭЩ\€HMK€ќ\HHTWСФђTФЛ€XШЭ\XЮHHMK€Ьљ]XШ[]ЭYЩHH—ХTUQУSХ‘WСUHЏHСS—МИИH€‹€њHЌK€ќ\™Щ]HT‘СUР“Х€њљ[Ьљ]HH€Ш]YЫЬћHHSPQСWРРUQУФ–WФTТPРS€њЫXЪ[™У[Э™HH•QK€ЫЫќ\ЭY™™XЭHЧХTUQУSХ‘WСQ‘‘PХИЏHСS—Н€ИУУ•TХСQ‘‘PХТQТWРTPSS‘И€УУ•TХСQ‘‘PХРQ‘‘PХQР–WФ‘U—РTPS€ЫЫќ\ЭШ]YЫЬћHHУУ•TХРРUQУФ–WРУУУ€ЫЫќ\ЭЫЫX›ФЭ\ќ\’YH€ЫЫќ\ЭЫЫX›У[Э™\ИHРУУP“ЧФХT•T—СФ“ХХK€]P[љ[TШЬљ\HР]P[љ[S[Э™WФ^›Ь“XY‹€ќ[Y\™[ќXЩS[Э™HH•QK€K‚€УSХ‘WФУУT—Р‘PSWHB€В€›[YHHУУTХS‘ФХ’S‘К”ЫЫ\€™X[HЉK€™\ШЬљ\[Ы€HУУTХS‘ФХ’S‘К€ђXњЫЬњИYЪ[€Ы™H\›‹€‚€ќ[€]XЪЬИ™^\›‹€ЉK€™Y™™XЭHQ‘‘PХФУУT—Р‘PSK€њЭЩ\€HLЊ€ќ\HHTWСФђTФЛ€XШЭ\XЮHHL€њHL€ќ\™Щ]HT‘СUФСSPХQ€њљ[Ьљ]HH€Ш]YЫЬћHHSPQСWРРUQУФ–WФФPТPS€њЫY\[Р[›™YH•QK€љ[њЭќXЭ[›™YH•QK€\™Э[Y[ќќЫХ\›ђ]XЪИHИњЭљ[™ТYHХ’S‘ТQФУS•УТФХS“QТќЩX]\€H—ХСPUT—ФХS€K€ЫЫќ\ЭY™™XЭHЧХTUQУSХ‘WСQ‘‘PХИЏHСS—Н€ИУУ•TХСQ‘‘PХРQ‘‘PХQР–WФ‘U—РTPS€УУ•TХСQ‘‘PХТQТWРTPSS‘Л€ЫЫќ\ЭШ]YЫЬћHHУУ•TХРРUQУФ–WРУУУ€ЫЫќ\ЭЫЫX›ФЭ\ќ\’YH€ЫЫќ\ЭЫЫX›У[Э™\ИHРУУP“ЧФХT•T—СФ“ХХУУP“ЧФХT•T—ФХS“–WСV_K€]P[љ[TШЬљ\HР]P[љ[S[Э™WФЫЫ\ђ™X[K€ќ[Y\™[ќXЩS[Э™HH•QK€K‚€УSХ‘WФТTУУ—ФХСT—HB€В€›[YHHУУTХS‘ФХ’S‘К”Ъ\ЫЫ€ЭЩ\€ЉK€™\ШЬљ\[Ы€HУУTХS‘ФХ’S‘К€”ШШ]\њИHЮXИЭЩ\—€‚€ќ]X^HЪ\ЫЫ€H›ЩK€ЉK€™Y™™XЭHQ‘‘PХУ“У—Х“УUSWФХUTЛ€њЭЩ\€H€ќ\HHTWФТTУУ‹€XШЭ\XЮHHНK€њHНK€ќ\™Щ]HT‘СUФСSPХQ€њљ[Ьљ]HH€Ш]YЫЬћHHSPQСWРРUQУФ–WФХUTЛ€\™Э[Y[ќHИ››Ы•›Ы][TЭ]\ИHSХ‘WСQ‘‘PХФТTУУ€K€ћ“[Э™HHИ™Y™™XЭH—СQ‘‘PХСQ—ХTМHK€›XYЪXРЫШ]Y™™XЭYH•QK€њЭЩ\“[Э™HH•QK€ЫЫќ\ЭY™™XЭHУУ•TХСQ‘‘PХХУФ”СS—РУУ‘USУ—УС—Ф‘U—УSУ”Л€ЫЫќ\ЭШ]YЫЬћHHУУ•TХРРUQУФ–WФУPT•€ЫЫќ\ЭЫЫX›ФЭ\ќ\’YHУУP“ЧФХT•T—ФТTУУ—ФХСT‹€ЫЫќ\ЭЫЫX›У[Э™\ИHРУУP“ЧФХT•T—ФХСQUФРСS•K€]P[љ[TШЬљ\HР]P[љ[S[Э™WФЪ\ЫЫ”ЭЩ\‹€ќ[Y\™[ќXЩS[Э™HH•QK€K‚€УSХ‘WФХS—ФФФ‘WHB€В€›[YHHУУTХS‘ФХ’S‘К”Э[€ЬЬ™HЉK€™\ШЬљ\[Ы€HУУTХS‘ФХ’S‘К€”ШШ]\њИHЭЩ\€]X^W€‚€њ\[^™HH›ЩK€ЉK€™Y™™XЭHQ‘‘PХУ“У—Х“УUSWФХUTЛ€њЭЩ\€H€ќ\HHTWСФђTФЛ€XШЭ\XЮHHНK€њHМ€ќ\™Щ]HT‘СUФСSPХQ€њљ[Ьљ]HH€Ш]YЫЬћHHSPQСWРРUQУФ–WФХUTЛ€ћ“[Э™HHИ™Y™™XЭH—СQ‘‘PХФФQ—ХTМHK€›XYЪXРЫШ]Y™™XЭYH•QK€\™Э[Y[ќHИ››Ы•›Ы][TЭ]\ИHSХ‘WСQ‘‘PХФTђSTТTИK€њЭЩ\“[Э™HH•QK€ЫЫќ\ЭY™™XЭHУУ•TХСQ‘‘PХРђQWФХT•WУSУ”ЧХТUСУУСРTPSЛ€ЫЫќ\ЭШ]YЫЬћHHУУ•TХРРUQУФ–WФУPT•€ЫЫќ\ЭЫЫX›ФЭ\ќ\’YH€ЫЫќ\ЭЫЫX›У[Э™\ИHРУУP“ЧФХT•T—ФХСQUФРСS•K€]P[љ[TШЬљ\HР]P[љ[S[Э™WФЭ[”ЬЬ™K€ќ[Y\™[ќXЩS[Э™HH•QK€K‚€УSХ‘WФУQTФХСT—HB€В€›[YHHУУTХS‘ФХ’S‘К”ЫY\ЭЩ\€ЉK€™\ШЬљ\[Ы€HУУTХS‘ФХ’S‘К€”ШШ]\њИHЭЩ\€]X^W€‚€Ш]\ЩHH›ЩHИЫY\€ЉK€™Y™™XЭHQ‘‘PХУ“У—Х“УUSWФХUTЛ€њЭЩ\€H€ќ\HHTWСФђTФЛ€XШЭ\XЮHHНK€њHMK€ќ\™Щ]HT‘СUФСSPХQ€њљ[Ьљ]HH€Ш]YЫЬћHHSPQСWРРUQУФ–WФХUTЛ€\™Э[Y[ќHИ››Ы•›Ы][TЭ]\ИHSХ‘WСQ‘‘PХФУQTK€ћ“[Э™HHИ™Y™™XЭH—СQ‘‘PХФФХTМHK€›XYЪXРЫШ]Y™™XЭYH•QK€њЭЩ\“[Э™HH•QK€ЫЫќ\ЭY™™XЭHУУ•TХСQ‘‘PХРђQWФХT•WФ‘U—УSУ”Л€ЫЫќ\ЭШ]YЫЬћHHУУ•TХРРUQУФ–WФУPT•€ЫЫќ\ЭЫЫX›ФЭ\ќ\’YHУУP“ЧФХT•T—ФУQTФХСT‹€ЫЫќ\ЭЫЫX›У[Э™\ИHРУУP“ЧФХT•T—ФХСQUФРСS•K€]P[љ[TШЬљ\HР]P[љ[S[Э™WФЫY\ЭЩ\‹€ќ[Y\™[ќXЩS[Э™HH•QK€K‚€УSХ‘WФUSСSђСWHB€В€›[YHHУУTХS‘ФХ’S‘К”][[ЩHЉK€™\ШЬљ\[Ы€HУУTХS‘ФХ’S‘К€ђH[\YЩHЩ€€ИИ\›њЧ€‚€ќ]ЫЫ™ќ\Щ\ИH\Щ\‹€ЉK€ЪY€—ХTUQУSХ‘WСUHЏHСS—НB€њЭЩ\€HLЊ€Щ[Y€—ХTUQУSХ‘WСUHOHСS—Н€њЭЩ\€HL€Щ[ЩB€њЭЩ\€HМ€Щ[™Y‚€™Y™™XЭHQ‘‘PХТU€ќ\HHTWСФђTФЛ€XШЭ\XЮHHL€њH—ХTUQУSХ‘WСUHЏHСS—НHИL€Њ€ќ\™Щ]HT‘СUФђS‘УK€њљ[Ьљ]HH€Ш]YЫЬћHHSPQСWРРUQУФ–WФФPТPS€›XZЩ\РЫЫќXЭH•QK€™[ЩS[Э™HH•QK€љ[њЭќXЭ[›™YH•QK€Y][Ы[Y™™XЭИHQUSУђSСQ‘‘PХКВ€›[Э™QY™™XЭHSХ‘WСQ‘‘PХХђTТ€њЩ[€H•QK€JK€ЫЫќ\ЭY™™XЭHЧХTUQУSХ‘WСQ‘‘PХИЏHСS—Н€ИУУ•TХСQ‘‘PХХTСT—УSФ‘WСPTТSWФХT•Q€УУ•TХСQ‘‘PХТђSTЧУХT”ЧР•UУRTФЧУУ‘WХT“‹€ЫЫќ\ЭШ]YЫЬћHHУУ•TХРРUQУФ–WР‘PUUK€ЫЫќ\ЭЫЫX›ФЭ\ќ\’YH€ЫЫќ\ЭЫЫX›У[Э™\ИHРУУP“ЧФХT•T—СФ“ХХK€]P[љ[TШЬљ\HР]P[љ[S[Э™WФ][[ЩK€ќ[Y\™[ќXЩS[Э™HH•QK€K‚€УSХ‘WФХ’S‘ЧФТХHB€В€›[YHHУУTХS‘ФХ’S‘К”Эљ[™ИЪЭЉK€™\ШЬљ\[Ы€HУУTХS‘ФХ’S‘К€ђљ[™ИH›ЩHЪ]Эљ[™Ч€‚€ќИ™YXЩH]ИЬYY€ЉK€™Y™™XЭH—ХTUQУSХ‘WСUHЏHСS—Н€ИQ‘‘PХФФQQСХУ—М€€Q‘‘PХФФQQСХУ‹€њЭЩ\€H€ќ\HHTWР•QЛ€XШЭ\XЮHHMK€њH€ќ\™Щ]HT‘СUР“Х€њљ[Ьљ]HH€Ш]YЫЬћHHSPQСWРРUQУФ–WФХUTЛ€ћ“[Э™HHИ™Y™™XЭH—СQ‘‘PХФФХTМHK€›XYЪXРЫШ]Y™™XЭYH•QK€ЫЫќ\ЭY™™XЭHУУ•TХСQ‘‘PХФХT•WФ‘U—УSУ‹€ЫЫќ\ЭШ]YЫЬћHHУУ•TХРРUQУФ–WФУPT•€ЫЫќ\ЭЫЫX›ФЭ\ќ\’YHУУP“ЧФХT•T—ФХ’S‘ЧФТХ€ЫЫќ\ЭЫЫX›У[Э™\ИHМK€]P[љ[TШЬљ\HР]P[љ[S[Э™WФЭљ[™ФЪЭ€K‚€УSХ‘WСђQУУ—ФђQСWHB€В€›[YHHУУTХS‘ФХ’S‘К‘YЫЫ€YЩHЉK€™\ШЬљ\[Ы€HУУTХS‘ФХ’S‘К€“][Ъ\ИЪШЪИШ]™\И]€‚€[Ш^\И[™›XЭ[XYЩK€ЉK€™Y™™XЭHQ‘‘PХС’VQТСSPQСK€њЭЩ\€HK€ќ\HHTWСђQУУ‹€XШЭ\XЮHHL€њHL€ќ\™Щ]HT‘СUФСSPХQ€њљ[Ьљ]HH€Ш]YЫЬћHHSPQСWРРUQУФ–WФФPТPS€љYЫ›Ь™\ТЪ[™ЬФ›ШЪИH
+—ХTUQУSХ‘WС“QФИOHСS—Н
+H
+—ХTUQУSХ‘WС“QФИСS—МКK€\™Э[Y[ќHИ™љ^Y[XYЩHHK€ЫЫќ\ЭY™™XЭHЧХTUQУSХ‘WСQ‘‘PХИЏHСS—Н€ИУУ•TХСQ‘‘PХФ‘TUUSУ—У“ХР“Ф’S‘И€УУ•TХСQ‘‘PХР‘UT—ХТS—УUT‹€ЫЫќ\ЭШ]YЫЬћHHУУ•TХРРUQУФ–WРУУУ€ЫЫќ\ЭЫЫX›ФЭ\ќ\’YHУУP“ЧФХT•T—СђQУУ—ФђQСK€ЫЫќ\ЭЫЫX›У[Э™\ИHРУУP“ЧФХT•T—СђQУУ—Р”‘PUУУP“ЧФХT•T—СђQУУ—СSђСKУУP“ЧФХT•T—СђQУУ—Ф•TТУУP“ЧФХT•T—СђQУУ—ХRSK€]P[љ[TШЬљ\HР]P[љ[S[Э™WСYЫЫ”YЩK€ќ[Y\™[ќXЩS[Э™HH•QK€K‚€УSХ‘WС’T‘WФФS—HB€В€›[YHHУУTХS‘ФХ’S‘К‘љ\™HЬ[€ЉK€™\ШЬљ\[Ы€HУУTХS‘ФХ’S‘К€•\ИH›ЩH[€Hљ[™ИЩ—€‚€™љ\™H›Ь€ђ’S‘S‘ЧХT“”И€\›њЛ€ЉK€™Y™™XЭHQ‘‘PХТU€њЭЩ\€H—ХTUQУSХ‘WСUHЏHСS—НHИНH€MK€ќ\HHTWС’T‘K€XШЭ\XЮHH—ХTUQУSХ‘WСUHЏHСS—НHИH€М€њHMK€ќ\™Щ]HT‘СUФСSPХQ€њљ[Ьљ]HH€Ш]YЫЬћHHSPQСWРРUQУФ–WФФPТPS€љYЫ›Ь™\ТЪ[™ЬФ›ШЪИH—ХTUQУSХ‘WС“QФИСS—МЛ€Y][Ы[Y™™XЭИHQUSУђSСQ‘‘PХКВ€›[Э™QY™™XЭHSХ‘WСQ‘‘PХХФђT€›][\Эљ[™ЛќЬ\YH—УTСЧХФђTQС’T‘WФФS‹€JK€ЫЫќ\ЭY™™XЭHУУ•TХСQ‘‘PХСУ•СVТUWРUQQSђСK€ЫЫќ\ЭШ]YЫЬћHHУУ•TХРРUQУФ–WР‘PUUK€ЫЫќ\ЭЫЫX›ФЭ\ќ\’YH€ЫЫќ\ЭЫЫX›У[Э™\ИHРУУP“ЧФХT•T—ФХS“–WСV_K€]P[љ[TШЬљ\HР]P[љ[S[Э™WСљ\™TЬ[‹€ќ[Y\™[ќXЩS[Э™HH•QK€K‚€УSХ‘WХS‘T—ФТРТЧHB€В€›[YHHУУTХS‘ФХ’S‘К•[™\€ЪШЪИЉK€™\ШЬљ\[Ы€HУУTХS‘ФХ’S‘К€ђ[€[XЭљXШ[]XЪИ]€‚€›X^H\[^™HH›ЩK€ЉK€™Y™™XЭHQ‘‘PХТU€њЭЩ\€H€ќ\HHTWСSPХ’PЛ€XШЭ\XЮHHL€њHМ€ќ\™Щ]HT‘СUФСSPХQ€њљ[Ьљ]HH€Ш]YЫЬћHHSPQСWРРUQУФ–WФФPТPS€Y][Ы[Y™™XЭИHQUSУђSСQ‘‘PХКВ€›[Э™QY™™XЭHSХ‘WСQ‘‘PХФTђSTТTЛ€Ъ[ЩHHL€JK€ЫЫќ\ЭY™™XЭHУУ•TХСQ‘‘PХТQТWРTPSS‘Л€ЫЫќ\ЭШ]YЫЬћHHУУ•TХРРUQУФ–WРУУУ€ЫЫќ\ЭЫЫX›ФЭ\ќ\’YH€ЫЫќ\ЭЫЫX›У[Э™\ИHРУУP“ЧФХT•T—РТT‘С_K€]P[љ[TШЬљ\HР]P[љ[S[Э™WХ[™\”ЪШЪЛ€K‚€УSХ‘WХS‘Tђ“УHB€В€›[YHHУУTХS‘ФХ’S‘К•[™\›ЫЉK€™\ШЬљ\[Ы€HУУTХS‘ФХ’S‘К€ђHЭ›Ы™И[XЭљXШ[]XЪЧ€‚€ќ]X^H\[^™HH›ЩK€ЉK€™Y™™XЭHQ‘‘PХТU€њЭЩ\€H—ХTUQУSХ‘WСUHЏHСS—Н€ИL€MK€ќ\HHTWСSPХ’PЛ€XШЭ\XЮHHL€њHMK€ќ\™Щ]HT‘СUФСSPХQ€њљ[Ьљ]HH€Ш]YЫЬћHHSPQСWРРUQУФ–WФФPТPS€Y][Ы[Y™™XЭИHQUSУђSСQ‘‘PХКВ€›[Э™QY™™XЭHSХ‘WСQ‘‘PХФTђSTТTЛ€Ъ[ЩHHL€JK€ЫЫќ\ЭY™™XЭHУУ•TХСQ‘‘PХТQТWРTPSS‘Л€ЫЫќ\ЭШ]YЫЬћHHУУ•TХРРUQУФ–WРУУУ€ЫЫќ\ЭЫЫX›ФЭ\ќ\’YH€ЫЫќ\ЭЫЫX›У[Э™\ИHРУУP“ЧФХT•T—РТT‘С_K€]P[љ[TШЬљ\HР]P[љ[S[Э™WХ[™\›Ы€ќ[Y\™[ќXЩS[Э™HH•QK€K‚€УSХ‘WХS‘T—ХРU‘WHB€В€›[YHHУУTХS‘ФХ’S‘К•[™\€Ш]™HЉK€™\ШЬљ\[Ы€HУУTХS‘ФХ’S‘К€ђHЩXZИ›ЫЩ€[XЭљXЪ]W€‚€ќ]\[^™\ИH›ЩK€ЉK€™Y™™XЭHQ‘‘PХУ“У—Х“УUSWФХUTЛ€њЭЩ\€H€ќ\HHTWСSPХ’PЛ€XШЭ\XЮHH—ХTUQУSХ‘WСUHЏHСS—НИИL€L€њHЊ€ќ\™Щ]HT‘СUФСSPХQ€њљ[Ьљ]HH€Ш]YЫЬћHHSPQСWРРUQУФ–WФХUTЛ€\™Э[Y[ќHИ››Ы•›Ы][TЭ]\ИHSХ‘WСQ‘‘PХФTђSTТTИK€ћ“[Э™HHИ™Y™™XЭH—СQ‘‘PХФФQ—ХTМHK€›XYЪXРЫШ]Y™™XЭYH•QK€ЫЫќ\ЭY™™XЭHЧХTUQУSХ‘WСQ‘‘PХИЏHСS—Н€ИУУ•TХСQ‘‘PХРђQWФХT•WФ‘U—УSУ”И€УУ•TХСQ‘‘PХРђQWФХT•WУSУ”ЧХТUСУУСРTPSЛ€ЫЫќ\ЭШ]YЫЬћHHУУ•TХРРUQУФ–WРУУУ€ЫЫќ\ЭЫЫX›ФЭ\ќ\’YHУУP“ЧФХT•T—ХS‘T—ХРU‘K€ЫЫќ\ЭЫЫX›У[Э™\ИHРУУP“ЧФХT•T—РТT‘С_K€]P[љ[TШЬљ\HР]P[љ[S[Э™WХ[™\•Ш]™K€ќ[Y\™[ќXЩS[Э™HH•QK€K‚€УSХ‘WХS‘T—HB€В€›[YHHУУTХS‘ФХ’S‘К•[™\€ЉK€™\ШЬљ\[Ы€HУУTХS‘ФХ’S‘К€ђHYЪљ[™И]XЪИ]X^W€‚€Ш]\ЩH\[\Ъ\Л€ЉK€™Y™™XЭHQ‘‘PХТU€њЭЩ\€H—ХTUQУSХ‘WСUHЏHСS—Н€ИLL€LЊ€ќ\HHTWСSPХ’PЛ€XШЭ\XЮHHМ€њHL€ќ\™Щ]HT‘СUФСSPХQ€њљ[Ьљ]HH€Ш]YЫЬћHHSPQСWРРUQУФ–WФФPТPS€™[XYЩ\РZ\›Ь›™HH—ХTUQУSХ‘WС“QФИЏHСS—М‹€[Ш^\Т]Т[”Z[€H•QK€XШЭ\XЮML[”Э[€H•QK€Y][Ы[Y™™XЭИHQUSУђSСQ‘‘PХКВ€›[Э™QY™™XЭHSХ‘WСQ‘‘PХФTђSTТTЛ€Ъ[ЩHH—ХTUQУSХ‘WСUHЏHСS—М€ИМ€L€JK€ЫЫќ\ЭY™™XЭHЧХTUQУSХ‘WСQ‘‘PХИЏHСS—Н€ИУУ•TХСQ‘‘PХР‘UT—ХТS—РUQQSђСWСVТUQ€УУ•TХСQ‘‘PХФХT•WФ‘U—УSУ”Л€ЫЫќ\ЭШ]YЫЬћHHУУ•TХРРUQУФ–WРУУУ€ЫЫќ\ЭЫЫX›ФЭ\ќ\’YH€ЫЫќ\ЭЫЫX›У[Э™\ИHРУУP“ЧФХT•T—РТT‘СKУУP“ЧФХT•T—УРТЧУУ‹УУP“ЧФХT•T—ФђRS—СSђС_K€]P[љ[TШЬљ\HР]P[љ[S[Э™WХ[™\‹€ќ[Y\™[ќXЩS[Э™HH•QK€K‚€УSХ‘WФ“РТЧХ“ХЧHB€В€›[YHHУУTХS‘ФХ’S‘К”›ШЪИ›ЭИЉK€™\ШЬљ\[Ы€HУУTХS‘ФХ’S‘К€•›ЭЬИЫX[›ШЪЬИЧ€‚€њЭљZЩHH›ЩK€ЉK€™Y™™XЭHQ‘‘PХТU€њЭЩ\€HL€ќ\HHTWФ“РТЛ€XШЭ\XЮHH—ХTUQУSХ‘WСUHЏHСS—М€ИL€ЌK€њHMK€ќ\™Щ]HT‘СUФСSPХQ€њљ[Ьљ]HH€Ш]YЫЬћHHSPQСWРРUQУФ–WФTТPРS€ЫЫќ\ЭY™™XЭHЧХTUQУSХ‘WСQ‘‘PХИЏHСS—Н€ИУУ•TХСQ‘‘PХТQТWРTPSS‘И€УУ•TХСQ‘‘PХР‘UT—ТQ—ФРSQWХTK€ЫЫќ\ЭШ]YЫЬћHHУУ•TХРРUQУФ–WХХQТ€ЫЫќ\ЭЫЫX›ФЭ\ќ\’YHУУP“ЧФХT•T—Ф“РТЧХ“ХЛ€ЫЫќ\ЭЫЫX›У[Э™\ИHМK€]P[љ[TШЬљ\HР]P[љ[S[Э™WФ›ШЪХ›ЭЛ€K‚€УSХ‘WСPT•UPRСWHB€В€›[YHHУУTХS‘ФХ’S‘К‘X\ќ]XZЩHЉK€™\ШЬљ\[Ы€HУУTХS‘ФХ’S‘К€ђHЭЩ\™ќ[]XZЩH]€‚€љ]И[Э\€Ърк[[Ы‹€ЉK€™Y™™XЭHQ‘‘PХСPT•UPRСK€њЭЩ\€HL€ќ\HHTWСФ“ХS‘€XШЭ\XЮHHL€њHL€ќ\™Щ]HT‘СUС“СTЧРS‘РSK€њљ[Ьљ]HH€Ш]YЫЬћHHSPQСWРРUQУФ–WФTТPРS€љYЫ›Ь™\ТЪ[™ЬФ›ШЪИH—ХTUQУSХ‘WС“QФИСS—МЛ€™[XYЩ\Х[™\™Ь›Э[™H—ХTUQУSХ‘WС“QФИЏHСS—М‹€њЪЮP]P[›™YH•QK€ЫЫќ\ЭY™™XЭHЧХTUQУSХ‘WСQ‘‘PХИЏHСS—Н€ИУУ•TХСQ‘‘PХРђQWФХT•WУSУ”ЧХТUСУУСРTPSИ€УУ•TХСQ‘‘PХРђQWФХT•WФ‘U—УSУ”Л€ЫЫќ\ЭШ]YЫЬћHHУУ•TХРРUQУФ–WХХQТ€ЫЫќ\ЭЫЫX›ФЭ\ќ\’YHУУP“ЧФХT•T—СPT•UPRСK€ЫЫќ\ЭЫЫX›У[Э™\ИHМK€]P[љ[TШЬљ\HР]P[љ[S[Э™WСX\ќ]XZЩK€ќ[Y\™[ќXЩS[Э™HH•QK€K‚€УSХ‘WС’TФХT‘WHB€В€›[YHHУУTХS‘ФХ’S‘К‘љ\ЬЭ\™HЉK€™\ШЬљ\[Ы€HУУTХS‘ФХ’S‘К€‘›ЬИH›ЩH[€Hљ\ЬЭ\™K—€‚€•H\Щ\€]\Э[€™XЪ\™ЩK€ЉK€™Y™™XЭHQ‘‘PХТU€њЭЩ\€HML€ќ\HHTWСФ“ХS‘€XШЭ\XЮHHL€њHK€ќ\™Щ]HT‘СUФСSPХQ€њљ[Ьљ]HH€Ш]YЫЬћHHSPQСWРРUQУФ–WФTТPРS€™[XYЩ\Х[™\™Ь›Э[™H•QK€њЪЮP]P[›™YH•QK€Y][Ы[Y™™XЭИHQUSУђSСQ‘‘PХКВ€›[Э™QY™™XЭHSХ‘WСQ‘‘PХФ‘PТT‘СK€њЩ[€H•QK€JK€ЫЫќ\ЭY™™XЭHУУ•TХСQ‘‘PХРђQWФХT•WУSУ”ЧХТUСУУСРTPSЛ€ЫЫќ\ЭШ]YЫЬћHHУУ•TХРРUQУФ–WХХQТ€ЫЫќ\ЭЫЫX›ФЭ\ќ\’YH€ЫЫќ\ЭЫЫX›У[Э™\ИHРУУP“ЧФХT•T—СPT•UPRС_K€]P[љ[TШЬљ\HР]P[љ[S[Э™WСљ\ЬЭ\™K€ќ[Y\™[ќXЩS[Э™HH•QK€K‚€УSХ‘WСQЧHB€В€›[YHHУУTХS‘ФХ’S‘К‘YИЉK€™\ШЬљ\[Ы€HУУTХS‘ФХ’S‘К€‘YЬИ[™\™Ь›Э[™Hљ\њЭ€‚€ќ\›€[™ЭљZЩ\И™^\›‹€ЉK€™Y™™XЭHQ‘‘PХФСSRWТS••S‘TђP“K€ЪY€—ХTUQУSХ‘WСUHЏHСS—Н€њЭЩ\€H€Щ[Y€—ХTUQУSХ‘WСUHЏHСS—М‚€њЭЩ\€HЊ€Щ[ЩB€њЭЩ\€HL€Щ[™Y‚€ќ\HHTWСФ“ХS‘€XШЭ\XЮHHL€њHL€ќ\™Щ]HT‘СUФСSPХQ€њљ[Ьљ]HH€Ш]YЫЬћHHSPQСWРРUQУФ–WФTТPРS€›XZЩ\РЫЫќXЭH•QK€њЫY\[Р[›™YH•QK€љ[њЭќXЭ[›™YH•QK€\ЬЪ\Э[›™YH—ХTUQУSХ‘WС“QФИЏHСS—Н‹€њЪЮP]P[›™YH•QK€\™Э[Y[ќќЫХ\›ђ]XЪИHИњЭљ[™ТYHХ’S‘ТQФУS‘QТУKњЭ]\ИHХUWХS‘T‘Ф“ХS‘K€ЫЫќ\ЭY™™XЭHЧХTUQУSХ‘WСQ‘‘PХИЏHСS—Н€ИУУ•TХСQ‘‘PХРU“ТQФХT•WУУђСH€УУ•TХСQ‘‘PХРU“ТQФХT•K€ЫЫќ\ЭШ]YЫЬћHHЧХTUQУSХ‘WРРUQУФ’QTИЏHСS—Н€ИУУ•TХРРUQУФ–WХХQТ€УУ•TХРРUQУФ–WФУPT•€ЫЫќ\ЭЫЫX›ФЭ\ќ\’YH€ЫЫќ\ЭЫЫX›У[Э™\ИHМK€]P[љ[TШЬљ\HР]P[љ[S[Э™WСYЛ€ќ[Y\™[ќXЩS[Э™HH•QK€K‚€УSХ‘WХЦPЧHB€В€›[YHHУУTХS‘ФХ’S‘К•ЮXИЉK€™\ШЬљ\[Ы€HУУTХS‘ФХ’S‘К€”Ъ\ЫЫњИH›ЩHЪ][—€‚€љ[ќ[њЪYћZ[™ИЮ[‹€ЉK€™Y™™XЭHQ‘‘PХУ“У—Х“УUSWФХUTЛ€њЭЩ\€H€ќ\HHTWФТTУУ‹€XШЭ\XЮHH—ХTUQУSХ‘WСUHЏHСS—НHИL€K€њHL€ќ\™Щ]HT‘СUФСSPХQ€њљ[Ьљ]HH€Ш]YЫЬћHHSPQСWРРUQУФ–WФХUTЛ€\™Э[Y[ќHИ››Ы•›Ы][TЭ]\ИHSХ‘WСQ‘‘PХХЦPИK€ћ“[Э™HHИ™Y™™XЭH—СQ‘‘PХСQ—ХTМHK€›XYЪXРЫШ]Y™™XЭYH•QK€[Ш^\Т]УЫ”Ш[YU\HH—ХЦPЧУ‘U‘T—УRTФИЏHСS—Н‹€ЫЫќ\ЭY™™XЭHУУ•TХСQ‘‘PХХУФ”СS—РУУ‘USУ—УС—Ф‘U—УSУ”Л€ЫЫќ\ЭШ]YЫЬћHHУУ•TХРРUQУФ–WФУPT•€ЫЫќ\ЭЫЫX›ФЭ\ќ\’YHУУP“ЧФХT•T—ХЦPЛ€ЫЫќ\ЭЫЫX›У[Э™\ИHМK€]P[љ[TШЬљ\HР]P[љ[S[Э™WХЮXЛ€ќ[Y\™[ќXЩS[Э™HH•QK€K‚€УSХ‘WРУУ‘•TТSУ—HB€В€›[YHHУУTХS‘ФХ’S‘КђЫЫ™ќ\Ъ[Ы€ЉK€™\ШЬљ\[Ы€HУУTХS‘ФХ’S‘К€ђHЮXЪXИ]XЪИ]X^W€‚€Ш]\ЩHЫЫ™ќ\Ъ[Ы‹€ЉK€™Y™™XЭHQ‘‘PХТU€њЭЩ\€HL€ќ\HHTWФЦPТPЛ€XШЭ\XЮHHL€њHЌK€ќ\™Щ]HT‘СUФСSPХQ€њљ[Ьљ]HH€Ш]YЫЬћHHSPQСWРРUQУФ–WФФPТPS€Y][Ы[Y™™XЭИHQUSУђSСQ‘‘PХКВ€›[Э™QY™™XЭHSХ‘WСQ‘‘PХРУУ‘•TТSУ‹€Ъ[ЩHHL€JK€ЫЫќ\ЭY™™XЭHЧХTUQУSХ‘WСQ‘‘PХИЏHСS—Н€ИУУ•TХСQ‘‘PХТQТWРTPSS‘И€УУ•TХСQ‘‘PХФХT•WФ‘U—УSУ‹€ЫЫќ\ЭШ]YЫЬћHHУУ•TХРРUQУФ–WФУPT•€ЫЫќ\ЭЫЫX›ФЭ\ќ\’YHУУP“ЧФХT•T—РУУ‘•TТSУ‹€ЫЫќ\ЭЫЫX›У[Э™\ИHРУУP“ЧФХT•T—РРSWУRS‘УУP“ЧФХT•T—ТТS‘TТTЛУУP“ЧФХT•T—ФЦPТPЯK€]P[љ[TШЬљ\HР]P[љ[S[Э™WРЫЫ™ќ\Ъ[Ы‹€K‚€УSХ‘WФЦPТPЧHB€В€›[YHHУУTХS‘ФХ’S‘К”ЮXЪXИЉK€™\ШЬљ\[Ы€HУУTХS‘ФХ’S‘К€ђHЭЩ\™ќ[ЮXЪXИ]XЪЧ€‚€ќ]X^HЭЩ\€Ь€Y‹€ЉK€™Y™™XЭHQ‘‘PХТU€њЭЩ\€HL€ќ\HHTWФЦPТPЛ€XШЭ\XЮHHL€њHL€ќ\™Щ]HT‘СUФСSPХQ€њљ[Ьљ]HH€Ш]YЫЬћHHSPQСWРРUQУФ–WФФPТPS€Y][Ы[Y™™XЭИHQUSУђSСQ‘‘PХКВ€›[Э™QY™™XЭHSХ‘WСQ‘‘PХФФСQ—УRS•TЧМK€Ъ[ЩHH—ХTUQУSХ‘WСUHЏHСS—М€ИL€МЛ€JK€ЫЫќ\ЭY™™XЭHЧХTUQУSХ‘WСQ‘‘PХИЏHСS—Н€ИУУ•TХСQ‘‘PХТQТWРTPSS‘И€УУ•TХСQ‘‘PХРђQWФХT•WФ‘U—УSУ”Л€ЫЫќ\ЭШ]YЫЬћHHУУ•TХРРUQУФ–WФУPT•€ЫЫќ\ЭЫЫX›ФЭ\ќ\’YHУУP“ЧФХT•T—ФЦPТPЛ€ЫЫќ\ЭЫЫX›У[Э™\ИHРУУP“ЧФХT•T—РРSWУRS‘УУP“ЧФХT•T—РУУ‘•TТSУ‹УУP“ЧФХT•T—ТТS‘TТTЯK€]P[љ[TШЬљ\HР]P[љ[S[Э™WФЮXЪXЛ€ќ[Y\™[ќXЩS[Э™HH•QK€K‚€УSХ‘WТT“ФТTЧHB€В€›[YHHУУTХS‘ФХ’S‘К’\›ЬЪ\ИЉK€™\ШЬљ\[Ы€HУУTХS‘ФХ’S‘К€ђH\›Э^љ[™И[Э™H]€‚€›X^H[™XЩHЫY\€ЉK€™Y™™XЭHQ‘‘PХУ“У—Х“УUSWФХUTЛ€њЭЩ\€H€ќ\HHTWФЦPТPЛ€XШЭ\XЮHHЊ€њHЊ€ќ\™Щ]HT‘СUФСSPХQ€њљ[Ьљ]HH€Ш]YЫЬћHHSPQСWРРUQУФ–WФХUTЛ€\™Э[Y[ќHИ››Ы•›Ы][TЭ]\ИHSХ‘WСQ‘‘PХФУQTK€ћ“[Э™HHИ™Y™™XЭH—СQ‘‘PХФФХTМHK€›XYЪXРЫШ]Y™™XЭYH•QK€ЫЫќ\ЭY™™XЭHУУ•TХСQ‘‘PХРђQWФХT•WФ‘U—УSУ”Л€ЫЫќ\ЭШ]YЫЬћHHУУ•TХРРUQУФ–WФУPT•€ЫЫќ\ЭЫЫX›ФЭ\ќ\’YHУУP“ЧФХT•T—ТT“ФТTЛ€ЫЫќ\ЭЫЫX›У[Э™\ИHМK€]P[љ[TШЬљ\HР]P[љ[S[Э™WТ\›ЬЪ\Л€ќ[Y\™[ќXЩS[Э™HH•QK€K‚€УSХ‘WУQQUUWHB€В€›[YHHУУTХS‘ФХ’S‘К“YY]]HЉK€™\ШЬљ\[Ы€HУУTХS‘ФХ’S‘К€“YY]]\И[€HXXЩYќ[€‚€™\Ъ[Ы€ИZ\ЩH]XЪЛ€ЉK€™Y™™XЭHQ‘‘PХРUPТЧХT€њЭЩ\€H€ќ\HHTWФЦPТPЛ€XШЭ\XЮHH€њH€ќ\™Щ]HT‘СUХTСT‹€њљ[Ьљ]HH€Ш]YЫЬћHHSPQСWРРUQУФ–WФХUTЛ€ћ“[Э™HHИ™Y™™XЭH—СQ‘‘PХРUЧХTМHK€љYЫ›Ь™\Ф›ЭXЭH•QK€›Z\њ›Ь“[Э™P[›™YH•QK€њЫ]ЪY™™XЭYH•QK€ЫЫќ\ЭY™™XЭHУУ•TХСQ‘‘PХТST“Х‘WРУУ‘USУ—Ф‘U‘S•У‘T•“ХTУ‘TФЛ€ЫЫќ\ЭШ]YЫЬћHHУУ•TХРРUQУФ–WР‘PUUK€ЫЫќ\ЭЫЫX›ФЭ\ќ\’YH€ЫЫќ\ЭЫЫX›У[Э™\ИHРУУP“ЧФХT•T—РРSWУRS‘K€]P[љ[TШЬљ\HР]P[љ[S[Э™WУYY]]K€ќ[Y\™[ќXЩS[Э™HH•QK€K‚€УSХ‘WРQТSUWHB€В€›[YHHУУTХS‘ФХ’S‘КђYЪ[]HЉK€™\ШЬљ\[Ы€HУУTХS‘ФХ’S‘К€”™[^\ИH›ЩHИЪ\њW€‚€›ЫЬЭЬYY€ЉK€™Y™™XЭHQ‘‘PХФФQQХTМ‹€њЭЩ\€H€ќ\HHTWФЦPТPЛ€XШЭ\XЮHH€њHМ€ќ\™Щ]HT‘СUХTСT‹€њљ[Ьљ]HH€Ш]YЫЬћHHSPQСWРРUQУФ–WФХUTЛ€ћ“[Э™HHИ™Y™™XЭH—СQ‘‘PХФ‘TСUФХUИK€љYЫ›Ь™\Ф›ЭXЭH•QK€›Z\њ›Ь“[Э™P[›™YH•QK€њЫ]ЪY™™XЭYH•QK€ЫЫќ\ЭY™™XЭHУУ•TХСQ‘‘PХУ‘VРTPSСPT“QT‹€ЫЫќ\ЭШ]YЫЬћHHУУ•TХРРUQУФ–WРУУУ€ЫЫќ\ЭЫЫX›ФЭ\ќ\’YHУУP“ЧФХT•T—РQТSUK€ЫЫќ\ЭЫЫX›У[Э™\ИHРУУP“ЧФХT•T—СХP“WХPS_K€]P[љ[TШЬљ\HР]P[љ[S[Э™WРYЪ[]K€ќ[Y\™[ќXЩS[Э™HH•QK€K‚€УSХ‘WФURPТЧРUPТЧHB€В€›[YHHУУTХS‘ФХ’S‘К”]ZXЪИ]XЪИЉK€™\ШЬљ\[Ы€HУУTХS‘ФХ’S‘К€ђ[€^™[Y[H\Э]XЪЧ€‚€ќ][Ш^\ИЭљZЩ\Иљ\њЭ€ЉK€™Y™™XЭHQ‘‘PХТU€њЭЩ\€H€ќ\HHTWУ“Ф“PS€XШЭ\XЮHHL€њHМ€ќ\™Щ]HT‘СUФСSPХQ€њљ[Ьљ]HHK€Ш]YЫЬћHHSPQСWРРUQУФ–WФTТPРS€›XZЩ\РЫЫќXЭH•QK€ЫЫќ\ЭY™™XЭHУУ•TХСQ‘‘PХУ‘VРTPSСPT“QT‹€ЫЫќ\ЭШ]YЫЬћHHУУ•TХРРUQУФ–WРУУУ€ЫЫќ\ЭЫЫX›ФЭ\ќ\’YH€ЫЫќ\ЭЫЫX›У[Э™\ИHРУУP“ЧФХT•T—СХP“WХPS_K€]P[љ[TШЬљ\HР]P[љ[S[Э™WФ]ZXЪР]XЪЛ€ќ[Y\™[ќXЩS[Э™HH•QK€K‚€УSХ‘WФђQСWHB€В€›[YHHУУTХS‘ФХ’S‘К”YЩHЉK€™\ШЬљ\[Ы€HУУTХS‘ФХ’S‘К€”Z\Щ\ИH\Щ\‰ЬИ]XЪЧ€‚€™]™\ћH[YH]\И]€ЉK€™Y™™XЭHQ‘‘PХТU€њЭЩ\€HЊ€ќ\HHTWУ“Ф“PS€XШЭ\XЮHHL€њHЊ€ќ\™Щ]HT‘СUФСSPХQ€њљ[Ьљ]HH€Ш]YЫЬћHHSPQСWРРUQУФ–WФTТPРS€Y][Ы[Y™™XЭИHQUSУђSСQ‘‘PХКВ€›[Э™QY™™XЭHSХ‘WСQ‘‘PХФђQСK€JK€›XZЩ\РЫЫќXЭH•QK€ЫЫќ\ЭY™™XЭHЧХTUQУSХ‘WСQ‘‘PХИЏHСS—Н€ИУУ•TХСQ‘‘PХРђQWФХT•WФ‘U—УSУ”И€УУ•TХСQ‘‘PХФ‘TUUSУ—У“ХР“Ф’S‘Л€ЫЫќ\ЭШ]YЫЬћHHЧХTUQУSХ‘WРРUQУФ’QTИЏHСS—Н€ИУУ•TХРРUQУФ–WХХQТ€УУ•TХРРUQУФ–WРУУУ€ЫЫќ\ЭЫЫX›ФЭ\ќ\’YHУУP“ЧФХT•T—ФђQСK€ЫЫќ\ЭЫЫX›У[Э™\ИHМK€]P[љ[TШЬљ\HР]P[љ[S[Э™WФYЩK€K‚€УSХ‘WХSTФ•HB€В€›[YHHУУTХS‘ФХ’S‘К•[\ЬќЉK€ЪY€—ХSTФ•Р‘RU’SФ€ЏHСS—О€™\ШЬљ\[Ы€HУУTХS‘ФХ’S‘К€”ЭЪ]Ъ\ИH\Щ\€Э]\Э—€‚€‘›Y\ИЪ[€\ЩYћHЪ[ФУSџK€ЉK€Щ[ЩB€™\ШЬљ\[Ы€HУУTХS‘ФХ’S‘К€ђHЮXЪXИ[Э™H›Ь€›YZ[™Ч€‚€™њ›ЫH]H[њЭ[ќK€ЉK€Щ[™Y‚€™Y™™XЭHQ‘‘PХХSTФ•€њЭЩ\€H€ќ\HHTWФЦPТPЛ€XШЭ\XЮHH€њHЊ€ќ\™Щ]HT‘СUХTСT‹€њљ[Ьљ]HH—ХTUQУSХ‘WСUHЏHСS—ОИM€€€Ш]YЫЬћHHSPQСWРРUQУФ–WФХUTЛ€ћ“[Э™HHИ™Y™™XЭH—СQ‘‘PХФ‘PУХ‘T—ТK€љYЫ›Ь™\Ф›ЭXЭH•QK€›Z\њ›Ь“[Э™P[›™YH•QK€ЫЫќ\ЭY™™XЭHУУ•TХСQ‘‘PХРU“ТQФХT•K€ЫЫќ\ЭШ]YЫЬћHHУУ•TХРРUQУФ–WРУУУ€ЫЫќ\ЭЫЫX›ФЭ\ќ\’YH€ЫЫќ\ЭЫЫX›У[Э™\ИHРУУP“ЧФХT•T—РУУ‘•TТSУ‹УУP“ЧФХT•T—СХP“WХPSKУУP“ЧФХT•T—ТТS‘TТTЛУУP“ЧФХT•T—ФЦPТPЯK€]P[љ[TШЬљ\HР]P[љ[S[Э™WХ[\Ьќ€K‚€УSХ‘WУ’QТФТQWHB€В€›[YHHУУTХS‘ФХ’S‘К“љYЪЪYHЉK€™\ШЬљ\[Ы€HУУTХS‘ФХ’S‘К€’[™›XЭИ[XYЩHY[ќXШ[€‚€ќИH\Щ\‰ЬИ]™[€ЉK€™Y™™XЭHQ‘‘PХУU‘SСSPQСK€њЭЩ\€HK€ќ\HHTWСТФХ€XШЭ\XЮHHL€њHMK€ќ\™Щ]HT‘СUФСSPХQ€њљ[Ьљ]HH€Ш]YЫЬћHHSPQСWРРUQУФ–WФФPТPS€ЫЫќ\ЭY™™XЭHЧХTUQУSХ‘WСQ‘‘PХИЏHСS—Н€ИУУ•TХСQ‘‘PХФ‘TUUSУ—У“ХР“Ф’S‘И€УУ•TХСQ‘‘PХФХT•WУSУ”ЧФРSQWХTWРTPS€ЫЫќ\ЭШ]YЫЬћHHУУ•TХРРUQУФ–WФУPT•€ЫЫќ\ЭЫЫX›ФЭ\ќ\’YH€ЫЫќ\ЭЫЫX›У[Э™\ИHМK€]P[љ[TШЬљ\HР]P[љ[S[Э™WУљYЪЪYK€ќ[Y\™[ќXЩS[Э™HH•QK€K‚€УSХ‘WУRSRPЧHB€В€›[YHHУУTХS‘ФХ’S‘К“Z[ZXИЉK€™\ШЬљ\[Ы€HУУTХS‘ФХ’S‘К€ђЫЬY\И\Э[Э™H\ЩYћHW€‚€™›ЩH\љ[™ИЫ™H]K€ЉK€™Y™™XЭHQ‘‘PХУRSRPЛ€њЭЩ\€H€ќ\HHTWУ“Ф“PS€XШЭ\XЮHH—ХTUQУSХ‘WСUHЏHСS—МИИ€L€њHL€ќ\™Щ]HT‘СUФСSPХQ€њљ[Ьљ]HH€Ш]YЫЬћHHSPQСWРРUQУФ–WФХUTЛ€ћ“[Э™HHИ™Y™™XЭH—СQ‘‘PХРPРЧХTМHK€љYЫ›Ь™\ФЭXњЭ]]HH•QK€›Z[ZXР[›™YH•QK€›Y]›Ы›ЫYP[›™YH—ХTUQУSХ‘WС“QФИЏHСS—М‹€ЫЬXШ][›™YH•QK€њЫY\[Р[›™YH•QK€љ[њЭќXЭ[›™YH•QK€™[ЫЬ™P[›™YH•QK€\ЬЪ\Э[›™YH•QK€ЫЫќ\ЭY™™XЭHУУ•TХСQ‘‘PХРTPSРTЧСУУСРTЧФ‘U—УУ‘K€ЫЫќ\ЭШ]YЫЬћHHУУ•TХРРUQУФ–WРХUK€ЫЫќ\ЭЫЫX›ФЭ\ќ\’YH€ЫЫќ\ЭЫЫX›У[Э™\ИHМK€]P[љ[TШЬљ\HР]P[љ[S[Э™WУZ[ZXЛ€ќ[Y\™[ќXЩS[Э™HH•QK€K‚€УSХ‘WФРФ‘QPТHB€В€›[YHHУУTХS‘ФХ’S‘К”ШЬ™YXЪЉK€™\ШЬљ\[Ы€HУУTХS‘ФХ’S‘К€‘[Z]ИHШЬ™YXЪИЪ\њW€‚€њ™YXЩHH›ЩIЬИY™[њЩK€ЉK€™Y™™XЭHQ‘‘PХСQ‘S”СWСХУ—М‹€њЭЩ\€H€ќ\HHTWУ“Ф“PS€XШЭ\XЮHHK€њH€ќ\™Щ]HT‘СUФСSPХQ€њљ[Ьљ]HH€Ш]YЫЬћHHSPQСWРРUQУФ–WФХUTЛ€ћ“[Э™HHИ™Y™™XЭH—СQ‘‘PХРUЧХTМHK€љYЫ›Ь™\ФЭXњЭ]]HH—ХTUQУSХ‘WС“QФИЏHСS—Н‹€›XYЪXРЫШ]Y™™XЭYH•QK€њЫЭ[™[Э™HH•QK€ЫЫќ\ЭY™™XЭHЧХTUQУSХ‘WСQ‘‘PХИЏHСS—Н€ИУУ•TХСQ‘‘PХФТQ•Т•QСWРUS•SУ€€УУ•TХСQ‘‘PХРђQWФХT•WФ‘U—УSУ”Л€ЫЫќ\ЭШ]YЫЬћHHУУ•TХРРUQУФ–WФУPT•€ЫЫќ\ЭЫЫX›ФЭ\ќ\’YH€ЫЫќ\ЭЫЫX›У[Э™\ИHМK€]P[љ[TШЬљ\HР]P[љ[S[Э™WФШЬ™YXЪ€ќ[Y\™[ќXЩS[Э™HH•QK€K‚€УSХ‘WСХP“WХPSWHB€В€›[YHHУУTХS‘ФХ’S‘К‘ЭX›HX[HЉK€™\ШЬљ\[Ы€HУУTХS‘ФХ’S‘К€ђЬ™X]\И[\ЫЬћHЫЬY\ИЧ€‚€њZ\ЩH]\Ъ]™[™\ЬЛ€ЉK€™Y™™XЭHQ‘‘PХСUђTТSУ—ХT€њЭЩ\€H€ќ\HHTWУ“Ф“PS€XШЭ\XЮHH€њHMK€ќ\™Щ]HT‘СUХTСT‹€њљ[Ьљ]HH€Ш]YЫЬћHHSPQСWРРUQУФ–WФХUTЛ€ћ“[Э™HHИ™Y™™XЭH—СQ‘‘PХФ‘TСUФХUИK€љYЫ›Ь™\Ф›ЭXЭH•QK€›Z\њ›Ь“[Э™P[›™YH•QK€њЫ]ЪY™™XЭYH•QK€ЫЫќ\ЭY™™XЭHЧХTUQУSХ‘WСQ‘‘PХИЏHСS—Н€ИУУ•TХСQ‘‘PХТST“Х‘WРУУ‘USУ—Ф‘U‘S•У‘T•“ХTУ‘TФИ€УУ•TХСQ‘‘PХРU“ТQФХT•WУУђСK€ЫЫќ\ЭШ]YЫЬћHHУУ•TХРРUQУФ–WРУУУ€ЫЫќ\ЭЫЫX›ФЭ\ќ\’YHУУP“ЧФХT•T—СХP“WХPSK€ЫЫќ\ЭЫЫX›У[Э™\ИHМK€]P[љ[TШЬљ\HР]P[љ[S[Э™WСЭX›UX[K€ќ[Y\™[ќXЩS[Э™HH•QK€K‚€УSХ‘WФ‘PУХ‘T—HB€В€›[YHHУУTХS‘ФХ’S‘К”™XЫЭ™\€ЉK€™\ШЬљ\[Ы€HУУTХS‘ФХ’S‘К€”™XЫЭ™\њИ\И[€W€‚€ќ\Щ\‰ЬИX^[][H€ЉK€ЪY€—ХTUQУSХ‘WСUHЏHСS—ОB€њHK€Щ[Y€—ХTUQУSХ‘WСUHЏHСS—Н€њHL€Щ[ЩB€њHЊ€Щ[™Y‚€™Y™™XЭHQ‘‘PХФ‘TХФ‘WТ€њЭЩ\€H€ќ\HHTWУ“Ф“PS€XШЭ\XЮHH€ќ\™Щ]HT‘СUХTСT‹€њљ[Ьљ]HH€Ш]YЫЬћHHSPQСWРРUQУФ–WФХUTЛ€ћ“[Э™HHИ™Y™™XЭH—СQ‘‘PХФ‘TСUФХUИK€љYЫ›Ь™\Ф›ЭXЭH•QK€›Z\њ›Ь“[Э™P[›™YH•QK€љX[[™У[Э™HH•QK€њЫ]ЪY™™XЭYH•QK€ЫЫќ\ЭY™™XЭHЧХTUQУSХ‘WСQ‘‘PХИЏHСS—Н€ИУУ•TХСQ‘‘PХР‘UT—ТQ—ФРSQWХTH€УУ•TХСQ‘‘PХФХT•WУSУ”ЧФРSQWХTWРTPS€ЫЫќ\ЭШ]YЫЬћHHУУ•TХРРUQУФ–WФУPT•€ЫЫќ\ЭЫЫX›ФЭ\ќ\’YH€ЫЫќ\ЭЫЫX›У[Э™\ИHМK€]P[љ[TШЬљ\HР]P[љ[S[Э™WФ™XЫЭ™\‹€ќ[Y\™[ќXЩS[Э™HH•QK€K‚€УSХ‘WТT‘S—HB€В€›[YHHУУTХS‘ФХ’S‘К’\™[€ЉK€™\ШЬљ\[Ы€HУУTХS‘ФХ’S‘К€”ЭY™™[њИH›ЩIЬИ€‚€›]\ШЫ\ИИZ\ЩHY™[њЩK€ЉK€™Y™™XЭHQ‘‘PХСQ‘S”СWХT€њЭЩ\€H€ќ\HHTWУ“Ф“PS€XШЭ\XЮHH€њHМ€ќ\™Щ]HT‘СUХTСT‹€њљ[Ьљ]HH€Ш]YЫЬћHHSPQСWРРUQУФ–WФХUTЛ€ћ“[Э™HHИ™Y™™XЭH—СQ‘‘PХСQ—ХTМHK€љYЫ›Ь™\Ф›ЭXЭH•QK€›Z\њ›Ь“[Э™P[›™YH•QK€њЫ]ЪY™™XЭYH•QK€ЫЫќ\ЭY™™XЭHУУ•TХСQ‘‘PХРU“ТQФХT•WУУђСK€ЫЫќ\ЭШ]YЫЬћHHУУ•TХРРUQУФ–WХХQТ€ЫЫќ\ЭЫЫX›ФЭ\ќ\’YHУУP“ЧФХT•T—ТT‘S‹€ЫЫќ\ЭЫЫX›У[Э™\ИHМK€]P[љ[TШЬљ\HР]P[љ[S[Э™WТ\™[‹€ќ[Y\™[ќXЩS[Э™HH•QK€K‚€УSХ‘WУRS’SRV‘WHB€В€›[YHHУУTХS‘ФХ’S‘К“Z[љ[Z^™HЉK€™\ШЬљ\[Ы€HУУTХS‘ФХ’S‘К€“Z[љ[Z^™\ИH\Щ\‰ЬИЪ^™HЧ€‚€ЪY€—УRS’SRV‘WСUђTТSУ€ЏHСS—НB€њЪ\њHZ\ЩH]\Ъ]™[™\ЬЛ€ЉK€Щ[ЩB€њZ\ЩH]\Ъ]™[™\ЬЛ€ЉK€Щ[™Y‚€™Y™™XЭHQ‘‘PХУRS’SRV‘K€њЭЩ\€H€ќ\HHTWУ“Ф“PS€XШЭ\XЮHH€њH—ХTUQУSХ‘WСUHЏHСS—Н€ИL€Њ€ќ\™Щ]HT‘СUХTСT‹€њљ[Ьљ]HH€Ш]YЫЬћHHSPQСWРРUQУФ–WФХUTЛ€ћ“[Э™HHИ™Y™™XЭH—СQ‘‘PХФ‘TСUФХUИK€љYЫ›Ь™\Ф›ЭXЭH•QK€›Z\њ›Ь“[Э™P[›™YH•QK€њЫ]ЪY™™XЭYH•QK€ЫЫќ\ЭY™™XЭHЧХTUQУSХ‘WСQ‘‘PХИЏHСS—Н€ИУУ•TХСQ‘‘PХРU“ТQФХT•H€УУ•TХСQ‘‘PХРU“ТQФХT•WУУђСK€ЫЫќ\ЭШ]YЫЬћHHУУ•TХРРUQУФ–WРХUK€ЫЫќ\ЭЫЫX›ФЭ\ќ\’YH€ЫЫќ\ЭЫЫX›У[Э™\ИHМK€]P[љ[TШЬљ\HР]P[љ[S[Э™WУZ[љ[Z^™K€ќ[Y\™[ќXЩS[Э™HH•QK€K‚€УSХ‘WФУSТСTРФ‘QS—HB€В€›[YHHУУTХS‘ФХ’S‘К”Ы[ЪЩ\ШЬ™Y[€ЉK€™\ШЬљ\[Ы€HУУTХS‘ФХ’S‘К€“ЭЩ\њИH›ЩIЬИXШЭ\XЮW€‚€ќ\Ъ[™ИЫ[ЪЩK[љЛ]Л€ЉK€™Y™™XЭHQ‘‘PХРPРХTђPЦWСХУ‹€њЭЩ\€H€ќ\HHTWУ“Ф“PS€XШЭ\XЮHHL€њHЊ€ќ\™Щ]HT‘СUФСSPХQ€њљ[Ьљ]HH€Ш]YЫЬћHHSPQСWРРUQУФ–WФХUTЛ€ћ“[Э™HHИ™Y™™XЭH—СQ‘‘PХСU”У—ХTМHK€›XYЪXРЫШ]Y™™XЭYH•QK€ЫЫќ\ЭY™™XЭHЧХTUQУSХ‘WСQ‘‘PХИЏHСS—Н€ИУУ•TХСQ‘‘PХФХT•WФ‘U—УSУ€€УУ•TХСQ‘‘PХФТQ•Т•QСWРUS•SУ‹€ЫЫќ\ЭШ]YЫЬћHHУУ•TХРРUQУФ–WФУPT•€ЫЫќ\ЭЫЫX›ФЭ\ќ\’YH€ЫЫќ\ЭЫЫX›У[Э™\ИHРУУP“ЧФХT•T—ФУSСЯK€]P[љ[TШЬљ\HР]P[љ[S[Э™WФЫ[ЪЩ\ШЬ™Y[‹€ќ[Y\™[ќXЩS[Э™HH•QK€K‚€УSХ‘WРУУ‘•TСWФђVWHB€В€›[YHHУУTХS‘ФХ’S‘КђЫЫ™ќ\ЩH^HЉK€™\ШЬљ\[Ы€HУУTХS‘ФХ’S‘К€ђHЪ[љ\Э\€^H]€‚€ЫЫ™ќ\Щ\ИH›ЩK€ЉK€™Y™™XЭHQ‘‘PХРУУ‘•TСK€њЭЩ\€H€ќ\HHTWСТФХ€XШЭ\XЮHHL€њHL€ќ\™Щ]HT‘СUФСSPХQ€њљ[Ьљ]HH€Ш]YЫЬћHHSPQСWРРUQУФ–WФХUTЛ€ћ“[Э™HHИ™Y™™XЭH—СQ‘‘PХФФUЧХTМHK€›XYЪXРЫШ]Y™™XЭYH•QK€ЫЫќ\ЭY™™XЭHЧХTUQУSХ‘WСQ‘‘PХИЏHСS—Н€ИУУ•TХСQ‘‘PХФХT•WУSУ—ХТUТ•QСTЧРUS•SУ€€УУ•TХСQ‘‘PХФРФђSP“WУ‘VХT“—УФ‘T‹€ЫЫќ\ЭШ]YЫЬћHHУУ•TХРРUQУФ–WФУPT•€ЫЫќ\ЭЫЫX›ФЭ\ќ\’YH€ЫЫќ\ЭЫЫX›У[Э™\ИHМK€]P[љ[TШЬљ\HР]P[љ[S[Э™WРЫЫ™ќ\ЩT^K€ќ[Y\™[ќXЩS[Э™HH•QK€K‚€УSХ‘WХТUђUЧHB€В€›[YHHУУTХS‘ФХ’S‘К•Ъ]]ИЉK€™\ШЬљ\[Ы€HУУTХS‘ФХ’S‘К€•Ъ]]ЬИH›ЩH[ќИ]Ч€‚€љ\™Ъ[ИZ\ЩHY™[њЩK€ЉK€™Y™™XЭHQ‘‘PХСQ‘S”СWХT€њЭЩ\€H€ќ\HHTWХРUT‹€XШЭ\XЮHH€њH€ќ\™Щ]HT‘СUХTСT‹€њљ[Ьљ]HH€Ш]YЫЬћHHSPQСWРРUQУФ–WФХUTЛ€ћ“[Э™HHИ™Y™™XЭH—СQ‘‘PХСQ—ХTМHK€љYЫ›Ь™\Ф›ЭXЭH•QK€›Z\њ›Ь“[Э™P[›™YH•QK€њЫ]ЪY™™XЭYH•QK€ЫЫќ\ЭY™™XЭHЧХTUQУSХ‘WСQ‘‘PХИЏHСS—Н€ИУУ•TХСQ‘‘PХРU“ТQФХT•WУУђСH€УУ•TХСQ‘‘PХРU“ТQФХT•K€ЫЫќ\ЭШ]YЫЬћHHУУ•TХРРUQУФ–WРХUK€ЫЫќ\ЭЫЫX›ФЭ\ќ\’YH€ЫЫќ\ЭЫЫX›У[Э™\ИHРУУP“ЧФХT•T—ФђRS—СSђС_K€]P[љ[TШЬљ\HР]P[љ[S[Э™WХЪ]]Л€ќ[Y\™[ќXЩS[Э™HH•QK€K‚€УSХ‘WСQ‘S”СWРХT“HB€В€›[YHHУУTХS‘ФХ’S‘К‘Y™[њЩHЭ\›ЉK€™\ШЬљ\[Ы€HУУTХS‘ФХ’S‘К€ђЭ\›И\ИЫЫЩX[ЩXZЧ€‚€њЬЭИ[™Z\ЩHY™[њЩK€ЉK€™Y™™XЭHQ‘‘PХСQ‘S”СWРХT“€њЭЩ\€H€ќ\HHTWУ“Ф“PS€XШЭ\XЮHH€њH€ќ\™Щ]HT‘СUХTСT‹€њљ[Ьљ]HH€Ш]YЫЬћHHSPQСWРРUQУФ–WФХUTЛ€ћ“[Э™HHИ™Y™™XЭH—СQ‘‘PХРPРЧХTМHK€љYЫ›Ь™\Ф›ЭXЭH•QK€›Z\њ›Ь“[Э™P[›™YH•QK€њЫ]ЪY™™XЭYH•QK€ЫЫќ\ЭY™™XЭHУУ•TХСQ‘‘PХРU“ТQФХT•WУУђСK€ЫЫќ\ЭШ]YЫЬћHHУУ•TХРРUQУФ–WРХUK€ЫЫќ\ЭЫЫX›ФЭ\ќ\’YHУУP“ЧФХT•T—СQ‘S”СWРХT“€ЫЫќ\ЭЫЫX›У[Э™\ИHМK€]P[љ[TШЬљ\HР]P[љ[S[Э™WСY™[њЩPЭ\›€ќ[Y\™[ќXЩS[Э™HH•QK€K‚€УSХ‘WРђT”’QT—HB€В€›[YHHУУTХS‘ФХ’S‘Кђ\њљY\€ЉK€™\ШЬљ\[Ы€HУУTХS‘ФХ’S‘К€ђЬ™X]\ИH\њљY\€]€‚€њЪ\њHZ\Щ\ИY™[њЩK€ЉK€™Y™™XЭHQ‘‘PХСQ‘S”СWХTМ‹€њЭЩ\€H€ќ\HHTWФЦPТPЛ€XШЭ\XЮHH€њH—ХTUQУSХ‘WСUHЏHСS—Н€ИЊ€М€ќ\™Щ]HT‘СUХTСT‹€њљ[Ьљ]HH€Ш]YЫЬћHHSPQСWРРUQУФ–WФХUTЛ€ћ“[Э™HHИ™Y™™XЭH—СQ‘‘PХФ‘TСUФХUИK€љYЫ›Ь™\Ф›ЭXЭH•QK€›Z\њ›Ь“[Э™P[›™YH•QK€њЫ]ЪY™™XЭYH•QK€ЫЫќ\ЭY™™XЭHУУ•TХСQ‘‘PХРU“ТQФХT•K€ЫЫќ\ЭШ]YЫЬћHHУУ•TХРРUQУФ–WРУУУ€ЫЫќ\ЭЫЫX›ФЭ\ќ\’YH€ЫЫќ\ЭЫЫX›У[Э™\ИHМK€]P[љ[TШЬљ\HР]P[љ[S[Э™WР\њљY\‹€ќ[Y\™[ќXЩS[Э™HH•QK€K‚€УSХ‘WУQТФРФ‘QS—HB€В€›[YHHУУTХS‘ФХ’S‘К“YЪШЬ™Y[€ЉK€™\ШЬљ\[Ы€HУУTХS‘ФХ’S‘К€•Ш[Щ€YЪЭ]ИЬXЪX[€‚€™[XYЩH›Ь€H\›њЛ€ЉK€™Y™™XЭHQ‘‘PХУQТФРФ‘QS‹€њЭЩ\€H€ќ\HHTWФЦPТPЛ€XШЭ\XЮHH€њHМ€ќ\™Щ]HT‘СUХTСT‹€њљ[Ьљ]HH€Ш]YЫЬћHHSPQСWРРUQУФ–WФХUTЛ€ћ“[Э™HHИ™Y™™XЭH—СQ‘‘PХФФQ—ХTМHK€љYЫ›Ь™\Ф›ЭXЭH•QK€›Z\њ›Ь“[Э™P[›™YH•QK€њЫ]ЪY™™XЭYH•QK€ЫЫќ\ЭY™™XЭHЧХTUQУSХ‘WСQ‘‘PХИЏHСS—Н€ИУУ•TХСQ‘‘PХРU“ТQФХT•WУУђСH€УУ•TХСQ‘‘PХРU“ТQФХT•K€ЫЫќ\ЭШ]YЫЬћHHУУ•TХРРUQУФ–WР‘PUUK€ЫЫќ\ЭЫЫX›ФЭ\ќ\’YH€ЫЫќ\ЭЫЫX›У[Э™\ИHРУУP“ЧФХT•T—РРSWУRS‘K€]P[љ[TШЬљ\HР]P[љ[S[Э™WУYЪШЬ™Y[‹€ќ[Y\™[ќXЩS[Э™HH•QK€K‚€УSХ‘WТV‘WHB€В€›[YHHУУTХS‘ФХ’S‘К’^™HЉK€™\ШЬљ\[Ы€HУУTХS‘ФХ’S‘К€ђЬ™X]\ИH›XЪИ^™H]€‚€™[[Z[]\И[Э]Ъ[™Щ\Л€ЉK€™Y™™XЭHQ‘‘PХТV‘K€њЭЩ\€H€ќ\HHTWТPСK€XШЭ\XЮHH€њHМ€ќ\™Щ]HT‘СUС’QS€њљ[Ьљ]HH€Ш]YЫЬћHHSPQСWРРUQУФ–WФХUTЛ€ћ“[Э™HHИ™Y™™XЭH—СQ‘‘PХФ‘PУХ‘T—ТK€љYЫ›Ь™\Ф›ЭXЭH•QK€љYЫ›Ь™\ФЭXњЭ]]HH•QK€›Z\њ›Ь“[Э™P[›™YH•QK€ЫЫќ\ЭY™™XЭHУУ•TХСQ‘‘PХХУФ”СS—РУУ‘USУ—УС—Ф‘U—УSУ”Л€ЫЫќ\ЭШ]YЫЬћHHУУ•TХРРUQУФ–WР‘PUUK€ЫЫќ\ЭЫЫX›ФЭ\ќ\’YH€ЫЫќ\ЭЫЫX›У[Э™\ИHРУУP“ЧФХT•T—ТRSK€]P[љ[TШЬљ\HР]P[љ[S[Э™WТ^™K€ќ[Y\™[ќXЩS[Э™HH•QK€K‚€УSХ‘WФ‘Q“PХHB€В€›[YHHУУTХS‘ФХ’S‘К”™Y›XЭЉK€™\ШЬљ\[Ы€HУУTХS‘ФХ’S‘К€•Ш[Щ€YЪЭ]И\ЪXШ[€‚€™[XYЩH›Ь€H\›њЛ€ЉK€™Y™™XЭHQ‘‘PХФ‘Q“PХ€њЭЩ\€H€ќ\HHTWФЦPТPЛ€XШЭ\XЮHH€њHЊ€ќ\™Щ]HT‘СUХTСT‹€њљ[Ьљ]HH€Ш]YЫЬћHHSPQСWРРUQУФ–WФХUTЛ€ћ“[Э™HHИ™Y™™XЭH—СQ‘‘PХСQ—ХTМHK€љYЫ›Ь™\Ф›ЭXЭH•QK€›Z\њ›Ь“[Э™P[›™YH•QK€њЫ]ЪY™™XЭYH•QK€ЫЫќ\ЭY™™XЭHЧХTUQУSХ‘WСQ‘‘PХИЏHСS—Н€ИУУ•TХСQ‘‘PХРU“ТQФХT•WУУђСH€УУ•TХСQ‘‘PХРU“ТQФХT•K€ЫЫќ\ЭШ]YЫЬћHHУУ•TХРРUQУФ–WФУPT•€ЫЫќ\ЭЫЫX›ФЭ\ќ\’YH€ЫЫќ\ЭЫЫX›У[Э™\ИHРУУP“ЧФХT•T—РРSWУRS‘K€]P[љ[TШЬљ\HР]P[љ[S[Э™WФ™Y›XЭ€ќ[Y\™[ќXЩS[Э™HH•QK€K‚€УSХ‘WС“РХTЧСS‘T‘ЦWHB€В€›[YHHУУTХS‘ФХ’S‘К‘›ШЭ\И[™\™ЮHЉK€™\ШЬљ\[Ы€HУУTХS‘ФХ’S‘К€‘›ШЭ\Щ\ИЭЩ\€ИZ\ЩHW€‚€Ьљ]XШ[Z]][Л€ЉK€™Y™™XЭHQ‘‘PХС“РХTЧСS‘T‘ЦK€њЭЩ\€H€ќ\HHTWУ“Ф“PS€XШЭ\XЮHH€њHМ€ќ\™Щ]HT‘СUХTСT‹€њљ[Ьљ]HH€Ш]YЫЬћHHSPQСWРРUQУФ–WФХUTЛ€ћ“[Э™HHИ™Y™™XЭH—СQ‘‘PХРPРЧХTМHK€\™Э[Y[ќHИњЭ]\ИH“УUSWС“РХTЧСS‘T‘ЦHK€љYЫ›Ь™\Ф›ЭXЭH•QK€›Z\њ›Ь“[Э™P[›™YH•QK€њЫ]ЪY™™XЭYH•QK€ЫЫќ\ЭY™™XЭHЧХTUQУSХ‘WСQ‘‘PХИЏHСS—Н€ИУУ•TХСQ‘‘PХТST“Х‘WРУУ‘USУ—Ф‘U‘S•У‘T•“ХTУ‘TФИ€УУ•TХСQ‘‘PХРђQWФХT•WФ‘U—УSУ”Л€ЫЫќ\ЭШ]YЫЬћHHУУ•TХРРUQУФ–WРУУУ€ЫЫќ\ЭЫЫX›ФЭ\ќ\’YHУУP“ЧФХT•T—С“РХTЧСS‘T‘ЦK€ЫЫќ\ЭЫЫX›У[Э™\ИHМK€]P[љ[TШЬљ\HР]P[љ[S[Э™WС›ШЭ\С[™\™ЮK€ќ[Y\™[ќXЩS[Э™HH•QK€K‚€УSХ‘WР’QWHB€В€›[YHHУУTХS‘ФХ’S‘КђљYHЉK€™\ШЬљ\[Ы€HУУTХS‘ФХ’S‘К€‘[™\™\И]XЪИ›Ь€—€‚€ќ\›њИИ™][X]HЭX›K€ЉK€™Y™™XЭHQ‘‘PХР’QK€њЭЩ\€HK€ќ\HHTWУ“Ф“PS€ЪY€—ХTUQУSХ‘WСUHЏHСS—Н€XШЭ\XЮHH€њљ[Ьљ]HHK€Щ[Y€—ХTUQУSХ‘WСUHЏHСS—М‚€XШЭ\XЮHHL€њљ[Ьљ]HH€Щ[ЩB€XШЭ\XЮHH€њљ[Ьљ]HH€Щ[™Y‚€њHL€ќ\™Щ]HT‘СUХTСT‹€Ш]YЫЬћHHSPQСWРРUQУФ–WФTТPРS€›XZЩ\РЫЫќXЭH•QK€њЫY\[Р[›™YH•QK€љ[њЭќXЭ[›™YH•QK€›Z\њ›Ь“[Э™P[›™YH•QK€ЫЫќ\ЭY™™XЭHЧХTUQУSХ‘WСQ‘‘PХИЏHСS—Н€ИУУ•TХСQ‘‘PХУ‘VРTPSУUT€€УУ•TХСQ‘‘PХРU“ТQФХT•K€ЫЫќ\ЭШ]YЫЬћHHУУ•TХРРUQУФ–WХХQТ€ЫЫќ\ЭЫЫX›ФЭ\ќ\’YH€ЫЫќ\ЭЫЫX›У[Э™\ИHМK€]P[љ[TШЬљ\HР]P[љ[S[Э™WРљYK€K‚€УSХ‘WУQU“У“УQWHB€В€›[YHHУУTХS‘ФХ’S‘К“Y]›Ы›ЫYHЉK€™\ШЬљ\[Ы€HУУTХS‘ФХ’S‘К€•ШYЩЫ\ИHљ[™Щ\€И\ЩH[ћW€‚€”Ърк[[Ы€[Э™H][™ЫK€ЉK€™Y™™XЭHQ‘‘PХУQU“У“УQK€њЭЩ\€H€ќ\HHTWУ“Ф“PS€XШЭ\XЮHH€њHL€ќ\™Щ]HT‘СUСTS‘Л€њљ[Ьљ]HH€Ш]YЫЬћHHSPQСWРРUQУФ–WФХUTЛ€љYЫ›Ь™\Ф›ЭXЭH•QK€›Z\њ›Ь“[Э™P[›™YH•QK€›Z[ZXР[›™YH•QK€›Y]›Ы›ЫYP[›™YH•QK€ЫЬXШ][›™YH•QK€њЫY\[Р[›™YH—ХTUQУSХ‘WС“QФИЏHСS—МЛ€љ[њЭќXЭ[›™YH•QK€™[ЫЬ™P[›™YH
+—ХTUQУSХ‘WС“QФИЏHСS—НИ—ХTUQУSХ‘WС“QФИСS—МКK€\ЬЪ\Э[›™YH•QK€ЫЫќ\ЭY™™XЭHЧХTUQУSХ‘WСQ‘‘PХИЏHСS—Н€ИУУ•TХСQ‘‘PХФUPSUWСTS‘ЧУУ—ХSRS‘И€УУ•TХСQ‘‘PХФ‘TUUSУ—У“ХР“Ф’S‘Л€ЫЫќ\ЭШ]YЫЬћHHУУ•TХРРUQУФ–WРХUK€ЫЫќ\ЭЫЫX›ФЭ\ќ\’YH€ЫЫќ\ЭЫЫX›У[Э™\ИHМK€]P[љ[TШЬљ\HР]P[љ[S[Э™WУY]›Ы›ЫYK€ќ[Y\™[ќXЩS[Э™HH•QK€K‚€УSХ‘WУRT”“Ф—УSХ‘WHB€В€›[YHHУУTХS‘ФХ’S‘К“Z\њ›Ь€[Э™HЉK€™\ШЬљ\[Ы€HУУTХS‘ФХ’S‘К€ђЫЭ[ќ\њИH›ЩIЬИ]XЪЧ€‚€ќЪ]HШ[YH[Э™K€ЉK€™Y™™XЭHQ‘‘PХУRT”“Ф—УSХ‘K€њЭЩ\€H€ќ\HHTWС“RS‘Л€XШЭ\XЮHH€њHЊ€ќ\™Щ]HT‘СUСTS‘Л€њљ[Ьљ]HH€Ш]YЫЬћHHSPQСWРРUQУФ–WФХUTЛ€ћ“[Э™HHИ™Y™™XЭH—СQ‘‘PХРUЧХTМ€K€љYЫ›Ь™\Ф›ЭXЭH•QK€›Z\њ›Ь“[Э™P[›™YH•QK€›Z[ZXР[›™YH•QK€›Y]›Ы›ЫYP[›™YH—ХTUQУSХ‘WС“QФИЏHСS—Н€ЫЬXШ][›™YH•QK€њЫY\[Р[›™YH—ХTUQУSХ‘WС“QФИЏHСS—МЛ€љ[њЭќXЭ[›™YH•QK€™[ЫЬ™P[›™YH•QK€\ЬЪ\Э[›™YH•QK€ЫЫќ\ЭY™™XЭHУУ•TХСQ‘‘PХРTPSРTЧСУУСРTЧФ‘U—УУ‘K€ЫЫќ\ЭШ]YЫЬћHHУУ•TХРРUQУФ–WФУPT•€ЫЫќ\ЭЫЫX›ФЭ\ќ\’YH€ЫЫќ\ЭЫЫX›У[Э™\ИHМK€]P[љ[TШЬљ\HР]P[љ[S[Э™WУZ\њ›Ь“[Э™K€ќ[Y\™[ќXЩS[Э™HH•QK€K‚€УSХ‘WФСS—СTХ•PХHB€В€›[YHHУУTХS‘ФХ’S‘К”Щ[‹Q\ЭќXЭЉK€™\ШЬљ\[Ы€HУУTХS‘ФХ’S‘К€’[™›XЭИЩ]™\™H[XYЩHќ]€‚€›XZЩ\ИH\Щ\€Z[ќ€ЉK€™Y™™XЭHQ‘‘PХТU€њЭЩ\€H—ХTUQУSХ‘WСUHЏHСS—М€ИЊ€LМ€ќ\HHTWУ“Ф“PS€XШЭ\XЮHHL€њHK€ќ\™Щ]HT‘СUС“СTЧРS‘РSK€њљ[Ьљ]HH€Ш]YЫЬћHHSPQСWРРUQУФ–WФTТPРS€™^ЬЪ[Ы€H•QK€њ\™[ќ[›Ы™[›™YH•QK€™[\[›™YH•QK€ЫЫќ\ЭY™™XЭHУУ•TХСQ‘‘PХСФ‘PUРTPSР•UУ“ЧУSФ‘WУSХ‘TЛ€ЫЫќ\ЭШ]YЫЬћHHУУ•TХРРUQУФ–WР‘PUUK€ЫЫќ\ЭЫЫX›ФЭ\ќ\’YH€ЫЫќ\ЭЫЫX›У[Э™\ИHРУУP“ЧФХT•T—УQPS—УУТЛУУP“ЧФХT•T—Р“РТЯK€]P[љ[TШЬљ\HР]P[љ[S[Э™WФЩ[‘\ЭќXЭ€ќ[Y\™[ќXЩS[Э™HH•QK€K‚€УSХ‘WСQСЧР“УP—HB€В€›[YHHУУTХS‘ФХ’S‘К‘YЩИ›ЫX€ЉK€™\ШЬљ\[Ы€HУУTХS‘ФХ’S‘К€ђ[€YЩИ\И›ЬЪX›H\›Y]€‚€ќH›ЩK€ЉK€™Y™™XЭHQ‘‘PХТU€њЭЩ\€HL€ќ\HHTWУ“Ф“PS€XШЭ\XЮHHНK€њHL€ќ\™Щ]HT‘СUФСSPХQ€њљ[Ьљ]HH€Ш]YЫЬћHHSPQСWРРUQУФ–WФTТPРS€[\ЭXУ[Э™HH•QK€ЫЫќ\ЭY™™XЭHУУ•TХСQ‘‘PХТQТWРTPSS‘Л€ЫЫќ\ЭШ]YЫЬћHHЧХTUQУSХ‘WРРUQУФ’QTИЏHСS—Н€ИУУ•TХРРUQУФ–WРХUH€УУ•TХРРUQУФ–WХХQТ€ЫЫќ\ЭЫЫX›ФЭ\ќ\’YH€ЫЫќ\ЭЫЫX›У[Э™\ИHРУУP“ЧФХT•T—ФУС•Р“ТSQK€]P[љ[TШЬљ\HР]P[љ[S[Э™WСYЩР›ЫX‹€ќ[Y\™[ќXЩS[Э™HH•QK€K‚€УSХ‘WУPТЧHB€В€›[YHHУУTХS‘ФХ’S‘К“XЪИЉK€™\ШЬљ\[Ы€HУУTХS‘ФХ’S‘К€“XЪЬИЪ]HЫ™ИЫ™ЭYHЧ€‚€љ[љќ\™K€X^H[ЫИ\[^™K€ЉK€™Y™™XЭHQ‘‘PХТU€њЭЩ\€H—ХTUQУSХ‘WСUHЏHСS—Н€ИМ€Њ€ќ\HHTWСТФХ€XШЭ\XЮHHL€њHМ€ќ\™Щ]HT‘СUФСSPХQ€њљ[Ьљ]HH€Ш]YЫЬћHHSPQСWРРUQУФ–WФTТPРS€›XZЩ\РЫЫќXЭH•QK€Y][Ы[Y™™XЭИHQUSУђSСQ‘‘PХКВ€›[Э™QY™™XЭHSХ‘WСQ‘‘PХФTђSTТTЛ€Ъ[ЩHHМ€JK€ЫЫќ\ЭY™™XЭHЧХTUQУSХ‘WСQ‘‘PХИЏHСS—Н€ИУУ•TХСQ‘‘PХФХT•WФ‘U—УSУ€€УУ•TХСQ‘‘PХРђQWФХT•WС”“У•УSУ‹€ЫЫќ\ЭШ]YЫЬћHHЧХTUQУSХ‘WРРUQУФ’QTИЏHСS—Н€ИУУ•TХРРUQУФ–WРХUH€УУ•TХРРUQУФ–WХХQТ€ЫЫќ\ЭЫЫX›ФЭ\ќ\’YH€ЫЫќ\ЭЫЫX›У[Э™\ИHМK€]P[љ[TШЬљ\HР]P[љ[S[Э™WУXЪЛ€ќ[Y\™[ќXЩS[Э™HH•QK€K‚€УSХ‘WФУSСЧHB€В€›[YHHУУTХS‘ФХ’S‘К”Ы[ЩИЉK€™\ШЬљ\[Ы€HУУTХS‘ФХ’S‘К€ђ[€^]\ЭYШ\И]XЪЧ€‚€ќ]X^H[ЫИЪ\ЫЫ‹€ЉK€™Y™™XЭHQ‘‘PХТU€њЭЩ\€H—ХTUQУSХ‘WСUHЏHСS—Н€ИМ€Њ€ќ\HHTWФТTУУ‹€XШЭ\XЮHHМ€њHЊ€ќ\™Щ]HT‘СUФСSPХQ€њљ[Ьљ]HH€Ш]YЫЬћHHSPQСWРРUQУФ–WФФPТPS€Y][Ы[Y™™XЭИHQUSУђSСQ‘‘PХКВ€›[Э™QY™™XЭHSХ‘WСQ‘‘PХФТTУУ‹€Ъ[ЩHH€JK€ЫЫќ\ЭY™™XЭHЧХTUQУSХ‘WСQ‘‘PХИЏHСS—Н€ИУУ•TХСQ‘‘PХТQТWРTPSS‘И€УУ•TХСQ‘‘PХРђQWФХT•WФ‘U—УSУ”Л€ЫЫќ\ЭШ]YЫЬћHHУУ•TХРРUQУФ–WХХQТ€ЫЫќ\ЭЫЫX›ФЭ\ќ\’YHУУP“ЧФХT•T—ФУSСЛ€ЫЫќ\ЭЫЫX›У[Э™\ИHМK€]P[љ[TШЬљ\HР]P[љ[S[Э™WФЫ[ЩЛ€K‚€УSХ‘WФУQСWHB€В€›[YHHУУTХS‘ФХ’S‘К”ЫYЩHЉK€™\ШЬљ\[Ы€HУУTХS‘ФХ’S‘К€”ЫYЩH\И\›YИ[™›XЭ€‚€™[XYЩK€X^H[ЫИЪ\ЫЫ‹€ЉK€™Y™™XЭHQ‘‘PХТU€њЭЩ\€HЌK€ќ\HHTWФТTУУ‹€XШЭ\XЮHHL€њHЊ€ќ\™Щ]HT‘СUФСSPХQ€њљ[Ьљ]HH€Ш]YЫЬћHHSPQСWРРUQУФ–WФФPТPS€Y][Ы[Y™™XЭИHQUSУђSСQ‘‘PХКВ€›[Э™QY™™XЭHSХ‘WСQ‘‘PХФТTУУ‹€Ъ[ЩHH—ХTUQУSХ‘WСUHЏHСS—М€ИМ€€JK€ЫЫќ\ЭY™™XЭHЧХTUQУSХ‘WСQ‘‘PХИЏHСS—Н€ИУУ•TХСQ‘‘PХФХT•WФ‘U—УSУ€€УУ•TХСQ‘‘PХРђQWФХT•WС”“У•УSУ‹€ЫЫќ\ЭШ]YЫЬћHHУУ•TХРРUQУФ–WХХQТ€ЫЫќ\ЭЫЫX›ФЭ\ќ\’YHУУP“ЧФХT•T—ФУQСK€ЫЫќ\ЭЫЫX›У[Э™\ИHРУУP“ЧФХT•T—ФУQСWР“УPџK€]P[љ[TШЬљ\HР]P[љ[S[Э™WФЫYЩK€K‚€УSХ‘WР“У‘WРУP—HB€В€›[YHHУУTХS‘ФХ’S‘Кђ›Ы™HЫX€ЉK€™\ШЬљ\[Ы€HУУTХS‘ФХ’S‘К€ђЫXњИH›ЩHЪ]H›Ы™K—€‚€“X^HШ]\ЩH›[Ъ[™Л€ЉK€™Y™™XЭHQ‘‘PХТU€њЭЩ\€HЌK€ќ\HHTWСФ“ХS‘€XШЭ\XЮHHK€њHЊ€ќ\™Щ]HT‘СUФСSPХQ€њљ[Ьљ]HH€Ш]YЫЬћHHSPQСWРРUQУФ–WФTТPРS€Y][Ы[Y™™XЭИHQUSУђSСQ‘‘PХКВ€›[Э™QY™™XЭHSХ‘WСQ‘‘PХС“SђТ€Ъ[ЩHHL€JK€ЫЫќ\ЭY™™XЭHЧХTUQУSХ‘WСQ‘‘PХИЏHСS—Н€ИУУ•TХСQ‘‘PХФ‘TUUSУ—У“ХР“Ф’S‘И€УУ•TХСQ‘‘PХФХT•WУSУ—ХТUТ•QСTЧРUS•SУ‹€ЫЫќ\ЭШ]YЫЬћHHУУ•TХРРUQУФ–WХХQТ€ЫЫќ\ЭЫЫX›ФЭ\ќ\’YHУУP“ЧФХT•T—Р“У‘WРУP‹€ЫЫќ\ЭЫЫX›У[Э™\ИHРУУP“ЧФХT•T—Р“У‘SQTђS‘ЛУУP“ЧФХT•T—Р“У‘WФ•TТУУP“ЧФХT•T—ФТQХЧР“У‘_K€]P[љ[TШЬљ\HР]P[љ[S[Э™WР›Ы™PЫX‹€K‚€УSХ‘WС’T‘WР“TХHB€В€›[YHHУУTХS‘ФХ’S‘К‘љ\™H›\ЭЉK€™\ШЬљ\[Ы€HУУTХS‘ФХ’S‘К€’[Ъ[™\]\И]™\ћ][™И]€‚€њЭљZЩ\Л€X^HШ]\ЩHHќ\›‹€ЉK€™Y™™XЭHQ‘‘PХТU€њЭЩ\€H—ХTUQУSХ‘WСUHЏHСS—Н€ИLL€LЊ€ќ\HHTWС’T‘K€XШЭ\XЮHHK€њHK€ќ\™Щ]HT‘СUФСSPХQ€њљ[Ьљ]HH€Ш]YЫЬћHHSPQСWРРUQУФ–WФФPТPS€Y][Ы[Y™™XЭИHQUSУђSСQ‘‘PХКВ€›[Э™QY™™XЭHSХ‘WСQ‘‘PХР•T“‹€Ъ[ЩHH—ХTUQУSХ‘WСUHЏHСS—М€ИL€М€JK€ЫЫќ\ЭY™™XЭHЧХTUQУSХ‘WСQ‘‘PХИЏHСS—Н€ИУУ•TХСQ‘‘PХР‘UT—ХТS—РUQQSђСWСVТUQ€УУ•TХСQ‘‘PХТQТWРTPSS‘Л€ЫЫќ\ЭШ]YЫЬћHHУУ•TХРРUQУФ–WР‘PUUK€ЫЫќ\ЭЫЫX›ФЭ\ќ\’YH€ЫЫќ\ЭЫЫX›У[Э™\ИHРУУP“ЧФХT•T—ФХS“–WСV_K€]P[љ[TШЬљ\HР]P[љ[S[Э™WСљ\™P›\Э€ќ[Y\™[ќXЩS[Э™HH•QK€K‚€УSХ‘WХРUT‘ђSHB€В€›[YHHУУTХS‘ФХ’S‘К•Ш]\™[ЉK€™\ШЬљ\[Ы€HУУTХS‘ФХ’S‘К€ђЪ\™Щ\ИЪ]ЬYYИЫ[X—€‚€ќШ]\™[Л€X^H›[Ъ€ЉK€™Y™™XЭHQ‘‘PХТU€њЭЩ\€H€ќ\HHTWХРUT‹€XШЭ\XЮHHL€њHMK€ќ\™Щ]HT‘СUФСSPХQ€њљ[Ьљ]HH€Ш]YЫЬћHHSPQСWРРUQУФ–WФTТPРS€›XZЩ\РЫЫќXЭH•QK€ЪY€—ХTUQУSХ‘WСUHЏHСS—Н€Y][Ы[Y™™XЭИHQUSУђSСQ‘‘PХКВ€›[Э™QY™™XЭHSХ‘WСQ‘‘PХС“SђТ€Ъ[ЩHHЊ€JK€Щ[™Y‚€ЫЫќ\ЭY™™XЭHЧХTUQУSХ‘WСQ‘‘PХИЏHСS—Н€ИУУ•TХСQ‘‘PХТQТWРTPSS‘И€УУ•TХСQ‘‘PХР‘UT—ТQ—УTХ€ЫЫќ\ЭШ]YЫЬћHHУУ•TХРРUQУФ–WХХQТ€ЫЫќ\ЭЫЫX›ФЭ\ќ\’YH€ЫЫќ\ЭЫЫX›У[Э™\ИHРУУP“ЧФХT•T—ФђRS—СSђС_K€]P[љ[TШЬљ\HР]P[љ[S[Э™WХШ]\™[€ќ[Y\™[ќXЩS[Э™HH•QK€K‚€УSХ‘WРУSTHB€В€›[YHHУУTХS‘ФХ’S‘КђЫ[\ЉK€™\ШЬљ\[Ы€HУУTХS‘ФХ’S‘К€•\И[™Ь]YY^™\ИW€‚€™›ЩH›Ь€ђ’S‘S‘ЧХT“”И€\›њЛ€ЉK€™Y™™XЭHQ‘‘PХТU€њЭЩ\€HНK€ќ\HHTWХРUT‹€XШЭ\XЮHH—ХTUQУSХ‘WСUHЏHСS—НHИH€НK€њH—ХTUQУSХ‘WСUHЏHСS—НHИMH€L€ќ\™Щ]HT‘СUФСSPХQ€њљ[Ьљ]HH€Ш]YЫЬћHHSPQСWРРUQУФ–WФTТPРS€›XZЩ\РЫЫќXЭH•QK€љYЫ›Ь™\ТЪ[™ЬФ›ШЪИH—ХTUQУSХ‘WС“QФИСS—МЛ€Y][Ы[Y™™XЭИHQUSУђSСQ‘‘PХКВ€›[Э™QY™™XЭHSХ‘WСQ‘‘PХХФђT€›][\Эљ[™ЛќЬ\YH—УTСЧХФђTQРУST€JK€ЫЫќ\ЭY™™XЭHУУ•TХСQ‘‘PХСУ•СVТUWРUQQSђСK€ЫЫќ\ЭШ]YЫЬћHHУУ•TХРРUQУФ–WХХQТ€ЫЫќ\ЭЫЫX›ФЭ\ќ\’YH€ЫЫќ\ЭЫЫX›У[Э™\ИHРУУP“ЧФХT•T—ФђRS—СSђС_K€]P[љ[TШЬљ\HР]P[љ[S[Э™WРЫ[\€ќ[Y\™[ќXЩS[Э™HH•QK€K‚€УSХ‘WФХТQ•HB€В€›[YHHУУTХS‘ФХ’S‘К”ЭЪYќЉK€™\ШЬљ\[Ы€HУУTХS‘ФХ’S‘К€”Ь^\ИЭ\‹\Ъ\Y^\Ч€‚€ќ]™]™\€Z\ЬЛ€ЉK€™Y™™XЭHQ‘‘PХТU€њЭЩ\€HЊ€ќ\HHTWУ“Ф“PS€XШЭ\XЮHH€њHЊ€ќ\™Щ]HT‘СUР“Х€њљ[Ьљ]HH€Ш]YЫЬћHHSPQСWРРUQУФ–WФФPТPS€ЫЫќ\ЭY™™XЭHУУ•TХСQ‘‘PХР‘UT—ТQ—С’T”Х€ЫЫќ\ЭШ]YЫЬћHHУУ•TХРРUQУФ–WРУУУ€ЫЫќ\ЭЫЫX›ФЭ\ќ\’YH€ЫЫќ\ЭЫЫX›У[Э™\ИHМK€]P[љ[TШЬљ\HР]P[љ[S[Э™WФЭЪYќ€ќ[Y\™[ќXЩS[Э™HH•QK€K‚€УSХ‘WФТХSРђTТHB€В€›[YHHУУTХS‘ФХ’S‘К”ЪЭ[\ЪЉK€™\ШЬљ\[Ы€HУУTХS‘ФХ’S‘К€•XЪЬИ[€HXY[—€‚€]XЪЬИЫ€H™^\›‹€ЉK€™Y™™XЭHQ‘‘PХХУЧХT“”ЧРUPТЛ€њЭЩ\€H—ХTUQУSХ‘WСUHЏHСS—Н€ИLМ€L€ќ\HHTWУ“Ф“PS€XШЭ\XЮHHL€њH—ХTUQУSХ‘WСUHЏHСS—Н€ИL€MK€ќ\™Щ]HT‘СUФСSPХQ€њљ[Ьљ]HH€Ш]YЫЬћHHSPQСWРРUQУФ–WФTТPРS€›XZЩ\РЫЫќXЭH•QK€њЫY\[Р[›™YH•QK€љ[њЭќXЭ[›™YH•QK€\™Э[Y[ќќЫХ\›ђ]XЪИHИњЭљ[™ТYHХ’S‘ТQФУS“ХСT‘QPQK€ЪY€—ХTUQУSХ‘WСUHЏHСS—М‚€Y][Ы[Y™™XЭИHQUSУђSСQ‘‘PХКВ€›[Э™QY™™XЭHSХ‘WСQ‘‘PХСQ—ФTЧМK€њЩ[€H•QK€›ЫђЪ\™ЩU\›“Ы›HH•QK€JK€Щ[™Y‚€ЫЫќ\ЭY™™XЭHЧХTUQУSХ‘WСQ‘‘PХИЏHСS—Н€ИУУ•TХСQ‘‘PХРQ‘‘PХQР–WФ‘U—РTPS€УУ•TХСQ‘‘PХРђQWФХT•WС”“У•УSУ‹€ЫЫќ\ЭШ]YЫЬћHHУУ•TХРРUQУФ–WХХQТ€ЫЫќ\ЭЫЫX›ФЭ\ќ\’YH€ЫЫќ\ЭЫЫX›У[Э™\ИHМK€]P[љ[TШЬљ\HР]P[љ[S[Э™WФЪЭ[\Ъ€ќ[Y\™[ќXЩS[Э™HH•QK€K‚€УSХ‘WФФRСWРРS““У—HB€В€›[YHHУУTХS‘ФХ’S‘К”ЬZЩHШ[››Ы€ЉK€™\ШЬљ\[Ы€HУУTХS‘ФХ’S‘К€“][Ъ\ИЪ\њЬZЩ\И]€‚€њЭљZЩH€ИH[Y\Л€ЉK€™Y™™XЭHQ‘‘PХТU€њЭЩ\€HЊ€ќ\HHTWУ“Ф“PS€XШЭ\XЮHHL€њHMK€ќ\™Щ]HT‘СUФСSPХQ€њљ[Ьљ]HH€Ш]YЫЬћHHSPQСWРРUQУФ–WФTТPРS€›][R]H•QK€ЫЫќ\ЭY™™XЭHЧХTUQУSХ‘WСQ‘‘PХИЏHСS—Н€ИУУ•TХСQ‘‘PХФUPSUWСTS‘ЧУУ—ХSRS‘И€УУ•TХСQ‘‘PХФХT•WУSУ—ХТUТ•QСTЧРUS•SУ‹€ЫЫќ\ЭШ]YЫЬћHHУУ•TХРРUQУФ–WРУУУ€ЫЫќ\ЭЫЫX›ФЭ\ќ\’YH€ЫЫќ\ЭЫЫX›У[Э™\ИHМK€]P[љ[TШЬљ\HР]P[љ[S[Э™WФЬZЩPШ[››Ы‹€K‚€УSХ‘WРУУ”Х’PХHB€В€›[YHHУУTХS‘ФХ’S‘КђЫЫњЭљXЭЉK€™\ШЬљ\[Ы€HУУTХS‘ФХ’S‘К€ђЫЫњЭљXЭИИ[™›XЭZ[‹—€‚€“X^HЭЩ\€ЬYY€ЉK€™Y™™XЭHQ‘‘PХТU€њЭЩ\€HL€ќ\HHTWУ“Ф“PS€XШЭ\XЮHHL€њHНK€ќ\™Щ]HT‘СUФСSPХQ€њљ[Ьљ]HH€Ш]YЫЬћHHSPQСWРРUQУФ–WФTТPРS€›XZЩ\РЫЫќXЭH•QK€Y][Ы[Y™™XЭИHQUSУђSСQ‘‘PХКВ€›[Э™QY™™XЭHSХ‘WСQ‘‘PХФФУRS•TЧМK€Ъ[ЩHH—ХTUQУSХ‘WСUHЏHСS—М€ИL€МЛ€JK€ЫЫќ\ЭY™™XЭHЧХTUQУSХ‘WСQ‘‘PХИЏHСS—Н€ИУУ•TХСQ‘‘PХХУФ”СS—РУУ‘USУ—УС—Ф‘U—УSУ”И€УУ•TХСQ‘‘PХФХT•WФ‘U—УSУ‹€ЫЫќ\ЭШ]YЫЬћHHУУ•TХРРUQУФ–WХХQТ€ЫЫќ\ЭЫЫX›ФЭ\ќ\’YH€ЫЫќ\ЭЫЫX›У[Э™\ИHМK€]P[љ[TШЬљ\HР]P[љ[S[Э™WРЫЫњЭљXЭ€K‚€УSХ‘WРSS‘TТPWHB€В€›[YHHУУTХS‘ФХ’S‘Кђ[[™\ЪXHЉK€™\ШЬљ\[Ы€HУУTХS‘ФХ’S‘К€‘›Ь™Щ]ИX›Э]ЫЫY][™Ч€‚€[™Ъ\њHZ\Щ\ИЬ€Y‹€ЉK€™Y™™XЭHQ‘‘PХФФPТPSСQ‘S”СWХTМ‹€њЭЩ\€H€ќ\HHTWФЦPТPЛ€XШЭ\XЮHH€њHЊ€ќ\™Щ]HT‘СUХTСT‹€њљ[Ьљ]HH€Ш]YЫЬћHHSPQСWРРUQУФ–WФХUTЛ€ћ“[Э™HHИ™Y™™XЭH—СQ‘‘PХФ‘TСUФХUИK€љYЫ›Ь™\Ф›ЭXЭH•QK€›Z\њ›Ь“[Э™P[›™YH•QK€њЫ]ЪY™™XЭYH•QK€ЫЫќ\ЭY™™XЭHЧХTUQУSХ‘WСQ‘‘PХИЏHСS—Н€ИУУ•TХСQ‘‘PХРU“ТQФХT•H€УУ•TХСQ‘‘PХТST“Х‘WРУУ‘USУ—Ф‘U‘S•У‘T•“ХTУ‘TФЛ€ЫЫќ\ЭШ]YЫЬћHHУУ•TХРРUQУФ–WРХUK€ЫЫќ\ЭЫЫX›ФЭ\ќ\’YHУУP“ЧФХT•T—РSS‘TТPK€ЫЫќ\ЭЫЫX›У[Э™\ИHМK€]P[љ[TШЬљ\HР]P[љ[S[Э™WР[[™\ЪXK€ќ[Y\™[ќXЩS[Э™HH•QK€K‚€УSХ‘WТТS‘TТTЧHB€В€›[YHHУУTХS‘ФХ’S‘К’Ъ[™\Ъ\ИЉK€™\ШЬљ\[Ы€HУУTХS‘ФХ’S‘К€‘\ЭXЭИH›ЩK—€‚€“X^HЭЩ\€XШЭ\XЮK€ЉK€™Y™™XЭHQ‘‘PХРPРХTђPЦWСХУ‹€њЭЩ\€H€ќ\HHTWФЦPТPЛ€XШЭ\XЮHH€њHMK€ќ\™Щ]HT‘СUФСSPХQ€њљ[Ьљ]HH€Ш]YЫЬћHHSPQСWРРUQУФ–WФХUTЛ€ћ“[Э™HHИ™Y™™XЭH—СQ‘‘PХСU”У—ХTМHK€›XYЪXРЫШ]Y™™XЭYH—ХTUQУSХ‘WС“QФИЏHСS—Н€ЫЫќ\ЭY™™XЭHЧХTUQУSХ‘WСQ‘‘PХИЏHСS—Н€ИУУ•TХСQ‘‘PХФ‘TUUSУ—У“ХР“Ф’S‘И€УУ•TХСQ‘‘PХСУ•СVТUWРUQQSђСK€ЫЫќ\ЭШ]YЫЬћHHУУ•TХРРUQУФ–WФУPT•€ЫЫќ\ЭЫЫX›ФЭ\ќ\’YHУУP“ЧФХT•T—ТТS‘TТTЛ€ЫЫќ\ЭЫЫX›У[Э™\ИHРУУP“ЧФХT•T—РУУ‘•TТSУ‹УУP“ЧФХT•T—ФЦPТPЯK€]P[љ[TШЬљ\HР]P[љ[S[Э™WТЪ[™\Ъ\Л€ќ[Y\™[ќXЩS[Э™HH•QK€K‚€УSХ‘WФУС•Р“ТSQHB€В€›[YHHУУTХS‘ФХ’S‘К”ЫЩќP›Ъ[YЉK€™\ШЬљ\[Ы€HУУTХS‘ФХ’S‘К€”™XЫЭ™\њИ\И[€W€‚€ќ\Щ\‰ЬИX^[][H€ЉK€™Y™™XЭHQ‘‘PХФУС•“ТSQ€њЭЩ\€H€ќ\HHTWУ“Ф“PS€XШЭ\XЮHH€њH—ХTUQУSХ‘WСUHЏHСS—ОHИH€L€ќ\™Щ]HT‘СUХTСT‹€њљ[Ьљ]HH€Ш]YЫЬћHHSPQСWРРUQУФ–WФХUTЛ€ћ“[Э™HHИ™Y™™XЭH—СQ‘‘PХФ‘TСUФХUИK€љX[[™У[Э™HH•QK€љYЫ›Ь™\Ф›ЭXЭH•QK€›Z\њ›Ь“[Э™P[›™YH•QK€њЫ]ЪY™™XЭYH•QK€ЫЫќ\ЭY™™XЭHЧХTUQУSХ‘WСQ‘‘PХИЏHСS—Н€ИУУ•TХСQ‘‘PХР‘UT—ТQ—С’T”Х€УУ•TХСQ‘‘PХТQТWРTPSS‘Л€ЫЫќ\ЭШ]YЫЬћHHЧХTUQУSХ‘WРРUQУФ’QTИЏHСS—Н€ИУУ•TХРРUQУФ–WРХUH€УУ•TХРРUQУФ–WР‘PUUK€ЫЫќ\ЭЫЫX›ФЭ\ќ\’YHУУP“ЧФХT•T—ФУС•Р“ТSQ€ЫЫќ\ЭЫЫX›У[Э™\ИHМK€]P[љ[TШЬљ\HР]P[љ[S[Э™WФЫЩќ›Ъ[Y€ќ[Y\™[ќXЩS[Э™HH•QK€K‚€УSХ‘WТQТТ•STТТPТЧHB€В€›[YHHУУTХS‘ФХ’S‘К’YЪќ[\ЪXЪИЉK€™\ШЬљ\[Ы€HУУTХS‘ФХ’S‘К€ђHќ[\[™ИЫ™YHЪXЪЛ€Y€]€‚€›Z\ЬЩ\ЛH\Щ\€\И\ќ€ЉK€ЪY€—ХTUQУSХ‘WСUHЏHСS—НB€њЭЩ\€HLМ€Щ[Y€—ХTUQУSХ‘WСUHOHСS—Н€њЭЩ\€HL€Щ[ЩB€њЭЩ\€HK€Щ[™Y‚€™Y™™XЭHQ‘‘PХФ‘PУТSТQ—УRTФЛ€ќ\HHTWС’QТS‘Л€XШЭ\XЮHHL€њH—ХTUQУSХ‘WСUHЏHСS—НHИL€Њ€ќ\™Щ]HT‘СUФСSPХQ€њљ[Ьљ]HH€Ш]YЫЬћHHSPQСWРРUQУФ–WФTТPРS€›XZЩ\РЫЫќXЭH•QK€љЪXЪЪ[™У[Э™HH•QK€™Ь]љ]P[›™YH•QK€ЫЫќ\ЭY™™XЭHУУ•TХСQ‘‘PХХTСT—УSФ‘WСPTТSWФХT•Q€ЫЫќ\ЭШ]YЫЬћHHУУ•TХРРUQУФ–WРУУУ€ЫЫќ\ЭЫЫX›ФЭ\ќ\’YH€ЫЫќ\ЭЫЫX›У[Э™\ИHРУУP“ЧФХT•T—УRS‘Ф‘PQTџK€]P[љ[TШЬљ\HР]P[љ[S[Э™WТYЪќ[\ЪXЪЛ€ќ[Y\™[ќXЩS[Э™HH•QK€K‚€УSХ‘WСУT‘WHB€В€›[YHHУУTХS‘ФХ’S‘К‘Ы\™HЉK€™\ШЬљ\[Ы€HУУTХS‘ФХ’S‘К€’[ќ[ZY]\И[™њљYЪ[њЧ€‚€ќH›ЩH[ќИ\[\Ъ\Л€ЉK€ЪY€—ХTUQУSХ‘WСUHЏHСS—Н‚€XШЭ\XЮHHL€Щ[Y€—ХTUQУSХ‘WСUHOHСS—НB€XШЭ\XЮHHL€Щ[ЩB€XШЭ\XЮHHНK€Щ[™Y‚€™Y™™XЭHQ‘‘PХУ“У—Х“УUSWФХUTЛ€њЭЩ\€H€ќ\HHTWУ“Ф“PS€њHМ€ќ\™Щ]HT‘СUФСSPХQ€њљ[Ьљ]HH€Ш]YЫЬћHHSPQСWРРUQУФ–WФХUTЛ€\™Э[Y[ќHИ››Ы•›Ы][TЭ]\ИHSХ‘WСQ‘‘PХФTђSTТTИK€ћ“[Э™HHИ™Y™™XЭH—СQ‘‘PХФФQ—ХTМHK€›XYЪXРЫШ]Y™™XЭYH•QK€ЫЫќ\ЭY™™XЭHЧХTUQУSХ‘WСQ‘‘PХИЏHСS—Н€ИУУ•TХСQ‘‘PХР‘UT—ТQ—ФРSQWХTH€УУ•TХСQ‘‘PХРђQWФХT•WФ‘U—УSУ”Л€ЫЫќ\ЭШ]YЫЬћHHУУ•TХРРUQУФ–WХХQТ€ЫЫќ\ЭЫЫX›ФЭ\ќ\’YHУУP“ЧФХT•T—СУT‘K€ЫЫќ\ЭЫЫX›У[Э™\ИHРУУP“ЧФХT•T—УQTџK€]P[љ[TШЬљ\HР]P[љ[S[Э™WСЫ\™K€ќ[Y\™[ќXЩS[Э™HH•QK€K‚€УSХ‘WС‘PSWСPUT—HB€В€›[YHHУУTХS‘ФХ’S‘К‘™X[HX]\€ЉK€™\ШЬљ\[Ы€HУУTХS‘ФХ’S‘К€•ZЩ\ИЫ™H[€H[XYЩW€‚€љ[™›XЭYЫ€HЫY\[™И›ЩK€ЉK€™Y™™XЭHQ‘‘PХС‘PSWСPUT‹€њЭЩ\€HL€ќ\HHTWФЦPТPЛ€XШЭ\XЮHHL€њHMK€ќ\™Щ]HT‘СUФСSPХQ€њљ[Ьљ]HH€Ш]YЫЬћHHSPQСWРРUQУФ–WФФPТPS€\™Э[Y[ќHИXњЫЬ”\Щ[ќYЩHHLK€љX[[™У[Э™HH—ТPSР“РТТS‘ИЏHСS—Н‹€ЫЫќ\ЭY™™XЭHУУ•TХСQ‘‘PХФХT•WФ‘U—УSУ”Л€ЫЫќ\ЭШ]YЫЬћHHУУ•TХРРUQУФ–WФУPT•€ЫЫќ\ЭЫЫX›ФЭ\ќ\’YH€ЫЫќ\ЭЫЫX›У[Э™\ИHРУУP“ЧФХT•T—РРSWУRS‘УУP“ЧФХT•T—ТT“ФТTЛУУP“ЧФХT•T—УХ‘SWТТTФЛУУP“ЧФХT•T—ФФФ‘KУУP“ЧФХT•T—ФТS‘ЛУУP“ЧФХT•T—ЦPUУ‹УУP“ЧФХT•T—СT’ЧХ“ТQУУP“ЧФХT•T—СФђTФЧХТTХKУУP“ЧФХT•T—ФУQTФХСTџK€]P[љ[TШЬљ\HР]P[љ[S[Э™WС™X[QX]\‹€ќ[Y\™[ќXЩS[Э™HH•QK€K‚€УSХ‘WФТTУУ—СРTЧHB€В€›[YHHУУTХS‘ФХ’S‘К”Ъ\ЫЫ€Ш\ИЉK€™\ШЬљ\[Ы€HУУTХS‘ФХ’S‘К€ЪY€—ХTUQУSХ‘WСUHЏHСS—НB€‘[ќ™[ЬИH›Щ\И[€HЮXЧ€‚€Щ[ЩB€‘[ќ™[ЬИH›ЩH[€HЮXЧ€‚€Щ[™Y‚€™Ш\И]X^HЪ\ЫЫ‹€ЉK€ЪY€—ХTUQУSХ‘WСUHЏHСS—Н‚€XШЭ\XЮHHL€Щ[Y€—ХTUQУSХ‘WСUHOHСS—НB€XШЭ\XЮHH€Щ[ЩB€XШЭ\XЮHHMK€Щ[™Y‚€™Y™™XЭHQ‘‘PХУ“У—Х“УUSWФХUTЛ€њЭЩ\€H€ќ\HHTWФТTУУ‹€њH€ќ\™Щ]H—ХTUQУSХ‘WСUHЏHСS—НHИT‘СUР“Х€T‘СUФСSPХQ€њљ[Ьљ]HH€Ш]YЫЬћHHSPQСWРРUQУФ–WФХUTЛ€\™Э[Y[ќHИ››Ы•›Ы][TЭ]\ИHSХ‘WСQ‘‘PХФТTУУ€K€ћ“[Э™HHИ™Y™™XЭH—СQ‘‘PХСQ—ХTМHK€›XYЪXРЫШ]Y™™XЭYH•QK€ЫЫќ\ЭY™™XЭHЧХTUQУSХ‘WСQ‘‘PХИЏHСS—Н€ИУУ•TХСQ‘‘PХФТQ•Т•QСWРUS•SУ€€УУ•TХСQ‘‘PХХУФ”СS—РУУ‘USУ—УС—Ф‘U—УSУ”Л€ЫЫќ\ЭШ]YЫЬћHHУУ•TХРРUQУФ–WФУPT•€ЫЫќ\ЭЫЫX›ФЭ\ќ\’YHУУP“ЧФХT•T—ФТTУУ—СРTЛ€ЫЫќ\ЭЫЫX›У[Э™\ИHМK€]P[љ[TШЬљ\HР]P[љ[S[Э™WФЪ\ЫЫ‘Ш\Л€K‚€УSХ‘WРђT”ђQСWHB€В€›[YHHУУTХS‘ФХ’S‘Кђ\њYЩHЉK€™\ШЬљ\[Ы€HУУTХS‘ФХ’S‘К€’\›И›Э[™Шљ™XЭИ]W€‚€™›ЩH€ИH[Y\Л€ЉK€™Y™™XЭHQ‘‘PХТU€њЭЩ\€HMK€ќ\HHTWУ“Ф“PS€XШЭ\XЮHHK€њHЊ€ќ\™Щ]HT‘СUФСSPХQ€њљ[Ьљ]HH€Ш]YЫЬћHHSPQСWРРUQУФ–WФTТPРS€›][R]H•QK€[\ЭXУ[Э™HH•QK€ЫЫќ\ЭY™™XЭHЧХTUQУSХ‘WСQ‘‘PХИЏHСS—Н€ИУУ•TХСQ‘‘PХФUPSUWСTS‘ЧУУ—ХSRS‘И€УУ•TХСQ‘‘PХР‘UT—ТQ—ФРSQWХTK€ЫЫќ\ЭШ]YЫЬћHHЧХTUQУSХ‘WРРUQУФ’QTИЏHСS—Н€ИУУ•TХРРUQУФ–WРХUH€УУ•TХРРUQУФ–WХХQТ€ЫЫќ\ЭЫЫX›ФЭ\ќ\’YH€ЫЫќ\ЭЫЫX›У[Э™\ИHМK€]P[љ[TШЬљ\HР]P[љ[S[Э™WР\њYЩK€K‚€УSХ‘WУQPТУQ‘WHB€В€›[YHHУУTХS‘ФХ’S‘К“YXЪY™HЉK€™\ШЬљ\[Ы€HУУTХS‘ФХ’S‘К€ђ[€]XЪИ]ЭX[И[—€‚€ќH[XYЩH[™›XЭY€ЉK€™Y™™XЭHQ‘‘PХРP”УФђ‹€њЭЩ\€H—ХTUQУSХ‘WСUHЏHСS—НИИ€Њ€ќ\HHTWР•QЛ€XШЭ\XЮHHL€њH—ХTUQУSХ‘WСUHЏHСS—НИИL€MK€ќ\™Щ]HT‘СUФСSPХQ€њљ[Ьљ]HH€Ш]YЫЬћHHSPQСWРРUQУФ–WФTТPРS€\™Э[Y[ќHИXњЫЬ”\Щ[ќYЩHHLK€›XZЩ\РЫЫќXЭH•QK€љYЫ›Ь™\ТЪ[™ЬФ›ШЪИH
+—ХTUQУSХ‘WС“QФИOHСS—МИ—ХTUQУSХ‘WС“QФИOHСS—Н
+K€љX[[™У[Э™HH—ТPSР“РТТS‘ИЏHСS—Н‹€ЫЫќ\ЭY™™XЭHЧХTUQУSХ‘WСQ‘‘PХИЏHСS—Н€ИУУ•TХСQ‘‘PХРTPSРTЧСУУСРTЧФ‘U—УУ‘H€УУ•TХСQ‘‘PХФХT•WФ‘U—УSУ‹€ЫЫќ\ЭШ]YЫЬћHHУУ•TХРРUQУФ–WФУPT•€ЫЫќ\ЭЫЫX›ФЭ\ќ\’YH€ЫЫќ\ЭЫЫX›У[Э™\ИHМK€]P[љ[TШЬљ\HР]P[љ[S[Э™WУYXЪY™K€K‚€УSХ‘WУХ‘SWТТTФЧHB€В€›[YHHУУTХS‘ФХ’S‘К“Э™[HЪ\ЬИЉK€™\ШЬљ\[Ы€HУУTХS‘ФХ’S‘К€‘[X[™ИHЪ\ЬИЪ]HШШ\ћW€‚€™XЩH][™XЩ\ИЫY\€ЉK€™Y™™XЭHQ‘‘PХУ“У—Х“УUSWФХUTЛ€њЭЩ\€H€ќ\HHTWУ“Ф“PS€XШЭ\XЮHHНK€њHL€ќ\™Щ]HT‘СUФСSPХQ€њљ[Ьљ]HH€Ш]YЫЬћHHSPQСWРРUQУФ–WФХUTЛ€\™Э[Y[ќHИ››Ы•›Ы][TЭ]\ИHSХ‘WСQ‘‘PХФУQTK€ћ“[Э™HHИ™Y™™XЭH—СQ‘‘PХФФХTМHK€›XYЪXРЫШ]Y™™XЭYH•QK€ЫЫќ\ЭY™™XЭHУУ•TХСQ‘‘PХРђQWФХT•WФ‘U—УSУ”ЛЛРЧХTUQУSХ‘WСQ‘‘PХИЏHСS—Н€ИУУ•TХСQ‘‘PХФURPТУWСФ“ХЧР“Ф‘Q‚€ЫЫќ\ЭШ]YЫЬћHHУУ•TХРРUQУФ–WР‘PUUK€ЫЫќ\ЭЫЫX›ФЭ\ќ\’YHУУP“ЧФХT•T—УХ‘SWТТTФЛ€ЫЫќ\ЭЫЫX›У[Э™\ИHМK€]P[љ[TШЬљ\HР]P[љ[S[Э™WУЭ™[RЪ\ЬЛ€ќ[Y\™[ќXЩS[Э™HH•QK€K‚€УSХ‘WФТЦWРUPТЧHB€В€›[YHHУУTХS‘ФХ’S‘К”ЪЮH]XЪИЉK€™\ШЬљ\[Ы€HУУTХS‘ФХ’S‘К€Њ‹]\›€]XЪЛ€YЪЬљ]XШ[€‚€љ]][Л[™X^H›[Ъ€ЉK€™Y™™XЭHQ‘‘PХХУЧХT“”ЧРUPТЛ€њЭЩ\€HM€ќ\HHTWС“RS‘Л€XШЭ\XЮHHL€њHK€ќ\™Щ]HT‘СUФСSPХQ€њљ[Ьљ]HH€Ш]YЫЬћHHSPQСWРРUQУФ–WФTТPРS€Ьљ]XШ[]ЭYЩHH—ХTUQУSХ‘WСUHЏHСS—МЛ€њЫY\[Р[›™YH•QK€љ[њЭќXЭ[›™YH•QK€\™Э[Y[ќќЫХ\›ђ]XЪИHИњЭљ[™ТYH—ХTUQУSХ‘WСUHЏHСS—НИХ’S‘ТQРУРRСQSђRT”ТQТ€Х’S‘ТQФУS’TСУХТS‘ИK€ЪY€—ХTUQУSХ‘WСUHЏHСS—МВ€Y][Ы[Y™™XЭИHQUSУђSСQ‘‘PХКВ€›[Э™QY™™XЭHSХ‘WСQ‘‘PХС“SђТ€Ъ[ЩHHМ€JK€Щ[™Y‚€ЫЫќ\ЭY™™XЭHУУ•TХСQ‘‘PХРQ‘‘PХQР–WФ‘U—РTPS€ЫЫќ\ЭШ]YЫЬћHHУУ•TХРРUQУФ–WРУУУ€ЫЫќ\ЭЫЫX›ФЭ\ќ\’YH€ЫЫќ\ЭЫЫX›У[Э™\ИHМK€]P[љ[TШЬљ\HР]P[љ[S[Э™WФЪЮP]XЪЛ€ќ[Y\™[ќXЩS[Э™HH•QK€K‚€УSХ‘WХђS”С“Ф“WHB€В€›[YHHУУTХS‘ФХ’S‘К•[њЩ›Ь›HЉK€™\ШЬљ\[Ы€HУУTХS‘ФХ’S‘К€ђ[\њИH\Щ\‰ЬИЩ[ИЧ€‚€™XЫЫYHHЫЬHЩ€H›ЩK€ЉK€™Y™™XЭHQ‘‘PХХђS”С“Ф“K€њЭЩ\€H€ќ\HHTWУ“Ф“PS€XШЭ\XЮHH€њHL€ќ\™Щ]HT‘СUФСSPХQ€њљ[Ьљ]HH€Ш]YЫЬћHHSPQСWРРUQУФ–WФХUTЛ€ћ“[Э™HHИ™Y™™XЭH—СQ‘‘PХФ‘PУХ‘T—ТK€љYЫ›Ь™\Ф›ЭXЭH•QK€љYЫ›Ь™\ФЭXњЭ]]HH—ХTUQУSХ‘WС“QФИСS—НK€›Z\њ›Ь“[Э™P[›™YH•QK€›Z[ZXР[›™YH•QK€›Y]›Ы›ЫYP[›™YH—ХTUQУSХ‘WС“QФИЏHСS—НK€ЫЬXШ][›™YH—ХTUQУSХ‘WС“QФИЏHСS—НK€љ[њЭќXЭ[›™YH•QK€™[ЫЬ™P[›™YH•QK€\ЬЪ\Э[›™YH—ХTUQУSХ‘WС“QФИЏHСS—НK€ЫЫќ\ЭY™™XЭHУУ•TХСQ‘‘PХФ‘TUUSУ—У“ХР“Ф’S‘Л€ЫЫќ\ЭШ]YЫЬћHHУУ•TХРРUQУФ–WФУPT•€ЫЫќ\ЭЫЫX›ФЭ\ќ\’YH€ЫЫќ\ЭЫЫX›У[Э™\ИHМK€]P[љ[TШЬљ\HР]P[љ[S[Э™WХ[њЩ›Ь›K€ќ[Y\™[ќXЩS[Э™HH•QK€K‚€УSХ‘WР•Pђ“WHB€В€›[YHHУУTХS‘ФХ’S‘КђќX›HЉK€™\ШЬљ\[Ы€HУУTХS‘ФХ’S‘К€ђ[€]XЪИ\Ъ[™ИќX›\Л—€‚€“X^HЭЩ\€H›ЩIЬИЬYY€ЉK€™Y™™XЭHQ‘‘PХТU€њЭЩ\€H—ХTUQУSХ‘WСUHЏHСS—Н€И€Њ€ќ\HHTWХРUT‹€XШЭ\XЮHHL€њHМ€ќ\™Щ]HT‘СUР“Х€њљ[Ьљ]HH€Ш]YЫЬћHHSPQСWРРUQУФ–WФФPТPS€Y][Ы[Y™™XЭИHQUSУђSСQ‘‘PХКВ€›[Э™QY™™XЭHSХ‘WСQ‘‘PХФФУRS•TЧМK€Ъ[ЩHH—ХTUQУSХ‘WСUHЏHСS—М€ИL€МЛ€JK€ЫЫќ\ЭY™™XЭHЧХTUQУSХ‘WСQ‘‘PХИЏHСS—Н€ИУУ•TХСQ‘‘PХТQТWРTPSS‘И€УУ•TХСQ‘‘PХФХT•WФ‘U—УSУ”Л€ЫЫќ\ЭШ]YЫЬћHHУУ•TХРРUQУФ–WРХUK€ЫЫќ\ЭЫЫX›ФЭ\ќ\’YH€ЫЫќ\ЭЫЫX›У[Э™\ИHРУУP“ЧФХT•T—ФђRS—СSђС_K€]P[љ[TШЬљ\HР]P[љ[S[Э™WРќX›K€K‚€УSХ‘WСV––WФSђТHB€В€›[YHHУУTХS‘ФХ’S‘К‘^ћћH[ЪЉK€ЪY€—ХTUQУSХ‘WСUHЏHСS—М‚€™\ШЬљ\[Ы€HУУTХS‘ФХ’S‘К€ђHљ]ZXИ[Ъ]X^W€‚€ЫЫ™ќ\ЩHH\™Щ]€ЉK€Щ[ЩB€™\ШЬљ\[Ы€HУУTХS‘ФХ’S‘К€•H\™Щ]\И]Ъ]€‚€њљ]ZXИ[Ъ\Л€ЉK€Щ[™Y‚€™Y™™XЭHQ‘‘PХТU€њЭЩ\€HМ€ќ\HHTWУ“Ф“PS€XШЭ\XЮHHL€њHL€ќ\™Щ]HT‘СUФСSPХQ€њљ[Ьљ]HH€Ш]YЫЬћHHSPQСWРРUQУФ–WФTТPРS€›XZЩ\РЫЫќXЭH•QK€њ[Ъ[™У[Э™HH•QK€ЪY€—ХTUQУSХ‘WСUHЏHСS—М‚€Y][Ы[Y™™XЭИHQUSУђSСQ‘‘PХКВ€›[Э™QY™™XЭHSХ‘WСQ‘‘PХРУУ‘•TТSУ‹€Ъ[ЩHHЊ€JK€Щ[™Y‚€ЫЫќ\ЭY™™XЭHЧХTUQУSХ‘WСQ‘‘PХИЏHСS—Н€ИУУ•TХСQ‘‘PХФТQ•Т•QСWРUS•SУ€€УУ•TХСQ‘‘PХРђQWФХT•WС”“У•УSУ‹€ЫЫќ\ЭШ]YЫЬћHHЧХTUQУSХ‘WРРUQУФ’QTИЏHСS—Н€ИУУ•TХРРUQУФ–WРХUH€УУ•TХРРUQУФ–WРУУУ€ЫЫќ\ЭЫЫX›ФЭ\ќ\’YH€ЫЫќ\ЭЫЫX›У[Э™\ИHМK€]P[љ[TШЬљ\HР]P[љ[S[Э™WС^ћћT[Ъ€ќ[Y\™[ќXЩS[Э™HH•QK€K‚€УSХ‘WФФФ‘WHB€В€›[YHHУУTХS‘ФХ’S‘К”ЬЬ™HЉK€™\ШЬљ\[Ы€HУУTХS‘ФХ’S‘К€”ШШ]\њИHЫЭYЩ€ЬЬ™\Ч€‚€ќ][Ш^\И[™XЩHЫY\€ЉK€™Y™™XЭHQ‘‘PХУ“У—Х“УUSWФХUTЛ€њЭЩ\€H€ќ\HHTWСФђTФЛ€XШЭ\XЮHHL€њHMK€ќ\™Щ]HT‘СUФСSPХQ€њљ[Ьљ]HH€Ш]YЫЬћHHSPQСWРРUQУФ–WФХUTЛ€\™Э[Y[ќHИ››Ы•›Ы][TЭ]\ИHSХ‘WСQ‘‘PХФУQTK€ћ“[Э™HHИ™Y™™XЭH—СQ‘‘PХФ‘TСUФХUИK€›XYЪXРЫШ]Y™™XЭYH•QK€њЭЩ\“[Э™HH•QK€ЫЫќ\ЭY™™XЭHУУ•TХСQ‘‘PХРђQWФХT•WФ‘U—УSУ”Л€ЫЫќ\ЭШ]YЫЬћHHУУ•TХРРUQУФ–WР‘PUUK€ЫЫќ\ЭЫЫX›ФЭ\ќ\’YHУУP“ЧФХT•T—ФФФ‘K€ЫЫќ\ЭЫЫX›У[Э™\ИHМK€]P[љ[TШЬљ\HР]P[љ[S[Э™WФЬЬ™K€ќ[Y\™[ќXЩS[Э™HH•QK€K‚€УSХ‘WС“TТHB€В€›[YHHУУTХS‘ФХ’S‘К‘›\ЪЉK€™\ШЬљ\[Ы€HУУTХS‘ФХ’S‘К€“ЫЬЩ\ИHЭЩ\™ќ[›\ЭЩ—€‚€›YЪ]Э]ИXШЭ\XЮK€ЉK€™Y™™XЭHQ‘‘PХРPРХTђPЦWСХУ‹€њЭЩ\€H€ќ\HHTWУ“Ф“PS€XШЭ\XЮHH—ХTUQУSХ‘WСUHЏHСS—НИL€М€њHЊ€ќ\™Щ]HT‘СUФСSPХQ€њљ[Ьљ]HH€Ш]YЫЬћHHSPQСWРРUQУФ–WФХUTЛ€ћ“[Э™HHИ™Y™™XЭH—СQ‘‘PХСU”У—ХTМHK€›XYЪXРЫШ]Y™™XЭYH•QK€ЫЫќ\ЭY™™XЭHУУ•TХСQ‘‘PХФТQ•Т•QСWРUS•SУ‹€ЫЫќ\ЭШ]YЫЬћHHУУ•TХРРUQУФ–WР‘PUUK€ЫЫќ\ЭЫЫX›ФЭ\ќ\’YH€ЫЫќ\ЭЫЫX›У[Э™\ИHМK€]P[љ[TШЬљ\HР]P[љ[S[Э™WС›\Ъ€ќ[Y\™[ќXЩS[Э™HH•QK€K‚€УSХ‘WФЦUРU‘WHB€В€›[YHHУУTХS‘ФХ’S‘К”Ю]Ш]™HЉK€™\ШЬљ\[Ы€HУУTХS‘ФХ’S‘К€ђ]XЪЬИЪ]HЮXЪXЧ€‚€ќШ]™HЩ€\ћZ[™И[ќ[њЪ]K€ЉK€™Y™™XЭHQ‘‘PХФЦUРU‘K€њЭЩ\€HK€ќ\HHTWФЦPТPЛ€XШЭ\XЮHH—ХTUQУSХ‘WСUHЏHСS—Н€ИL€€њHMK€ќ\™Щ]HT‘СUФСSPХQ€њљ[Ьљ]HH€Ш]YЫЬћHHSPQСWРРUQУФ–WФФPТPS€ЫЫќ\ЭY™™XЭHЧХTUQУSХ‘WСQ‘‘PХИЏHСS—Н€ИУУ•TХСQ‘‘PХФUPSUWСTS‘ЧУУ—ХSRS‘И€УУ•TХСQ‘‘PХРђQWФХT•WУSУ”ЧХТUСУУСРTPSЛ€ЫЫќ\ЭШ]YЫЬћHHУУ•TХРРUQУФ–WФУPT•€ЫЫќ\ЭЫЫX›ФЭ\ќ\’YH€ЫЫќ\ЭЫЫX›У[Э™\ИHРУУP“ЧФХT•T—РРSWУRS‘K€]P[љ[TШЬљ\HР]P[љ[S[Э™WФЮ]Ш]™K€ќ[Y\™[ќXЩS[Э™HH•QK€K‚€УSХ‘WФФTТHB€В€›[YHHУУTХS‘ФХ’S‘К”Ь\ЪЉK€™\ШЬљ\[Ы€HУУTХS‘ФХ’S‘К€’]	ЬИќ\ЭHЬ\Ъ‹‹—€‚€’\И›ИY™™XЭЪ]ЫЩ]™\‹€ЉK€™Y™™XЭHQ‘‘PХСЧУ“ХS‘Л€њЭЩ\€H€ќ\HHTWУ“Ф“PS€XШЭ\XЮHH€њH€ќ\™Щ]HT‘СUХTСT‹€њљ[Ьљ]HH€Ш]YЫЬћHHSPQСWРРUQУФ–WФХUTЛ€ћ“[Э™HHИ™Y™™XЭH—СQ‘‘PХРUЧХTМИK€љYЫ›Ь™\Ф›ЭXЭH•QK€›Z\њ›Ь“[Э™P[›™YH•QK€™Ь]љ]P[›™YH•QK€ЫЫќ\ЭY™™XЭHУУ•TХСQ‘‘PХР‘UT—ТQ—УTХЛРЧХTUQУSХ‘WСQ‘‘PХИЏHСS—Н€ИУУ•TХСQ‘‘PХФURPТУWСФ“ХЧР“Ф‘Q‚€ЫЫќ\ЭШ]YЫЬћHHУУ•TХРРUQУФ–WРХUK€ЫЫќ\ЭЫЫX›ФЭ\ќ\’YH€ЫЫќ\ЭЫЫX›У[Э™\ИHМK€]P[љ[TШЬљ\HР]P[љ[S[Э™WФЬ\Ъ€K‚€УSХ‘WРPТQРT“SФ—HB€В€›[YHHУУTХS‘ФХ’S‘КђXЪY\›[Ь€ЉK€™\ШЬљ\[Ы€HУУTХS‘ФХ’S‘К€“\]ZYљY\ИH\Щ\‰ЬИ›ЩW€‚€ќИЪ\њHZ\ЩHY™[њЩK€ЉK€™Y™™XЭHQ‘‘PХСQ‘S”СWХTМ‹€њЭЩ\€H€ќ\HHTWФТTУУ‹€XШЭ\XЮHH€њH—ХTUQУSХ‘WСUHЏHСS—Н€ИЊ€€ќ\™Щ]HT‘СUХTСT‹€њљ[Ьљ]HH€Ш]YЫЬћHHSPQСWРРUQУФ–WФХUTЛ€ћ“[Э™HHИ™Y™™XЭH—СQ‘‘PХФ‘TСUФХUИK€њЫ]ЪY™™XЭYH•QK€љYЫ›Ь™\Ф›ЭXЭH•QK€›Z\њ›Ь“[Э™P[›™YH•QK€ЫЫќ\ЭY™™XЭHЧХTUQУSХ‘WСQ‘‘PХИЏHСS—Н€ИУУ•TХСQ‘‘PХРU“ТQФХT•H€УУ•TХСQ‘‘PХТST“Х‘WРУУ‘USУ—Ф‘U‘S•У‘T•“ХTУ‘TФЛ€ЫЫќ\ЭШ]YЫЬћHHУУ•TХРРUQУФ–WХХQТ€ЫЫќ\ЭЫЫX›ФЭ\ќ\’YH€ЫЫќ\ЭЫЫX›У[Э™\ИHМK€]P[љ[TШЬљ\HР]P[љ[S[Э™WРXЪY\›[Ь‹€ќ[Y\™[ќXЩS[Э™HH•QK€K‚€УSХ‘WРФђP’SSQT—HB€В€›[YHHУУTХS‘ФХ’S‘КђЬXљ[[Y\€ЉK€™\ШЬљ\[Ы€HУУTХS‘ФХ’S‘К€’[[Y\њИЪ]H[Щ\‹€\ИW€‚€љYЪЬљ]XШ[Z]][Л€ЉK€™Y™™XЭHQ‘‘PХТU€њЭЩ\€H—ХTUQУSХ‘WСUHЏHСS—Н€ИL€L€ќ\HHTWХРUT‹€XШЭ\XЮHH—ХTUQУSХ‘WСUHЏHСS—НHИL€K€Ьљ]XШ[]ЭYЩHH—ХTUQУSХ‘WСUHЏHСS—МИИH€‹€њHL€ќ\™Щ]HT‘СUФСSPХQ€њљ[Ьљ]HH€Ш]YЫЬћHHSPQСWРРUQУФ–WФTТPРS€›XZЩ\РЫЫќXЭH•QK€ЫЫќ\ЭY™™XЭHЧХTUQУSХ‘WСQ‘‘PХИЏHСS—Н€ИУУ•TХСQ‘‘PХФ‘TUUSУ—У“ХР“Ф’S‘И€УУ•TХСQ‘‘PХРQ‘‘PХQР–WФ‘U—РTPS€ЫЫќ\ЭШ]YЫЬћHHУУ•TХРРUQУФ–WХХQТ€ЫЫќ\ЭЫЫX›ФЭ\ќ\’YH€ЫЫќ\ЭЫЫX›У[Э™\ИHРУУP“ЧФХT•T—ФђRS—СSђСKУУP“ЧФХT•T—ФХУФ‘ЧСSђС_K€]P[љ[TШЬљ\HР]P[љ[S[Э™WРЬXљ[[Y\‹€ќ[Y\™[ќXЩS[Э™HH•QK€K‚€УSХ‘WСVФТSУ—HB€В€›[YHHУУTХS‘ФХ’S‘К‘^ЬЪ[Ы€ЉK€™\ШЬљ\[Ы€HУУTХS‘ФХ’S‘К€’[™›XЭИЩ]™\™H[XYЩHќ]€‚€›XZЩ\ИH\Щ\€Z[ќ€ЉK€™Y™™XЭHQ‘‘PХТU€њЭЩ\€H—ХTUQУSХ‘WСUHЏHСS—М€ИЌL€MМ€ќ\HHTWУ“Ф“PS€XШЭ\XЮHHL€њHK€ќ\™Щ]HT‘СUС“СTЧРS‘РSK€њљ[Ьљ]HH€Ш]YЫЬћHHSPQСWРРUQУФ–WФTТPРS€™^ЬЪ[Ы€H•QK€њ\™[ќ[›Ы™[›™YH•QK€™[\[›™YH•QK€ЫЫќ\ЭY™™XЭHУУ•TХСQ‘‘PХСФ‘PUРTPSР•UУ“ЧУSФ‘WУSХ‘TЛ€ЫЫќ\ЭШ]YЫЬћHHУУ•TХРРUQУФ–WР‘PUUK€ЫЫќ\ЭЫЫX›ФЭ\ќ\’YH€ЫЫќ\ЭЫЫX›У[Э™\ИHРУУP“ЧФХT•T—УQPS—УУТЛУУP“ЧФХT•T—Р“РТЯK€]P[љ[TШЬљ\HР]P[љ[S[Э™WС^ЬЪ[Ы‹€ќ[Y\™[ќXЩS[Э™HH•QK€K‚€УSХ‘WС•T–WФХТTTЧHB€В€›[YHHУУTХS‘ФХ’S‘К‘ќ\ћHЭЪ\\ИЉK€™\ШЬљ\[Ы€HУУTХS‘ФХ’S‘К€”ZЩ\ИH›ЩHЪ]Ъ\њ€‚€Ы]ЬЛ]Л‹€ИH[Y\Л€ЉK€™Y™™XЭHQ‘‘PХТU€њЭЩ\€HN€ќ\HHTWУ“Ф“PS€XШЭ\XЮHH€њHMK€ќ\™Щ]HT‘СUФСSPХQ€њљ[Ьљ]HH€Ш]YЫЬћHHSPQСWРРUQУФ–WФTТPРS€›][R]H•QK€њЫXЪ[™У[Э™HH•QK€›XZЩ\РЫЫќXЭH•QK€ЫЫќ\ЭY™™XЭHЧХTUQУSХ‘WСQ‘‘PХИЏHСS—Н€ИУУ•TХСQ‘‘PХФUPSUWСTS‘ЧУУ—ХSRS‘И€УУ•TХСQ‘‘PХФХT•WУSУ—ХТUТ•QСTЧРUS•SУ‹€ЫЫќ\ЭШ]YЫЬћHHУУ•TХРРUQУФ–WХХQТ€ЫЫќ\ЭЫЫX›ФЭ\ќ\’YH€ЫЫќ\ЭЫЫX›У[Э™\ИHРУУP“ЧФХT•T—ФРФђUТK€]P[љ[TШЬљ\HР]P[љ[S[Э™WСќ\ћTЭЪ\\Л€K‚€УSХ‘WР“У‘SQTђS‘ЧHB€В€›[YHHУУTХS‘ФХ’S‘Кђ›Ы™[Y\[™ИЉK€™\ШЬљ\[Ы€HУУTХS‘ФХ’S‘К€•›ЭЬИH›Ы™H›ЫЫY\[™Ч€‚€ќ]ЭљZЩ\ИЪXЩK€ЉK€™Y™™XЭHQ‘‘PХТU€њЭЩ\€HL€ќ\HHTWСФ“ХS‘€XШЭ\XЮHHL€њHL€ќ\™Щ]HT‘СUФСSPХQ€њљ[Ьљ]HH€Ш]YЫЬћHHSPQСWРРUQУФ–WФTТPРS€њЭљZЩPЫЭ[ќH‹€ЫЫќ\ЭY™™XЭHЧХTUQУSХ‘WСQ‘‘PХИЏHСS—Н€ИУУ•TХСQ‘‘PХФХT•WУSУ”ЧФРSQWХTWРTPS€УУ•TХСQ‘‘PХТQТWРTPSS‘Л€ЫЫќ\ЭШ]YЫЬћHHУУ•TХРРUQУФ–WХХQТ€ЫЫќ\ЭЫЫX›ФЭ\ќ\’YHУУP“ЧФХT•T—Р“У‘SQTђS‘Л€ЫЫќ\ЭЫЫX›У[Э™\ИHРУУP“ЧФХT•T—Р“У‘WРУP‹УУP“ЧФХT•T—Р“У‘WФ•TТУУP“ЧФХT•T—ФТQХЧР“У‘_K€]P[љ[TШЬљ\HР]P[љ[S[Э™WР›Ы™[Y\[™Л€ќ[Y\™[ќXЩS[Э™HH•QK€K‚€УSХ‘WФ‘TХHB€В€›[YHHУУTХS‘ФХ’S‘К”™\ЭЉK€™\ШЬљ\[Ы€HУУTХS‘ФХ’S‘К€•H\Щ\€ЫY\И›Ь€€\›њЛ€‚€њ™\ЭЬљ[™И[™Э]\Л€ЉK€™Y™™XЭHQ‘‘PХФ‘TХ€њЭЩ\€H€ќ\HHTWФЦPТPЛ€XШЭ\XЮHH€њH—ХTUQУSХ‘WСUHЏHСS—ОHИH€L€ќ\™Щ]HT‘СUХTСT‹€њљ[Ьљ]HH€Ш]YЫЬћHHSPQСWРРUQУФ–WФХUTЛ€ћ“[Э™HHИ™Y™™XЭH—СQ‘‘PХФ‘TСUФХUИK€њЫ]ЪY™™XЭYH•QK€љYЫ›Ь™\Ф›ЭXЭH•QK€›Z\њ›Ь“[Э™P[›™YH•QK€љX[[™У[Э™HH•QK€ЫЫќ\ЭY™™XЭHЧХTUQУSХ‘WСQ‘‘PХИЏHСS—Н€ИУУ•TХСQ‘‘PХРU“ТQФХT•H€УУ•TХСQ‘‘PХРU“ТQФХT•WУУђСK€ЫЫќ\ЭШ]YЫЬћHHУУ•TХРРUQУФ–WРХUK€ЫЫќ\ЭЫЫX›ФЭ\ќ\’YHУУP“ЧФХT•T—Ф‘TХ€ЫЫќ\ЭЫЫX›У[Э™\ИHРУУP“ЧФХT•T—Р‘SWС•SKУУP“ЧФХT•T—РТT“KУУP“ЧФХT•T—ЦPUУџK€]P[љ[TШЬљ\HР]P[љ[S[Э™WФ™\Э€ќ[Y\™[ќXЩS[Э™HH•QK€K‚€УSХ‘WФ“РТЧФУQWHB€В€›[YHHУУTХS‘ФХ’S‘К”›ШЪИЫYHЉK€ЪY€—ХTUQУSХ‘WСUHЏHСS—М‚€™\ШЬљ\[Ы€HУУTХS‘ФХ’S‘К€“\™ЩH›Э[\њИ\™H\›Y—€‚€“X^HШ]\ЩH›[Ъ[™Л€ЉK€Щ[ЩB€™\ШЬљ\[Ы€HУУTХS‘ФХ’S‘К€’]ИH›ЩHЪ][—€‚€][[ЪHЩ€›ШЪЬЛ€ЉK€Щ[™Y‚€™Y™™XЭHQ‘‘PХТU€њЭЩ\€HНK€ќ\HHTWФ“РТЛ€XШЭ\XЮHHL€њHL€ќ\™Щ]HT‘СUР“Х€њљ[Ьљ]HH€Ш]YЫЬћHHSPQСWРРUQУФ–WФTТPРS€ЪY€—ХTUQУSХ‘WСUHЏHСS—М‚€Y][Ы[Y™™XЭИHQUSУђSСQ‘‘PХКВ€›[Э™QY™™XЭHSХ‘WСQ‘‘PХС“SђТ€Ъ[ЩHHМ€JK€Щ[™Y‚€ЫЫќ\ЭY™™XЭHЧХTUQУSХ‘WСQ‘‘PХИЏHСS—Н€ИУУ•TХСQ‘‘PХФХT•WФ‘U—УSУ”И€УУ•TХСQ‘‘PХРђQWФХT•WФ‘U—УSУ”Л€ЫЫќ\ЭШ]YЫЬћHHУУ•TХРРUQУФ–WХХQТ€ЫЫќ\ЭЫЫX›ФЭ\ќ\’YH€ЫЫќ\ЭЫЫX›У[Э™\ИHРУУP“ЧФХT•T—Ф“РТЧХ“ХЯK€]P[љ[TШЬљ\HР]P[љ[S[Э™WФ›ШЪФЫYK€ќ[Y\™[ќXЩS[Э™HH•QK€K‚€УSХ‘WТTT—СђS‘ЧHB€В€›[YHHУУTХS‘ФХ’S‘К’\\€[™ИЉK€™\ШЬљ\[Ы€HУУTХS‘ФХ’S‘К€ђ]XЪЬИЪ]Ъ\њ[™ЬЛ—€‚€“X^HШ]\ЩH›[Ъ[™Л€ЉK€™Y™™XЭHQ‘‘PХТU€њЭЩ\€H€ќ\HHTWУ“Ф“PS€XШЭ\XЮHHL€њHMK€ќ\™Щ]HT‘СUФСSPХQ€њљ[Ьљ]HH€Ш]YЫЬћHHSPQСWРРUQУФ–WФTТPРS€›XZЩ\РЫЫќXЭH•QK€љ][™У[Э™HH•QK€Y][Ы[Y™™XЭИHQUSУђSСQ‘‘PХКВ€›[Э™QY™™XЭHSХ‘WСQ‘‘PХС“SђТ€Ъ[ЩHHL€JK€ЫЫќ\ЭY™™XЭHЧХTUQУSХ‘WСQ‘‘PХИЏHСS—Н€ИУУ•TХСQ‘‘PХФ‘TUUSУ—У“ХР“Ф’S‘И€УУ•TХСQ‘‘PХРђQWФХT•WС”“У•УSУ‹€ЫЫќ\ЭШ]YЫЬћHHУУ•TХРРUQУФ–WРУУУ€ЫЫќ\ЭЫЫX›ФЭ\ќ\’YH€ЫЫќ\ЭЫЫX›У[Э™\ИHМK€]P[љ[TШЬљ\HР]P[љ[S[Э™WТ\\‘[™Л€ќ[Y\™[ќXЩS[Э™HH•QK€K‚€УSХ‘WФТT”S—HB€В€›[YHHУУTХS‘ФХ’S‘К”Ъ\њ[€ЉK€™\ШЬљ\[Ы€HУУTХS‘ФХ’S‘К€”™YXЩ\ИHЫYЫЫ€ЫЭ[ќ€‚€[™Z\Щ\И]XЪЛ€ЉK€™Y™™XЭHQ‘‘PХРUPТЧХT€њЭЩ\€H€ќ\HHTWУ“Ф“PS€XШЭ\XЮHH€њHМ€ќ\™Щ]HT‘СUХTСT‹€њљ[Ьљ]HH€Ш]YЫЬћHHSPQСWРРUQУФ–WФХUTЛ€ћ“[Э™HHИ™Y™™XЭH—СQ‘‘PХРUЧХTМHK€њЫ]ЪY™™XЭYH•QK€љYЫ›Ь™\Ф›ЭXЭH•QK€›Z\њ›Ь“[Э™P[›™YH•QK€ЫЫќ\ЭY™™XЭHУУ•TХСQ‘‘PХТST“Х‘WРУУ‘USУ—Ф‘U‘S•У‘T•“ХTУ‘TФЛ€ЫЫќ\ЭШ]YЫЬћHHУУ•TХРРUQУФ–WРХUK€ЫЫќ\ЭЫЫX›ФЭ\ќ\’YH€ЫЫќ\ЭЫЫX›У[Э™\ИHМK€]P[љ[TШЬљ\HР]P[љ[S[Э™WФЪ\њ[‹€ќ[Y\™[ќXЩS[Э™HH•QK€K‚€УSХ‘WРУУ•‘T”ТSУ—HB€В€›[YHHУУTХS‘ФХ’S‘КђЫЫќ™\њЪ[Ы€ЉK€™\ШЬљ\[Ы€HУУTХS‘ФХ’S‘К€ђЪ[™Щ\ИH\Щ\‰ЬИ\W€‚€ЪY€—ХTUQРУУ•‘T”ТSУ€ЏHСS—Н‚€љ[ќИљ\њЭЫ›ЭЫ€[Э™IЬИ\K€ЉK€Щ[ЩB€љ[ќИHЫ›ЭЫ€[Э™IЬИ\K€ЉK€Щ[™Y‚€™Y™™XЭHQ‘‘PХРУУ•‘T”ТSУ‹€њЭЩ\€H€ќ\HHTWУ“Ф“PS€XШЭ\XЮHH€њHМ€ќ\™Щ]HT‘СUХTСT‹€њљ[Ьљ]HH€Ш]YЫЬћHHSPQСWРРUQУФ–WФХUTЛ€ћ“[Э™HHИ™Y™™XЭH—СQ‘‘PХРSФХUЧХTМHK€њЫ]ЪY™™XЭYH—ХTUQУSХ‘WС“QФИЏHСS—НK€љYЫ›Ь™\Ф›ЭXЭH•QK€›Z\њ›Ь“[Э™P[›™YH•QK€ЫЫќ\ЭY™™XЭHУУ•TХСQ‘‘PХР‘UT—ТQ—ФРSQWХTK€ЫЫќ\ЭШ]YЫЬћHHУУ•TХРРUQУФ–WР‘PUUK€ЫЫќ\ЭЫЫX›ФЭ\ќ\’YH€ЫЫќ\ЭЫЫX›У[Э™\ИHМK€]P[љ[TШЬљ\HР]P[љ[S[Э™WРЫЫќ™\њЪ[Ы‹€ќ[Y\™[ќXЩS[Э™HH•QK€K‚€УSХ‘WХ’WРUPТЧHB€В€›[YHHУУTХS‘ФХ’S‘К•љH]XЪИЉK€ЪY€—ХTUQУSХ‘WСUHЏHСS—М‚€™\ШЬљ\[Ы€HУУTХS‘ФХ’S‘К€‘љ\™\И™YH\\ИЩ€™X[\Л—€‚€ЪY€—ХTСWС”“ФХ’UHOH•QB€“X^Hќ\›‹Ь\KЩњ›ЬЭљ]K€ЉK€Щ[ЩB€“X^Hќ\›‹Ь\[^™KЩњ™Y^™K€ЉK€Щ[™Y‚€Щ[ЩB€™\ШЬљ\[Ы€HУУTХS‘ФХ’S‘К€ђHљX[™Э[\€љY[Щ€[™\™ЮW€‚€љ\ИЬ™X]Y[™][ЪY€ЉK€Щ[™Y‚€™Y™™XЭHQ‘‘PХТU€њЭЩ\€H€ќ\HHTWУ“Ф“PS€XШЭ\XЮHHL€њHL€ќ\™Щ]HT‘СUФСSPХQ€њљ[Ьљ]HH€Ш]YЫЬћHHSPQСWРРUQУФ–WФФPТPS€ЪY€—ХTUQУSХ‘WСUHЏHСS—М‚€Y][Ы[Y™™XЭИHQUSУђSСQ‘‘PХКВ€›[Э™QY™™XЭHSХ‘WСQ‘‘PХХ’WРUPТЛ€Ъ[ЩHHЊ€JK€Щ[™Y‚€ЫЫќ\ЭY™™XЭHЧХTUQУSХ‘WСQ‘‘PХИЏHСS—Н€ИУУ•TХСQ‘‘PХФUPSUWСTS‘ЧУУ—ХSRS‘И€УУ•TХСQ‘‘PХФХT•WФ‘U—УSУ”Л€ЫЫќ\ЭШ]YЫЬћHHУУ•TХРРUQУФ–WР‘PUUK€ЫЫќ\ЭЫЫX›ФЭ\ќ\’YH€ЫЫќ\ЭЫЫX›У[Э™\ИHРУУP“ЧФХT•T—УРТЧУУџK€]P[љ[TШЬљ\HР]P[љ[S[Э™WХљP]XЪЛ€ќ[Y\™[ќXЩS[Э™HH•QK€K‚€УSХ‘WФХTT—СђS‘ЧHB€В€›[YHHУУTХS‘ФХ’S‘К”Э\\€[™ИЉK€™\ШЬљ\[Ы€HУУTХS‘ФХ’S‘К€ђ]XЪЬИЪ]Ъ\њ[™ЬЧ€‚€[™Э]И[€H›ЩIЬИ€ЉK€™Y™™XЭHQ‘‘PХС’VQФTђСS•СSPQСK€њЭЩ\€HK€ќ\HHTWУ“Ф“PS€XШЭ\XЮHHL€њHL€ќ\™Щ]HT‘СUФСSPХQ€њљ[Ьљ]HH€Ш]YЫЬћHHSPQСWРРUQУФ–WФTТPРS€\™Э[Y[ќHИ™[XYЩT\Щ[ќYЩHHLK€›XZЩ\РЫЫќXЭH•QK€љYЫ›Ь™\ТЪ[™ЬФ›ШЪИH
+—ХTUQУSХ‘WС“QФИOHСS—МИ—ХTUQУSХ‘WС“QФИOHСS—Н
+K€ЫЫќ\ЭY™™XЭHУУ•TХСQ‘‘PХРђQWФХT•WУSУ”ЧХТUСУУСРTPSЛ€ЫЫќ\ЭШ]YЫЬћHHУУ•TХРРUQУФ–WХХQТ€ЫЫќ\ЭЫЫX›ФЭ\ќ\’YH€ЫЫќ\ЭЫЫX›У[Э™\ИHРУУP“ЧФХT•T—ФРРT–WСђPС_K€]P[љ[TШЬљ\HР]P[љ[S[Э™WФЭ\\‘[™Л€ќ[Y\™[ќXЩS[Э™HH•QK€K‚€УSХ‘WФУTТHB€В€›[YHHУУTХS‘ФХ’S‘К”Ы\ЪЉK€™\ШЬљ\[Ы€HУУTХS‘ФХ’S‘К€”Ы\Ъ\ИЪ]Ы]ЬЛ]Л€\Ч€‚€HYЪЬљ]XШ[Z]][Л€ЉK€™Y™™XЭHQ‘‘PХТU€њЭЩ\€H€ќ\HHTWУ“Ф“PS€XШЭ\XЮHHL€Ьљ]XШ[]ЭYЩHH—ХTUQУSХ‘WСUHЏHСS—МИИH€‹€њHЊ€ќ\™Щ]HT‘СUФСSPХQ€њљ[Ьљ]HH€Ш]YЫЬћHHSPQСWРРUQУФ–WФTТPРS€›XZЩ\РЫЫќXЭH•QK€њЫXЪ[™У[Э™HH•QK€ЫЫќ\ЭY™™XЭHЧХTUQУSХ‘WСQ‘‘PХИЏHСS—Н€ИУУ•TХСQ‘‘PХТQТWРTPSS‘И€УУ•TХСQ‘‘PХРQ‘‘PХQР–WФ‘U—РTPS€ЫЫќ\ЭШ]YЫЬћHHУУ•TХРРUQУФ–WРУУУ€ЫЫќ\ЭЫЫX›ФЭ\ќ\’YH€ЫЫќ\ЭЫЫX›У[Э™\ИHРУУP“ЧФХT•T—ФРФђUТУУP“ЧФХT•T—ФХУФ‘ЧСSђС_K€]P[љ[TШЬљ\HР]P[љ[S[Э™WФЫ\Ъ€ќ[Y\™[ќXЩS[Э™HH•QK€K‚€УSХ‘WФХP”ХUUWHB€В€›[YHHУУTХS‘ФХ’S‘К”ЭXњЭ]]HЉK€™\ШЬљ\[Ы€HУУTХS‘ФХ’S‘К€ђЬ™X]\ИHXЫЮH\Ъ[™ИKН€‚€›Щ€H\Щ\‰ЬИX^[][H€ЉK€™Y™™XЭHQ‘‘PХФХP”ХUUK€њЭЩ\€H€ќ\HHTWУ“Ф“PS€XШЭ\XЮHH€њHL€ќ\™Щ]HT‘СUХTСT‹€њљ[Ьљ]HH€Ш]YЫЬћHHSPQСWРРUQУФ–WФХUTЛ€ћ“[Э™HHИ™Y™™XЭH—СQ‘‘PХФ‘TСUФХUИK€њЫ]ЪY™™XЭYH•QK€љYЫ›Ь™\Ф›ЭXЭH•QK€›Z\њ›Ь“[Э™P[›™YH•QK€њЪЮP]P[›™YH•QK€ЫЫќ\ЭY™™XЭHУУ•TХСQ‘‘PХРU“ТQФХT•WУУђСK€ЫЫќ\ЭШ]YЫЬћHHЧХTUQУSХ‘WРРUQУФ’QTИЏHСS—Н€ИУУ•TХРРUQУФ–WРХUH€УУ•TХРРUQУФ–WФУPT•€ЫЫќ\ЭЫЫX›ФЭ\ќ\’YH€ЫЫќ\ЭЫЫX›У[Э™\ИHМK€]P[љ[TШЬљ\HР]P[љ[S[Э™WФЭXњЭ]]K€ќ[Y\™[ќXЩS[Э™HH•QK€K‚€УSХ‘WФХ•QСУWHB€В€›[YHHУУTХS‘ФХ’S‘К”ЭќYЩЫHЉK€™\ШЬљ\[Ы€HУУTХS‘ФХ’S‘К€•\ЩYЫ›HY€[\™HЫЫ™K—€‚€ђ[ЫИ\ќИH\Щ\€H]K€ЉK€ЪY€—ХTUQУSХ‘WСUHЏHСS—Н€™Y™™XЭHQ‘‘PХФХ•QСУK€XШЭ\XЮHH€њHK€Y][Ы[Y™™XЭИHQUSУђSСQ‘‘PХКВ€›[Э™QY™™XЭHSХ‘WСQ‘‘PХФ‘PУТSТМЌK€њЩ[€H•QK€JK€Щ[Y€—ХTUQУSХ‘WСUHЏHСS—М‚€™Y™™XЭHQ‘‘PХФ‘PУТS€XШЭ\XЮHHL€њHK€\™Э[Y[ќHИњ™XЫЪ[\Щ[ќYЩHHЌHK€Щ[ЩB€™Y™™XЭHQ‘‘PХФ‘PУТS€XШЭ\XЮHHL€њHL€\™Э[Y[ќHИњ™XЫЪ[\Щ[ќYЩHHLK€Щ[™Y‚€њЭЩ\€HL€ќ\HHTWУ“Ф“PS€ќ\™Щ]HT‘СUФСSPХQ€њљ[Ьљ]HH€Ш]YЫЬћHHSPQСWРРUQУФ–WФTТPРS€›XZЩ\РЫЫќXЭH•QK€›YQљ\њЭ[›™YH•QK€›Z[ZXР[›™YH•QK€›Y]›Ы›ЫYP[›™YH•QK€њЫY\[Р[›™YH•QK€ЫЬXШ][›™YH•QK€љ[њЭќXЭ[›™YH•QK€™[ЫЬ™P[›™YH•QK€\ЬЪ\Э[›™YH•QK€њЪЩ]Ъ[›™YH•QK€›Z\њ›Ь“[Э™P[›™YH—ХTUQУSХ‘WС“QФИЏHСS—Н€]P[љ[TШЬљ\HР]P[љ[S[Э™WФЭќYЩЫK€ќ[Y\™[ќXЩS[Э™HH•QK€ЫЫќ\ЭY™™XЭHУУ•TХСQ‘‘PХТQТWРTPSS‘Л€ЫЫќ\ЭШ]YЫЬћHHЧХTUQУSХ‘WРРUQУФ’QTИЏHСS—Н€ИУУ•TХРРUQУФ–WРУУУ€УУ•TХРРUQУФ–WХХQТ€K‚€УSХ‘WФТСUТHB€В€›[YHHУУTХS‘ФХ’S‘К”ЪЩ]ЪЉK€™\ШЬљ\[Ы€HУУTХS‘ФХ’S‘К€ђЫЬY\ИH›ЩIЬИ\Э[Э™W€‚€њ\›X[™[ќK€ЉK€™Y™™XЭHQ‘‘PХФТСUТ€њЭЩ\€H€ќ\HHTWУ“Ф“PS€XШЭ\XЮHH€њHK€ќ\™Щ]HT‘СUФСSPХQ€њљ[Ьљ]HH€Ш]YЫЬћHHSPQСWРРUQУФ–WФХUTЛ€ћ“[Э™HHИ™Y™™XЭH—СQ‘‘PХРSФХUЧХTМHK€љYЫ›Ь™\Ф›ЭXЭH•QK€љYЫ›Ь™\ФЭXњЭ]]HH—ХTUQУSХ‘WС“QФИЏHСS—НK€›Z\њ›Ь“[Э™P[›™YH•QK€›Z[ZXР[›™YH•QK€›Y]›Ы›ЫYP[›™YH•QK€ЫЬXШ][›™YH•QK€њЫY\[Р[›™YH—ХTUQУSХ‘WС“QФИЏHСS—НK€љ[њЭќXЭ[›™YH•QK€™[ЫЬ™P[›™YH•QK€\ЬЪ\Э[›™YH•QK€њЪЩ]Ъ[›™YH•QK€ЫЫќ\ЭY™™XЭHУУ•TХСQ‘‘PХРTPSРTЧСУУСРTЧФ‘U—УУ‘K€ЫЫќ\ЭШ]YЫЬћHHУУ•TХРРUQУФ–WФУPT•€ЫЫќ\ЭЫЫX›ФЭ\ќ\’YH€ЫЫќ\ЭЫЫX›У[Э™\ИHМK€]P[љ[TШЬљ\HР]P[љ[S[Э™WФЪЩ]Ъ€ќ[Y\™[ќXЩS[Э™HH•QK€K‚€УSХ‘WХ’TWТТPТЧHB€В€›[YHHУУTХS‘ФХ’S‘К•љ\HЪXЪИЉK€™\ШЬљ\[Ы€HУУTХS‘ФХ’S‘К€’ЪXЪЬИH›ЩHИ[Y\И[€W€‚€њ›ЭИЪ]љ\Ъ[™И[ќ[њЪ]K€ЉK€™Y™™XЭHQ‘‘PХХ’TWТТPТЛ€њЭЩ\€HL€ќ\HHTWС’QТS‘Л€XШЭ\XЮHHL€њHL€ќ\™Щ]HT‘СUФСSPХQ€њљ[Ьљ]HH€Ш]YЫЬћHHSPQСWРРUQУФ–WФTТPРS€›XZЩ\РЫЫќXЭH•QK€љЪXЪЪ[™У[Э™HH•QK€њЭљZЩPЫЭ[ќHЛ€ЫЫќ\ЭY™™XЭHЧХTUQУSХ‘WСQ‘‘PХИЏHСS—Н€ИУУ•TХСQ‘‘PХФ‘TUUSУ—У“ХР“Ф’S‘И€УУ•TХСQ‘‘PХТQТWРTPSS‘Л€ЫЫќ\ЭШ]YЫЬћHHУУ•TХРРUQУФ–WРУУУ€ЫЫќ\ЭЫЫX›ФЭ\ќ\’YH€ЫЫќ\ЭЫЫX›У[Э™\ИHРУУP“ЧФХT•T—С“РХTЧСS‘T‘Ц_K€]P[љ[TШЬљ\HР]P[љ[S[Э™WХљ\RЪXЪЛ€ќ[Y\™[ќXЩS[Э™HH•QK€K‚€УSХ‘WХQQ—HB€В€›[YHHУУTХS‘ФХ’S‘К•YY€ЉK€™\ШЬљ\[Ы€HУУTХS‘ФХ’S‘К€•Ъ[H]XЪЪ[™Л]X^W€‚€њЭX[H›ЩIЬИ[][K€ЉK€™Y™™XЭHQ‘‘PХФХPSТUSK€њЭЩ\€H—ХTUQУSХ‘WСUHЏHСS—Н€ИЊ€€ќ\HHTWСT’Л€XШЭ\XЮHHL€њH—ХTUQУSХ‘WСUHЏHСS—Н€ИЌH€L€ќ\™Щ]HT‘СUФСSPХQ€њљ[Ьљ]HH€Ш]YЫЬћHHSPQСWРРUQУФ–WФTТPРS€›XZЩ\РЫЫќXЭH•QK€љYЫ›Ь™\ТЪ[™ЬФ›ШЪИH
+—ХTUQУSХ‘WС“QФИOHСS—МИ—ХTUQУSХ‘WС“QФИOHСS—Н
+K€›YQљ\њЭ[›™YH•QK€›Y]›Ы›ЫYP[›™YH•QK€ЫЬXШ][›™YH•QK€\ЬЪ\Э[›™YH•QK€ЫЫќ\ЭY™™XЭHЧХTUQУSХ‘WСQ‘‘PХИЏHСS—Н€ИУУ•TХСQ‘‘PХРTPSРTЧСУУСРTЧФ‘U—УУ‘H€УУ•TХСQ‘‘PХРTPSРTЧСУУСРTЧФ‘U—УУ‘TЛ€ЫЫќ\ЭШ]YЫЬћHHУУ•TХРРUQУФ–WХХQТ€ЫЫќ\ЭЫЫX›ФЭ\ќ\’YH€ЫЫќ\ЭЫЫX›У[Э™\ИHМK€]P[љ[TШЬљ\HР]P[љ[S[Э™WХYY‹€ќ[Y\™[ќXЩS[Э™HH•QK€K‚€УSХ‘WФФQT—ХСP—HB€В€›[YHHУУTХS‘ФХ’S‘К”ЬY\€ЩX€ЉK€™\ШЬљ\[Ы€HУУTХS‘ФХ’S‘К€‘[њЫ\™\ИH›ЩHИЭЬ]€‚€™њ›ЫH›YZ[™ИЬ€ЭЪ]Ъ[™Л€ЉK€™Y™™XЭHQ‘‘PХУQPS—УУТЛ€њЭЩ\€H€ќ\HHTWР•QЛ€XШЭ\XЮHH€њHL€ќ\™Щ]HT‘СUФСSPХQ€њљ[Ьљ]HH€Ш]YЫЬћHHSPQСWРРUQУФ–WФХUTЛ€ћ“[Э™HHИ™Y™™XЭH—СQ‘‘PХСQ—ХTМHK€љYЫ›Ь™\Ф›ЭXЭH—ХTUQУSХ‘WС“QФИСS—МЛ€›XYЪXРЫШ]Y™™XЭYH•QK€ЫЫќ\ЭY™™XЭHУУ•TХСQ‘‘PХУPRСWС“УХТS‘ЧУSУ”ЧУ‘T•“ХTЛ€ЫЫќ\ЭШ]YЫЬћHHУУ•TХРРUQУФ–WФУPT•€ЫЫќ\ЭЫЫX›ФЭ\ќ\’YH€ЫЫќ\ЭЫЫX›У[Э™\ИHРУУP“ЧФХT•T—ФХ’S‘ЧФТХK€]P[љ[TШЬљ\HР]P[љ[S[Э™WФЬY\•ЩX‹€ќ[Y\™[ќXЩS[Э™HH•QK€K‚€УSХ‘WУRS‘Ф‘PQT—HB€В€›[YHHУУTХS‘ФХ’S‘К“Z[™™XY\€ЉK€™\ШЬљ\[Ы€HУУTХS‘ФХ’S‘К€”Щ[њЩ\ИH›ЩIЬИXЭ[Ы€Ч€‚€™[њЭ\™HH™^[Э™IЬИ]€ЉK€™Y™™XЭHQ‘‘PХУРТЧУУ‹€њЭЩ\€H€ќ\HHTWУ“Ф“PS€XШЭ\XЮHH—ХTUQУSХ‘WСUHЏHСS—НИ€L€њHK€ќ\™Щ]HT‘СUФСSPХQ€њљ[Ьљ]HH€Ш]YЫЬћHHSPQСWРРUQУФ–WФХUTЛ€ћ“[Э™HHИ™Y™™XЭH—СQ‘‘PХФФUЧХTМHK€ЫЫќ\ЭY™™XЭHЧХTUQУSХ‘WСQ‘‘PХИЏHСS—Н€ИУУ•TХСQ‘‘PХУ‘VРTPSСPT“QT€€УУ•TХСQ‘‘PХСУ•СVТUWРUQQSђСK€ЫЫќ\ЭШ]YЫЬћHHУУ•TХРРUQУФ–WФУPT•€ЫЫќ\ЭЫЫX›ФЭ\ќ\’YHУУP“ЧФХT•T—УRS‘Ф‘PQT‹€ЫЫќ\ЭЫЫX›У[Э™\ИHМK€]P[љ[TШЬљ\HР]P[љ[S[Э™WУZ[™™XY\‹€ќ[Y\™[ќXЩS[Э™HH•QK€K‚€УSХ‘WУ’QТPT‘WHB€В€›[YHHУУTХS‘ФХ’S‘К“љYЪX\™HЉK€™\ШЬљ\[Ы€HУУTХS‘ФХ’S‘К€’[™›XЭИKН[XYЩHЫ€W€‚€њЫY\[™И›ЩH]™\ћH\›‹€ЉK€™Y™™XЭHQ‘‘PХУ’QТPT‘K€њЭЩ\€H€ќ\HHTWСТФХ€XШЭ\XЮHH—ХTUQУSХ‘WСUHЏHСS—НИL€€њHMK€ќ\™Щ]HT‘СUФСSPХQ€њљ[Ьљ]HH€Ш]YЫЬћHHSPQСWРРUQУФ–WФХUTЛ€ћ“[Э™HHИ™Y™™XЭH—СQ‘‘PХФФUЧХTМHK€љYЫ›Ь™\Ф›ЭXЭH—ХTUQУSХ‘WС“QФИСS—МЛ€ЫЫќ\ЭY™™XЭHУУ•TХСQ‘‘PХРђQWФХT•WФ‘U—УSУ”Л€ЫЫќ\ЭШ]YЫЬћHHУУ•TХРРUQУФ–WФУPT•€ЫЫќ\ЭЫЫX›ФЭ\ќ\’YH€ЫЫќ\ЭЫЫX›У[Э™\ИHРУУP“ЧФХT•T—УХ‘SWТТTФЛУУP“ЧФХT•T—ФФФ‘KУУP“ЧФХT•T—ФТS‘ЛУУP“ЧФХT•T—ЦPUУ‹УУP“ЧФХT•T—ТT“ФТTЛУУP“ЧФХT•T—СT’ЧХ“ТQУУP“ЧФХT•T—СФђTФЧХТTХKУУP“ЧФХT•T—ФУQTФХСTџK€]P[љ[TШЬљ\HР]P[љ[S[Э™WУљYЪX\™K€ќ[Y\™[ќXЩS[Э™HH•QK€K‚€УSХ‘WС“SQWХТQSHB€В€›[YHHУУTХS‘ФХ’S‘К‘›[YHЪY[ЉK€™\ШЬљ\[Ы€HУУTХS‘ФХ’S‘К€ђHљY\ћHЪ\™ЩH]XЪИ]€‚€›X^H[™›XЭHќ\›‹€ЉK€™Y™™XЭHQ‘‘PХТU€њЭЩ\€HЊ€ќ\HHTWС’T‘K€XШЭ\XЮHHL€њHЌK€ќ\™Щ]HT‘СUФСSPХQ€њљ[Ьљ]HH€Ш]YЫЬћHHSPQСWРРUQУФ–WФTТPРS€›XZЩ\РЫЫќXЭH•QK€ќ]ЬХ\Щ\€H•QK€Y][Ы[Y™™XЭИHQUSУђSСQ‘‘PХКВ€›[Э™QY™™XЭHSХ‘WСQ‘‘PХР•T“‹€Ъ[ЩHHL€JK€ЫЫќ\ЭY™™XЭHЧХTUQУSХ‘WСQ‘‘PХИЏHСS—Н€ИУУ•TХСQ‘‘PХРQ‘‘PХQР–WФ‘U—РTPS€УУ•TХСQ‘‘PХТQТWРTPSS‘Л€ЫЫќ\ЭШ]YЫЬћHHУУ•TХРРUQУФ–WР‘PUUK€ЫЫќ\ЭЫЫX›ФЭ\ќ\’YH€ЫЫќ\ЭЫЫX›У[Э™\ИHРУУP“ЧФХT•T—ФХS“–WСV_K€]P[љ[TШЬљ\HР]P[љ[S[Э™WС›[YUЪY[€K‚€УSХ‘WФУ“Ф‘WHB€В€›[YHHУУTХS‘ФХ’S‘К”Ы›Ь™HЉK€™\ШЬљ\[Ы€HУУTХS‘ФХ’S‘К€ђHЭY]XЪИ]Ш[€Ы›W€‚€™H\ЩY\ЫY\€X^H›[Ъ€ЉK€™Y™™XЭHQ‘‘PХФУ“Ф‘K€њЭЩ\€H—ХTUQУSХ‘WСUHЏHСS—Н€ИL€€ќ\HHTWУ“Ф“PS€XШЭ\XЮHHL€њHMK€ќ\™Щ]HT‘СUФСSPХQ€њљ[Ьљ]HH€Ш]YЫЬћHHSPQСWРРUQУФ–WФФPТPS€љYЫ›Ь™\ФЭXњЭ]]HH—ХTUQУSХ‘WС“QФИЏHСS—Н‹€њЫЭ[™[Э™HH•QK€›Y]›Ы›ЫYP[›™YH—ХTUQУSХ‘WС“QФИЏHСS—НK€Y][Ы[Y™™XЭИHQUSУђSСQ‘‘PХКВ€›[Э™QY™™XЭHSХ‘WСQ‘‘PХС“SђТ€Ъ[ЩHHМ€JK€ЫЫќ\ЭY™™XЭHУУ•TХСQ‘‘PХТQТWРTPSS‘ЛЛРЧХTUQУSХ‘WСQ‘‘PХИЏHСS—Н€ИУУ•TХСQ‘‘PХФURPТУWСФ“ХЧР“Ф‘Q‚€ЫЫќ\ЭШ]YЫЬћHHУУ•TХРРUQУФ–WРХUK€ЫЫќ\ЭЫЫX›ФЭ\ќ\’YH€ЫЫќ\ЭЫЫX›У[Э™\ИHРУУP“ЧФХT•T—Ф‘TХK€]P[љ[TШЬљ\HР]P[љ[S[Э™WФЫ›Ь™K€ќ[Y\™[ќXЩS[Э™HH•QK€K‚€УSХ‘WРХT”СWHB€В€›[YHHУУTХS‘ФХ’S‘КђЭ\њЩHЉK€™\ШЬљ\[Ы€HУУTХS‘ФХ’S‘К€ђH[Э™H]ќ[Э[ЫњЧ€‚€™Y™™\™[ќH›Ь€ТФХЛ€ЉK€™Y™™XЭHQ‘‘PХРХT”СK€њЭЩ\€H€ќ\HH—ХTUQУSХ‘WХTTИЏHСS—НHИTWСТФХ€TWУVTХT–K€XШЭ\XЮHH€њHL€ќ\™Щ]HT‘СUФСSPХQ€њљ[Ьљ]HH€Ш]YЫЬћHHSPQСWРРUQУФ–WФХUTЛ€ћ“[Э™HHИ™Y™™XЭH—СQ‘‘PХРХT”СHK€љYЫ›Ь™\Ф›ЭXЭH•QK€љYЫ›Ь™\ФЭXњЭ]]HH—ХTUQУSХ‘WС“QФИЏHСS—НK€›Z\њ›Ь“[Э™P[›™YH•QK€ЫЫќ\ЭY™™XЭHУУ•TХСQ‘‘PХУ‘VРTPSУUT‹€ЫЫќ\ЭШ]YЫЬћHHУУ•TХРРUQУФ–WХХQТ€ЫЫќ\ЭЫЫX›ФЭ\ќ\’YHУУP“ЧФХT•T—РХT”СK€ЫЫќ\ЭЫЫX›У[Э™\ИHМK€]P[љ[TШЬљ\HР]P[љ[S[Э™WРЭ\њЩK€ќ[Y\™[ќXЩS[Э™HH•QK€K‚€УSХ‘WС“RSHB€В€›[YHHУУTХS‘ФХ’S‘К‘›Z[ЉK€™\ШЬљ\[Ы€HУУTХS‘ФХ’S‘К€’[™›XЭИ[Ь™H[XYЩHЪ[—€‚€ќH\Щ\‰ЬИ\ИЭЫ‹€ЉK€™Y™™XЭHQ‘‘PХС“RS€њЭЩ\€HK€ќ\HHTWУ“Ф“PS€XШЭ\XЮHHL€њHMK€ќ\™Щ]HT‘СUФСSPХQ€њљ[Ьљ]HH€Ш]YЫЬћHHSPQСWРРUQУФ–WФTТPРS€›XZЩ\РЫЫќXЭH•QK€ЫЫќ\ЭY™™XЭHУУ•TХСQ‘‘PХР‘UT—ХТS—УUT‹€ЫЫќ\ЭШ]YЫЬћHHУУ•TХРРUQУФ–WРХUK€ЫЫќ\ЭЫЫX›ФЭ\ќ\’YH€ЫЫќ\ЭЫЫX›У[Э™\ИHРУУP“ЧФХT•T—СS‘T‘_K€]P[љ[TШЬљ\HР]P[љ[S[Э™WС›Z[€ќ[Y\™[ќXЩS[Э™HH•QK€K‚€УSХ‘WРУУ•‘T”ТSУ—М—HB€В€›[YHHУУTХS‘ФХ’S‘КђЫЫќ™\њЪ[Ы€€ЉK€™\ШЬљ\[Ы€HУУTХS‘ФХ’S‘К€“XZЩ\ИH\Щ\€™\Ъ\Э[ќ€‚€ќИH\Э]XЪЙЬИ\K€ЉK€™Y™™XЭHQ‘‘PХРУУ•‘T”ТSУ—М‹€њЭЩ\€H€ќ\HHTWУ“Ф“PS€XШЭ\XЮHH€њHМ€ќ\™Щ]H—ХTUQУSХ‘WСUHЏHСS—НHИT‘СUФСSPХQ€T‘СUХTСT‹€њљ[Ьљ]HH€Ш]YЫЬћHHSPQСWРРUQУФ–WФХUTЛ€ћ“[Э™HHИ™Y™™XЭH—СQ‘‘PХФ‘PУХ‘T—ТK€љYЫ›Ь™\Ф›ЭXЭH•QK€љYЫ›Ь™\ФЭXњЭ]]HH—ХTUQУSХ‘WС“QФИЏHСS—НK€›Z\њ›Ь“[Э™P[›™YH•QK€ЫЫќ\ЭY™™XЭHУУ•TХСQ‘‘PХР‘UT—ТQ—ФРSQWХTK€ЫЫќ\ЭШ]YЫЬћHHУУ•TХРРUQУФ–WР‘PUUK€ЫЫќ\ЭЫЫX›ФЭ\ќ\’YH€ЫЫќ\ЭЫЫX›У[Э™\ИHМK€]P[љ[TШЬљ\HР]P[љ[S[Э™WРЫЫќ™\њЪ[ЫЊ‹€ќ[Y\™[ќXЩS[Э™HH•QK€K‚€УSХ‘WРQT“Р“TХHB€В€›[YHHУУTХS‘ФХ’S‘КђY\›Ш›\ЭЉK€™\ШЬљ\[Ы€HУУTХS‘ФХ’S‘К€“][Ъ\ИHXЭ][YY›\Э—€‚€’YЪЬљ]XШ[Z]][Л€ЉK€™Y™™XЭHQ‘‘PХТU€њЭЩ\€HL€ќ\HHTWС“RS‘Л€XШЭ\XЮHHMK€Ьљ]XШ[]ЭYЩHH—ХTUQУSХ‘WСUHЏHСS—МИИH€‹€њHK€ќ\™Щ]HT‘СUФСSPХQ€њљ[Ьљ]HH€Ш]YЫЬћHHSPQСWРРUQУФ–WФФPТPS€ќЪ[™[Э™HH•QK€ЫЫќ\ЭY™™XЭHУУ•TХСQ‘‘PХРQ‘‘PХQР–WФ‘U—РTPSЛРЧХTUQУSХ‘WСQ‘‘PХИЏHСS—Н€ИУУ•TХСQ‘‘PХСVТUTЧРUQQSђСWУSФ‘WТQ—УTХ‚€ЫЫќ\ЭШ]YЫЬћHHУУ•TХРРUQУФ–WРУУУ€ЫЫќ\ЭЫЫX›ФЭ\ќ\’YH€ЫЫќ\ЭЫЫX›У[Э™\ИHМK€]P[љ[TШЬљ\HР]P[љ[S[Э™WРY\›Ш›\Э€ќ[Y\™[ќXЩS[Э™HH•QK€K‚€УSХ‘WСT’ЧРQT“ЧHB€В€›[YHHУУTХS‘ФХ’S‘К”ЪYЭИ›\ЭЉK€™\ШЬљ\[Ы€HУУTХS‘ФХ’S‘К€“][Ъ\ИH\љЩ[™Y›\Э—€‚€’YЪЬљ]XШ[Z]][Л€ЉK€™Y™™XЭHQ‘‘PХТU€њЭЩ\€HL€ќ\HHTWСT’Л€XШЭ\XЮHHMK€Ьљ]XШ[]ЭYЩHH—ХTUQУSХ‘WСUHЏHСS—МИИH€‹€њHK€ќ\™Щ]HT‘СUФСSPХQ€њљ[Ьљ]HH€Ш]YЫЬћHHSPQСWРРUQУФ–WФФPТPS€ќЪ[™[Э™HH•QK€ЫЫќ\ЭY™™XЭHУУ•TХСQ‘‘PХРQ‘‘PХQР–WФ‘U—РTPSЛРЧХTUQУSХ‘WСQ‘‘PХИЏHСS—Н€ИУУ•TХСQ‘‘PХСVТUTЧРUQQSђСWУSФ‘WТQ—УTХ‚€ЫЫќ\ЭШ]YЫЬћHHУУ•TХРРUQУФ–WРУУУ€ЫЫќ\ЭЫЫX›ФЭ\ќ\’YH€ЫЫќ\ЭЫЫX›У[Э™\ИHМK€]P[љ[TШЬљ\HР]P[љ[S[Э™WС\љРY\›Л€ќ[Y\™[ќXЩS[Э™HH•QK€K‚€УSХ‘WРУХУ—ФФФ‘WHB€В€›[YHHУУTХS‘ФХ’S‘КђЫЭЫ€ЬЬ™HЉK€™\ШЬљ\[Ы€HУУTХS‘ФХ’S‘К€ЪY€—ХTUQУSХ‘WСUHЏHСS—Н‚€”ЬЬ™\ИЫ[™ИИH›Щ\Л€‚€Щ[ЩB€”ЬЬ™\ИЫ[™ИИH›ЩK€‚€Щ[™Y‚€њЪ\њH™YXЪ[™ИЬYY€ЉK€™Y™™XЭHQ‘‘PХФФQQСХУ—М‹€њЭЩ\€H€ќ\HHTWСФђTФЛ€XШЭ\XЮHH—ХTUQУSХ‘WСUHЏHСS—НHИL€K€њH€ќ\™Щ]H—ХTUQУSХ‘WСUHЏHСS—Н€ИT‘СUР“Х€T‘СUФСSPХQ€њљ[Ьљ]HH€Ш]YЫЬћHHSPQСWРРUQУФ–WФХUTЛ€ћ“[Э™HHИ™Y™™XЭH—СQ‘‘PХФ‘TСUФХUИK€›XYЪXРЫШ]Y™™XЭYH•QK€њЭЩ\“[Э™HH•QK€ЫЫќ\ЭY™™XЭHУУ•TХСQ‘‘PХФХT•WУSУ—ХТUТ•QСTЧРUS•SУ‹€ЫЫќ\ЭШ]YЫЬћHHУУ•TХРРUQУФ–WР‘PUUK€ЫЫќ\ЭЫЫX›ФЭ\ќ\’YH€ЫЫќ\ЭЫЫX›У[Э™\ИHМK€]P[љ[TШЬљ\HР]P[љ[S[Э™WРЫЭЫ”ЬЬ™K€ќ[Y\™[ќXЩS[Э™HH•QK€K‚€УSХ‘WФ‘U‘T”РSHB€В€›[YHHУУTХS‘ФХ’S‘К”™]™\њШ[ЉK€™\ШЬљ\[Ы€HУУTХS‘ФХ’S‘К€’[™›XЭИ[Ь™H[XYЩHЪ[—€‚€ќH\Щ\‰ЬИ\ИЭЫ‹€ЉK€™Y™™XЭHQ‘‘PХС“RS€њЭЩ\€HK€ќ\HHTWС’QТS‘Л€XШЭ\XЮHHL€њHMK€ќ\™Щ]HT‘СUФСSPХQ€њљ[Ьљ]HH€Ш]YЫЬћHHSPQСWРРUQУФ–WФTТPРS€›XZЩ\РЫЫќXЭH•QK€ЫЫќ\ЭY™™XЭHЧХTUQУSХ‘WСQ‘‘PХИЏHСS—Н€ИУУ•TХСQ‘‘PХР‘UT—ХТS—УUT€€УУ•TХСQ‘‘PХР‘UT—ТQ—УTХ€ЫЫќ\ЭШ]YЫЬћHHУУ•TХРРUQУФ–WРУУУ€ЫЫќ\ЭЫЫX›ФЭ\ќ\’YH€ЫЫќ\ЭЫЫX›У[Э™\ИHРУУP“ЧФХT•T—СS‘T‘_K€]P[љ[TШЬљ\HР]P[љ[S[Э™WФ™]™\њШ[€ќ[Y\™[ќXЩS[Э™HH•QK€K‚€УSХ‘WФФUWHB€В€›[YHHУУTХS‘ФХ’S‘К”Ь]HЉK€™\ШЬљ\[Ы€HУУTХS‘ФХ’S‘К€”Ь]Yќ[HЭ]ИH€‚€ЪY€—ФФ‘QPСQР–WФФUHЏHСS—Н€›Щ€H›ЩIЬИ\Э[Э™HћH€ЉK€Щ[ЩB€›Щ€›ЩIЬИ\Э[Э™HћH‹MK€ЉK€Щ[™Y‚€™Y™™XЭHQ‘‘PХФФUK€њЭЩ\€H€ќ\HHTWСТФХ€XШЭ\XЮHHL€њHL€ќ\™Щ]HT‘СUФСSPХQ€њљ[Ьљ]HH€Ш]YЫЬћHHSPQСWРРUQУФ–WФХUTЛ€ћ“[Э™HHИ™Y™™XЭH—СQ‘‘PХФ‘PУХ‘T—ТK€›XYЪXРЫШ]Y™™XЭYH—ХTUQУSХ‘WС“QФИЏHСS—НK€љYЫ›Ь™\ФЭXњЭ]]HH•QK€ЫЫќ\ЭY™™XЭHЧХTUQУSХ‘WСQ‘‘PХИЏHСS—Н€ИУУ•TХСQ‘‘PХРђQWФХT•WУSУ”ЧХТUСУУСРTPSИ€УУ•TХСQ‘‘PХР‘UT—ХТS—УUT‹€ЫЫќ\ЭШ]YЫЬћHHУУ•TХРРUQУФ–WХХQТ€ЫЫќ\ЭЫЫX›ФЭ\ќ\’YH€ЫЫќ\ЭЫЫX›У[Э™\ИHРУУP“ЧФХT•T—РХT”СKУУP“ЧФХT•T—СSђУФ‘KУУP“ЧФХT•T—ХUS•УУP“ЧФХT•T—ХФ“QS•K€]P[љ[TШЬљ\HР]P[љ[S[Э™WФЬ]K€ќ[Y\™[ќXЩS[Э™HH•QK€K‚€УSХ‘WФХСT—ФУ“ХЧHB€В€›[YHHУУTХS‘ФХ’S‘К”ЭЩ\€Ы›ЭИЉK€™\ШЬљ\[Ы€HУУTХS‘ФХ’S‘К€ђ›\ЭИH›Щ\ИЪ]HЫ›ЭЮW€‚€ЪY€—ХTСWС”“ФХ’UHOH•QB€™Э\Э€X^HШ]\ЩHњ›ЬЭљ]K€ЉK€Щ[ЩB€™Э\Э€X^HШ]\ЩHњ™Y^љ[™Л€ЉK€Щ[™Y‚€™Y™™XЭHQ‘‘PХТU€њЭЩ\€H€ќ\HHTWТPСK€XШЭ\XЮHHL€њHЌK€ќ\™Щ]HT‘СUР“Х€њљ[Ьљ]HH€Ш]YЫЬћHHSPQСWРРUQУФ–WФФPТPS€Y][Ы[Y™™XЭИHQUSУђSСQ‘‘PХКВ€›[Э™QY™™XЭHSХ‘WСQ‘‘PХС”‘QV‘WУФ—С”“ФХ’UK€Ъ[ЩHHL€JK€ЫЫќ\ЭY™™XЭHУУ•TХСQ‘‘PХТQТWРTPSS‘Л€ЫЫќ\ЭШ]YЫЬћHHУУ•TХРРUQУФ–WР‘PUUK€ЫЫќ\ЭЫЫX›ФЭ\ќ\’YHУУP“ЧФХT•T—ФХСT—ФУ“ХЛ€ЫЫќ\ЭЫЫX›У[Э™\ИHРУУP“ЧФХT•T—ТRSK€]P[љ[TШЬљ\HР]P[љ[S[Э™WФЭЩ\”Ы›ЭЛ€K‚€УSХ‘WФ“ХPХHB€В€›[YHHУУTХS‘ФХ’S‘К”›ЭXЭЉK€™\ШЬљ\[Ы€HФ›ЭXЭ\ШЬљ\[Ы‹€™Y™™XЭHQ‘‘PХФ“ХPХ€њЭЩ\€H€ќ\HHTWУ“Ф“PS€XШЭ\XЮHH€њHL€ќ\™Щ]HT‘СUХTСT‹€ЪY€—ХTUQУSХ‘WСUHЏHСS—НB€њљ[Ьљ]HH€Щ[Y€—ХTUQУSХ‘WСUHЏHСS—МВ€њљ[Ьљ]HHЛ€Щ[ЩB€њљ[Ьљ]HH‹€Щ[™Y‚€Ш]YЫЬћHHSPQСWРРUQУФ–WФХUTЛ€\™Э[Y[ќHИњ›ЭXЭY]ЩH“ХPХУ“Ф“PSK€ћ“[Э™HHИ™Y™™XЭH—СQ‘‘PХФ‘TСUФХUИK€љYЫ›Ь™\Ф›ЭXЭH•QK€›Z\њ›Ь“[Э™P[›™YH•QK€›Y]›Ы›ЫYP[›™YH•QK€ЫЬXШ][›™YH•QK€\ЬЪ\Э[›™YH•QK€ЫЫќ\ЭY™™XЭHЧХTUQУSХ‘WСQ‘‘PХИЏHСS—Н€ИУУ•TХСQ‘‘PХРU“ТQФХT•WУУђСH€УУ•TХСQ‘‘PХРU“ТQФХT•K€ЫЫќ\ЭШ]YЫЬћHHУУ•TХРРUQУФ–WРХUK€ЫЫќ\ЭЫЫX›ФЭ\ќ\’YH€ЫЫќ\ЭЫЫX›У[Э™\ИHРУУP“ЧФХT•T—ТT‘SџK€]P[љ[TШЬљ\HР]P[љ[S[Э™WФ›ЭXЭ€ќ[Y\™[ќXЩS[Э™HH•QK€K‚€УSХ‘WУPPТФSђТHB€В€›[YHHУУTХS‘ФХ’S‘К“XXЪ[ЪЉK€™\ШЬљ\[Ы€HУУTХS‘ФХ’S‘К€ђH[Ъ\И›ЭЫ€]ЪXЪЩY€‚€њЬYYИЭљZЩHљ\њЭ€ЉK€™Y™™XЭHQ‘‘PХТU€њЭЩ\€H€ќ\HHTWС’QТS‘Л€XШЭ\XЮHHL€њHМ€ќ\™Щ]HT‘СUФСSPХQ€њљ[Ьљ]HHK€Ш]YЫЬћHHSPQСWРРUQУФ–WФTТPРS€›XZЩ\РЫЫќXЭH•QK€њ[Ъ[™У[Э™HH•QK€ЫЫќ\ЭY™™XЭHУУ•TХСQ‘‘PХУ‘VРTPSСPT“QT‹€ЫЫќ\ЭШ]YЫЬћHHУУ•TХРРUQУФ–WРУУУ€ЫЫќ\ЭЫЫX›ФЭ\ќ\’YH€ЫЫќ\ЭЫЫX›У[Э™\ИHМK€]P[љ[TШЬљ\HР]P[љ[S[Э™WУXXЪ[Ъ€ќ[Y\™[ќXЩS[Э™HH•QK€K‚€УSХ‘WФРРT–WСђPСWHB€В€›[YHHУУTХS‘ФХ’S‘К”ШШ\ћHXЩHЉK€™\ШЬљ\[Ы€HУУTХS‘ФХ’S‘К€‘њљYЪ[њИЪ]HШШ\ћHXЩW€‚€ќИЪ\њH™YXЩHЬYY€ЉK€™Y™™XЭHQ‘‘PХФФQQСХУ—М‹€њЭЩ\€H€ќ\HHTWУ“Ф“PS€XШЭ\XЮHH—ХTUQУSХ‘WСUHЏHСS—НHИL€L€њHL€ќ\™Щ]HT‘СUФСSPХQ€њљ[Ьљ]HH€Ш]YЫЬћHHSPQСWРРUQУФ–WФХUTЛ€ћ“[Э™HHИ™Y™™XЭH—СQ‘‘PХФФХTМHK€›XYЪXРЫШ]Y™™XЭYH•QK€ЫЫќ\ЭY™™XЭHЧХTUQУSХ‘WСQ‘‘PХИЏHСS—Н€ИУУ•TХСQ‘‘PХХУФ”СS—РУУ‘USУ—УС—Ф‘U—УSУ”И€УУ•TХСQ‘‘PХФХT•WУSУ—ХТUТ•QСTЧРUS•SУ‹€ЫЫќ\ЭШ]YЫЬћHHУУ•TХРРUQУФ–WХХQТ€ЫЫќ\ЭЫЫX›ФЭ\ќ\’YHУУP“ЧФХT•T—ФРРT–WСђPСK€ЫЫќ\ЭЫЫX›У[Э™\ИHРУУP“ЧФХT•T—УQT‹УУP“ЧФХT•T—ФђQС_K€]P[љ[TШЬљ\HР]P[љ[S[Э™WФШШ\ћQXЩK€ќ[Y\™[ќXЩS[Э™HH•QK€K‚€УSХ‘WС‘RS•РUPТЧHB€В€›[YHHУУTХS‘ФХ’S‘К‘™Z[ќ]XЪИЉK€™\ШЬљ\[Ы€HУУTХS‘ФХ’S‘К€‘]ЬИH›ЩHЫЬЩK[—€‚€њЭљZЩ\ИЪ]Э]Z[€ЉK€™Y™™XЭHQ‘‘PХТU€њЭЩ\€HЊ€ќ\HHTWСT’Л€XШЭ\XЮHH€њHЊ€ќ\™Щ]HT‘СUФСSPХQ€њљ[Ьљ]HH€Ш]YЫЬћHHSPQСWРРUQУФ–WФTТPРS€›XZЩ\РЫЫќXЭH—ХTUQУSХ‘WСUHЏHСS—Н€ЫЫќ\ЭY™™XЭHУУ•TХСQ‘‘PХР‘UT—ТQ—С’T”Х€ЫЫќ\ЭШ]YЫЬћHHУУ•TХРРUQУФ–WФУPT•€ЫЫќ\ЭЫЫX›ФЭ\ќ\’YH€ЫЫќ\ЭЫЫX›У[Э™\ИHРУУP“ЧФХT•T—СђRСWУХUУУP“ЧФХT•T—УQT‹УУP“ЧФХT•T—ФХS‘K€]P[љ[TШЬљ\HР]P[љ[S[Э™WС™Z[ќ]XЪЛ€ќ[Y\™[ќXЩS[Э™HH•QK€K‚€УSХ‘WФХСQUТТTФЧHB€В€›[YHHУУTХS‘ФХ’S‘К”ЭЩY]Ъ\ЬИЉK€™\ШЬљ\[Ы€HУУTХS‘ФХ’S‘К€‘[X[™ИHЪ\ЬИЪ]HЭ]W€‚€›ЫЪЛ€X^HШ]\ЩHЫЫ™ќ\Ъ[Ы‹€ЉK€™Y™™XЭHQ‘‘PХРУУ‘•TСK€њЭЩ\€H€ќ\HH—ХTUQУSХ‘WХTTИЏHСS—Н€ИTWСђRT–H€TWУ“Ф“PS€XШЭ\XЮHHНK€њHL€ќ\™Щ]HT‘СUФСSPХQ€њљ[Ьљ]HH€Ш]YЫЬћHHSPQСWРРUQУФ–WФХUTЛ€ћ“[Э™HHИ™Y™™XЭH—СQ‘‘PХФФUЧХTМHK€›XYЪXРЫШ]Y™™XЭYH•QK€ЫЫќ\ЭY™™XЭHУУ•TХСQ‘‘PХУPRСWС“УХТS‘ЧУSУ”ЧУ‘T•“ХTЛ€ЫЫќ\ЭШ]YЫЬћHHУУ•TХРРUQУФ–WРХUK€ЫЫќ\ЭЫЫX›ФЭ\ќ\’YH€ЫЫќ\ЭЫЫX›У[Э™\ИHРУУP“ЧФХT•T—РТT“_K€]P[љ[TШЬљ\HР]P[љ[S[Э™WФЭЩY]Ъ\ЬЛ€ќ[Y\™[ќXЩS[Э™HH•QK€K‚€УSХ‘WР‘SWС•SWHB€В€›[YHHУУTХS‘ФХ’S‘Кђ™[Hќ[HЉK€™\ШЬљ\[Ы€HУУTХS‘ФХ’S‘К€“X^[Z^™\И]XЪИЪ[W€‚€њШXЬљYљXЪ[™И[€Щ€X^€ЉK€™Y™™XЭHQ‘‘PХР‘SWС•SK€њЭЩ\€H€ќ\HHTWУ“Ф“PS€XШЭ\XЮHH€њHL€ќ\™Щ]HT‘СUХTСT‹€њљ[Ьљ]HH€Ш]YЫЬћHHSPQСWРРUQУФ–WФХUTЛ€ћ“[Э™HHИ™Y™™XЭH—СQ‘‘PХФ‘PУХ‘T—ТK€њЫ]ЪY™™XЭYH•QK€љYЫ›Ь™\Ф›ЭXЭH•QK€›Z\њ›Ь“[Э™P[›™YH•QK€ЫЫќ\ЭY™™XЭHЧХTUQУSХ‘WСQ‘‘PХИЏHСS—Н€ИУУ•TХСQ‘‘PХХTСT—УSФ‘WСPTТSWФХT•Q€УУ•TХСQ‘‘PХТST“Х‘WРУУ‘USУ—Ф‘U‘S•У‘T•“ХTУ‘TФЛ€ЫЫќ\ЭШ]YЫЬћHHУУ•TХРРUQУФ–WРХUK€ЫЫќ\ЭЫЫX›ФЭ\ќ\’YHУУP“ЧФХT•T—Р‘SWС•SK€ЫЫќ\ЭЫЫX›У[Э™\ИHМK€]P[љ[TШЬљ\HР]P[љ[S[Э™WР™[Qќ[K€ќ[Y\™[ќXЩS[Э™HH•QK€K‚€УSХ‘WФУQСWР“УP—HB€В€›[YHHУУTХS‘ФХ’S‘К”ЫYЩH›ЫX€ЉK€™\ШЬљ\[Ы€HУУTХS‘ФХ’S‘К€”ЫYЩH\И\›YИ[™›XЭ€‚€™[XYЩK€X^H[ЫИЪ\ЫЫ‹€ЉK€™Y™™XЭHQ‘‘PХТU€њЭЩ\€HL€ќ\HHTWФТTУУ‹€XШЭ\XЮHHL€њHL€ќ\™Щ]HT‘СUФСSPХQ€њљ[Ьљ]HH€Ш]YЫЬћHHSPQСWРРUQУФ–WФФPТPS€[\ЭXУ[Э™HH•QK€Y][Ы[Y™™XЭИHQUSУђSСQ‘‘PХКВ€›[Э™QY™™XЭHSХ‘WСQ‘‘PХФТTУУ‹€Ъ[ЩHHМ€JK€ЫЫќ\ЭY™™XЭHУУ•TХСQ‘‘PХФХT•WУSУ—ХТUТ•QСTЧРUS•SУ‹€ЫЫќ\ЭШ]YЫЬћHHУУ•TХРРUQУФ–WХХQТ€ЫЫќ\ЭЫЫX›ФЭ\ќ\’YHУУP“ЧФХT•T—ФУQСWР“УP‹€ЫЫќ\ЭЫЫX›У[Э™\ИHРУУP“ЧФХT•T—ФУQС_K€]P[љ[TШЬљ\HР]P[љ[S[Э™WФЫYЩP›ЫX‹€ќ[Y\™[ќXЩS[Э™HH•QK€K‚€УSХ‘WУUQФУTHB€В€›[YHHУУTХS‘ФХ’S‘К“]YTЫ\ЉK€™\ШЬљ\[Ы€HУУTХS‘ФХ’S‘К€’\›И]Y[€H›ЩIЬИXЩW€‚€ќИ™YXЩH]ИXШЭ\XЮK€ЉK€™Y™™XЭHQ‘‘PХТU€њЭЩ\€HЊ€ќ\HHTWСФ“ХS‘€XШЭ\XЮHHL€њHL€ќ\™Щ]HT‘СUФСSPХQ€њљ[Ьљ]HH€Ш]YЫЬћHHSPQСWРРUQУФ–WФФPТPS€Y][Ы[Y™™XЭИHQUSУђSСQ‘‘PХКВ€›[Э™QY™™XЭHSХ‘WСQ‘‘PХРPРЧУRS•TЧМK€Ъ[ЩHHL€JK€ЫЫќ\ЭY™™XЭHЧХTUQУSХ‘WСQ‘‘PХИЏHСS—Н€ИУУ•TХСQ‘‘PХХУФ”СS—РУУ‘USУ—УС—Ф‘U—УSУ”И€УУ•TХСQ‘‘PХФХT•WУSУ—ХТUТ•QСTЧРUS•SУ‹€ЫЫќ\ЭШ]YЫЬћHHУУ•TХРРUQУФ–WРХUK€ЫЫќ\ЭЫЫX›ФЭ\ќ\’YHУУP“ЧФХT•T—УUQФУT€ЫЫќ\ЭЫЫX›У[Э™\ИHРУУP“ЧФХT•T—УUQФФФ•УУP“ЧФХT•T—ФРS‘РUPТЛУУP“ЧФХT•T—ФРS‘ХФ“_K€]P[љ[TШЬљ\HР]P[љ[S[Э™WУ]YЫ\€ќ[Y\™[ќXЩS[Э™HH•QK€K‚€УSХ‘WУРХV“УТРWHB€В€›[YHHУУTХS‘ФХ’S‘К“ШЭ^›ЫЪШHЉK€™\ШЬљ\[Ы€HУУTХS‘ФХ’S‘К€‘љ\™\ИH[\Щ€[љИЧ€‚€™[XYЩH[™Э]XШЭ\XЮK€ЉK€™Y™™XЭHQ‘‘PХТU€њЭЩ\€HЌK€ќ\HHTWХРUT‹€XШЭ\XЮHHK€њHL€ќ\™Щ]HT‘СUФСSPХQ€њљ[Ьљ]HH€Ш]YЫЬћHHSPQСWРРUQУФ–WФФPТPS€[\ЭXУ[Э™HH•QK€Y][Ы[Y™™XЭИHQUSУђSСQ‘‘PХКВ€›[Э™QY™™XЭHSХ‘WСQ‘‘PХРPРЧУRS•TЧМK€Ъ[ЩHHL€JK€ЫЫќ\ЭY™™XЭHЧХTUQУSХ‘WСQ‘‘PХИЏHСS—Н€ИУУ•TХСQ‘‘PХФ‘TUUSУ—У“ХР“Ф’S‘И€УУ•TХСQ‘‘PХФХT•WУSУ—ХТUТ•QСTЧРUS•SУ‹€ЫЫќ\ЭШ]YЫЬћHHУУ•TХРРUQУФ–WХХQТ€ЫЫќ\ЭЫЫX›ФЭ\ќ\’YH€ЫЫќ\ЭЫЫX›У[Э™\ИHРУУP“ЧФХT•T—УРТЧУУ‹УУP“ЧФХT•T—ФђRS—СSђС_K€]P[љ[TШЬљ\HР]P[љ[S[Э™WУШЭ^›ЫЪШK€ќ[Y\™[ќXЩS[Э™HH•QK€K‚€УSХ‘WФФRСTЧHB€В€›[YHHУУTХS‘ФХ’S‘К”ЬZЩ\ИЉK€™\ШЬљ\[Ы€HУУTХS‘ФХ’S‘К€”Щ]ИЬZЩ\И]\ќH€‚€™›ЩHЭЪ]Ъ[™И[‹€ЉK€™Y™™XЭHQ‘‘PХФФRСTЛ€њЭЩ\€H€ќ\HHTWСФ“ХS‘€XШЭ\XЮHH€њHЊ€ќ\™Щ]HT‘СUУФУ‘S•ЧС’QS€њљ[Ьљ]HH€Ш]YЫЬћHHSPQСWРРUQУФ–WФХUTЛ€ћ“[Э™HHИ™Y™™XЭH—СQ‘‘PХСQ—ХTМHK€љYЫ›Ь™\Ф›ЭXЭH•QK€›Z\њ›Ь“[Э™P[›™YH•QK€›XYЪXРЫШ]Y™™XЭYH—ХTUQУSХ‘WС“QФИЏHСS—НK€™›ЬЩT™\ЬЭ\™HH•QK€њЪЮP]P[›™YH•QK€ЫЫќ\ЭY™™XЭHУУ•TХСQ‘‘PХУPRСWС“УХТS‘ЧУSУ”ЧУ‘T•“ХTЛ€ЫЫќ\ЭШ]YЫЬћHHУУ•TХРРUQУФ–WФУPT•€ЫЫќ\ЭЫЫX›ФЭ\ќ\’YHУУP“ЧФХT•T—ФФRСTЛ€ЫЫќ\ЭЫЫX›У[Э™\ИHМK€]P[љ[TШЬљ\HР]P[љ[S[Э™WФЬZЩ\Л€ќ[Y\™[ќXЩS[Э™HH•QK€K‚€УSХ‘WЦђTРРS““У—HB€В€›[YHHУУTХS‘ФХ’S‘К–\Ш[››Ы€ЉK€™\ШЬљ\[Ы€HУУTХS‘ФХ’S‘К€”ЭЩ\™ќ[[™Э\™HИШ]\ЩW€‚€њ\[\Ъ\Лќ][XШЭ\]K€ЉK€™Y™™XЭHQ‘‘PХТU€њЭЩ\€H—ХTUQУSХ‘WСUHЏHСS—НИLЊ€L€ќ\HHTWСSPХ’PЛ€XШЭ\XЮHHL€њHK€ќ\™Щ]HT‘СUФСSPХQ€њљ[Ьљ]HH€Ш]YЫЬћHHSPQСWРРUQУФ–WФФPТPS€[\ЭXУ[Э™HH•QK€Y][Ы[Y™™XЭИHQUSУђSСQ‘‘PХКВ€›[Э™QY™™XЭHSХ‘WСQ‘‘PХФTђSTТTЛ€Ъ[ЩHHL€JK€ЫЫќ\ЭY™™XЭHЧХTUQУSХ‘WСQ‘‘PХИЏHСS—Н€ИУУ•TХСQ‘‘PХРђQWФХT•WУSУ”ЧХТUСУУСРTPSИ€УУ•TХСQ‘‘PХТQТWРTPSS‘Л€ЫЫќ\ЭШ]YЫЬћHHУУ•TХРРUQУФ–WРУУУ€ЫЫќ\ЭЫЫX›ФЭ\ќ\’YH€ЫЫќ\ЭЫЫX›У[Э™\ИHРУУP“ЧФХT•T—РТT‘СKУУP“ЧФХT•T—УРТЧУУџK€]P[љ[TШЬљ\HР]P[љ[S[Э™WЦ\Ш[››Ы‹€ќ[Y\™[ќXЩS[Э™HH•QK€K‚€УSХ‘WС“Ф‘TТQТHB€В€›[YHHУУTХS‘ФХ’S‘К‘›Ь™\ЪYЪЉK€™\ШЬљ\[Ы€HУУTХS‘ФХ’S‘К€“™YШ]\ИH›ЩIЬИY™›ЬќЧ€‚€ќИZYЪ[€]\Ъ]™[™\ЬЛ€ЉK€™Y™™XЭHQ‘‘PХС“Ф‘TТQТ€њЭЩ\€H€ќ\HHTWУ“Ф“PS€XШЭ\XЮHH—ХTUQУSХ‘WСUHЏHСS—НHИ€L€њH€ќ\™Щ]HT‘СUФСSPХQ€њљ[Ьљ]HH€Ш]YЫЬћHHSPQСWРРUQУФ–WФХUTЛ€ћ“[Э™HHИ™Y™™XЭH—СQ‘‘PХР“УФХРФ’UИK€›XYЪXРЫШ]Y™™XЭYH—ХTUQУSХ‘WС“QФИЏHСS—НK€љYЫ›Ь™\ФЭXњЭ]]HH•QK€ЫЫќ\ЭY™™XЭHЧХTUQУSХ‘WСQ‘‘PХИЏHСS—Н€ИУУ•TХСQ‘‘PХФХT•WУSУ”ЧФРSQWХTWРTPS€УУ•TХСQ‘‘PХХУФ”СS—РУУ‘USУ—УС—Ф‘U—УSУ”Л€ЫЫќ\ЭШ]YЫЬћHHУУ•TХРРUQУФ–WФУPT•€ЫЫќ\ЭЫЫX›ФЭ\ќ\’YH€ЫЫќ\ЭЫЫX›У[Э™\ИHМK€]P[љ[TШЬљ\HР]P[љ[S[Э™WС›Ь™\ЪYЪ€ќ[Y\™[ќXЩS[Э™HH•QK€K‚€УSХ‘WСTХS–WР“У‘HB€В€›[YHHУУTХS‘ФХ’S‘К‘\Э[ћH›Ы™ЉK€™\ШЬљ\[Ы€HУУTХS‘ФХ’S‘К€’Y€H\Щ\€Z[ќЛH›ЩW€‚€љ\И[ЫИXYHИZ[ќ€ЉK€™Y™™XЭHQ‘‘PХСTХS–WР“У‘€њЭЩ\€H€ќ\HHTWСТФХ€XШЭ\XЮHH€њHK€ќ\™Щ]HT‘СUХTСT‹€њљ[Ьљ]HH€Ш]YЫЬћHHSPQСWРРUQУФ–WФХUTЛ€ћ“[Э™HHИ™Y™™XЭH—СQ‘‘PХС“УХЧУQHK€љYЫ›Ь™\Ф›ЭXЭH•QK€љYЫ›Ь™\ФЭXњЭ]]HH•QK€›Z\њ›Ь“[Э™P[›™YH•QK€›Y]›Ы›ЫYP[›™YH•QK€ЫЬXШ][›™YH•QK€\ЬЪ\Э[›™YH•QK€ЫЫќ\ЭY™™XЭHУУ•TХСQ‘‘PХСФ‘PUРTPSР•UУ“ЧУSФ‘WУSХ‘TЛЛРЧХTUQУSХ‘WСQ‘‘PХИЏHСS—Н€ИУУ•TХСQ‘‘PХФURPТУWСФ“ХЧР“Ф‘Q‚€ЫЫќ\ЭШ]YЫЬћHHУУ•TХРРUQУФ–WФУPT•€ЫЫќ\ЭЫЫX›ФЭ\ќ\’YH€ЫЫќ\ЭЫЫX›У[Э™\ИHРУУP“ЧФХT•T—РХT”СKУУP“ЧФХT•T—СS‘T‘KУУP“ЧФХT•T—УQPS—УУТЛУУP“ЧФХT•T—СSђУФ‘KУУP“ЧФХT•T—ХUS•УУP“ЧФХT•T—ХФ“QS•K€]P[љ[TШЬљ\HР]P[љ[S[Э™WС\Э[ћP›Ы™€ќ[Y\™[ќXЩS[Э™HH•QK€K‚€УSХ‘WФT’TТФУУ‘ЧHB€В€›[YHHУУTХS‘ФХ’S‘К”\љ\ЪЫЫ™ИЉK€™\ШЬљ\[Ы€HУУTХS‘ФХ’S‘К€ђ[ћHЪрк[[Ы€X\љ[™И\Ч€‚€њЫЫ™ИZ[ќИ[€И\›њЛ€ЉK€™Y™™XЭHQ‘‘PХФT’TТФУУ‘Л€њЭЩ\€H€ќ\HHTWУ“Ф“PS€XШЭ\XЮHH€њHK€ќ\™Щ]HT‘СUРSРђUT”Л€њљ[Ьљ]HH€Ш]YЫЬћHHSPQСWРРUQУФ–WФХUTЛ€ћ“[Э™HHИ™Y™™XЭH—СQ‘‘PХФ‘TСUФХUИK€љYЫ›Ь™\Ф›ЭXЭH•QK€љYЫ›Ь™\ФЭXњЭ]]HH•QK€›Z\њ›Ь“[Э™P[›™YH•QK€њЫЭ[™[Э™HH•QK€ЫЫќ\ЭY™™XЭHУУ•TХСQ‘‘PХРђQWФХT•WУSУ”ЧХТUСУУСРTPSЛЛРЧХTUQУSХ‘WСQ‘‘PХИЏHСS—Н€ИУУ•TХСQ‘‘PХФURPТУWСФ“ХЧР“Ф‘Q‚€ЫЫќ\ЭШ]YЫЬћHHУУ•TХРРUQУФ–WР‘PUUK€ЫЫќ\ЭЫЫX›ФЭ\ќ\’YH€ЫЫќ\ЭЫЫX›У[Э™\ИHРУУP“ЧФХT•T—УQPS—УУТЛУУP“ЧФХT•T—ФТS‘ЛУУP“ЧФХT•T—Р“РТЯK€]P[љ[TШЬљ\HР]P[љ[S[Э™WФ\љ\ЪЫЫ™Л€ќ[Y\™[ќXЩS[Э™HH•QK€K‚€УSХ‘WТPЦWХТS‘HB€В€›[YHHУУTХS‘ФХ’S‘К’XЮHЪ[™ЉK€™\ШЬљ\[Ы€HУУTХS‘ФХ’S‘К€ђHЪ[[™И]XЪИ]€‚€›ЭЩ\њИH›ЩIЬИЬYY€ЉK€™Y™™XЭHQ‘‘PХТU€њЭЩ\€HMK€ќ\HHTWТPСK€XШЭ\XЮHHMK€њHMK€ќ\™Щ]HT‘СUР“Х€њљ[Ьљ]HH€Ш]YЫЬћHHSPQСWРРUQУФ–WФФPТPS€ќЪ[™[Э™HH•QK€Y][Ы[Y™™XЭИHQUSУђSСQ‘‘PХКВ€›[Э™QY™™XЭHSХ‘WСQ‘‘PХФФУRS•TЧМK€Ъ[ЩHHL€JK€ЫЫќ\ЭY™™XЭHУУ•TХСQ‘‘PХРђQWФХT•WФ‘U—УSУ”Л€ЫЫќ\ЭШ]YЫЬћHHУУ•TХРРUQУФ–WР‘PUUK€ЫЫќ\ЭЫЫX›ФЭ\ќ\’YH€ЫЫќ\ЭЫЫX›У[Э™\ИHРУУP“ЧФХT•T—ТRSK€]P[љ[TШЬљ\HР]P[љ[S[Э™WТXЮUЪ[™€ќ[Y\™[ќXЩS[Э™HH•QK€K‚€УSХ‘WСUPХHB€В€›[YHHУУTХS‘ФХ’S‘К‘]XЭЉK€™\ШЬљ\[Ы€HФ›ЭXЭ\ШЬљ\[Ы‹€™Y™™XЭHQ‘‘PХФ“ХPХ€њЭЩ\€H€ќ\HHTWС’QТS‘Л€XШЭ\XЮHH€њHK€ќ\™Щ]HT‘СUХTСT‹€ЪY€—ХTUQУSХ‘WСUHЏHСS—НB€њљ[Ьљ]HH€Щ[Y€—ХTUQУSХ‘WСUHЏHСS—МВ€њљ[Ьљ]HHЛ€Щ[ЩB€њљ[Ьљ]HH‹€Щ[™Y‚€Ш]YЫЬћHHSPQСWРРUQУФ–WФХUTЛ€\™Э[Y[ќHИњ›ЭXЭY]ЩH“ХPХУ“Ф“PSK€ћ“[Э™HHИ™Y™™XЭH—СQ‘‘PХСU”У—ХTМHK€љYЫ›Ь™\Ф›ЭXЭH•QK€›Z\њ›Ь“[Э™P[›™YH•QK€›Y]›Ы›ЫYP[›™YH•QK€ЫЬXШ][›™YH•QK€\ЬЪ\Э[›™YH•QK€ЫЫќ\ЭY™™XЭHЧХTUQУSХ‘WСQ‘‘PХИЏHСS—Н€ИУУ•TХСQ‘‘PХРU“ТQФХT•H€УУ•TХСQ‘‘PХРU“ТQФХT•WУУђСK€ЫЫќ\ЭШ]YЫЬћHHУУ•TХРРUQУФ–WРУУУ€ЫЫќ\ЭЫЫX›ФЭ\ќ\’YH€ЫЫќ\ЭЫЫX›У[Э™\ИHРУУP“ЧФХT•T—ХUS•K€]P[љ[TШЬљ\HР]P[љ[S[Э™WС]XЭ€ќ[Y\™[ќXЩS[Э™HH•QK€K‚€УSХ‘WР“У‘WФ•TТHB€В€›[YHHУУTХS‘ФХ’S‘Кђ›Ы™Hќ\ЪЉK€™\ШЬљ\[Ы€HУУTХS‘ФХ’S‘К€”ЭљZЩ\ИH›ЩHЪ]H›Ы™W€‚€љ[€[™€ИH[Y\Л€ЉK€™Y™™XЭHQ‘‘PХТU€њЭЩ\€HЌK€ќ\HHTWСФ“ХS‘€XШЭ\XЮHH—ХTUQУSХ‘WСUHЏHСS—НHИL€€њHL€ќ\™Щ]HT‘СUФСSPХQ€њљ[Ьљ]HH€Ш]YЫЬћHHSPQСWРРUQУФ–WФTТPРS€›][R]H•QK€ЫЫќ\ЭY™™XЭHЧХTUQУSХ‘WСQ‘‘PХИЏHСS—Н€ИУУ•TХСQ‘‘PХФUPSUWСTS‘ЧУУ—ХSRS‘И€УУ•TХСQ‘‘PХТQТWРTPSS‘Л€ЫЫќ\ЭШ]YЫЬћHHУУ•TХРРUQУФ–WХХQТ€ЫЫќ\ЭЫЫX›ФЭ\ќ\’YHУУP“ЧФХT•T—Р“У‘WФ•TТ€ЫЫќ\ЭЫЫX›У[Э™\ИHРУУP“ЧФХT•T—Р“У‘WРУP‹УУP“ЧФХT•T—Р“У‘SQTђS‘ЛУУP“ЧФХT•T—С“РХTЧСS‘T‘ЦKУУP“ЧФХT•T—ФТQХЧР“У‘_K€]P[љ[TШЬљ\HР]P[љ[S[Э™WР›Ы™Tќ\Ъ€K‚€УSХ‘WУРТЧУУ—HB€В€›[YHHУУTХS‘ФХ’S‘К“ШЪЛSЫ€ЉK€™\ШЬљ\[Ы€HУУTХS‘ФХ’S‘К€“ШЪЬИЫ€ИH›ЩHЧ€‚€™[њЭ\™HH™^[Э™H]Л€ЉK€™Y™™XЭHQ‘‘PХУРТЧУУ‹€њЭЩ\€H€ќ\HHTWУ“Ф“PS€XШЭ\XЮHH—ХTUQУSХ‘WСUHЏHСS—НИ€L€њHK€ќ\™Щ]HT‘СUФСSPХQ€њљ[Ьљ]HH€Ш]YЫЬћHHSPQСWРРUQУФ–WФХUTЛ€ћ“[Э™HHИ™Y™™XЭH—СQ‘‘PХФФХTМHK€ЫЫќ\ЭY™™XЭHЧХTUQУSХ‘WСQ‘‘PХИЏHСS—Н€ИУУ•TХСQ‘‘PХУ‘VРTPSСPT“QT€€УУ•TХСQ‘‘PХСУ•СVТUWРUQQSђСK€ЫЫќ\ЭШ]YЫЬћHHУУ•TХРРUQУФ–WФУPT•€ЫЫќ\ЭЫЫX›ФЭ\ќ\’YHУУP“ЧФХT•T—УРТЧУУ‹€ЫЫќ\ЭЫЫX›У[Э™\ИHМK€]P[љ[TШЬљ\HР]P[љ[S[Э™WУШЪУЫ‹€ќ[Y\™[ќXЩS[Э™HH•QK€K‚€УSХ‘WУХUђQСWHB€В€›[YHHУУTХS‘ФХ’S‘К“Э]YЩHЉK€™\ШЬљ\[Ы€HУУTХS‘ФХ’S‘К€ђH[\YЩHЩ€€ИИ\›њЧ€‚€ќ]ЫЫ™ќ\Щ\ИH\Щ\‹€ЉK€™Y™™XЭHQ‘‘PХТU€њЭЩ\€H—ХTUQУSХ‘WСUHЏHСS—НИLЊ€L€ќ\HHTWСђQУУ‹€XШЭ\XЮHHL€њH—ХTUQУSХ‘WСUHЏHСS—НHИL€MK€ќ\™Щ]HT‘СUФђS‘УK€њљ[Ьљ]HH€Ш]YЫЬћHHSPQСWРРUQУФ–WФTТPРS€›XZЩ\РЫЫќXЭH•QK€љ[њЭќXЭ[›™YH•QK€Y][Ы[Y™™XЭИHQUSУђSСQ‘‘PХКВ€›[Э™QY™™XЭHSХ‘WСQ‘‘PХХђTТ€њЩ[€H•QK€JK€ЫЫќ\ЭY™™XЭHЧХTUQУSХ‘WСQ‘‘PХИЏHСS—Н€ИУУ•TХСQ‘‘PХХTСT—УSФ‘WСPTТSWФХT•Q€УУ•TХСQ‘‘PХТђSTЧУХT”ЧР•UУRTФЧУУ‘WХT“‹€ЫЫќ\ЭШ]YЫЬћHHУУ•TХРРUQУФ–WРУУУ€ЫЫќ\ЭЫЫX›ФЭ\ќ\’YH€ЫЫќ\ЭЫЫX›У[Э™\ИHМK€]P[љ[TШЬљ\HР]P[љ[S[Э™WУЭ]YЩK€ќ[Y\™[ќXЩS[Э™HH•QK€K‚€УSХ‘WФРS‘ХФ“WHB€В€›[YHHУУTХS‘ФХ’S‘К”Ш[™ЭЬ›HЉK€™\ШЬљ\[Ы€HУУTХS‘ФХ’S‘К€ђШ]\Щ\ИHШ[™ЭЬ›H]€‚€њYЩ\И›Ь€Щ]™\[\›њЛ€ЉK€™Y™™XЭHQ‘‘PХХСPUT‹€њЭЩ\€H€ќ\HHTWФ“РТЛ€XШЭ\XЮHH€њHL€ќ\™Щ]HT‘СUС’QS€њљ[Ьљ]HH€Ш]YЫЬћHHSPQСWРРUQУФ–WФХUTЛ€ћ“[Э™HHИ™Y™™XЭH—СQ‘‘PХФФХTМHK€љYЫ›Ь™\Ф›ЭXЭH•QK€›Z\њ›Ь“[Э™P[›™YH•QK€ќЪ[™[Э™HH•QK€\™Э[Y[ќHИќЩX]\•\HHђUWХСPUT—ФРS‘ХФ“HK€ЫЫќ\ЭY™™XЭHЧХTUQУSХ‘WСQ‘‘PХИЏHСS—Н€ИУУ•TХСQ‘‘PХРђQWФХT•WУSУ”ЧХТUСУУСРTPSИ€УУ•TХСQ‘‘PХФРФђSP“WУ‘VХT“—УФ‘T‹€ЫЫќ\ЭШ]YЫЬћHHУУ•TХРРUQУФ–WХХQТ€ЫЫќ\ЭЫЫX›ФЭ\ќ\’YHУУP“ЧФХT•T—ФРS‘ХФ“K€ЫЫќ\ЭЫЫX›У[Э™\ИHМK€]P[љ[TШЬљ\HР]P[љ[S[Э™WФШ[™ЭЬ›K€ќ[Y\™[ќXЩS[Э™HH•QK€K‚€УSХ‘WСТQРWСђRS—HB€В€›[YHHУУTХS‘ФХ’S‘К‘ЪYШHZ[€ЉK€™\ШЬљ\[Ы€HУУTХS‘ФХ’S‘К€ђ[€]XЪИ]ЭX[И[—€‚€ќH[XYЩH[™›XЭY€ЉK€™Y™™XЭHQ‘‘PХРP”УФђ‹€њЭЩ\€H—ХTUQУSХ‘WСUHЏHСS—НHИНH€Њ€ќ\HHTWСФђTФЛ€XШЭ\XЮHHL€њH—ХTUQУSХ‘WСUHЏHСS—НИL€K€ќ\™Щ]HT‘СUФСSPХQ€њљ[Ьљ]HH€Ш]YЫЬћHHSPQСWРРUQУФ–WФФPТPS€\™Э[Y[ќHИXњЫЬ”\Щ[ќYЩHHLK€љYЫ›Ь™\ТЪ[™ЬФ›ШЪИH
+—ХTUQУSХ‘WС“QФИOHСS—МИ—ХTUQУSХ‘WС“QФИOHСS—Н
+K€љX[[™У[Э™HH—ТPSР“РТТS‘ИЏHСS—Н‹€ЫЫќ\ЭY™™XЭHЧХTUQУSХ‘WСQ‘‘PХИЏHСS—Н€ИУУ•TХСQ‘‘PХРђQWФХT•WС”“У•УSУ€€УУ•TХСQ‘‘PХФХT•WУSУ—ХТUТ•QСTЧРUS•SУ‹€ЫЫќ\ЭШ]YЫЬћHHУУ•TХРРUQУФ–WФУPT•€ЫЫќ\ЭЫЫX›ФЭ\ќ\’YH€ЫЫќ\ЭЫЫX›У[Э™\ИHРУУP“ЧФХT•T—СФ“ХХK€]P[љ[TШЬљ\HР]P[љ[S[Э™WСЪYШQZ[‹€ќ[Y\™[ќXЩS[Э™HH•QK€K‚€УSХ‘WСS‘T‘WHB€В€›[YHHУУTХS‘ФХ’S‘К‘[™\™HЉK€™\ШЬљ\[Ы€HУУTХS‘ФХ’S‘К€‘[™\™\И[ћH]XЪИ›Ь—€‚€ЊH\›‹X]љ[™И]X\ЭR€ЉK€™Y™™XЭHQ‘‘PХСS‘T‘K€њЭЩ\€H€ќ\HHTWУ“Ф“PS€XШЭ\XЮHH€њHL€ќ\™Щ]HT‘СUХTСT‹€ЪY€—ХTUQУSХ‘WСUHЏHСS—НB€њљ[Ьљ]HH€Щ[Y€—ХTUQУSХ‘WСUHЏHСS—МВ€њљ[Ьљ]HHЛ€Щ[ЩB€њљ[Ьљ]HH‹€Щ[™Y‚€Ш]YЫЬћHHSPQСWРРUQУФ–WФХUTЛ€\™Э[Y[ќHИњ›ЭXЭY]ЩH“ХPХУ“У‘HK€ћ“[Э™HHИ™Y™™XЭH—СQ‘‘PХФ‘TСUФХUИK€љYЫ›Ь™\Ф›ЭXЭH•QK€›Z\њ›Ь“[Э™P[›™YH•QK€›Y]›Ы›ЫYP[›™YH•QK€ЫЬXШ][›™YH•QK€\ЬЪ\Э[›™YH•QK€ЫЫќ\ЭY™™XЭHЧХTUQУSХ‘WСQ‘‘PХИЏHСS—Н€ИУУ•TХСQ‘‘PХУ‘VРTPSУUT€€УУ•TХСQ‘‘PХРU“ТQФХT•WУУђСK€ЫЫќ\ЭШ]YЫЬћHHУУ•TХРРUQУФ–WХХQТ€ЫЫќ\ЭЫЫX›ФЭ\ќ\’YHУУP“ЧФХT•T—СS‘T‘K€ЫЫќ\ЭЫЫX›У[Э™\ИHМK€]P[љ[TШЬљ\HР]P[љ[S[Э™WС[™\™K€ќ[Y\™[ќXЩS[Э™HH•QK€K‚€УSХ‘WРТT“WHB€В€›[YHHУУTХS‘ФХ’S‘КђЪ\›HЉK€™\ШЬљ\[Ы€HУУTХS‘ФХ’S‘К€ђЪ\›\ИH›ЩH[™Ъ\њW€‚€њ™YXЩ\И]И]XЪЛ€ЉK€™Y™™XЭHQ‘‘PХРUPТЧСХУ—М‹€њЭЩ\€H€ќ\HH—ХTUQУSХ‘WХTTИЏHСS—Н€ИTWСђRT–H€TWУ“Ф“PS€XШЭ\XЮHHL€њHЊ€ќ\™Щ]HT‘СUФСSPХQ€њљ[Ьљ]HH€Ш]YЫЬћHHSPQСWРРUQУФ–WФХUTЛ€ћ“[Э™HHИ™Y™™XЭH—СQ‘‘PХСQ—ХTМHK€›XYЪXРЫШ]Y™™XЭYH•QK€ЫЫќ\ЭY™™XЭHЧХTUQУSХ‘WСQ‘‘PХИЏHСS—Н€ИУУ•TХСQ‘‘PХФХT•WУSУ—ХТUТ•QСTЧРUS•SУ€€УУ•TХСQ‘‘PХФХT•WУSУ”ЧФРSQWХTWРTPS€ЫЫќ\ЭШ]YЫЬћHHУУ•TХРРUQУФ–WРХUK€ЫЫќ\ЭЫЫX›ФЭ\ќ\’YHУУP“ЧФХT•T—РТT“K€ЫЫќ\ЭЫЫX›У[Э™\ИHМK€]P[љ[TШЬљ\HР]P[љ[S[Э™WРЪ\›K€ќ[Y\™[ќXЩS[Э™HH•QK€K‚€УSХ‘WФ“УХUHB€В€›[YHHУУTХS‘ФХ’S‘К”›ЫЭ]ЉK€™\ШЬљ\[Ы€HУУTХS‘ФХ’S‘К€ђ[€]XЪИ\Э[™ИH\›њЧ€‚€ќЪ]љ\Ъ[™И[ќ[њЪ]K€ЉK€™Y™™XЭHQ‘‘PХФ“УХU€њЭЩ\€HМ€ќ\HHTWФ“РТЛ€XШЭ\XЮHHL€њHЊ€ќ\™Щ]HT‘СUФСSPХQ€њљ[Ьљ]HH€Ш]YЫЬћHHSPQСWРРUQУФ–WФTТPРS€›XZЩ\РЫЫќXЭH•QK€љ[њЭќXЭ[›™YH•QK€њ\™[ќ[›Ы™[›™YH•QK€ЫЫќ\ЭY™™XЭHЧХTUQУSХ‘WСQ‘‘PХИЏHСS—Н€ИУУ•TХСQ‘‘PХФ‘TUUSУ—У“ХР“Ф’S‘И€УУ•TХСQ‘‘PХСУ•СVТUWРUQQSђСK€ЫЫќ\ЭШ]YЫЬћHHЧХTUQУSХ‘WРРUQУФ’QTИЏHСS—Н€ИУУ•TХРРUQУФ–WРХUH€УУ•TХРРUQУФ–WХХQТ€ЫЫќ\ЭЫЫX›ФЭ\ќ\’YH€ЫЫќ\ЭЫЫX›У[Э™\ИHРУУP“ЧФХT•T—СQ‘S”СWРХT“УУP“ЧФХT•T—ТT‘SџK€]P[љ[TШЬљ\HР]P[љ[S[Э™WФ›ЫЭ]€ќ[Y\™[ќXЩS[Э™HH•QK€K‚€УSХ‘WСђSСWФХТTWHB€В€›[YHHУУTХS‘ФХ’S‘К‘[ЩHЭЪ\HЉK€™\ШЬљ\[Ы€HС[ЩTЭЪ\Q\ШЬљ\[Ы‹€™Y™™XЭHQ‘‘PХСђSСWФХТTK€њЭЩ\€H€ќ\HHTWУ“Ф“PS€XШЭ\XЮHHL€њH€ќ\™Щ]HT‘СUФСSPХQ€њљ[Ьљ]HH€Ш]YЫЬћHHSPQСWРРUQУФ–WФTТPРS€›XZЩ\РЫЫќXЭH•QK€ЫЫќ\ЭY™™XЭHУУ•TХСQ‘‘PХРђQWФХT•WФ‘U—УSУ”ЛЛРЧХTUQУSХ‘WСQ‘‘PХИЏHСS—Н€ИУУ•TХСQ‘‘PХФURPТУWСФ“ХЧР“Ф‘Q‚€ЫЫќ\ЭШ]YЫЬћHHУУ•TХРРUQУФ–WРУУУ€ЫЫќ\ЭЫЫX›ФЭ\ќ\’YH€ЫЫќ\ЭЫЫX›У[Э™\ИHРУУP“ЧФХT•T—ФХУФ‘ЧСSђС_K€]P[љ[TШЬљ\HР]P[љ[S[Э™WС[ЩTЭЪ\K€ќ[Y\™[ќXЩS[Э™HH•QK€K‚€УSХ‘WФХРQССT—HB€В€›[YHHУУTХS‘ФХ’S‘К”ЭШYЩЩ\€ЉK€™\ШЬљ\[Ы€HУУTХS‘ФХ’S‘К€ђЫЫ™ќ\Щ\ИH›ЩKќ][ЫЧ€‚€њЪ\њHZ\Щ\И]И]XЪЛ€ЉK€™Y™™XЭHQ‘‘PХФХРQССT‹€њЭЩ\€H€ќ\HHTWУ“Ф“PS€XШЭ\XЮHH—ХTUQУSХ‘WСUHЏHСS—НИИH€L€њHMK€ќ\™Щ]HT‘СUФСSPХQ€њљ[Ьљ]HH€Ш]YЫЬћHHSPQСWРРUQУФ–WФХUTЛ€ћ“[Э™HHИ™Y™™XЭH—СQ‘‘PХФ‘TСUФХUИK€ЛЛљYЫ›Ь™\ФЭXњЭ]]HH•QK[€Щ[Ќ
+ЛH]XЪИZ\ЩHЪ[›ИЫ™Щ\€ћ\\ЬИЭXњЭ]]K€ЭЩ]™\‹\И\ИљXЪЮHИЫЩB€›XYЪXРЫШ]Y™™XЭYH•QK€ЫЫќ\ЭY™™XЭHЧХTUQУSХ‘WСQ‘‘PХИЏHСS—Н€ИУУ•TХСQ‘‘PХХУФ”СS—РУУ‘USУ—УС—Ф‘U—УSУ”И€УУ•TХСQ‘‘PХР‘UT—ТQ—С’T”Х€ЫЫќ\ЭШ]YЫЬћHHУУ•TХРРUQУФ–WРХUK€ЫЫќ\ЭЫЫX›ФЭ\ќ\’YH€ЫЫќ\ЭЫЫX›У[Э™\ИHМK€]P[љ[TШЬљ\HР]P[љ[S[Э™WФЭШYЩЩ\‹€ќ[Y\™[ќXЩS[Э™HH•QK€K‚€УSХ‘WУRSЧС’S’ЧHB€В€›[YHHУУTХS‘ФХ’S‘К“Z[Иљ[љИЉK€™\ШЬљ\[Ы€HУУTХS‘ФХ’S‘К€”™XЫЭ™\њИ\И[€W€‚€ќ\Щ\‰ЬИX^[][H€ЉK€™Y™™XЭHQ‘‘PХФУС•“ТSQ€њЭЩ\€H€ќ\HHTWУ“Ф“PS€XШЭ\XЮHH€њH—ХTUQУSХ‘WСUHЏHСS—ОHИH€L€ќ\™Щ]HT‘СUХTСT‹€њљ[Ьљ]HH€Ш]YЫЬћHHSPQСWРРUQУФ–WФХUTЛ€ћ“[Э™HHИ™Y™™XЭH—СQ‘‘PХФ‘TСUФХUИK€љX[[™У[Э™HH•QK€њЫ]ЪY™™XЭYH•QK€љYЫ›Ь™\Ф›ЭXЭH•QK€›Z\њ›Ь“[Э™P[›™YH•QK€ЫЫќ\ЭY™™XЭHЧХTUQУSХ‘WСQ‘‘PХИЏHСS—Н€ИУУ•TХСQ‘‘PХР‘UT—ТQ—С’T”Х€УУ•TХСQ‘‘PХР‘UT—ТQ—ФРSQWХTK€ЫЫќ\ЭШ]YЫЬћHHУУ•TХРРUQУФ–WРХUK€ЫЫќ\ЭЫЫX›ФЭ\ќ\’YH€ЫЫќ\ЭЫЫX›У[Э™\ИHМK€]P[љ[TШЬљ\HР]P[љ[S[Э™WУZ[Сљ[љЛ€ќ[Y\™[ќXЩS[Э™HH•QK€K‚€УSХ‘WФФT’ЧHB€В€›[YHHУУTХS‘ФХ’S‘К”Ь\љИЉK€™\ШЬљ\[Ы€HУУTХS‘ФХ’S‘К€ђ[€[XЭљYљYYXЪЫH]€‚€›X^H\[^™HH›ЩK€ЉK€™Y™™XЭHQ‘‘PХТU€њЭЩ\€HЌK€ќ\HHTWСSPХ’PЛ€XШЭ\XЮHHL€њHЊ€ќ\™Щ]HT‘СUФСSPХQ€њљ[Ьљ]HH€Ш]YЫЬћHHSPQСWРРUQУФ–WФTТPРS€›XZЩ\РЫЫќXЭH•QK€Y][Ы[Y™™XЭИHQUSУђSСQ‘‘PХКВ€›[Э™QY™™XЭHSХ‘WСQ‘‘PХФTђSTТTЛ€Ъ[ЩHHМ€JK€ЫЫќ\ЭY™™XЭHЧХTUQУSХ‘WСQ‘‘PХИЏHСS—Н€ИУУ•TХСQ‘‘PХТQТWРTPSS‘И€УУ•TХСQ‘‘PХРђQWФХT•WС”“У•УSУ‹€ЫЫќ\ЭШ]YЫЬћHHУУ•TХРРUQУФ–WРУУУ€ЫЫќ\ЭЫЫX›ФЭ\ќ\’YH€ЫЫќ\ЭЫЫX›У[Э™\ИHРУУP“ЧФХT•T—РТT‘С_K€]P[љ[TШЬљ\HР]P[љ[S[Э™WФЬ\љЛ€K‚€УSХ‘WС•T–WРХUT—HB€В€›[YHHУУTХS‘ФХ’S‘К‘ќ\ћHЭ]\€ЉK€™\ШЬљ\[Ы€HУУTХS‘ФХ’S‘К€ђ[€]XЪИ][ќ[њЪYљY\Ч€‚€›Ы€XXЪЭXШЩ\ЬЪ]™H]€ЉK€ЪY€—ХTUQУSХ‘WСUHЏHСS—Н‚€њЭЩ\€H€Щ[Y€—ХTUQУSХ‘WСUHOHСS—НB€њЭЩ\€HЊ€Щ[ЩB€њЭЩ\€HL€Щ[™Y‚€™Y™™XЭHQ‘‘PХС•T–WРХUT‹€ќ\HHTWР•QЛ€XШЭ\XЮHHMK€њHЊ€ќ\™Щ]HT‘СUФСSPХQ€њљ[Ьљ]HH€Ш]YЫЬћHHSPQСWРРUQУФ–WФTТPРS€›XZЩ\РЫЫќXЭH•QK€њЫXЪ[™У[Э™HH•QK€ЫЫќ\ЭY™™XЭHУУ•TХСQ‘‘PХФ‘TUUSУ—У“ХР“Ф’S‘Л€ЫЫќ\ЭШ]YЫЬћHHУУ•TХРРUQУФ–WРУУУ€ЫЫќ\ЭЫЫX›ФЭ\ќ\’YH€ЫЫќ\ЭЫЫX›У[Э™\ИHРУУP“ЧФХT•T—ФХУФ‘ЧСSђС_K€]P[љ[TШЬљ\HР]P[љ[S[Э™WСќ\ћPЭ]\‹€ќ[Y\™[ќXЩS[Э™HH•QK€K‚€УSХ‘WФХQSХТS‘ЧHB€В€›[YHHУУTХS‘ФХ’S‘К”ЭY[Ъ[™ИЉK€™\ШЬљ\[Ы€HУУTХS‘ФХ’S‘К€”ЭљZЩ\ИH›ЩHЪ]\™€‚€ќЪ[™ЬИЬ™XYЪYK€ЉK€™Y™™XЭHQ‘‘PХТU€њЭЩ\€HМ€ќ\HHTWФХQS€XШЭ\XЮHHL€њHЌK€ќ\™Щ]HT‘СUФСSPХQ€њљ[Ьљ]HH€Ш]YЫЬћHHSPQСWРРUQУФ–WФTТPРS€›XZЩ\РЫЫќXЭH•QK€љYЫ›Ь™\ТЪ[™ЬФ›ШЪИH—ХTUQУSХ‘WС“QФИСS—МЛ€Y][Ы[Y™™XЭИHQUSУђSСQ‘‘PХКВ€›[Э™QY™™XЭHSХ‘WСQ‘‘PХСQ—ФTЧМK€њЩ[€H•QK€Ъ[ЩHHL€JK€ЫЫќ\ЭY™™XЭHЧХTUQУSХ‘WСQ‘‘PХИЏHСS—Н€ИУУ•TХСQ‘‘PХРQ‘‘PХQР–WФ‘U—РTPS€УУ•TХСQ‘‘PХР‘UT—ТQ—ФРSQWХTK€ЫЫќ\ЭШ]YЫЬћHHУУ•TХРРUQУФ–WРУУУ€ЫЫќ\ЭЫЫX›ФЭ\ќ\’YH€ЫЫќ\ЭЫЫX›У[Э™\ИHМK€]P[љ[TШЬљ\HР]P[љ[S[Э™WФЭY[Ъ[™Л€ќ[Y\™[ќXЩS[Э™HH•QK€K‚€УSХ‘WУQPS—УУТЧHB€В€›[YHHУУTХS‘ФХ’S‘К“YX[€ЫЪИЉK€™\ШЬљ\[Ы€HУУTХS‘ФХ’S‘К€‘љ^\ИH›ЩHЪ]HYX[—€‚€›ЫЪИ]™]™[ќИ\ШШ\K€ЉK€™Y™™XЭHQ‘‘PХУQPS—УУТЛ€њЭЩ\€H€ќ\HHTWУ“Ф“PS€XШЭ\XЮHH€њHK€ќ\™Щ]HT‘СUФСSPХQ€њљ[Ьљ]HH€Ш]YЫЬћHHSPQСWРРUQУФ–WФХUTЛ€ћ“[Э™HHИ™Y™™XЭH—СQ‘‘PХФФQ—ХTМHK€љYЫ›Ь™\Ф›ЭXЭH
+—ХTUQУSХ‘WС“QФИЏHСS—НЉH
+—ХTUQУSХ‘WС“QФИСS—МКK€›XYЪXРЫШ]Y™™XЭYH•QK€ЫЫќ\ЭY™™XЭHУУ•TХСQ‘‘PХУPRСWС“УХТS‘ЧУSУ”ЧУ‘T•“ХTЛ€ЫЫќ\ЭШ]YЫЬћHHУУ•TХРРUQУФ–WР‘PUUK€ЫЫќ\ЭЫЫX›ФЭ\ќ\’YHУУP“ЧФХT•T—УQPS—УУТЛ€ЫЫќ\ЭЫЫX›У[Э™\ИHРУУP“ЧФХT•T—РХT”С_K€]P[љ[TШЬљ\HР]P[љ[S[Э™WУYX[“ЫЪЛ€ќ[Y\™[ќXЩS[Э™HH•QK€K‚€УSХ‘WРUђPХHB€В€›[YHHУУTХS‘ФХ’S‘Кђ]XЭЉK€™\ШЬљ\[Ы€HУУTХS‘ФХ’S‘К€“XZЩ\ИHЬЬЪ]HЩ[™\—€‚€›\ЬИZЩ[HИ]XЪЛ€ЉK€™Y™™XЭHQ‘‘PХРUђPХ€њЭЩ\€H€ќ\HHTWУ“Ф“PS€XШЭ\XЮHHL€њHMK€ќ\™Щ]HT‘СUФСSPХQ€њљ[Ьљ]HH€Ш]YЫЬћHHSPQСWРРUQУФ–WФХUTЛ€ћ“[Э™HHИ™Y™™XЭH—СQ‘‘PХФ‘TСUФХUИK€›XYЪXРЫШ]Y™™XЭYH•QK€љYЫ›Ь™\ФЭXњЭ]]HH•QK€ЫЫќ\ЭY™™XЭHУУ•TХСQ‘‘PХУPRСWС“УХТS‘ЧУSУ”ЧУ‘T•“ХTЛ€ЫЫќ\ЭШ]YЫЬћHHУУ•TХРРUQУФ–WРХUK€ЫЫќ\ЭЫЫX›ФЭ\ќ\’YH€ЫЫќ\ЭЫЫX›У[Э™\ИHМK€]P[љ[TШЬљ\HР]P[љ[S[Э™WР]XЭ€ќ[Y\™[ќXЩS[Э™HH•QK€K‚€УSХ‘WФУQTХSЧHB€В€›[YHHУУTХS‘ФХ’S‘К”ЫY\[ИЉK€™\ШЬљ\[Ы€HУУTХS‘ФХ’S‘К€•\Щ\И[€]Z[X›H[Э™W€‚€њ[™Ы[HЪ[H\ЫY\€ЉK€™Y™™XЭHQ‘‘PХФУQTХSЛ€њЭЩ\€H€ќ\HHTWУ“Ф“PS€XШЭ\XЮHH€њHL€ќ\™Щ]HT‘СUСTS‘Л€њљ[Ьљ]HH€Ш]YЫЬћHHSPQСWРРUQУФ–WФХUTЛ€ћ“[Э™HHИ™Y™™XЭH—СQ‘‘PХР“УФХРФ’UИK€љYЫ›Ь™\Ф›ЭXЭH•QK€›Z\њ›Ь“[Э™P[›™YH•QK€›Y]›Ы›ЫYP[›™YH•QK€ЫЬXШ][›™YH•QK€њЫY\[Р[›™YH•QK€љ[њЭќXЭ[›™YH•QK€›Z[ZXР[›™YH•QK€™[ЫЬ™P[›™YH
+—ХTUQУSХ‘WС“QФИЏHСS—НИ—ХTUQУSХ‘WС“QФИСS—МКK€\ЬЪ\Э[›™YH•QK€ЫЫќ\ЭY™™XЭHЧХTUQУSХ‘WСQ‘‘PХИЏHСS—Н€ИУУ•TХСQ‘‘PХФUPSUWСTS‘ЧУУ—ХSRS‘И€УУ•TХСQ‘‘PХФ‘TUUSУ—У“ХР“Ф’S‘Л€ЫЫќ\ЭШ]YЫЬћHHУУ•TХРРUQУФ–WРХUK€ЫЫќ\ЭЫЫX›ФЭ\ќ\’YH€ЫЫќ\ЭЫЫX›У[Э™\ИHРУУP“ЧФХT•T—Ф‘TХK€]P[љ[TШЬљ\HР]P[љ[S[Э™WФЫY\[Л€ќ[Y\™[ќXЩS[Э™HH•QK€K‚€УSХ‘WТPSР‘SHB€В€›[YHHУУTХS‘ФХ’S‘К’X[™[ЉK€™\ШЬљ\[Ы€HУУTХS‘ФХ’S‘К€ђЪ[Y\ИЫЫЭ[™ЫHИX[€‚€[Э]\ИX››Ь›X[]Y\Л€ЉK€™Y™™XЭHQ‘‘PХТPSР‘S€њЭЩ\€H€ќ\HHTWУ“Ф“PS€XШЭ\XЮHH€њHK€ќ\™Щ]HT‘СUХTСT‹€њљ[Ьљ]HH€Ш]YЫЬћHHSPQСWРРUQУФ–WФХUTЛ€ћ“[Э™HHИ™Y™™XЭH—СQ‘‘PХФ‘PУХ‘T—ТK€њЫ]ЪY™™XЭYH•QK€љYЫ›Ь™\Ф›ЭXЭH•QK€љYЫ›Ь™\ФЭXњЭ]]HH•QK€›Z\њ›Ь“[Э™P[›™YH•QK€њЫЭ[™[Э™HH•QK€ЫЫќ\ЭY™™XЭHЧХTUQУSХ‘WСQ‘‘PХИЏHСS—Н€ИУУ•TХСQ‘‘PХРU“ТQФХT•H€УУ•TХСQ‘‘PХР‘UT—ТQ—УTХ€ЫЫќ\ЭШ]YЫЬћHHУУ•TХРРUQУФ–WР‘PUUK€ЫЫќ\ЭЫЫX›ФЭ\ќ\’YHУУP“ЧФХT•T—ТPSР‘S€ЫЫќ\ЭЫЫX›У[Э™\ИHРУУP“ЧФХT•T—УPТЦWРТS•K€]P[љ[TШЬљ\HР]P[љ[S[Э™WТX[™[€ќ[Y\™[ќXЩS[Э™HH•QK€K‚€УSХ‘WФ‘UT“—HB€В€›[YHHУУTХS‘ФХ’S‘К”™]\›€ЉK€™\ШЬљ\[Ы€HУУTХS‘ФХ’S‘К€ђ[€]XЪИ][Ь™X\Щ\Ч€‚€љ[€ЭЩ\€Ъ]њљY[™Ъ\€ЉK€™Y™™XЭHQ‘‘PХФ‘UT“‹€њЭЩ\€HK€ќ\HHTWУ“Ф“PS€XШЭ\XЮHHL€њHЊ€ќ\™Щ]HT‘СUФСSPХQ€њљ[Ьљ]HH€Ш]YЫЬћHHSPQСWРРUQУФ–WФTТPРS€›XZЩ\РЫЫќXЭH•QK€ЫЫќ\ЭY™™XЭHЧХTUQУSХ‘WСQ‘‘PХИЏHСS—Н€ИУУ•TХСQ‘‘PХТQТWРTPSS‘И€УУ•TХСQ‘‘PХСVТUWРUQQSђСWТS—РS–WРУУ•TХ€ЫЫќ\ЭШ]YЫЬћHHУУ•TХРРUQУФ–WРХUK€ЫЫќ\ЭЫЫX›ФЭ\ќ\’YH€ЫЫќ\ЭЫЫX›У[Э™\ИHМK€]P[љ[TШЬљ\HР]P[љ[S[Э™WФ™]\›‹€ќ[Y\™[ќXЩS[Э™HH•QK€K‚€УSХ‘WФ‘TСS•HB€В€›[YHHУУTХS‘ФХ’S‘К”™\Щ[ќЉK€™\ШЬљ\[Ы€HУУTХS‘ФХ’S‘К€ђHЪYќ[€H›Ь›HЩ€W€‚€›ЫX‹€X^H™\ЭЬ™H€ЉK€™Y™™XЭHQ‘‘PХФ‘TСS•€њЭЩ\€HK€ќ\HHTWУ“Ф“PS€XШЭ\XЮHHL€њHMK€ќ\™Щ]HT‘СUФСSPХQ€њљ[Ьљ]HH€Ш]YЫЬћHHSPQСWРРUQУФ–WФTТPРS€љYЫ›Ь™\ТЪ[™ЬФ›ШЪИH
+—ХTUQУSХ‘WС“QФИOHСS—МИ—ХTUQУSХ‘WС“QФИOHСS—Н
+K€ЫЫќ\ЭY™™XЭHУУ•TХСQ‘‘PХФ‘TUUSУ—У“ХР“Ф’S‘Л€ЫЫќ\ЭШ]YЫЬћHHУУ•TХРРUQУФ–WРХUK€ЫЫќ\ЭЫЫX›ФЭ\ќ\’YH€ЫЫќ\ЭЫЫX›У[Э™\ИHРУУP“ЧФХT•T—РСSP”ђUKУУP“ЧФХT•T—РУХ‘UУУP“ЧФХT•T—ТTWТХT‹УУP“ЧФХT•T—ХТTТK€]P[љ[TШЬљ\HР]P[љ[S[Э™WФ™\Щ[ќ€ќ[Y\™[ќXЩS[Э™HH•QK€K‚€УSХ‘WС”•TХђUSУ—HB€В€›[YHHУУTХS‘ФХ’S‘К‘њќ\Э][Ы€ЉK€™\ШЬљ\[Ы€HУУTХS‘ФХ’S‘К€ђ[€]XЪИ]\ИЭ›Ы™Щ\—€‚€љY€HZ[™\€\И\ЫZЩY€ЉK€™Y™™XЭHQ‘‘PХС”•TХђUSУ‹€њЭЩ\€HK€ќ\HHTWУ“Ф“PS€XШЭ\XЮHHL€њHЊ€ќ\™Щ]HT‘СUФСSPХQ€њљ[Ьљ]HH€Ш]YЫЬћHHSPQСWРРUQУФ–WФTТPРS€›XZЩ\РЫЫќXЭH•QK€ЫЫќ\ЭY™™XЭHЧХTUQУSХ‘WСQ‘‘PХИЏHСS—Н€ИУУ•TХСQ‘‘PХФХT•WФ‘U—УSУ€€УУ•TХСQ‘‘PХСVТUWРUQQSђСWТS—РS–WРУУ•TХ€ЫЫќ\ЭШ]YЫЬћHHУУ•TХРРUQУФ–WРХUK€ЫЫќ\ЭЫЫX›ФЭ\ќ\’YH€ЫЫќ\ЭЫЫX›У[Э™\ИHМK€]P[љ[TШЬљ\HР]P[љ[S[Э™WСњќ\Э][Ы‹€ќ[Y\™[ќXЩS[Э™HH•QK€K‚€УSХ‘WФРQ‘QХPT‘HB€В€›[YHHУУTХS‘ФХ’S‘К”ШY™YЭX\™ЉK€™\ШЬљ\[Ы€HУУTХS‘ФХ’S‘К€”›ЭXЭИ[Y\Ињ›ЫHЭ]\Ч€‚€њ›Ш›[\И›Ь€H\›њЛ€ЉK€™Y™™XЭHQ‘‘PХФРQ‘QХPT‘€њЭЩ\€H€ќ\HHTWУ“Ф“PS€XШЭ\XЮHH€њHЌK€ќ\™Щ]HT‘СUХTСT‹€њљ[Ьљ]HH€Ш]YЫЬћHHSPQСWРРUQУФ–WФХUTЛ€ћ“[Э™HHИ™Y™™XЭH—СQ‘‘PХФФХTМHK€њЫ]ЪY™™XЭYH•QK€љYЫ›Ь™\Ф›ЭXЭH•QK€›Z\њ›Ь“[Э™P[›™YH•QK€ЫЫќ\ЭY™™XЭHЧХTUQУSХ‘WСQ‘‘PХИЏHСS—Н€ИУУ•TХСQ‘‘PХРU“ТQФХT•WУУђСH€УУ•TХСQ‘‘PХРU“ТQФХT•K€ЫЫќ\ЭШ]YЫЬћHHУУ•TХРРUQУФ–WР‘PUUK€ЫЫќ\ЭЫЫX›ФЭ\ќ\’YH€ЫЫќ\ЭЫЫX›У[Э™\ИHМK€]P[љ[TШЬљ\HР]P[љ[S[Э™WФШY™YЭX\™€ќ[Y\™[ќXЩS[Э™HH•QK€K‚€УSХ‘WФRS—ФФUHB€В€›[YHHУУTХS‘ФХ’S‘К”Z[€Ь]ЉK€™\ШЬљ\[Ы€HУУTХS‘ФХ’S‘К€ђYИH\Щ\€[™›ЩIЬИ€‚€ќ[€Ъ\™\И[H\]X[K€ЉK€™Y™™XЭHQ‘‘PХФRS—ФФU€њЭЩ\€H€ќ\HHTWУ“Ф“PS€XШЭ\XЮHH—ХTUQУSХ‘WСUHЏHСS—МИИ€L€њHЊ€ќ\™Щ]HT‘СUФСSPХQ€њљ[Ьљ]HH€Ш]YЫЬћHHSPQСWРРUQУФ–WФХUTЛ€ћ“[Э™HHИ™Y™™XЭH—СQ‘‘PХСQ—ХTМHK€ЫЫќ\ЭY™™XЭHЧХTUQУSХ‘WСQ‘‘PХИЏHСS—Н€ИУУ•TХСQ‘‘PХРTPSРTЧСУУСРTЧФ‘U—УУ‘TИ€УУ•TХСQ‘‘PХРђQWФХT•WС”“У•УSУ‹€ЫЫќ\ЭШ]YЫЬћHHУУ•TХРРUQУФ–WФУPT•€ЫЫќ\ЭЫЫX›ФЭ\ќ\’YH€ЫЫќ\ЭЫЫX›У[Э™\ИHРУУP“ЧФХT•T—СS‘T‘_K€]P[љ[TШЬљ\HР]P[љ[S[Э™WФZ[”Ь]€ќ[Y\™[ќXЩS[Э™HH•QK€K‚€УSХ‘WФРPФ‘QС’T‘WHB€В€›[YHHУУTХS‘ФХ’S‘К”ШXЬ™Yљ\™HЉK€™\ШЬљ\[Ы€HУУTХS‘ФХ’S‘К€ђH^\ЭXШ[љ\™H]XЪИ]€‚€›X^H[™›XЭHќ\›‹€ЉK€™Y™™XЭHQ‘‘PХТU€њЭЩ\€HL€ќ\HHTWС’T‘K€XШЭ\XЮHHMK€њHK€ќ\™Щ]HT‘СUФСSPХQ€њљ[Ьљ]HH€Ш]YЫЬћHHSPQСWРРUQУФ–WФTТPРS€ќ]ЬХ\Щ\€H•QK€Y][Ы[Y™™XЭИHQUSУђSСQ‘‘PХКВ€›[Э™QY™™XЭHSХ‘WСQ‘‘PХР•T“‹€Ъ[ЩHHL€JK€ЫЫќ\ЭY™™XЭHЧХTUQУSХ‘WСQ‘‘PХИЏHСS—Н€ИУУ•TХСQ‘‘PХР‘UT—ТQ—УTХ€УУ•TХСQ‘‘PХТQТWРTPSS‘Л€ЫЫќ\ЭШ]YЫЬћHHУУ•TХРРUQУФ–WР‘PUUK€ЫЫќ\ЭЫЫX›ФЭ\ќ\’YH€ЫЫќ\ЭЫЫX›У[Э™\ИHРУУP“ЧФХT•T—ФХS“–WСV_K€]P[љ[TШЬљ\HР]P[љ[S[Э™WФШXЬ™Yљ\™K€ќ[Y\™[ќXЩS[Э™HH•QK€K‚€УSХ‘WУPQУ’UQWHB€В€›[YHHУУTХS‘ФХ’S‘К“XYЫљ]YHЉK€™\ШЬљ\[Ы€HУУTХS‘ФХ’S‘К€ђHЬ›Э[™\ЪZЪ[™И]XЪЧ€‚€›Щ€[™ЫH[ќ[њЪ]K€ЉK€™Y™™XЭHQ‘‘PХУPQУ’UQK€њЭЩ\€HK€ќ\HHTWСФ“ХS‘€XШЭ\XЮHHL€њHМ€ќ\™Щ]HT‘СUС“СTЧРS‘РSK€њљ[Ьљ]HH€Ш]YЫЬћHHSPQСWРРUQУФ–WФTТPРS€™[XYЩ\Х[™\™Ь›Э[™H•QK€њЪЮP]P[›™YH•QK€ЫЫќ\ЭY™™XЭHУУ•TХСQ‘‘PХР‘UT—ХТS—РUQQSђСWСVТUQ€ЫЫќ\ЭШ]YЫЬћHHУУ•TХРРUQУФ–WХХQТ€ЫЫќ\ЭЫЫX›ФЭ\ќ\’YH€ЫЫќ\ЭЫЫX›У[Э™\ИHМK€]P[љ[TШЬљ\HР]P[љ[S[Э™WУXYЫљ]YK€K‚€УSХ‘WСSђSRPЧФSђТHB€В€›[YHHУУTХS‘ФХ’S‘К‘[[ZXИ[ЪЉK€™\ШЬљ\[Ы€HУУTХS‘ФХ’S‘К€”ЭЩ\™ќ[[™Э\™HИШ]\ЩW€‚€ЫЫ™ќ\Ъ[Ы‹ќ][XШЭ\]K€ЉK€™Y™™XЭHQ‘‘PХТU€њЭЩ\€HL€ќ\HHTWС’QТS‘Л€XШЭ\XЮHHL€њHK€ќ\™Щ]HT‘СUФСSPХQ€њљ[Ьљ]HH€Ш]YЫЬћHHSPQСWРРUQУФ–WФTТPРS€›XZЩ\РЫЫќXЭH•QK€њ[Ъ[™У[Э™HH•QK€Y][Ы[Y™™XЭИHQUSУђSСQ‘‘PХКВ€›[Э™QY™™XЭHSХ‘WСQ‘‘PХРУУ‘•TТSУ‹€Ъ[ЩHHL€JK€ЫЫќ\ЭY™™XЭHУУ•TХСQ‘‘PХФХT•WУSУ—ХТUТ•QСTЧРUS•SУ‹€ЫЫќ\ЭШ]YЫЬћHHУУ•TХРРUQУФ–WРУУУ€ЫЫќ\ЭЫЫX›ФЭ\ќ\’YH€ЫЫќ\ЭЫЫX›У[Э™\ИHРУУP“ЧФХT•T—С“РХTЧСS‘T‘ЦKУУP“ЧФХT•T—УRS‘Ф‘PQTџK€]P[љ[TШЬљ\HР]P[љ[S[Э™WС[[ZXФ[Ъ€ќ[Y\™[ќXЩS[Э™HH•QK€K‚€УSХ‘WУQQРRФ“—HB€В€›[YHHУУTХS‘ФХ’S‘К“YYШZЬ›€ЉK€™\ШЬљ\[Ы€HУУTХS‘ФХ’S‘К€ђHњќ][[[Z[™И]XЪЧ€‚€ќ\Ъ[™ИЭ]]ќ\ЭЬ›њЛ€ЉK€™Y™™XЭHQ‘‘PХТU€њЭЩ\€HLЊ€ќ\HHTWР•QЛ€XШЭ\XЮHHK€њHL€ќ\™Щ]HT‘СUФСSPХQ€њљ[Ьљ]HH€Ш]YЫЬћHHSPQСWРРUQУФ–WФTТPРS€›XZЩ\РЫЫќXЭH•QK€ЫЫќ\ЭY™™XЭHЧХTUQУSХ‘WСQ‘‘PХИЏHСS—Н€ИУУ•TХСQ‘‘PХФ‘TUUSУ—У“ХР“Ф’S‘И€УУ•TХСQ‘‘PХР‘UT—ТQ—ФРSQWХTK€ЫЫќ\ЭШ]YЫЬћHHУУ•TХРРUQУФ–WРУУУ€ЫЫќ\ЭЫЫX›ФЭ\ќ\’YH€ЫЫќ\ЭЫЫX›У[Э™\ИHМK€]P[љ[TШЬљ\HР]P[љ[S[Э™WУYYШZЬ›‹€ќ[Y\™[ќXЩS[Э™HH•QK€K‚€УSХ‘WСђQУУ—Р”‘PUHB€В€›[YHHУУTХS‘ФХ’S‘К‘YЫЫ€њ™X]ЉK€™\ШЬљ\[Ы€HУУTХS‘ФХ’S‘К€”ЭљZЩ\ИH›ЩHЪ]H›\Э€‚€›Щ€њ™X]€X^H\[^™K€ЉK€™Y™™XЭHQ‘‘PХТU€њЭЩ\€HЊ€ќ\HHTWСђQУУ‹€XШЭ\XЮHHL€њHЊ€ќ\™Щ]HT‘СUФСSPХQ€њљ[Ьљ]HH€Ш]YЫЬћHHSPQСWРРUQУФ–WФФPТPS€љYЫ›Ь™\ТЪ[™ЬФ›ШЪИH—ХTUQУSХ‘WС“QФИСS—МЛ€Y][Ы[Y™™XЭИHQUSУђSСQ‘‘PХКВ€›[Э™QY™™XЭHSХ‘WСQ‘‘PХФTђSTТTЛ€Ъ[ЩHHМ€JK€ЫЫќ\ЭY™™XЭHЧХTUQУSХ‘WСQ‘‘PХИЏHСS—Н€ИУУ•TХСQ‘‘PХФХT•WФ‘U—УSУ€€УУ•TХСQ‘‘PХРђQWФХT•WФ‘U—УSУ”Л€ЫЫќ\ЭШ]YЫЬћHHУУ•TХРРUQУФ–WРУУУ€ЫЫќ\ЭЫЫX›ФЭ\ќ\’YHУУP“ЧФХT•T—СђQУУ—Р”‘PU€ЫЫќ\ЭЫЫX›У[Э™\ИHРУУP“ЧФХT•T—СђQУУ—СSђСKУУP“ЧФХT•T—СђQУУ—ФђQСKУУP“ЧФХT•T—СђQУУ—Ф•TТУУP“ЧФХT•T—СђQУУ—ХRSK€]P[љ[TШЬљ\HР]P[љ[S[Э™WСYЫЫђњ™X]€ќ[Y\™[ќXЩS[Э™HH•QK€K‚€УSХ‘WРђUУ—ФTФЧHB€В€›[YHHУУTХS‘ФХ’S‘Кђ]Ы€\ЬИЉK€™\ШЬљ\[Ы€HУУTХS‘ФХ’S‘К€”ЭЪ]Ъ\ИЭ]H\Щ\€Ъ[W€‚€љЩY\[™ИY™™XЭИ[€^K€ЉK€™Y™™XЭHQ‘‘PХРђUУ—ФTФЛ€њЭЩ\€H€ќ\HHTWУ“Ф“PS€XШЭ\XЮHH€њH€ќ\™Щ]HT‘СUХTСT‹€њљ[Ьљ]HH€Ш]YЫЬћHHSPQСWРРUQУФ–WФХUTЛ€ћ“[Э™HHИ™Y™™XЭH—СQ‘‘PХФ‘TСUФХUИK€љYЫ›Ь™\Ф›ЭXЭH•QK€›Z\њ›Ь“[Э™P[›™YH•QK€ЫЫќ\ЭY™™XЭHЧХTUQУSХ‘WСQ‘‘PХИЏHСS—Н€ИУУ•TХСQ‘‘PХР‘UT—ХТUСУУСРУУ‘USУ€€УУ•TХСQ‘‘PХУPRСWС“УХТS‘ЧУSУ”ЧУ‘T•“ХTЛ€ЫЫќ\ЭШ]YЫЬћHHУУ•TХРРUQУФ–WРХUK€ЫЫќ\ЭЫЫX›ФЭ\ќ\’YH€ЫЫќ\ЭЫЫX›У[Э™\ИHРУУP“ЧФХT•T—РQТSUKУУP“ЧФХT•T—РSS‘TТPKУУP“ЧФХT•T—ТУ‘WРУUФЛУУP“ЧФХT•T—РРSWУRS‘УУP“ЧФХT•T—УђTХWФХУУP“ЧФХT•T—Ф“РТЧФУTТK€]P[љ[TШЬљ\HР]P[љ[S[Э™WР]Ы”\ЬЛ€ќ[Y\™[ќXЩS[Э™HH•QK€K‚€УSХ‘WСSђУФ‘WHB€В€›[YHHУУTХS‘ФХ’S‘К‘[ЫЬ™HЉK€™\ШЬљ\[Ы€HУУTХS‘ФХ’S‘К€“XZЩ\ИH›ЩH™\X]]Ч€‚€›\Э[Э™HЭ™\€И\›њЛ€ЉK€™Y™™XЭHQ‘‘PХСSђУФ‘K€њЭЩ\€H€ќ\HHTWУ“Ф“PS€XШЭ\XЮHHL€њHK€ќ\™Щ]HT‘СUФСSPХQ€њљ[Ьљ]HH€Ш]YЫЬћHHSPQСWРРUQУФ–WФХUTЛ€ћ“[Э™HHИ™Y™™XЭH—СQ‘‘PХФФХTМHK€›XYЪXРЫШ]Y™™XЭYH—ХTUQУSХ‘WС“QФИЏHСS—НK€™[ЫЬ™P[›™YH•QK€љYЫ›Ь™\ФЭXњЭ]]HH•QK€ЫЫќ\ЭY™™XЭHУУ•TХСQ‘‘PХУPRСWС“УХТS‘ЧУSУ”ЧУ‘T•“ХTЛ€ЫЫќ\ЭШ]YЫЬћHHУУ•TХРРUQУФ–WРХUK€ЫЫќ\ЭЫЫX›ФЭ\ќ\’YHУУP“ЧФХT•T—СSђУФ‘K€ЫЫќ\ЭЫЫX›У[Э™\ИHМK€]P[љ[TШЬљ\HР]P[љ[S[Э™WС[ЫЬ™K€ќ[Y\™[ќXЩS[Э™HH•QK€K‚€УSХ‘WФT”ХRUHB€В€›[YHHУУTХS‘ФХ’S‘К”\њЭZ]ЉK€™\ШЬљ\[Ы€HУУTХS‘ФХ’S‘К€’[™›XЭИY[XYЩHY€\ЩY€‚€›Ы€H›ЩHЭЪ]Ъ[™ИЭ]€ЉK€™Y™™XЭHQ‘‘PХФT”ХRU€њЭЩ\€H€ќ\HHTWСT’Л€XШЭ\XЮHHL€њHЊ€ќ\™Щ]HT‘СUФСSPХQ€њљ[Ьљ]HH€Ш]YЫЬћHHSPQСWРРUQУФ–WФTТPРS€›XZЩ\РЫЫќXЭH•QK€љYЫ›Ь™\ТЪ[™ЬФ›ШЪИH
+—ХTUQУSХ‘WС“QФИOHСS—МИ—ХTUQУSХ‘WС“QФИOHСS—Н
+K€ЫЫќ\ЭY™™XЭHЧХTUQУSХ‘WСQ‘‘PХИЏHСS—Н€ИУУ•TХСQ‘‘PХФХT•WУSУ”ЧФРSQWХTWРTPS€УУ•TХСQ‘‘PХРђQWФХT•WУSУ”ЧХТUСУУСРTPSЛ€ЫЫќ\ЭШ]YЫЬћHHУУ•TХРРUQУФ–WФУPT•€ЫЫќ\ЭЫЫX›ФЭ\ќ\’YH€ЫЫќ\ЭЫЫX›У[Э™\ИHМK€]P[љ[TШЬљ\HР]P[љ[S[Э™WФ\њЭZ]€ќ[Y\™[ќXЩS[Э™HH•QK€K‚€УSХ‘WФђTQФФS—HB€В€›[YHHУУTХS‘ФХ’S‘К”\YЬ[€ЉK€™\ШЬљ\[Ы€HУУTХS‘ФХ’S‘К€•\Щ\€Ь[њИ[™™[[Э™\ИЫЫYW€‚€ЪY€—ФФQQР•Q‘’S‘ЧФђTQФФS€ЏHСS—О€™Y™™XЭЛЪ[H\[™ИЬYY€ЉK€Щ[ЩB€™Y™™XЭЛ€ЉK€Щ[™Y‚€™Y™™XЭHQ‘‘PХФђTQФФS‹€њЭЩ\€H—ХTUQУSХ‘WСUHЏHСS—ОИL€Њ€ќ\HHTWУ“Ф“PS€XШЭ\XЮHHL€њH€ќ\™Щ]HT‘СUФСSPХQ€њљ[Ьљ]HH€Ш]YЫЬћHHSPQСWРРUQУФ–WФTТPРS€›XZЩ\РЫЫќXЭH•QK€ЪY€—ФФQQР•Q‘’S‘ЧФђTQФФS€ЏHСS—О€Y][Ы[Y™™XЭИHQUSУђSСQ‘‘PХКВ€›[Э™QY™™XЭHSХ‘WСQ‘‘PХФФФTЧМK€њЩ[€H•QK€Ъ[ЩHHL€JK€Щ[™Y‚€ЫЫќ\ЭY™™XЭHЧХTUQУSХ‘WСQ‘‘PХИЏHСS—Н€ИУУ•TХСQ‘‘PХР‘UT—ХТS—РUQQSђСWСVТUQ€УУ•TХСQ‘‘PХРU“ТQФХT•WУУђСK€ЫЫќ\ЭШ]YЫЬћHHУУ•TХРРUQУФ–WРУУУ€ЫЫќ\ЭЫЫX›ФЭ\ќ\’YH€ЫЫќ\ЭЫЫX›У[Э™\ИHМK€]P[љ[TШЬљ\HР]P[љ[S[Э™WФ\YЬ[‹€ќ[Y\™[ќXЩS[Э™HH•QK€K‚€УSХ‘WФХСQUФРСS•HB€В€›[YHHУУTХS‘ФХ’S‘К”ЭЩY]ШЩ[ќЉK€™\ШЬљ\[Ы€HУУTХS‘ФХ’S‘К€ЪY€—ХTUQУSХ‘WСUHЏHСS—Н‚€ђ[\™\ИH›Щ\ИИ\њЪW€‚€њ™YXЩH]\Ъ]™[™\ЬЛ€ЉK€Щ[ЩB€ђ[\™\ИH›Щ\ИИ™YXЩW€‚€™]\Ъ]™[™\ЬЛ€ЉK€Щ[™Y‚€™Y™™XЭH—ХTUQУSХ‘WСUHЏHСS—Н€ИQ‘‘PХСUђTТSУ—СХУ—М€€Q‘‘PХСUђTТSУ—СХУ‹€њЭЩ\€H€ќ\HHTWУ“Ф“PS€XШЭ\XЮHHL€њHЊ€ќ\™Щ]HT‘СUР“Х€њљ[Ьљ]HH€Ш]YЫЬћHHSPQСWРРUQУФ–WФХUTЛ€ћ“[Э™HHИ™Y™™XЭH—СQ‘‘PХРPРЧХTМHK€›XYЪXРЫШ]Y™™XЭYH•QK€ЫЫќ\ЭY™™XЭHЧХTUQУSХ‘WСQ‘‘PХИЏHСS—Н€ИУУ•TХСQ‘‘PХРU“ТQФХT•WУУђСH€УУ•TХСQ‘‘PХРђQWФХT•WФ‘U—УSУ”Л€ЫЫќ\ЭШ]YЫЬћHHУУ•TХРРUQУФ–WРХUK€ЫЫќ\ЭЫЫX›ФЭ\ќ\’YHУУP“ЧФХT•T—ФХСQUФРСS•€ЫЫќ\ЭЫЫX›У[Э™\ИHМK€]P[љ[TШЬљ\HР]P[љ[S[Э™WФЭЩY]ШЩ[ќ€ќ[Y\™[ќXЩS[Э™HH•QK€K‚€УSХ‘WТT“У—ХRSHB€В€›[YHHУУTХS‘ФХ’S‘К’\›Ы€Z[ЉK€™\ШЬљ\[Ы€HУУTХS‘ФХ’S‘К€ђ]XЪЬИЪ]H›ШЪЛZ\™€‚€ќZ[€X^HЭЩ\€Y™[њЩK€ЉK€™Y™™XЭHQ‘‘PХТU€њЭЩ\€HL€ќ\HHTWФХQS€XШЭ\XЮHHНK€њHMK€ќ\™Щ]HT‘СUФСSPХQ€њљ[Ьљ]HH€Ш]YЫЬћHHSPQСWРРUQУФ–WФTТPРS€›XZЩ\РЫЫќXЭH•QK€Y][Ы[Y™™XЭИHQUSУђSСQ‘‘PХКВ€›[Э™QY™™XЭHSХ‘WСQ‘‘PХСQ—УRS•TЧМK€Ъ[ЩHHМ€JK€ЫЫќ\ЭY™™XЭHЧХTUQУSХ‘WСQ‘‘PХИЏHСS—Н€ИУУ•TХСQ‘‘PХТQТWРTPSS‘И€УУ•TХСQ‘‘PХРђQWФХT•WС”“У•УSУ‹€ЫЫќ\ЭШ]YЫЬћHHУУ•TХРРUQУФ–WРУУУ€ЫЫќ\ЭЫЫX›ФЭ\ќ\’YH€ЫЫќ\ЭЫЫX›У[Э™\ИHМK€]P[љ[TШЬљ\HР]P[љ[S[Э™WТ\›Ы•Z[€ќ[Y\™[ќXЩS[Э™HH•QK€K‚€УSХ‘WУQUSРУUЧHB€В€›[YHHУУTХS‘ФХ’S‘К“Y][Ы]ИЉK€™\ШЬљ\[Ы€HУУTХS‘ФХ’S‘К€ђHЫ]И]XЪИ]X^W€‚€њZ\ЩHH\Щ\‰ЬИ]XЪЛ€ЉK€™Y™™XЭHQ‘‘PХТU€њЭЩ\€HL€ќ\HHTWФХQS€XШЭ\XЮHHMK€њHНK€ќ\™Щ]HT‘СUФСSPХQ€њљ[Ьљ]HH€Ш]YЫЬћHHSPQСWРРUQУФ–WФTТPРS€њЫXЪ[™У[Э™HH•QK€›XZЩ\РЫЫќXЭH•QK€Y][Ы[Y™™XЭИHQUSУђSСQ‘‘PХКВ€›[Э™QY™™XЭHSХ‘WСQ‘‘PХРUЧФTЧМK€њЩ[€H•QK€Ъ[ЩHHL€JK€ЫЫќ\ЭY™™XЭHУУ•TХСQ‘‘PХТQТWРTPSS‘Л€ЫЫќ\ЭШ]YЫЬћHHУУ•TХРРUQУФ–WРУУУ€ЫЫќ\ЭЫЫX›ФЭ\ќ\’YH€ЫЫќ\ЭЫЫX›У[Э™\ИHРУУP“ЧФХT•T—УQUSФУХS‘K€]P[љ[TШЬљ\HР]P[љ[S[Э™WУY][Ы]Л€ќ[Y\™[ќXЩS[Э™HH•QK€K‚€УSХ‘WХ’USХ“ХЧHB€В€›[YHHУУTХS‘ФХ’S‘К•љ][›ЭИЉK€™\ШЬљ\[Ы€HУУTХS‘ФХ’S‘К€“XZЩ\ИH\Щ\‰ЬИ[Э™H\Э€‚€ќ]]™]™\€Z\ЬЩ\Л€ЉK€™Y™™XЭHQ‘‘PХТU€њЭЩ\€HМ€ќ\HHTWС’QТS‘Л€XШЭ\XЮHH€њHL€ќ\™Щ]HT‘СUФСSPХQ€њљ[Ьљ]HHLK€Ш]YЫЬћHHSPQСWРРUQУФ–WФTТPРS€›XZЩ\РЫЫќXЭH•QK€ЫЫќ\ЭY™™XЭHЧХTUQУSХ‘WСQ‘‘PХИЏHСS—Н€ИУУ•TХСQ‘‘PХР‘UT—ТQ—УTХ€УУ•TХСQ‘‘PХУ‘VРTPSУUT‹€ЫЫќ\ЭШ]YЫЬћHHУУ•TХРРUQУФ–WРУУУ€ЫЫќ\ЭЫЫX›ФЭ\ќ\’YH€ЫЫќ\ЭЫЫX›У[Э™\ИHРУУP“ЧФХT•T—СђRСWУХUУУP“ЧФХT•T—СS•ђRS“QS•УУP“ЧФХT•T—ФVWУ’PС_K€]P[љ[TШЬљ\HР]P[љ[S[Э™WХљ][›ЭЛ€ќ[Y\™[ќXЩS[Э™HH•QK€K‚€УSХ‘WУSФ“’S‘ЧФХS—HB€В€›[YHHУУTХS‘ФХ’S‘К“[Ь›љ[™ИЭ[€ЉK€™\ШЬљ\[Ы€HУУTХS‘ФХ’S‘К€”™\ЭЬ™\И€H[[Э[ќ€‚€ќ\љY\ИЪ]HЩX]\‹€ЉK€™Y™™XЭHQ‘‘PХУSФ“’S‘ЧФХS‹€њЭЩ\€H€ќ\HHTWУ“Ф“PS€XШЭ\XЮHH€њHK€ќ\™Щ]HT‘СUХTСT‹€њљ[Ьљ]HH€Ш]YЫЬћHHSPQСWРРUQУФ–WФХUTЛ€ћ“[Э™HHИ™Y™™XЭH—СQ‘‘PХФ‘TСUФХUИK€љX[[™У[Э™HH•QK€њЫ]ЪY™™XЭYH•QK€љYЫ›Ь™\Ф›ЭXЭH•QK€›Z\њ›Ь“[Э™P[›™YH•QK€ЫЫќ\ЭY™™XЭHУУ•TХСQ‘‘PХФUPSUWСTS‘ЧУУ—ХSRS‘Л€ЫЫќ\ЭШ]YЫЬћHHУУ•TХРРUQУФ–WР‘PUUK€ЫЫќ\ЭЫЫX›ФЭ\ќ\’YH€ЫЫќ\ЭЫЫX›У[Э™\ИHРУУP“ЧФХT•T—ФХS“–WСV_K€]P[љ[TШЬљ\HР]P[љ[S[Э™WУ[Ь›љ[™ФЭ[‹€ќ[Y\™[ќXЩS[Э™HH•QK€K‚€УSХ‘WФЦS•TТTЧHB€В€›[YHHУУTХS‘ФХ’S‘К”Ю[ќ\Ъ\ИЉK€™\ШЬљ\[Ы€HУУTХS‘ФХ’S‘К€”™\ЭЬ™\И€H[[Э[ќ€‚€ќ\љY\ИЪ]HЩX]\‹€ЉK€™Y™™XЭHQ‘‘PХФЦS•TТTЛ€њЭЩ\€H€ќ\HHTWСФђTФЛ€XШЭ\XЮHH€њHK€ќ\™Щ]HT‘СUХTСT‹€њљ[Ьљ]HH€Ш]YЫЬћHHSPQСWРРUQУФ–WФХUTЛ€ћ“[Э™HHИ™Y™™XЭH—СQ‘‘PХФ‘TСUФХUИK€љX[[™У[Э™HH•QK€њЫ]ЪY™™XЭYH•QK€љYЫ›Ь™\Ф›ЭXЭH•QK€›Z\њ›Ь“[Э™P[›™YH•QK€ЫЫќ\ЭY™™XЭHУУ•TХСQ‘‘PХФUPSUWСTS‘ЧУУ—ХSRS‘Л€ЫЫќ\ЭШ]YЫЬћHHУУ•TХРРUQУФ–WФУPT•€ЫЫќ\ЭЫЫX›ФЭ\ќ\’YH€ЫЫќ\ЭЫЫX›У[Э™\ИHРУУP“ЧФХT•T—ФХS“–WСV_K€]P[љ[TШЬљ\HР]P[љ[S[Э™WФЮ[ќ\Ъ\Л€ќ[Y\™[ќXЩS[Э™HH•QK€K‚€УSХ‘WУSУУ“QТHB€В€›[YHHУУTХS‘ФХ’S‘К“[ЫЫ›YЪЉK€™\ШЬљ\[Ы€HУУTХS‘ФХ’S‘К€”™\ЭЬ™\И€H[[Э[ќ€‚€ќ\љY\ИЪ]HЩX]\‹€ЉK€™Y™™XЭHQ‘‘PХУSУУ“QТ€њЭЩ\€H€ќ\HH—ХTUQУSХ‘WХTTИЏHСS—Н€ИTWСђRT–H€TWУ“Ф“PS€XШЭ\XЮHH€њHK€ќ\™Щ]HT‘СUХTСT‹€њљ[Ьљ]HH€Ш]YЫЬћHHSPQСWРРUQУФ–WФХUTЛ€ћ“[Э™HHИ™Y™™XЭH—СQ‘‘PХФ‘TСUФХUИK€љX[[™У[Э™HH•QK€њЫ]ЪY™™XЭYH•QK€љYЫ›Ь™\Ф›ЭXЭH•QK€›Z\њ›Ь“[Э™P[›™YH•QK€ЫЫќ\ЭY™™XЭHУУ•TХСQ‘‘PХФUPSUWСTS‘ЧУУ—ХSRS‘Л€ЫЫќ\ЭШ]YЫЬћHHУУ•TХРРUQУФ–WР‘PUUK€ЫЫќ\ЭЫЫX›ФЭ\ќ\’YH€ЫЫќ\ЭЫЫX›У[Э™\ИHРУУP“ЧФХT•T—ФХS“–WСV_K€]P[љ[TШЬљ\HР]P[љ[S[Э™WУ[ЫЫ›YЪ€ќ[Y\™[ќXЩS[Э™HH•QK€K‚€УSХ‘WТQS—ФХСT—HB€В€›[YHHУУTХS‘ФХ’S‘К’Y[€ЭЩ\€ЉK€™\ШЬљ\[Ы€HУУTХS‘ФХ’S‘К€ЪY€—ТQS—ФХСT—СQИЏHСS—Н‚€•H\H\љY\Ч€‚€ќЪ]H\Щ\‹€ЉK€Щ[ЩB€•H\H[™Y™™XЭ]™[™\ЬЧ€‚€ќ\ћHЪ]H\Щ\‹€ЉK€Щ[™Y‚€њЭЩ\€H—ТQS—ФХСT—СQИЏHСS—Н€ИЊ€K€™Y™™XЭHQ‘‘PХТQS—ФХСT‹€ќ\HHTWУ“Ф“PS€XШЭ\XЮHHL€њHMK€ќ\™Щ]HT‘СUФСSPХQ€њљ[Ьљ]HH€Ш]YЫЬћHHSPQСWРРUQУФ–WФФPТPS€ЫЫќ\ЭY™™XЭHУУ•TХСQ‘‘PХФ‘TUUSУ—У“ХР“Ф’S‘Л€ЫЫќ\ЭШ]YЫЬћHHУУ•TХРРUQУФ–WФУPT•€ЫЫќ\ЭЫЫX›ФЭ\ќ\’YH€ЫЫќ\ЭЫЫX›У[Э™\ИHМK€]P[љ[TШЬљ\HР]P[љ[S[Э™WТY[”ЭЩ\‹€ќ[Y\™[ќXЩS[Э™HH•QK€K‚€УSХ‘WРФ“ФФЧРТФHB€В€›[YHHУУTХS‘ФХ’S‘КђЬ›ЬЬИЪЬЉK€™\ШЬљ\[Ы€HУУTХS‘ФХ’S‘К€ђHЭX›KXЪЬ[™И]XЪЛ—€‚€’YЪЬљ]XШ[Z]][Л€ЉK€™Y™™XЭHQ‘‘PХТU€њЭЩ\€HL€ќ\HHTWС’QТS‘Л€XШЭ\XЮHH€Ьљ]XШ[]ЭYЩHH—ХTUQУSХ‘WСUHЏHСS—МИИH€‹€њHK€ќ\™Щ]HT‘СUФСSPХQ€њљ[Ьљ]HH€Ш]YЫЬћHHSPQСWРРUQУФ–WФTТPРS€›XZЩ\РЫЫќXЭH•QK€ЫЫќ\ЭY™™XЭHУУ•TХСQ‘‘PХРQ‘‘PХQР–WФ‘U—РTPS€ЫЫќ\ЭШ]YЫЬћHHУУ•TХРРUQУФ–WРУУУ€ЫЫќ\ЭЫЫX›ФЭ\ќ\’YH€ЫЫќ\ЭЫЫX›У[Э™\ИHРУУP“ЧФХT•T—С“РХTЧСS‘T‘Ц_K€]P[љ[TШЬљ\HР]P[љ[S[Э™WРЬ›ЬЬРЪЬ€ќ[Y\™[ќXЩS[Э™HH•QK€K‚€УSХ‘WХТTХT—HB€В€›[YHHУУTХS‘ФХ’S‘К•Ъ\Э\€ЉK€™\ШЬљ\[Ы€HУУTХS‘ФХ’S‘К€•Ъ\И\HљXЪ[Э\ИЪ\Э\—€‚€ќИX\€]›Щ\Л€X^H›[Ъ€ЉK€™Y™™XЭHQ‘‘PХТU€њЭЩ\€H€ќ\HHTWСђQУУ‹€XШЭ\XЮHHL€њHЊ€ќ\™Щ]HT‘СUР“Х€њљ[Ьљ]HH€Ш]YЫЬћHHSPQСWРРUQУФ–WФФPТPS€љYЫ›Ь™\ТЪ[™ЬФ›ШЪИH—ХTUQУSХ‘WС“QФИСS—МЛ€™[XYЩ\РZ\›Ь›™QЭX›Q[XYЩHH•QK€ќЪ[™[Э™HH•QK€Y][Ы[Y™™XЭИHQUSУђSСQ‘‘PХКВ€›[Э™QY™™XЭHSХ‘WСQ‘‘PХС“SђТ€Ъ[ЩHHЊ€JK€ЫЫќ\ЭY™™XЭHЧХTUQУSХ‘WСQ‘‘PХИЏHСS—Н€ИУУ•TХСQ‘‘PХТQТWРTPSS‘И€УУ•TХСQ‘‘PХФРФђSP“WУ‘VХT“—УФ‘T‹€ЫЫќ\ЭШ]YЫЬћHHУУ•TХРРUQУФ–WРУУУ€ЫЫќ\ЭЫЫX›ФЭ\ќ\’YH€ЫЫќ\ЭЫЫX›У[Э™\ИHМK€]P[љ[TШЬљ\HР]P[љ[S[Э™WХЪ\Э\‹€K‚€УSХ‘WФђRS—СSђСWHB€В€›[YHHУУTХS‘ФХ’S‘К”Z[€[ЩHЉK€™\ШЬљ\[Ы€HУУTХS‘ФХ’S‘К€ђ›ЫЬЭИHЭЩ\€Щ€Ш]\‹W€‚€ќ\H[Э™\И›Ь€H\›њЛ€ЉK€™Y™™XЭHQ‘‘PХХСPUT‹€њЭЩ\€H€ќ\HHTWХРUT‹€XШЭ\XЮHH€њHK€ќ\™Щ]HT‘СUС’QS€њљ[Ьљ]HH€Ш]YЫЬћHHSPQСWРРUQУФ–WФХUTЛ€ћ“[Э™HHИ™Y™™XЭH—СQ‘‘PХФФХTМHK€љYЫ›Ь™\Ф›ЭXЭH•QK€›Z\њ›Ь“[Э™P[›™YH•QK€\™Э[Y[ќHИќЩX]\•\HHђUWХСPUT—ФђRS€K€ЫЫќ\ЭY™™XЭHУУ•TХСQ‘‘PХР‘UT—ХТS—РUQQSђСWСVТUQ€ЫЫќ\ЭШ]YЫЬћHHЧХTUQУSХ‘WРРUQУФ’QTИЏHСS—Н€ИУУ•TХРРUQУФ–WР‘PUUH€УУ•TХРРUQУФ–WХХQТ€ЫЫќ\ЭЫЫX›ФЭ\ќ\’YHУУP“ЧФХT•T—ФђRS—СSђСK€ЫЫќ\ЭЫЫX›У[Э™\ИHМK€]P[љ[TШЬљ\HР]P[љ[S[Э™WФZ[‘[ЩK€ќ[Y\™[ќXЩS[Э™HH•QK€K‚€УSХ‘WФХS“–WСVWHB€В€›[YHHУУTХS‘ФХ’S‘К”Э[›ћH^HЉK€™\ШЬљ\[Ы€HУУTХS‘ФХ’S‘К€ђ›ЫЬЭИHЭЩ\€Щ€љ\™KW€‚€ќ\H[Э™\И›Ь€H\›њЛ€ЉK€™Y™™XЭHQ‘‘PХХСPUT‹€њЭЩ\€H€ќ\HHTWС’T‘K€XШЭ\XЮHH€њHK€ќ\™Щ]HT‘СUС’QS€њљ[Ьљ]HH€Ш]YЫЬћHHSPQСWРРUQУФ–WФХUTЛ€ћ“[Э™HHИ™Y™™XЭH—СQ‘‘PХФФХTМHK€љYЫ›Ь™\Ф›ЭXЭH•QK€›Z\њ›Ь“[Э™P[›™YH•QK€\™Э[Y[ќHИќЩX]\•\HHђUWХСPUT—ФХS€K€ЫЫќ\ЭY™™XЭHУУ•TХСQ‘‘PХР‘UT—ХТS—РUQQSђСWСVТUQ€ЫЫќ\ЭШ]YЫЬћHHУУ•TХРРUQУФ–WР‘PUUK€ЫЫќ\ЭЫЫX›ФЭ\ќ\’YHУУP“ЧФХT•T—ФХS“–WСVK€ЫЫќ\ЭЫЫX›У[Э™\ИHМK€]P[љ[TШЬљ\HР]P[љ[S[Э™WФЭ[›ћQ^K€ќ[Y\™[ќXЩS[Э™HH•QK€K‚€УSХ‘WРФ•SђТHB€В€›[YHHУУTХS‘ФХ’S‘КђЬќ[ЪЉK€™\ШЬљ\[Ы€HУУTХS‘ФХ’S‘К€ђЬќ[Ъ\ИЪ]Ъ\њ[™ЬЛ—€‚€ЪY€—ХTUQУSХ‘WСUHЏHСS—Н€“X^HЭЩ\€Y™[њЩK€ЉK€Щ[ЩB€“X^HЭЩ\€Ь€Y‹€ЉK€Щ[™Y‚€™Y™™XЭHQ‘‘PХТU€њЭЩ\€H€ќ\HHTWСT’Л€XШЭ\XЮHHL€њHMK€ќ\™Щ]HT‘СUФСSPХQ€њљ[Ьљ]HH€Ш]YЫЬћHHSPQСWРРUQУФ–WФTТPРS€›XZЩ\РЫЫќXЭH•QK€љ][™У[Э™HH•QK€Y][Ы[Y™™XЭИHQUSУђSСQ‘‘PХКВ€ЪY€—ХTUQУSХ‘WСUHЏHСS—Н€›[Э™QY™™XЭHSХ‘WСQ‘‘PХСQ—УRS•TЧМK€Щ[ЩB€›[Э™QY™™XЭHSХ‘WСQ‘‘PХФФСQ—УRS•TЧМK€Щ[™Y‚€Ъ[ЩHHЊ€JK€ЫЫќ\ЭY™™XЭHУУ•TХСQ‘‘PХРђQWФХT•WС”“У•УSУ‹€ЫЫќ\ЭШ]YЫЬћHHУУ•TХРРUQУФ–WХХQТ€ЫЫќ\ЭЫЫX›ФЭ\ќ\’YH€ЫЫќ\ЭЫЫX›У[Э™\ИHРУУP“ЧФХT•T—ФРРT–WСђPС_K€]P[љ[TШЬљ\HР]P[љ[S[Э™WРЬќ[Ъ€ќ[Y\™[ќXЩS[Э™HH•QK€K‚€УSХ‘WУRT”“Ф—РУРUHB€В€›[YHHУУTХS‘ФХ’S‘К“Z\њ›Ь€ЫШ]ЉK€™\ШЬљ\[Ы€HУУTХS‘ФХ’S‘К€ђЫЭ[ќ\њИH›ЩIЬИЬXЪX[€‚€]XЪИ]ЭX›HHЭЩ\‹€ЉK€™Y™™XЭHQ‘‘PХФ‘Q“PХСSPQСK€њЭЩ\€HK€ќ\HHTWФЦPТPЛ€XШЭ\XЮHHL€њHЊ€ќ\™Щ]HT‘СUСTS‘Л€њљ[Ьљ]HHMK€Ш]YЫЬћHHSPQСWРРUQУФ–WФФPТPS€\™Э[Y[ќHВ€њ™Y›XЭ[XYЩK™[XYЩT\Щ[ќHЊ€њ™Y›XЭ[XYЩK™[XYЩPШ]YЫЬљY\ИH]HSPQСWРРUQУФ–WФФPТPS€K€љYЫ›Ь™\Ф›ЭXЭH—ХTUQУSХ‘WС“QФИСS—НK€›Z\њ›Ь“[Э™P[›™YH—ХTUQУSХ‘WС“QФИЏHСS—Н€›YQљ\њЭ[›™YH•QK€›Y]›Ы›ЫYP[›™YH•QK€ЫЬXШ][›™YH—ХTUQУSХ‘WС“QФИHСS—О€\ЬЪ\Э[›™YH•QK€ЫЫќ\ЭY™™XЭHЧХTUQУSХ‘WСQ‘‘PХИЏHСS—Н€ИУУ•TХСQ‘‘PХР‘UT—ТQ—УTХ€УУ•TХСQ‘‘PХРU“ТQФХT•WУУђСK€ЫЫќ\ЭШ]YЫЬћHHУУ•TХРРUQУФ–WР‘PUUK€ЫЫќ\ЭЫЫX›ФЭ\ќ\’YH€ЫЫќ\ЭЫЫX›У[Э™\ИHРУУP“ЧФХT•T—ХUS•УУP“ЧФХT•T—СSђУФ‘KУУP“ЧФХT•T—ХФ“QS•K€]P[љ[TШЬљ\HР]P[љ[S[Э™WУZ\њ›ЬђЫШ]€ќ[Y\™[ќXЩS[Э™HH•QK€K‚€УSХ‘WФЦPТХTHB€В€›[YHHУУTХS‘ФХ’S‘К”ЮXЪ\ЉK€™\ШЬљ\[Ы€HУУTХS‘ФХ’S‘К€ђЫЬY\И›ЩIЬИЭ]Ъ[™Щ\Ч€‚€[™Ъ]™\ИИH\Щ\‹€ЉK€™Y™™XЭHQ‘‘PХФЦPТХT€њЭЩ\€H€ќ\HHTWУ“Ф“PS€XШЭ\XЮHH€њHL€ќ\™Щ]HT‘СUФСSPХQ€њљ[Ьљ]HH€Ш]YЫЬћHHSPQСWРРUQУФ–WФХUTЛ€ћ“[Э™HHИ™Y™™XЭH—СQ‘‘PХФ‘PУХ‘T—ТK€љYЫ›Ь™\Ф›ЭXЭH•QK€љYЫ›Ь™\ФЭXњЭ]]HH•QK€›Z\њ›Ь“[Э™P[›™YH•QK€њЫ]ЪY™™XЭYH—ХTUQУSХ‘WС“QФИСS—НK€ЫЫќ\ЭY™™XЭHУУ•TХСQ‘‘PХР‘UT—ТQ—ФРSQWХTK€ЫЫќ\ЭШ]YЫЬћHHУУ•TХРРUQУФ–WФУPT•€ЫЫќ\ЭЫЫX›ФЭ\ќ\’YH€ЫЫќ\ЭЫЫX›У[Э™\ИHМK€]P[љ[TШЬљ\HР]P[љ[S[Э™WФЮXЪ\€ќ[Y\™[ќXЩS[Э™HH•QK€K‚€УSХ‘WСV‘SQWФФQQHB€В€›[YHHУУTХS‘ФХ’S‘К‘^™[YHЬYYЉK€™\ШЬљ\[Ы€HУУTХS‘ФХ’S‘К€ђ[€^™[Y[H\Э[™€‚€њЭЩ\™ќ[]XЪЛ€ЉK€™Y™™XЭHQ‘‘PХТU€њЭЩ\€H€ќ\HHTWУ“Ф“PS€XШЭ\XЮHHL€њHK€ќ\™Щ]HT‘СUФСSPХQ€њљ[Ьљ]HH—ХTUQУSХ‘WСUHЏHСS—НHИ€€K€Ш]YЫЬћHHSPQСWРРUQУФ–WФTТPРS€›XZЩ\РЫЫќXЭH•QK€ЫЫќ\ЭY™™XЭHУУ•TХСQ‘‘PХУ‘VРTPSСPT“QT‹€ЫЫќ\ЭШ]YЫЬћHHУУ•TХРРUQУФ–WРУУУ€ЫЫќ\ЭЫЫX›ФЭ\ќ\’YH€ЫЫќ\ЭЫЫX›У[Э™\ИHМK€]P[љ[TШЬљ\HР]P[љ[S[Э™WС^™[YTЬYY€ќ[Y\™[ќXЩS[Э™HH•QK€K‚€УSХ‘WРSђТQS•ФХСT—HB€В€›[YHHУУTХS‘ФХ’S‘Кђ[ЪY[ќЭЩ\€ЉK€™\ШЬљ\[Ы€HУУTХS‘ФХ’S‘К€ђ[€]XЪИ]X^HZ\ЩW€‚€[Э]Л€ЉK€™Y™™XЭHQ‘‘PХТU€њЭЩ\€HЊ€ќ\HHTWФ“РТЛ€XШЭ\XЮHHL€њHK€ќ\™Щ]HT‘СUФСSPХQ€њљ[Ьљ]HH€Ш]YЫЬћHHSPQСWРРUQУФ–WФФPТPS€›XZЩ\РЫЫќXЭH—ХTUQУSХ‘WСUHСS—Н€Y][Ы[Y™™XЭИHQUSУђSСQ‘‘PХКВ€›[Э™QY™™XЭHSХ‘WСQ‘‘PХРSФХUЧХT€њЩ[€H•QK€Ъ[ЩHHL€JK€ЫЫќ\ЭY™™XЭHУУ•TХСQ‘‘PХТST“Х‘WРУУ‘USУ—Ф‘U‘S•У‘T•“ХTУ‘TФЛ€ЫЫќ\ЭШ]YЫЬћHHУУ•TХРРUQУФ–WХХQТ€ЫЫќ\ЭЫЫX›ФЭ\ќ\’YH€ЫЫќ\ЭЫЫX›У[Э™\ИHМK€]P[љ[TШЬљ\HР]P[љ[S[Э™WР[ЪY[ќЭЩ\‹€ќ[Y\™[ќXЩS[Э™HH•QK€K‚€УSХ‘WФТQХЧРђSHB€В€›[YHHУУTХS‘ФХ’S‘К”ЪYЭИ[ЉK€™\ШЬљ\[Ы€HУУTХS‘ФХ’S‘К€’\›ИH›XЪИ›Ш€]X^W€‚€›ЭЩ\€H›ЩIЬИЬ€Y‹€ЉK€™Y™™XЭHQ‘‘PХТU€њЭЩ\€H€ќ\HHTWСТФХ€XШЭ\XЮHHL€њHMK€ќ\™Щ]HT‘СUФСSPХQ€њљ[Ьљ]HH€Ш]YЫЬћHHSPQСWРРUQУФ–WФФPТPS€[\ЭXУ[Э™HH•QK€Y][Ы[Y™™XЭИHQUSУђSСQ‘‘PХКВ€›[Э™QY™™XЭHSХ‘WСQ‘‘PХФФСQ—УRS•TЧМK€Ъ[ЩHHЊ€JK€ЫЫќ\ЭY™™XЭHЧХTUQУSХ‘WСQ‘‘PХИЏHСS—Н€ИУУ•TХСQ‘‘PХТQТWРTPSS‘И€УУ•TХСQ‘‘PХФТQ•Т•QСWРUS•SУ‹€ЫЫќ\ЭШ]YЫЬћHHУУ•TХРРUQУФ–WФУPT•€ЫЫќ\ЭЫЫX›ФЭ\ќ\’YH€ЫЫќ\ЭЫЫX›У[Э™\ИHМK€]P[љ[TШЬљ\HР]P[љ[S[Э™WФЪYЭР[€ќ[Y\™[ќXЩS[Э™HH•QK€K‚€УSХ‘WС•UT‘WФТQТHB€В€›[YHHУУTХS‘ФХ’S‘К‘ќ]\™HЪYЪЉK€™\ШЬљ\[Ы€HУУTХS‘ФХ’S‘К€’ZYЪ[њИ[›™\€ЭЩ\€Ч€‚€њЭљZЩH€\›њИ]\‹€ЉK€ЪY€—ХTUQУSХ‘WСUHЏHСS—Н‚€њЭЩ\€HLЊ€Щ[Y€—ХTUQУSХ‘WСUHOHСS—НB€њЭЩ\€HL€Щ[ЩB€њЭЩ\€H€Щ[™Y‚€™Y™™XЭHQ‘‘PХС•UT‘WФТQТ€ќ\HHTWФЦPТPЛ€XШЭ\XЮHH—ХTUQУSХ‘WСUHЏHСS—НHИL€L€њH—ХTUQУSХ‘WСUHЏHСS—НHИL€MK€ќ\™Щ]HT‘СUФСSPХQ€њљ[Ьљ]HH€Ш]YЫЬћHHSPQСWРРUQУФ–WФФPТPS€љYЫ›Ь™\Ф›ЭXЭH•QK€›Z\њ›Ь“[Э™P[›™YH•QK€ЫЫќ\ЭY™™XЭHЧХTUQУSХ‘WСQ‘‘PХИЏHСS—Н€ИУУ•TХСQ‘‘PХР‘UT—ТQ—ФРSQWХTH€УУ•TХСQ‘‘PХСУ•СVТUWРUQQSђСK€ЫЫќ\ЭШ]YЫЬћHHУУ•TХРРUQУФ–WФУPT•€ЫЫќ\ЭЫЫX›ФЭ\ќ\’YH€ЫЫќ\ЭЫЫX›У[Э™\ИHРУУP“ЧФХT•T—РРSWУRS‘УУP“ЧФХT•T—РУУ‘•TТSУ‹УУP“ЧФХT•T—ТТS‘TТTЛУУP“ЧФХT•T—ФЦPТPЯK€]P[љ[TШЬљ\HР]P[љ[S[Э™WСќ]\™TЪYЪ€ќ[Y\™[ќXЩS[Э™HH•QK€K‚€УSХ‘WФ“РТЧФУPTТHB€В€›[YHHУУTХS‘ФХ’S‘К”›ШЪИЫX\ЪЉK€™\ШЬљ\[Ы€HУУTХS‘ФХ’S‘К€ђH›ШЪЛXЬќ\Ъ[™И]XЪЧ€‚€ќ]X^HЭЩ\€Y™[њЩK€ЉK€™Y™™XЭHQ‘‘PХТU€њЭЩ\€H—ХTUQУSХ‘WСUHЏHСS—НИ€Њ€ќ\HHTWС’QТS‘Л€XШЭ\XЮHHL€њHMK€ќ\™Щ]HT‘СUФСSPХQ€њљ[Ьљ]HH€Ш]YЫЬћHHSPQСWРРUQУФ–WФTТPРS€›XZЩ\РЫЫќXЭH•QK€Y][Ы[Y™™XЭИHQUSУђSСQ‘‘PХКВ€›[Э™QY™™XЭHSХ‘WСQ‘‘PХСQ—УRS•TЧМK€Ъ[ЩHHL€JK€ЫЫќ\ЭY™™XЭHЧХTUQУSХ‘WСQ‘‘PХИЏHСS—Н€ИУУ•TХСQ‘‘PХТQТWРTPSS‘И€УУ•TХСQ‘‘PХР‘UT—ХТUСУУСРУУ‘USУ‹€ЫЫќ\ЭШ]YЫЬћHHУУ•TХРРUQУФ–WХХQТ€ЫЫќ\ЭЫЫX›ФЭ\ќ\’YH€ЫЫќ\ЭЫЫX›У[Э™\ИHМK€]P[љ[TШЬљ\HР]P[љ[S[Э™WФ›ШЪФЫX\Ъ€ќ[Y\™[ќXЩS[Э™HH•QK€K‚€УSХ‘WХТT“УУHB€В€›[YHHУУTХS‘ФХ’S‘К•Ъ\›ЫЫЉK€™\ШЬљ\[Ы€HУУTХS‘ФХ’S‘К€•\И[™\ќИH›ЩH[—€‚€HЪ\›ЫЫ›Ь€ђ’S‘S‘ЧХT“”И€\›њЛ€ЉK€™Y™™XЭHQ‘‘PХТU€њЭЩ\€H—ХTUQУSХ‘WСUHЏHСS—НHИНH€MK€ќ\HHTWХРUT‹€XШЭ\XЮHH—ХTUQУSХ‘WСUHЏHСS—НHИH€М€њHMK€ќ\™Щ]HT‘СUФСSPХQ€њљ[Ьљ]HH€Ш]YЫЬћHHSPQСWРРUQУФ–WФФPТPS€љYЫ›Ь™\ТЪ[™ЬФ›ШЪИH—ХTUQУSХ‘WС“QФИСS—МЛ€™[XYЩ\Х[™\ќШ]\€H•QK€Y][Ы[Y™™XЭИHQUSУђSСQ‘‘PХКВ€›[Э™QY™™XЭHSХ‘WСQ‘‘PХХФђT€›][\Эљ[™ЛќЬ\YH—УTСЧХФђTQХТT“УУ€JK€ЫЫќ\ЭY™™XЭHУУ•TХСQ‘‘PХСУ•СVТUWРUQQSђСK€ЫЫќ\ЭШ]YЫЬћHHУУ•TХРРUQУФ–WР‘PUUK€ЫЫќ\ЭЫЫX›ФЭ\ќ\’YH€ЫЫќ\ЭЫЫX›У[Э™\ИHРУУP“ЧФХT•T—ФђRS—СSђС_K€]P[љ[TШЬљ\HР]P[љ[S[Э™WХЪ\›ЫЫ€ќ[Y\™[ќXЩS[Э™HH•QK€K‚€УSХ‘WР‘PUХTHB€В€›[YHHУУTХS‘ФХ’S‘Кђ™X]\ЉK€™\ШЬљ\[Ы€HУУTХS‘ФХ’S‘К€”Э[[[ЫњИ\ќHЪрк[[Ы€Ч€‚€љ›Ъ[€[€H]XЪЛ€ЉK€™Y™™XЭHQ‘‘PХР‘PUХT€њЭЩ\€H—ХTUQУSХ‘WСUHЏHСS—НHИH€L€ќ\HHTWСT’Л€XШЭ\XЮHHL€њHL€ќ\™Щ]HT‘СUФСSPХQ€њљ[Ьљ]HH€Ш]YЫЬћHHSPQСWРРUQУФ–WФTТPРS€Y][Ы[Y™™XЭИHQUSУђSСQ‘‘PХКВ€›[Э™QY™™XЭHSХ‘WСQ‘‘PХР‘PUХTУQTФРQСK€њ™P]XЪСY™™XЭH•QK€њЩ[€H•QK€JK€ЫЫќ\ЭY™™XЭHЧХTUQУSХ‘WСQ‘‘PХИЏHСS—Н€ИУУ•TХСQ‘‘PХР‘UT—ХТUСУУСРУУ‘USУ€€УУ•TХСQ‘‘PХРђQWФХT•WУSУ”ЧХТUСУУСРTPSЛ€ЫЫќ\ЭШ]YЫЬћHHУУ•TХРРUQУФ–WФУPT•€ЫЫќ\ЭЫЫX›ФЭ\ќ\’YH€ЫЫќ\ЭЫЫX›У[Э™\ИHМK€]P[љ[TШЬљ\HР]P[љ[S[Э™WР™X]\€ќ[Y\™[ќXЩS[Э™HH•QK€K‚€УSХ‘WСђRСWУХUHB€В€›[YHHУУTХS‘ФХ’S‘К‘ZЩHЭ]ЉK€™\ШЬљ\[Ы€HУУTХS‘ФХ’S‘К€“[Э™\И\Э[™›[Ъ\Л€Ы›W€‚€ќЫЬљЬИЫ€\Щ\‰ЬИ\Э\›‹€ЉK€њљ[Ьљ]HH—ХTUQУSХ‘WСUHЏHСS—НHИИ€K€›XZЩ\РЫЫќXЭH—ХTUQУSХ‘WСUHЏHСS—Н€™Y™™XЭHQ‘‘PХС’T”ХХT“—УУ“K€њЭЩ\€H€ќ\HHTWУ“Ф“PS€XШЭ\XЮHHL€њHL€ќ\™Щ]HT‘СUФСSPХQ€Ш]YЫЬћHHSPQСWРРUQУФ–WФTТPРS€Y][Ы[Y™™XЭИHQUSУђSСQ‘‘PХКВ€›[Э™QY™™XЭHSХ‘WСQ‘‘PХС“SђТ€Ъ[ЩHHL€JK€ЫЫќ\ЭY™™XЭHЧХTUQУSХ‘WСQ‘‘PХИЏHСS—Н€ИУУ•TХСQ‘‘PХФХT•WФ‘U—УSУ€€УУ•TХСQ‘‘PХФХT•WУSУ”ЧФРSQWХTWРTPS€ЫЫќ\ЭШ]YЫЬћHHУУ•TХРРUQУФ–WРХUK€ЫЫќ\ЭЫЫX›ФЭ\ќ\’YHУУP“ЧФХT•T—СђRСWУХU€ЫЫќ\ЭЫЫX›У[Э™\ИHМK€]P[љ[TШЬљ\HР]P[љ[S[Э™WСZЩSЭ]€ќ[Y\™[ќXЩS[Э™HH•QK€K‚€УSХ‘WХT“РT—HB€В€›[YHHУУTХS‘ФХ’S‘К•\›Ш\€ЉK€™\ШЬљ\[Ы€HУУTХS‘ФХ’S‘К€ЪY€—ХT“РT—ХT“”ИЏHСS—НB€ђШ]\Щ\И[€\›Ш\€›Ь€Ч€‚€Щ[ЩB€ђШ]\Щ\И[€\›Ш\€›Ь€€ИW€‚€Щ[™Y‚€ќ\›њИ[™™]™[ќИЫY\€ЉK€™Y™™XЭHQ‘‘PХХT“РT‹€њЭЩ\€H—ХTUQУSХ‘WСUHЏHСS—НHИL€L€ќ\HHTWУ“Ф“PS€XШЭ\XЮHHL€њHL€ќ\™Щ]HT‘СUФђS‘УK€њљ[Ьљ]HH€Ш]YЫЬћHHSPQСWРРUQУФ–WФФPТPS€љYЫ›Ь™\ФЭXњЭ]]HH—ХTUQУSХ‘WС“QФИЏHСS—Н‹€њЫЭ[™[Э™HH•QK€њЫY\[Р[›™YH•QK€љ[њЭќXЭ[›™YH•QK€њ\™[ќ[›Ы™[›™YH•QK€Y][Ы[Y™™XЭИHQUSУђSСQ‘‘PХКВ€›[Э™QY™™XЭHSХ‘WСQ‘‘PХХT“РT‹€њЩ[€H•QK€JK€ЫЫќ\ЭY™™XЭHЧХTUQУSХ‘WСQ‘‘PХИЏHСS—Н€ИУУ•TХСQ‘‘PХФХT•WУSУ—ХТUТ•QСTЧРUS•SУ€€УУ•TХСQ‘‘PХФРФђSP“WУ‘VХT“—УФ‘T‹€ЫЫќ\ЭШ]YЫЬћHHУУ•TХРРUQУФ–WРХUK€ЫЫќ\ЭЫЫX›ФЭ\ќ\’YH€ЫЫќ\ЭЫЫX›У[Э™\ИHМK€]P[љ[TШЬљ\HР]P[љ[S[Э™WХ\›Ш\‹€ќ[Y\™[ќXЩS[Э™HH•QK€K‚€УSХ‘WФХРТФSWHB€В€›[YHHУУTХS‘ФХ’S‘К”ЭШЪЬ[HЉK€™\ШЬљ\[Ы€HУУTХS‘ФХ’S‘К€ђЪ\™Щ\И\ЭЩ\€›Ь€\Ч€‚€ЊИ\›њЛ€ЉK€™Y™™XЭHQ‘‘PХФХРТФSK€њЭЩ\€H€ќ\HHTWУ“Ф“PS€XШЭ\XЮHH€њH—ХTUQУSХ‘WСUHЏHСS—НИЊ€L€ќ\™Щ]HT‘СUХTСT‹€њљ[Ьљ]HH€Ш]YЫЬћHHSPQСWРРUQУФ–WФХUTЛ€ћ“[Э™HHИ™Y™™XЭH—СQ‘‘PХФ‘PУХ‘T—ТK€њЫ]ЪY™™XЭYH•QK€љYЫ›Ь™\Ф›ЭXЭH•QK€›Z\њ›Ь“[Э™P[›™YH•QK€ЫЫќ\ЭY™™XЭHЧХTUQУSХ‘WСQ‘‘PХИЏHСS—Н€ИУУ•TХСQ‘‘PХТST“Х‘WРУУ‘USУ—Ф‘U‘S•У‘T•“ХTУ‘TФИ€УУ•TХСQ‘‘PХРU“ТQФХT•WУУђСK€ЫЫќ\ЭШ]YЫЬћHHУУ•TХРРUQУФ–WХХQТ€ЫЫќ\ЭЫЫX›ФЭ\ќ\’YHУУP“ЧФХT•T—ФХРТФSK€ЫЫќ\ЭЫЫX›У[Э™\ИHМK€]P[љ[TШЬљ\HР]P[љ[S[Э™WФЭШЪЬ[K€ќ[Y\™[ќXЩS[Э™HH•QK€K‚€УSХ‘WФФUХTHB€В€›[YHHУУTХS‘ФХ’S‘К”Ь]\ЉK€™\ШЬљ\[Ы€HУУTХS‘ФХ’S‘К€”™[X\Щ\ИЭШЪЬ[YЭЩ\—€‚€ЉH[Ь™HH™]\ЉK€ЉK€™Y™™XЭHQ‘‘PХФФUХT€њЭЩ\€HK€ќ\HHTWУ“Ф“PS€XШЭ\XЮHHL€њHL€ќ\™Щ]HT‘СUФСSPХQ€њљ[Ьљ]HH€Ш]YЫЬћHHSPQСWРРUQУФ–WФФPТPS€›Z\њ›Ь“[Э™P[›™YH•QK€ЫЫќ\ЭY™™XЭHЧХTUQУSХ‘WСQ‘‘PХИЏHСS—Н€ИУУ•TХСQ‘‘PХР‘UT—ХТUСУУСРУУ‘USУ€€УУ•TХСQ‘‘PХТQТWРTPSS‘Л€ЫЫќ\ЭШ]YЫЬћHHУУ•TХРРUQУФ–WХХQТ€ЫЫќ\ЭЫЫX›ФЭ\ќ\’YH€ЫЫќ\ЭЫЫX›У[Э™\ИHРУУP“ЧФХT•T—ФХРТФS_K€]P[љ[TШЬљ\HР]P[љ[S[Э™WФЬ]\€ќ[Y\™[ќXЩS[Э™HH•QK€K‚€УSХ‘WФХРSХЧHB€В€›[YHHУУTХS‘ФХ’S‘К”ЭШ[ЭИЉK€™\ШЬљ\[Ы€HУУTХS‘ФХ’S‘К€ђXњЫЬњИЭШЪЬ[YЭЩ\—€‚€[™™\ЭЬ™\И€ЉK€™Y™™XЭHQ‘‘PХФХРSХЛ€њЭЩ\€H€ќ\HHTWУ“Ф“PS€XШЭ\XЮHH€њHL€ќ\™Щ]HT‘СUХTСT‹€њљ[Ьљ]HH€Ш]YЫЬћHHSPQСWРРUQУФ–WФХUTЛ€ћ“[Э™HHИ™Y™™XЭH—СQ‘‘PХФ‘TСUФХUИK€љX[[™У[Э™HH•QK€њЫ]ЪY™™XЭYH•QK€љYЫ›Ь™\Ф›ЭXЭH•QK€›Z\њ›Ь“[Э™P[›™YH•QK€ЫЫќ\ЭY™™XЭHЧХTUQУSХ‘WСQ‘‘PХИЏHСS—Н€ИУУ•TХСQ‘‘PХРU“ТQФХT•WУУђСH€УУ•TХСQ‘‘PХТST“Х‘WРУУ‘USУ—Ф‘U‘S•У‘T•“ХTУ‘TФЛ€ЫЫќ\ЭШ]YЫЬћHHУУ•TХРРUQУФ–WХХQТ€ЫЫќ\ЭЫЫX›ФЭ\ќ\’YH€ЫЫќ\ЭЫЫX›У[Э™\ИHРУУP“ЧФХT•T—ФХРТФS_K€]P[љ[TШЬљ\HР]P[љ[S[Э™WФЭШ[ЭЛ€ќ[Y\™[ќXЩS[Э™HH•QK€K‚€УSХ‘WТPUХРU‘WHB€В€›[YHHУУTХS‘ФХ’S‘К’X]Ш]™HЉK€™\ШЬљ\[Ы€HУУTХS‘ФХ’S‘К€‘^[\ИHЭњ™X]Ы€W€‚€™›Щ\Л€X^H[™›XЭHќ\›‹€ЉK€™Y™™XЭHQ‘‘PХТU€њЭЩ\€H—ХTUQУSХ‘WСUHЏHСS—Н€ИMH€L€ќ\HHTWС’T‘K€XШЭ\XЮHHL€њHL€ќ\™Щ]HT‘СUР“Х€њљ[Ьљ]HH€Ш]YЫЬћHHSPQСWРРUQУФ–WФФPТPS€ќЪ[™[Э™HH•QK€Y][Ы[Y™™XЭИHQUSУђSСQ‘‘PХКВ€›[Э™QY™™XЭHSХ‘WСQ‘‘PХР•T“‹€Ъ[ЩHHL€JK€ЫЫќ\ЭY™™XЭHЧХTUQУSХ‘WСQ‘‘PХИЏHСS—Н€ИУУ•TХСQ‘‘PХФХT•WФ‘U—УSУ”И€УУ•TХСQ‘‘PХТQТWРTPSS‘Л€ЫЫќ\ЭШ]YЫЬћHHУУ•TХРРUQУФ–WР‘PUUK€ЫЫќ\ЭЫЫX›ФЭ\ќ\’YH€ЫЫќ\ЭЫЫX›У[Э™\ИHРУУP“ЧФХT•T—ФХS“–WСV_K€]P[љ[TШЬљ\HР]P[љ[S[Э™WТX]Ш]™K€ќ[Y\™[ќXЩS[Э™HH•QK€K‚€УSХ‘WТRSHB€В€›[YHHУУTХS‘ФХ’S‘К’Z[ЉK€ЪY€—Ф‘Q‘T”‘QТPСWХСPUT€OH—ТPСWХСPUT—ФУ“ХВ€™\ШЬљ\[Ы€HУУTХS‘ФХ’S‘К€”Э[[[ЫњИHЫ›ЭЬЭЬ›H]€‚€›\ЭИ›Ь€љ]™H\›њЛ€ЉK€Щ[ЩB€™\ШЬљ\[Ы€HУУTХS‘ФХ’S‘К€”Э[[[ЫњИHZ[ЭЬ›H]€‚€њЭљZЩ\И]™\ћH\›‹€ЉK€Щ[™Y‚€™Y™™XЭHQ‘‘PХХСPUT‹€њЭЩ\€H€ќ\HHTWТPСK€XШЭ\XЮHH€њHL€ќ\™Щ]HT‘СUС’QS€њљ[Ьљ]HH€Ш]YЫЬћHHSPQСWРРUQУФ–WФХUTЛ€ћ“[Э™HHИ™Y™™XЭH—СQ‘‘PХФФХTМHK€љYЫ›Ь™\Ф›ЭXЭH•QK€›Z\њ›Ь“[Э™P[›™YH•QK€\™Э[Y[ќHИќЩX]\•\HH
+—Ф‘Q‘T”‘QТPСWХСPUT€OH—ТPСWХСPUT—ФУ“ХКHИђUWХСPUT—ФУ“ХИ€ђUWХСPUT—ТRSK€ЫЫќ\ЭY™™XЭHЧХTUQУSХ‘WСQ‘‘PХИЏHСS—Н€ИУУ•TХСQ‘‘PХРђQWФХT•WУSУ”ЧХТUСУУСРTPSИ€УУ•TХСQ‘‘PХРђQWФХT•WФ‘U—УSУ”Л€ЫЫќ\ЭШ]YЫЬћHHУУ•TХРРUQУФ–WР‘PUUK€ЫЫќ\ЭЫЫX›ФЭ\ќ\’YHУУP“ЧФХT•T—ТRS€ЫЫќ\ЭЫЫX›У[Э™\ИHМK€]P[љ[TШЬљ\H
+—Ф‘Q‘T”‘QТPСWХСPUT€OH—ТPСWХСPUT—ФУ“ХКHИР]P[љ[S[Э™WФЫ›ЭЬШШ\H€Р]P[љ[S[Э™WТZ[€ќ[Y\™[ќXЩS[Э™HH•QK€K‚€УSХ‘WХФ“QS•HB€В€›[YHHУУTХS‘ФХ’S‘К•Ь›Y[ќЉK€™\ШЬљ\[Ы€HУУTХS‘ФХ’S‘К€•Ь›Y[ќИH›ЩH[™ЭЬЧ€‚€њЭXШЩ\ЬЪ]™H\ЩHЩ€H[Э™K€ЉK€™Y™™XЭHQ‘‘PХХФ“QS•€њЭЩ\€H€ќ\HHTWСT’Л€XШЭ\XЮHHL€њHMK€ќ\™Щ]HT‘СUФСSPХQ€њљ[Ьљ]HH€Ш]YЫЬћHHSPQСWРРUQУФ–WФХUTЛ€ћ“[Э™HHИ™Y™™XЭH—СQ‘‘PХСQ—ХTМHK€›XYЪXРЫШ]Y™™XЭYH—ХTUQУSХ‘WС“QФИЏHСS—НK€ЫЫќ\ЭY™™XЭHУУ•TХСQ‘‘PХУPRСWС“УХТS‘ЧУSУ”ЧУ‘T•“ХTЛ€ЫЫќ\ЭШ]YЫЬћHHУУ•TХРРUQУФ–WХХQТ€ЫЫќ\ЭЫЫX›ФЭ\ќ\’YHУУP“ЧФХT•T—ХФ“QS•€ЫЫќ\ЭЫЫX›У[Э™\ИHМK€]P[љ[TШЬљ\HР]P[љ[S[Э™WХЬ›Y[ќ€ќ[Y\™[ќXЩS[Э™HH•QK€K‚€УSХ‘WС“UT—HB€В€›[YHHУУTХS‘ФХ’S‘К‘›]\€ЉK€™\ШЬљ\[Ы€HУУTХS‘ФХ’S‘К€ђЫЫ™ќ\Щ\ИH›ЩKќ]€‚€њZ\Щ\И]ИЬ€]Л€ЉK€™Y™™XЭHQ‘‘PХС“UT‹€њЭЩ\€H€ќ\HHTWСT’Л€XШЭ\XЮHHL€њHMK€ќ\™Щ]HT‘СUФСSPХQ€њљ[Ьљ]HH€Ш]YЫЬћHHSPQСWРРUQУФ–WФХUTЛ€ћ“[Э™HHИ™Y™™XЭH—СQ‘‘PХФФQ—ХTМHK€›XYЪXРЫШ]Y™™XЭYH•QK€ЫЫќ\ЭY™™XЭHУУ•TХСQ‘‘PХУPRСWС“УХТS‘ЧУSУ”ЧУ‘T•“ХTЛ€ЫЫќ\ЭШ]YЫЬћHHУУ•TХРРUQУФ–WФУPT•€ЫЫќ\ЭЫЫX›ФЭ\ќ\’YH€ЫЫќ\ЭЫЫX›У[Э™\ИHРУУP“ЧФХT•T—РТT“_K€]P[љ[TШЬљ\HР]P[љ[S[Э™WС›]\‹€ќ[Y\™[ќXЩS[Э™HH•QK€K‚€УSХ‘WХТSУЧХТTФHB€В€›[YHHУУTХS‘ФХ’S‘К•Ъ[SЛUЪ\ЬЉK€™\ШЬљ\[Ы€HУУTХS‘ФХ’S‘К€’[™›XЭИHќ\›€Ы€H›ЩW€‚€ќЪ][ќ[њЩHљ\™K€ЉK€™Y™™XЭHQ‘‘PХУ“У—Х“УUSWФХUTЛ€њЭЩ\€H€ќ\HHTWС’T‘K€XШЭ\XЮHH—ХTUQУSХ‘WСUHЏHСS—Н€ИH€НK€њHMK€ќ\™Щ]HT‘СUФСSPХQ€њљ[Ьљ]HH€Ш]YЫЬћHHSPQСWРРUQУФ–WФХUTЛ€\™Э[Y[ќHИ››Ы•›Ы][TЭ]\ИHSХ‘WСQ‘‘PХР•T“€K€ћ“[Э™HHИ™Y™™XЭH—СQ‘‘PХРUЧХTМHK€›XYЪXРЫШ]Y™™XЭYH•QK€ЫЫќ\ЭY™™XЭHЧХTUQУSХ‘WСQ‘‘PХИЏHСS—Н€ИУУ•TХСQ‘‘PХФТQ•Т•QСWРUS•SУ€€УУ•TХСQ‘‘PХРђQWФХT•WС”“У•УSУ‹€ЫЫќ\ЭШ]YЫЬћHHУУ•TХРРUQУФ–WР‘PUUK€ЫЫќ\ЭЫЫX›ФЭ\ќ\’YHУУP“ЧФХT•T—ХТSУЧХТTФ€ЫЫќ\ЭЫЫX›У[Э™\ИHРУУP“ЧФХT•T—ФХS“–WСV_K€]P[љ[TШЬљ\HР]P[љ[S[Э™WХЪ[ХЪ\Ь€ќ[Y\™[ќXЩS[Э™HH•QK€K‚€УSХ‘WУQSQS•ЧHB€В€›[YHHУУTХS‘ФХ’S‘К“Y[Y[ќИЉK€™\ШЬљ\[Ы€HУУTХS‘ФХ’S‘К€•H\Щ\€Z[ќИ[™\њЪW€‚€›ЭЩ\њИ›Щ\И]И[™Ьђ]Л€ЉK€™Y™™XЭHQ‘‘PХУQSQS•Л€њЭЩ\€H€ќ\HHTWСT’Л€XШЭ\XЮHH—ХTUQУSХ‘WСUHЏHСS—НИL€€њHL€ќ\™Щ]HT‘СUФСSPХQ€њљ[Ьљ]HH€Ш]YЫЬћHHSPQСWРРUQУФ–WФХUTЛ€ћ“[Э™HHИ™Y™™XЭH—СQ‘‘PХФ‘TХФ‘WФ‘TPСSQS•ТK€ЫЫќ\ЭY™™XЭHУУ•TХСQ‘‘PХСФ‘PUРTPSР•UУ“ЧУSФ‘WУSХ‘TЛ€ЫЫќ\ЭШ]YЫЬћHHУУ•TХРРUQУФ–WХХQТ€ЫЫќ\ЭЫЫX›ФЭ\ќ\’YH€ЫЫќ\ЭЫЫX›У[Э™\ИHРУУP“ЧФХT•T—УQPS—УУТЛУУP“ЧФХT•T—Р“РТЯK€]P[љ[TШЬљ\HР]P[љ[S[Э™WУY[Y[ќЛ€ќ[Y\™[ќXЩS[Э™HH•QK€K‚€УSХ‘WСђPРQWHB€В€›[YHHУУTХS‘ФХ’S‘К‘XШYHЉK€™\ШЬљ\[Ы€HУУTХS‘ФХ’S‘К€ђ›ЫЬЭИЭЩ\€Ъ[€ќ\›™Y€‚€њ\[^™YЬ€Ъ\ЫЫ™Y€ЉK€™Y™™XЭHQ‘‘PХСђPРQK€њЭЩ\€HМ€ќ\HHTWУ“Ф“PS€XШЭ\XЮHHL€њHЊ€ќ\™Щ]HT‘СUФСSPХQ€њљ[Ьљ]HH€Ш]YЫЬћHHSPQСWРРUQУФ–WФTТPРS€›XZЩ\РЫЫќXЭH•QK€ЫЫќ\ЭY™™XЭHУУ•TХСQ‘‘PХР‘UT—ТQ—УTХ€ЫЫќ\ЭШ]YЫЬћHHУУ•TХРРUQУФ–WРХUK€ЫЫќ\ЭЫЫX›ФЭ\ќ\’YH€ЫЫќ\ЭЫЫX›У[Э™\ИHМK€]P[љ[TШЬљ\HР]P[љ[S[Э™WСXШYK€ќ[Y\™[ќXЩS[Э™HH•QK€K‚€УSХ‘WС“РХTЧФSђТHB€В€›[YHHУУTХS‘ФХ’S‘К‘›ШЭ\И[ЪЉK€™\ШЬљ\[Ы€HУУTХS‘ФХ’S‘К€”ЭЩ\™ќ[]XЪЛ[Э™\И\Э—€‚€•H\Щ\€›[Ъ\ИY€]€ЉK€™Y™™XЭHQ‘‘PХС“РХTЧФSђТ€њЭЩ\€HML€ќ\HHTWС’QТS‘Л€XШЭ\XЮHHL€њHЊ€ќ\™Щ]HT‘СUФСSPХQ€њљ[Ьљ]HHLЛ€Ш]YЫЬћHHSPQСWРРUQУФ–WФTТPРS€›XZЩ\РЫЫќXЭH•QK€›Z\њ›Ь“[Э™P[›™YH•QK€њ[Ъ[™У[Э™HH•QK€›YQљ\њЭ[›™YH•QK€њЫY\[Р[›™YH•QK€›Y]›Ы›ЫYP[›™YH•QK€ЫЬXШ][›™YH•QK€љ[њЭќXЭ[›™YH•QK€\ЬЪ\Э[›™YH•QK€ЫЫќ\ЭY™™XЭHЧХTUQУSХ‘WСQ‘‘PХИЏHСS—Н€ИУУ•TХСQ‘‘PХР‘UT—ТQ—УTХ€УУ•TХСQ‘‘PХУ‘VРTPSУUT‹€ЫЫќ\ЭШ]YЫЬћHHУУ•TХРРUQУФ–WХХQТ€ЫЫќ\ЭЫЫX›ФЭ\ќ\’YH€ЫЫќ\ЭЫЫX›У[Э™\ИHРУУP“ЧФХT•T—С“РХTЧСS‘T‘Ц_K€]P[љ[TШЬљ\HР]P[љ[S[Э™WС›ШЭ\Ф[Ъ€ќ[Y\™[ќXЩS[Э™HH•QK€K‚€УSХ‘WФУQSS‘ЧФРSЧHB€В€›[YHHУУTХS‘ФХ’S‘К”ЫY[[™ИШ[ИЉK€™\ШЬљ\[Ы€HУУTХS‘ФХ’S‘К€”ЭЩ\™ќ[YШZ[њЭ\[^™Y€‚€™›Щ\Лќ][ЫИX[И[K€ЉK€™Y™™XЭHQ‘‘PХСХP“WФХСT—УУ—РT‘ЧФХUTЛ€њЭЩ\€H—ХTUQУSХ‘WСUHЏHСS—Н€ИМ€Њ€ќ\HHTWУ“Ф“PS€XШЭ\XЮHHL€њHL€ќ\™Щ]HT‘СUФСSPХQ€њљ[Ьљ]HH€Ш]YЫЬћHHSPQСWРРUQУФ–WФTТPРS€\™Э[Y[ќHИњЭ]\ИHХUTМWФTђSTТTИK€›XZЩ\РЫЫќXЭH•QK€Y][Ы[Y™™XЭИHQUSУђSСQ‘‘PХКВ€›[Э™QY™™XЭHSХ‘WСQ‘‘PХФ‘SSХ‘WФХUTЛ€JK€ЫЫќ\ЭY™™XЭHЧХTUQУSХ‘WСQ‘‘PХИЏHСS—Н€ИУУ•TХСQ‘‘PХРQ‘‘PХQР–WФ‘U—РTPS€УУ•TХСQ‘‘PХФХT•WФ‘U—УSУ‹€ЫЫќ\ЭШ]YЫЬћHHЧХTUQУSХ‘WРРUQУФ’QTИЏHСS—Н€ИУУ•TХРРUQУФ–WХХQТ€УУ•TХРРUQУФ–WФУPT•€ЫЫќ\ЭЫЫX›ФЭ\ќ\’YH€ЫЫќ\ЭЫЫX›У[Э™\ИHРУУP“ЧФХT•T—С“ФђСWФSKУУP“ЧФХT•T—ХS‘T—ХРU‘KУУP“ЧФХT•T—СУT‘_K€]P[љ[TШЬљ\HР]P[љ[S[Э™WФЫY[[™ФШ[Л€ќ[Y\™[ќXЩS[Э™HH•QK€K‚€УSХ‘WС“УХЧУQWHB€В€›[YHHУУTХS‘ФХ’S‘К‘›ЫЭИYHЉK€™\ШЬљ\[Ы€HУУTХS‘ФХ’S‘К€‘]ЬИ][ќ[Ы€ИXZЩW€‚€™›Щ\И]XЪИЫ›HH\Щ\‹€ЉK€™Y™™XЭHQ‘‘PХС“УХЧУQK€њЭЩ\€H€ќ\HHTWУ“Ф“PS€XШЭ\XЮHH€њHЊ€ќ\™Щ]HT‘СUХTСT‹€њљ[Ьљ]HH—ХTUQУSХ‘WСUHЏHСS—Н€И€€Л€Ш]YЫЬћHHSPQСWРРUQУФ–WФХUTЛ€ћ“[Э™HHИ™Y™™XЭH—СQ‘‘PХФ‘TСUФХUИK€љYЫ›Ь™\Ф›ЭXЭH•QK€›Z\њ›Ь“[Э™P[›™YH•QK€›Y]›Ы›ЫYP[›™YH•QK€ЫЬXШ][›™YH•QK€\ЬЪ\Э[›™YH•QK€ЫЫќ\ЭY™™XЭHУУ•TХСQ‘‘PХСУ•СVТUWРUQQSђСK€ЫЫќ\ЭШ]YЫЬћHHУУ•TХРРUQУФ–WРХUK€ЫЫќ\ЭЫЫX›ФЭ\ќ\’YH€ЫЫќ\ЭЫЫX›У[Э™\ИHМK€]P[љ[TШЬљ\HР]P[љ[S[Э™WС›ЫЭУYK€ќ[Y\™[ќXЩS[Э™HH•QK€K‚€УSХ‘WУђUT‘WФХСT—HB€В€›[YHHУУTХS‘ФХ’S‘К“]\™HЭЩ\€ЉK€™\ШЬљ\[Ы€HУУTХS‘ФХ’S‘К€•H\HЩ€]XЪИ\љY\Ч€‚€™\[™[™ИЫ€HШШ][Ы‹€ЉK€™Y™™XЭHQ‘‘PХУђUT‘WФХСT‹€њЭЩ\€HK€ќ\HHTWУ“Ф“PS€XШЭ\XЮHH€њHЊ€ќ\™Щ]H—ХTUQУSХ‘WС“QФИЏHСS—Н€ИT‘СUФСSPХQ€T‘СUСTS‘Л€њљ[Ьљ]HH€Ш]YЫЬћHHSPQСWРРUQУФ–WФХUTЛ€љYЫ›Ь™\Ф›ЭXЭH•QK€›Z\њ›Ь“[Э™P[›™YH•QK€›Y]›Ы›ЫYP[›™YH—ХTUQУSХ‘WС“QФИЏHСS—НK€ЫЬXШ][›™YH•QK€њЫY\[Р[›™YH•QK€љ[њЭќXЭ[›™YH•QK€™[ЫЬ™P[›™YH
+—ХTUQУSХ‘WС“QФИЏHСS—НИ—ХTUQУSХ‘WС“QФИСS—МКK€\ЬЪ\Э[›™YH—ХTUQУSХ‘WС“QФИЏHСS—Н‹€›Z[ZXР[›™YH•QK€ЫЫќ\ЭY™™XЭHУУ•TХСQ‘‘PХР‘UT—ХТS—РUQQSђСWСVТUQ€ЫЫќ\ЭШ]YЫЬћHHУУ•TХРРUQУФ–WР‘PUUK€ЫЫќ\ЭЫЫX›ФЭ\ќ\’YH€ЫЫќ\ЭЫЫX›У[Э™\ИHМK€]P[љ[TШЬљ\HР]P[љ[S[Э™WУ]\™TЭЩ\‹€ќ[Y\™[ќXЩS[Э™HH•QK€K‚€УSХ‘WРТT‘СWHB€В€›[YHHУУTХS‘ФХ’S‘КђЪ\™ЩHЉK€™\ШЬљ\[Ы€HУУTХS‘ФХ’S‘К€ђЪ\™Щ\ИЭЩ\€И›ЫЬЭW€‚€‘[XЭљXИ[Э™H\ЩY™^€ЉK€™Y™™XЭHQ‘‘PХРТT‘СK€њЭЩ\€H€ќ\HHTWСSPХ’PЛ€XШЭ\XЮHH€њHЊ€ќ\™Щ]HT‘СUХTСT‹€њљ[Ьљ]HH€Ш]YЫЬћHHSPQСWРРUQУФ–WФХUTЛ€ћ“[Э™HHИ™Y™™XЭH—СQ‘‘PХФФQ—ХTМHK€њЫ]ЪY™™XЭYH•QK€љYЫ›Ь™\Ф›ЭXЭH•QK€›Z\њ›Ь“[Э™P[›™YH•QK€ЫЫќ\ЭY™™XЭHЧХTUQУSХ‘WСQ‘‘PХИЏHСS—Н€ИУУ•TХСQ‘‘PХТST“Х‘WРУУ‘USУ—Ф‘U‘S•У‘T•“ХTУ‘TФИ€УУ•TХСQ‘‘PХР‘UT—ТQ—ФРSQWХTK€ЫЫќ\ЭШ]YЫЬћHHУУ•TХРРUQУФ–WФУPT•€ЫЫќ\ЭЫЫX›ФЭ\ќ\’YHУУP“ЧФХT•T—РТT‘СK€ЫЫќ\ЭЫЫX›У[Э™\ИHМK€]P[љ[TШЬљ\HР]P[љ[S[Э™WРЪ\™ЩK€ќ[Y\™[ќXЩS[Э™HH•QK€K‚€УSХ‘WХUS•HB€В€›[YHHУУTХS‘ФХ’S‘К•][ќЉK€™\ШЬљ\[Ы€HУУTХS‘ФХ’S‘К€•][ќИH›ЩH[ќИЫ›W€‚€ќ\Ъ[™И]XЪИ[Э™\Л€ЉK€™Y™™XЭHQ‘‘PХХUS•€њЭЩ\€H€ќ\HHTWСT’Л€XШЭ\XЮHHL€њHЊ€ќ\™Щ]HT‘СUФСSPХQ€њљ[Ьљ]HH€Ш]YЫЬћHHSPQСWРРUQУФ–WФХUTЛ€ћ“[Э™HHИ™Y™™XЭH—СQ‘‘PХРUЧХTМHK€љYЫ›Ь™\ФЭXњЭ]]HH•QK€›XYЪXРЫШ]Y™™XЭYH—ХTUQУSХ‘WС“QФИЏHСS—НK€›Z\њ›Ь“[Э™P[›™YH—ХTUQУSХ‘WС“QФИСS—Н€ЫЫќ\ЭY™™XЭHЧХTUQУSХ‘WСQ‘‘PХИЏHСS—Н€ИУУ•TХСQ‘‘PХФХT•WУSУ—ХТUТ•QСTЧРUS•SУ€€УУ•TХСQ‘‘PХУPRСWС“УХТS‘ЧУSУ”ЧУ‘T•“ХTЛ€ЫЫќ\ЭШ]YЫЬћHHУУ•TХРРUQУФ–WФУPT•€ЫЫќ\ЭЫЫX›ФЭ\ќ\’YHУУP“ЧФХT•T—ХUS•€ЫЫќ\ЭЫЫX›У[Э™\ИHМK€]P[љ[TШЬљ\HР]P[љ[S[Э™WХ][ќ€ќ[Y\™[ќXЩS[Э™HH•QK€K‚€УSХ‘WТSS‘ЧТS‘HB€В€›[YHHУУTХS‘ФХ’S‘К’[[™И[™ЉK€™\ШЬљ\[Ы€HУУTХS‘ФХ’S‘К€ђ›ЫЬЭИHЭЩ\€Щ€[W€‚€њ™XЪ\Y[ќ	ЬИ[Э™\Л€ЉK€™Y™™XЭHQ‘‘PХТSS‘ЧТS‘€њЭЩ\€H€ќ\HHTWУ“Ф“PS€XШЭ\XЮHH€њHЊ€ќ\™Щ]H—ХTUQУSХ‘WСUHЏHСS—НИT‘СUРSH€T‘СUХTСT‹€њљ[Ьљ]HHK€Ш]YЫЬћHHSPQСWРРUQУФ–WФХUTЛ€ћ“[Э™HHИ™Y™™XЭH—СQ‘‘PХФ‘TСUФХUИK€љYЫ›Ь™\Ф›ЭXЭH•QK€љYЫ›Ь™\ФЭXњЭ]]HH•QK€›Z\њ›Ь“[Э™P[›™YH•QK€›Y]›Ы›ЫYP[›™YH•QK€ЫЬXШ][›™YH•QK€\ЬЪ\Э[›™YH•QK€ЫЫќ\ЭY™™XЭHЧХTUQУSХ‘WСQ‘‘PХИЏHСS—Н€ИУУ•TХСQ‘‘PХТQТWРTPSS‘И€УУ•TХСQ‘‘PХУPRСWС“УХТS‘ЧУSУ”ЧУ‘T•“ХTЛ€ЫЫќ\ЭШ]YЫЬћHHУУ•TХРРUQУФ–WФУPT•€ЫЫќ\ЭЫЫX›ФЭ\ќ\’YH€ЫЫќ\ЭЫЫX›У[Э™\ИHМK€]P[љ[TШЬљ\HР]P[љ[S[Э™WТ[[™Т[™€ќ[Y\™[ќXЩS[Э™HH•QK€K‚€УSХ‘WХ’PТЧHB€В€›[YHHУУTХS‘ФХ’S‘К•љXЪИЉK€™\ШЬљ\[Ы€HУУTХS‘ФХ’S‘К€•љXЪЬИH›ЩH[ќИY[™Ч€‚€љ[][\Л€ЉK€™Y™™XЭHQ‘‘PХХ’PТЛ€њЭЩ\€H€ќ\HHTWФЦPТPЛ€XШЭ\XЮHHL€њHL€ќ\™Щ]HT‘СUФСSPХQ€њљ[Ьљ]HH€Ш]YЫЬћHHSPQСWРРUQУФ–WФХUTЛ€ћ“[Э™HHИ™Y™™XЭH—СQ‘‘PХФФХTМ€K€›Y]›Ы›ЫYP[›™YH•QK€ЫЬXШ][›™YH•QK€\ЬЪ\Э[›™YH•QK€ЫЫќ\ЭY™™XЭHЧХTUQУSХ‘WСQ‘‘PХИЏHСS—Н€ИУУ•TХСQ‘‘PХФХT•WУSУ”ЧФРSQWХTWРTPS€УУ•TХСQ‘‘PХР‘UT—ТQ—ФРSQWХTK€ЫЫќ\ЭШ]YЫЬћHHУУ•TХРРUQУФ–WФУPT•€ЫЫќ\ЭЫЫX›ФЭ\ќ\’YH€ЫЫќ\ЭЫЫX›У[Э™\ИHМK€]P[љ[TШЬљ\HР]P[љ[S[Э™WХљXЪЛ€ќ[Y\™[ќXЩS[Э™HH•QK€K‚€УSХ‘WФ“УWФVWHB€В€›[YHHУУTХS‘ФХ’S‘К”›ЫH^HЉK€™\ШЬљ\[Ы€HУУTХS‘ФХ’S‘К€“Z[ZXЬИH\™Щ][™€‚€ЫЬY\И]ИXљ[]K€ЉK€™Y™™XЭHQ‘‘PХФ“УWФVK€њЭЩ\€H€ќ\HHTWФЦPТPЛ€XШЭ\XЮHH€њHL€ќ\™Щ]HT‘СUФСSPХQ€њљ[Ьљ]HH€Ш]YЫЬћHHSPQСWРРUQУФ–WФХUTЛ€ћ“[Э™HHИ™Y™™XЭH—СQ‘‘PХФФХTМHK€љYЫ›Ь™\Ф›ЭXЭH•QK€љYЫ›Ь™\ФЭXњЭ]]HH•QK€›Z\њ›Ь“[Э™P[›™YH•QK€ЫЫќ\ЭY™™XЭHУУ•TХСQ‘‘PХРTPSРTЧСУУСРTЧФ‘U—УУ‘TЛ€ЫЫќ\ЭШ]YЫЬћHHУУ•TХРРUQУФ–WРХUK€ЫЫќ\ЭЫЫX›ФЭ\ќ\’YH€ЫЫќ\ЭЫЫX›У[Э™\ИHМK€]P[љ[TШЬљ\HР]P[љ[S[Э™WФ›ЫT^K€ќ[Y\™[ќXЩS[Э™HH•QK€K‚€УSХ‘WХТTТHB€В€›[YHHУУTХS‘ФХ’S‘К•Ъ\ЪЉK€™\ШЬљ\[Ы€HУУTХS‘ФХ’S‘К€ђHЪ\Ъ]™\ЭЬ™\И—€‚€’]ZЩ\И[YHИЫЬљЛ€ЉK€™Y™™XЭHQ‘‘PХХТTТ€њЭЩ\€H€ќ\HHTWУ“Ф“PS€XШЭ\XЮHH€њHL€ќ\™Щ]HT‘СUХTСT‹€њљ[Ьљ]HH€Ш]YЫЬћHHSPQСWРРUQУФ–WФХUTЛ€ћ“[Э™HHИ™Y™™XЭH—СQ‘‘PХФФQ—ХTМHK€љX[[™У[Э™HH•QK€њЫ]ЪY™™XЭYH—ХTUQУSХ‘WС“QФИЏHСS—НK€љYЫ›Ь™\Ф›ЭXЭH•QK€›Z\њ›Ь“[Э™P[›™YH•QK€ЫЫќ\ЭY™™XЭHЧХTUQУSХ‘WСQ‘‘PХИЏHСS—Н€ИУУ•TХСQ‘‘PХР‘UT—ТQ—УTХ€УУ•TХСQ‘‘PХСУ•СVТUWРUQQSђСK€ЫЫќ\ЭШ]YЫЬћHHУУ•TХРРUQУФ–WРХUK€ЫЫќ\ЭЫЫX›ФЭ\ќ\’YHУУP“ЧФХT•T—ХТTТ€ЫЫќ\ЭЫЫX›У[Э™\ИHМK€]P[љ[TШЬљ\HР]P[љ[S[Э™WХЪ\Ъ€ќ[Y\™[ќXЩS[Э™HH•QK€K‚€УSХ‘WРTФТTХHB€В€›[YHHУУTХS‘ФХ’S‘Кђ\ЬЪ\ЭЉK€™\ШЬљ\[Ы€HУУTХS‘ФХ’S‘К€ђ]XЪЬИ[™Ы[HЪ]Ы™W€‚€›Щ€H\ќ™\‰ЬИ[Э™\Л€ЉK€™Y™™XЭHQ‘‘PХРTФТTХ€њЭЩ\€H€ќ\HHTWУ“Ф“PS€XШЭ\XЮHH€њHЊ€ќ\™Щ]HT‘СUСTS‘Л€њљ[Ьљ]HH€Ш]YЫЬћHHSPQСWРРUQУФ–WФХUTЛ€љYЫ›Ь™\Ф›ЭXЭH•QK€›Z\њ›Ь“[Э™P[›™YH
+—ХTUQУSХ‘WС“QФИЏHСS—НИ—ХTUQУSХ‘WС“QФИСS—МКK€›Y]›Ы›ЫYP[›™YH—ХTUQУSХ‘WС“QФИЏHСS—Н€ЫЬXШ][›™YH•QK€њЫY\[Р[›™YH•QK€љ[њЭќXЭ[›™YH•QK€™[ЫЬ™P[›™YH•QK€\ЬЪ\Э[›™YH•QK€›Z[ZXР[›™YH•QK€ЫЫќ\ЭY™™XЭHУУ•TХСQ‘‘PХФUPSUWСTS‘ЧУУ—ХSRS‘Л€ЫЫќ\ЭШ]YЫЬћHHУУ•TХРРUQУФ–WРХUK€ЫЫќ\ЭЫЫX›ФЭ\ќ\’YH€ЫЫќ\ЭЫЫX›У[Э™\ИHМK€]P[љ[TШЬљ\HР]P[љ[S[Э™WР\ЬЪ\Э€ќ[Y\™[ќXЩS[Э™HH•QK€K‚€УSХ‘WТS‘ФђRS—HB€В€›[YHHУУTХS‘ФХ’S‘К’[™ЬZ[€ЉK€™\ШЬљ\[Ы€HУУTХS‘ФХ’S‘К€“^\И›ЫЭИ]™\ЭЬ™H—€‚€•H\Щ\€Ш[‰ЭЭЪ]ЪЭ]€ЉK€™Y™™XЭHQ‘‘PХТS‘ФђRS‹€њЭЩ\€H€ќ\HHTWСФђTФЛ€XШЭ\XЮHH€њHЊ€ќ\™Щ]HT‘СUХTСT‹€њљ[Ьљ]HH€Ш]YЫЬћHHSPQСWРРUQУФ–WФХUTЛ€ћ“[Э™HHИ™Y™™XЭH—СQ‘‘PХФФQ—ХTМHK€њЫ]ЪY™™XЭYH•QK€љYЫ›Ь™\Ф›ЭXЭH•QK€›Z\њ›Ь“[Э™P[›™YH•QK€њЪЮP]P[›™YH•QK€ЫЫќ\ЭY™™XЭHЧХTUQУSХ‘WСQ‘‘PХИЏHСS—Н€ИУУ•TХСQ‘‘PХТST“Х‘WРУУ‘USУ—Ф‘U‘S•У‘T•“ХTУ‘TФИ€УУ•TХСQ‘‘PХРU“ТQФХT•K€ЫЫќ\ЭШ]YЫЬћHHУУ•TХРРUQУФ–WФУPT•€ЫЫќ\ЭЫЫX›ФЭ\ќ\’YH€ЫЫќ\ЭЫЫX›У[Э™\ИHМK€]P[љ[TШЬљ\HР]P[љ[S[Э™WТ[™ЬZ[‹€ќ[Y\™[ќXЩS[Э™HH•QK€K‚€УSХ‘WФХTT”ХСT—HB€В€›[YHHУУTХS‘ФХ’S‘К”Э\\њЭЩ\€ЉK€™\ШЬљ\[Ы€HУУTХS‘ФХ’S‘К€ђ›ЫЬЭИЭ™[™ЭЪ\њK€‚€ќ]ЭЩ\њИXљ[]Y\Л€ЉK€™Y™™XЭHQ‘‘PХТU€њЭЩ\€HLЊ€ќ\HHTWС’QТS‘Л€XШЭ\XЮHHL€њHK€ќ\™Щ]HT‘СUФСSPХQ€њљ[Ьљ]HH€Ш]YЫЬћHHSPQСWРРUQУФ–WФTТPРS€›XZЩ\РЫЫќXЭH•QK€Y][Ы[Y™™XЭИHQUSУђSСQ‘‘PХКВ€›[Э™QY™™XЭHSХ‘WСQ‘‘PХРUЧСQ—СХУ‹€њЩ[€H•QK€JK€ЫЫќ\ЭY™™XЭHУУ•TХСQ‘‘PХХTСT—УSФ‘WСPTТSWФХT•Q€ЫЫќ\ЭШ]YЫЬћHHУУ•TХРРUQУФ–WХХQТ€ЫЫќ\ЭЫЫX›ФЭ\ќ\’YH€ЫЫќ\ЭЫЫX›У[Э™\ИHРУУP“ЧФХT•T—УРТЧУУ‹УУP“ЧФХT•T—УRS‘Ф‘PQTџK€]P[љ[TШЬљ\HР]P[љ[S[Э™WФЭ\\њЭЩ\‹€ќ[Y\™[ќXЩS[Э™HH•QK€K‚€УSХ‘WУPQТPЧРУРUHB€В€›[YHHУУTХS‘ФХ’S‘К“XYЪXИЫШ]ЉK€™\ШЬљ\[Ы€HУУTХS‘ФХ’S‘К€”™Y›XЭИЬXЪX[Y™™XЭЧ€‚€XЪИИH]XЪЩ\‹€ЉK€™Y™™XЭHQ‘‘PХУPQТPЧРУРU€њЭЩ\€H€ќ\HHTWФЦPТPЛ€XШЭ\XЮHH€њHMK€ќ\™Щ]HT‘СUСTS‘Л€њљ[Ьљ]HH€Ш]YЫЬћHHSPQСWРРUQУФ–WФХUTЛ€ћ“[Э™HHИ™Y™™XЭH—СQ‘‘PХФФQ—ХTМ€K€љYЫ›Ь™\Ф›ЭXЭH•QK€›Z\њ›Ь“[Э™P[›™YH•QK€ЫЫќ\ЭY™™XЭHЧХTUQУSХ‘WСQ‘‘PХИЏHСS—Н€ИУУ•TХСQ‘‘PХР‘UT—ТQ—УTХ€УУ•TХСQ‘‘PХРU“ТQФХT•K€ЫЫќ\ЭШ]YЫЬћHHУУ•TХРРUQУФ–WР‘PUUK€ЫЫќ\ЭЫЫX›ФЭ\ќ\’YH€ЫЫќ\ЭЫЫX›У[Э™\ИHМK€]P[љ[TШЬљ\HР]P[љ[S[Э™WУXYЪXРЫШ]€ќ[Y\™[ќXЩS[Э™HH•QK€K‚€УSХ‘WФ‘PЦPУWHB€В€›[YHHУУTХS‘ФХ’S‘К”™XЮXЫHЉK€™\ШЬљ\[Ы€HУУTХS‘ФХ’S‘К€”™XЮXЫ\ИH\ЩY][H›Ь—€‚€›Ы™H[Ь™H\ЩK€ЉK€™Y™™XЭHQ‘‘PХФ‘PЦPУK€њЭЩ\€H€ќ\HHTWУ“Ф“PS€XШЭ\XЮHH€њHL€ќ\™Щ]HT‘СUХTСT‹€њљ[Ьљ]HH€Ш]YЫЬћHHSPQСWРРUQУФ–WФХUTЛ€ћ“[Э™HHИ™Y™™XЭH—СQ‘‘PХФФХTМ€K€њЫ]ЪY™™XЭYH—ХTUQУSХ‘WС“QФИЏHСS—НK€љYЫ›Ь™\Ф›ЭXЭH•QK€›Z\њ›Ь“[Э™P[›™YH•QK€ЫЫќ\ЭY™™XЭHЧХTUQУSХ‘WСQ‘‘PХИЏHСS—Н€ИУУ•TХСQ‘‘PХРTPSРTЧСУУСРTЧФ‘U—УУ‘H€УУ•TХСQ‘‘PХФ‘TUUSУ—У“ХР“Ф’S‘Л€ЫЫќ\ЭШ]YЫЬћHHУУ•TХРРUQУФ–WФУPT•€ЫЫќ\ЭЫЫX›ФЭ\ќ\’YH€ЫЫќ\ЭЫЫX›У[Э™\ИHМK€]P[љ[TШЬљ\HР]P[љ[S[Э™WФ™XЮXЫK€ќ[Y\™[ќXЩS[Э™HH•QK€K‚€УSХ‘WФ‘U‘S‘СWHB€В€›[YHHУУTХS‘ФХ’S‘К”™]™[™ЩHЉK€™\ШЬљ\[Ы€HФ™]™[™ЩQ\ШЬљ\[Ы‹€™Y™™XЭHQ‘‘PХФ‘U‘S‘СK€њЭЩ\€HЊ€ќ\HHTWС’QТS‘Л€XШЭ\XЮHHL€њHL€ќ\™Щ]HT‘СUФСSPХQ€њљ[Ьљ]HHM€Ш]YЫЬћHHSPQСWРРUQУФ–WФTТPРS€›XZЩ\РЫЫќXЭH•QK€ЫЫќ\ЭY™™XЭHЧХTUQУSХ‘WСQ‘‘PХИЏHСS—Н€ИУУ•TХСQ‘‘PХР‘UT—ТQ—УTХ€УУ•TХСQ‘‘PХУ‘VРTPSУUT‹€ЫЫќ\ЭШ]YЫЬћHHУУ•TХРРUQУФ–WХХQТ€ЫЫќ\ЭЫЫX›ФЭ\ќ\’YHУУP“ЧФХT•T—Ф‘U‘S‘СK€ЫЫќ\ЭЫЫX›У[Э™\ИHРУУP“ЧФХT•T—ФVPђPТЯK€]P[љ[TШЬљ\HР]P[љ[S[Э™WФ™]™[™ЩK€ќ[Y\™[ќXЩS[Э™HH•QK€K‚€УSХ‘WР”’PТЧР”‘PRЧHB€В€›[YHHУУTХS‘ФХ’S‘КђњљXЪИњ™XZИЉK€™\ШЬљ\[Ы€HУУTХS‘ФХ’S‘К€‘\Э›Ю\И\њљY\њИЭXЪ\Ч€‚€”‘Q“PХ[™Ш]\Щ\И[XYЩK€ЉK€™Y™™XЭHQ‘‘PХТU€њЭЩ\€HНK€ќ\HHTWС’QТS‘Л€XШЭ\XЮHHL€њHMK€ќ\™Щ]HT‘СUФСSPХQ€њљ[Ьљ]HH€Ш]YЫЬћHHSPQСWРРUQУФ–WФTТPРS€Y][Ы[Y™™XЭИHQUSУђSСQ‘‘PХКВ€›[Э™QY™™XЭHSХ‘WСQ‘‘PХР”‘PRЧФРФ‘QS‹€њ™P]XЪСY™™XЭH•QK€JK€›XZЩ\РЫЫќXЭH•QK€ЫЫќ\ЭY™™XЭHЧХTUQУSХ‘WСQ‘‘PХИЏHСS—Н€ИУУ•TХСQ‘‘PХТQТWРTPSS‘И€УУ•TХСQ‘‘PХРђQWФХT•WС”“У•УSУ‹€ЫЫќ\ЭШ]YЫЬћHHУУ•TХРРUQУФ–WРУУУ€ЫЫќ\ЭЫЫX›ФЭ\ќ\’YH€ЫЫќ\ЭЫЫX›У[Э™\ИHРУУP“ЧФХT•T—С“РХTЧСS‘T‘Ц_K€]P[љ[TШЬљ\HР]P[љ[S[Э™WРњљXЪРњ™XZЛ€ќ[Y\™[ќXЩS[Э™HH•QK€K‚€УSХ‘WЦPUУ—HB€В€›[YHHУУTХS‘ФХ’S‘К–X]Ы€ЉK€™\ШЬљ\[Ы€HУУTХS‘ФХ’S‘К€“[ИH›ЩH[ќИX]Ыљ[™Л€‚€ќ[€ЫY\[™И™^\›‹€ЉK€™Y™™XЭHQ‘‘PХЦPUУ‹€њЭЩ\€H€ќ\HHTWУ“Ф“PS€XШЭ\XЮHH€њHL€ќ\™Щ]HT‘СUФСSPХQ€њљ[Ьљ]HH€Ш]YЫЬћHHSPQСWРРUQУФ–WФХUTЛ€\™Э[Y[ќHИ››Ы•›Ы][TЭ]\ИHSХ‘WСQ‘‘PХФУQTK€ћ“[Э™HHИ™Y™™XЭH—СQ‘‘PХФФХTМHK€›XYЪXРЫШ]Y™™XЭYH•QK€ЫЫќ\ЭY™™XЭHУУ•TХСQ‘‘PХУPRСWС“УХТS‘ЧУSУ”ЧУ‘T•“ХTЛ€ЫЫќ\ЭШ]YЫЬћHHУУ•TХРРUQУФ–WРХUK€ЫЫќ\ЭЫЫX›ФЭ\ќ\’YHУУP“ЧФХT•T—ЦPUУ‹€ЫЫќ\ЭЫЫX›У[Э™\ИHМK€]P[љ[TШЬљ\HР]P[љ[S[Э™WЦX]Ы‹€ќ[Y\™[ќXЩS[Э™HH•QK€K‚€УSХ‘WТУ“РТЧУС‘—HB€В€›[YHHУУTХS‘ФХ’S‘К’Ы›ШЪИЩ™€ЉK€™\ШЬљ\[Ы€HУУTХS‘ФХ’S‘К€’Ы›ШЪЬИЭЫ€H›ЩIЬИ[€‚€љ][HИ™]™[ќ]И\ЩK€ЉK€™Y™™XЭHQ‘‘PХТУ“РТЧУС‘‹€њЭЩ\€H—ХTUQУSХ‘WСUHЏHСS—Н€ИЌH€Њ€ќ\HHTWСT’Л€XШЭ\XЮHHL€њHЊ€ќ\™Щ]HT‘СUФСSPХQ€њљ[Ьљ]HH€Ш]YЫЬћHHSPQСWРРUQУФ–WФTТPРS€›XZЩ\РЫЫќXЭH•QK€ЫЫќ\ЭY™™XЭHЧХTUQУSХ‘WСQ‘‘PХИЏHСS—Н€ИУУ•TХСQ‘‘PХФХT•WФ‘U—УSУ€€УУ•TХСQ‘‘PХРђQWФХT•WС”“У•УSУ‹€ЫЫќ\ЭШ]YЫЬћHHУУ•TХРРUQУФ–WФУPT•€ЫЫќ\ЭЫЫX›ФЭ\ќ\’YH€ЫЫќ\ЭЫЫX›У[Э™\ИHРУУP“ЧФХT•T—СђRСWУХUK€]P[љ[TШЬљ\HР]P[љ[S[Э™WТЫ›ШЪУЩ™‹€ќ[Y\™[ќXЩS[Э™HH•QK€K‚€УSХ‘WСS‘PU“Ф—HB€В€›[YHHУУTХS‘ФХ’S‘К‘[™X]›Ь€ЉK€™\ШЬљ\[Ы€HУУTХS‘ФХ’S‘К€ђЭ]И›ЩIЬИИ\]X[€‚€ќ\Щ\‰ЬИ€ЉK€™Y™™XЭHQ‘‘PХСS‘PU“Ф‹€њЭЩ\€HK€ќ\HHTWУ“Ф“PS€XШЭ\XЮHHL€њHK€ќ\™Щ]HT‘СUФСSPХQ€њљ[Ьљ]HH€Ш]YЫЬћHHSPQСWРРUQУФ–WФTТPРS€›XZЩ\РЫЫќXЭH•QK€њ\™[ќ[›Ы™[›™YH•QK€ЫЫќ\ЭY™™XЭHУУ•TХСQ‘‘PХР‘UT—ТQ—УTХ€ЫЫќ\ЭШ]YЫЬћHHУУ•TХРРUQУФ–WХХQТ€ЫЫќ\ЭЫЫX›ФЭ\ќ\’YH€ЫЫќ\ЭЫЫX›У[Э™\ИHРУУP“ЧФХT•T—СS‘T‘_K€]P[љ[TШЬљ\HР]P[љ[S[Э™WС[™X]›Ь‹€ќ[Y\™[ќXЩS[Э™HH•QK€K‚€УSХ‘WСT•TSУ—HB€В€›[YHHУУTХS‘ФХ’S‘К‘\ќ\[Ы€ЉK€™\ШЬљ\[Ы€HУУTХS‘ФХ’S‘К€•HYЪ\€H\Щ\‰ЬИ€‚€ќH[Ь™H[XYЩHШ]\ЩY€ЉK€™Y™™XЭHQ‘‘PХФХСT—РђTСQУУ—ХTСT—Т€њЭЩ\€HML€ќ\HHTWС’T‘K€XШЭ\XЮHHL€њHK€ќ\™Щ]HT‘СUР“Х€њљ[Ьљ]HH€Ш]YЫЬћHHSPQСWРРUQУФ–WФФPТPS€ЫЫќ\ЭY™™XЭHЧХTUQУSХ‘WСQ‘‘PХИЏHСS—Н€ИУУ•TХСQ‘‘PХХTСT—УSФ‘WСPTТSWФХT•Q€УУ•TХСQ‘‘PХР‘UT—ХТS—УUT‹€ЫЫќ\ЭШ]YЫЬћHHУУ•TХРРUQУФ–WР‘PUUK€ЫЫќ\ЭЫЫX›ФЭ\ќ\’YH€ЫЫќ\ЭЫЫX›У[Э™\ИHРУУP“ЧФХT•T—СPT•UPRСKУУP“ЧФХT•T—СS‘T‘KУУP“ЧФХT•T—ФХS“–WСV_K€]P[љ[TШЬљ\HР]P[љ[S[Э™WС\ќ\[Ы‹€ќ[Y\™[ќXЩS[Э™HH•QK€K‚€УSХ‘WФТТSФХРTHB€В€›[YHHУУTХS‘ФХ’S‘К”ЪЪ[ЭШ\ЉK€™\ШЬљ\[Ы€HУУTХS‘ФХ’S‘К€•H\Щ\€ЭШ\ИЬXЪX[€‚€Xљ[]Y\ИЪ]H\™Щ]€ЉK€™Y™™XЭHQ‘‘PХФТТSФХРT€њЭЩ\€H€ќ\HHTWФЦPТPЛ€XШЭ\XЮHH€њHL€ќ\™Щ]HT‘СUФСSPХQ€њљ[Ьљ]HH€Ш]YЫЬћHHSPQСWРРUQУФ–WФХUTЛ€ћ“[Э™HHИ™Y™™XЭH—СQ‘‘PХФФХTМHK€љYЫ›Ь™\ФЭXњЭ]]HH•QK€ЫЫќ\ЭY™™XЭHУУ•TХСQ‘‘PХРTPSРTЧСУУСРTЧФ‘U—УУ‘TЛ€ЫЫќ\ЭШ]YЫЬћHHУУ•TХРРUQУФ–WФУPT•€ЫЫќ\ЭЫЫX›ФЭ\ќ\’YH€ЫЫќ\ЭЫЫX›У[Э™\ИHМK€]P[љ[TШЬљ\HР]P[љ[S[Э™WФЪЪ[ЭШ\€ќ[Y\™[ќXЩS[Э™HH•QK€K‚€УSХ‘WТST’TУУ—HB€В€›[YHHУУTХS‘ФХ’S‘К’[\љ\ЫЫ€ЉK€™\ШЬљ\[Ы€HУУTХS‘ФХ’S‘К€”™]™[ќИ›Щ\Ињ›ЫH\Ъ[™Ч€‚€›[Э™\ИЫ›ЭЫ€ћHH\Щ\‹€ЉK€™Y™™XЭHQ‘‘PХТST’TУУ‹€њЭЩ\€H€ќ\HHTWФЦPТPЛ€XШЭ\XЮHH€њHL€ќ\™Щ]HT‘СUХTСT‹€њљ[Ьљ]HH€Ш]YЫЬћHHSPQСWРРUQУФ–WФХUTЛ€ћ“[Э™HHИ™Y™™XЭH—СQ‘‘PХФФQ—ХTМ€K€њЫ]ЪY™™XЭYH—ХTUQУSХ‘WС“QФИЏHСS—НK€љYЫ›Ь™\Ф›ЭXЭH•QK€љYЫ›Ь™\ФЭXњЭ]]HH•QK€›Z\њ›Ь“[Э™P[›™YH•QK€™›ЬЩT™\ЬЭ\™HH•QK€ЫЫќ\ЭY™™XЭHЧХTUQУSХ‘WСQ‘‘PХИЏHСS—Н€ИУУ•TХСQ‘‘PХСУ•СVТUWРUQQSђСH€УУ•TХСQ‘‘PХХУФ”СS—РУУ‘USУ—УС—Ф‘U—УSУ”Л€ЫЫќ\ЭШ]YЫЬћHHУУ•TХРРUQУФ–WФУPT•€ЫЫќ\ЭЫЫX›ФЭ\ќ\’YH€ЫЫќ\ЭЫЫX›У[Э™\ИHМK€]P[љ[TШЬљ\HР]P[љ[S[Э™WТ[\љ\ЫЫ‹€ќ[Y\™[ќXЩS[Э™HH•QK€K‚€УSХ‘WФ‘Q”‘TТHB€В€›[YHHУУTХS‘ФХ’S‘К”™Yњ™\ЪЉK€™\ШЬљ\[Ы€HУУTХS‘ФХ’S‘К€’X[ИЪ\ЫЫљ[™Л\[\Ъ\Л€‚€›Ь€Hќ\›‹€ЉK€™Y™™XЭHQ‘‘PХФ‘Q”‘TТ€њЭЩ\€H€ќ\HHTWУ“Ф“PS€XШЭ\XЮHH€њHЊ€ќ\™Щ]HT‘СUХTСT‹€њљ[Ьљ]HH€Ш]YЫЬћHHSPQСWРРUQУФ–WФХUTЛ€ћ“[Э™HHИ™Y™™XЭH—СQ‘‘PХФ‘PУХ‘T—ТK€њЫ]ЪY™™XЭYH•QK€љYЫ›Ь™\Ф›ЭXЭH•QK€›Z\њ›Ь“[Э™P[›™YH•QK€ЫЫќ\ЭY™™XЭHЧХTUQУSХ‘WСQ‘‘PХИЏHСS—Н€ИУУ•TХСQ‘‘PХРU“ТQФХT•WУУђСH€УУ•TХСQ‘‘PХТST“Х‘WРУУ‘USУ—Ф‘U‘S•У‘T•“ХTУ‘TФЛ€ЫЫќ\ЭШ]YЫЬћHHУУ•TХРРUQУФ–WРХUK€ЫЫќ\ЭЫЫX›ФЭ\ќ\’YH€ЫЫќ\ЭЫЫX›У[Э™\ИHРУУP“ЧФХT•T—ФТS‘ЛУУP“ЧФХT•T—ХРUT—ФФФ•K€]P[љ[TШЬљ\HР]P[љ[S[Э™WФ™Yњ™\Ъ€ќ[Y\™[ќXЩS[Э™HH•QK€K‚€УSХ‘WСФ•QСWHB€В€›[YHHУУTХS‘ФХ’S‘К‘ЬќYЩHЉK€™\ШЬљ\[Ы€HУУTХS‘ФХ’S‘К€’Y€H\Щ\€Z[ќЛ[]\Ч€‚€[Щ€›ЩIЬИ\Э[Э™K€ЉK€™Y™™XЭHQ‘‘PХСФ•QСK€њЭЩ\€H€ќ\HHTWСТФХ€XШЭ\XЮHH€њHK€ќ\™Щ]HT‘СUХTСT‹€њљ[Ьљ]HH€Ш]YЫЬћHHSPQСWРРUQУФ–WФХUTЛ€ћ“[Э™HHИ™Y™™XЭH—СQ‘‘PХС“УХЧУQHK€љYЫ›Ь™\Ф›ЭXЭH•QK€љYЫ›Ь™\ФЭXњЭ]]HH•QK€›Z\њ›Ь“[Э™P[›™YH•QK€ЫЫќ\ЭY™™XЭHЧХTUQУSХ‘WСQ‘‘PХИЏHСS—Н€ИУУ•TХСQ‘‘PХТђSTЧУХT”ЧР•UУRTФЧУУ‘WХT“€€УУ•TХСQ‘‘PХР‘UT—ХТS—УUT‹€ЫЫќ\ЭШ]YЫЬћHHУУ•TХРРUQУФ–WХХQТ€ЫЫќ\ЭЫЫX›ФЭ\ќ\’YH€ЫЫќ\ЭЫЫX›У[Э™\ИHРУУP“ЧФХT•T—РХT”СKУУP“ЧФХT•T—СSђУФ‘KУУP“ЧФХT•T—ХUS•УУP“ЧФХT•T—ХФ“QS•K€]P[љ[TШЬљ\HР]P[љ[S[Э™WСЬќYЩK€ќ[Y\™[ќXЩS[Э™HH•QK€K‚€УSХ‘WФУђUТHB€В€›[YHHУУTХS‘ФХ’S‘К”Ы]ЪЉK€™\ШЬљ\[Ы€HУУTХS‘ФХ’S‘К€”ЭX[ИHY™™XЭИЩ€W€‚€›[Э™HH\™Щ]\Щ\И™^€ЉK€™Y™™XЭHQ‘‘PХФУђUТ€њЭЩ\€H€ќ\HHTWСT’Л€XШЭ\XЮHH€њHL€ќ\™Щ]HT‘СUСTS‘Л€њљ[Ьљ]HH€Ш]YЫЬћHHSPQСWРРUQУФ–WФХUTЛ€ћ“[Э™HHИ™Y™™XЭH—СQ‘‘PХФФХTМ€K€љYЫ›Ь™\Ф›ЭXЭH•QK€›Z\њ›Ь“[Э™P[›™YH•QK€љYЫ›Ь™\ФЭXњЭ]]HH•QK€™›ЬЩT™\ЬЭ\™HH•QK€›Y]›Ы›ЫYP[›™YH•QK€ЫЬXШ][›™YH•QK€\ЬЪ\Э[›™YH•QK€ЫЫќ\ЭY™™XЭHЧХTUQУSХ‘WСQ‘‘PХИЏHСS—Н€ИУУ•TХСQ‘‘PХРTPSРTЧСУУСРTЧФ‘U—УУ‘H€УУ•TХСQ‘‘PХРђQWФХT•WУSУ”ЧХТUСУУСРTPSЛ€ЫЫќ\ЭШ]YЫЬћHHУУ•TХРРUQУФ–WФУPT•€ЫЫќ\ЭЫЫX›ФЭ\ќ\’YH€ЫЫќ\ЭЫЫX›У[Э™\ИHМK€]P[љ[TШЬљ\HР]P[љ[S[Э™WФЫ]Ъ€ќ[Y\™[ќXЩS[Э™HH•QK€K‚€УSХ‘WФСPФ‘UФХСT—HB€В€›[YHHУУTХS‘ФХ’S‘К”ЩXЬ™]ЭЩ\€ЉK€™\ШЬљ\[Ы€HУУTХS‘ФХ’S‘К€ђ[€]XЪИЪ]Y™™XЭЧ€‚€ќ]\ћHћHШШ][Ы‹€ЉK€™Y™™XЭHQ‘‘PХТU€њЭЩ\€HМ€ќ\HHTWУ“Ф“PS€XШЭ\XЮHHL€њHЊ€ќ\™Щ]HT‘СUФСSPХQ€њљ[Ьљ]HH€Ш]YЫЬћHHSPQСWРРUQУФ–WФTТPРS€Y][Ы[Y™™XЭИHQUSУђSСQ‘‘PХКВ€›[Э™QY™™XЭHSХ‘WСQ‘‘PХФСPФ‘UФХСT‹€Ъ[ЩHHМ€JK€ЫЫќ\ЭY™™XЭHУУ•TХСQ‘‘PХР‘UT—ХТUСУУСРУУ‘USУ‹€ЫЫќ\ЭШ]YЫЬћHHУУ•TХРРUQУФ–WФУPT•€ЫЫќ\ЭЫЫX›ФЭ\ќ\’YH€ЫЫќ\ЭЫЫX›У[Э™\ИHМK€]P[љ[TШЬљ\HР]P[љ[S[Э™WФЩXЬ™]ЭЩ\‹€ќ[Y\™[ќXЩS[Э™HH•QK€K‚€УSХ‘WСU‘WHB€В€›[YHHУУTХS‘ФХ’S‘К‘]™HЉK€™\ШЬљ\[Ы€HУУTХS‘ФХ’S‘К€‘]™\И[™\ќШ]\€Hљ\њЭ€‚€ќ\›€[™ЭљZЩ\И™^\›‹€ЉK€™Y™™XЭHQ‘‘PХФСSRWТS••S‘TђP“K€њЭЩ\€H—ХTUQУSХ‘WСUHЏHСS—НИ€Њ€ќ\HHTWХРUT‹€XШЭ\XЮHHL€њHL€ќ\™Щ]HT‘СUФСSPХQ€њљ[Ьљ]HH€Ш]YЫЬћHHSPQСWРРUQУФ–WФTТPРS€›XZЩ\РЫЫќXЭH•QK€њЫY\[Р[›™YH•QK€љ[њЭќXЭ[›™YH•QK€\ЬЪ\Э[›™YH—ХTUQУSХ‘WС“QФИЏHСS—Н‹€њЪЮP]P[›™YH•QK€\™Э[Y[ќќЫХ\›ђ]XЪИHИњЭљ[™ТYHХ’S‘ТQФУS’QS‘T•РUT‹њЭ]\ИHХUWХS‘T•РUT€K€ЫЫќ\ЭY™™XЭHУУ•TХСQ‘‘PХРU“ТQФХT•WУУђСK€ЫЫќ\ЭШ]YЫЬћHHУУ•TХРРUQУФ–WР‘PUUK€ЫЫќ\ЭЫЫX›ФЭ\ќ\’YHУУP“ЧФХT•T—СU‘K€ЫЫќ\ЭЫЫX›У[Э™\ИHРУУP“ЧФХT•T—ФђRS—СSђСKУУP“ЧФХT•T—ФХT‘џK€]P[љ[TШЬљ\HР]P[љ[S[Э™WС]™K€ќ[Y\™[ќXЩS[Э™HH•QK€K‚€УSХ‘WРT“WХ•TХHB€В€›[YHHУУTХS‘ФХ’S‘Кђ\›Hќ\ЭЉK€™\ШЬљ\[Ы€HУУTХS‘ФХ’S‘К€”ЭZYЪX\›H[Ъ\И]€‚€њЭљZЩHH›ЩH€ИH[Y\Л€ЉK€™Y™™XЭHQ‘‘PХТU€њЭЩ\€HMK€ќ\HHTWС’QТS‘Л€XШЭ\XЮHHL€њHЊ€ќ\™Щ]HT‘СUФСSPХQ€њљ[Ьљ]HH€Ш]YЫЬћHHSPQСWРРUQУФ–WФTТPРS€›][R]H•QK€›XZЩ\РЫЫќXЭH•QK€ЫЫќ\ЭY™™XЭHЧХTUQУSХ‘WСQ‘‘PХИЏHСS—Н€ИУУ•TХСQ‘‘PХФUPSUWСTS‘ЧУУ—ХSRS‘И€УУ•TХСQ‘‘PХФХT•WУSУ—ХТUТ•QСTЧРUS•SУ‹€ЫЫќ\ЭШ]YЫЬћHHУУ•TХРРUQУФ–WХХQТ€ЫЫќ\ЭЫЫX›ФЭ\ќ\’YH€ЫЫќ\ЭЫЫX›У[Э™\ИHРУУP“ЧФХT•T—СђRСWУХUУУP“ЧФХT•T—С“РХTЧСS‘T‘Ц_K€]P[љ[TШЬљ\HР]P[љ[S[Э™WР\›Uќ\Э€K‚€УSХ‘WРРSSХQ“QСWHB€В€›[YHHУУTХS‘ФХ’S‘КђШ[[ЭY›YЩHЉK€™\ШЬљ\[Ы€HУУTХS‘ФХ’S‘К€ђ[\њИHЪрк[[Ы‰ЬИ\W€‚€™\[™[™ИЫ€HШШ][Ы‹€ЉK€™Y™™XЭHQ‘‘PХРРSSХQ“QСK€њЭЩ\€H€ќ\HHTWУ“Ф“PS€XШЭ\XЮHH€њHЊ€ќ\™Щ]HT‘СUХTСT‹€њљ[Ьљ]HH€Ш]YЫЬћHHSPQСWРРUQУФ–WФХUTЛ€ћ“[Э™HHИ™Y™™XЭH—СQ‘‘PХСU”У—ХTМHK€њЫ]ЪY™™XЭYH•QK€љYЫ›Ь™\Ф›ЭXЭH•QK€›Z\њ›Ь“[Э™P[›™YH•QK€ЫЫќ\ЭY™™XЭHЧХTUQУSХ‘WСQ‘‘PХИЏHСS—Н€ИУУ•TХСQ‘‘PХРTPSРTЧСУУСРTЧФ‘U—УУ‘TИ€УУ•TХСQ‘‘PХРQ‘‘PХQР–WФ‘U—РTPS€ЫЫќ\ЭШ]YЫЬћHHУУ•TХРРUQУФ–WФУPT•€ЫЫќ\ЭЫЫX›ФЭ\ќ\’YH€ЫЫќ\ЭЫЫX›У[Э™\ИHМK€]P[љ[TШЬљ\HР]P[љ[S[Э™WРШ[[ЭY›YЩK€ќ[Y\™[ќXЩS[Э™HH•QK€K‚€УSХ‘WХRSСУХЧHB€В€›[YHHУУTХS‘ФХ’S‘К•Z[ЫЭИЉK€™\ШЬљ\[Ы€HУУTХS‘ФХ’S‘К€ЪY€—ХTUQУSХ‘WСUHЏHСS—НB€‘›\ЪYЪ]\ЭXШ[W€‚€Щ[ЩB€‘›\Ъ\ИHYЪ]Ъ\њW€‚€Щ[™Y‚€њZ\Щ\ИЬ€]Л€ЉK€™Y™™XЭH—ХTUQУSХ‘WСUHЏHСS—НHИQ‘‘PХФФPТPSРUPТЧХTМИ€Q‘‘PХФФPТPSРUPТЧХTМ‹€њЭЩ\€H€ќ\HHTWР•QЛ€XШЭ\XЮHH€њHЊ€ќ\™Щ]HT‘СUХTСT‹€њљ[Ьљ]HH€Ш]YЫЬћHHSPQСWРРUQУФ–WФХUTЛ€ћ“[Э™HHИ™Y™™XЭH—СQ‘‘PХФ‘TСUФХUИK€њЫ]ЪY™™XЭYH•QK€љYЫ›Ь™\Ф›ЭXЭH•QK€›Z\њ›Ь“[Э™P[›™YH•QK€ЫЫќ\ЭY™™XЭHУУ•TХСQ‘‘PХТST“Х‘WРУУ‘USУ—Ф‘U‘S•У‘T•“ХTУ‘TФЛ€ЫЫќ\ЭШ]YЫЬћHHУУ•TХРРUQУФ–WР‘PUUK€ЫЫќ\ЭЫЫX›ФЭ\ќ\’YH€ЫЫќ\ЭЫЫX›У[Э™\ИHМK€]P[љ[TШЬљ\HР]P[љ[S[Э™WХZ[ЫЭЛ€ќ[Y\™[ќXЩS[Э™HH•QK€K‚€УSХ‘WУTХT—ФT‘СWHB€В€›[YHHУУTХS‘ФХ’S‘К“\Э\€\™ЩHЉK€™\ШЬљ\[Ы€HУУTХS‘ФХ’S‘К€ђ]XЪЬИЪ]Hќ\њЭЩ—€‚€›YЪ€X^HЭЩ\€Ь€Y‹€ЉK€™Y™™XЭHQ‘‘PХТU€њЭЩ\€H
+—ХTUQУSХ‘WСUHЏHСS—ОJHИMH€М€ќ\HHTWФЦPТPЛ€XШЭ\XЮHHL€њHK€ќ\™Щ]HT‘СUФСSPХQ€њљ[Ьљ]HH€Ш]YЫЬћHHSPQСWРРUQУФ–WФФPТPS€Y][Ы[Y™™XЭИHQUSУђSСQ‘‘PХКВ€›[Э™QY™™XЭHSХ‘WСQ‘‘PХФФСQ—УRS•TЧМK€Ъ[ЩHHL€JK€ЫЫќ\ЭY™™XЭHЧХTUQУSХ‘WСQ‘‘PХИЏHСS—Н€ИУУ•TХСQ‘‘PХФХT•WУSУ”ЧФРSQWХTWРTPS€УУ•TХСQ‘‘PХФХT•WФ‘U—УSУ‹€ЫЫќ\ЭШ]YЫЬћHHУУ•TХРРUQУФ–WФУPT•€ЫЫќ\ЭЫЫX›ФЭ\ќ\’YH€ЫЫќ\ЭЫЫX›У[Э™\ИHРУУP“ЧФХT•T—РРSWУRS‘K€]P[љ[TШЬљ\HР]P[љ[S[Э™WУ\Э\”\™ЩK€ќ[Y\™[ќXЩS[Э™HH•QK€K‚€УSХ‘WУRTХРђSHB€В€›[YHHУУTХS‘ФХ’S‘К“Z\Э[ЉK€™\ШЬљ\[Ы€HУУTХS‘ФХ’S‘К€ђ]XЪЬИЪ]H›\њћHЩ—€‚€™ЭЫ‹€X^HЭЩ\€Ь€]Л€ЉK€™Y™™XЭHQ‘‘PХТU€њЭЩ\€H
+—ХTUQУSХ‘WСUHЏHСS—ОJHИMH€М€ќ\HHTWФЦPТPЛ€XШЭ\XЮHHL€њHK€ќ\™Щ]HT‘СUФСSPХQ€њљ[Ьљ]HH€Ш]YЫЬћHHSPQСWРРUQУФ–WФФPТPS€[\ЭXУ[Э™HH•QK€Y][Ы[Y™™XЭИHQUSУђSСQ‘‘PХКВ€›[Э™QY™™XЭHSХ‘WСQ‘‘PХФФРUЧУRS•TЧМK€Ъ[ЩHHL€JK€ЫЫќ\ЭY™™XЭHЧХTUQУSХ‘WСQ‘‘PХИЏHСS—Н€ИУУ•TХСQ‘‘PХРђQWФХT•WУSУ”ЧХТUСУУСРTPSИ€УУ•TХСQ‘‘PХРђQWФХT•WС”“У•УSУ‹€ЫЫќ\ЭШ]YЫЬћHHУУ•TХРРUQУФ–WФУPT•€ЫЫќ\ЭЫЫX›ФЭ\ќ\’YH€ЫЫќ\ЭЫЫX›У[Э™\ИHРУУP“ЧФХT•T—РРSWУRS‘K€]P[љ[TШЬљ\HР]P[љ[S[Э™WУZ\Э[€ќ[Y\™[ќXЩS[Э™HH•QK€K‚€УSХ‘WС‘PUT—СSђСWHB€В€›[YHHУУTХS‘ФХ’S‘К‘™X]\€[ЩHЉK€™\ШЬљ\[Ы€HУУTХS‘ФХ’S‘К€‘[ќ™[ЬИH›ЩHЪ]ЭЫ—€‚€ќИЪ\њH™YXЩH]XЪЛ€ЉK€™Y™™XЭHQ‘‘PХРUPТЧСХУ—М‹€њЭЩ\€H€ќ\HHTWС“RS‘Л€XШЭ\XЮHHL€њHMK€ќ\™Щ]HT‘СUФСSPХQ€њљ[Ьљ]HH€Ш]YЫЬћHHSPQСWРРUQУФ–WФХUTЛ€ћ“[Э™HHИ™Y™™XЭH—СQ‘‘PХСQ—ХTМHK€›XYЪXРЫШ]Y™™XЭYH•QK€™[ЩS[Э™HH•QK€ЫЫќ\ЭY™™XЭHУУ•TХСQ‘‘PХР‘UT—ТQ—УTХ€ЫЫќ\ЭШ]YЫЬћHHУУ•TХРРUQУФ–WР‘PUUK€ЫЫќ\ЭЫЫX›ФЭ\ќ\’YH€ЫЫќ\ЭЫЫX›У[Э™\ИHМK€]P[љ[TШЬљ\HР]P[љ[S[Э™WС™X]\‘[ЩK€ќ[Y\™[ќXЩS[Э™HH•QK€K‚€УSХ‘WХQUT—СSђСWHB€В€›[YHHУУTХS‘ФХ’S‘К•Y]\€[ЩHЉK€™\ШЬљ\[Ы€HУУTХS‘ФХ’S‘К€ђЫЫ™ќ\Щ\И[Ърк[[Ы€Ы—€‚€ќHШЩ[™K€ЉK€™Y™™XЭHQ‘‘PХРУУ‘•TСK€њЭЩ\€H€ќ\HHTWУ“Ф“PS€XШЭ\XЮHHL€њHЊ€ќ\™Щ]HT‘СUС“СTЧРS‘РSK€њљ[Ьљ]HH€Ш]YЫЬћHHSPQСWРРUQУФ–WФХUTЛ€ћ“[Э™HHИ™Y™™XЭH—СQ‘‘PХФФUЧХTМHK€™[ЩS[Э™HH•QK€›Z\њ›Ь“[Э™P[›™YH—ХTUQУSХ‘WС“QФИСS—Н€ЫЫќ\ЭY™™XЭHУУ•TХСQ‘‘PХТђSTЧУХT”ЧР•UУRTФЧУУ‘WХT“‹€ЫЫќ\ЭШ]YЫЬћHHУУ•TХРРUQУФ–WРХUK€ЫЫќ\ЭЫЫX›ФЭ\ќ\’YH€ЫЫќ\ЭЫЫX›У[Э™\ИHМK€]P[љ[TШЬљ\HР]P[љ[S[Э™WХY]\‘[ЩK€ќ[Y\™[ќXЩS[Э™HH•QK€K‚€УSХ‘WР“V‘WТТPТЧHB€В€›[YHHУУTХS‘ФХ’S‘Кђ›^™HЪXЪИЉK€™\ШЬљ\[Ы€HУУTХS‘ФХ’S‘К€ђHЪXЪИЪ]HYЪЬљ]XШ[W€‚€љ]][Л€X^HШ]\ЩHHќ\›‹€ЉK€™Y™™XЭHQ‘‘PХТU€њЭЩ\€HK€ќ\HHTWС’T‘K€XШЭ\XЮHHL€Ьљ]XШ[]ЭYЩHH—ХTUQУSХ‘WСUHЏHСS—МИИH€‹€њHL€ќ\™Щ]HT‘СUФСSPХQ€њљ[Ьљ]HH€Ш]YЫЬћHHSPQСWРРUQУФ–WФTТPРS€›XZЩ\РЫЫќXЭH•QK€љЪXЪЪ[™У[Э™HH•QK€Y][Ы[Y™™XЭИHQUSУђSСQ‘‘PХКВ€›[Э™QY™™XЭHSХ‘WСQ‘‘PХР•T“‹€Ъ[ЩHHL€JK€ЫЫќ\ЭY™™XЭHЧХTUQУSХ‘WСQ‘‘PХИЏHСS—Н€ИУУ•TХСQ‘‘PХФ‘TUUSУ—У“ХР“Ф’S‘И€УУ•TХСQ‘‘PХТQТWРTPSS‘Л€ЫЫќ\ЭШ]YЫЬћHHЧХTUQУSХ‘WРРUQУФ’QTИЏHСS—Н€ИУУ•TХРРUQУФ–WРУУУ€УУ•TХРРUQУФ–WР‘PUUK€ЫЫќ\ЭЫЫX›ФЭ\ќ\’YH€ЫЫќ\ЭЫЫX›У[Э™\ИHРУУP“ЧФХT•T—ФХS“–WСVKУУP“ЧФХT•T—С“РХTЧСS‘T‘Ц_K€]P[љ[TШЬљ\HР]P[љ[S[Э™WР›^™RЪXЪЛ€ќ[Y\™[ќXЩS[Э™HH•QK€K‚€УSХ‘WУUQФФФ•HB€В€›[YHHУУTХS‘ФХ’S‘К“]YЬЬќЉK€™\ШЬљ\[Ы€HУУTХS‘ФХ’S‘К€ђЫЭ™\њИH\Щ\€[€]YЧ€‚€ќЩXZЩ[€[[XЭљXИ[Э™\Л€ЉK€ЛИ[€[ЬћH\ИЪЭ[Y[ќ[Ы€H\›њИ
+Щ[€ЉКB€™Y™™XЭHQ‘‘PХУUQФФФ•€њЭЩ\€H€ќ\HHTWСФ“ХS‘€XШЭ\XЮHH€њHMK€ќ\™Щ]HT‘СUС’QS€њљ[Ьљ]HH€Ш]YЫЬћHHSPQСWРРUQУФ–WФХUTЛ€ћ“[Э™HHИ™Y™™XЭH—СQ‘‘PХФФQ—ХTМHK€љYЫ›Ь™\Ф›ЭXЭH•QK€›Z\њ›Ь“[Э™P[›™YH•QK€њЪЮP]P[›™YH•QK€ЫЫќ\ЭY™™XЭHЧХTUQУSХ‘WСQ‘‘PХИЏHСS—Н€ИУУ•TХСQ‘‘PХСVТUWРUQQSђСWТS—РS–WРУУ•TХ€УУ•TХСQ‘‘PХТQТWРTPSS‘Л€ЫЫќ\ЭШ]YЫЬћHHУУ•TХРРUQУФ–WРХUK€ЫЫќ\ЭЫЫX›ФЭ\ќ\’YHУУP“ЧФХT•T—УUQФФФ•€ЫЫќ\ЭЫЫX›У[Э™\ИHРУУP“ЧФХT•T—УUQФУTУУP“ЧФХT•T—ФРS‘ХФ“KУУP“ЧФХT•T—ХРUT—ФФФ•K€]P[љ[TШЬљ\HР]P[љ[S[Э™WУ]YЬЬќ€ќ[Y\™[ќXЩS[Э™HH•QK€K‚€УSХ‘WТPСWРђSHB€В€›[YHHУУTХS‘ФХ’S‘К’XЩH[ЉK€™\ШЬљ\[Ы€HУУTХS‘ФХ’S‘К€ђHK]\›€]XЪИ]ШZ[њЧ€‚€њЭЩ\€Ы€ЭXШЩ\ЬЪ]™H]Л€ЉK€™Y™™XЭHQ‘‘PХФ“УХU€њЭЩ\€HМ€ќ\HHTWТPСK€XШЭ\XЮHHL€њHЊ€ќ\™Щ]HT‘СUФСSPХQ€њљ[Ьљ]HH€Ш]YЫЬћHHSPQСWРРUQУФ–WФTТPРS€›XZЩ\РЫЫќXЭH•QK€[\ЭXУ[Э™HH•QK€љ[њЭќXЭ[›™YH•QK€њ\™[ќ[›Ы™[›™YH•QK€ЫЫќ\ЭY™™XЭHУУ•TХСQ‘‘PХСУ•СVТUWРUQQSђСK€ЫЫќ\ЭШ]YЫЬћHHУУ•TХРРUQУФ–WР‘PUUK€ЫЫќ\ЭЫЫX›ФЭ\ќ\’YH€ЫЫќ\ЭЫЫX›У[Э™\ИHРУУP“ЧФХT•T—ТRSУУP“ЧФХT•T—СQ‘S”СWРХT“K€]P[љ[TШЬљ\HР]P[љ[S[Э™WТXЩP[€K‚€УSХ‘WУ‘QQWРT“WHB€В€›[YHHУУTХS‘ФХ’S‘К“™YYH\›HЉK€™\ШЬљ\[Ы€HУУTХS‘ФХ’S‘К€ђ]XЪЬИЪ]Ь›ћH\›\Л—€‚€“X^HШ]\ЩH›[Ъ[™Л€ЉK€™Y™™XЭHQ‘‘PХТU€њЭЩ\€HЊ€ќ\HHTWСФђTФЛ€XШЭ\XЮHHL€њHMK€ќ\™Щ]HT‘СUФСSPХQ€њљ[Ьљ]HH€Ш]YЫЬћHHSPQСWРРUQУФ–WФTТPРS€›XZЩ\РЫЫќXЭH•QK€›Z[љ[Z^™QЭX›Q[XYЩHH—ХTUQУSХ‘WС“QФИСS—Н€Y][Ы[Y™™XЭИHQUSУђSСQ‘‘PХКВ€›[Э™QY™™XЭHSХ‘WСQ‘‘PХС“SђТ€Ъ[ЩHHМ€JK€ЫЫќ\ЭY™™XЭHЧХTUQУSХ‘WСQ‘‘PХИЏHСS—Н€ИУУ•TХСQ‘‘PХТQТWРTPSS‘И€УУ•TХСQ‘‘PХРђQWФХT•WС”“У•УSУ‹€ЫЫќ\ЭШ]YЫЬћHHУУ•TХРРUQУФ–WФУPT•€ЫЫќ\ЭЫЫX›ФЭ\ќ\’YH€ЫЫќ\ЭЫЫX›У[Э™\ИHМK€]P[љ[TШЬљ\HР]P[љ[S[Э™WУ™YYP\›K€ќ[Y\™[ќXЩS[Э™HH•QK€K‚€УSХ‘WФУPТЧУС‘—HB€В€›[YHHУУTХS‘ФХ’S‘К”ЫXЪИЩ™€ЉK€™\ШЬљ\[Ы€HУУTХS‘ФХ’S‘К€”ЫXЪЬИЩ™€[™™\ЭЬ™\Ч€‚€љ[€HX^[][H€ЉK€™Y™™XЭHQ‘‘PХФ‘TХФ‘WТ€њЭЩ\€H€ќ\HHTWУ“Ф“PS€XШЭ\XЮHH€њH—ХTUQУSХ‘WСUHЏHСS—ОHИH€L€ќ\™Щ]HT‘СUХTСT‹€њљ[Ьљ]HH€Ш]YЫЬћHHSPQСWРРUQУФ–WФХUTЛ€ћ“[Э™HHИ™Y™™XЭH—СQ‘‘PХФ‘TСUФХUИK€љX[[™У[Э™HH•QK€њЫ]ЪY™™XЭYH•QK€љYЫ›Ь™\Ф›ЭXЭH•QK€›Z\њ›Ь“[Э™P[›™YH•QK€ЫЫќ\ЭY™™XЭHУУ•TХСQ‘‘PХР‘UT—ХТS—УUT‹ЛРЧХTUQУSХ‘WСQ‘‘PХИЏHСS—Н€ИУУ•TХСQ‘‘PХФURPТУWСФ“ХЧР“Ф‘Q‚€ЫЫќ\ЭШ]YЫЬћHHУУ•TХРРUQУФ–WРХUK€ЫЫќ\ЭЫЫX›ФЭ\ќ\’YH€ЫЫќ\ЭЫЫX›У[Э™\ИHМK€]P[љ[TШЬљ\HР]P[љ[S[Э™WФЫXЪУЩ™‹€ќ[Y\™[ќXЩS[Э™HH•QK€K‚€УSХ‘WТTT—Х“ТPСWHB€В€›[YHHУУTХS‘ФХ’S‘К’\\€›ЪXЩHЉK€™\ШЬљ\[Ы€HУУTХS‘ФХ’S‘К€ђHЭY]XЪИ]\Щ\Ч€‚€њЫЭ[™Ш]™\ИИ[љќ\™K€ЉK€™Y™™XЭHQ‘‘PХТU€њЭЩ\€HL€ќ\HHTWУ“Ф“PS€XШЭ\XЮHHL€њHL€ќ\™Щ]HT‘СUР“Х€њљ[Ьљ]HH€Ш]YЫЬћHHSPQСWРРUQУФ–WФФPТPS€њЫЭ[™[Э™HH•QK€љYЫ›Ь™\ФЭXњЭ]]HH—ХTUQУSХ‘WС“QФИЏHСS—Н‹€ЫЫќ\ЭY™™XЭHЧХTUQУSХ‘WСQ‘‘PХИЏHСS—Н€ИУУ•TХСQ‘‘PХФХT•WФ‘U—УSУ”И€УУ•TХСQ‘‘PХРђQWФХT•WФ‘U—УSУ”Л€ЫЫќ\ЭШ]YЫЬћHHУУ•TХРРUQУФ–WРУУУ€ЫЫќ\ЭЫЫX›ФЭ\ќ\’YH€ЫЫќ\ЭЫЫX›У[Э™\ИHМK€]P[љ[TШЬљ\HР]P[љ[S[Э™WТ\\•›ЪXЩK€ќ[Y\™[ќXЩS[Э™HH•QK€K‚€УSХ‘WФТTУУ—СђS‘ЧHB€В€›[YHHУУTХS‘ФХ’S‘К”Ъ\ЫЫ€[™ИЉK€™\ШЬљ\[Ы€HУУTХS‘ФХ’S‘К€ђHЪ\њY[™ЩY]XЪЛ—€‚€“X^HYHЪ\ЫЫ€H›ЩK€ЉK€™Y™™XЭHQ‘‘PХТU€њЭЩ\€HL€ќ\HHTWФТTУУ‹€XШЭ\XЮHHL€њHMK€ќ\™Щ]HT‘СUФСSPХQ€њљ[Ьљ]HH€Ш]YЫЬћHHSPQСWРРUQУФ–WФTТPРS€›XZЩ\РЫЫќXЭH•QK€љ][™У[Э™HH•QK€Y][Ы[Y™™XЭИHQUSУђSСQ‘‘PХКВ€›[Э™QY™™XЭHSХ‘WСQ‘‘PХХЦPЛ€Ъ[ЩHH—ХTUQУSХ‘WСUHЏHСS—Н€ИL€М€JK€ЫЫќ\ЭY™™XЭHЧХTUQУSХ‘WСQ‘‘PХИЏHСS—Н€ИУУ•TХСQ‘‘PХТQТWРTPSS‘И€УУ•TХСQ‘‘PХХУФ”СS—РУУ‘USУ—УС—Ф‘U—УSУ”Л€ЫЫќ\ЭШ]YЫЬћHHУУ•TХРРUQУФ–WФУPT•€ЫЫќ\ЭЫЫX›ФЭ\ќ\’YH€ЫЫќ\ЭЫЫX›У[Э™\ИHМK€]P[љ[TШЬљ\HР]P[љ[S[Э™WФЪ\ЫЫ‘[™Л€K‚€УSХ‘WРФ•TТРУUЧHB€В€›[YHHУУTХS‘ФХ’S‘КђЬќ\ЪЫ]ИЉK€™\ШЬљ\[Ы€HУУTХS‘ФХ’S‘К€•X\њИ]H›ЩHЪ]Ъ\њ€‚€Ы]ЬЛ€X^HЭЩ\€Y™[њЩK€ЉK€™Y™™XЭHQ‘‘PХТU€њЭЩ\€HНK€ќ\HHTWУ“Ф“PS€XШЭ\XЮHHMK€њHL€ќ\™Щ]HT‘СUФСSPХQ€њљ[Ьљ]HH€Ш]YЫЬћHHSPQСWРРUQУФ–WФTТPРS€њЫXЪ[™У[Э™HH•QK€›XZЩ\РЫЫќXЭH•QK€Y][Ы[Y™™XЭИHQUSУђSСQ‘‘PХКВ€›[Э™QY™™XЭHSХ‘WСQ‘‘PХСQ—УRS•TЧМK€Ъ[ЩHHL€JK€ЫЫќ\ЭY™™XЭHУУ•TХСQ‘‘PХРђQWФХT•WС”“У•УSУ‹€ЫЫќ\ЭШ]YЫЬћHHУУ•TХРРUQУФ–WРУУУ€ЫЫќ\ЭЫЫX›ФЭ\ќ\’YH€ЫЫќ\ЭЫЫX›У[Э™\ИHРУУP“ЧФХT•T—ФХУФ‘ЧСSђС_K€]P[љ[TШЬљ\HР]P[љ[S[Э™WРЬќ\ЪЫ]Л€ќ[Y\™[ќXЩS[Э™HH•QK€K‚€УSХ‘WР“TХР•T“—HB€В€›[YHHУУTХS‘ФХ’S‘Кђ›\Эќ\›€ЉK€™\ШЬљ\[Ы€HУУTХS‘ФХ’S‘К€”ЭЩ\™ќ[ќ]X]™\ИW€‚€ќ\Щ\€[[[Шљ[HH™^\›‹€ЉK€™Y™™XЭHQ‘‘PХТU€њЭЩ\€HML€ќ\HHTWС’T‘K€XШЭ\XЮHHL€њHK€ќ\™Щ]HT‘СUФСSPХQ€њљ[Ьљ]HH€Ш]YЫЬћHHSPQСWРРUQУФ–WФФPТPS€Y][Ы[Y™™XЭИHQUSУђSСQ‘‘PХКВ€›[Э™QY™™XЭHSХ‘WСQ‘‘PХФ‘PТT‘СK€њЩ[€H•QK€JK€ЫЫќ\ЭY™™XЭHУУ•TХСQ‘‘PХТђSTЧУХT”ЧР•UУRTФЧУУ‘WХT“‹€ЫЫќ\ЭШ]YЫЬћHHУУ•TХРРUQУФ–WР‘PUUK€ЫЫќ\ЭЫЫX›ФЭ\ќ\’YH€ЫЫќ\ЭЫЫX›У[Э™\ИHРУУP“ЧФХT•T—ФХS“–WСV_K€]P[љ[TШЬљ\HР]P[љ[S[Э™WР›\Эќ\›‹€ќ[Y\™[ќXЩS[Э™HH•QK€K‚€УSХ‘WТQ“ЧРРS““У—HB€В€›[YHHУУTХS‘ФХ’S‘К’Y›ИШ[››Ы€ЉK€™\ШЬљ\[Ы€HУУTХS‘ФХ’S‘К€”ЭЩ\™ќ[ќ]X]™\ИW€‚€ќ\Щ\€[[[Шљ[HH™^\›‹€ЉK€™Y™™XЭHQ‘‘PХТU€њЭЩ\€HML€ќ\HHTWХРUT‹€XШЭ\XЮHHL€њHK€ќ\™Щ]HT‘СUФСSPХQ€њљ[Ьљ]HH€Ш]YЫЬћHHSPQСWРРUQУФ–WФФPТPS€Y][Ы[Y™™XЭИHQUSУђSСQ‘‘PХКВ€›[Э™QY™™XЭHSХ‘WСQ‘‘PХФ‘PТT‘СK€њЩ[€H•QK€JK€ЫЫќ\ЭY™™XЭHУУ•TХСQ‘‘PХТђSTЧУХT”ЧР•UУRTФЧУУ‘WХT“‹€ЫЫќ\ЭШ]YЫЬћHHУУ•TХРРUQУФ–WРУУУ€ЫЫќ\ЭЫЫX›ФЭ\ќ\’YH€ЫЫќ\ЭЫЫX›У[Э™\ИHРУУP“ЧФХT•T—ФђRS—СSђС_K€]P[љ[TШЬљ\HР]P[љ[S[Э™WТY›РШ[››Ы‹€ќ[Y\™[ќXЩS[Э™HH•QK€K‚€УSХ‘WУQUSФ—УPTТHB€В€›[YHHУУTХS‘ФХ’S‘К“Y][Ь€X\ЪЉK€™\ШЬљ\[Ы€HУУTХS‘ФХ’S‘К€‘љ\™\ИHY][Ь‹[ZЩH[Ъ—€‚€“X^HZ\ЩH]XЪЛ€ЉK€™Y™™XЭHQ‘‘PХТU€њЭЩ\€H—ХTUQУSХ‘WСUHЏHСS—Н€ИL€L€ќ\HHTWФХQS€XШЭ\XЮHH—ХTUQУSХ‘WСUHЏHСS—Н€ИL€K€њHL€ќ\™Щ]HT‘СUФСSPХQ€њљ[Ьљ]HH€Ш]YЫЬћHHSPQСWРРUQУФ–WФTТPРS€›XZЩ\РЫЫќXЭH•QK€њ[Ъ[™У[Э™HH•QK€Y][Ы[Y™™XЭИHQUSУђSСQ‘‘PХКВ€›[Э™QY™™XЭHSХ‘WСQ‘‘PХРUЧФTЧМK€њЩ[€H•QK€Ъ[ЩHHЊ€JK€ЫЫќ\ЭY™™XЭHЧХTUQУSХ‘WСQ‘‘PХИЏHСS—Н€ИУУ•TХСQ‘‘PХФ‘TUUSУ—У“ХР“Ф’S‘И€УУ•TХСQ‘‘PХР‘UT—ТQ—ФРSQWХTK€ЫЫќ\ЭШ]YЫЬћHHУУ•TХРРUQУФ–WРУУУ€ЫЫќ\ЭЫЫX›ФЭ\ќ\’YH€ЫЫќ\ЭЫЫX›У[Э™\ИHМK€]P[љ[TШЬљ\HР]P[љ[S[Э™WУY][Ь“X\Ъ€ќ[Y\™[ќXЩS[Э™HH•QK€K‚€УSХ‘WРTХУ’TТHB€В€›[YHHУУTХS‘ФХ’S‘Кђ\ЭЫљ\ЪЉK€™\ШЬљ\[Ы€HУУTХS‘ФХ’S‘К€ђ[€]XЪИ]X^HЪШЪЧ€‚€ќH›ЩH[ќИ›[Ъ[™Л€ЉK€™Y™™XЭHQ‘‘PХТU€њЭЩ\€HМ€ќ\HHTWСТФХ€XШЭ\XЮHHL€њHMK€ќ\™Щ]HT‘СUФСSPХQ€њљ[Ьљ]HH€Ш]YЫЬћHHSPQСWРРUQУФ–WФTТPРS€›XZЩ\РЫЫќXЭH•QK€›Z[љ[Z^™QЭX›Q[XYЩHH—ХTUQУSХ‘WС“QФИСS—Н€Y][Ы[Y™™XЭИHQUSУђSСQ‘‘PХКВ€›[Э™QY™™XЭHSХ‘WСQ‘‘PХС“SђТ€Ъ[ЩHHМ€JK€ЫЫќ\ЭY™™XЭHУУ•TХСQ‘‘PХФХT•WФ‘U—УSУ‹€ЫЫќ\ЭШ]YЫЬћHHЧХTUQУSХ‘WРРUQУФ’QTИЏHСS—Н€ИУУ•TХРРUQУФ–WРХUH€УУ•TХРРUQУФ–WФУPT•€ЫЫќ\ЭЫЫX›ФЭ\ќ\’YH€ЫЫќ\ЭЫЫX›У[Э™\ИHМK€]P[љ[TШЬљ\HР]P[љ[S[Э™WР\ЭЫљ\Ъ€ќ[Y\™[ќXЩS[Э™HH•QK€K‚€УSХ‘WХСPUT—РђSHB€В€›[YHHУУTХS‘ФХ’S‘К•ЩX]\€[ЉK€™\ШЬљ\[Ы€HУУTХS‘ФХ’S‘К€•H[Э™IЬИ\H[™ЭЩ\—€‚€Ъ[™ЩHЪ]HЩX]\‹€ЉK€™Y™™XЭHQ‘‘PХХСPUT—РђS€њЭЩ\€HL€ќ\HHTWУ“Ф“PS€XШЭ\XЮHHL€њHL€ќ\™Щ]HT‘СUФСSPХQ€њљ[Ьљ]HH€Ш]YЫЬћHHSPQСWРРUQУФ–WФФPТPS€ћ“[Э™HHИњЭЩ\“Э™\њљYHHMЊK€[\ЭXУ[Э™HH•QK€ЫЫќ\ЭY™™XЭHЧХTUQУSХ‘WСQ‘‘PХИЏHСS—Н€ИУУ•TХСQ‘‘PХФ‘TUUSУ—У“ХР“Ф’S‘И€УУ•TХСQ‘‘PХТQТWРTPSS‘Л€ЫЫќ\ЭШ]YЫЬћHHЧХTUQУSХ‘WРРUQУФ’QTИЏHСS—Н€ИУУ•TХРРUQУФ–WР‘PUUH€УУ•TХРРUQУФ–WФУPT•€ЫЫќ\ЭЫЫX›ФЭ\ќ\’YH€ЫЫќ\ЭЫЫX›У[Э™\ИHРУУP“ЧФХT•T—ТRSУУP“ЧФХT•T—ФђRS—СSђСKУУP“ЧФХT•T—ФРS‘ХФ“KУУP“ЧФХT•T—ФХS“–WСV_K€]P[љ[TШЬљ\HР]P[љ[S[Э™WХЩX]\ђ[€ќ[Y\™[ќXЩS[Э™HH•QK€K‚€УSХ‘WРT“УPUTђTWHB€В€›[YHHУУTХS‘ФХ’S‘Кђ\›ЫX]\\HЉK€™\ШЬљ\[Ы€HУУTХS‘ФХ’S‘К€’X[И[Э]\И›Ш›[\Ч€‚€ќЪ]HЫЫЭ[™ИШЩ[ќ€ЉK€™Y™™XЭHQ‘‘PХТPSР‘S€њЭЩ\€H€ќ\HHTWСФђTФЛ€XШЭ\XЮHH€њHK€ќ\™Щ]HT‘СUХTСT‹€њљ[Ьљ]HH€Ш]YЫЬћHHSPQСWРРUQУФ–WФХUTЛ€ћ“[Э™HHИ™Y™™XЭH—СQ‘‘PХФ‘PУХ‘T—ТK€њЫ]ЪY™™XЭYH•QK€љYЫ›Ь™\Ф›ЭXЭH•QK€љYЫ›Ь™\ФЭXњЭ]]HH—ХTUQУSХ‘WС“QФИСS—Н‹€›Z\њ›Ь“[Э™P[›™YH•QK€ЫЫќ\ЭY™™XЭHЧХTUQУSХ‘WСQ‘‘PХИЏHСS—Н€ИУУ•TХСQ‘‘PХРU“ТQФХT•H€УУ•TХСQ‘‘PХР‘UT—ТQ—УTХ€ЫЫќ\ЭШ]YЫЬћHHУУ•TХРРUQУФ–WФУPT•€ЫЫќ\ЭЫЫX›ФЭ\ќ\’YH€ЫЫќ\ЭЫЫX›У[Э™\ИHМK€]P[љ[TШЬљ\HР]P[љ[S[Э™WР\›ЫX]\\K€ќ[Y\™[ќXЩS[Э™HH•QK€K‚€УSХ‘WСђRСWХPT”ЧHB€В€›[YHHУУTХS‘ФХ’S‘К‘ZЩHX\њИЉK€™\ШЬљ\[Ы€HУУTХS‘ФХ’S‘К€‘™ZYЫњИЬћZ[™ИИЪ\њW€‚€›ЭЩ\€H›ЩIЬИЬ€Y‹€ЉK€™Y™™XЭHQ‘‘PХФФPТPSСQ‘S”СWСХУ—М‹€њЭЩ\€H€ќ\HHTWСT’Л€XШЭ\XЮHHL€њHЊ€ќ\™Щ]HT‘СUФСSPХQ€њљ[Ьљ]HH€Ш]YЫЬћHHSPQСWРРUQУФ–WФХUTЛ€ћ“[Э™HHИ™Y™™XЭH—СQ‘‘PХФФUЧХTМHK€›XYЪXРЫШ]Y™™XЭYH•QK€ЫЫќ\ЭY™™XЭHУУ•TХСQ‘‘PХР‘UT—ТQ—УTХЛРЧХTUQУSХ‘WСQ‘‘PХИЏHСS—Н€ИУУ•TХСQ‘‘PХФURPТУWСФ“ХЧР“Ф‘Q‚€ЫЫќ\ЭШ]YЫЬћHHЧХTUQУSХ‘WРРUQУФ’QTИЏHСS—Н€ИУУ•TХРРUQУФ–WРХUH€УУ•TХРРUQУФ–WФУPT•€ЫЫќ\ЭЫЫX›ФЭ\ќ\’YH€ЫЫќ\ЭЫЫX›У[Э™\ИHМK€]P[љ[TШЬљ\HР]P[љ[S[Э™WСZЩUX\њЛ€ќ[Y\™[ќXЩS[Э™HH•QK€K‚€УSХ‘WРRT—РХUT—HB€В€›[YHHУУTХS‘ФХ’S‘КђZ\€Э]\€ЉK€™\ШЬљ\[Ы€HУУTХS‘ФХ’S‘К€’XЪЬИЪ]^›Ь›ZЩHЪ[™—€‚€’YЪЬљ]XШ[Z]][Л€ЉK€™Y™™XЭHQ‘‘PХТU€њЭЩ\€H—ХTUQУSХ‘WСUHЏHСS—Н€ИЊ€MK€ќ\HHTWС“RS‘Л€XШЭ\XЮHHMK€Ьљ]XШ[]ЭYЩHH—ХTUQУSХ‘WСUHЏHСS—МИИH€‹€њHЌK€ќ\™Щ]HT‘СUР“Х€њљ[Ьљ]HH€Ш]YЫЬћHHSPQСWРРUQУФ–WФФPТPS€ќЪ[™[Э™HH•QK€њЫXЪ[™У[Э™HH•QK€ЫЫќ\ЭY™™XЭHЧХTUQУSХ‘WСQ‘‘PХИЏHСS—Н€ИУУ•TХСQ‘‘PХТQТWРTPSS‘И€УУ•TХСQ‘‘PХФХT•WУSУ”ЧФРSQWХTWРTPS€ЫЫќ\ЭШ]YЫЬћHHУУ•TХРРUQУФ–WРУУУ€ЫЫќ\ЭЫЫX›ФЭ\ќ\’YH€ЫЫќ\ЭЫЫX›У[Э™\ИHМK€]P[љ[TШЬљ\HР]P[љ[S[Э™WРZ\ђЭ]\‹€ќ[Y\™[ќXЩS[Э™HH•QK€K‚€УSХ‘WУХ‘T’PUHB€В€›[YHHУУTХS‘ФХ’S‘К“Э™\љX]ЉK€™\ШЬљ\[Ы€HУУTХS‘ФХ’S‘К€ђ[ЭЬИHќ[\ЭЩ\€]XЪЛ€‚€ќ]Ъ\њHЭЩ\њИЬ€]Л€ЉK€™Y™™XЭHQ‘‘PХТU€њЭЩ\€H—ХTUQУSХ‘WСUHЏHСS—Н€ИLМ€M€ќ\HHTWС’T‘K€XШЭ\XЮHHL€њHK€ќ\™Щ]HT‘СUФСSPХQ€њљ[Ьљ]HH€Ш]YЫЬћHHSPQСWРРUQУФ–WФФPТPS€›XZЩ\РЫЫќXЭH—ХTUQУSХ‘WСUHСS—Н€Y][Ы[Y™™XЭИHQUSУђSСQ‘‘PХКВ€›[Э™QY™™XЭHSХ‘WСQ‘‘PХФФРUЧУRS•TЧМ‹€њЩ[€H•QK€JK€ЫЫќ\ЭY™™XЭHУУ•TХСQ‘‘PХХTСT—УSФ‘WСPTТSWФХT•Q€ЫЫќ\ЭШ]YЫЬћHHУУ•TХРРUQУФ–WР‘PUUK€ЫЫќ\ЭЫЫX›ФЭ\ќ\’YH€ЫЫќ\ЭЫЫX›У[Э™\ИHРУУP“ЧФХT•T—ФХS“–WСV_K€]P[љ[TШЬљ\HР]P[љ[S[Э™WУЭ™\љX]€ќ[Y\™[ќXЩS[Э™HH•QK€K‚€УSХ‘WУСФ—ФУUUHB€В€›[YHHУУTХS‘ФХ’S‘К“ЩЬ€Ы]]ЉK€™\ШЬљ\[Ы€HУУTХS‘ФХ’S‘К€“™YШ]H]\Ъ]™[™\ЬИ[™€‚€‘ЪЬЭ\IЬИ[[][љ]Y\Л€ЉK€™Y™™XЭHQ‘‘PХС“Ф‘TТQТ€њЭЩ\€H€ќ\HHTWУ“Ф“PS€XШЭ\XЮHH—ХTUQУSХ‘WСUHЏHСS—НИ€L€њH€ќ\™Щ]HT‘СUФСSPХQ€њљ[Ьљ]HH€Ш]YЫЬћHHSPQСWРРUQУФ–WФХUTЛ€ћ“[Э™HHИ™Y™™XЭH—СQ‘‘PХРUЧХTМHK€љYЫ›Ь™\ФЭXњЭ]]HH•QK€›XYЪXРЫШ]Y™™XЭYH—ХTUQУSХ‘WС“QФИЏHСS—НK€ЫЫќ\ЭY™™XЭHЧХTUQУSХ‘WСQ‘‘PХИЏHСS—Н€ИУУ•TХСQ‘‘PХРU“ТQФХT•WУУђСH€УУ•TХСQ‘‘PХХУФ”СS—РУУ‘USУ—УС—Ф‘U—УSУ”Л€ЫЫќ\ЭШ]YЫЬћHHУУ•TХРРUQУФ–WФУPT•€ЫЫќ\ЭЫЫX›ФЭ\ќ\’YH€ЫЫќ\ЭЫЫX›У[Э™\ИHМK€]P[љ[TШЬљ\HР]P[љ[S[Э™WУЩЬ”Ы]]€ќ[Y\™[ќXЩS[Э™HH•QK€K‚€УSХ‘WФ“РТЧХУP—HB€В€›[YHHУУTХS‘ФХ’S‘К”›ШЪИЫX€ЉK€™\ШЬљ\[Ы€HУУTХS‘ФХ’S‘К€”ЭЬИH›ЩHњ›ЫH[Эљ[™Ч€‚€ќЪ]›ШЪЬИ[™Э]ИЬYY€ЉK€™Y™™XЭHQ‘‘PХТU€њЭЩ\€H—ХTUQУSХ‘WСUHЏHСS—Н€ИЊ€L€ќ\HHTWФ“РТЛ€XШЭ\XЮHH—ХTUQУSХ‘WСUHЏHСS—Н€ИMH€€њH—ХTUQУSХ‘WСUHЏHСS—Н€ИMH€L€ќ\™Щ]HT‘СUФСSPХQ€њљ[Ьљ]HH€Ш]YЫЬћHHSPQСWРРUQУФ–WФTТPРS€Y][Ы[Y™™XЭИHQUSУђSСQ‘‘PХКВ€›[Э™QY™™XЭHSХ‘WСQ‘‘PХФФУRS•TЧМK€Ъ[ЩHHL€JK€ЫЫќ\ЭY™™XЭHЧХTUQУSХ‘WСQ‘‘PХИЏHСS—Н€ИУУ•TХСQ‘‘PХФТQ•Т•QСWРUS•SУ€€УУ•TХСQ‘‘PХСУ•СVТUWРUQQSђСK€ЫЫќ\ЭШ]YЫЬћHHУУ•TХРРUQУФ–WФУPT•€ЫЫќ\ЭЫЫX›ФЭ\ќ\’YH€ЫЫќ\ЭЫЫX›У[Э™\ИHРУУP“ЧФХT•T—Ф“РТЧХ“ХЯK€]P[љ[TШЬљ\HР]P[љ[S[Э™WФ›ШЪХЫX‹€ќ[Y\™[ќXЩS[Э™HH•QK€K‚€УSХ‘WФТS‘T—ХТS‘HB€В€›[YHHУУTХS‘ФХ’S‘К”Ъ[™\€Ъ[™ЉK€™\ШЬљ\[Ы€HУУTХS‘ФХ’S‘К€ђHЭЩ\ћH]XЪИ]X^W€‚€њZ\ЩHXљ[]Y\Л€ЉK€™Y™™XЭHQ‘‘PХТU€њЭЩ\€HЊ€ќ\HHTWР•QЛ€XШЭ\XЮHHL€њHK€ќ\™Щ]HT‘СUФСSPХQ€њљ[Ьљ]HH€Ш]YЫЬћHHSPQСWРРUQУФ–WФФPТPS€ќЪ[™[Э™HH—СVђTУUQУSХ‘WС“QФЛ€Y][Ы[Y™™XЭИHQUSУђSСQ‘‘PХКВ€›[Э™QY™™XЭHSХ‘WСQ‘‘PХРSФХUЧХT€њЩ[€H•QK€Ъ[ЩHHL€JK€ЫЫќ\ЭY™™XЭHУУ•TХСQ‘‘PХТST“Х‘WРУУ‘USУ—Ф‘U‘S•У‘T•“ХTУ‘TФЛ€ЫЫќ\ЭШ]YЫЬћHHУУ•TХРРUQУФ–WР‘PUUK€ЫЫќ\ЭЫЫX›ФЭ\ќ\’YH€ЫЫќ\ЭЫЫX›У[Э™\ИHМK€]P[љ[TШЬљ\HР]P[љ[S[Э™WФЪ[™\•Ъ[™€ќ[Y\™[ќXЩS[Э™HH•QK€K‚€УSХ‘WУQUSФУХS‘HB€В€›[YHHУУTХS‘ФХ’S‘К“Y][ЫЭ[™ЉK€™\ШЬљ\[Ы€HУУTХS‘ФХ’S‘К€‘[Z]ИHЬњљX›HШЬ™YXЪ€‚€ќ]Ъ\њHЭЩ\њИЬ€Y‹€ЉK€™Y™™XЭHQ‘‘PХФФPТPSСQ‘S”СWСХУ—М‹€њЭЩ\€H€ќ\HHTWФХQS€XШЭ\XЮHHK€њH€ќ\™Щ]HT‘СUФСSPХQ€њљ[Ьљ]HH€Ш]YЫЬћHHSPQСWРРUQУФ–WФХUTЛ€ћ“[Э™HHИ™Y™™XЭH—СQ‘‘PХФФUЧХTМHK€љYЫ›Ь™\ФЭXњЭ]]HH—ХTUQУSХ‘WС“QФИЏHСS—Н‹€›XYЪXРЫШ]Y™™XЭYH•QK€њЫЭ[™[Э™HH•QK€ЫЫќ\ЭY™™XЭHУУ•TХСQ‘‘PХРђQWФХT•WФ‘U—УSУ”Л€ЫЫќ\ЭШ]YЫЬћHHУУ•TХРРUQУФ–WФУPT•€ЫЫќ\ЭЫЫX›ФЭ\ќ\’YHУУP“ЧФХT•T—УQUSФУХS‘€ЫЫќ\ЭЫЫX›У[Э™\ИHМK€]P[љ[TШЬљ\HР]P[љ[S[Э™WУY][ЫЭ[™€ќ[Y\™[ќXЩS[Э™HH•QK€K‚€УSХ‘WСФђTФЧХТTХWHB€В€›[YHHУУTХS‘ФХ’S‘К‘Ь\ЬИЪ\ЭHЉK€™\ШЬљ\[Ы€HУУTХS‘ФХ’S‘К€“[ИH›ЩH[ќИЫY\€‚€ќЪ]HX\Ш[ќY[ЩK€ЉK€™Y™™XЭHQ‘‘PХУ“У—Х“УUSWФХUTЛ€њЭЩ\€H€ќ\HHTWСФђTФЛ€XШЭ\XЮHHMK€њHMK€ќ\™Щ]HT‘СUФСSPХQ€њљ[Ьљ]HH€Ш]YЫЬћHHSPQСWРРUQУФ–WФХUTЛ€\™Э[Y[ќHИ››Ы•›Ы][TЭ]\ИHSХ‘WСQ‘‘PХФУQTK€ћ“[Э™HHИ™Y™™XЭH—СQ‘‘PХФФХTМHK€љYЫ›Ь™\ФЭXњЭ]]HH—ХTUQУSХ‘WС“QФИЏHСS—Н‹€›XYЪXРЫШ]Y™™XЭYH•QK€њЫЭ[™[Э™HH•QK€ЫЫќ\ЭY™™XЭHЧХTUQУSХ‘WСQ‘‘PХИЏHСS—Н€ИУУ•TХСQ‘‘PХРU“ТQФХT•WУУђСH€УУ•TХСQ‘‘PХРђQWФХT•WФ‘U—УSУ”Л€ЫЫќ\ЭШ]YЫЬћHHУУ•TХРРUQУФ–WФУPT•€ЫЫќ\ЭЫЫX›ФЭ\ќ\’YHУУP“ЧФХT•T—СФђTФЧХТTХK€ЫЫќ\ЭЫЫX›У[Э™\ИHМK€]P[љ[TШЬљ\HР]P[љ[S[Э™WСЬ\ЬХЪ\ЭK€ќ[Y\™[ќXЩS[Э™HH•QK€K‚€УSХ‘WХPТУWHB€В€›[YHHУУTХS‘ФХ’S‘К•XЪЫHЉK€™\ШЬљ\[Ы€HУУTХS‘ФХ’S‘К€“XZЩ\ИH›ЩH]YЪЧ€‚€›ЭЩ\€]XЪИ[™Y™[њЩK€ЉK€™Y™™XЭHQ‘‘PХХPТУK€њЭЩ\€H€ќ\HHTWУ“Ф“PS€XШЭ\XЮHHL€њHЊ€ќ\™Щ]HT‘СUФСSPХQ€њљ[Ьљ]HH€Ш]YЫЬћHHSPQСWРРUQУФ–WФХUTЛ€ћ“[Э™HHИ™Y™™XЭH—СQ‘‘PХСQ—ХTМHK€љYЫ›Ь™\ФЭXњЭ]]HH—ХTUQУSХ‘WС“QФИСS—Н€›XYЪXРЫШ]Y™™XЭYH•QK€ЫЫќ\ЭY™™XЭHУУ•TХСQ‘‘PХХУФ”СS—РУУ‘USУ—УС—Ф‘U—УSУ”Л€ЫЫќ\ЭШ]YЫЬћHHУУ•TХРРUQУФ–WРХUK€ЫЫќ\ЭЫЫX›ФЭ\ќ\’YH€ЫЫќ\ЭЫЫX›У[Э™\ИHМK€]P[љ[TШЬљ\HР]P[љ[S[Э™WХXЪЫK€ќ[Y\™[ќXЩS[Э™HH•QK€K‚€УSХ‘WРУФУRPЧФХСT—HB€В€›[YHHУУTХS‘ФХ’S‘КђЫЬЫZXИЭЩ\€ЉK€™\ШЬљ\[Ы€HУУTХS‘ФХ’S‘К€”Z\Щ\ИY™[њЩH[™Ь€Y—€‚€ќЪ]H^\ЭXИЭЩ\‹€ЉK€™Y™™XЭHQ‘‘PХРУФУRPЧФХСT‹€њЭЩ\€H€ќ\HHTWФЦPТPЛ€XШЭ\XЮHH€њHЊ€ќ\™Щ]HT‘СUХTСT‹€њљ[Ьљ]HH€Ш]YЫЬћHHSPQСWРРUQУФ–WФХUTЛ€ћ“[Э™HHИ™Y™™XЭH—СQ‘‘PХФФQ—ХTМHK€њЫ]ЪY™™XЭYH•QK€љYЫ›Ь™\Ф›ЭXЭH•QK€›Z\њ›Ь“[Э™P[›™YH•QK€ЫЫќ\ЭY™™XЭHУУ•TХСQ‘‘PХТST“Х‘WРУУ‘USУ—Ф‘U‘S•У‘T•“ХTУ‘TФЛ€ЫЫќ\ЭШ]YЫЬћHHЧХTUQУSХ‘WРРUQУФ’QTИЏHСS—Н€ИУУ•TХРРUQУФ–WР‘PUUH€УУ•TХРРUQУФ–WРУУУ€ЫЫќ\ЭЫЫX›ФЭ\ќ\’YH€ЫЫќ\ЭЫЫX›У[Э™\ИHМK€]P[љ[TШЬљ\HР]P[љ[S[Э™WРЫЬЫZXФЭЩ\‹€ќ[Y\™[ќXЩS[Э™HH•QK€K‚€УSХ‘WХРUT—ФФХUHB€В€›[YHHУУTХS‘ФХ’S‘К•Ш]\€ЬЭ]ЉK€™\ШЬљ\[Ы€HУУTХS‘ФХ’S‘К€’[™›XЭИ[Ь™H[XYЩHY€W€‚€ќ\Щ\‰ЬИ\ИYЪ€ЉK€™Y™™XЭHQ‘‘PХФХСT—РђTСQУУ—ХTСT—Т€њЭЩ\€HML€ќ\HHTWХРUT‹€XШЭ\XЮHHL€њHK€ќ\™Щ]HT‘СUР“Х€њљ[Ьљ]HH€Ш]YЫЬћHHSPQСWРРUQУФ–WФФPТPS€ЫЫќ\ЭY™™XЭHЧХTUQУSХ‘WСQ‘‘PХИЏHСS—Н€ИУУ•TХСQ‘‘PХХTСT—УSФ‘WСPTТSWФХT•Q€УУ•TХСQ‘‘PХР‘UT—ХТS—УUT‹€ЫЫќ\ЭШ]YЫЬћHHУУ•TХРРUQУФ–WР‘PUUK€ЫЫќ\ЭЫЫX›ФЭ\ќ\’YH€ЫЫќ\ЭЫЫX›У[Э™\ИHРУУP“ЧФХT•T—ФђRS—СSђС_K€]P[љ[TШЬљ\HР]P[љ[S[Э™WХШ]\”ЬЭ]€ќ[Y\™[ќXЩS[Э™HH•QK€K‚€УSХ‘WФТQУђSР‘PSWHB€В€›[YHHУУTХS‘ФХ’S‘К”ЪYЫ[™X[HЉK€™\ШЬљ\[Ы€HУУTХS‘ФХ’S‘К€ђHЭ[™ЩH™X[H]XЪИ]€‚€›X^HЫЫ™ќ\ЩHH›ЩK€ЉK€™Y™™XЭHQ‘‘PХТU€њЭЩ\€HНK€ќ\HHTWР•QЛ€XШЭ\XЮHHL€њHMK€ќ\™Щ]HT‘СUФСSPХQ€њљ[Ьљ]HH€Ш]YЫЬћHHSPQСWРРUQУФ–WФФPТPS€Y][Ы[Y™™XЭИHQUSУђSСQ‘‘PХКВ€›[Э™QY™™XЭHSХ‘WСQ‘‘PХРУУ‘•TТSУ‹€Ъ[ЩHHL€JK€ЫЫќ\ЭY™™XЭHЧХTUQУSХ‘WСQ‘‘PХИЏHСS—Н€ИУУ•TХСQ‘‘PХФТQ•Т•QСWРUS•SУ€€УУ•TХСQ‘‘PХФРФђSP“WУ‘VХT“—УФ‘T‹€ЫЫќ\ЭШ]YЫЬћHHУУ•TХРРUQУФ–WР‘PUUK€ЫЫќ\ЭЫЫX›ФЭ\ќ\’YH€ЫЫќ\ЭЫЫX›У[Э™\ИHМK€]P[љ[TШЬљ\HР]P[љ[S[Э™WФЪYЫ[™X[K€ќ[Y\™[ќXЩS[Э™HH•QK€K‚€УSХ‘WФТQХЧФSђТHB€В€›[YHHУУTХS‘ФХ’S‘К”ЪYЭИ[ЪЉK€™\ШЬљ\[Ы€HУУTХS‘ФХ’S‘К€ђ[€[]›ЪYX›H[Ъ]€‚€љ\И›ЭЫ€њ›ЫHЪYЭЬЛ€ЉK€™Y™™XЭHQ‘‘PХТU€њЭЩ\€HЊ€ќ\HHTWСТФХ€XШЭ\XЮHH€њHЊ€ќ\™Щ]HT‘СUФСSPХQ€њљ[Ьљ]HH€Ш]YЫЬћHHSPQСWРРUQУФ–WФTТPРS€›XZЩ\РЫЫќXЭH•QK€њ[Ъ[™У[Э™HH•QK€ЫЫќ\ЭY™™XЭHУУ•TХСQ‘‘PХР‘UT—ТQ—С’T”Х€ЫЫќ\ЭШ]YЫЬћHHУУ•TХРРUQУФ–WФУPT•€ЫЫќ\ЭЫЫX›ФЭ\ќ\’YH€ЫЫќ\ЭЫЫX›У[Э™\ИHМK€]P[љ[TШЬљ\HР]P[љ[S[Э™WФЪYЭФ[Ъ€ќ[Y\™[ќXЩS[Э™HH•QK€K‚€УSХ‘WСVђTСS”УФ–WHB€В€›[YHHУУTХS‘ФХ’S‘К‘^\Щ[њЫЬћHЉK€™\ШЬљ\[Ы€HУУTХS‘ФХ’S‘К€ђ]XЪЬИЪ]HXЭ[X\—€‚€њЭЩ\‹€X^HШ]\ЩH›[Ъ[™Л€ЉK€™Y™™XЭHQ‘‘PХТU€њЭЩ\€H€ќ\HHTWФЦPТPЛ€XШЭ\XЮHHL€њH—ХTUQУSХ‘WСUHЏHСS—Н€ИЊ€М€ќ\™Щ]HT‘СUФСSPХQ€њљ[Ьљ]HH€Ш]YЫЬћHHSPQСWРРUQУФ–WФФPТPS€›Z[љ[Z^™QЭX›Q[XYЩHH—ХTUQУSХ‘WС“QФИСS—Н€Y][Ы[Y™™XЭИHQUSУђSСQ‘‘PХКВ€›[Э™QY™™XЭHSХ‘WСQ‘‘PХС“SђТ€Ъ[ЩHHL€JK€ЫЫќ\ЭY™™XЭHЧХTUQУSХ‘WСQ‘‘PХИЏHСS—Н€ИУУ•TХСQ‘‘PХФХT•WУSУ”ЧФРSQWХTWРTPS€УУ•TХСQ‘‘PХРђQWФХT•WС”“У•УSУ‹€ЫЫќ\ЭШ]YЫЬћHHУУ•TХРРUQУФ–WРУУУ€ЫЫќ\ЭЫЫX›ФЭ\ќ\’YH€ЫЫќ\ЭЫЫX›У[Э™\ИHМK€]P[љ[TШЬљ\HР]P[љ[S[Э™WС^\Щ[њЫЬћK€ќ[Y\™[ќXЩS[Э™HH•QK€K‚€УSХ‘WФТЦWХTTђХUHB€В€›[YHHУУTХS‘ФХ’S‘К”ЪЮH\\Э]ЉK€™\ШЬљ\[Ы€HУУTХS‘ФХ’S‘К€ђ[€\\Э]›ЭЫ€\ИY—€‚€›X\[™И[ќИHЪЮK€ЉK€™Y™™XЭHQ‘‘PХТU€њЭЩ\€HK€ќ\HHTWС’QТS‘Л€XШЭ\XЮHHL€њHMK€ќ\™Щ]HT‘СUФСSPХQ€њљ[Ьљ]HH€Ш]YЫЬћHHSPQСWРРUQУФ–WФTТPРS€›XZЩ\РЫЫќXЭH•QK€њ[Ъ[™У[Э™HH•QK€™[XYЩ\РZ\›Ь›™HH•QK€ЫЫќ\ЭY™™XЭHУУ•TХСQ‘‘PХФХT•WУSУ”ЧФРSQWХTWРTPS€ЫЫќ\ЭШ]YЫЬћHHУУ•TХРРUQУФ–WРУУУ€ЫЫќ\ЭЫЫX›ФЭ\ќ\’YH€ЫЫќ\ЭЫЫX›У[Э™\ИHРУУP“ЧФХT•T—С“РХTЧСS‘T‘Ц_K€]P[љ[TШЬљ\HР]P[љ[S[Э™WФЪЮU\\Э]€ќ[Y\™[ќXЩS[Э™HH•QK€K‚€УSХ‘WФРS‘ХУP—HB€В€›[YHHУУTХS‘ФХ’S‘К”Ш[™ЫX€ЉK€™\ШЬљ\[Ы€HУУTХS‘ФХ’S‘К€•\И[™\ќИH›ЩH[—€‚€њ]ZXЪЬШ[™›Ь€ђ’S‘S‘ЧХT“”И€\›њЛ€ЉK€™Y™™XЭHQ‘‘PХТU€њЭЩ\€H—ХTUQУSХ‘WСUHЏHСS—НHИНH€MK€ќ\HHTWСФ“ХS‘€XШЭ\XЮHH—ХTUQУSХ‘WСUHЏHСS—НHИH€М€њHMK€ќ\™Щ]HT‘СUФСSPХQ€њљ[Ьљ]HH€Ш]YЫЬћHHSPQСWРРUQУФ–WФTТPРS€Y][Ы[Y™™XЭИHQUSУђSСQ‘‘PХКВ€›[Э™QY™™XЭHSХ‘WСQ‘‘PХХФђT€›][\Эљ[™ЛќЬ\YH—УTСЧХФђTQФРS‘ХУP‹€JK€ЫЫќ\ЭY™™XЭHУУ•TХСQ‘‘PХСУ•СVТUWРUQQSђСK€ЫЫќ\ЭШ]YЫЬћHHУУ•TХРРUQУФ–WФУPT•€ЫЫќ\ЭЫЫX›ФЭ\ќ\’YH€ЫЫќ\ЭЫЫX›У[Э™\ИHРУУP“ЧФХT•T—ФРS‘ХФ“_K€]P[љ[TШЬљ\HР]P[љ[S[Э™WФШ[™ЫX‹€ќ[Y\™[ќXЩS[Э™HH•QK€K‚€УSХ‘WФТQT—РУУHB€В€›[YHHУУTХS‘ФХ’S‘К”ЪY\€ЫЫЉK€™\ШЬљ\[Ы€HУУTХS‘ФХ’S‘К€ђ›\ЭИH›ЩHЪ]XЩK—€‚€•H\Щ\€]\Э[€™XЪ\™ЩK€ЉK€™Y™™XЭHQ‘‘PХТU€њЭЩ\€HML€ќ\HHTWТPСK€XШЭ\XЮHHL€њHK€ќ\™Щ]HT‘СUФСSPХQ€њљ[Ьљ]HH€Ш]YЫЬћHHSPQСWРРUQУФ–WФФPТPS€Y][Ы[Y™™XЭИHQUSУђSСQ‘‘PХКВ€›[Э™QY™™XЭHSХ‘WСQ‘‘PХФ‘PТT‘СK€њЩ[€H•QK€JK€ЫЫќ\ЭY™™XЭHУУ•TХСQ‘‘PХРђQWФХT•WУSУ”ЧХТUСУУСРTPSЛ€ЫЫќ\ЭШ]YЫЬћHHУУ•TХРРUQУФ–WР‘PUUK€ЫЫќ\ЭЫЫX›ФЭ\ќ\’YH€ЫЫќ\ЭЫЫX›У[Э™\ИHРУУP“ЧФХT•T—ТRSУУP“ЧФХT•T—УRS‘Ф‘PQTџK€]P[љ[TШЬљ\HР]P[љ[S[Э™WФЪY\ђЫЫ€ќ[Y\™[ќXЩS[Э™HH•QK€K‚€УSХ‘WУUQWХРUT—HB€В€›[YHHУУTХS‘ФХ’S‘К“]YHШ]\€ЉK€™\ШЬљ\[Ы€HУУTХS‘ФХ’S‘К€ђ]XЪЬИЪ]]YHШ]\‹—€‚€“X^HЭЩ\€XШЭ\XЮK€ЉK€™Y™™XЭHQ‘‘PХТU€њЭЩ\€H—ХTUQУSХ‘WСUHЏHСS—Н€ИL€MK€ќ\HHTWХРUT‹€XШЭ\XЮHHK€њHL€ќ\™Щ]HT‘СUР“Х€њљ[Ьљ]HH€Ш]YЫЬћHHSPQСWРРUQУФ–WФФPТPS€њЪЮP]P[›™YH•QK€Y][Ы[Y™™XЭИHQUSУђSСQ‘‘PХКВ€›[Э™QY™™XЭHSХ‘WСQ‘‘PХРPРЧУRS•TЧМK€Ъ[ЩHHМ€JK€ЫЫќ\ЭY™™XЭHЧХTUQУSХ‘WСQ‘‘PХИЏHСS—Н€ИУУ•TХСQ‘‘PХФХT•WФ‘U—УSУ”И€УУ•TХСQ‘‘PХФХT•WУSУ—ХТUТ•QСTЧРUS•SУ‹€ЫЫќ\ЭШ]YЫЬћHHУУ•TХРРUQУФ–WХХQТ€ЫЫќ\ЭЫЫX›ФЭ\ќ\’YH€ЫЫќ\ЭЫЫX›У[Э™\ИHРУУP“ЧФХT•T—ФђRS—СSђС_K€]P[љ[TШЬљ\HР]P[љ[S[Э™WУ]YUШ]\‹€ќ[Y\™[ќXЩS[Э™HH•QK€K‚€УSХ‘WР•SUФСQQHB€В€›[YHHУУTХS‘ФХ’S‘Кђќ[]ЩYYЉK€™\ШЬљ\[Ы€HУУTХS‘ФХ’S‘К€”ЪЫЭИ€ИHЩYYИ[€H›ЭЧ€‚€ќИЭљZЩHH›ЩK€ЉK€™Y™™XЭHQ‘‘PХТU€њЭЩ\€H—ХTUQУSХ‘WСUHЏHСS—НHИЌH€L€ќ\HHTWСФђTФЛ€XШЭ\XЮHHL€њHМ€ќ\™Щ]HT‘СUФСSPХQ€њљ[Ьљ]HH€Ш]YЫЬћHHSPQСWРРUQУФ–WФTТPРS€›][R]H•QK€[\ЭXУ[Э™HH•QK€ЫЫќ\ЭY™™XЭHЧХTUQУSХ‘WСQ‘‘PХИЏHСS—Н€ИУУ•TХСQ‘‘PХФUPSUWСTS‘ЧУУ—ХSRS‘И€УУ•TХСQ‘‘PХРђQWФХT•WУSУ”ЧХТUСУУСРTPSЛ€ЫЫќ\ЭШ]YЫЬћHHУУ•TХРРUQУФ–WРУУУ€ЫЫќ\ЭЫЫX›ФЭ\ќ\’YH€ЫЫќ\ЭЫЫX›У[Э™\ИHРУУP“ЧФХT•T—СФ“ХХУУP“ЧФХT•T—Ф“ХХSTџK€]P[љ[TШЬљ\HР]P[љ[S[Э™WРќ[]ЩYY€K‚€УSХ‘WРQT’PSРPСWHB€В€›[YHHУУTХS‘ФХ’S‘КђY\љX[XЩHЉK€™\ШЬљ\[Ы€HУУTХS‘ФХ’S‘К€ђ[€^™[Y[HЬYYH[™€‚€ќ[]›ЪYX›H]XЪЛ€ЉK€™Y™™XЭHQ‘‘PХТU€њЭЩ\€HЊ€ќ\HHTWС“RS‘Л€XШЭ\XЮHH€њHЊ€ќ\™Щ]HT‘СUФСSPХQ€њљ[Ьљ]HH€Ш]YЫЬћHHSPQСWРРUQУФ–WФTТPРS€›XZЩ\РЫЫќXЭH•QK€њЫXЪ[™У[Э™HH•QK€ЫЫќ\ЭY™™XЭHУУ•TХСQ‘‘PХР‘UT—ТQ—С’T”Х€ЫЫќ\ЭШ]YЫЬћHHУУ•TХРРUQУФ–WРУУУ€ЫЫќ\ЭЫЫX›ФЭ\ќ\’YH€ЫЫќ\ЭЫЫX›У[Э™\ИHМK€]P[љ[TШЬљ\HР]P[љ[S[Э™WРY\љX[XЩK€ќ[Y\™[ќXЩS[Э™HH•QK€K‚€УSХ‘WТPТPУWФФPT—HB€В€›[YHHУУTХS‘ФХ’S‘К’XЪXЫHЬX\€ЉK€™\ШЬљ\[Ы€HУУTХS‘ФХ’S‘К€ђ]XЪЬИH›ЩHћHљ\љ[™Ч€‚€Њ€ИHXЪXЫ\И[€H›ЭЛ€ЉK€™Y™™XЭHQ‘‘PХТU€њЭЩ\€H—ХTUQУSХ‘WСUHЏHСS—НHИЌH€L€ќ\HHTWТPСK€XШЭ\XЮHHL€њHМ€ќ\™Щ]HT‘СUФСSPХQ€њљ[Ьљ]HH€Ш]YЫЬћHHSPQСWРРUQУФ–WФTТPРS€›][R]H•QK€ЫЫќ\ЭY™™XЭHЧХTUQУSХ‘WСQ‘‘PХИЏHСS—Н€ИУУ•TХСQ‘‘PХФUPSUWСTS‘ЧУУ—ХSRS‘И€УУ•TХСQ‘‘PХФХT•WУSУ”ЧФРSQWХTWРTPS€ЫЫќ\ЭШ]YЫЬћHHУУ•TХРРUQУФ–WР‘PUUK€ЫЫќ\ЭЫЫX›ФЭ\ќ\’YH€ЫЫќ\ЭЫЫX›У[Э™\ИHМK€]P[љ[TШЬљ\HР]P[љ[S[Э™WТXЪXЫTЬX\‹€K‚€УSХ‘WТT“У—СQ‘S”СWHB€В€›[YHHУУTХS‘ФХ’S‘К’\›Ы€Y™[њЩHЉK€™\ШЬљ\[Ы€HУУTХS‘ФХ’S‘К€’\™[њИH›ЩIЬИЭ\™XЩW€‚€ќИЪ\њHZ\ЩHY™[њЩK€ЉK€™Y™™XЭHQ‘‘PХСQ‘S”СWХTМ‹€њЭЩ\€H€ќ\HHTWФХQS€XШЭ\XЮHH€њHMK€ќ\™Щ]HT‘СUХTСT‹€њљ[Ьљ]HH€Ш]YЫЬћHHSPQСWРРUQУФ–WФХUTЛ€ћ“[Э™HHИ™Y™™XЭH—СQ‘‘PХФ‘TСUФХUИK€њЫ]ЪY™™XЭYH•QK€љYЫ›Ь™\Ф›ЭXЭH•QK€›Z\њ›Ь“[Э™P[›™YH•QK€ЫЫќ\ЭY™™XЭHУУ•TХСQ‘‘PХРU“ТQФХT•K€ЫЫќ\ЭШ]YЫЬћHHУУ•TХРРUQУФ–WХХQТ€ЫЫќ\ЭЫЫX›ФЭ\ќ\’YH€ЫЫќ\ЭЫЫX›У[Э™\ИHМK€]P[љ[TШЬљ\HР]P[љ[S[Э™WТ\›Ы‘Y™[њЩK€ќ[Y\™[ќXЩS[Э™HH•QK€K‚€УSХ‘WР“РТЧHB€В€›[YHHУУTХS‘ФХ’S‘Кђ›ШЪИЉK€™\ШЬљ\[Ы€HУУTХS‘ФХ’S‘К€ђ›ШЪЬИH›ЩIЬИШ^H[™€‚€њ™]™[ќИ\ШШ\K€ЉK€™Y™™XЭHQ‘‘PХУQPS—УУТЛ€њЭЩ\€H€ќ\HHTWУ“Ф“PS€XШЭ\XЮHH€њHK€ќ\™Щ]HT‘СUФСSPХQ€њљ[Ьљ]HH€Ш]YЫЬћHHSPQСWРРUQУФ–WФХUTЛ€ћ“[Э™HHИ™Y™™XЭH—СQ‘‘PХСQ—ХTМHK€љYЫ›Ь™\Ф›ЭXЭH—ХTUQУSХ‘WС“QФИЏHСS—Н‹€›XYЪXРЫШ]Y™™XЭYH•QK€ЫЫќ\ЭY™™XЭHУУ•TХСQ‘‘PХУPRСWС“УХТS‘ЧУSУ”ЧУ‘T•“ХTЛ€ЫЫќ\ЭШ]YЫЬћHHУУ•TХРРUQУФ–WРХUK€ЫЫќ\ЭЫЫX›ФЭ\ќ\’YHУУP“ЧФХT•T—Р“РТЛ€ЫЫќ\ЭЫЫX›У[Э™\ИHМK€]P[љ[TШЬљ\HР]P[љ[S[Э™WР›ШЪЛ€ќ[Y\™[ќXЩS[Э™HH•QK€K‚€УSХ‘WТХУHB€В€›[YHHУУTХS‘ФХ’S‘К’ЭЫЉK€™\ШЬљ\[Ы€HУУTХS‘ФХ’S‘К€’ЭЫИИZ\ЩHHЬ\љ]€‚€[™›ЫЬЭИ]XЪЛ€ЉK€њЭЩ\€H€™Y™™XЭHQ‘‘PХРUPТЧХT€ќ\HHTWУ“Ф“PS€XШЭ\XЮHH€њH€ќ\™Щ]H—ХTUQУSХ‘WСUHЏHСS—ОИT‘СUХTСT—РS‘РSN€T‘СUХTСT€€њљ[Ьљ]HH€Ш]YЫЬћHHSPQСWРРUQУФ–WФХUTЛ€ћ“[Э™HHИ™Y™™XЭH—СQ‘‘PХРUЧХTМHK€њЫ]ЪY™™XЭYH•QK€љYЫ›Ь™\Ф›ЭXЭH•QK€›Z\њ›Ь“[Э™P[›™YH•QK€њЫЭ[™[Э™HH—ХTUQУSХ‘xЫ^v¶‰ћЛkєwµзHВ€›[YHHУУTХS‘ФХ’S‘К”ЭЬ™YЭЩ\€ЉK€™\ШЬљ\[Ы€HУУTХS‘ФХ’S‘К€•HYЪ\€H\Щ\‰ЬИЭ]Ч€‚€ќH[Ь™H[XYЩHШ]\ЩY€ЉK€™Y™™XЭHQ‘‘PХФХФ‘QФХСT‹€њЭЩ\€HЊ€ќ\HHTWФЦPТPЛ€XШЭ\XЮHHL€њHL€ќ\™Щ]HT‘СUФСSPХQ€њљ[Ьљ]HH€Ш]YЫЬћHHSPQСWРРUQУФ–WФФPТPS€ЫЫќ\ЭY™™XЭHУУ•TХСQ‘‘PХР‘UT—ХТUСУУСРУУ‘USУ‹€ЫЫќ\ЭШ]YЫЬћHHУУ•TХРРUQУФ–WФУPT•€ЫЫќ\ЭЫЫX›ФЭ\ќ\’YH€ЫЫќ\ЭЫЫX›У[Э™\ИHРУУP“ЧФХT•T—РSS‘TТPKУУP“ЧФХT•T—ТУ‘WРУUФЛУУP“ЧФХT•T—РРSWУRS‘УУP“ЧФХT•T—УђTХWФХK€]P[љ[TШЬљ\HР]P[љ[S[Э™WФЭЬ™YЭЩ\‹€K‚€УSХ‘WФURPТЧСХPT‘HB€В€›[YHHУУTХS‘ФХ’S‘К”]ZXЪИЭX\™ЉK€™\ШЬљ\[Ы€HУУTХS‘ФХ’S‘К€‘]Y\Иљ[Ьљ]H]XЪЬЧ€‚€™›Ь€Ы™H\›‹€ЉK€™Y™™XЭHQ‘‘PХФ“ХPХ€њЭЩ\€H€ќ\HHTWС’QТS‘Л€XШЭ\XЮHH€њHMK€ќ\™Щ]HT‘СUХTСT‹€њљ[Ьљ]HHЛ€Ш]YЫЬћHHSPQСWРРUQУФ–WФХUTЛ€\™Э[Y[ќHИњ›ЭXЭY]ЩH“ХPХФURPТЧСХPT‘K€ћ“[Э™HHИ™Y™™XЭH—СQ‘‘PХСQ—ХTМHK€њЫ]ЪY™™XЭYH•QK€љYЫ›Ь™\Ф›ЭXЭH•QK€›Z\њ›Ь“[Э™P[›™YH•QK€›Y]›Ы›ЫYP[›™YH•QK€ЫЫќ\ЭY™™XЭHУУ•TХСQ‘‘PХР‘UT—ТQ—С’T”Х€ЫЫќ\ЭШ]YЫЬћHHУУ•TХРРUQУФ–WРУУУ€ЫЫќ\ЭЫЫX›ФЭ\ќ\’YH€ЫЫќ\ЭЫЫX›У[Э™\ИHМK€]P[љ[TШЬљ\HР]P[љ[S[Э™WФ]ZXЪСЭX\™€K‚€УSХ‘WРSWФХТUТHB€В€›[YHHУУTХS‘ФХ’S‘Кђ[HЭЪ]ЪЉK€™\ШЬљ\[Ы€HУУTХS‘ФХ’S‘К€•H\Щ\€ЭЪ]Ъ\ИXЩ\Ч€‚€ќЪ]]И\ќ™\‹€ЉK€™Y™™XЭHQ‘‘PХРSWФХТUТ€њЭЩ\€H€ќ\HHTWФЦPТPЛ€XШЭ\XЮHH€њHMK€ќ\™Щ]HT‘СUХTСT‹€њљ[Ьљ]HH—ХTUQУSХ‘WСUHЏHСS—НИИ€€K€Ш]YЫЬћHHSPQСWРРUQУФ–WФХUTЛ€ћ“[Э™HHИ™Y™™XЭH—СQ‘‘PХФФХTМ€K€љYЫ›Ь™\Ф›ЭXЭH•QK€›Z\њ›Ь“[Э™P[›™YH•QK€ЫЫќ\ЭY™™XЭHУУ•TХСQ‘‘PХФРФђSP“WУ‘VХT“—УФ‘T‹€ЫЫќ\ЭШ]YЫЬћHHУУ•TХРРUQУФ–WФУPT•€ЫЫќ\ЭЫЫX›ФЭ\ќ\’YH€ЫЫќ\ЭЫЫX›У[Э™\ИHМK€]P[љ[TШЬљ\HР]P[љ[S[Э™WР[TЭЪ]Ъ€K‚€УSХ‘WФРРSHB€В€›[YHHУУTХS‘ФХ’S‘К”ШШ[ЉK€™\ШЬљ\[Ы€HУУTХS‘ФХ’S‘К€”ЪЫЭИ›Ъ[[™ИШ]\€]W€‚€™›ЩK€X^H[™›XЭHќ\›‹€ЉK€™Y™™XЭHQ‘‘PХТU€њЭЩ\€H€ќ\HHTWХРUT‹€XШЭ\XЮHHL€њHMK€ќ\™Щ]HT‘СUФСSPХQ€њљ[Ьљ]HH€Ш]YЫЬћHHSPQСWРРUQУФ–WФФPТPS€ќ]ЬХ\Щ\€H•QK€Y][Ы[Y™™XЭИHQUSУђSСQ‘‘PХКВ€›[Э™QY™™XЭHSХ‘WСQ‘‘PХР•T“‹€Ъ[ЩHHМ€JK€ЫЫќ\ЭY™™XЭHУУ•TХСQ‘‘PХУPRСWС“УХТS‘ЧУSУ”ЧУ‘T•“ХTЛ€ЫЫќ\ЭШ]YЫЬћHHУУ•TХРРUQУФ–WХХQТ€ЫЫќ\ЭЫЫX›ФЭ\ќ\’YHУУP“ЧФХT•T—ФРРS€ЫЫќ\ЭЫЫX›У[Э™\ИHМK€]P[љ[TШЬљ\HР]P[љ[S[Э™WФШШ[€K‚€УSХ‘WФТSФУPTТHB€В€›[YHHУУTХS‘ФХ’S‘К”Ъ[ЫX\ЪЉK€™\ШЬљ\[Ы€HУУTХS‘ФХ’S‘К€”Ъ\њHZ\Щ\И]ЛФЬђ]ЛЧ€‚€”ЬYYќ]›ЬИY‹ФЬ‘Y‹€ЉK€™Y™™XЭHQ‘‘PХФТSФУPTТ€њЭЩ\€H€ќ\HHTWУ“Ф“PS€XШЭ\XЮHH€њHMK€ќ\™Щ]HT‘СUХTСT‹€њљ[Ьљ]HH€Ш]YЫЬћHHSPQСWРРUQУФ–WФХUTЛ€ћ“[Э™HHИ™Y™™XЭH—СQ‘‘PХФ‘TСUФХUИK€њЫ]ЪY™™XЭYH•QK€љYЫ›Ь™\Ф›ЭXЭH•QK€›Z\њ›Ь“[Э™P[›™YH•QK€ЫЫќ\ЭY™™XЭHУУ•TХСQ‘‘PХР‘UT—ТQ—УTХ€ЫЫќ\ЭШ]YЫЬћHHУУ•TХРРUQУФ–WХХQТ€ЫЫќ\ЭЫЫX›ФЭ\ќ\’YH€ЫЫќ\ЭЫЫX›У[Э™\ИHМK€]P[љ[TШЬљ\HР]P[љ[S[Э™WФЪ[ЫX\Ъ€K‚€УSХ‘WТPSФSСWHB€В€›[YHHУУTХS‘ФХ’S‘К’X[[ЩHЉK€™\ШЬљ\[Ы€HУУTХS‘ФХ’S‘К€”™XЫЭ™\њИ\И[€W€‚€ќ\™Щ]	ЬИX^[][H€ЉK€™Y™™XЭHQ‘‘PХТPSФSСK€њЭЩ\€H€ќ\HHTWФЦPТPЛ€XШЭ\XЮHH€њHL€ќ\™Щ]HT‘СUФСSPХQ€њљ[Ьљ]HH€Ш]YЫЬћHHSPQСWРРUQУФ–WФХUTЛ€ћ“[Э™HHИ™Y™™XЭH—СQ‘‘PХФ‘TСUФХUИK€›XYЪXРЫШ]Y™™XЭYH•QK€›Z\њ›Ь“[Э™P[›™YH•QK€љX[[™У[Э™HH•QK€њ[ЩS[Э™HH•QK€ЫЫќ\ЭY™™XЭHУУ•TХСQ‘‘PХСVТUWРUQQSђСWТS—РS–WРУУ•TХ€ЫЫќ\ЭШ]YЫЬћHHУУ•TХРРUQУФ–WР‘PUUK€ЫЫќ\ЭЫЫX›ФЭ\ќ\’YH€ЫЫќ\ЭЫЫX›У[Э™\ИHМK€]P[љ[TШЬљ\HР]P[љ[S[Э™WТX[[ЩK€K‚€УSХ‘WТVHB€В€›[YHHУУTХS‘ФХ’S‘К’^ЉK€™\ШЬљ\[Ы€HУУTХS‘ФХ’S‘К€‘Щ\ИЭX›H[XYЩHY€W€‚€™›ЩH\ИHЭ]\И›Ш›[K€ЉK€™Y™™XЭHQ‘‘PХСХP“WФХСT—УУ—РT‘ЧФХUTЛ€њЭЩ\€H—ХTUQУSХ‘WСUHЏHСS—Н€ИЌH€L€ќ\HHTWСТФХ€XШЭ\XЮHHL€њHL€ќ\™Щ]HT‘СUФСSPХQ€њљ[Ьљ]HH€Ш]YЫЬћHHSPQСWРРUQУФ–WФФPТPS€ћ“[Э™HHИњЭЩ\“Э™\њљYHHMЊK€\™Э[Y[ќHИњЭ]\ИHХUTМWРS–HK€ЫЫќ\ЭY™™XЭHУУ•TХСQ‘‘PХФХT•WУSУ”ЧФРSQWХTWРTPS€ЫЫќ\ЭШ]YЫЬћHHУУ•TХРРUQУФ–WФУPT•€ЫЫќ\ЭЫЫX›ФЭ\ќ\’YH€ЫЫќ\ЭЫЫX›У[Э™\ИHРУУP“ЧФХT•T—ХЦPЛУУP“ЧФХT•T—С“ФђСWФSKУУP“ЧФХT•T—ХS‘T—ХРU‘KУУP“ЧФХT•T—ТS‘‘T““ЛУУP“ЧФХT•T—ХТSУЧХТTФУУP“ЧФХT•T—УХ‘SWТТTФЛУУP“ЧФХT•T—ФФФ‘KУУP“ЧФХT•T—ФТS‘ЛУУP“ЧФХT•T—ЦPUУ‹УУP“ЧФХT•T—ТT“ФТTЛУУP“ЧФХT•T—СT’ЧХ“ТQУУP“ЧФХT•T—СФђTФЧХТTХKУУP“ЧФХT•T—ФУQTФХСT‹УУP“ЧФХT•T—ФТTУУ—СРTЛУУP“ЧФХT•T—ФТTУУ—ФХСT‹УУP“ЧФХT•T—ХЦPЧФФRСTЛУУP“ЧФХT•T—СУT‘_K€]P[љ[TШЬљ\HР]P[љ[S[Э™WТ^€K‚€УSХ‘WФТЦWС“ФHB€В€›[YHHУУTХS‘ФХ’S‘К”ЪЮH›ЬЉK€™\ШЬљ\[Ы€HУУTХS‘ФХ’S‘К€•ZЩ\ИH›ЩH[ќИHЪЮW€‚€ќ[€›ЬИ]H™^\›‹€ЉK€™Y™™XЭHQ‘‘PХФТЦWС“Ф€њЭЩ\€HЊ€ќ\HHTWС“RS‘Л€XШЭ\XЮHHL€њHL€ќ\™Щ]HT‘СUФСSPХQ€њљ[Ьљ]HH€Ш]YЫЬћHHSPQСWРРUQУФ–WФTТPРS€›XZЩ\РЫЫќXЭH•QK€™Ь]љ]P[›™YH•QK€њЫY\[Р[›™YH•QK€љ[њЭќXЭ[›™YH•QK€\ЬЪ\Э[›™YH—ХTUQУSХ‘WС“QФИЏHСS—Н‹€\™Э[Y[ќќЫХ\›ђ]XЪИHИњЭљ[™ТYHХ’S‘ТQФУS•УТХT‘СUQТњЭ]\ИHХUWУУ—РRT€K€ЫЫќ\ЭY™™XЭHУУ•TХСQ‘‘PХСУ•СVТUWРUQQSђСK€ЫЫќ\ЭШ]YЫЬћHHУУ•TХРРUQУФ–WХХQТ€ЫЫќ\ЭЫЫX›ФЭ\ќ\’YH€ЫЫќ\ЭЫЫX›У[Э™\ИHРУУP“ЧФХT•T—СS•ђRS“QS•УУP“ЧФХT•T—ФVWУ’PС_K€]P[љ[TШЬљ\HР]P[љ[S[Э™WФЪЮQ›Ь€K‚€УSХ‘WФТQ•ССPT—HB€В€›[YHHУУTХS‘ФХ’S‘К”ЪYќЩX\€ЉK€™\ШЬљ\[Ы€HУУTХS‘ФХ’S‘К€”›Э]\И]ИЩX\њИИZ\ЩW€‚€ђ]XЪИ[™ЬYY€ЉK€™Y™™XЭHQ‘‘PХФТQ•ССPT‹€њЭЩ\€H€ќ\HHTWФХQS€XШЭ\XЮHH€њHL€ќ\™Щ]HT‘СUХTСT‹€њљ[Ьљ]HH€Ш]YЫЬћHHSPQСWРРUQУФ–WФХUTЛ€ћ“[Э™HHИ™Y™™XЭH—СQ‘‘PХФ‘TСUФХUИK€њЫ]ЪY™™XЭYH•QK€љYЫ›Ь™\Ф›ЭXЭH•QK€›Z\њ›Ь“[Э™P[›™YH•QK€ЫЫќ\ЭY™™XЭHУУ•TХСQ‘‘PХТST“Х‘WРУУ‘USУ—Ф‘U‘S•У‘T•“ХTУ‘TФЛ€ЫЫќ\ЭШ]YЫЬћHHУУ•TХРРUQУФ–WФУPT•€ЫЫќ\ЭЫЫX›ФЭ\ќ\’YHУУP“ЧФХT•T—ФТQ•ССPT‹€ЫЫќ\ЭЫЫX›У[Э™\ИHМK€]P[љ[TШЬљ\HР]P[љ[S[Э™WФЪYќЩX\‹€K‚€УSХ‘WРТTђУWХ“ХЧHB€В€›[YHHУУTХS‘ФХ’S‘КђЪ\ЫH›ЭИЉK€™\ШЬљ\[Ы€HРЪ\ЫU›ЭС\ШЬљ\[Ы‹€™Y™™XЭHQ‘‘PХТUФХТUТХT‘СU€њЭЩ\€HЊ€ќ\HHTWС’QТS‘Л€XШЭ\XЮHHL€њHL€ќ\™Щ]HT‘СUФСSPХQ€њљ[Ьљ]HHM‹€Ш]YЫЬћHHSPQСWРРUQУФ–WФTТPРS€›XZЩ\РЫЫќXЭH•QK€ЫЬXШ][›™YH•QK€\ЬЪ\Э[›™YH•QK€ЫЫќ\ЭY™™XЭHУУ•TХСQ‘‘PХУ‘VРTPSУUT‹€ЫЫќ\ЭШ]YЫЬћHHУУ•TХРРUQУФ–WРУУУ€ЫЫќ\ЭЫЫX›ФЭ\ќ\’YH€ЫЫќ\ЭЫЫX›У[Э™\ИHРУУP“ЧФХT•T—СS•ђRS“QS•УУP“ЧФХT•T—ФVWУ’PС_K€]P[љ[TШЬљ\HР]P[љ[S[Э™WРЪ\ЫU›ЭЛ€K‚€УSХ‘WТSђТS‘TђUWHB€В€›[YHHУУTХS‘ФХ’S‘К’[Ъ[™\]HЉK€™\ШЬљ\[Ы€HУУTХS‘ФХ’S‘К€ђќ\›њИ\™\њљY\И[™Щ[\Ч€‚€њ™]™[ќ[™ИZ\€\ЩK€ЉK€™Y™™XЭHQ‘‘PХТU€њЭЩ\€H—ХTUQУSХ‘WСUHЏHСS—Н€ИЊ€М€ќ\HHTWС’T‘K€XШЭ\XЮHHL€њHMK€ќ\™Щ]HT‘СUР“Х€њљ[Ьљ]HH€Ш]YЫЬћHHSPQСWРРUQУФ–WФФPТPS€Y][Ы[Y™™XЭИHQUSУђSСQ‘‘PХКВ€›[Э™QY™™XЭHSХ‘WСQ‘‘PХТSђТS‘TђUK€JK€ЫЫќ\ЭY™™XЭHУУ•TХСQ‘‘PХФТQ•Т•QСWРUS•SУ‹€ЫЫќ\ЭШ]YЫЬћHHУУ•TХРРUQУФ–WХХQТ€ЫЫќ\ЭЫЫX›ФЭ\ќ\’YH€ЫЫќ\ЭЫЫX›У[Э™\ИHМK€]P[љ[TШЬљ\HР]P[љ[S[Э™WТ[Ъ[™\]K€K‚€УSХ‘WФUPTТHB€В€›[YHHУУTХS‘ФХ’S‘К”]X\ЪЉK€™\ШЬљ\[Ы€HУУTХS‘ФХ’S‘К€”Э\™\ЬЩ\ИH›ЩKXZЪ[™Ч€‚€љ][Э™H\Э€ЉK€™Y™™XЭHQ‘‘PХФUPTТ€њЭЩ\€H€ќ\HHTWСT’Л€XШЭ\XЮHHL€њHMK€ќ\™Щ]HT‘СUФСSPХQ€њљ[Ьљ]HH€Ш]YЫЬћHHSPQСWРРUQУФ–WФХUTЛ€ћ“[Э™HHИ™Y™™XЭH—СQ‘‘PХФФХTМHK€›Y]›Ы›ЫYP[›™YH•QK€ЫЫќ\ЭY™™XЭHУУ•TХСQ‘‘PХУ‘VРTPSСPT“QT‹€ЫЫќ\ЭШ]YЫЬћHHУУ•TХРРUQУФ–WФУPT•€ЫЫќ\ЭЫЫX›ФЭ\ќ\’YH€ЫЫќ\ЭЫЫX›У[Э™\ИHМK€]P[љ[TШЬљ\HР]P[љ[S[Э™WФ]X\Ъ€K‚€УSХ‘WРPФ“РђUPФЧHB€В€›[YHHУУTХS‘ФХ’S‘КђXЬ›Ш]XЬИЉK€™\ШЬљ\[Ы€HУУTХS‘ФХ’S‘К€‘Щ\ИЭX›H[XYЩHY€W€‚€ќ\Щ\€\И›И][K€ЉK€™Y™™XЭHQ‘‘PХРPФ“РђUPФЛ€њЭЩ\€HMK€ќ\HHTWС“RS‘Л€XШЭ\XЮHHL€њHMK€ќ\™Щ]HT‘СUФСSPХQ€њљ[Ьљ]HH€Ш]YЫЬћHHSPQСWРРUQУФ–WФTТPРS€›XZЩ\РЫЫќXЭH•QK€ЫЫќ\ЭY™™XЭHУУ•TХСQ‘‘PХР‘UT—ХТUСУУСРУУ‘USУ‹€ЫЫќ\ЭШ]YЫЬћHHУУ•TХРРUQУФ–WРУУУ€ЫЫќ\ЭЫЫX›ФЭ\ќ\’YH€ЫЫќ\ЭЫЫX›У[Э™\ИHМK€]P[љ[TШЬљ\HР]P[љ[S[Э™WРXЬ›Ш]XЬЛ€K‚€УSХ‘WФ‘Q“PХХTWHB€В€›[YHHУУTХS‘ФХ’S‘К”™Y›XЭ\HЉK€™\ШЬљ\[Ы€HУУTХS‘ФХ’S‘К€•H\Щ\€™Y›XЭИH›ЩIЬЧ€‚€ќ\KЫЬZ[™И]€ЉK€™Y™™XЭHQ‘‘PХФ‘Q“PХХTK€њЭЩ\€H€ќ\HHTWУ“Ф“PS€XШЭ\XЮHH€њHMK€ќ\™Щ]HT‘СUФСSPХQ€њљ[Ьљ]HH€Ш]YЫЬћHHSPQСWРРUQУФ–WФХUTЛ€ћ“[Э™HHИ™Y™™XЭH—СQ‘‘PХФФUЧХTМHK€љYЫ›Ь™\ФЭXњЭ]]HH•QK€›Z\њ›Ь“[Э™P[›™YH•QK€ЫЫќ\ЭY™™XЭHУУ•TХСQ‘‘PХР‘UT—ТQ—ФРSQWХTK€ЫЫќ\ЭШ]YЫЬћHHУУ•TХРРUQУФ–WФУPT•€ЫЫќ\ЭЫЫX›ФЭ\ќ\’YH€ЫЫќ\ЭЫЫX›У[Э™\ИHМK€]P[љ[TШЬљ\HР]P[љ[S[Э™WФ™Y›XЭ\K€K‚€УSХ‘WФ‘USPUWHB€В€›[YHHУУTХS‘ФХ’S‘К”™][X]HЉK€™\ШЬљ\[Ы€HУУTХS‘ФХ’S‘К€ђ[€]XЪИ]Щ\И[Ь™W€‚€™[XYЩHY€[€[HZ[ќY€ЉK€™Y™™XЭHQ‘‘PХФ‘USPUK€њЭЩ\€HМ€ќ\HHTWУ“Ф“PS€XШЭ\XЮHHL€њHK€ќ\™Щ]HT‘СUФСSPХQ€њљ[Ьљ]HH€Ш]YЫЬћHHSPQСWРРUQУФ–WФTТPРS€›XZЩ\РЫЫќXЭH•QK€ЫЫќ\ЭY™™XЭHУУ•TХСQ‘‘PХРQ‘‘PХQР–WФ‘U—РTPS€ЫЫќ\ЭШ]YЫЬћHHУУ•TХРРUQУФ–WРУУУ€ЫЫќ\ЭЫЫX›ФЭ\ќ\’YH€ЫЫќ\ЭЫЫX›У[Э™\ИHМK€]P[љ[TШЬљ\HР]P[љ[S[Э™WФ™][X]K€K‚€УSХ‘WС’SђSСРSP’UHB€В€›[YHHУУTХS‘ФХ’S‘К‘љ[[Ш[Xљ]ЉK€™\ШЬљ\[Ы€HУУTХS‘ФХ’S‘К€•H\Щ\€Z[ќИИ[XYЩW€‚€ќH›ЩH\]X[И]И€ЉK€™Y™™XЭHQ‘‘PХС’SђSСРSP’U€њЭЩ\€HK€ќ\HHTWС’QТS‘Л€XШЭ\XЮHHL€њHK€ќ\™Щ]HT‘СUФСSPХQ€њљ[Ьљ]HH€Ш]YЫЬћHHSPQСWРРUQУФ–WФФPТPS€™^ЬЪ[Ы€H—ХTUQУSХ‘WС“QФИHСS—НK€›Z\њ›Ь“[Э™P[›™YH•QK€њ\™[ќ[›Ы™[›™YH•QK€ЫЫќ\ЭY™™XЭHУУ•TХСQ‘‘PХСФ‘PUРTPSР•UУ“ЧУSФ‘WУSХ‘TЛ€ЫЫќ\ЭШ]YЫЬћHHУУ•TХРРUQУФ–WХХQТ€ЫЫќ\ЭЫЫX›ФЭ\ќ\’YH€ЫЫќ\ЭЫЫX›У[Э™\ИHМK€]P[љ[TШЬљ\HР]P[љ[S[Э™WСљ[[Ш[Xљ]€K‚€УSХ‘WР‘TХХЧHB€В€›[YHHУУTХS‘ФХ’S‘Кђ™\ЭЭИЉK€™\ШЬљ\[Ы€HУУTХS‘ФХ’S‘К€•H\Щ\€Ъ]™\И]И[€‚€љ][HИH›ЩK€ЉK€™Y™™XЭHQ‘‘PХР‘TХХЛ€њЭЩ\€H€ќ\HHTWУ“Ф“PS€XШЭ\XЮHH€њHMK€ќ\™Щ]HT‘СUФСSPХQ€њљ[Ьљ]HH€Ш]YЫЬћHHSPQСWРРUQУФ–WФХUTЛ€ћ“[Э™HHИ™Y™™XЭH—СQ‘‘PХФФХTМ€K€љYЫ›Ь™\Ф›ЭXЭH—ХTUQУSХ‘WС“QФИЏHСS—Н‹€љYЫ›Ь™\ФЭXњЭ]]HH—ХTUQУSХ‘WС“QФИЏHСS—Н‹€›Y]›Ы›ЫYP[›™YH•QK€ЫЬXШ][›™YH•QK€\ЬЪ\Э[›™YH•QK€ЫЫќ\ЭY™™XЭHУУ•TХСQ‘‘PХР‘UT—ХТS—РUQQSђСWСVТUQ€ЫЫќ\ЭШ]YЫЬћHHУУ•TХРРUQУФ–WРХUK€ЫЫќ\ЭЫЫX›ФЭ\ќ\’YH€ЫЫќ\ЭЫЫX›У[Э™\ИHРУУP“ЧФХT•T—РСSP”ђUKУУP“ЧФХT•T—РУХ‘UУУP“ЧФХT•T—ТTWТХT‹УУP“ЧФХT•T—ХТTТK€]P[љ[TШЬљ\HР]P[љ[S[Э™WР™\ЭЭЛ€K‚€УSХ‘WТS‘‘T““ЧHB€В€›[YHHУУTХS‘ФХ’S‘К’[™™\››ИЉK€™\ШЬљ\[Ы€HУУTХS‘ФХ’S‘К€”ЭЩ\™ќ[[™Э\™HИ[™›XЭ€‚€Hќ\›‹ќ][XШЭ\]K€ЉK€™Y™™XЭHQ‘‘PХТU€њЭЩ\€HL€ќ\HHTWС’T‘K€XШЭ\XЮHHL€њHK€ќ\™Щ]HT‘СUФСSPХQ€њљ[Ьљ]HH€Ш]YЫЬћHHSPQСWРРUQУФ–WФФPТPS€Y][Ы[Y™™XЭИHQUSУђSСQ‘‘PХКВ€›[Э™QY™™XЭHSХ‘WСQ‘‘PХР•T“‹€Ъ[ЩHHL€JK€ЫЫќ\ЭY™™XЭHУУ•TХСQ‘‘PХРђQWФХT•WС”“У•УSУ‹€ЫЫќ\ЭШ]YЫЬћHHУУ•TХРРUQУФ–WР‘PUUK€ЫЫќ\ЭЫЫX›ФЭ\ќ\’YHУУP“ЧФХT•T—ТS‘‘T““Л€ЫЫќ\ЭЫЫX›У[Э™\ИHМK€]P[љ[TШЬљ\HР]P[љ[S[Э™WТ[™™\››Л€K‚€УSХ‘WХРUT—ФQСWHB€В€›[YHHУУTХS‘ФХ’S‘К•Ш]\€YЩHЉK€™\ШЬљ\[Ы€HУУTХS‘ФХ’S‘К€ђ]XЪЬИЪ]HЫЫ[[€Щ—€‚€ќШ]\‹€X^HXZЩHHZ[›ЭЛ€ЉK€™Y™™XЭHQ‘‘PХФQСK€њЭЩ\€H—ХTUQУSХ‘WСUHЏHСS—Н€И€L€ќ\HHTWХРUT‹€XШЭ\XЮHHL€њHL€ќ\™Щ]HT‘СUФСSPХQ€њљ[Ьљ]HH€Ш]YЫЬћHHSPQСWРРUQУФ–WФФPТPS€њЪЮP]P[›™YH•QK€ЫЫќ\ЭY™™XЭHУУ•TХСQ‘‘PХСVТUWРUQQSђСWТS—РS–WРУУ•TХ€ЫЫќ\ЭШ]YЫЬћHHУУ•TХРРUQУФ–WР‘PUUK€ЫЫќ\ЭЫЫX›ФЭ\ќ\’YH€ЫЫќ\ЭЫЫX›У[Э™\ИHМK€]P[љ[TШЬљ\HР]P[љ[S[Э™WХШ]\”YЩK€K‚€УSХ‘WС’T‘WФQСWHB€В€›[YHHУУTХS‘ФХ’S‘К‘љ\™HYЩHЉK€™\ШЬљ\[Ы€HУУTХS‘ФХ’S‘К€ђ]XЪЬИЪ]HЫЫ[[€Щ—€‚€™љ\™K€X^Hќ\›€HЬ\ЬЛ€ЉK€™Y™™XЭHQ‘‘PХФQСK€њЭЩ\€H—ХTUQУSХ‘WСUHЏHСS—Н€И€L€ќ\HHTWС’T‘K€XШЭ\XЮHHL€њHL€ќ\™Щ]HT‘СUФСSPХQ€њљ[Ьљ]HH€Ш]YЫЬћHHSPQСWРРUQУФ–WФФPТPS€њЪЮP]P[›™YH•QK€ЫЫќ\ЭY™™XЭHУУ•TХСQ‘‘PХСVТUWРUQQSђСWТS—РS–WРУУ•TХ€ЫЫќ\ЭШ]YЫЬћHHУУ•TХРРUQУФ–WР‘PUUK€ЫЫќ\ЭЫЫX›ФЭ\ќ\’YH€ЫЫќ\ЭЫЫX›У[Э™\ИHМK€]P[љ[TШЬљ\HР]P[љ[S[Э™WСљ\™TYЩK€K‚€УSХ‘WСФђTФЧФQСWHB€В€›[YHHУУTХS‘ФХ’S‘К‘Ь\ЬИYЩHЉK€™\ШЬљ\[Ы€HУУTХS‘ФХ’S‘К€ђ]XЪЬИЪ]HЫЫ[[€Щ—€‚€™Ь\ЬЛ€X^HЬ™X]HHЭШ[\€ЉK€™Y™™XЭHQ‘‘PХФQСK€њЭЩ\€H—ХTUQУSХ‘WСUHЏHСS—Н€И€L€ќ\HHTWСФђTФЛ€XШЭ\XЮHHL€њHL€ќ\™Щ]HT‘СUФСSPХQ€њљ[Ьљ]HH€Ш]YЫЬћHHSPQСWРРUQУФ–WФФPТPS€њЪЮP]P[›™YH•QK€ЫЫќ\ЭY™™XЭHУУ•TХСQ‘‘PХСVТUWРUQQSђСWТS—РS–WРУУ•TХ€ЫЫќ\ЭШ]YЫЬћHHУУ•TХРРUQУФ–WР‘PUUK€ЫЫќ\ЭЫЫX›ФЭ\ќ\’YH€ЫЫќ\ЭЫЫX›У[Э™\ИHМK€]P[љ[TШЬљ\HР]P[љ[S[Э™WСЬ\ЬФYЩK€K‚€УSХ‘WХ“УФХТUТHB€В€›[YHHУУTХS‘ФХ’S‘К•›ЫЭЪ]ЪЉK€™\ШЬљ\[Ы€HХU\›‘\ШЬљ\[Ы‹€™Y™™XЭHQ‘‘PХТUСTРРTK€њЭЩ\€HМ€ќ\HHTWСSPХ’PЛ€XШЭ\XЮHHL€њHЊ€ќ\™Щ]HT‘СUФСSPХQ€њљ[Ьљ]HH€Ш]YЫЬћHHSPQСWРРUQУФ–WФФPТPS€ЫЫќ\ЭY™™XЭHУУ•TХСQ‘‘PХРU“ТQФХT•KЛРУУ•TХСQ‘‘PХФURPТУWСФ“ХЧР“Ф‘Q€ЫЫќ\ЭШ]YЫЬћHHУУ•TХРРUQУФ–WРУУУ€ЫЫќ\ЭЫЫX›ФЭ\ќ\’YH€ЫЫќ\ЭЫЫX›У[Э™\ИHРУУP“ЧФХT•T—РТT‘С_K€]P[љ[TШЬљ\HР]P[љ[S[Э™WХ›ЫЭЪ]Ъ€K‚€УSХ‘WФХ•QСУWР•QЧHB€В€›[YHHУУTХS‘ФХ’S‘К”ЭќYЩЫHќYИЉK€™\ШЬљ\[Ы€HУУTХS‘ФХ’S‘К€”™\Ъ\Э[™ЛH\Щ\€]XЪЬЧ€‚€ќH›Щ\Л€ЭЩ\њИЬ€]Л€ЉK€™Y™™XЭHQ‘‘PХТU€њЭЩ\€H—ХTUQУSХ‘WСUHЏHСS—Н€ИL€М€ќ\HHTWР•QЛ€XШЭ\XЮHHL€њHЊ€ќ\™Щ]HT‘СUР“Х€њљ[Ьљ]HH€Ш]YЫЬћHHSPQСWРРUQУФ–WФФPТPS€Y][Ы[Y™™XЭИHQUSУђSСQ‘‘PХКВ€›[Э™QY™™XЭHSХ‘WСQ‘‘PХФФРUЧУRS•TЧМK€Ъ[ЩHHL€JK€ЫЫќ\ЭY™™XЭHУУ•TХСQ‘‘PХР‘UT—ТQ—УTХ€ЫЫќ\ЭШ]YЫЬћHHУУ•TХРРUQУФ–WРХUK€ЫЫќ\ЭЫЫX›ФЭ\ќ\’YH€ЫЫќ\ЭЫЫX›У[Э™\ИHМK€]P[љ[TШЬљ\HР]P[љ[S[Э™WФЭќYЩЫPќYЛ€K‚€УSХ‘WР•SЦ‘WHB€В€›[YHHУУTХS‘ФХ’S‘Кђќ[Ю™HЉK€™\ШЬљ\[Ы€HУУTХS‘ФХ’S‘К€”ЭЫ\ИЭЫ€Ы€HЬ›Э[™—€‚€’]И[[™ЭЩ\њИЬYY€ЉK€™Y™™XЭHQ‘‘PХСPT•UPRСK€њЭЩ\€HЊ€ќ\HHTWСФ“ХS‘€XШЭ\XЮHHL€њHЊ€ќ\™Щ]HT‘СUС“СTЧРS‘РSK€њљ[Ьљ]HH€Ш]YЫЬћHHSPQСWРРUQУФ–WФTТPРS€њЪЮP]P[›™YH•QK€Y][Ы[Y™™XЭИHQUSУђSСQ‘‘PХКВ€›[Э™QY™™XЭHSХ‘WСQ‘‘PХФФУRS•TЧМK€Ъ[ЩHHL€JK€ЫЫќ\ЭY™™XЭHУУ•TХСQ‘‘PХФХT•WФ‘U—УSУ”Л€ЫЫќ\ЭШ]YЫЬћHHУУ•TХРРUQУФ–WХХQТ€ЫЫќ\ЭЫЫX›ФЭ\ќ\’YH€ЫЫќ\ЭЫЫX›У[Э™\ИHМK€]P[љ[TШЬљ\HР]P[љ[S[Э™WРќ[Ю™K€K‚€УSХ‘WС”“ФХР”‘PUHB€В€›[YHHУУTХS‘ФХ’S‘К‘њ›ЬЭњ™X]ЉK€™\ШЬљ\[Ы€HФЭЬ›U›ЭС\ШЬљ\[Ы‹€™Y™™XЭHQ‘‘PХТU€њЭЩ\€H—ХTUQУSХ‘WСUHЏHСS—Н€ИЊ€€ќ\HHTWТPСK€XШЭ\XЮHHL€њHL€ќ\™Щ]HT‘СUФСSPХQ€њљ[Ьљ]HH€Ш]YЫЬћHHSPQСWРРUQУФ–WФФPТPS€[Ш^\РЬљ]XШ[]H•QK€ЫЫќ\ЭY™™XЭHУУ•TХСQ‘‘PХРQ‘‘PХQР–WФ‘U—РTPSЛРУУ•TХСQ‘‘PХФURPТУWСФ“ХЧР“Ф‘Q€ЫЫќ\ЭШ]YЫЬћHHУУ•TХРРUQУФ–WР‘PUUK€ЫЫќ\ЭЫЫX›ФЭ\ќ\’YH€ЫЫќ\ЭЫЫX›У[Э™\ИHМK€]P[љ[TШЬљ\HР]P[љ[S[Э™WСњ›ЬЭњ™X]€K‚€УSХ‘WСђQУУ—ХRSHB€В€›[YHHУУTХS‘ФХ’S‘К‘YЫЫ€Z[ЉK€™\ШЬљ\[Ы€HРЪ\ЫU›ЭС\ШЬљ\[Ы‹€™Y™™XЭHQ‘‘PХТUФХТUТХT‘СU€њЭЩ\€HЊ€ќ\HHTWСђQУУ‹€XШЭ\XЮHHL€њHL€ќ\™Щ]HT‘СUФСSPХQ€њљ[Ьљ]HHM‹€Ш]YЫЬћHHSPQСWРРUQУФ–WФTТPРS€›XZЩ\РЫЫќXЭH•QK€ЫЬXШ][›™YH•QK€\ЬЪ\Э[›™YH•QK€ЫЫќ\ЭY™™XЭHУУ•TХСQ‘‘PХУ‘VРTPSУUT‹€ЫЫќ\ЭШ]YЫЬћHHУУ•TХРРUQУФ–WХХQТ€ЫЫќ\ЭЫЫX›ФЭ\ќ\’YHУУP“ЧФХT•T—СђQУУ—ХRS€ЫЫќ\ЭЫЫX›У[Э™\ИHРУУP“ЧФХT•T—СђQУУ—Р”‘PUУУP“ЧФХT•T—СђQУУ—СSђСKУУP“ЧФХT•T—СђQУУ—ФђQСKУУP“ЧФХT•T—СђQУУ—Ф•TТУУP“ЧФХT•T—ФХPSФ“РТЛУУP“ЧФХT•T—ФФRСTЛУУP“ЧФХT•T—ХЦPЧФФRСTЯK€]P[љ[TШЬљ\HР]P[љ[S[Э™WСYЫЫ•Z[€K‚€УSХ‘WХУФ’ЧХTHB€В€›[YHHУУTХS‘ФХ’S‘К•ЫЬљИ\ЉK€™\ШЬљ\[Ы€HУУTХS‘ФХ’S‘К€•H\Щ\€\И›Э\ЩY—€‚€•\И]XЪИ[™Ь€]Л€ЉK€™Y™™XЭHQ‘‘PХРUPТЧФФUЧХT€њЭЩ\€H€ќ\HHTWУ“Ф“PS€XШЭ\XЮHH€њHМ€ќ\™Щ]HT‘СUХTСT‹€њљ[Ьљ]HH€Ш]YЫЬћHHSPQСWРРUQУФ–WФХUTЛ€ћ“[Э™HHИ™Y™™XЭH—СQ‘‘PХРUЧХTМHK€њЫ]ЪY™™XЭYH•QK€љYЫ›Ь™\Ф›ЭXЭH•QK€›Z\њ›Ь“[Э™P[›™YH•QK€ЫЫќ\ЭY™™XЭHУУ•TХСQ‘‘PХТST“Х‘WРУУ‘USУ—Ф‘U‘S•У‘T•“ХTУ‘TФЛЛРУУ•TХСQ‘‘PХСVТUTЧРUQQSђСWУSФ‘WТQ—С’T”Х€ЫЫќ\ЭШ]YЫЬћHHУУ•TХРРUQУФ–WХХQТ€ЫЫќ\ЭЫЫX›ФЭ\ќ\’YH€ЫЫќ\ЭЫЫX›У[Э™\ИHМK€]P[љ[TШЬљ\HР]P[љ[S[Э™WХЫЬљХ\€K‚€УSХ‘WСSPХ“ХСP—HB€В€›[YHHУУTХS‘ФХ’S‘К‘[XЭ›ЭЩX€ЉK€™\ШЬљ\[Ы€HУУTХS‘ФХ’S‘К€”Ы\™\ИH›Щ\ИЪ][—€‚€™[XЭљXИ™]€ЭЩ\њИЬYY€ЉK€™Y™™XЭHQ‘‘PХТU€њЭЩ\€HMK€ќ\HHTWСSPХ’PЛ€XШЭ\XЮHHMK€њHMK€ќ\™Щ]HT‘СUР“Х€њљ[Ьљ]HH€Ш]YЫЬћHHSPQСWРРUQУФ–WФФPТPS€Y][Ы[Y™™XЭИHQUSУђSСQ‘‘PХКВ€›[Э™QY™™XЭHSХ‘WСQ‘‘PХФФУRS•TЧМK€Ъ[ЩHHL€JK€ЫЫќ\ЭY™™XЭHУУ•TХСQ‘‘PХФХT•WУSУ—ХТUТ•QСTЧРUS•SУ‹€ЫЫќ\ЭШ]YЫЬћHHУУ•TХРРUQУФ–WР‘PUUK€ЫЫќ\ЭЫЫX›ФЭ\ќ\’YH€ЫЫќ\ЭЫЫX›У[Э™\ИHРУУP“ЧФХT•T—ФХ’S‘ЧФТХK€]P[љ[TШЬљ\HР]P[љ[S[Э™WС[XЭ›ЭЩX‹€K‚€УSХ‘WХТSРТT‘СWHB€В€›[YHHУУTХS‘ФХ’S‘К•Ъ[Ъ\™ЩHЉK€™\ШЬљ\[Ы€HУУTХS‘ФХ’S‘К€ђ[€[XЭљXШ[XЪЫH]€‚€[ЫИ\ќИH\Щ\‹€ЉK€™Y™™XЭHQ‘‘PХФ‘PУТS€њЭЩ\€HL€ќ\HHTWСSPХ’PЛ€XШЭ\XЮHHL€њHMK€ќ\™Щ]HT‘СUФСSPХQ€њљ[Ьљ]HH€Ш]YЫЬћHHSPQСWРРUQУФ–WФTТPРS€\™Э[Y[ќHИњ™XЫЪ[\Щ[ќYЩHHЌHK€›XZЩ\РЫЫќXЭH•QK€ЫЫќ\ЭY™™XЭHУУ•TХСQ‘‘PХХTСT—УSФ‘WСPTТSWФХT•Q€ЫЫќ\ЭШ]YЫЬћHHУУ•TХРРUQУФ–WХХQТ€ЫЫќ\ЭЫЫX›ФЭ\ќ\’YH€ЫЫќ\ЭЫЫX›У[Э™\ИHМK€]P[љ[TШЬљ\HР]P[љ[S[Э™WХЪ[Ъ\™ЩK€K‚€УSХ‘WС’SФ•S—HB€В€›[YHHУУTХS‘ФХ’S‘К‘љ[ќ[€ЉK€™\ШЬљ\[Ы€HУУTХS‘ФХ’S‘К€”Ь[њИ]И›ЩHZЩHHљ[—€‚€’YЪЬљ]XШ[Z]][Л€ЉK€™Y™™XЭHQ‘‘PХТU€њЭЩ\€H€ќ\HHTWСФ“ХS‘€XШЭ\XЮHHMK€Ьљ]XШ[]ЭYЩHH—ХTUQУSХ‘WСUHЏHСS—МИИH€‹€њHL€ќ\™Щ]HT‘СUФСSPХQ€њљ[Ьљ]HH€Ш]YЫЬћHHSPQСWРРUQУФ–WФTТPРS€›XZЩ\РЫЫќXЭH•QK€ЫЫќ\ЭY™™XЭHУУ•TХСQ‘‘PХРQ‘‘PХQР–WФ‘U—РTPS€ЫЫќ\ЭШ]YЫЬћHHУУ•TХРРUQУФ–WХХQТ€ЫЫќ\ЭЫЫX›ФЭ\ќ\’YH€ЫЫќ\ЭЫЫX›У[Э™\ИHРУУP“ЧФХT•T—С“РХTЧСS‘T‘Ц_K€]P[љ[TШЬљ\HР]P[љ[S[Э™WСљ[ќ[‹€K‚€УSХ‘WСPSРТФHB€В€›[YHHУУTХS‘ФХ’S‘К‘X[ЪЬЉK€™\ШЬљ\[Ы€HУУTХS‘ФХ’S‘К€ђ]XЪЬИЪ]њќ][]Ч€‚€ќ]ЭљZЩHЪXЩK€ЉK€™Y™™XЭHQ‘‘PХТU€њЭЩ\€H€ќ\HHTWСђQУУ‹€XШЭ\XЮHHL€њHMK€ќ\™Щ]HT‘СUФСSPХQ€њљ[Ьљ]HH€Ш]YЫЬћHHSPQСWРРUQУФ–WФTТPРS€›XZЩ\РЫЫќXЭH•QK€њЭљZЩPЫЭ[ќH‹€ЫЫќ\ЭY™™XЭHУУ•TХСQ‘‘PХФХT•WУSУ”ЧФРSQWХTWРTPS€ЫЫќ\ЭШ]YЫЬћHHУУ•TХРРUQУФ–WХХQТ€ЫЫќ\ЭЫЫX›ФЭ\ќ\’YH€ЫЫќ\ЭЫЫX›У[Э™\ИHМK€]P[љ[TШЬљ\HР]P[љ[S[Э™WСX[ЪЬ€K‚€УSХ‘WТPT•ФХSTHB€В€›[YHHУУTХS‘ФХ’S‘К’X\ќЭ[\ЉK€™\ШЬљ\[Ы€HУУTХS‘ФХ’S‘К€ђHЭY[€›ЭИYќ\€HЭ]W€‚€XЭ€X^HШ]\ЩH›[Ъ[™Л€ЉK€™Y™™XЭHQ‘‘PХТU€њЭЩ\€HЊ€ќ\HHTWФЦPТPЛ€XШЭ\XЮHHL€њHЌK€ќ\™Щ]HT‘СUФСSPХQ€њљ[Ьљ]HH€Ш]YЫЬћHHSPQСWРРUQУФ–WФTТPРS€›XZЩ\РЫЫќXЭH•QK€Y][Ы[Y™™XЭИHQUSУђSСQ‘‘PХКВ€›[Э™QY™™XЭHSХ‘WСQ‘‘PХС“SђТ€Ъ[ЩHHМ€JK€ЫЫќ\ЭY™™XЭHУУ•TХСQ‘‘PХФ‘TUUSУ—У“ХР“Ф’S‘Л€ЫЫќ\ЭШ]YЫЬћHHУУ•TХРРUQУФ–WРХUK€ЫЫќ\ЭЫЫX›ФЭ\ќ\’YH€ЫЫќ\ЭЫЫX›У[Э™\ИHМK€]P[љ[TШЬљ\HР]P[љ[S[Э™WТX\ќЭ[\€K‚€УSХ‘WТФ“—УQPТHB€В€›[YHHУУTХS‘ФХ’S‘К’Ь›€YXЪЉK€™\ШЬљ\[Ы€HУYYШQZ[‘\ШЬљ\[Ы‹€™Y™™XЭHQ‘‘PХРP”УФђ‹€њЭЩ\€HНK€ќ\HHTWСФђTФЛ€XШЭ\XЮHHL€њHL€ќ\™Щ]HT‘СUФСSPХQ€њљ[Ьљ]HH€Ш]YЫЬћHHSPQСWРРUQУФ–WФTТPРS€\™Э[Y[ќHИXњЫЬ”\Щ[ќYЩHHLK€›XZЩ\РЫЫќXЭH•QK€љX[[™У[Э™HH—ТPSР“РТТS‘ИЏHСS—Н‹€ЫЫќ\ЭY™™XЭHУУ•TХСQ‘‘PХРTPSРTЧСУУСРTЧФ‘U—УУ‘K€ЫЫќ\ЭШ]YЫЬћHHУУ•TХРРUQУФ–WХХQТ€ЫЫќ\ЭЫЫX›ФЭ\ќ\’YH€ЫЫќ\ЭЫЫX›У[Э™\ИHМK€]P[љ[TШЬљ\HР]P[љ[S[Э™WТЬ›“YXЪ€K‚€УSХ‘WФРPФ‘QФХУФ‘HB€В€›[YHHУУTХS‘ФХ’S‘К”ШXЬ™YЭЫЬ™ЉK€™\ШЬљ\[Ы€HРЪ\]Ш^Q\ШЬљ\[Ы‹€™Y™™XЭHQ‘‘PХТU€њЭЩ\€HL€ќ\HHTWС’QТS‘Л€XШЭ\XЮHHL€њH—ХTUQУSХ‘WСUHЏHСS—Н€ИMH€Њ€ќ\™Щ]HT‘СUФСSPХQ€њљ[Ьљ]HH€Ш]YЫЬћHHSPQСWРРUQУФ–WФTТPРS€›XZЩ\РЫЫќXЭH•QK€љYЫ›Ь™\Х\™Щ]Y™[њЩQ]\Ъ[Ы”ЭYЩ\ИH•QK€њЫXЪ[™У[Э™HH•QK€ЫЫќ\ЭY™™XЭHУУ•TХСQ‘‘PХСVТUWРUQQSђСWТS—РS–WРУУ•TХ€ЫЫќ\ЭШ]YЫЬћHHУУ•TХРРUQУФ–WРУУУ€ЫЫќ\ЭЫЫX›ФЭ\ќ\’YH€ЫЫќ\ЭЫЫX›У[Э™\ИHМK€]P[љ[TШЬљ\HР]P[љ[S[Э™WФШXЬ™YЭЫЬ™€K‚€УSХ‘WФђV“Ф—ФТSHB€В€›[YHHУУTХS‘ФХ’S‘К”^›Ь€Ъ[ЉK€™\ШЬљ\[Ы€HУУTХS‘ФХ’S‘К€•X\њИ]H›ЩHЪ]Ъ\њ€‚€њЪ[Л€X^HЭЩ\€Y™[њЩK€ЉK€™Y™™XЭHQ‘‘PХТU€њЭЩ\€HНK€ќ\HHTWХРUT‹€XШЭ\XЮHHMK€њHL€ќ\™Щ]HT‘СUФСSPХQ€њљ[Ьљ]HH€Ш]YЫЬћHHSPQСWРРUQУФ–WФTТPРS€›XZЩ\РЫЫќXЭH•QK€њЫXЪ[™У[Э™HH•QK€Y][Ы[Y™™XЭИHQUSУђSСQ‘‘PХКВ€›[Э™QY™™XЭHSХ‘WСQ‘‘PХСQ—УRS•TЧМK€Ъ[ЩHHL€JK€ЫЫќ\ЭY™™XЭHУУ•TХСQ‘‘PХФ‘TUUSУ—У“ХР“Ф’S‘Л€ЫЫќ\ЭШ]YЫЬћHHУУ•TХРРUQУФ–WРУУУ€ЫЫќ\ЭЫЫX›ФЭ\ќ\’YH€ЫЫќ\ЭЫЫX›У[Э™\ИHМK€]P[љ[TШЬљ\HР]P[љ[S[Э™WФ^›Ь”Ъ[€K‚€УSХ‘WТPUРФђTТHB€В€›[YHHУУTХS‘ФХ’S‘К’X]Ь\ЪЉK€™\ШЬљ\[Ы€HТX]ћTЫ[Q\ШЬљ\[Ы‹€™Y™™XЭHQ‘‘PХТPUРФђTТ€њЭЩ\€HK€ќ\HHTWС’T‘K€XШЭ\XЮHHL€њHL€ќ\™Щ]HT‘СUФСSPХQ€њљ[Ьљ]HH€Ш]YЫЬћHHSPQСWРРUQУФ–WФTТPРS€›XZЩ\РЫЫќXЭH•QK€›Z[љ[Z^™QЭX›Q[XYЩHH—ХTUQУSХ‘WС“QФИЏHСS—Н‹€ЫЫќ\ЭY™™XЭHУУ•TХСQ‘‘PХР‘UT—ТQ—УTХ€ЫЫќ\ЭШ]YЫЬћHHУУ•TХРРUQУФ–WХХQТ€ЫЫќ\ЭЫЫX›ФЭ\ќ\’YH€ЫЫќ\ЭЫЫX›У[Э™\ИHМK€]P[љ[TШЬљ\HР]P[љ[S[Э™WТX]Ь\Ъ€K‚€УSХ‘WУPQ—ХФ“ђQЧHB€В€›[YHHУУTХS‘ФХ’S‘К“XY€Ь›YИЉK€™\ШЬљ\[Ы€HУУTХS‘ФХ’S‘К€ђЪ\Ы\ИH›ЩHЪ]X]™\Ч€‚€ќИ[XYЩH[™Э]XШЭ\XЮK€ЉK€™Y™™XЭHQ‘‘PХТU€њЭЩ\€HЌK€ќ\HHTWСФђTФЛ€XШЭ\XЮHHL€њHL€ќ\™Щ]HT‘СUФСSPХQ€њљ[Ьљ]HH€Ш]YЫЬћHHSPQСWРРUQУФ–WФФPТPS€Y][Ы[Y™™XЭИHQUSУђSСQ‘‘PХКВ€›[Э™QY™™XЭHSХ‘WСQ‘‘PХРPРЧУRS•TЧМK€Ъ[ЩHHL€JK€ЫЫќ\ЭY™™XЭHУУ•TХСQ‘‘PХФ‘TUUSУ—У“ХР“Ф’S‘Л€ЫЫќ\ЭШ]YЫЬћHHУУ•TХРРUQУФ–WРУУУ€ЫЫќ\ЭЫЫX›ФЭ\ќ\’YH€ЫЫќ\ЭЫЫX›У[Э™\ИHМK€]P[љ[TШЬљ\HР]P[љ[S[Э™WУXY•Ь›YЛ€K‚€УSХ‘WФХPST“УT—HB€В€›[YHHУУTХS‘ФХ’S‘К”ЭX[\›Ы\€ЉK€™\ШЬљ\[Ы€HУУTХS‘ФХ’S‘К€ђЬќ\Ъ\ИH›ЩHЪ]]Ч€‚€›ЩK€X^HШ]\ЩH›[Ъ[™Л€ЉK€™Y™™XЭHQ‘‘PХТU€њЭЩ\€HЌK€ќ\HHTWР•QЛ€XШЭ\XЮHHL€њHЊ€ќ\™Щ]HT‘СUФСSPХQ€њљ[Ьљ]HH€Ш]YЫЬћHHSPQСWРРUQУФ–WФTТPРS€›XZЩ\РЫЫќXЭH•QK€›Z[љ[Z^™QЭX›Q[XYЩHH•QK€Y][Ы[Y™™XЭИHQUSУђSСQ‘‘PХКВ€›[Э™QY™™XЭHSХ‘WСQ‘‘PХС“SђТ€Ъ[ЩHHМ€JK€ЫЫќ\ЭY™™XЭHУУ•TХСQ‘‘PХФ‘TUUSУ—У“ХР“Ф’S‘Л€ЫЫќ\ЭШ]YЫЬћHHУУ•TХРРUQУФ–WХХQТ€ЫЫќ\ЭЫЫX›ФЭ\ќ\’YH€ЫЫќ\ЭЫЫX›У[Э™\ИHМK€]P[љ[TШЬљ\HР]P[љ[S[Э™WФЭX[\›Ы\‹€K‚€УSХ‘WРУХУ—СХPT‘HB€В€›[YHHУУTХS‘ФХ’S‘КђЫЭЫ€ЭX\™ЉK€™\ШЬљ\[Ы€HУУTХS‘ФХ’S‘К€•Ь\И]И›ЩH[€ЫЭЫ‹—€‚€‘\ЭXШ[HZ\Щ\ИY™[њЩK€ЉK€™Y™™XЭHQ‘‘PХСQ‘S”СWХTМЛ€њЭЩ\€H€ќ\HHTWСФђTФЛ€XШЭ\XЮHH€њHL€ќ\™Щ]HT‘СUХTСT‹€њљ[Ьљ]HH€Ш]YЫЬћHHSPQСWРРUQУФ–WФХUTЛ€ћ“[Э™HHИ™Y™™XЭH—СQ‘‘PХФ‘TСUФХUИK€њЫ]ЪY™™XЭYH•QK€љYЫ›Ь™\Ф›ЭXЭH•QK€›Z\њ›Ь“[Э™P[›™YH•QK€ЫЫќ\ЭY™™XЭHУУ•TХСQ‘‘PХРU“ТQФХT•K€ЫЫќ\ЭШ]YЫЬћHHУУ•TХРРUQУФ–WРХUK€ЫЫќ\ЭЫЫX›ФЭ\ќ\’YH€ЫЫќ\ЭЫЫX›У[Э™\ИHМK€]P[љ[TШЬљ\HР]P[љ[S[Э™WРЫЭЫ‘ЭX\™€K‚€УSХ‘WУ’QТСV‘WHB€В€›[YHHУУTХS‘ФХ’S‘К“љYЪ^™HЉK€™\ШЬљ\[Ы€HУУTХS‘ФХ’S‘К€“ЫЬЩ\ИH]ЪX›XЪИЪШЪЧ€‚€ќШ]™K€X^HЭЩ\€XШЭ\XЮK€ЉK€™Y™™XЭHQ‘‘PХТU€њЭЩ\€HK€ќ\HHTWСT’Л€XШЭ\XЮHHMK€њHL€ќ\™Щ]HT‘СUФСSPХQ€њљ[Ьљ]HH€Ш]YЫЬћHHSPQСWРРUQУФ–WФФPТPS€Y][Ы[Y™™XЭИHQUSУђSСQ‘‘PХКВ€›[Э™QY™™XЭHSХ‘WСQ‘‘PХРPРЧУRS•TЧМK€Ъ[ЩHH€JK€ЫЫќ\ЭY™™XЭHУУ•TХСQ‘‘PХФ‘TUUSУ—У“ХР“Ф’S‘Л€ЫЫќ\ЭШ]YЫЬћHHУУ•TХРРUQУФ–WРУУУ€ЫЫќ\ЭЫЫX›ФЭ\ќ\’YH€ЫЫќ\ЭЫЫX›У[Э™\ИHМK€]P[љ[TШЬљ\HР]P[љ[S[Э™WУљYЪ^™K€K‚€УSХ‘WФЦTХ’RСWHB€В€›[YHHУУTХS‘ФХ’S‘К”Ю\ЭљZЩHЉK€™\ШЬљ\[Ы€HФЮ\ЪШЪС\ШЬљ\[Ы‹€™Y™™XЭHQ‘‘PХФЦTТРТЛ€њЭЩ\€HL€ќ\HHTWФЦPТPЛ€XШЭ\XЮHHL€њHL€ќ\™Щ]HT‘СUФСSPХQ€њљ[Ьљ]HH€Ш]YЫЬћHHSPQСWРРUQУФ–WФФPТPS€ЫЫќ\ЭY™™XЭHУУ•TХСQ‘‘PХФ‘TUUSУ—У“ХР“Ф’S‘Л€ЫЫќ\ЭШ]YЫЬћHHУУ•TХРРUQУФ–WРУУУ€ЫЫќ\ЭЫЫX›ФЭ\ќ\’YH€ЫЫќ\ЭЫЫX›У[Э™\ИHМK€]P[љ[TШЬљ\HР]P[љ[S[Э™WФЮ\ЭљZЩK€K‚€УSХ‘WХRSФУTHB€В€›[YHHУУTХS‘ФХ’S‘К•Z[Ы\ЉK€™\ШЬљ\[Ы€HУУTХS‘ФХ’S‘К€”ЭљZЩ\ИH›ЩHЪ]]Ч€‚€ќZ[€ИH[Y\Л€ЉK€™Y™™XЭHQ‘‘PХТU€њЭЩ\€HЌK€ќ\HHTWУ“Ф“PS€XШЭ\XЮHHK€њHL€ќ\™Щ]HT‘СUФСSPХQ€њљ[Ьљ]HH€Ш]YЫЬћHHSPQСWРРUQУФ–WФTТPРS€›][R]H•QK€›XZЩ\РЫЫќXЭH•QK€ЫЫќ\ЭY™™XЭHУУ•TХСQ‘‘PХФUPSUWСTS‘ЧУУ—ХSRS‘Л€ЫЫќ\ЭШ]YЫЬћHHУУ•TХРРUQУФ–WРХUK€ЫЫќ\ЭЫЫX›ФЭ\ќ\’YH€ЫЫќ\ЭЫЫX›У[Э™\ИHМK€]P[љ[TШЬљ\HР]P[љ[S[Э™WХZ[Ы\€K‚€УSХ‘WТT”’PРS‘WHB€В€›[YHHУУTХS‘ФХ’S‘К’\њљXШ[™HЉK€™\ШЬљ\[Ы€HУУTХS‘ФХ’S‘К€•\ИH›ЩH[€HљY\ЩW€‚€ќЪ[™€X^HШ]\ЩHЫЫ™ќ\Ъ[Ы‹€ЉK€™Y™™XЭHQ‘‘PХТU€њЭЩ\€H—ХTUQУSХ‘WСUHЏHСS—Н€ИLL€LЊ€ќ\HHTWС“RS‘Л€XШЭ\XЮHHМ€њHL€ќ\™Щ]HT‘СUФСSPХQ€њљ[Ьљ]HH€Ш]YЫЬћHHSPQСWРРUQУФ–WФФPТPS€ќЪ[™[Э™HH•QK€™[XYЩ\РZ\›Ь›™HH•QK€[Ш^\Т]Т[”Z[€H•QK€XШЭ\XЮML[”Э[€H•QK€Y][Ы[Y™™XЭИHQUSУђSСQ‘‘PХКВ€›[Э™QY™™XЭHSХ‘WСQ‘‘PХРУУ‘•TТSУ‹€Ъ[ЩHHМ€JK€ЫЫќ\ЭY™™XЭHУУ•TХСQ‘‘PХРђQWФХT•WУSУ”ЧХТUСУУСРTPSЛ€ЫЫќ\ЭШ]YЫЬћHHУУ•TХРРUQУФ–WХХQТ€ЫЫќ\ЭЫЫX›ФЭ\ќ\’YH€ЫЫќ\ЭЫЫX›У[Э™\ИHРУУP“ЧФХT•T—ФђRS—СSђС_K€]P[љ[TШЬљ\HР]P[љ[S[Э™WТ\њљXШ[™K€K‚€УSХ‘WТPQРТT‘СWHB€В€›[YHHУУTХS‘ФХ’S‘К’XYЪ\™ЩHЉK€™\ШЬљ\[Ы€HУУTХS‘ФХ’S‘К€ђHЪ\™ЩH\Ъ[™ИЭX\™Z\‹—€‚€’]\ќИH\Щ\€H]K€ЉK€™Y™™XЭHQ‘‘PХФ‘PУТS€њЭЩ\€HLЊ€ќ\HHTWУ“Ф“PS€XШЭ\XЮHHL€њHMK€ќ\™Щ]HT‘СUФСSPХQ€њљ[Ьљ]HH€Ш]YЫЬћHHSPQСWРРUQУФ–WФTТPРS€\™Э[Y[ќHИњ™XЫЪ[\Щ[ќYЩHHЌHK€›XZЩ\РЫЫќXЭH•QK€ЫЫќ\ЭY™™XЭHУУ•TХСQ‘‘PХХTСT—УSФ‘WСPTТSWФХT•Q€ЫЫќ\ЭШ]YЫЬћHHУУ•TХРРUQУФ–WХХQТ€ЫЫќ\ЭЫЫX›ФЭ\ќ\’YH€ЫЫќ\ЭЫЫX›У[Э™\ИHМK€]P[љ[TШЬљ\HР]P[љ[S[Э™WТXYЪ\™ЩK€K‚€УSХ‘WССPT—СФ’S‘HB€В€›[YHHУУTХS‘ФХ’S‘К‘ЩX\€Ьљ[™ЉK€™\ШЬљ\[Ы€HУУTХS‘ФХ’S‘К€•›ЭЬИЫИЭY[ЩX\њЧ€‚€ќ]ЭљZЩHЪXЩK€ЉK€™Y™™XЭHQ‘‘PХТU€њЭЩ\€HL€ќ\HHTWФХQS€XШЭ\XЮHHK€њHMK€ќ\™Щ]HT‘СUФСSPХQ€њљ[Ьљ]HH€Ш]YЫЬћHHSPQСWРРUQУФ–WФTТPРS€ћ“[Э™HHИњЭЩ\“Э™\њљYHHNK€›XZЩ\РЫЫќXЭH•QK€њЭљZЩPЫЭ[ќH‹€ЫЫќ\ЭY™™XЭHУУ•TХСQ‘‘PХТQТWРTPSS‘Л€ЫЫќ\ЭШ]YЫЬћHHУУ•TХРРUQУФ–WФУPT•€ЫЫќ\ЭЫЫX›ФЭ\ќ\’YH€ЫЫќ\ЭЫЫX›У[Э™\ИHРУУP“ЧФХT•T—ФТQ•ССPTџK€]P[љ[TШЬљ\HР]P[љ[S[Э™WСЩX\‘Ьљ[™€K‚€УSХ‘WФСPT’S‘ЧФТХHB€В€›[YHHУУTХS‘ФХ’S‘К”ЩX\љ[™ИЪЭЉK€™\ШЬљ\[Ы€HУ]T[YQ\ШЬљ\[Ы‹€™Y™™XЭHQ‘‘PХТU€њЭЩ\€HL€ќ\HHTWС’T‘K€XШЭ\XЮHHL€њHK€ќ\™Щ]HT‘СUС“СTЧРS‘РSK€њљ[Ьљ]HH€Ш]YЫЬћHHSPQСWРРUQУФ–WФФPТPS€[\ЭXУ[Э™HH•QK€Y][Ы[Y™™XЭИHQUSУђSСQ‘‘PХКВ€›[Э™QY™™XЭHSХ‘WСQ‘‘PХР•T“‹€Ъ[ЩHHМ€JK€ЫЫќ\ЭY™™XЭHУУ•TХСQ‘‘PХФ‘TUUSУ—У“ХР“Ф’S‘Л€ЫЫќ\ЭШ]YЫЬћHHУУ•TХРРUQУФ–WРУУУ€ЫЫќ\ЭЫЫX›ФЭ\ќ\’YH€ЫЫќ\ЭЫЫX›У[Э™\ИHМK€]P[љ[TШЬљ\HР]P[љ[S[Э™WФЩX\љ[™ФЪЭ€K‚€УSХ‘WХPТ“ЧР“TХHB€В€›[YHHУУTХS‘ФХ’S‘К•XЪ›И›\ЭЉK€™\ШЬљ\[Ы€HУУTХS‘ФХ’S‘К€•H\H\љY\ИЪ]W€‚€љЪ[™Щ€љ]™H[€ЉK€™Y™™XЭHQ‘‘PХРТS‘СWХTWУУ—ТUSK€њЭЩ\€H—ХTUQУSХ‘WСUHЏHСS—Н€ИLЊ€K€ќ\HHTWУ“Ф“PS€XШЭ\XЮHHL€њHK€ќ\™Щ]HT‘СUФСSPХQ€њљ[Ьљ]HH€Ш]YЫЬћHHSPQСWРРUQУФ–WФФPТPS€\™Э[Y[ќHИљЫY™™XЭHУСQ‘‘PХС’U‘HK€›Y]›Ы›ЫYP[›™YH•QK€ЫЫќ\ЭY™™XЭHУУ•TХСQ‘‘PХР‘UT—ХТUСУУСРУУ‘USУ‹€ЫЫќ\ЭШ]YЫЬћHHУУ•TХРРUQУФ–WРУУУ€ЫЫќ\ЭЫЫX›ФЭ\ќ\’YH€ЫЫќ\ЭЫЫX›У[Э™\ИHМK€]P[љ[TШЬљ\HР]P[љ[S[Э™WХXЪ›Р›\Э€K‚€УSХ‘WФ‘SPЧФУУ‘ЧHB€В€›[YHHУУTХS‘ФХ’S‘К”™[XИЫЫ™ИЉK€™\ШЬљ\[Ы€HУУTХS‘ФХ’S‘К€ђ]XЪЬИЪ][€[ЪY[ќ€‚€њЫЫ™Л€X^H[™XЩHЫY\€ЉK€™Y™™XЭHQ‘‘PХТU€њЭЩ\€HНK€ќ\HHTWУ“Ф“PS€XШЭ\XЮHHL€њHL€ќ\™Щ]HT‘СUР“Х€њљ[Ьљ]HH€Ш]YЫЬћHHSPQСWРРUQУФ–WФФPТPS€\™Э[Y[ќHИњЭ]\ИHХUTМWФУQTK€љYЫ›Ь™\ФЭXњЭ]]HH—ХTUQУSХ‘WС“QФИЏHСS—Н‹€њЫЭ[™[Э™HH•QK€›Y]›Ы›ЫYP[›™YH•QK€Y][Ы[Y™™XЭИHQUSУђSСQ‘‘PХКВ€›[Э™QY™™XЭHSХ‘WСQ‘‘PХФУQT€Ъ[ЩHHL€JK€ЫЫќ\ЭY™™XЭHУУ•TХСQ‘‘PХУPRСWС“УХТS‘ЧУSУ”ЧУ‘T•“ХTЛ€ЫЫќ\ЭШ]YЫЬћHHУУ•TХРРUQУФ–WР‘PUUQ•S€ЫЫќ\ЭЫЫX›ФЭ\ќ\’YH€ЫЫќ\ЭЫЫX›У[Э™\ИHМK€]P[љ[TШЬљ\HР]P[љ[S[Э™WФ™[XФЫЫ™Л€K‚€УSХ‘WФСPФ‘UФХУФ‘HB€В€›[YHHУУTХS‘ФХ’S‘К”ЩXЬ™]ЭЫЬ™ЉK€™\ШЬљ\[Ы€HУУTХS‘ФХ’S‘К€ђЭ]ИЪ]HЫ™ИЬ›€]€‚€™Щ\И\ЪXШ[[XYЩK€ЉK€™Y™™XЭHQ‘‘PХФЦTТРТЛ€њЭЩ\€HK€ќ\HHTWС’QТS‘Л€XШЭ\XЮHHL€њHL€ќ\™Щ]HT‘СUФСSPХQ€њљ[Ьљ]HH€Ш]YЫЬћHHSPQСWРРUQУФ–WФФPТPS€њЫXЪ[™У[Э™HH•QK€›Y]›Ы›ЫYP[›™YH•QK€ЫЫќ\ЭY™™XЭHУУ•TХСQ‘‘PХФ‘TUUSУ—У“ХР“Ф’S‘Л€ЫЫќ\ЭШ]YЫЬћHHУУ•TХРРUQУФ–WР‘PUUQ•S€ЫЫќ\ЭЫЫX›ФЭ\ќ\’YH€ЫЫќ\ЭЫЫX›У[Э™\ИHМK€]P[љ[TШЬљ\HР]P[љ[S[Э™WФЩXЬ™]ЭЫЬ™€K‚€УSХ‘WСУPТPUWHB€В€›[YHHУУTХS‘ФХ’S‘К‘ЫXЪX]HЉK€™\ШЬљ\[Ы€HУУTХS‘ФХ’S‘К€ђ›ЭЬИ™\ћHЫЫZ\€]W€‚€™›Щ\Л€]ЭЩ\њИZ\€ЬYY€ЉK€™Y™™XЭHQ‘‘PХТU€њЭЩ\€HЌK€ќ\HHTWТPСK€XШЭ\XЮHHMK€њHL€ќ\™Щ]HT‘СUР“Х€њљ[Ьљ]HH€Ш]YЫЬћHHSPQСWРРUQУФ–WФФPТPS€Y][Ы[Y™™XЭИHQUSУђSСQ‘‘PХКВ€›[Э™QY™™XЭHSХ‘WСQ‘‘PХФФУRS•TЧМK€Ъ[ЩHHL€JK€ЫЫќ\ЭY™™XЭHУУ•TХСQ‘‘PХСУ•СVТUWРUQQSђСK€ЫЫќ\ЭШ]YЫЬћHHУУ•TХРРUQУФ–WР‘PUUK€ЫЫќ\ЭЫЫX›ФЭ\ќ\’YH€ЫЫќ\ЭЫЫX›У[Э™\ИHРУУP“ЧФХT•T—ТRSK€]P[љ[TШЬљ\HР]P[љ[S[Э™WСЫXЪX]K€K‚€УSХ‘WР“УФХ’RСWHB€В€›[YHHУУTХS‘ФХ’S‘Кђ›ЫЭљZЩHЉK€™\ШЬљ\[Ы€HУУTХS‘ФХ’S‘К€”ЭљZЩ\ИЪ]HЬ™X][[Э[ќ€‚€›Щ€YЪљ[™Л€X^H\[^™K€ЉK€™Y™™XЭHQ‘‘PХТU€њЭЩ\€HLМ€ќ\HHTWСSPХ’PЛ€XШЭ\XЮHHK€њHK€ќ\™Щ]HT‘СUФСSPХQ€њљ[Ьљ]HH€Ш]YЫЬћHHSPQСWРРUQУФ–WФTТPРS€›XZЩ\РЫЫќXЭH•QK€Y][Ы[Y™™XЭИHQUSУђSСQ‘‘PХКВ€›[Э™QY™™XЭHSХ‘WСQ‘‘PХФTђSTТTЛ€Ъ[ЩHHЊ€JK€ЫЫќ\ЭY™™XЭHУУ•TХСQ‘‘PХФ‘TUUSУ—У“ХР“Ф’S‘Л€ЫЫќ\ЭШ]YЫЬћHHУУ•TХРРUQУФ–WР‘PUUK€ЫЫќ\ЭЫЫX›ФЭ\ќ\’YH€ЫЫќ\ЭЫЫX›У[Э™\ИHМK€]P[љ[TШЬљ\HР]P[љ[S[Э™WР›ЫЭљZЩK€K‚€УSХ‘WР“QWС“T‘WHB€В€›[YHHУУTХS‘ФХ’S‘Кђ›YH›\™HЉK€™\ШЬљ\[Ы€HУУTХS‘ФХ’S‘К€‘[™Э[њИH›ЩH[€H›YW€‚€™›[YK€X^H[™›XЭHќ\›‹€ЉK€™Y™™XЭHQ‘‘PХТU€њЭЩ\€HLМ€ќ\HHTWС’T‘K€XШЭ\XЮHHK€њHK€ќ\™Щ]HT‘СUФСSPХQ€њљ[Ьљ]HH€Ш]YЫЬћHHSPQСWРРUQУФ–WФФPТPS€Y][Ы[Y™™XЭИHQUSУђSСQ‘‘PХКВ€›[Э™QY™™XЭHSХ‘WСQ‘‘PХР•T“‹€Ъ[ЩHHЊ€JK€ЫЫќ\ЭY™™XЭHУУ•TХСQ‘‘PХФ‘TUUSУ—У“ХР“Ф’S‘Л€ЫЫќ\ЭШ]YЫЬћHHУУ•TХРРUQУФ–WР‘PUUK€ЫЫќ\ЭЫЫX›ФЭ\ќ\’YH€ЫЫќ\ЭЫЫX›У[Э™\ИHМK€]P[љ[TШЬљ\HР]P[љ[S[Э™WР›YQ›\™K€K‚€УSХ‘WС’QT–WСSђСWHB€В€›[YHHУУTХS‘ФХ’S‘К‘љY\ћH[ЩHЉK€™\ШЬљ\[Ы€HУУTХS‘ФХ’S‘К€‘[Щ\ИЫШZЩY[€›[Y\Л—€‚€“X^HZ\ЩHЬ€]Л€ЉK€™Y™™XЭHQ‘‘PХТU€њЭЩ\€H€ќ\HHTWС’T‘K€XШЭ\XЮHHL€њHL€ќ\™Щ]HT‘СUФСSPХQ€њљ[Ьљ]HH€Ш]YЫЬћHHSPQСWРРUQУФ–WФФPТPS€™[ЩS[Э™HH•QK€Y][Ы[Y™™XЭИHQUSУђSСQ‘‘PХКВ€›[Э™QY™™XЭHSХ‘WСQ‘‘PХФФРUЧФTЧМK€њЩ[€H•QK€Ъ[ЩHHL€JK€ЫЫќ\ЭY™™XЭHУУ•TХСQ‘‘PХР‘UT—ХТUСУУСРУУ‘USУ‹€ЫЫќ\ЭШ]YЫЬћHHУУ•TХРРUQУФ–WР‘PUUK€ЫЫќ\ЭЫЫX›ФЭ\ќ\’YH€ЫЫќ\ЭЫЫX›У[Э™\ИHМK€]P[љ[TШЬљ\HР]P[љ[S[Э™WСљY\ћQ[ЩK€K‚€УSХ‘WС”‘QV‘WФТРТЧHB€В€›[YHHУУTХS‘ФХ’S‘К‘њ™Y^™HЪШЪИЉK€™\ШЬљ\[Ы€HУУTХS‘ФХ’S‘К€ђHЭЩ\™ќ[‹]\›€[Э™H]€‚€›X^H\[^™HH›ЩK€ЉK€™Y™™XЭHQ‘‘PХХУЧХT“”ЧРUPТЛ€њЭЩ\€HM€ќ\HHTWТPСK€XШЭ\XЮHHL€њHK€ќ\™Щ]HT‘СUФСSPХQ€њљ[Ьљ]HH€Ш]YЫЬћHHSPQСWРРUQУФ–WФTТPРS€›Y]›Ы›ЫYP[›™YH•QK€њЫY\[Р[›™YH•QK€љ[њЭќXЭ[›™YH•QK€\™Э[Y[ќќЫХ\›ђ]XЪИHИњЭљ[™ТYHХ’S‘ТQРУРRСQSђQ”‘QV’S‘УQТK€Y][Ы[Y™™XЭИHQUSУђSСQ‘‘PХКВ€›[Э™QY™™XЭHSХ‘WСQ‘‘PХФTђSTТTЛ€Ъ[ЩHHМ€JK€ЫЫќ\ЭY™™XЭHУУ•TХСQ‘‘PХРQ‘‘PХQР–WФ‘U—РTPS€ЫЫќ\ЭШ]YЫЬћHHУУ•TХРРUQУФ–WР‘PUUK€ЫЫќ\ЭЫЫX›ФЭ\ќ\’YH€ЫЫќ\ЭЫЫX›У[Э™\ИHМK€]P[љ[TШЬљ\HР]P[љ[S[Э™WСњ™Y^™TЪШЪЛ€K‚€УSХ‘WТPСWР•T“—HB€В€›[YHHУУTХS‘ФХ’S‘К’XЩHќ\›€ЉK€™\ШЬљ\[Ы€HУУTХS‘ФХ’S‘К€ђHЭЩ\™ќ[‹]\›€[Э™H]€‚€›X^H[™›XЭHќ\›‹€ЉK€™Y™™XЭHQ‘‘PХХУЧХT“”ЧРUPТЛ€њЭЩ\€HM€ќ\HHTWТPСK€XШЭ\XЮHHL€њHK€ќ\™Щ]HT‘СUФСSPХQ€њљ[Ьљ]HH€Ш]YЫЬћHHSPQСWРРUQУФ–WФФPТPS€›Y]›Ы›ЫYP[›™YH•QK€њЫY\[Р[›™YH•QK€љ[њЭќXЭ[›™YH•QK€\™Э[Y[ќќЫХ\›ђ]XЪИHИњЭљ[™ТYHХ’S‘ТQРУРRСQSђQ”‘QV’S‘УQТK€Y][Ы[Y™™XЭИHQUSУђSСQ‘‘PХКВ€›[Э™QY™™XЭHSХ‘WСQ‘‘PХР•T“‹€Ъ[ЩHHМ€JK€ЫЫќ\ЭY™™XЭHУУ•TХСQ‘‘PХРQ‘‘PХQР–WФ‘U—РTPS€ЫЫќ\ЭШ]YЫЬћHHУУ•TХРРUQУФ–WР‘PUUK€ЫЫќ\ЭЫЫX›ФЭ\ќ\’YH€ЫЫќ\ЭЫЫX›У[Э™\ИHМK€]P[љ[TШЬљ\HР]P[љ[S[Э™WТXЩPќ\›‹€K‚€УSХ‘WФУђT“HB€В€›[YHHУУTХS‘ФХ’S‘К”Ы\›ЉK€™\ШЬљ\[Ы€HУУTХS‘ФХ’S‘К€–Y[И[™[ќИ]H›ЩW€‚€›ЭЩ\љ[™И]ИЬ€]Л€ЉK€™Y™™XЭHQ‘‘PХТU€њЭЩ\€HMK€ќ\HHTWСT’Л€XШЭ\XЮHHMK€њHMK€ќ\™Щ]HT‘СUР“Х€њљ[Ьљ]HH€Ш]YЫЬћHHSPQСWРРUQУФ–WФФPТPS€љYЫ›Ь™\ФЭXњЭ]]HH—ХTUQУSХ‘WС“QФИЏHСS—Н‹€њЫЭ[™[Э™HH•QK€›Y]›Ы›ЫYP[›™YH•QK€Y][Ы[Y™™XЭИHQUSУђSСQ‘‘PХКВ€›[Э™QY™™XЭHSХ‘WСQ‘‘PХФФРUЧУRS•TЧМK€Ъ[ЩHHL€JK€ЫЫќ\ЭY™™XЭHУУ•TХСQ‘‘PХРђQWФХT•WФ‘U—УSУ”ЛЛРУУ•TХСQ‘‘PХФURPТУWСФ“ХЧР“Ф‘Q€ЫЫќ\ЭШ]YЫЬћHHУУ•TХРРUQУФ–WХХQТ€ЫЫќ\ЭЫЫX›ФЭ\ќ\’YH€ЫЫќ\ЭЫЫX›У[Э™\ИHМK€]P[љ[TШЬљ\HР]P[љ[S[Э™WФЫ\›€K‚€УSХ‘WТPТPУWРФђTТHB€В€›[YHHУУTХS‘ФХ’S‘К’XЪXЫHЬ\ЪЉK€™\ШЬљ\[Ы€HУУTХS‘ФХ’S‘К€‘›ЬИ\™ЩHXЪXЫ\ИЫ€W€‚€™›ЩK€X^HШ]\ЩH›[Ъ[™Л€ЉK€™Y™™XЭHQ‘‘PХТU€њЭЩ\€HK€ќ\HHTWТPСK€XШЭ\XЮHHL€њHL€ќ\™Щ]HT‘СUФСSPХQ€њљ[Ьљ]HH€Ш]YЫЬћHHSPQСWРРUQУФ–WФTТPРS€Y][Ы[Y™™XЭИHQUSУђSСQ‘‘PХКВ€›[Э™QY™™XЭHSХ‘WСQ‘‘PХС“SђТ€Ъ[ЩHHМ€JK€ЫЫќ\ЭY™™XЭHУУ•TХСQ‘‘PХР‘UT—ТQ—УTХ€ЫЫќ\ЭШ]YЫЬћHHУУ•TХРРUQУФ–WР‘PUUK€ЫЫќ\ЭЫЫX›ФЭ\ќ\’YH€ЫЫќ\ЭЫЫX›У[Э™\ИHРУУP“ЧФХT•T—ТRSK€]P[љ[TШЬљ\HР]P[љ[S[Э™WТXЪXЫPЬ\Ъ€K‚€УSХ‘WХ—РФ‘PUWHB€В€›[YHHУУTХS‘ФХ’S‘К•‹XЬ™X]HЉK€™\ШЬљ\[Ы€HУУTХS‘ФХ’S‘К€•™\ћHЭЩ\™ќ[ќ]ЭЩ\њЧ€‚€‘Y™[њЩKЬ€Y€[™ЬYY€ЉK€™Y™™XЭHQ‘‘PХТU€њЭЩ\€HN€ќ\HHTWС’T‘K€XШЭ\XЮHHMK€њHK€ќ\™Щ]HT‘СUФСSPХQ€њљ[Ьљ]HH€Ш]YЫЬћHHSPQСWРРUQУФ–WФTТPРS€ћ“[Э™HHИњЭЩ\“Э™\њљYHHЊЊK€›XZЩ\РЫЫќXЭH•QK€›Y]›Ы›ЫYP[›™YH•QK€Y][Ы[Y™™XЭИHQUSУђSСQ‘‘PХКВ€›[Э™QY™™XЭHSХ‘WСQ‘‘PХХ—РФ‘PUK€њЩ[€H•QK€JK€ЫЫќ\ЭY™™XЭHУУ•TХСQ‘‘PХХTСT—УSФ‘WСPTТSWФХT•Q€ЫЫќ\ЭШ]YЫЬћHHУУ•TХРРUQУФ–WРУУУ€ЫЫќ\ЭЫЫX›ФЭ\ќ\’YH€ЫЫќ\ЭЫЫX›У[Э™\ИHМK€]P[љ[TШЬљ\HР]P[љ[S[Э™WХђЬ™X]K€K‚€УSХ‘WС•TТSУ—С“T‘WHB€В€›[YHHУУTХS‘ФХ’S‘К‘ќ\Ъ[Ы€›\™HЉK€™\ШЬљ\[Ы€HУУTХS‘ФХ’S‘К€”Э[[[ЫњИHљ\™X[€ЫЬљЬЧ€‚€ќЩ[Ъ]H[™\›Ы€ЉK€™Y™™XЭHQ‘‘PХС•TТSУ—РУУP“Л€њЭЩ\€HL€ќ\HHTWС’T‘K€XШЭ\XЮHHL€њHK€ќ\™Щ]HT‘СUФСSPХQ€њљ[Ьљ]HH€Ш]YЫЬћHHSPQСWРРUQУФ–WФФPТPS€ќ]ЬХ\Щ\€H•QK€ЫЫќ\ЭY™™XЭHУУ•TХСQ‘‘PХР‘UT—ХТS—УUT‹€ЫЫќ\ЭШ]YЫЬћHHУУ•TХРРUQУФ–WР‘PUUK€ЫЫќ\ЭЫЫX›ФЭ\ќ\’YH€ЫЫќ\ЭЫЫX›У[Э™\ИHМK€]P[љ[TШЬљ\HР]P[љ[S[Э™WСќ\Ъ[Ы‘›\™K€K‚€УSХ‘WС•TТSУ—Р“УHB€В€›[YHHУУTХS‘ФХ’S‘К‘ќ\Ъ[Ы€›ЫЉK€™\ШЬљ\[Ы€HУУTХS‘ФХ’S‘К€”Э[[[ЫњИH[™\›Ы—€‚€•ЫЬљЬИЩ[Ъ]Hљ\™X[€ЉK€™Y™™XЭHQ‘‘PХС•TТSУ—РУУP“Л€њЭЩ\€HL€ќ\HHTWСSPХ’PЛ€XШЭ\XЮHHL€њHK€ќ\™Щ]HT‘СUФСSPХQ€њљ[Ьљ]HH€Ш]YЫЬћHHSPQСWРРUQУФ–WФTТPРS€ЫЫќ\ЭY™™XЭHУУ•TХСQ‘‘PХР‘UT—ХТS—УUT‹€ЫЫќ\ЭШ]YЫЬћHHУУ•TХРРUQУФ–WРУУУ€ЫЫќ\ЭЫЫX›ФЭ\ќ\’YH€ЫЫќ\ЭЫЫX›У[Э™\ИHМK€]P[љ[TШЬљ\HР]P[љ[S[Э™WСќ\Ъ[Ыђ›Ы€K‚€УSХ‘WС“RS‘ЧФ‘TФЧHB€В€›[YHHУУTХS‘ФХ’S‘К‘›Z[™И™\ЬИЉK€™\ШЬљ\[Ы€HУУTХS‘ФХ’S‘К€•\И]XЪИЩ\ИљYЪ[™Ч€‚€[™›Z[™Л]\H[XYЩK€ЉK€™Y™™XЭHQ‘‘PХХУЧХTQУSХ‘K€њЭЩ\€H—ХTUQУSХ‘WСUHЏHСS—НИИL€€ќ\HHTWС’QТS‘Л€XШЭ\XЮHHMK€њHL€ќ\™Щ]HT‘СUФСSPХQ€њљ[Ьљ]HH€Ш]YЫЬћHHSPQСWРРUQУФ–WФTТPРS€ћ“[Э™HHИњЭЩ\“Э™\њљYHHMМK€\™Э[Y[ќHИќ\HHTWС“RS‘ИK€›XZЩ\РЫЫќXЭH•QK€›Z[љ[Z^™QЭX›Q[XYЩHH•QK€™Ь]љ]P[›™YH•QK€њЪЮP]P[›™YH•QK€ЫЫќ\ЭY™™XЭHУУ•TХСQ‘‘PХСVТUWРUQQSђСWТS—РS–WРУУ•TХ€ЫЫќ\ЭШ]YЫЬћHHУУ•TХРРUQУФ–WХХQТ€ЫЫќ\ЭЫЫX›ФЭ\ќ\’YH€ЫЫќ\ЭЫЫX›У[Э™\ИHМK€]P[љ[TШЬљ\HР]P[љ[S[Э™WС›Z[™Ф™\ЬЛ€K‚€УSХ‘WУPUР“РТЧHB€В€›[YHHУУTХS‘ФХ’S‘К“X]›ШЪИЉK€™\ШЬљ\[Ы€HУУTХS‘ФХ’S‘К€‘]Y\И[XYЪ[™И[Э™\Л—€‚€“Ы›HЫЬљЬИЫ€\Э\›‹€ЉK€™Y™™XЭHQ‘‘PХУPUР“РТЛ€њЭЩ\€H€ќ\HHTWС’QТS‘Л€XШЭ\XЮHH€њHMK€ќ\™Щ]HT‘СUХTСT‹€њљ[Ьљ]HH€Ш]YЫЬћHHSPQСWРРUQУФ–WФХUTЛ€\™Э[Y[ќHИњ›ЭXЭY]ЩH“ХPХУPUР“РТЛK€ћ“[Э™HHИ™Y™™XЭH—СQ‘‘PХСQ—ХTМHK€њЫ]ЪY™™XЭYH•QK€љYЫ›Ь™\Ф›ЭXЭH•QK€›Z\њ›Ь“[Э™P[›™YH•QK€›Y]›Ы›ЫYP[›™YH•QK€ЫЬXШ][›™YH•QK€\ЬЪ\Э[›™YH•QK€њЪЮP]P[›™YH•QK€ЫЫќ\ЭY™™XЭHУУ•TХСQ‘‘PХФХT•WФ‘U—УSУ”Л€ЫЫќ\ЭШ]YЫЬћHHУУ•TХРРUQУФ–WРУУУ€ЫЫќ\ЭЫЫX›ФЭ\ќ\’YH€ЫЫќ\ЭЫЫX›У[Э™\ИHМK€]P[љ[TШЬљ\HР]P[љ[S[Э™WУX]›ШЪЛ€K‚€УSХ‘WР‘SТHB€В€›[YHHУУTХS‘ФХ’S‘Кђ™[ЪЉK€™\ШЬљ\[Ы€HУУTХS‘ФХ’S‘К€“]ИЭ]HЭY™[Ъ—€‚€“]\ЭX]H™\њћHИ\ЩH]€ЉK€™Y™™XЭHQ‘‘PХР‘SТ€њЭЩ\€HLЊ€ќ\HHTWФТTУУ‹€XШЭ\XЮHHL€њHL€ќ\™Щ]HT‘СUФСSPХQ€њљ[Ьљ]HH€Ш]YЫЬћHHSPQСWРРUQУФ–WФФPТPS€›Z\њ›Ь“[Э™P[›™YH•QK€›YQљ\њЭ[›™YH•QK€›Y]›Ы›ЫYP[›™YH•QK€›Z[ZXР[›™YH•QK€ЫЬXШ][›™YH•QK€њЫY\[Р[›™YH•QK€љ[њЭќXЭ[›™YH•QK€\ЬЪ\Э[›™YH•QK€ЫЫќ\ЭY™™XЭHУУ•TХСQ‘‘PХР‘UT—ХТUСУУСРУУ‘USУ‹€ЫЫќ\ЭШ]YЫЬћHHУУ•TХРРUQУФ–WХХQТ€ЫЫќ\ЭЫЫX›ФЭ\ќ\’YH€ЫЫќ\ЭЫЫX›У[Э™\ИHМK€]P[љ[TШЬљ\HР]P[љ[S[Э™WР™[Ъ€K‚€УSХ‘WФ“ХХST—HB€В€›[YHHУУTХS‘ФХ’S‘К”›ЭЭ[\€ЉK€™\ШЬљ\[Ы€HУУTХS‘ФХ’S‘К€•\ИH]XЪИ[™Ь€]Ч€‚€›Щ€Ь\ЬЛ]\HЪрк[[Ы‹€ЉK€™Y™™XЭHQ‘‘PХФ“ХХST‹€њЭЩ\€H€ќ\HHTWСФ“ХS‘€XШЭ\XЮHH€њHL€ќ\™Щ]HT‘СUРSРђUT”Л€њљ[Ьљ]HH€Ш]YЫЬћHHSPQСWРРUQУФ–WФХUTЛ€ћ“[Э™HHИ™Y™™XЭH—СQ‘‘PХРUЧХTМHK€љYЫ›Ь™\Ф›ЭXЭH•QK€›Z\њ›Ь“[Э™P[›™YH•QK€њЪЮP]P[›™YH•QK€ЫЫќ\ЭY™™XЭHУУ•TХСQ‘‘PХТST“Х‘WРУУ‘USУ—Ф‘U‘S•У‘T•“ХTУ‘TФЛ€ЫЫќ\ЭШ]YЫЬћHHУУ•TХРРUQУФ–WХХQТ€ЫЫќ\ЭЫЫX›ФЭ\ќ\’YHУУP“ЧФХT•T—Ф“ХХST‹€ЫЫќ\ЭЫЫX›У[Э™\ИHМK€]P[љ[TШЬљ\HР]P[љ[S[Э™WФ›ЭЭ[\‹€K‚€УSХ‘WФХPТЦWХСP—HB€В€›[YHHУУTХS‘ФХ’S‘К”ЭXЪЮHЩX€ЉK€™\ШЬљ\[Ы€HУУTХS‘ФХ’S‘К€•ЩX]™\ИHЭXЪЮH™]]€‚€њЫЭЬИ›Щ\ИЭЪ]Ъ[™И[‹€ЉK€™Y™™XЭHQ‘‘PХФХPТЦWХСP‹€њЭЩ\€H€ќ\HHTWР•QЛ€XШЭ\XЮHH€њHЊ€ќ\™Щ]HT‘СUУФУ‘S•ЧС’QS€њљ[Ьљ]HH€Ш]YЫЬћHHSPQСWРРUQУФ–WФХUTЛ€ћ“[Э™HHИ™Y™™XЭH—СQ‘‘PХФФХTМHK€љYЫ›Ь™\Ф›ЭXЭH•QK€›Z\њ›Ь“[Э™P[›™YH•QK€›XYЪXРЫШ]Y™™XЭYH•QK€њЪЮP]P[›™YH•QK€ЫЫќ\ЭY™™XЭHУУ•TХСQ‘‘PХФХT•WУSУ—ХТUТ•QСTЧРUS•SУ‹€ЫЫќ\ЭШ]YЫЬћHHУУ•TХРРUQУФ–WХХQТ€ЫЫќ\ЭЫЫX›ФЭ\ќ\’YH€ЫЫќ\ЭЫЫX›У[Э™\ИHРУУP“ЧФХT•T—ФХ’S‘ЧФТХK€]P[љ[TШЬљ\HР]P[љ[S[Э™WФЭXЪЮUЩX‹€K‚€УSХ‘WС‘SФХS‘СT—HB€В€›[YHHУУTХS‘ФХ’S‘К‘™[Э[™Щ\€ЉK€™\ШЬљ\[Ы€HУУTХS‘ФХ’S‘К€’Y€]Ы›ШЪЬИЭ]H›ЩW€‚€ќH]XЪИЭ]\ИZ\ЩY€ЉK€™Y™™XЭHQ‘‘PХС‘SФХS‘СT‹€њЭЩ\€H—ХTUQУSХ‘WСUHЏHСS—НИИL€М€ќ\HHTWР•QЛ€XШЭ\XЮHHL€њHЌK€ќ\™Щ]HT‘СUФСSPХQ€њљ[Ьљ]HH€Ш]YЫЬћHHSPQСWРРUQУФ–WФTТPРS€›XZЩ\РЫЫќXЭH•QK€ЫЫќ\ЭY™™XЭHУУ•TХСQ‘‘PХР‘UT—ХТS—РUQQSђСWСVТUQ€ЫЫќ\ЭШ]YЫЬћHHУУ•TХРРUQУФ–WРУУУ€ЫЫќ\ЭЫЫX›ФЭ\ќ\’YH€ЫЫќ\ЭЫЫX›У[Э™\ИHМK€]P[љ[TШЬљ\HР]P[љ[S[Э™WС™[Э[™Щ\‹€K‚€УSХ‘WФS•УWС“ФђСWHB€В€›[YHHУУTХS‘ФХ’S‘К”[ќЫH›ЬЩHЉK€™\ШЬљ\[Ы€HФЪYЭС›ЬЩQ\ШЬљ\[Ы‹€™Y™™XЭHQ‘‘PХФСSRWТS••S‘TђP“K€њЭЩ\€HL€ќ\HHTWСТФХ€XШЭ\XЮHHL€њHL€ќ\™Щ]HT‘СUФСSPХQ€њљ[Ьљ]HH€Ш]YЫЬћHHSPQСWРРUQУФ–WФTТPРS€љYЫ›Ь™\Ф›ЭXЭH•QK€›XZЩ\РЫЫќXЭH•QK€›Z[љ[Z^™QЭX›Q[XYЩHH—ХTUQУSХ‘WС“QФИСS—НЛ€њЫY\[Р[›™YH•QK€љ[њЭќXЭ[›™YH•QK€\ЬЪ\Э[›™YH•QK€\™Э[Y[ќќЫХ\›ђ]XЪИHИњЭљ[™ТYHХ’S‘ТQХђS’TТQS”ХS•KњЭ]\ИHХUWФS•УWС“ФђСHK€Y][Ы[Y™™XЭИHQUSУђSСQ‘‘PХКВ€›[Э™QY™™XЭHSХ‘WСQ‘‘PХС‘RS•€JK€ЫЫќ\ЭY™™XЭHУУ•TХСQ‘‘PХРU“ТQФХT•K€ЫЫќ\ЭШ]YЫЬћHHУУ•TХРРUQУФ–WРУУУ€ЫЫќ\ЭЫЫX›ФЭ\ќ\’YH€ЫЫќ\ЭЫЫX›У[Э™\ИHМK€]P[љ[TШЬљ\HР]P[љ[S[Э™WФ[ќЫQ›ЬЩK€K‚€УSХ‘WХ’PТЧУФ—Х‘PUHB€В€›[YHHУУTХS‘ФХ’S‘К•љXЪЛ[Ь‹U™X]ЉK€™\ШЬљ\[Ы€HУУTХS‘ФХ’S‘К€‘ЫЩ\ИљXЪЛ[Ь‹]™X][™Л€‚€Y[™ИЪЬЭ\HИ›ЩK€ЉK€™Y™™XЭHQ‘‘PХХT‘ХTK€њЭЩ\€H€ќ\HHTWСТФХ€XШЭ\XЮHHL€њHЊ€ќ\™Щ]HT‘СUФСSPХQ€њљ[Ьљ]HH€Ш]YЫЬћHHSPQСWРРUQУФ–WФХUTЛ€\™Э[Y[ќHИќ\HHTWСТФХK€ћ“[Э™HHИ™Y™™XЭH—СQ‘‘PХРSФХUЧХTМHK€›XYЪXРЫШ]Y™™XЭYH•QK€ЫЫќ\ЭY™™XЭHУУ•TХСQ‘‘PХФХT•WУSУ”ЧФРSQWХTWРTPS€ЫЫќ\ЭШ]YЫЬћHHУУ•TХРРUQУФ–WРХUK€ЫЫќ\ЭЫЫX›ФЭ\ќ\’YH€ЫЫќ\ЭЫЫX›У[Э™\ИHМK€]P[љ[TШЬљ\HР]P[љ[S[Э™WХљXЪУЬ•™X]€K‚€УSХ‘WУ“Р“WФ“РT—HB€В€›[YHHУУTХS‘ФХ’S‘К“›Ш›H›Ш\€ЉK€™\ШЬљ\[Ы€HУУTХS‘ФХ’S‘К€’[ќ[ZY]\ИH›ЩKИЭ]€‚€ђ]XЪИ[™Ь€]Л€ЉK€™Y™™XЭHQ‘‘PХУ“Р“WФ“РT‹€њЭЩ\€H€ќ\HHTWУ“Ф“PS€XШЭ\XЮHHL€њHМ€ќ\™Щ]HT‘СUФСSPХQ€њљ[Ьљ]HH€Ш]YЫЬћHHSPQСWРРUQУФ–WФХUTЛ€ћ“[Э™HHИ™Y™™XЭH—СQ‘‘PХСQ—ХTМHK€љYЫ›Ь™\ФЭXњЭ]]HH—ХTUQУSХ‘WС“QФИЏHСS—Н‹€›XYЪXРЫШ]Y™™XЭYH•QK€њЫЭ[™[Э™HH•QK€ЫЫќ\ЭY™™XЭHУУ•TХСQ‘‘PХР‘UT—ТQ—С’T”Х€ЫЫќ\ЭШ]YЫЬћHHУУ•TХРРUQУФ–WХХQТ€ЫЫќ\ЭЫЫX›ФЭ\ќ\’YH€ЫЫќ\ЭЫЫX›У[Э™\ИHМK€]P[љ[TШЬљ\HР]P[љ[S[Э™WУ›Ш›T›Ш\‹€K‚€УSХ‘WТSУ—СSQСWHB€В€›[YHHУУTХS‘ФХ’S‘К’[Ы€[YЩHЉK€™\ШЬљ\[Ы€HУУTХS‘ФХ’S‘К€‘[XЭљYљY\И›Ь›X[]\W€‚€›[Э™\ИЪ]Ъ\™ЩY]Ы\Л€ЉK€™Y™™XЭHQ‘‘PХТSУ—СSQСK€њЭЩ\€H€ќ\HHTWСSPХ’PЛ€XШЭ\XЮHH€њHЌK€ќ\™Щ]HT‘СUС’QS€њљ[Ьљ]HHK€Ш]YЫЬћHHSPQСWРРUQУФ–WФХUTЛ€ћ“[Э™HHИ™Y™™XЭH—СQ‘‘PХФФUЧХTМHK€љYЫ›Ь™\Ф›ЭXЭH•QK€›Z\њ›Ь“[Э™P[›™YH•QK€ЫЫќ\ЭY™™XЭHУУ•TХСQ‘‘PХСУ•СVТUWРUQQSђСK€ЫЫќ\ЭШ]YЫЬћHHУУ•TХРРUQУФ–WР‘PUUK€ЫЫќ\ЭЫЫX›ФЭ\ќ\’YH€ЫЫќ\ЭЫЫX›У[Э™\ИHМK€]P[љ[TШЬљ\HР]P[љ[S[Э™WТ[Ы‘[YЩK€K‚€УSХ‘WФTђP“УPЧРТT‘СWHB€В€›[YHHУУTХS‘ФХ’S‘К”\X›ЫXИЪ\™ЩHЉK€™\ШЬљ\[Ы€HУУTХS‘ФХ’S‘К€‘[XYЩ\ИYXЩ[ќЪрк[[Ы—€‚€[™X[И\ћH[€Щ€]€ЉK€™Y™™XЭHQ‘‘PХРP”УФђ‹€њЭЩ\€H—ХTUQУSХ‘WСUHЏHСS—НИИЌH€L€ќ\HHTWСSPХ’PЛ€XШЭ\XЮHHL€њHЊ€ќ\™Щ]HT‘СUС“СTЧРS‘РSK€њљ[Ьљ]HH€Ш]YЫЬћHHSPQСWРРUQУФ–WФФPТPS€\™Э[Y[ќHИXњЫЬ”\Щ[ќYЩHHLK€љX[[™У[Э™HH—ТPSР“РТТS‘ИЏHСS—Н‹€ЫЫќ\ЭY™™XЭHУУ•TХСQ‘‘PХРTPSРTЧСУУСРTЧФ‘U—УУ‘TЛ€ЫЫќ\ЭШ]YЫЬћHHУУ•TХРРUQУФ–WФУPT•€ЫЫќ\ЭЫЫX›ФЭ\ќ\’YHУУP“ЧФХT•T—ФTђP“УPЧРТT‘СK€ЫЫќ\ЭЫЫX›У[Э™\ИHРУУP“ЧФХT•T—РТT‘С_K€]P[љ[TШЬљ\HР]P[љ[S[Э™WФ\X›ЫXРЪ\™ЩK€K‚€УSХ‘WС“Ф‘TХЧРХT”СWHB€В€›[YHHУУTХS‘ФХ’S‘К‘›Ь™\Э	ЬИЭ\њЩHЉK€™\ШЬљ\[Ы€HУУTХS‘ФХ’S‘К€”]ИHЭ\њЩHЫ€H›ЩK€‚€Y[™ИHЬ\ЬИ\K€ЉK€™Y™™XЭHQ‘‘PХХT‘ХTK€њЭЩ\€H€ќ\HHTWСФђTФЛ€XШЭ\XЮHHL€њHЊ€ќ\™Щ]HT‘СUФСSPХQ€њљ[Ьљ]HH€Ш]YЫЬћHHSPQСWРРUQУФ–WФХUTЛ€\™Э[Y[ќHИќ\HHTWСФђTФИK€ћ“[Э™HHИ™Y™™XЭH—СQ‘‘PХРSФХUЧХTМHK€›XYЪXРЫШ]Y™™XЭYH•QK€ЫЫќ\ЭY™™XЭHУУ•TХСQ‘‘PХРђQWФХT•WУSУ”ЧХТUСУУСРTPSЛ€ЫЫќ\ЭШ]YЫЬћHHУУ•TХРРUQУФ–WФУPT•€ЫЫќ\ЭЫЫX›ФЭ\ќ\’YH€ЫЫќ\ЭЫЫX›У[Э™\ИHМK€]P[љ[TШЬљ\HР]P[љ[S[Э™WС›Ь™\ЭРЭ\њЩK€K‚€УSХ‘WФUSР“V–ђT‘HB€В€›[YHHУУTХS‘ФХ’S‘К”][›^ћ\™ЉK€™\ШЬљ\[Ы€HУУTХS‘ФХ’S‘К€”Э\њИ\Hљ[Ы[ќЭЬ›W€‚€›Щ€][ИИ]XЪИ[€ЉK€™Y™™XЭHQ‘‘PХТU€њЭЩ\€HL€ќ\HHTWСФђTФЛ€XШЭ\XЮHHL€њHMK€ќ\™Щ]HT‘СUС“СTЧРS‘РSK€њљ[Ьљ]HH€Ш]YЫЬћHHSPQСWРРUQУФ–WФTТPРS€ќЪ[™[Э™HH•QK€ЫЫќ\ЭY™™XЭHУУ•TХСQ‘‘PХФХT•WФ‘U—УSУ”Л€ЫЫќ\ЭШ]YЫЬћHHУУ•TХРРUQУФ–WР‘PUUK€ЫЫќ\ЭЫЫX›ФЭ\ќ\’YH€ЫЫќ\ЭЫЫX›У[Э™\ИHМK€]P[љ[TШЬљ\HР]P[љ[S[Э™WФ][›^ћ\™€K‚€УSХ‘WС”‘QV‘WС–WHB€В€›[YHHУУTХS‘ФХ’S‘К‘њ™Y^™KQћHЉK€™\ШЬљ\[Ы€HУУTХS‘ФХ’S‘К€”Э\\€Y™™XЭ]™HЫ€Ш]\‹W€‚€ЪY€—ХTСWС”“ФХ’UHOH•QB€ќ\\Л€X^HШ]\ЩHњ›ЬЭљ]K€ЉK€Щ[ЩB€ќ\\Л€X^HШ]\ЩHњ™Y^љ[™Л€ЉK€Щ[™Y‚€™Y™™XЭHQ‘‘PХФХTT—СQ‘‘PХU‘WУУ—РT‘Л€њЭЩ\€HМ€ќ\HHTWТPСK€XШЭ\XЮHHL€њHЊ€ќ\™Щ]HT‘СUФСSPХQ€њљ[Ьљ]HH€Ш]YЫЬћHHSPQСWРРUQУФ–WФФPТPS€\™Э[Y[ќHИќ\HHTWХРUT€K€Y][Ы[Y™™XЭИHQUSУђSСQ‘‘PХКВ€›[Э™QY™™XЭHSХ‘WСQ‘‘PХС”‘QV‘WУФ—С”“ФХ’UK€Ъ[ЩHHL€JK€ЫЫќ\ЭY™™XЭHУУ•TХСQ‘‘PХФ‘TUUSУ—У“ХР“Ф’S‘Л€ЫЫќ\ЭШ]YЫЬћHHУУ•TХРРUQУФ–WР‘PUUK€ЫЫќ\ЭЫЫX›ФЭ\ќ\’YH€ЫЫќ\ЭЫЫX›У[Э™\ИHМK€]P[љ[TШЬљ\HР]P[љ[S[Э™WСњ™Y^™QћK€K‚€УSХ‘WСTРT“RS‘ЧХ“ТPСWHB€В€›[YHHУУTХS‘ФХ’S‘К‘\Ш\›Z[™И›ЪXЩHЉK€™\ШЬљ\[Ы€HУУTХS‘ФХ’S‘К€“]ИЭ]HЪ\›Z[™ИЬћW€‚€ќ]Ш[››Э™H]YY€ЉK€™Y™™XЭHQ‘‘PХТU€њЭЩ\€H€ќ\HHTWСђRT–K€XШЭ\XЮHH€њHMK€ќ\™Щ]HT‘СUР“Х€њљ[Ьљ]HH€Ш]YЫЬћHHSPQСWРРUQУФ–WФФPТPS€љYЫ›Ь™\ФЭXњЭ]]HH—ХTUQУSХ‘WС“QФИЏHСS—Н‹€њЫЭ[™[Э™HH•QK€ЫЫќ\ЭY™™XЭHУУ•TХСQ‘‘PХР‘UT—ТQ—С’T”Х€ЫЫќ\ЭШ]YЫЬћHHУУ•TХРРUQУФ–WРХUK€ЫЫќ\ЭЫЫX›ФЭ\ќ\’YH€ЫЫќ\ЭЫЫX›У[Э™\ИHМK€]P[љ[TШЬљ\HР]P[љ[S[Э™WС\Ш\›Z[™Х›ЪXЩK€K‚€УSХ‘WФT•S‘ЧФТХHB€В€›[YHHУУTХS‘ФХ’S‘К”\ќ[™ИЪЭЉK€™\ШЬљ\[Ы€HУУTХS‘ФХ’S‘К€“ЭЩ\њИH›ЩIЬИ]XЪИ[™€‚€”Ь€]Л[€ЭЪ]Ъ\ИЭ]€ЉK€™Y™™XЭHQ‘‘PХФT•S‘ЧФТХ€њЭЩ\€H€ќ\HHTWСT’Л€XШЭ\XЮHHL€њHЊ€ќ\™Щ]HT‘СUФСSPХQ€њљ[Ьљ]HH€Ш]YЫЬћHHSPQСWРРUQУФ–WФХUTЛ€ћ“[Э™HHИ™Y™™XЭH—СQ‘‘PХФ‘TХФ‘WФ‘TPСSQS•ТK€›XYЪXРЫШ]Y™™XЭYH•QK€љYЫ›Ь™\ФЭXњЭ]]HH—ХTUQУSХ‘WС“QФИЏHСS—Н‹€њЫЭ[™[Э™HH•QK€ЫЫќ\ЭY™™XЭHУУ•TХСQ‘‘PХРU“ТQФХT•KЛРУУ•TХСQ‘‘PХСVТUTЧРUQQSђСWУSФ‘WТQ—УTХ€ЫЫќ\ЭШ]YЫЬћHHУУ•TХРРUQУФ–WРУУУ€ЫЫќ\ЭЫЫX›ФЭ\ќ\’YH€ЫЫќ\ЭЫЫX›У[Э™\ИHМK€]P[љ[TШЬљ\HР]P[љ[S[Э™WФ\ќ[™ФЪЭ€K‚€УSХ‘WХФЦWХT•–WHB€В€›[YHHУУTХS‘ФХ’S‘К•ЬЮKU\ќћHЉK€™\ШЬљ\[Ы€HУУTХS‘ФХ’S‘К€”ЭШ\И[Э]Ъ[™Щ\И]€‚€Y™™XЭH\™Щ]€ЉK€™Y™™XЭHQ‘‘PХХФЦWХT•–K€њЭЩ\€H€ќ\HHTWСT’Л€XШЭ\XЮHH—ХTUQУSХ‘WСUHЏHСS—НИИ€L€њHЊ€ќ\™Щ]HT‘СUФСSPХQ€њљ[Ьљ]HH€Ш]YЫЬћHHSPQСWРРUQУФ–WФХUTЛ€ћ“[Э™HHИ™Y™™XЭH—СQ‘‘PХРUЧХTМHK€›XYЪXРЫШ]Y™™XЭYH•QK€ЫЫќ\ЭY™™XЭHУУ•TХСQ‘‘PХФРФђSP“WУ‘VХT“—УФ‘T‹€ЫЫќ\ЭШ]YЫЬћHHУУ•TХРРUQУФ–WФУPT•€ЫЫќ\ЭЫЫX›ФЭ\ќ\’YH€ЫЫќ\ЭЫЫX›У[Э™\ИHМK€]P[љ[TШЬљ\HР]P[љ[S[Э™WХЬЮU\ќћK€K‚€УSХ‘WСђRS’S‘ЧТТTФЧHB€В€›[YHHУУTХS‘ФХ’S‘К‘Z[љ[™ИЪ\ЬИЉK€™\ШЬљ\[Ы€HСZ[љ[™ТЪ\ЬС\ШЬљ\[Ы‹€™Y™™XЭHQ‘‘PХРP”УФђ‹€њЭЩ\€HL€ќ\HHTWСђRT–K€XШЭ\XЮHHL€њHL€ќ\™Щ]HT‘СUФСSPХQ€њљ[Ьљ]HH€Ш]YЫЬћHHSPQСWРРUQУФ–WФФPТPS€\™Э[Y[ќHИXњЫЬ”\Щ[ќYЩHHНHK€›XZЩ\РЫЫќXЭH•QK€љX[[™У[Э™HH—ТPSР“РТТS‘ИЏHСS—Н‹€ЫЫќ\ЭY™™XЭHУУ•TХСQ‘‘PХРTPSРTЧСУУСРTЧФ‘U—УУ‘TЛ€ЫЫќ\ЭШ]YЫЬћHHУУ•TХРРUQУФ–WРХUK€ЫЫќ\ЭЫЫX›ФЭ\ќ\’YH€ЫЫќ\ЭЫЫX›У[Э™\ИHМK€]P[љ[TШЬљ\HР]P[љ[S[Э™WСZ[љ[™ТЪ\ЬЛ€K‚€УSХ‘WРФђQ•WФТQSHB€В€›[YHHУУTХS‘ФХ’S‘КђЬYќHЪY[ЉK€™\ШЬљ\[Ы€HУУTХS‘ФХ’S‘К€‘]Y\ИЭ]\И[Э™\И›Ь—€‚€›Ы™H\›‹€ЉK€™Y™™XЭHQ‘‘PХФ“ХPХ€њЭЩ\€H€ќ\HHTWСђRT–K€XШЭ\XЮHH€њHL€ќ\™Щ]HT‘СUХTСT‹€њљ[Ьљ]HHЛ€Ш]YЫЬћHHSPQСWРРUQУФ–WФХUTЛ€\™Э[Y[ќHИњ›ЭXЭY]ЩH“ХPХРФђQ•WФТQSK€ћ“[Э™HHИ™Y™™XЭH—СQ‘‘PХФФQ—ХTМHK€љYЫ›Ь™\Ф›ЭXЭH•QK€›Z\њ›Ь“[Э™P[›™YH•QK€›Y]›Ы›ЫYP[›™YH•QK€ЫЫќ\ЭY™™XЭHУУ•TХСQ‘‘PХР‘UT—ТQ—С’T”Х€ЫЫќ\ЭШ]YЫЬћHHУУ•TХРРUQУФ–WФУPT•€ЫЫќ\ЭЫЫX›ФЭ\ќ\’YH€ЫЫќ\ЭЫЫX›У[Э™\ИHМK€]P[љ[TШЬљ\HР]P[љ[S[Э™WРЬYќTЪY[€K‚€УSХ‘WС“ХСT—ФТQSHB€В€›[YHHУУTХS‘ФХ’S‘К‘›ЭЩ\€ЪY[ЉK€™\ШЬљ\[Ы€HУУTХS‘ФХ’S‘К€”Z\Щ\ИHY™[њЩHЩ—€‚€‘Ь\ЬЛ]\HЪрк[[Ы‹€ЉK€™Y™™XЭHQ‘‘PХС“ХСT—ФТQS€њЭЩ\€H€ќ\HHTWСђRT–K€XШЭ\XЮHH€њHL€ќ\™Щ]HT‘СUРSРђUT”Л€њљ[Ьљ]HH€Ш]YЫЬћHHSPQСWРРUQУФ–WФХUTЛ€ћ“[Э™HHИ™Y™™XЭH—СQ‘‘PХСQ—ХTМHK€љYЫ›Ь™\Ф›ЭXЭH•QK€›Z\њ›Ь“[Э™P[›™YH•QK€ЫЫќ\ЭY™™XЭHУУ•TХСQ‘‘PХРU“ТQФХT•K€ЫЫќ\ЭШ]YЫЬћHHУУ•TХРРUQУФ–WР‘PUUK€ЫЫќ\ЭЫЫX›ФЭ\ќ\’YH€ЫЫќ\ЭЫЫX›У[Э™\ИHМK€]P[љ[TШЬљ\HР]P[љ[S[Э™WС›ЭЩ\”ЪY[€K‚€УSХ‘WСФђTФЦWХT”ђRS—HB€В€›[YHHУУTХS‘ФХ’S‘К‘Ь\ЬЮH\њZ[€ЉK€™\ШЬљ\[Ы€HУУTХS‘ФХ’S‘К€•HЬ›Э[™\›њИИЬ\ЬЧ€‚€™›Ь€H\›њЛ€™\ЭЬ™\И€ЉK€™Y™™XЭHQ‘‘PХСФђTФЦWХT”ђRS‹€њЭЩ\€H€ќ\HHTWСФђTФЛ€XШЭ\XЮHH€њHL€ќ\™Щ]HT‘СUС’QS€њљ[Ьљ]HH€Ш]YЫЬћHHSPQСWРРUQУФ–WФХUTЛ€ћ“[Э™HHИ™Y™™XЭH—СQ‘‘PХСQ—ХTМHK€љYЫ›Ь™\Ф›ЭXЭH•QK€›Z\њ›Ь“[Э™P[›™YH•QK€њЪЮP]P[›™YH•QK€ЫЫќ\ЭY™™XЭHУУ•TХСQ‘‘PХР‘UT—ХТS—РUQQSђСWСVТUQЛРУУ•TХСQ‘‘PХСVТUTЧРUQQSђСWУSФ‘WТQ—С’T”Х€ЫЫќ\ЭШ]YЫЬћHHУУ•TХРРUQУФ–WР‘PUUK€ЫЫќ\ЭЫЫX›ФЭ\ќ\’YHУУP“ЧФХT•T—СФђTФЦWХT”ђRS‹€ЫЫќ\ЭЫЫX›У[Э™\ИHМK€]P[љ[TШЬљ\HР]P[љ[S[Э™WСЬ\ЬЮU\њZ[‹€K‚€УSХ‘WУRTХWХT”ђRS—HB€В€›[YHHУУTХS‘ФХ’S‘К“Z\ЭH\њZ[€ЉK€™\ШЬљ\[Ы€HУУTХS‘ФХ’S‘К€ђЫЭ™\њИHЬ›Э[™Ъ]Z\Э€‚€™›Ь€H\›њЛ€›ШЪЬИЭ]\Л€ЉK€™Y™™XЭHQ‘‘PХУRTХWХT”ђRS‹€њЭЩ\€H€ќ\HHTWСђRT–K€XШЭ\XЮHH€њHL€ќ\™Щ]HT‘СUС’QS€њљ[Ьљ]HH€Ш]YЫЬћHHSPQСWРРUQУФ–WФХUTЛ€ћ“[Э™HHИ™Y™™XЭH—СQ‘‘PХФФQ—ХTМHK€љYЫ›Ь™\Ф›ЭXЭH•QK€›Z\њ›Ь“[Э™P[›™YH•QK€њЪЮP]P[›™YH•QK€ЫЫќ\ЭY™™XЭHУУ•TХСQ‘‘PХР‘UT—ХТS—РUQQSђСWСVТUQЛРУУ•TХСQ‘‘PХСVТUTЧРUQQSђСWУSФ‘WТQ—С’T”Х€ЫЫќ\ЭШ]YЫЬћHHУУ•TХРРUQУФ–WР‘PUUK€ЫЫќ\ЭЫЫX›ФЭ\ќ\’YHУУP“ЧФХT•T—УRTХWХT”ђRS‹€ЫЫќ\ЭЫЫX›У[Э™\ИHМK€]P[љ[TШЬљ\HР]P[љ[S[Э™WУZ\ЭU\њZ[‹€K‚€УSХ‘WСSPХ’Q–WHB€В€›[YHHУУTХS‘ФХ’S‘К‘[XЭљYћHЉK€™\ШЬљ\[Ы€HУУTХS‘ФХ’S‘К€‘[XЭљYљY\ИH›ЩKXZЪ[™Ч€‚€љ]И™^[Э™H[XЭљXЛ]\K€ЉK€™Y™™XЭHQ‘‘PХСSPХ’Q–K€њЭЩ\€H€ќ\HHTWСSPХ’PЛ€XШЭ\XЮHH€њHЊ€ќ\™Щ]HT‘СUФСSPХQ€њљ[Ьљ]HH€Ш]YЫЬћHHSPQСWРРUQУФ–WФХUTЛ€ћ“[Э™HHИ™Y™™XЭH—СQ‘‘PХФФUЧХTМHK€ЫЫќ\ЭY™™XЭHУУ•TХСQ‘‘PХФХT•WУSУ”ЧФРSQWХTWРTPS€ЫЫќ\ЭШ]YЫЬћHHУУ•TХРРUQУФ–WФУPT•€ЫЫќ\ЭЫЫX›ФЭ\ќ\’YH€ЫЫќ\ЭЫЫX›У[Э™\ИHРУУP“ЧФХT•T—ФTђP“УPЧРТT‘С_K€]P[љ[TШЬљ\HР]P[љ[S[Э™WС[XЭљYћK€K‚€УSХ‘WФVWФ“ХQТHB€В€›[YHHУУTХS‘ФХ’S‘К”^H›ЭYЪЉK€™\ШЬљ\[Ы€HУУTХS‘ФХ’S‘К€”^\И›ЭYЪЪ]H›ЩK—€‚€“X^HЭЩ\€]XЪЛ€ЉK€™Y™™XЭHQ‘‘PХТU€њЭЩ\€HL€ќ\HHTWСђRT–K€XШЭ\XЮHHL€њHL€ќ\™Щ]HT‘СUФСSPХQ€њљ[Ьљ]HH€Ш]YЫЬћHHSPQСWРРUQУФ–WФTТPРS€›XZЩ\РЫЫќXЭH•QK€Y][Ы[Y™™XЭИHQUSУђSСQ‘‘PХКВ€›[Э™QY™™XЭHSХ‘WСQ‘‘PХРUЧУRS•TЧМK€Ъ[ЩHHL€JK€ЫЫќ\ЭY™™XЭHУУ•TХСQ‘‘PХХУФ”СS—РУУ‘USУ—УС—Ф‘U—УSУ”Л€ЫЫќ\ЭШ]YЫЬћHHУУ•TХРРUQУФ–WРХUK€ЫЫќ\ЭЫЫX›ФЭ\ќ\’YH€ЫЫќ\ЭЫЫX›У[Э™\ИHМK€]P[љ[TШЬљ\HР]P[љ[S[Э™WФ^T›ЭYЪ€K‚€УSХ‘WСђRT–WХТS‘HB€В€›[YHHУУTХS‘ФХ’S‘К‘Z\ћHЪ[™ЉK€™\ШЬљ\[Ы€HУУTХS‘ФХ’S‘К€”Э\њИ\HZ\ћHЪ[™Ч€‚€њЭљZЩHH›ЩK€ЉK€™Y™™XЭHQ‘‘PХТU€њЭЩ\€H€ќ\HHTWСђRT–K€XШЭ\XЮHHL€њHМ€ќ\™Щ]HT‘СUФСSPХQ€њљ[Ьљ]HH€Ш]YЫЬћHHSPQСWРРUQУФ–WФФPТPS€ќЪ[™[Э™HH•QK€ЫЫќ\ЭY™™XЭHУУ•TХСQ‘‘PХТQТWРTPSS‘Л€ЫЫќ\ЭШ]YЫЬћHHУУ•TХРРUQУФ–WР‘PUUK€ЫЫќ\ЭЫЫX›ФЭ\ќ\’YH€ЫЫќ\ЭЫЫX›У[Э™\ИHМK€]P[љ[TШЬљ\HР]P[љ[S[Э™WСZ\ћUЪ[™€K‚€УSХ‘WУSУУђ“TХHB€В€›[YHHУУTХS‘ФХ’S‘К“[ЫЫ›\ЭЉK€™\ШЬљ\[Ы€HУУTХS‘ФХ’S‘К€ђ]XЪЬИЪ]HЭЩ\€Щ—€‚€ќH[ЫЫ‹€X^HЭЩ\€Ь€]Л€ЉK€™Y™™XЭHQ‘‘PХТU€њЭЩ\€HMK€ќ\HHTWСђRT–K€XШЭ\XЮHHL€њHMK€ќ\™Щ]HT‘СUФСSPХQ€њљ[Ьљ]HH€Ш]YЫЬћHHSPQСWРРUQУФ–WФФPТPS€Y][Ы[Y™™XЭИHQUSУђSСQ‘‘PХКВ€›[Э™QY™™XЭHSХ‘WСQ‘‘PХФФРUЧУRS•TЧМK€Ъ[ЩHHМ€JK€ЫЫќ\ЭY™™XЭHУУ•TХСQ‘‘PХРђQWФХT•WС”“У•УSУ‹€ЫЫќ\ЭШ]YЫЬћHHУУ•TХРРUQУФ–WР‘PUUK€ЫЫќ\ЭЫЫX›ФЭ\ќ\’YH€ЫЫќ\ЭЫЫX›У[Э™\ИHМK€]P[љ[TШЬљ\HР]P[љ[S[Э™WУ[ЫЫ›\Э€K‚€УSХ‘WР“УУP•T”ХHB€В€›[YHHУУTХS‘ФХ’S‘Кђ›ЫЫXќ\њЭЉK€™\ШЬљ\[Ы€HУУTХS‘ФХ’S‘К€ђ]XЪЬИ]™\ћ][™ИЪ]W€‚€™\ЭќXЭ]™HЫЭ[™Ш]™K€ЉK€™Y™™XЭHQ‘‘PХТU€њЭЩ\€HM€ќ\HHTWУ“Ф“PS€XШЭ\XЮHHL€њHL€ќ\™Щ]HT‘СUС“СTЧРS‘РSK€њљ[Ьљ]HH€Ш]YЫЬћHHSPQСWРРUQУФ–WФФPТPS€љYЫ›Ь™\ФЭXњЭ]]HH—ХTUQУSХ‘WС“QФИЏHСS—Н‹€њЫЭ[™[Э™HH•QK€ЫЫќ\ЭY™™XЭHУУ•TХСQ‘‘PХТђSTЧУХT”ЧР•UУRTФЧУУ‘WХT“‹€ЫЫќ\ЭШ]YЫЬћHHУУ•TХРРUQУФ–WХХQТ€ЫЫќ\ЭЫЫX›ФЭ\ќ\’YH€ЫЫќ\ЭЫЫX›У[Э™\ИHМK€]P[љ[TШЬљ\HР]P[љ[S[Э™WР›ЫЫXќ\њЭ€K‚€УSХ‘WСђRT–WУРТЧHB€В€›[YHHУУTХS‘ФХ’S‘К‘Z\ћHШЪИЉK€™\ШЬљ\[Ы€HУУTХS‘ФХ’S‘К€“ШЪЬИЭЫ€H]YљY[€‚€њ™]™[ќ[™И\ШШ\H™^\›‹€ЉK€™Y™™XЭHQ‘‘PХСђRT–WУРТЛ€њЭЩ\€H€ќ\HHTWСђRT–K€XШЭ\XЮHH€њHL€ќ\™Щ]HT‘СUС’QS€њљ[Ьљ]HH€Ш]YЫЬћHHSPQСWРРUQУФ–WФХUTЛ€ћ“[Э™HHИ™Y™™XЭH—СQ‘‘PХСQ—ХTМHK€љYЫ›Ь™\Ф›ЭXЭH•QK€љYЫ›Ь™\ФЭXњЭ]]HH•QK€ЫЫќ\ЭY™™XЭHУУ•TХСQ‘‘PХСУ•СVТUWРUQQSђСK€ЫЫќ\ЭШ]YЫЬћHHУУ•TХРРUQУФ–WФУPT•€ЫЫќ\ЭЫЫX›ФЭ\ќ\’YH€ЫЫќ\ЭЫЫX›У[Э™\ИHМK€]P[љ[TШЬљ\HР]P[љ[S[Э™WСZ\ћSШЪЛ€K‚€УSХ‘WТТS‘ФЧФТQSHB€В€›[YHHУУTХS‘ФХ’S‘К’Ъ[™ЙЬИЪY[ЉK€™\ШЬљ\[Ы€HУУTХS‘ФХ’S‘К€‘]Y\И[XYЩK[™Ъ\њW€‚€њ™YXЩ\И]XЪИY€ЭќXЪЛ€ЉK€™Y™™XЭHQ‘‘PХФ“ХPХ€њЭЩ\€H€ќ\HHTWФХQS€XШЭ\XЮHH€њHL€ќ\™Щ]HT‘СUХTСT‹€њљ[Ьљ]HH€Ш]YЫЬћHHSPQСWРРUQУФ–WФХUTЛ€\™Э[Y[ќHИњ›ЭXЭY]ЩH“ХPХТТS‘ФЧФТQSK€ћ“[Э™HHИ™Y™™XЭH—СQ‘‘PХФ‘TСUФХUИK€љYЫ›Ь™\Ф›ЭXЭH•QK€›Z\њ›Ь“[Э™P[›™YH•QK€›Y]›Ы›ЫYP[›™YH•QK€ЫЬXШ][›™YH•QK€љ[њЭќXЭ[›™YH•QK€\ЬЪ\Э[›™YH•QK€ЫЫќ\ЭY™™XЭHУУ•TХСQ‘‘PХРU“ТQФХT•K€ЫЫќ\ЭШ]YЫЬћHHУУ•TХРРUQУФ–WРУУУ€ЫЫќ\ЭЫЫX›ФЭ\ќ\’YH€ЫЫќ\ЭЫЫX›У[Э™\ИHМK€]P[љ[TШЬљ\HР]P[љ[S[Э™WТЪ[™ЬФЪY[€K‚€УSХ‘WФVWУ’PСWHB€В€›[YHHУУTХS‘ФХ’S‘К”^HљXЩHЉK€™\ШЬљ\[Ы€HУУTХS‘ФХ’S‘К€ђ™YњљY[™H›ЩKЭЩ\љ[™Ч€‚€љ]И]XЪИЪ]Э]Z[€ЉK€™Y™™XЭHQ‘‘PХРUPТЧСХУ‹€њЭЩ\€H€ќ\HHTWУ“Ф“PS€XШЭ\XЮHH€њHЊ€ќ\™Щ]HT‘СUФСSPХQ€њљ[Ьљ]HH€Ш]YЫЬћHHSPQСWРРUQУФ–WФХUTЛ€ћ“[Э™HHИ™Y™™XЭH—СQ‘‘PХСQ—ХTМHK€љYЫ›Ь™\Ф›ЭXЭH•QK€љYЫ›Ь™\ФЭXњЭ]]HH•QK€›XYЪXРЫШ]Y™™XЭYH•QK€ЫЫќ\ЭY™™XЭHУУ•TХСQ‘‘PХР‘UT—ХТS—РUQQSђСWСVТUQ€ЫЫќ\ЭШ]YЫЬћHHУУ•TХРРUQУФ–WРХUK€ЫЫќ\ЭЫЫX›ФЭ\ќ\’YHУУP“ЧФХT•T—ФVWУ’PСK€ЫЫќ\ЭЫЫX›У[Э™\ИHМK€]P[љ[TШЬљ\HР]P[љ[S[Э™WФ^SљXЩK€K‚€УSХ‘WРУУ‘’QWHB€В€›[YHHУУTХS‘ФХ’S‘КђЫЫ™љYHЉK€™\ШЬљ\[Ы€HУУTХS‘ФХ’S‘К€”Ъ\™\ИHЩXЬ™]Ъ]W€‚€™›ЩKЭЩ\љ[™ИЬ€]Л€ЉK€™Y™™XЭHQ‘‘PХФФPТPSРUPТЧСХУ‹€њЭЩ\€H€ќ\HHTWУ“Ф“PS€XШЭ\XЮHH€њHЊ€ќ\™Щ]HT‘СUФСSPХQ€њљ[Ьљ]HH€Ш]YЫЬћHHSPQСWРРUQУФ–WФХUTЛ€ћ“[Э™HHИ™Y™™XЭH—СQ‘‘PХФФQ—ХTМHK€љYЫ›Ь™\Ф›ЭXЭH•QK€›XYЪXРЫШ]Y™™XЭYH•QK€љYЫ›Ь™\ФЭXњЭ]]HH—ХTUQУSХ‘WС“QФИЏHСS—Н‹€њЫЭ[™[Э™HH•QK€ЫЫќ\ЭY™™XЭHУУ•TХСQ‘‘PХХУФ”СS—РУУ‘USУ—УС—Ф‘U—УSУ”Л€ЫЫќ\ЭШ]YЫЬћHHУУ•TХРРUQУФ–WРХUK€ЫЫќ\ЭЫЫX›ФЭ\ќ\’YH€ЫЫќ\ЭЫЫX›У[Э™\ИHМK€]P[љ[TШЬљ\HР]P[љ[S[Э™WРЫЫ™љYK€K‚€УSХ‘WСPSSУ‘ФХФ“WHB€В€›[YHHУУTХS‘ФХ’S‘К‘X[[Ы™ЭЬ›HЉK€™\ШЬљ\[Ы€HУУTХS‘ФХ’S‘К€•Ъ\И\HЭЬ›HЩ—€‚€™X[[Ы™Л€X^H\Y™[њЩK€ЉK€™Y™™XЭHQ‘‘PХТU€њЭЩ\€HL€ќ\HHTWФ“РТЛ€XШЭ\XЮHHMK€њHK€ќ\™Щ]HT‘СUР“Х€њљ[Ьљ]HH€Ш]YЫЬћHHSPQСWРРUQУФ–WФTТPРS€›Y]›Ы›ЫYP[›™YH•QK€Y][Ы[Y™™XЭИHQUSУђSСQ‘‘PХКВ€›[Э™QY™™XЭH—ХTUQУSХ‘WСUHЏHСS—НИИSХ‘WСQ‘‘PХСQ—ФTЧМЋ€SХ‘WСQ‘‘PХСQ—ФTЧМK€њЩ[€H•QK€Ъ[ЩHHL€JK€ЫЫќ\ЭY™™XЭHУУ•TХСQ‘‘PХХTСT—УSФ‘WСPTТSWФХT•QЛРУУ•TХСQ‘‘PХСVТUTЧРUQQSђСWУSФ‘WТQ—УTХ€ЫЫќ\ЭШ]YЫЬћHHУУ•TХРРUQУФ–WР‘PUUK€ЫЫќ\ЭЫЫX›ФЭ\ќ\’YH€ЫЫќ\ЭЫЫX›У[Э™\ИHМK€]P[љ[TШЬљ\HР]P[љ[S[Э™WСX[[Ы™ЭЬ›K€K‚€УSХ‘WФХPSWСT•TSУ—HB€В€›[YHHУУTХS‘ФХ’S‘К”ЭX[H\ќ\[Ы€ЉK€™\ШЬљ\[Ы€HУУTХS‘ФХ’S‘К€’[[Y\њЩ\ИH›ЩH[€X]Y€‚€њЭX[K€X^H[™›XЭHќ\›‹€ЉK€™Y™™XЭHQ‘‘PХТU€њЭЩ\€HLL€ќ\HHTWХРUT‹€XШЭ\XЮHHMK€њHK€ќ\™Щ]HT‘СUФСSPХQ€њљ[Ьљ]HH€Ш]YЫЬћHHSPQСWРРUQУФ–WФФPТPS€ќ]ЬХ\Щ\€H•QK€›Y]›Ы›ЫYP[›™YH•QK€Y][Ы[Y™™XЭИHQUSУђSСQ‘‘PХКВ€›[Э™QY™™XЭHSХ‘WСQ‘‘PХР•T“‹€Ъ[ЩHHМ€JK€ЫЫќ\ЭY™™XЭHУУ•TХСQ‘‘PХТQТWРTPSS‘ЛЛРУУ•TХСQ‘‘PХСVТUTЧРUQQSђСWУSФ‘WТQ—УTХ€ЫЫќ\ЭШ]YЫЬћHHУУ•TХРРUQУФ–WР‘PUUK€ЫЫќ\ЭЫЫX›ФЭ\ќ\’YH€ЫЫќ\ЭЫЫX›У[Э™\ИHРУУP“ЧФХT•T—ФРРSK€]P[љ[TШЬљ\HР]P[љ[S[Э™WФЭX[Q\ќ\[Ы‹€K‚€УSХ‘WТTT”ФPСWТУWHB€В€›[YHHУУTХS‘ФХ’S‘К’\\њЬXЩHЫHЉK€™\ШЬљ\[Ы€HТ\\њЬXЩRЫQ\ШЬљ\[Ы‹€™Y™™XЭHQ‘‘PХТU€њЭЩ\€H€ќ\HHTWФЦPТPЛ€XШЭ\XЮHH€њHK€ќ\™Щ]HT‘СUФСSPХQ€њљ[Ьљ]HH€Ш]YЫЬћHHSPQСWРРUQУФ–WФФPТPS€љYЫ›Ь™\Ф›ЭXЭH•QK€љYЫ›Ь™\ФЭXњЭ]]HH•QK€›Y]›Ы›ЫYP[›™YH•QK€Y][Ы[Y™™XЭИHQUSУђSСQ‘‘PХКВ€›[Э™QY™™XЭHSХ‘WСQ‘‘PХС‘RS•€JK€ЫЫќ\ЭY™™XЭHУУ•TХСQ‘‘PХСУ•СVТUWРUQQSђСKЛРУУ•TХСQ‘‘PХСVТUTЧРUQQSђСWУSФ‘WТQ—С’T”Х€ЫЫќ\ЭШ]YЫЬћHHУУ•TХРРUQУФ–WФУPT•€ЫЫќ\ЭЫЫX›ФЭ\ќ\’YHУУP“ЧФХT•T—ТTT”ФPСWТУK€ЫЫќ\ЭЫЫX›У[Э™\ИHРУУP“ЧФХT•T—ТTT”ФPСWС•T–_K€]P[љ[TШЬљ\HР]P[љ[S[Э™WТ\\њЬXЩRЫK€K‚€УSХ‘WХРUT—ФТT’RСS—HB€В€›[YHHУУTХS‘ФХ’S‘К•Ш]\€Ъ\љZЩ[€ЉK€™\ШЬљ\[Ы€HУУTХS‘ФХ’S‘К€•›ЭЬИ€ИHЪ\њЭ\њЧ€‚€ќ]ЭљZЩHљ\њЭ€ЉK€™Y™™XЭHQ‘‘PХФФPТQTЧФХСT—УХ‘T”’QK€њЭЩ\€HMK€ќ\HHTWХРUT‹€XШЭ\XЮHHL€њHЊ€ќ\™Щ]HT‘СUФСSPХQ€њљ[Ьљ]HHK€Ш]YЫЬћHH—ХTUQУSХ‘WСUHЏHСS—НИИSPQСWРРUQУФ–WФФPТPS€SPQСWРРUQУФ–WФTТPРS€\™Э[Y[ќHВ€њЬXЪY\ФЭЩ\“Э™\њљYKњЬXЪY\ИHФPТQTЧСФ‘S’S’ђWРTТ€њЬXЪY\ФЭЩ\“Э™\њљYKњЭЩ\€HЊ€њЬXЪY\ФЭЩ\“Э™\њљYK›ќ[SЩ’]ИHВ€K€›][R]H•QK€њЫXЪ[™У[Э™HH•QK€ЫЫќ\ЭY™™XЭHУУ•TХСQ‘‘PХУ‘VРTPSСPT“QT‹€ЫЫќ\ЭШ]YЫЬћHHУУ•TХРРUQУФ–WРУУУ€ЫЫќ\ЭЫЫX›ФЭ\ќ\’YH€ЫЫќ\ЭЫЫX›У[Э™\ИHМK€]P[љ[TШЬљ\HР]P[љ[S[Э™WХШ]\”Ъ\љZЩ[‹€K‚€УSХ‘WУVTХPРSС’T‘WHB€В€›[YHHУУTХS‘ФХ’S‘К“^\ЭXШ[љ\™HЉK€™\ШЬљ\[Ы€HУУTХS‘ФХ’S‘К€ђњ™X]\ИHЬXЪX[Э€‚€™љ\™K€ЭЩ\њИЬ€]Л€ЉK€™Y™™XЭHQ‘‘PХТU€њЭЩ\€H—ХTUQУSХ‘WСUHЏHСS—НИИНH€ЌK€ќ\HHTWС’T‘K€XШЭ\XЮHHL€њHL€ќ\™Щ]HT‘СUФСSPХQ€њљ[Ьљ]HH€Ш]YЫЬћHHSPQСWРРUQУФ–WФФPТPS€Y][Ы[Y™™XЭИHQUSУђSСQ‘‘PХКВ€›[Э™QY™™XЭHSХ‘WСQ‘‘PХФФРUЧУRS•TЧМK€Ъ[ЩHHL€JK€ЫЫќ\ЭY™™XЭHУУ•TХСQ‘‘PХФ‘TUUSУ—У“ХР“Ф’S‘Л€ЫЫќ\ЭШ]YЫЬћHHУУ•TХРРUQУФ–WР‘PUUK€ЫЫќ\ЭЫЫX›ФЭ\ќ\’YH€ЫЫќ\ЭЫЫX›У[Э™\ИHМK€]P[љ[TШЬљ\HР]P[љ[S[Э™WУ^\ЭXШ[љ\™K€K‚€УSХ‘WФФRЦWФТQSHB€В€›[YHHУУTХS‘ФХ’S‘К”ЬZЮHЪY[ЉK€™\ШЬљ\[Ы€HУУTХS‘ФХ’S‘К€‘]Y\И]XЪЛ[™[XYЩ\Ч€‚€ќH›ЩHY€ЭќXЪЛ€ЉK€™Y™™XЭHQ‘‘PХФ“ХPХ€њЭЩ\€H€ќ\HHTWСФђTФЛ€XШЭ\XЮHH€њHL€ќ\™Щ]HT‘СUХTСT‹€њљ[Ьљ]HH€Ш]YЫЬћHHSPQСWРРUQУФ–WФХUTЛ€\™Э[Y[ќHИњ›ЭXЭY]ЩH“ХPХФФRЦWФТQSK€ћ“[Э™HHИ™Y™™XЭH—СQ‘‘PХСQ—ХTМHK€љYЫ›Ь™\Ф›ЭXЭH•QK€›Z\њ›Ь“[Э™P[›™YH•QK€›Y]›Ы›ЫYP[›™YH•QK€ЫЬXШ][›™YH•QK€\ЬЪ\Э[›™YH•QK€ЫЫќ\ЭY™™XЭHУУ•TХСQ‘‘PХРU“ТQФХT•K€ЫЫќ\ЭШ]YЫЬћHHУУ•TХРРUQУФ–WХХQТ€ЫЫќ\ЭЫЫX›ФЭ\ќ\’YH€ЫЫќ\ЭЫЫX›У[Э™\ИHМK€]P[љ[TШЬљ\HР]P[љ[S[Э™WФЬZЮTЪY[€K‚€УSХ‘WРT“УPUPЧУRTХHB€В€›[YHHУУTХS‘ФХ’S‘Кђ\›ЫX]XИZ\ЭЉK€™\ШЬљ\[Ы€HУУTХS‘ФХ’S‘К€”Z\Щ\ИHЬ€Y€Щ€W€‚€њ\ќ™\€Ърк[[Ы‹€ЉK€™Y™™XЭHQ‘‘PХРT“УPUPЧУRTХ€њЭЩ\€H€ќ\HHTWСђRT–K€XШЭ\XЮHH€њHЊ€ќ\™Щ]HT‘СUРSK€њљ[Ьљ]HH€Ш]YЫЬћHHSPQСWРРUQУФ–WФХUTЛ€ћ“[Э™HHИ™Y™™XЭH—СQ‘‘PХФФQ—ХTМ€K€љYЫ›Ь™\Ф›ЭXЭH•QK€љYЫ›Ь™\ФЭXњЭ]]HH•QK€›Z\њ›Ь“[Э™P[›™YH•QK€ЫЫќ\ЭY™™XЭHУУ•TХСQ‘‘PХТST“Х‘WРУУ‘USУ—Ф‘U‘S•У‘T•“ХTУ‘TФЛ€ЫЫќ\ЭШ]YЫЬћHHУУ•TХРРUQУФ–WР‘PUUQ•S€ЫЫќ\ЭЫЫX›ФЭ\ќ\’YH€ЫЫќ\ЭЫЫX›У[Э™\ИHМK€]P[љ[TШЬљ\HР]P[љ[S[Э™WР\›ЫX]XУZ\Э€K‚€УSХ‘WСQT’QWТSTSСWHB€В€›[YHHУУTХS‘ФХ’S‘К‘Y\љYH[\[ЩHЉK€™\ШЬљ\[Ы€HУУTХS‘ФХ’S‘К€‘^ЬЩ\ИH›ЩHИH[ЩW€‚€ќ]Ъ\њHЭ]ИЬ€]Л€ЉK€™Y™™XЭHQ‘‘PХФФPТPSРUPТЧСХУ—М‹€њЭЩ\€H€ќ\HHTWСSPХ’PЛ€XШЭ\XЮHHL€њHMK€ќ\™Щ]HT‘СUФСSPХQ€њљ[Ьљ]HH€Ш]YЫЬћHHSPQСWРРUQУФ–WФХUTЛ€ћ“[Э™HHИ™Y™™XЭH—СQ‘‘PХФФQ—ХTМHK€›XYЪXРЫШ]Y™™XЭYH•QK€ЫЫќ\ЭY™™XЭHУУ•TХСQ‘‘PХРђQWФХT•WС”“У•УSУ‹€ЫЫќ\ЭШ]YЫЬћHHУУ•TХРРUQУФ–WФУPT•€ЫЫќ\ЭЫЫX›ФЭ\ќ\’YH€ЫЫќ\ЭЫЫX›У[Э™\ИHМK€]P[љ[TШЬљ\HР]P[љ[S[Э™WСY\љYR[\[ЩK€K‚€УSХ‘WХ‘S“УWС‘SђТHB€В€›[YHHУУTХS‘ФХ’S‘К•™[›ЫH™[ЪЉK€™\ШЬљ\[Ы€HУУTХS‘ФХ’S‘К€“ЭЩ\њИH]XЪЛЬ€]Ч€‚€[™ЬYYЩ€Ъ\ЫЫ™Y›Щ\Л€ЉK€™Y™™XЭHQ‘‘PХХ‘S“УWС‘SђТ€њЭЩ\€H€ќ\HHTWФТTУУ‹€XШЭ\XЮHHL€њHЊ€ќ\™Щ]HT‘СUР“Х€њљ[Ьљ]HH€Ш]YЫЬћHHSPQСWРРUQУФ–WФХUTЛ€ћ“[Э™HHИ™Y™™XЭH—СQ‘‘PХСQ—ХTМHK€›XYЪXРЫШ]Y™™XЭYH•QK€ЫЫќ\ЭY™™XЭHУУ•TХСQ‘‘PХХУФ”СS—РУУ‘USУ—УС—Ф‘U—УSУ”Л€ЫЫќ\ЭШ]YЫЬћHHУУ•TХРРUQУФ–WФУPT•€ЫЫќ\ЭЫЫX›ФЭ\ќ\’YH€ЫЫќ\ЭЫЫX›У[Э™\ИHРУУP“ЧФХT•T—ХЦPЛУУP“ЧФХT•T—ФТTУУ—СРTЛУУP“ЧФХT•T—ФТTУУ—ФХСT‹УУP“ЧФХT•T—ХЦPЧФФRСTЯK€]P[љ[TШЬљ\HР]P[љ[S[Э™WХ™[›ЫQ™[Ъ€K‚€УSХ‘WФХСT—HB€В€›[YHHУУTХS‘ФХ’S‘К”ЭЩ\€ЉK€™\ШЬљ\[Ы€HУУTХS‘ФХ’S‘К€‘[XYЩ\ИH›ЩHY€]\Щ\Ч€‚€Hљ\™K]\H[Э™K€ЉK€™Y™™XЭHQ‘‘PХФХСT‹€њЭЩ\€H€ќ\HHTWР•QЛ€XШЭ\XЮHHL€њHЊ€ќ\™Щ]HT‘СUФСSPХQ€њљ[Ьљ]HHK€Ш]YЫЬћHHSPQСWРРUQУФ–WФХUTЛ€ћ“[Э™HHИ™Y™™XЭH—СQ‘‘PХФФQ—ХTМ€K€њЭЩ\“[Э™HH•QK€›XYЪXРЫШ]Y™™XЭYH•QK€ЫЫќ\ЭY™™XЭHУУ•TХСQ‘‘PХСУ•СVТUWРUQQSђСKЛРУУ•TХСQ‘‘PХФURPТУWСФ“ХЧР“Ф‘Q€ЫЫќ\ЭШ]YЫЬћHHУУ•TХРРUQУФ–WФУPT•€ЫЫќ\ЭЫЫX›ФЭ\ќ\’YH€ЫЫќ\ЭЫЫX›У[Э™\ИHМK€]P[љ[TШЬљ\HР]P[љ[S[Э™WФЭЩ\‹€K‚€УSХ‘WССSУPSђЦWHB€В€›[YHHУУTХS‘ФХ’S‘К‘Щ[ЫX[ЮHЉK€™\ШЬљ\[Ы€HУУTХS‘ФХ’S‘К€”Z\Щ\ИЬ€]ЛЬ€Y€[™€‚€”ЬYYЫ€H›™\›‹€ЉK€™Y™™XЭHQ‘‘PХССSУPSђЦK€њЭЩ\€H€ќ\HHTWСђRT–K€XШЭ\XЮHH€њHL€ќ\™Щ]HT‘СUХTСT‹€њљ[Ьљ]HH€Ш]YЫЬћHHSPQСWРРUQУФ–WФХUTЛ€ћ“[Э™HHИ™Y™™XЭH—СQ‘‘PХРSФХUЧХTМHK€њЫY\[Р[›™YH•QK€љ[њЭќXЭ[›™YH•QK€њЪЮP]P[›™YH•QK€\™Э[Y[ќќЫХ\›ђ]XЪИHИњЭљ[™ТYHХ’S‘ТQФУ“PP”УФђ’S‘ФХСT€K€ЫЫќ\ЭY™™XЭHУУ•TХСQ‘‘PХТST“Х‘WРУУ‘USУ—Ф‘U‘S•У‘T•“ХTУ‘TФЛ€ЫЫќ\ЭШ]YЫЬћHHУУ•TХРРUQУФ–WР‘PUUQ•S€ЫЫќ\ЭЫЫX›ФЭ\ќ\’YH€ЫЫќ\ЭЫЫX›У[Э™\ИHМK€]P[љ[TШЬљ\HР]P[љ[S[Э™WСЩ[ЫX[ЮK€K‚€УSХ‘WУPQУ‘UPЧС“VHB€В€›[YHHУУTХS‘ФХ’S‘К“XYЫ™]XИ›^ЉK€™\ШЬљ\[Ы€HУУTХS‘ФХ’S‘К€ђ›ЫЬЭИHY™[њЩ\ИЩ—€‚€ќЬЩHЪ]\ИЬ€Z[ќ\Л€ЉK€™Y™™XЭHQ‘‘PХУPQУ‘UPЧС“V€њЭЩ\€H€ќ\HHTWСSPХ’PЛ€XШЭ\XЮHH€њHЊ€ќ\™Щ]HT‘СUХTСT‹€њљ[Ьљ]HH€Ш]YЫЬћHHSPQСWРРUQУФ–WФХUTЛ€ћ“[Э™HHИ™Y™™XЭH—СQ‘‘PХФФQ—ХTМHK€њЫ]ЪY™™XЭYH•QK€љYЫ›Ь™\Ф›ЭXЭH•QK€љYЫ›Ь™\ФЭXњЭ]]HH•QK€›Z\њ›Ь“[Э™P[›™YH•QK€ЫЫќ\ЭY™™XЭHУУ•TХСQ‘‘PХТST“Х‘WРУУ‘USУ—Ф‘U‘S•У‘T•“ХTУ‘TФЛ€ЫЫќ\ЭШ]YЫЬћHHУУ•TХРРUQУФ–WФУPT•€ЫЫќ\ЭЫЫX›ФЭ\ќ\’YH€ЫЫќ\ЭЫЫX›У[Э™\ИHМK€]P[љ[TШЬљ\HР]P[љ[S[Э™WУXYЫ™]XС›^€K‚€УSХ‘WТTWТХT—HB€В€›[YHHУУTХS‘ФХ’S‘К’\HЭ\€ЉK€™\ШЬљ\[Ы€HУУTХS‘ФХ’S‘К€‘ЭX›\ИH[[Э[ќЩ—€‚€”љ^™H[Ы™^H™XЩZ]™Y€ЉK€™Y™™XЭHQ‘‘PХТTWТХT‹€њЭЩ\€H€ќ\HHTWУ“Ф“PS€XШЭ\XЮHH€њHМ€ќ\™Щ]HT‘СUХTСT‹€њљ[Ьљ]HH€Ш]YЫЬћHHSPQСWРРUQУФ–WФХUTЛ€ћ“[Э™HHИ™Y™™XЭH—СQ‘‘PХРSФХUЧХTМHK€љYЫ›Ь™\Ф›ЭXЭH•QK€›Z\њ›Ь“[Э™P[›™YH•QK€ЫЫќ\ЭY™™XЭHУУ•TХСQ‘‘PХСVТUWРUQQSђСWТS—РS–WРУУ•TХ€ЫЫќ\ЭШ]YЫЬћHHУУ•TХРРUQУФ–WРХUK€ЫЫќ\ЭЫЫX›ФЭ\ќ\’YHУУP“ЧФХT•T—ТTWТХT‹€ЫЫќ\ЭЫЫX›У[Э™\ИHМK€]P[љ[TШЬљ\HР]P[љ[S[Э™WТ\RЭ\‹€K‚€УSХ‘WСSPХ’PЧХT”ђRS—HB€В€›[YHHУУTХS‘ФХ’S‘К‘[XЭљXИ\њZ[€ЉK€™\ШЬљ\[Ы€HУУTХS‘ФХ’S‘К€‘[XЭљYљY\ИHЬ›Э[™›Ь—€‚€ЌH\›њЛ€™]™[ќИЫY\€ЉK€™Y™™XЭHQ‘‘PХСSPХ’PЧХT”ђRS‹€њЭЩ\€H€ќ\HHTWСSPХ’PЛ€XШЭ\XЮHH€њHL€ќ\™Щ]HT‘СUС’QS€њљ[Ьљ]HH€Ш]YЫЬћHHSPQСWРРUQУФ–WФХUTЛ€ћ“[Э™HHИ™Y™™XЭH—СQ‘‘PХФФХTМHK€љYЫ›Ь™\Ф›ЭXЭH•QK€›Z\њ›Ь“[Э™P[›™YH•QK€њЪЮP]P[›™YH•QK€ЫЫќ\ЭY™™XЭHУУ•TХСQ‘‘PХР‘UT—ХТS—РUQQSђСWСVТUQЛРУУ•TХСQ‘‘PХСVТUTЧРUQQSђСWУSФ‘WТQ—С’T”Х€ЫЫќ\ЭШ]YЫЬћHHУУ•TХРРUQУФ–WФУPT•€ЫЫќ\ЭЫЫX›ФЭ\ќ\’YHУУP“ЧФХT•T—СSPХ’PЧХT”ђRS‹€ЫЫќ\ЭЫЫX›У[Э™\ИHМK€]P[љ[TШЬљ\HР]P[љ[S[Э™WС[XЭљXХ\њZ[‹€K‚€УSХ‘WСV–“S‘ЧСУPSWHB€В€›[YHHУУTХS‘ФХ’S‘К‘^ћ›[™ИЫX[HЉK€™\ШЬљ\[Ы€HУУTХS‘ФХ’S‘К€‘[XYЩ\И›Щ\ИћH[Z][™Ч€‚€HњљYЪ›\Ъ€ЉK€™Y™™XЭHQ‘‘PХТU€њЭЩ\€H€ќ\HHTWСђRT–K€XШЭ\XЮHHL€њHL€ќ\™Щ]HT‘СUР“Х€њљ[Ьљ]HH€Ш]YЫЬћHHSPQСWРРUQУФ–WФФPТPS€ЫЫќ\ЭY™™XЭHУУ•TХСQ‘‘PХТQТWРTPSS‘Л€ЫЫќ\ЭШ]YЫЬћHHУУ•TХРРUQУФ–WР‘PUUK€ЫЫќ\ЭЫЫX›ФЭ\ќ\’YH€ЫЫќ\ЭЫЫX›У[Э™\ИHМK€]P[љ[TШЬљ\HР]P[љ[S[Э™WС^ћ›[™СЫX[K€K‚€УSХ‘WРСSP”ђUWHB€В€›[YHHУУTХS‘ФХ’S‘КђЩ[Xњ]HЉK€™\ШЬљ\[Ы€HУУTХS‘ФХ’S‘К€ђЫЫ™Ь][]\И[ЭHЫ€[Э\—€‚€њЬXЪX[^K€ЉK€™Y™™XЭHQ‘‘PХРСSP”ђUK€њЭЩ\€H€ќ\HHTWУ“Ф“PS€XШЭ\XЮHH€њH€ќ\™Щ]HT‘СUХTСT‹€њљ[Ьљ]HH€Ш]YЫЬћHHSPQСWРРUQУФ–WФХUTЛ€ћ“[Э™HHИ™Y™™XЭH—СQ‘‘PХРSФХUЧХTМHK€љYЫ›Ь™\Ф›ЭXЭH•QK€›Z\њ›Ь“[Э™P[›™YH•QK€›Y]›Ы›ЫYP[›™YH•QK€›Z[ZXР[›™YH•QK€ЫЬXШ][›™YH•QK€њЫY\[Р[›™YH•QK€љ[њЭќXЭ[›™YH•QK€\ЬЪ\Э[›™YH•QK€ЫЫќ\ЭY™™XЭHУУ•TХСQ‘‘PХСVТUWРUQQSђСWТS—РS–WРУУ•TХ€ЫЫќ\ЭШ]YЫЬћHHУУ•TХРРUQУФ–WРХUK€ЫЫќ\ЭЫЫX›ФЭ\ќ\’YHУУP“ЧФХT•T—РСSP”ђUK€ЫЫќ\ЭЫЫX›У[Э™\ИHМK€]P[љ[TШЬљ\HР]P[љ[S[Э™WРЩ[Xњ]K€K‚€УSХ‘WТУТS‘ЧHB€В€›[YHHУУTХS‘ФХ’S‘К’Ы[™ИЉK€™\ШЬљ\[Ы€HУУTХS‘ФХ’S‘К€•H\Щ\€[™[HЫ[™Ч€‚€›XZЪ[™И[H\K€ЉK€™Y™™XЭHQ‘‘PХТУТS‘Л€њЭЩ\€H€ќ\HHTWУ“Ф“PS€XШЭ\XЮHH€њH€ќ\™Щ]HT‘СUРSK€њљ[Ьљ]HH€Ш]YЫЬћHHSPQСWРРUQУФ–WФХUTЛ€ћ“[Э™HHИ™Y™™XЭH—СQ‘‘PХРSФХUЧХTМHK€љYЫ›Ь™\Ф›ЭXЭH•QK€љYЫ›Ь™\ФЭXњЭ]]HH•QK€›Y]›Ы›ЫYP[›™YH•QK€›Z[ZXР[›™YH•QK€ЫЬXШ][›™YH•QK€њЫY\[Р[›™YH•QK€љ[њЭќXЭ[›™YH•QK€\ЬЪ\Э[›™YH•QK€ЫЫќ\ЭY™™XЭHУУ•TХСQ‘‘PХРU“ТQФХT•K€ЫЫќ\ЭШ]YЫЬћHHУУ•TХРРUQУФ–WРХUK€ЫЫќ\ЭЫЫX›ФЭ\ќ\’YH€ЫЫќ\ЭЫЫX›У[Э™\ИHМK€]P[љ[TШЬљ\HР]P[љ[S[Э™WТЫ[™Л€K‚€УSХ‘WРђP–WСУСVQTЧHB€В€›[YHHУУTХS‘ФХ’S‘КђXћKQЫ^Y\ИЉK€™\ШЬљ\[Ы€HУУTХS‘ФХ’S‘К€“ЭЩ\њИH›ЩIЬИ]XЪЧ€‚€™Y›Ь™H]Ш[€[Э™K€ЉK€™Y™™XЭHQ‘‘PХРUPТЧСХУ‹€њЭЩ\€H€ќ\HHTWСђRT–K€XШЭ\XЮHHL€њHМ€ќ\™Щ]HT‘СUФСSPХQ€њљ[Ьљ]HHK€Ш]YЫЬћHHSPQСWРРUQУФ–WФХUTЛ€ћ“[Э™HHИ™Y™™XЭH—СQ‘‘PХСQ—ХTМHK€›XYЪXРЫШ]Y™™XЭYH•QK€ЫЫќ\ЭY™™XЭHУУ•TХСQ‘‘PХУ‘VРTPSСPT“QT‹€ЫЫќ\ЭШ]YЫЬћHHУУ•TХРРUQУФ–WРХUK€ЫЫќ\ЭЫЫX›ФЭ\ќ\’YH€ЫЫќ\ЭЫЫX›У[Э™\ИHМK€]P[љ[TШЬљ\HР]P[љ[S[Э™WРXћQЫ^Y\Л€K‚€УSХ‘WУ•V–“WHB€В€›[YHHУУTХS‘ФХ’S‘К“ќ^ћ›HЉK€™\ШЬљ\[Ы€HУУTХS‘ФХ’S‘К€”ќXњИ]ИЪYZЬИYШZ[њЭ€‚€ќH›ЩK\[^љ[™И]€ЉK€™Y™™XЭHQ‘‘PХТU€њЭЩ\€HЊ€ќ\HHTWСSPХ’PЛ€XШЭ\XЮHHL€њHЊ€ќ\™Щ]HT‘СUФСSPХQ€њљ[Ьљ]HH€Ш]YЫЬћHHSPQСWРРUQУФ–WФTТPРS€›XZЩ\РЫЫќXЭH•QK€Y][Ы[Y™™XЭИHQUSУђSСQ‘‘PХКВ€›[Э™QY™™XЭHSХ‘WСQ‘‘PХФTђSTТTЛ€Ъ[ЩHHL€JK€ЫЫќ\ЭY™™XЭHУУ•TХСQ‘‘PХФХT•WУSУ”ЧФРSQWХTWРTPS€ЫЫќ\ЭШ]YЫЬћHHУУ•TХРРUQУФ–WРХUK€ЫЫќ\ЭЫЫX›ФЭ\ќ\’YH€ЫЫќ\ЭЫЫX›У[Э™\ИHРУУP“ЧФХT•T—РТT‘С_K€]P[љ[TШЬљ\HР]P[љ[S[Э™WУќ^ћ›K€K‚€УSХ‘WТУРђPТЧHB€В€›[YHHУУTХS‘ФХ’S‘К’ЫXЪИЉK€™\ШЬљ\[Ы€HС[ЩTЭЪ\Q\ШЬљ\[Ы‹€™Y™™XЭHQ‘‘PХСђSСWФХТTK€њЭЩ\€H€ќ\HHTWУ“Ф“PS€XШЭ\XЮHHL€њH€ќ\™Щ]HT‘СUФСSPХQ€њљ[Ьљ]HH€Ш]YЫЬћHHSPQСWРРUQУФ–WФTТPРS€›XZЩ\РЫЫќXЭH•QK€ЫЫќ\ЭY™™XЭHУУ•TХСQ‘‘PХРђQWФХT•WФ‘U—УSУ”ЛЛРУУ•TХСQ‘‘PХФURPТУWСФ“ХЧР“Ф‘Q€ЫЫќ\ЭШ]YЫЬћHHУУ•TХРРUQУФ–WРУУУ€ЫЫќ\ЭЫЫX›ФЭ\ќ\’YH€ЫЫќ\ЭЫЫX›У[Э™\ИHМK€]P[љ[TШЬљ\HР]P[љ[S[Э™WТЫXЪЛ€K‚€УSХ‘WТS‘‘TХUSУ—HB€В€›[YHHУУTХS‘ФХ’S‘К’[™™\Э][Ы€ЉK€™\ШЬљ\[Ы€HУУTХS‘ФХ’S‘К€•H›ЩH\И[™™\ЭY[™€‚€]XЪЩY›Ь€ђ’S‘S‘ЧХT“”И€\›њЛ€ЉK€™Y™™XЭHQ‘‘PХТU€њЭЩ\€HЊ€ќ\HHTWР•QЛ€XШЭ\XЮHHL€њHЊ€ќ\™Щ]HT‘СUФСSPХQ€њљ[Ьљ]HH€Ш]YЫЬћHHSPQСWРРUQУФ–WФФPТPS€›XZЩ\РЫЫќXЭH•QK€Y][Ы[Y™™XЭИHQUSУђSСQ‘‘PХКВ€›[Э™QY™™XЭHSХ‘WСQ‘‘PХХФђT€›][\Эљ[™ЛќЬ\YH—УTСЧХФђTQТS‘‘TХUSУ‹€JK€ЫЫќ\ЭY™™XЭHУУ•TХСQ‘‘PХСУ•СVТUWРUQQSђСK€ЫЫќ\ЭШ]YЫЬћHHУУ•TХРРUQУФ–WРХUK€ЫЫќ\ЭЫЫX›ФЭ\ќ\’YH€ЫЫќ\ЭЫЫX›У[Э™\ИHМK€]P[љ[TШЬљ\HР]P[љ[S[Э™WТ[™™\Э][Ы‹€K‚€УSХ‘WФХСT—ХTФSђТHB€В€›[YHHУУTХS‘ФХ’S‘К”ЭЩ\‹U\[ЪЉK€™\ШЬљ\[Ы€HУУTХS‘ФХ’S‘К€ђH\™[Ъ]Z\Щ\Ч€‚€ќH\Щ\‰ЬИ]XЪЛ€ЉK€™Y™™XЭHQ‘‘PХТU€њЭЩ\€H€ќ\HHTWС’QТS‘Л€XШЭ\XЮHHL€њHЊ€ќ\™Щ]HT‘СUФСSPХQ€њљ[Ьљ]HH€Ш]YЫЬћHHSPQСWРРUQУФ–WФTТPРS€›XZЩ\РЫЫќXЭH•QK€њ[Ъ[™У[Э™HH•QK€Y][Ы[Y™™XЭИHQUSУђSСQ‘‘PХКВ€›[Э™QY™™XЭHSХ‘WСQ‘‘PХРUЧФTЧМK€њЩ[€H•QK€Ъ[ЩHHL€JK€ЫЫќ\ЭY™™XЭHУУ•TХСQ‘‘PХР‘UT—ХТUСУУСРУУ‘USУ‹€ЫЫќ\ЭШ]YЫЬћHHУУ•TХРРUQУФ–WХХQТ€ЫЫќ\ЭЫЫX›ФЭ\ќ\’YH€ЫЫќ\ЭЫЫX›У[Э™\ИHМK€]P[љ[TШЬљ\HР]P[љ[S[Э™WФЭЩ\•\[Ъ€K‚€УSХ‘WУР“U’SУ—ХТS‘ЧHB€В€›[YHHУУTХS‘ФХ’S‘К“Ш›]љ[Ы€Ъ[™ИЉK€™\ШЬљ\[Ы€HСZ[љ[™ТЪ\ЬС\ШЬљ\[Ы‹€™Y™™XЭHQ‘‘PХРP”УФђ‹€њЭЩ\€H€ќ\HHTWС“RS‘Л€XШЭ\XЮHHL€њHL€ќ\™Щ]HT‘СUФСSPХQ€њљ[Ьљ]HH€Ш]YЫЬћHHSPQСWРРUQУФ–WФФPТPS€\™Э[Y[ќHИXњЫЬ”\Щ[ќYЩHHНHK€љX[[™У[Э™HH—ТPSР“РТТS‘ИЏHСS—Н‹€ЫЫќ\ЭY™™XЭHУУ•TХСQ‘‘PХРTPSРTЧСУУСРTЧФ‘U—УУ‘TЛ€ЫЫќ\ЭШ]YЫЬћHHУУ•TХРРUQУФ–WРУУУ€ЫЫќ\ЭЫЫX›ФЭ\ќ\’YH€ЫЫќ\ЭЫЫX›У[Э™\ИHМK€]P[љ[TШЬљ\HР]P[љ[S[Э™WУШ›]љ[Ы•Ъ[™Л€K‚€УSХ‘WХХTРS‘РT”“ХФЧHB€В€›[YHHУУTХS‘ФХ’S‘К•Э\Ш[™\њ›ЭЬИЉK€™\ШЬљ\[Ы€HУУTХS‘ФХ’S‘К€ђШ[€]›Z[™И›Щ\Л[—€‚€љЫ›ШЪЬИ[HИHЬ›Э[™€ЉK€™Y™™XЭHQ‘‘PХФУPPТЧСХУ‹€њЭЩ\€HL€ќ\HHTWСФ“ХS‘€XШЭ\XЮHHL€њHL€ќ\™Щ]HT‘СUР“Х€њљ[Ьљ]HH€Ш]YЫЬћHHSPQСWРРUQУФ–WФTТPРS€™[XYЩ\РZ\›Ь›™HH•QK€љYЫ›Ь™U\RY‘›Z[™Р[™[™Ь›Э[™YH•QK€›Y]›Ы›ЫYP[›™YH•QK€њЪЮP]P[›™YH•QK€ЫЫќ\ЭY™™XЭHУУ•TХСQ‘‘PХФХT•WУSУ”ЧФРSQWХTWРTPS€ЫЫќ\ЭШ]YЫЬћHHУУ•TХРРUQУФ–WР‘PUUQ•S€ЫЫќ\ЭЫЫX›ФЭ\ќ\’YHУУP“ЧФХT•T—ХХTРS‘РT”“ХФЛ€ЫЫќ\ЭЫЫX›У[Э™\ИHРУУP“ЧФХT•T—ХХTРS‘ХРU‘TЯK€]P[љ[TШЬљ\HР]P[љ[S[Э™WХЭ\Ш[™\њ›ЭЬЛ€K‚€УSХ‘WХХTРS‘ХРU‘TЧHB€В€›[YHHУУTХS‘ФХ’S‘К•Э\Ш[™Ш]™\ИЉK€™\ШЬљ\[Ы€HУУTХS‘ФХ’S‘К€•ЬЩH]ћHHШ]™HШ[—€‚€››ИЫ™Щ\€\ШШ\K€ЉK€™Y™™XЭHQ‘‘PХТU€њЭЩ\€HL€ќ\HHTWСФ“ХS‘€XШЭ\XЮHHL€њHL€ќ\™Щ]HT‘СUР“Х€њљ[Ьљ]HH€Ш]YЫЬћHHSPQСWРРUQУФ–WФTТPРS€›Y]›Ы›ЫYP[›™YH•QK€њЪЮP]P[›™YH•QK€Y][Ы[Y™™XЭИHQUSУђSСQ‘‘PХКВ€›[Э™QY™™XЭHSХ‘WСQ‘‘PХФ‘U‘S•СTРРTK€JK€ЫЫќ\ЭY™™XЭHУУ•TХСQ‘‘PХХУФ”СS—РУУ‘USУ—УС—Ф‘U—УSУ”Л€ЫЫќ\ЭШ]YЫЬћHHУУ•TХРРUQУФ–WХХQТ€ЫЫќ\ЭЫЫX›ФЭ\ќ\’YHУУP“ЧФХT•T—ХХTРS‘ХРU‘TЛ€ЫЫќ\ЭЫЫX›У[Э™\ИHРУУP“ЧФХT•T—ХХTРS‘РT”“ХФЯK€]P[љ[TШЬљ\HР]P[љ[S[Э™WХЭ\Ш[™Ш]™\Л€K‚€УSХ‘WУS‘ЧХФђUHB€В€›[YHHУУTХS‘ФХ’S‘К“[™	ЬИЬ]ЉK€™\ШЬљ\[Ы€HУУTХS‘ФХ’S‘К€‘Ш]\њИH[™\™ЮHЩ€W€‚€›[™И]XЪИ]™\ћH›ЩK€ЉK€™Y™™XЭHQ‘‘PХТU€њЭЩ\€HL€ќ\HHTWСФ“ХS‘€XШЭ\XЮHHL€њHL€ќ\™Щ]HT‘СUР“Х€њљ[Ьљ]HH€Ш]YЫЬћHHSPQСWРРUQУФ–WФTТPРS€њЪЮP]P[›™YH•QK€ЫЫќ\ЭY™™XЭHУУ•TХСQ‘‘PХФХT•WФ‘U—УSУ”Л€ЫЫќ\ЭШ]YЫЬћHHУУ•TХРРUQУФ–WР‘PUUK€ЫЫќ\ЭЫЫX›ФЭ\ќ\’YH€ЫЫќ\ЭЫЫX›У[Э™\ИHМK€]P[љ[TШЬљ\HР]P[љ[S[Э™WУ[™ХЬ]€K‚€УSХ‘WУQТУС—Ф•RS—HB€В€›[YHHУУTХS‘ФХ’S‘К“YЪЩ€ќZ[€ЉK€™\ШЬљ\[Ы€HУУTХS‘ФХ’S‘К€‘љ\™\ИHЬ™X]™X[HЩ€YЪ€‚€ќ][ЫИ\ќИH\Щ\‹€ЉK€™Y™™XЭHQ‘‘PХФ‘PУТS€њЭЩ\€HM€ќ\HHTWСђRT–K€XШЭ\XЮHHL€њHK€ќ\™Щ]HT‘СUФСSPХQ€њљ[Ьљ]HH€Ш]YЫЬћHHSPQСWРРUQУФ–WФФPТPS€\™Э[Y[ќHИњ™XЫЪ[\Щ[ќYЩHHLK€›Y]›Ы›ЫYP[›™YH•QK€ЫЫќ\ЭY™™XЭHУУ•TХСQ‘‘PХХTСT—УSФ‘WСPTТSWФХT•Q€ЫЫќ\ЭШ]YЫЬћHHУУ•TХРРUQУФ–WР‘PUUK€ЫЫќ\ЭЫЫX›ФЭ\ќ\’YH€ЫЫќ\ЭЫЫX›У[Э™\ИHМK€]P[љ[TШЬљ\HР]P[љ[S[Э™WУYЪЩ”ќZ[‹€K‚€УSХ‘WУФ’QТS—ФSСWHB€В€›[YHHУУTХS‘ФХ’S‘К“ЬљYЪ[€[ЩHЉK€™\ШЬљ\[Ы€HУУTХS‘ФХ’S‘К€ђ™X[\ИЩ€ЫЭЪ[™И›YHYЪ€‚€›\Э›Э›Щ\Л€ЉK€™Y™™XЭHQ‘‘PХТU€њЭЩ\€HLL€ќ\HHTWХРUT‹€XШЭ\XЮHHK€њHL€ќ\™Щ]HT‘СUР“Х€њљ[Ьљ]HH€Ш]YЫЬћHHSPQСWРРUQУФ–WФФPТPS€њ[ЩS[Э™HH•QK€›Y]›Ы›ЫYP[›™YH•QK€ЫЫќ\ЭY™™XЭHУУ•TХСQ‘‘PХР‘UT—ТQ—С’T”ХЛРУУ•TХСQ‘‘PХСVТUTЧРUQQSђСWУSФ‘WТQ—С’T”Х€ЫЫќ\ЭШ]YЫЬћHHУУ•TХРРUQУФ–WР‘PUUK€ЫЫќ\ЭЫЫX›ФЭ\ќ\’YH€ЫЫќ\ЭЫЫX›У[Э™\ИHМK€]P[љ[TШЬљ\HР]P[љ[S[Э™WУЬљYЪ[”[ЩK€K‚€УSХ‘WФ‘PТTPСWР“QTЧHB€В€›[YHHУУTХS‘ФХ’S‘К”™XЪ\XЩH›Y\ИЉK€™\ШЬљ\[Ы€HУУTХS‘ФХ’S‘К€‘™X\њЫЫYH›Y\ИЩ€ЭЫ™W€‚€]XЪИ›Э›Щ\Л€ЉK€™Y™™XЭHQ‘‘PХТU€њЭЩ\€HLЊ€ќ\HHTWСФ“ХS‘€XШЭ\XЮHHK€њHL€ќ\™Щ]HT‘СUР“Х€њљ[Ьљ]HH€Ш]YЫЬћHHSPQСWРРUQУФ–WФTТPРS€њЫXЪ[™У[Э™HH•QK€›Y]›Ы›ЫYP[›™YH•QK€њЪЮP]P[›™YH•QK€ЫЫќ\ЭY™™XЭHУУ•TХСQ‘‘PХР‘UT—ТQ—УTХЛРУУ•TХСQ‘‘PХСVТUTЧРUQQSђСWУSФ‘WТQ—УTХ€ЫЫќ\ЭШ]YЫЬћHHУУ•TХРРUQУФ–WРУУУ€ЫЫќ\ЭЫЫX›ФЭ\ќ\’YH€ЫЫќ\ЭЫЫX›У[Э™\ИHМK€]P[љ[TШЬљ\HР]P[љ[S[Э™WФ™XЪ\XЩP›Y\Л€K‚€УSХ‘WСђQУУ—РTРСS•HB€В€›[YHHУУTХS‘ФХ’S‘К‘YЫЫ€\ШЩ[ќЉK€™\ШЬљ\[Ы€HРЫЬЩPЫЫX]\ШЬљ\[Ы‹€™Y™™XЭHQ‘‘PХТU€њЭЩ\€HLЊ€ќ\HHTWС“RS‘Л€XШЭ\XЮHHL€њHK€ќ\™Щ]HT‘СUФСSPХQ€њљ[Ьљ]HH€Ш]YЫЬћHHSPQСWРРUQУФ–WФTТPРS€›XZЩ\РЫЫќXЭH•QK€›Y]›Ы›ЫYP[›™YH•QK€Y][Ы[Y™™XЭИHQUSУђSСQ‘‘PХКВ€›[Э™QY™™XЭHSХ‘WСQ‘‘PХСQ—ФФQ—СХУ‹€њЩ[€H•QK€JK€ЫЫќ\ЭY™™XЭHУУ•TХСQ‘‘PХХTСT—УSФ‘WСPTТSWФХT•Q€ЫЫќ\ЭШ]YЫЬћHHУУ•TХРРUQУФ–WР‘PUUK€ЫЫќ\ЭЫЫX›ФЭ\ќ\’YH€ЫЫќ\ЭЫЫX›У[Э™\ИHМK€]P[љ[TШЬљ\HР]P[љ[S[Э™WСYЫЫђ\ШЩ[ќ€K‚€УSХ‘WТTT”ФPСWС•T–WHB€В€›[YHHУУTХS‘ФХ’S‘К’\\њЬXЩHќ\ћHЉK€™\ШЬљ\[Ы€HТ\\њЬXЩRЫQ\ШЬљ\[Ы‹€™Y™™XЭHQ‘‘PХТTT”ФPСWС•T–K€њЭЩ\€HL€ќ\HHTWСT’Л€XШЭ\XЮHH€њHK€ќ\™Щ]HT‘СUФСSPХQ€њљ[Ьљ]HH€Ш]YЫЬћHHSPQСWРРUQУФ–WФTТPРS€љYЫ›Ь™\Ф›ЭXЭH•QK€љYЫ›Ь™\ФЭXњЭ]]HH•QK€›Y]›Ы›ЫYP[›™YH•QK€њЪЩ]Ъ[›™YH
+—ФТСUТРђS”ИЏHСS—ОJK€Y][Ы[Y™™XЭИHQUSУђSСQ‘‘PХКВ€›[Э™QY™™XЭHSХ‘WСQ‘‘PХС‘RS•ЛИСО€\И\ИЭ\ЬЩYИ\[€™Y›Ь™HH]XЪИ[љ[X][ЫЏВ€K€В€›[Э™QY™™XЭHSХ‘WСQ‘‘PХСQ—УRS•TЧМK€њЩ[€H•QK€JK€ЫЫќ\ЭY™™XЭHУУ•TХСQ‘‘PХТQТWРTPSS‘ЛЛРУУ•TХСQ‘‘PХСVТUTЧРUQQSђСWУSФ‘WТQ—С’T”Х€ЫЫќ\ЭШ]YЫЬћHHУУ•TХРРUQУФ–WХХQТ€ЫЫќ\ЭЫЫX›ФЭ\ќ\’YHУУP“ЧФХT•T—ТTT”ФPСWС•T–K€ЫЫќ\ЭЫЫX›У[Э™\ИHРУУP“ЧФХT•T—ТTT”ФPСWТУ_K€]P[љ[TШЬљ\HР]P[љ[S[Э™WТ\\њЬXЩQќ\ћK€K‚€УSХ‘WФТФ‘WХTHB€В€›[YHHУУTХS‘ФХ’S‘К”ЪЬ™H\ЉK€™\ШЬљ\[Ы€HУУTХS‘ФХ’S‘К€”™\ЭЬ™\ИH\Щ\‰ЬИ—€‚€“[Ь™H[€HШ[™ЭЬ›K€ЉK€™Y™™XЭHQ‘‘PХФТФ‘WХT€њЭЩ\€H€ќ\HHTWСФ“ХS‘€XШЭ\XЮHH€њH—ХTUQУSХ‘WСUHЏHСS—ОHИH€L€ќ\™Щ]HT‘СUХTСT‹€њљ[Ьљ]HH€Ш]YЫЬћHHSPQСWРРUQУФ–WФХUTЛ€ћ“[Э™HHИ™Y™™XЭH—СQ‘‘PХФ‘TСUФХUИK€љX[[™У[Э™HH•QK€њЫ]ЪY™™XЭYH•QK€љYЫ›Ь™\Ф›ЭXЭH•QK€›Z\њ›Ь“[Э™P[›™YH•QK€ЫЫќ\ЭY™™XЭHУУ•TХСQ‘‘PХФUPSUWСTS‘ЧУУ—ХSRS‘Л€ЫЫќ\ЭШ]YЫЬћHHУУ•TХРРUQУФ–WРХUK€ЫЫќ\ЭЫЫX›ФЭ\ќ\’YH€ЫЫќ\ЭЫЫX›У[Э™\ИHРУУP“ЧФХT•T—ФРS‘ХФ“_K€]P[љ[TШЬљ\HР]P[љ[S[Э™WФЪЬ™U\€K‚€УSХ‘WС’T”ХТST‘TФТSУ—HB€В€›[YHHУУTХS‘ФХ’S‘К‘љ\њЭ[\™\ЬЪ[Ы€ЉK€™\ШЬљ\[Ы€HУУTХS‘ФХ’S‘К€’]И\™[™љ\њЭ—€‚€“Ы›HЫЬљЬИљ\њЭ\›‹€ЉK€™Y™™XЭHQ‘‘PХС’T”ХХT“—УУ“K€њЭЩ\€HL€ќ\HHTWР•QЛ€XШЭ\XЮHHL€њHL€ќ\™Щ]HT‘СUФСSPХQ€њљ[Ьљ]HH‹€Ш]YЫЬћHHSPQСWРРUQУФ–WФTТPРS€\™Э[Y[ќHИ›[Э™T›Ь\ќHHSХ‘WС’T”ХТST‘TФТSУ€K€›XZЩ\РЫЫќXЭH•QK€ЫЫќ\ЭY™™XЭHУУ•TХСQ‘‘PХР‘UT—ТQ—С’T”Х€ЫЫќ\ЭШ]YЫЬћHHУУ•TХРРUQУФ–WРУУУ€ЫЫќ\ЭЫЫX›ФЭ\ќ\’YH€ЫЫќ\ЭЫЫX›У[Э™\ИHМK€]P[љ[TШЬљ\HР]P[љ[S[Э™WСљ\њЭ[\™\ЬЪ[Ы‹€K‚€УSХ‘WРђS‘Q•SР•S’СT—HB€В€›[YHHУУTХS‘ФХ’S‘Кђ[™Yќ[ќ[љЩ\€ЉK€™\ШЬљ\[Ы€HУУTХS‘ФХ’S‘К€”›ЭXЭИ\Щ\€[™Ъ\ЫЫњЧ€‚€™›Щ\ИЫ€ЫЫќXЭ€ЉK€™Y™™XЭHQ‘‘PХФ“ХPХ€њЭЩ\€H€ќ\HHTWФТTУУ‹€XШЭ\XЮHH€њHL€ќ\™Щ]HT‘СUХTСT‹€њљ[Ьљ]HH€Ш]YЫЬћHHSPQСWРРUQУФ–WФХUTЛ€\™Э[Y[ќHИњ›ЭXЭY]ЩH“ХPХРђS‘Q•SР•S’СT€K€ћ“[Э™HHИ™Y™™XЭH—СQ‘‘PХСQ—ХTМHK€љYЫ›Ь™\Ф›ЭXЭH•QK€›Z\њ›Ь“[Э™P[›™YH•QK€›Y]›Ы›ЫYP[›™YH•QK€ЫЬXШ][›™YH•QK€\ЬЪ\Э[›™YH•QK€ЫЫќ\ЭY™™XЭHУУ•TХСQ‘‘PХРU“ТQФХT•K€ЫЫќ\ЭШ]YЫЬћHHУУ•TХРРUQУФ–WХХQТ€ЫЫќ\ЭЫЫX›ФЭ\ќ\’YH€ЫЫќ\ЭЫЫX›У[Э™\ИHМK€]P[љ[TШЬљ\HР]P[љ[S[Э™WР[™Yќ[ќ[љЩ\‹€K‚€УSХ‘WФФT’UФТPТУWHB€В€›[YHHУУTХS‘ФХ’S‘К”Ь\љ]ЪXЪЫHЉK€™\ШЬљ\[Ы€HУУTХS‘ФХ’S‘К€ђYќ\€™Z[™И]›Щ\ИШ[—€‚€››ИЫ™Щ\€\ШШ\K€ЉK€™Y™™XЭHQ‘‘PХТU€њЭЩ\€H€ќ\HHTWСТФХ€XШЭ\XЮHHL€њHL€ќ\™Щ]HT‘СUФСSPХQ€њљ[Ьљ]HH€Ш]YЫЬћHHSPQСWРРUQУФ–WФTТPРS€Y][Ы[Y™™XЭИHQUSУђSСQ‘‘PХКВ€›[Э™QY™™XЭHSХ‘WСQ‘‘PХФ‘U‘S•СTРРTK€Ъ[ЩHHL€JK€ЫЫќ\ЭY™™XЭHУУ•TХСQ‘‘PХРђQWФХT•WУSУ”ЧХТUСУУСРTPSЛ€ЫЫќ\ЭШ]YЫЬћHHУУ•TХРРUQУФ–WФУPT•€ЫЫќ\ЭЫЫX›ФЭ\ќ\’YH€ЫЫќ\ЭЫЫX›У[Э™\ИHМK€]P[љ[TШЬљ\HР]P[љ[S[Э™WФЬ\љ]ЪXЪЫK€K‚€УSХ‘WСT’СTХУT’PUHB€В€›[YHHУУTХS‘ФХ’S‘К‘\љЩ\Э\љX]ЉK€™\ШЬљ\[Ы€HУУTХS‘ФХ’S‘К€”ЭЪ[™ЬИH\›\ИИЭљZЩW€‚€’]YЫ›Ь™\ИЭ]Ъ[™Щ\Л€ЉK€™Y™™XЭHQ‘‘PХТU€њЭЩ\€HK€ќ\HHTWСT’Л€XШЭ\XЮHHL€њHL€ќ\™Щ]HT‘СUФСSPХQ€њљ[Ьљ]HH€Ш]YЫЬћHHSPQСWРРUQУФ–WФTТPРS€›XZЩ\РЫЫќXЭH•QK€љYЫ›Ь™\Х\™Щ]Y™[њЩQ]\Ъ[Ы”ЭYЩ\ИH•QK€ЫЫќ\ЭY™™XЭHУУ•TХСQ‘‘PХРђQWФХT•WУSУ”ЧХТUСУУСРTPSЛ€ЫЫќ\ЭШ]YЫЬћHHУУ•TХРРUQУФ–WРУУУ€ЫЫќ\ЭЫЫX›ФЭ\ќ\’YH€ЫЫќ\ЭЫЫX›У[Э™\ИHМK€]P[љ[TШЬљ\HР]P[љ[S[Э™WС\љЩ\Э\љX]€K‚€УSХ‘WФФT’УS‘ЧРT’PWHB€В€›[YHHУУTХS‘ФХ’S‘К”Ь\љЫ[™И\љXHЉK€™\ШЬљ\[Ы€HУУTХS‘ФХ’S‘К€”Ъ[™ЬИЪ]ќX›\Л€Э\™\Ч€‚€ќ\›њИЫ€ЫЫќXЭ€ЉK€™Y™™XЭHQ‘‘PХТU€њЭЩ\€HL€ќ\HHTWХРUT‹€XШЭ\XЮHHL€њHL€ќ\™Щ]HT‘СUС“СTЧРS‘РSK€њљ[Ьљ]HH€Ш]YЫЬћHHSPQСWРРUQУФ–WФФPТPS€\™Э[Y[ќHИњЭ]\ИHХUTМWР•T“€K€љYЫ›Ь™\ФЭXњЭ]]HH—ХTUQУSХ‘WС“QФИЏHСS—Н‹€њЫЭ[™[Э™HH•QK€Y][Ы[Y™™XЭИHQUSУђSСQ‘‘PХКВ€›[Э™QY™™XЭHSХ‘WСQ‘‘PХФ‘SSХ‘WФХUTЛ€њЪY\‘›ЬЩSЭ™\њљYHH•QK€JK€ЫЫќ\ЭY™™XЭHУУ•TХСQ‘‘PХТQТWРTPSS‘Л€ЫЫќ\ЭШ]YЫЬћHHУУ•TХРРUQУФ–WР‘PUUK€ЫЫќ\ЭЫЫX›ФЭ\ќ\’YH€ЫЫќ\ЭЫЫX›У[Э™\ИHРУУP“ЧФХT•T—ФРРSK€]P[љ[TШЬљ\HР]P[љ[S[Э™WФЬ\љЫ[™Р\љXK€K‚€УSХ‘WТPСWТSSQT—HB€В€›[YHHУУTХS‘ФХ’S‘К’XЩH[[Y\€ЉK€™\ШЬљ\[Ы€HУУTХS‘ФХ’S‘К€”ЭЪ[™ЬИHљ\ЭИЭљZЩK—€‚€“ЭЩ\њИH\Щ\‰ЬИЬYY€ЉK€™Y™™XЭHQ‘‘PХТU€њЭЩ\€HL€ќ\HHTWТPСK€XШЭ\XЮHHL€њHL€ќ\™Щ]HT‘СUФСSPХQ€њљ[Ьљ]HH€Ш]YЫЬћHHSPQСWРРUQУФ–WФTТPРS€›XZЩ\РЫЫќXЭH•QK€њ[Ъ[™У[Э™HH•QK€Y][Ы[Y™™XЭИHQUSУђSСQ‘‘PХКВ€›[Э™QY™™XЭHSХ‘WСQ‘‘PХФФУRS•TЧМK€њЩ[€H•QK€JK€ЫЫќ\ЭY™™XЭHУУ•TХСQ‘‘PХХTСT—УSФ‘WСPTТSWФХT•Q€ЫЫќ\ЭШ]YЫЬћHHУУ•TХРРUQУФ–WР‘PUUK€ЫЫќ\ЭЫЫX›ФЭ\ќ\’YH€ЫЫќ\ЭЫЫX›У[Э™\ИHРУУP“ЧФХT•T—ТRSK€]P[љ[TШЬљ\HР]P[љ[S[Э™WТXЩR[[Y\‹€K‚€УSХ‘WС“ФђSТPSS‘ЧHB€В€›[YHHУУTХS‘ФХ’S‘К‘›Ь[X[[™ИЉK€™\ШЬљ\[Ы€HУУTХS‘ФХ’S‘К€”™\ЭЬ™\И[€[IЬИ—€‚€’X[И[Ь™HЫ€Ь\ЬЛ€ЉK€™Y™™XЭHQ‘‘PХТPSФSСK€њЭЩ\€H€ќ\HHTWСђRT–K€XШЭ\XЮHH€њHL€ќ\™Щ]HT‘СUФСSPХQ€њљ[Ьљ]HH€Ш]YЫЬћHHSPQСWРРUQУФ–WФХUTЛ€ћ“[Э™HHИ™Y™™XЭH—СQ‘‘PХФ‘TСUФХUИK€\™Э[Y[ќHИ›[Э™T›Ь\ќHHSХ‘WСQ‘‘PХС“ФђSТPSS‘ИK€›Z\њ›Ь“[Э™P[›™YH•QK€љX[[™У[Э™HH•QK€›XYЪXРЫШ]Y™™XЭYH•QK€ЫЫќ\ЭY™™XЭHУУ•TХСQ‘‘PХСVТUWРUQQSђСWТS—РS–WРУУ•TХ€ЫЫќ\ЭШ]YЫЬћHHУУ•TХРРUQУФ–WРХUK€ЫЫќ\ЭЫЫX›ФЭ\ќ\’YH€ЫЫќ\ЭЫЫX›У[Э™\ИHМK€]P[љ[TШЬљ\HР]P[љ[S[Э™WС›Ь[X[[™Л€K‚€УSХ‘WТQТТФ”СTХСT—HB€В€›[YHHУУTХS‘ФХ’S‘К’YЪЬњЩ\ЭЩ\€ЉK€™\ШЬљ\[Ы€HУУTХS‘ФХ’S‘К€”Ы[\И\™[ќИH›ЩHЪ]€‚€љ]И[ќ\™H›ЩK€ЉK€™Y™™XЭHQ‘‘PХТU€њЭЩ\€HMK€ќ\HHTWСФ“ХS‘€XШЭ\XЮHHMK€њHL€ќ\™Щ]HT‘СUФСSPХQ€њљ[Ьљ]HH€Ш]YЫЬћHHSPQСWРРUQУФ–WФTТPРS€›XZЩ\РЫЫќXЭH•QK€ЫЫќ\ЭY™™XЭHУУ•TХСQ‘‘PХТQТWРTPSS‘Л€ЫЫќ\ЭШ]YЫЬћHHУУ•TХРРUQУФ–WХХQТ€ЫЫќ\ЭЫЫX›ФЭ\ќ\’YH€ЫЫќ\ЭЫЫX›У[Э™\ИHМK€]P[љ[TШЬљ\HР]P[љ[S[Э™WТYЪЬњЩ\ЭЩ\‹€K‚€УSХ‘WФХ‘S‘ХФРTHB€В€›[YHHУУTХS‘ФХ’S‘К”Э™[™ЭШ\ЉK€™\ШЬљ\[Ы€HУУTХS‘ФХ’S‘К€”Ш\ИH›ЩIЬИ]XЪИЧ€‚€љX[[€›ЬИ]XЪЛ€ЉK€™Y™™XЭHQ‘‘PХФХ‘S‘ХФРT€њЭЩ\€H€ќ\HHTWСФђTФЛ€XШЭ\XЮHHL€њHL€ќ\™Щ]HT‘СUФСSPХQ€њљ[Ьљ]HH€Ш]YЫЬћHHSPQСWРРUQУФ–WФХUTЛ€ћ“[Э™HHИ™Y™™XЭH—СQ‘‘PХСQ—ХTМHK€›XYЪXРЫШ]Y™™XЭYH•QK€љX[[™У[Э™HH—ТPSР“РТТS‘ИЏHСS—Н‹€ЫЫќ\ЭY™™XЭHУУ•TХСQ‘‘PХРTPSРTЧСУУСРTЧФ‘U—УУ‘TЛ€ЫЫќ\ЭШ]YЫЬћHHУУ•TХРРUQУФ–WФУPT•€ЫЫќ\ЭЫЫX›ФЭ\ќ\’YH€ЫЫќ\ЭЫЫX›У[Э™\ИHМK€]P[љ[TШЬљ\HР]P[љ[S[Э™WФЭ™[™ЭШ\€K‚€УSХ‘WФУУT—Р“QWHB€В€›[YHHУУTХS‘ФХ’S‘К”ЫЫ\€›YHЉK€™\ШЬљ\[Ы€HУУTХS‘ФХ’S‘К€ђЪ\™Щ\Иљ\њЭ\›‹[—€‚€ЪЬИЪ]H›YHЩ€YЪ€ЉK€™Y™™XЭHQ‘‘PХФУУT—Р‘PSK€њЭЩ\€HLЌK€ќ\HHTWСФђTФЛ€XШЭ\XЮHHL€њHL€ќ\™Щ]HT‘СUФСSPХQ€њљ[Ьљ]HH€Ш]YЫЬћHHSPQСWРРUQУФ–WФTТPРS€›XZЩ\РЫЫќXЭH•QK€њЫXЪ[™У[Э™HH•QK€њЫY\[Р[›™YH•QK€љ[њЭќXЭ[›™YH•QK€\™Э[Y[ќќЫХ\›ђ]XЪИHИњЭљ[™ТYHХ’S‘ТQФУS•УТФХS“QТќЩX]\€H—ХСPUT—ФХS€K€ЫЫќ\ЭY™™XЭHУУ•TХСQ‘‘PХТQТWРTPSS‘Л€ЫЫќ\ЭШ]YЫЬћHHУУ•TХРРUQУФ–WХХQТ€ЫЫќ\ЭЫЫX›ФЭ\ќ\’YH€ЫЫќ\ЭЫЫX›У[Э™\ИHРУУP“ЧФХT•T—ФХS“–WСV_K€]P[љ[TШЬљ\HР]P[љ[S[Э™WФЫЫ\ђ›YK€K‚€УSХ‘WУPQђQСWHB€В€›[YHHУУTХS‘ФХ’S‘К“XYYЩHЉK€™\ШЬљ\[Ы€HУУTХS‘ФХ’S‘К€ђ]XЪЬИЪ]H›\њћHЩ—€‚€њЫX[X]™\Л€ЉK€™Y™™XЭHQ‘‘PХТU€њЭЩ\€H€ќ\HHTWСФђTФЛ€XШЭ\XЮHHL€њH€ќ\™Щ]HT‘СUФСSPХQ€њљ[Ьљ]HH€Ш]YЫЬћHHSPQСWРРUQУФ–WФTТPРS€ЫЫќ\ЭY™™XЭHУУ•TХСQ‘‘PХТQТWРTPSS‘Л€ЫЫќ\ЭШ]YЫЬћHHУУ•TХРРUQУФ–WРУУУ€ЫЫќ\ЭЫЫX›ФЭ\ќ\’YH€ЫЫќ\ЭЫЫX›У[Э™\ИHРУУP“ЧФХT•T—СФ“ХХK€]P[љ[TШЬљ\HР]P[љ[S[Э™WУXYYЩK€K‚€УSХ‘WФФХQТHB€В€›[YHHУУTХS‘ФХ’S‘К”ЬЭYЪЉK€™\ШЬљ\[Ы€HУУTХS‘ФХ’S‘К€“XZЩ\ИH›ЩH]XЪИW€‚€њЬЭYЪYЪрк[[Ы‹€ЉK€™Y™™XЭHQ‘‘PХС“УХЧУQK€њЭЩ\€H€ќ\HHTWУ“Ф“PS€XШЭ\XЮHH€њHMK€ќ\™Щ]HT‘СUФСSPХQ€њљ[Ьљ]HHЛ€Ш]YЫЬћHHSPQСWРРUQУФ–WФХUTЛ€ћ“[Э™HHИ™Y™™XЭH—СQ‘‘PХФФQ—ХTМHK€›XYЪXРЫШ]Y™™XЭYH•QK€›Z\њ›Ь“[Э™P[›™YH•QK€›Y]›Ы›ЫYP[›™YH•QK€ЫЬXШ][›™YH•QK€\ЬЪ\Э[›™YH•QK€ЫЫќ\ЭY™™XЭHУУ•TХСQ‘‘PХСУ•СVТUWРUQQSђСK€ЫЫќ\ЭШ]YЫЬћHHУУ•TХРРUQУФ–WРХUK€ЫЫќ\ЭЫЫX›ФЭ\ќ\’YH€ЫЫќ\ЭЫЫX›У[Э™\ИHМK€]P[љ[TШЬљ\HР]P[љ[S[Э™WФЬЭYЪ€K‚€УSХ‘WХЦPЧХ‘PQHB€В€›[YHHУУTХS‘ФХ’S‘К•ЮXИ™XYЉK€™\ШЬљ\[Ы€HУУTХS‘ФХ’S‘К€ђ]XЪЬИЪ]H™XY]€‚€њЪ\ЫЫњИ[™›ЬИЬYY€ЉK€™Y™™XЭHQ‘‘PХХЦPЧХ‘PQ€њЭЩ\€H€ќ\HHTWФТTУУ‹€XШЭ\XЮHHL€њHЊ€ќ\™Щ]HT‘СUФСSPХQ€њљ[Ьљ]HH€Ш]YЫЬћHHSPQСWРРUQУФ–WФХUTЛ€ћ“[Э™HHИ™Y™™XЭH—СQ‘‘PХФФХTМHK€›XYЪXРЫШ]Y™™XЭYH•QK€ЫЫќ\ЭY™™XЭHУУ•TХСQ‘‘PХФТQ•Т•QСWРUS•SУ‹€ЫЫќ\ЭШ]YЫЬћHHУУ•TХРРUQУФ–WХХQТ€ЫЫќ\ЭЫЫX›ФЭ\ќ\’YH€ЫЫќ\ЭЫЫX›У[Э™\ИHРУУP“ЧФХT•T—ХЦPЯK€]P[љ[TШЬљ\HР]P[љ[S[Э™WХЮXХ™XY€K‚€УSХ‘WУTСT—С“РХTЧHB€В€›[YHHУУTХS‘ФХ’S‘К“\Щ\€›ШЭ\ИЉK€™\ШЬљ\[Ы€HУУTХS‘ФХ’S‘К€‘ЭX\[ќY\ИH™^[Э™W€‚€ќЪ[™HHЬљ]XШ[]€ЉK€™Y™™XЭHQ‘‘PХУTСT—С“РХTЛ€њЭЩ\€H€ќ\HHTWУ“Ф“PS€XШЭ\XЮHH€њHМ€ќ\™Щ]HT‘СUХTСT‹€њљ[Ьљ]HH€Ш]YЫЬћHHSPQСWРРUQУФ–WФХUTЛ€ћ“[Э™HHИ™Y™™XЭH—СQ‘‘PХРUЧХTМHK€њЫ]ЪY™™XЭYH•QK€љYЫ›Ь™\Ф›ЭXЭH•QK€›Z\њ›Ь“[Э™P[›™YH•QK€ЫЫќ\ЭY™™XЭHУУ•TХСQ‘‘PХТST“Х‘WРУУ‘USУ—Ф‘U‘S•У‘T•“ХTУ‘TФЛ€ЫЫќ\ЭШ]YЫЬћHHУУ•TХРРUQУФ–WРУУУ€ЫЫќ\ЭЫЫX›ФЭ\ќ\’YH€ЫЫќ\ЭЫЫX›У[Э™\ИHМK€]P[љ[TШЬљ\HР]P[љ[S[Э™WУ\Щ\‘›ШЭ\Л€K‚€УSХ‘WССPT—ХTHB€В€›[YHHУУTХS‘ФХ’S‘К‘ЩX\€\ЉK€™\ШЬљ\[Ы€HУУTХS‘ФХ’S‘К€ђ›ЫЬЭИH]XЪЬИЩ—€‚€ќЬЩHЪ]\ИЬ€Z[ќ\Л€ЉK€™Y™™XЭHQ‘‘PХССPT—ХT€њЭЩ\€H€ќ\HHTWФХQS€XШЭ\XЮHH€њHЊ€ќ\™Щ]HT‘СUХTСT‹€њљ[Ьљ]HH€Ш]YЫЬћHHSPQСWРРUQУФ–WФХUTЛ€ћ“[Э™HHИ™Y™™XЭH—СQ‘‘PХФФUЧХTМHK€њЫ]ЪY™™XЭYH•QK€љYЫ›Ь™\Ф›ЭXЭH•QK€љYЫ›Ь™\ФЭXњЭ]]HH•QK€›Z\њ›Ь“[Э™P[›™YH•QK€ЫЫќ\ЭY™™XЭHУУ•TХСQ‘‘PХТST“Х‘WРУУ‘USУ—Ф‘U‘S•У‘T•“ХTУ‘TФЛ€ЫЫќ\ЭШ]YЫЬћHHУУ•TХРРUQУФ–WФУPT•€ЫЫќ\ЭЫЫX›ФЭ\ќ\’YH€ЫЫќ\ЭЫЫX›У[Э™\ИHМK€]P[љ[TШЬљ\HР]P[љ[S[Э™WСЩX\•\€K‚€УSХ‘WХ“РUРТФHB€В€›[YHHУУTХS‘ФХ’S‘К•›Ш]ЪЬЉK€™\ШЬљ\[Ы€HУУTХS‘ФХ’S‘К€ђЪЬИH›Ш]И\ШX›W€‚€њЫЭ[™[Э™\И›Ь€€\›њЛ€ЉK€™Y™™XЭHQ‘‘PХТU€њЭЩ\€H€ќ\HHTWСT’Л€XШЭ\XЮHHL€њHMK€ќ\™Щ]HT‘СUФСSPХQ€њљ[Ьљ]HH€Ш]YЫЬћHHSPQСWРРUQУФ–WФTТPРS€›XZЩ\РЫЫќXЭH•QK€Y][Ы[Y™™XЭИHQUSУђSСQ‘‘PХКВ€›[Э™QY™™XЭHSХ‘WСQ‘‘PХХ“РUРТФ€Ъ[ЩHHL€JK€ЫЫќ\ЭY™™XЭHУУ•TХСQ‘‘PХУPRСWС“УХТS‘ЧУSУ”ЧУ‘T•“ХTЛ€ЫЫќ\ЭШ]YЫЬћHHУУ•TХРРUQУФ–WФУPT•€ЫЫќ\ЭЫЫX›ФЭ\ќ\’YH€ЫЫќ\ЭЫЫX›У[Э™\ИHМK€]P[љ[TШЬљ\HР]P[љ[S[Э™WХ›Ш]ЪЬ€K‚€УSХ‘WФУS—ФQ‘—HB€В€›[YHHУУTХS‘ФХ’S‘К”Ы[€Y™€ЉK€™\ШЬљ\[Ы€HУУTХS‘ФХ’S‘К€‘^Щ\ИЫ€›Щ\Лќ]€‚€њ™\ЭЬ™\И[IЬИ€ЉK€™Y™™XЭHQ‘‘PХТUСS‘SVWТPSРSK€њЭЩ\€HL€ќ\HHTWР•QЛ€XШЭ\XЮHHL€њHMK€ќ\™Щ]HT‘СUФСSPХQ€њљ[Ьљ]HH€Ш]YЫЬћHHSPQСWРРUQУФ–WФФPТPS€[\ЭXУ[Э™HH•QK€ЫЫќ\ЭY™™XЭHУУ•TХСQ‘‘PХТQТWРTPSS‘Л€ЫЫќ\ЭШ]YЫЬћHHУУ•TХРРUQУФ–WРХUK€ЫЫќ\ЭЫЫX›ФЭ\ќ\’YH€ЫЫќ\ЭЫЫX›У[Э™\ИHМK€]P[љ[TШЬљ\HР]P[љ[S[Э™WФЫ[”Y™‹€K‚€УSХ‘WРSђТФ—ФТХHB€В€›[YHHУУTХS‘ФХ’S‘Кђ[ЪЬ€ЪЭЉK€™\ШЬљ\[Ы€HУУTХS‘ФХ’S‘К€”Э[™Ы\ИH›ЩHЪ]W€‚€ЪZ[‹€H›ЩHШ[‰Э\ШШ\K€ЉK€™Y™™XЭHQ‘‘PХТU€њЭЩ\€H€ќ\HHTWФХQS€XШЭ\XЮHHL€њHЊ€ќ\™Щ]HT‘СUФСSPХQ€њљ[Ьљ]HH€Ш]YЫЬћHHSPQСWРРUQУФ–WФTТPРS€›XZЩ\РЫЫќXЭH•QK€Y][Ы[Y™™XЭИHQUSУђSСQ‘‘PХКВ€›[Э™QY™™XЭHSХ‘WСQ‘‘PХФ‘U‘S•СTРРTK€Ъ[ЩHHL€JK€ЫЫќ\ЭY™™XЭHУУ•TХСQ‘‘PХРђQWФХT•WУSУ”ЧХТUСУУСРTPSЛ€ЫЫќ\ЭШ]YЫЬћHHУУ•TХРРUQУФ–WФУPT•€ЫЫќ\ЭЫЫX›ФЭ\ќ\’YH€ЫЫќ\ЭЫЫX›У[Э™\ИHМK€]P[љ[TШЬљ\HР]P[љ[S[Э™WР[ЪЬ”ЪЭ€K‚€УSХ‘WФЦPТPЧХT”ђRS—HB€В€›[YHHУУTХS‘ФХ’S‘К”ЮXЪXИ\њZ[€ЉK€™\ШЬљ\[Ы€HУУTХS‘ФХ’S‘К€•HЬ›Э[™\›њИЩZ\™›Ь—€‚€ЌH\›њЛ€›ШЪЬИљ[Ьљ]K€ЉK€™Y™™XЭHQ‘‘PХФЦPТPЧХT”ђRS‹€њЭЩ\€H€ќ\HHTWФЦPТPЛ€XШЭ\XЮHH€њHL€ќ\™Щ]HT‘СUС’QS€њљ[Ьљ]HH€Ш]YЫЬћHHSPQСWРРUQУФ–WФХUTЛ€ћ“[Э™HHИ™Y™™XЭH—СQ‘‘PХФФUЧХTМHK€љYЫ›Ь™\Ф›ЭXЭH•QK€›Z\њ›Ь“[Э™P[›™YH•QK€њЪЮP]P[›™YH•QK€ЫЫќ\ЭY™™XЭHУУ•TХСQ‘‘PХР‘UT—ХТS—РUQQSђСWСVТUQ€ЫЫќ\ЭШ]YЫЬћHHУУ•TХРРUQУФ–WФУPT•€ЫЫќ\ЭЫЫX›ФЭ\ќ\’YHУУP“ЧФХT•T—ФЦPТPЧХT”ђRS‹€ЫЫќ\ЭЫЫX›У[Э™\ИHМK€]P[љ[TШЬљ\HР]P[љ[S[Э™WФЮXЪXХ\њZ[‹€K‚€УSХ‘WУS‘СWHB€В€›[YHHУУTХS‘ФХ’S‘К“[™ЩHЉK€™\ШЬљ\[Ы€HУУTХS‘ФХ’S‘К€“[™Щ\И]H›ЩHИЭЩ\—€‚€љ]И]XЪИЭ]€ЉK€™Y™™XЭHQ‘‘PХТU€њЭЩ\€H€ќ\HHTWР•QЛ€XШЭ\XЮHHL€њHMK€ќ\™Щ]HT‘СUФСSPХQ€њљ[Ьљ]HH€Ш]YЫЬћHHSPQСWРРUQУФ–WФTТPРS€›XZЩ\РЫЫќXЭH•QK€Y][Ы[Y™™XЭИHQUSУђSСQ‘‘PХКВ€›[Э™QY™™XЭHSХ‘WСQ‘‘PХРUЧУRS•TЧМK€Ъ[ЩHHL€JK€ЫЫќ\ЭY™™XЭHУУ•TХСQ‘‘PХРђQWФХT•WФ‘U—УSУ”Л€ЫЫќ\ЭШ]YЫЬћHHУУ•TХРРUQУФ–WРХUK€ЫЫќ\ЭЫЫX›ФЭ\ќ\’YH€ЫЫќ\ЭЫЫX›У[Э™\ИHМK€]P[љ[TШЬљ\HР]P[љ[S[Э™WУ[™ЩK€K‚€УSХ‘WС’T‘WУTТHB€В€›[YHHУУTХS‘ФХ’S‘К‘љ\™H\ЪЉK€™\ШЬљ\[Ы€HУУTХS‘ФХ’S‘К€•Ъ\ИH›ЩHЪ]љ\™W€‚€›ЭЩ\љ[™И]ИY™[њЩK€ЉK€™Y™™XЭHQ‘‘PХТU€њЭЩ\€H€ќ\HHTWС’T‘K€XШЭ\XЮHHL€њHMK€ќ\™Щ]HT‘СUФСSPХQ€њљ[Ьљ]HH€Ш]YЫЬћHHSPQСWРРUQУФ–WФTТPРS€›XZЩ\РЫЫќXЭH•QK€Y][Ы[Y™™XЭИHQUSУђSСQ‘‘PХКВ€›[Э™QY™™XЭHSХ‘WСQ‘‘PХСQ—УRS•TЧМK€Ъ[ЩHHL€JK€ЫЫќ\ЭY™™XЭHУУ•TХСQ‘‘PХФХT•WФ‘U—УSУ‹€ЫЫќ\ЭШ]YЫЬћHHУУ•TХРРUQУФ–WР‘PUUK€ЫЫќ\ЭЫЫX›ФЭ\ќ\’YH€ЫЫќ\ЭЫЫX›У[Э™\ИHРУУP“ЧФХT•T—ФХS“–WСV_K€]P[љ[TШЬљ\HР]P[љ[S[Э™WСљ\™S\Ъ€K‚€УSХ‘WФХСT—Х’THB€В€›[YHHУУTХS‘ФХ’S‘К”ЭЩ\€љ\ЉK€™\ШЬљ\[Ы€HУУTХS‘ФХ’S‘К€’]]И\™\€H[Ь™W€‚€њЭ]›ЫЬЭИH\Щ\€\Л€ЉK€™Y™™XЭHQ‘‘PХФХФ‘QФХСT‹€њЭЩ\€HЊ€ќ\HHTWСT’Л€XШЭ\XЮHHL€њHL€ќ\™Щ]HT‘СUФСSPХQ€њљ[Ьљ]HH€Ш]YЫЬћHHSPQСWРРUQУФ–WФTТPРS€›XZЩ\РЫЫќXЭH•QK€ЫЫќ\ЭY™™XЭHУУ•TХСQ‘‘PХР‘UT—ХТUСУУСРУУ‘USУ‹€ЫЫќ\ЭШ]YЫЬћHHУУ•TХРРUQУФ–WХХQТ€ЫЫќ\ЭЫЫX›ФЭ\ќ\’YH€ЫЫќ\ЭЫЫX›У[Э™\ИHМK€]P[љ[TШЬљ\HР]P[љ[S[Э™WФЭЩ\•љ\€K‚€УSХ‘WР•T“—ХTHB€В€›[YHHУУTХS‘ФХ’S‘Кђќ\›€\ЉK€™\ШЬљ\[Ы€HУУTХS‘ФХ’S‘К€ђќ\›њИЭ]H\Щ\€ќ[W€‚€њ™[[Эљ[™ИHљ\™H\K€ЉK€™Y™™XЭHQ‘‘PХСђRSТQ—У“ХРT‘ЧХTK€њЭЩ\€HLМ€ќ\HHTWС’T‘K€XШЭ\XЮHHL€њHK€ќ\™Щ]HT‘СUФСSPХQ€њљ[Ьљ]HH€Ш]YЫЬћHHSPQСWРРUQУФ–WФФPТPS€ќ]ЬХ\Щ\€H•QK€\™Э[Y[ќHИќ\HHTWС’T‘HK€Y][Ы[Y™™XЭИHQUSУђSСQ‘‘PХКВ€›[Э™QY™™XЭHSХ‘WСQ‘‘PХФ‘SSХ‘WРT‘ЧХTK€њЩ[€H•QK€JK€ЫЫќ\ЭY™™XЭHУУ•TХСQ‘‘PХТQТWРTPSS‘Л€ЫЫќ\ЭШ]YЫЬћHHУУ•TХРРUQУФ–WР‘PUUK€ЫЫќ\ЭЫЫX›ФЭ\ќ\’YH€ЫЫќ\ЭЫЫX›У[Э™\ИHРУУP“ЧФХT•T—ФХS“–WСV_K€]P[љ[TШЬљ\HР]P[љ[S[Э™WРќ\›•\€K‚€УSХ‘WФФQQФХРTHB€В€›[YHHУУTХS‘ФХ’S‘К”ЬYYЭШ\ЉK€™\ШЬљ\[Ы€HУУTХS‘ФХ’S‘К€”ЭШ\И\Щ\‰ЬИЬYYЪ]€‚€ќH\™Щ]	ЬЛ€ЉK€™Y™™XЭHQ‘‘PХФФQQФХРT€њЭЩ\€H€ќ\HHTWФЦPТPЛ€XШЭ\XЮHH€њHL€ќ\™Щ]HT‘СUФСSPХQ€њљ[Ьљ]HH€Ш]YЫЬћHHSPQСWРРUQУФ–WФХUTЛ€ћ“[Э™HHИ™Y™™XЭH—СQ‘‘PХФФХTМHK€љYЫ›Ь™\ФЭXњЭ]]HH•QK€ЫЫќ\ЭY™™XЭHУУ•TХСQ‘‘PХРTPSРTЧСУУСРTЧФ‘U—УУ‘TЛ€ЫЫќ\ЭШ]YЫЬћHHУУ•TХРРUQУФ–WФУPT•€ЫЫќ\ЭЫЫX›ФЭ\ќ\’YH€ЫЫќ\ЭЫЫX›У[Э™\ИHМK€]P[љ[TШЬљ\HР]P[љ[S[Э™WФЬYYЭШ\€K‚€УSХ‘WФУPT•ФХ’RСWHB€В€›[YHHУУTХS‘ФХ’S‘К”ЫX\ќЭљZЩHЉK€™\ШЬљ\[Ы€HУУTХS‘ФХ’S‘К€’]ИЪ][€XШЭ\]W€‚€љЬ›€]™]™\€Z\ЬЩ\Л€ЉK€™Y™™XЭHQ‘‘PХТU€њЭЩ\€HМ€ќ\HHTWФХQS€XШЭ\XЮHH€њHL€ќ\™Щ]HT‘СUФСSPХQ€њљ[Ьљ]HH€Ш]YЫЬћHHSPQСWРРUQУФ–WФTТPРS€›XZЩ\РЫЫќXЭH•QK€ЫЫќ\ЭY™™XЭHУУ•TХСQ‘‘PХР‘UT—ТQ—С’T”Х€ЫЫќ\ЭШ]YЫЬћHHУУ•TХРРUQУФ–WФУPT•€ЫЫќ\ЭЫЫX›ФЭ\ќ\’YH€ЫЫќ\ЭЫЫX›У[Э™\ИHМK€]P[љ[TШЬљ\HР]P[љ[S[Э™WФЫX\ќЭљZЩK€K‚€УSХ‘WФT’Q–WHB€В€›[YHHУУTХS‘ФХ’S‘К”\љYћHЉK€™\ШЬљ\[Ы€HУУTХS‘ФХ’S‘К€ђЭ\™\ИH›ЩIЬИЭ]\Ч€‚€ќИ™\ЭЬ™H€ЉK€™Y™™XЭHQ‘‘PХФT’Q–K€њЭЩ\€H€ќ\HHTWФТTУУ‹€XШЭ\XЮHH€њHЊ€ќ\™Щ]HT‘СUФСSPХQ€њљ[Ьљ]HH€Ш]YЫЬћHHSPQСWРРUQУФ–WФХUTЛ€ћ“[Э™HHИ™Y™™XЭH—СQ‘‘PХРSФХUЧХTМHK€›Z\њ›Ь“[Э™P[›™YH•QK€љX[[™У[Э™HH•QK€›XYЪXРЫШ]Y™™XЭYH•QK€ЫЫќ\ЭY™™XЭHУУ•TХСQ‘‘PХТQТWРTPSS‘Л€ЫЫќ\ЭШ]YЫЬћHHУУ•TХРРUQУФ–WФУPT•€ЫЫќ\ЭЫЫX›ФЭ\ќ\’YH€ЫЫќ\ЭЫЫX›У[Э™\ИHМK€]P[љ[TШЬљ\HР]P[љ[S[Э™WФ\љYћK€K‚€УSХ‘WФ‘U‘SUSУ—СSђСWHB€В€›[YHHУУTХS‘ФХ’S‘К”™]™[][Ы€[ЩHЉK€™\ШЬљ\[Ы€HУУTХS‘ФХ’S‘К€‘[Щ\ИЪ]^\ЭXШ[ЭЩ\‹—€‚€“X]Ъ\И\Щ\‰ЬИљ\њЭ\K€ЉK€™Y™™XЭHQ‘‘PХФ‘U‘SUSУ—СSђСK€њЭЩ\€HL€ќ\HHTWУ“Ф“PS€XШЭ\XЮHHL€њHMK€ќ\™Щ]HT‘СUФСSPХQ€њљ[Ьљ]HH€Ш]YЫЬћHHSPQСWРРUQУФ–WФФPТPS€™[ЩS[Э™HH•QK€ЫЫќ\ЭY™™XЭHУУ•TХСQ‘‘PХФ‘TUUSУ—У“ХР“Ф’S‘Л€ЫЫќ\ЭШ]YЫЬћHHУУ•TХРРUQУФ–WР‘PUUK€ЫЫќ\ЭЫЫX›ФЭ\ќ\’YH€ЫЫќ\ЭЫЫX›У[Э™\ИHМK€]P[љ[TШЬљ\HР]P[љ[S[Э™WФ™]™[][Ы‘[ЩK€K‚€УSХ‘WРУФ‘WСS‘“ФђСT—HB€В€›[YHHУУTХS‘ФХ’S‘КђЫЬ™H[™›ЬЩ\€ЉK€™\ШЬљ\[Ы€HУУTХS‘ФХ’S‘К€’]ИЪ]H^H]€‚€›ќ[YљY\ИH›ЩIЬИXљ[]K€ЉK€™Y™™XЭHQ‘‘PХТU€њЭЩ\€HL€ќ\HHTWСђQУУ‹€XШЭ\XЮHHL€њHL€ќ\™Щ]HT‘СUФСSPХQ€њљ[Ьљ]HH€Ш]YЫЬћHHSPQСWРРUQУФ–WФФPТPS€ћ“[Э™HHИњЭЩ\“Э™\њљYHHMK€Y][Ы[Y™™XЭИHQUSУђSСQ‘‘PХКВ€›[Э™QY™™XЭHSХ‘WСQ‘‘PХРУФ‘WСS‘“ФђСT‹€JK€ЫЫќ\ЭY™™XЭHУУ•TХСQ‘‘PХФТQ•Т•QСWРUS•SУ‹€ЫЫќ\ЭШ]YЫЬћHHУУ•TХРРUQУФ–WХХQТ€ЫЫќ\ЭЫЫX›ФЭ\ќ\’YH€ЫЫќ\ЭЫЫX›У[Э™\ИHМK€]P[љ[TШЬљ\HР]P[љ[S[Э™WРЫЬ™Q[™›ЬЩ\‹€K‚€УSХ‘WХ“ФТТPТЧHB€В€›[YHHУУTХS‘ФХ’S‘К•›ЬЪXЪИЉK€™\ШЬљ\[Ы€HУУTХS‘ФХ’S‘К€ђ[€[ќ[њЩHЪXЪИњ›ЫHW€‚€ќ›ЬXЬЛ€ЭЩ\њИ]XЪЛ€ЉK€™Y™™XЭHQ‘‘PХТU€њЭЩ\€HМ€ќ\HHTWСФђTФЛ€XШЭ\XЮHHL€њHMK€ќ\™Щ]HT‘СUФСSPХQ€њљ[Ьљ]HH€Ш]YЫЬћHHSPQСWРРUQУФ–WФTТPРS€›XZЩ\РЫЫќXЭH•QK€љЪXЪЪ[™У[Э™HH•QK€Y][Ы[Y™™XЭИHQUSУђSСQ‘‘PХКВ€›[Э™QY™™XЭHSХ‘WСQ‘‘PХРUЧУRS•TЧМK€Ъ[ЩHHL€JK€ЫЫќ\ЭY™™XЭHУУ•TХСQ‘‘PХРђQWФХT•WФ‘U—УSУ”Л€ЫЫќ\ЭШ]YЫЬћHHУУ•TХРРUQУФ–WХХQТ€ЫЫќ\ЭЫЫX›ФЭ\ќ\’YH€ЫЫќ\ЭЫЫX›У[Э™\ИHМK€]P[љ[TШЬљ\HР]P[љ[S[Э™WХ›ЬЪXЪЛ€K‚€УSХ‘WТS”Х•PХHB€В€›[YHHУУTХS‘ФХ’S‘К’[њЭќXЭЉK€™\ШЬљ\[Ы€HУУTХS‘ФХ’S‘К€“Ь™\њИH\™Щ]И\ЩW€‚€љ]И\Э[Э™HYШZ[‹€ЉK€™Y™™XЭHQ‘‘PХТS”Х•PХ€њЭЩ\€H€ќ\HHTWФЦPТPЛ€XШЭ\XЮHH€њHMK€ќ\™Щ]HT‘СUФСSPХQ€њљ[Ьљ]HH€Ш]YЫЬћHHSPQСWРРUQУФ–WФХUTЛ€ћ“[Э™HHИ™Y™™XЭH—СQ‘‘PХФФUЧХTМHK€љYЫ›Ь™\ФЭXњЭ]]HH•QK€›Z\њ›Ь“[Э™P[›™YH•QK€›Y]›Ы›ЫYP[›™YH•QK€љ[њЭќXЭ[›™YH•QK€ЫЫќ\ЭY™™XЭHУУ•TХСQ‘‘PХРTPSРTЧСУУСРTЧФ‘U—УУ‘K€ЫЫќ\ЭШ]YЫЬћHHУУ•TХРРUQУФ–WФУPT•€ЫЫќ\ЭЫЫX›ФЭ\ќ\’YH€ЫЫќ\ЭЫЫX›У[Э™\ИHМK€]P[љ[TШЬљ\HР]P[љ[S[Э™WТ[њЭќXЭ€K‚€УSХ‘WР‘PRЧР“TХHB€В€›[YHHУУTХS‘ФХ’S‘Кђ™XZИ›\ЭЉK€™\ШЬљ\[Ы€HУУTХS‘ФХ’S‘К€’X]И™XZИИ]XЪИ\Э—€‚€ђќ\›њИ›ЩHЫ€ЫЫќXЭ€ЉK€™Y™™XЭHQ‘‘PХР‘PRЧР“TХ€њЭЩ\€HL€ќ\HHTWС“RS‘Л€XШЭ\XЮHHL€њHMK€ќ\™Щ]HT‘СUФСSPХQ€њљ[Ьљ]HHLЛ€Ш]YЫЬћHHSPQСWРРUQУФ–WФTТPРS€›Z\њ›Ь“[Э™P[›™YH•QK€[\ЭXУ[Э™HH•QK€›YQљ\њЭ[›™YH•QK€›Y]›Ы›ЫYP[›™YH•QK€ЫЬXШ][›™YH•QK€њЫY\[Р[›™YH•QK€љ[њЭќXЭ[›™YH•QK€\ЬЪ\Э[›™YH•QK€ЫЫќ\ЭY™™XЭHУУ•TХСQ‘‘PХРQ‘‘PХQР–WФ‘U—РTPS€ЫЫќ\ЭШ]YЫЬћHHУУ•TХРРUQУФ–WРУУУ€ЫЫќ\ЭЫЫX›ФЭ\ќ\’YH€ЫЫќ\ЭЫЫX›У[Э™\ИHМK€]P[љ[TШЬљ\HР]P[љ[S[Э™WР™XZР›\Э€K‚€УSХ‘WРУS‘ТS‘ЧФРРSTЧHB€В€›[YHHУУTХS‘ФХ’S‘КђЫ[™Ъ[™ИШШ[\ИЉK€™\ШЬљ\[Ы€HУУTХS‘ФХ’S‘К€“XZЩ\ИHљYИ›Ъ\ЩHЪ]€‚€љ]ИШШ[\Л€›ЬИY™[њЩK€ЉK€™Y™™XЭHQ‘‘PХТU€њЭЩ\€HLL€ќ\HHTWСђQУУ‹€XШЭ\XЮHHL€њHK€ќ\™Щ]HT‘СUР“Х€њљ[Ьљ]HH€Ш]YЫЬћHHSPQСWРРUQУФ–WФФPТPS€љYЫ›Ь™\ФЭXњЭ]]HH—ХTUQУSХ‘WС“QФИЏHСS—Н‹€њЫЭ[™[Э™HH•QK€Y][Ы[Y™™XЭИHQUSУђSСQ‘‘PХКВ€›[Э™QY™™XЭHSХ‘WСQ‘‘PХСQ—УRS•TЧМK€њЩ[€H•QK€JK€ЫЫќ\ЭY™™XЭHУУ•TХСQ‘‘PХРђQWФХT•WС”“У•УSУ‹€ЫЫќ\ЭШ]YЫЬћHHУУ•TХРРUQУФ–WР‘PUUK€ЫЫќ\ЭЫЫX›ФЭ\ќ\’YH€ЫЫќ\ЭЫЫX›У[Э™\ИHМK€]P[љ[TШЬљ\HР]P[љ[S[Э™WРЫ[™Ъ[™ФШШ[\Л€K‚€УSХ‘WСђQУУ—ТSSQT—HB€В€›[YHHУУTХS‘ФХ’S‘К‘YЫЫ€[[Y\€ЉK€™\ШЬљ\[Ы€HУУTХS‘ФХ’S‘К€”ЭЪ[™ЬИ]ИЪЫH›ЩW€‚€›ZЩHH[[Y\€И[XYЩK€ЉK€™Y™™XЭHQ‘‘PХТU€њЭЩ\€HL€ќ\HHTWСђQУУ‹€XШЭ\XЮHHL€њHMK€ќ\™Щ]HT‘СUФСSPХQ€њљ[Ьљ]HH€Ш]YЫЬћHHSPQСWРРUQУФ–WФTТPРS€›XZЩ\РЫЫќXЭH•QK€ЫЫќ\ЭY™™XЭHУУ•TХСQ‘‘PХТQТWРTPSS‘Л€ЫЫќ\ЭШ]YЫЬћHHУУ•TХРРUQУФ–WРУУУ€ЫЫќ\ЭЫЫX›ФЭ\ќ\’YH€ЫЫќ\ЭЫЫX›У[Э™\ИHРУУP“ЧФХT•T—СђQУУ—Р”‘PUУУP“ЧФХT•T—СђQУУ—СSђСKУУP“ЧФХT•T—СђQУУ—ФђQСKУУP“ЧФХT•T—СђQУУ—Ф•TТУУP“ЧФХT•T—СђQУУ—ХRSK€]P[љ[TШЬљ\HР]P[љ[S[Э™WСYЫЫ’[[Y\‹€K‚€УSХ‘WР”•USФХТS‘ЧHB€В€›[YHHУУTХS‘ФХ’S‘Кђњќ][ЭЪ[™ИЉK€™\ШЬљ\[Ы€HУУTХS‘ФХ’S‘К€•љ[Ы[ќHЭЪ[™ЬИ\›Э[™€‚€ќИ\ќ]™\ћ[Ы™H™X\ћK€ЉK€™Y™™XЭHQ‘‘PХТU€њЭЩ\€HЊ€ќ\HHTWСT’Л€XШЭ\XЮHHL€њHЊ€ќ\™Щ]HT‘СUС“СTЧРS‘РSK€њљ[Ьљ]HH€Ш]YЫЬћHHSPQСWРРUQУФ–WФTТPРS€›XZЩ\РЫЫќXЭH•QK€ЫЫќ\ЭY™™XЭHУУ•TХСQ‘‘PХТQТWРTPSS‘Л€ЫЫќ\ЭШ]YЫЬћHHУУ•TХРРUQУФ–WХХQТ€ЫЫќ\ЭЫЫX›ФЭ\ќ\’YH€ЫЫќ\ЭЫЫX›У[Э™\ИHМK€]P[љ[TШЬљ\HР]P[љ[S[Э™WРњќ][ЭЪ[™Л€K‚€УSХ‘WРUT“ФђWХ‘RSHB€В€›[YHHУУTХS‘ФХ’S‘Кђ]\›ЬH™Z[ЉK€ЪY€—Ф‘Q‘T”‘QТPСWХСPUT€OH—ТPСWХСPUT—ФУ“ХВ€™\ШЬљ\[Ы€HУУTХS‘ФХ’S‘К€•ЩXZЩ[њИ[]XЪЬЛќ]€‚€›Ы›H\ШX›HЪ]Ы›ЭЛ€ЉK€Щ[Y€—Ф‘Q‘T”‘QТPСWХСPUT€OH—ТPСWХСPUT—Р“Х€™\ШЬљ\[Ы€HУУTХS‘ФХ’S‘К€•ЩXZЩ[њИ[]XЪЬИY—€‚€ќ\ЩY[€Z[Ь€Ы›ЭЛ€ЉK€Щ[ЩB€™\ШЬљ\[Ы€HУУTХS‘ФХ’S‘К€•ЩXZЩ[њИ[]XЪЬЛќ]€‚€›Ы›H\ШX›HЪ]Z[€ЉK€Щ[™Y‚€™Y™™XЭHQ‘‘PХРUT“ФђWХ‘RS€њЭЩ\€H€ќ\HHTWТPСK€XШЭ\XЮHH€њHЊ€ќ\™Щ]HT‘СUХTСT‹€њљ[Ьљ]HH€Ш]YЫЬћHHSPQСWРРUQУФ–WФХUTЛ€ћ“[Э™HHИ™Y™™XЭH—СQ‘‘PХФФХTМHK€њЫ]ЪY™™XЭYH•QK€љYЫ›Ь™\Ф›ЭXЭH•QK€›Z\њ›Ь“[Э™P[›™YH•QK€ЫЫќ\ЭY™™XЭHУУ•TХСQ‘‘PХРU“ТQФХT•K€ЫЫќ\ЭШ]YЫЬћHHУУ•TХРРUQУФ–WР‘PUUK€ЫЫќ\ЭЫЫX›ФЭ\ќ\’YH€ЫЫќ\ЭЫЫX›У[Э™\ИHРУУP“ЧФХT•T—ТRSK€]P[љ[TШЬљ\HР]P[љ[S[Э™WР]\›ЬU™Z[€K‚€УSХ‘WФТSХђTHB€В€›[YHHУУTХS‘ФХ’S‘К”Ъ[\ЉK€™\ШЬљ\[Ы€HУУTХS‘ФХ’S‘К€”Щ]ИHЪ[\]€‚€™[XYЩ\ИЫ€ЫЫќXЭ€ЉK€™Y™™XЭHQ‘‘PХФТSХђT€њЭЩ\€HML€ќ\HHTWС’T‘K€XШЭ\XЮHHL€њHK€ќ\™Щ]HT‘СUР“Х€њљ[Ьљ]HHLЛ€Ш]YЫЬћHHSPQСWРРUQУФ–WФФPТPS€›Z\њ›Ь“[Э™P[›™YH•QK€›YQљ\њЭ[›™YH•QK€›Y]›Ы›ЫYP[›™YH•QK€ЫЬXШ][›™YH•QK€њЫY\[Р[›™YH•QK€љ[њЭќXЭ[›™YH•QK€\ЬЪ\Э[›™YH•QK€ЫЫќ\ЭY™™XЭHУУ•TХСQ‘‘PХР‘UT—ТQ—УTХ€ЫЫќ\ЭШ]YЫЬћHHУУ•TХРРUQУФ–WР‘PUUK€ЫЫќ\ЭЫЫX›ФЭ\ќ\’YH€ЫЫќ\ЭЫЫX›У[Э™\ИHМK€]P[љ[TШЬљ\HР]P[љ[S[Э™WФЪ[\€K‚€УSХ‘WС“UT—РРS““У—HB€В€›[YHHУУTХS‘ФХ’S‘К‘›]\€Ш[››Ы€ЉK€™\ШЬљ\[Ы€HУУTХS‘ФХ’S‘К€ђHЭ›Ы™И^H]\њЪW€‚€›ЭЩ\њИЬ€]XЪЛ€ЉK€™Y™™XЭHQ‘‘PХТU€њЭЩ\€HLМ€ќ\HHTWСђRT–K€XШЭ\XЮHHL€њHK€ќ\™Щ]HT‘СUФСSPХQ€њљ[Ьљ]HH€Ш]YЫЬћHHSPQСWРРUQУФ–WФФPТPS€›Y]›Ы›ЫYP[›™YH•QK€Y][Ы[Y™™XЭИHQUSУђSСQ‘‘PХКВ€›[Э™QY™™XЭHSХ‘WСQ‘‘PХФФРUЧУRS•TЧМ‹€њЩ[€H•QK€JK€ЫЫќ\ЭY™™XЭHУУ•TХСQ‘‘PХХTСT—УSФ‘WСPTТSWФХT•Q€ЫЫќ\ЭШ]YЫЬћHHУУ•TХРРUQУФ–WРХUK€ЫЫќ\ЭЫЫX›ФЭ\ќ\’YH€ЫЫќ\ЭЫЫX›У[Э™\ИHМK€]P[љ[TШЬљ\HР]P[љ[S[Э™WС›]\ђШ[››Ы‹€K‚€УSХ‘WФЦPТPЧСђS‘ФЧHB€В€›[YHHУУTХS‘ФХ’S‘К”ЮXЪXИ[™ЬИЉK€™\ШЬљ\[Ы€HУУTХS‘ФХ’S‘К€ђЪЫ\ИЪ]ЮXЪXИ[™ЬЛ—€‚€‘\Э›Ю\И[ћH\њљY\њЛ€ЉK€™Y™™XЭHQ‘‘PХТU€њЭЩ\€HK€ќ\HHTWФЦPТPЛ€XШЭ\XЮHHL€њHMK€ќ\™Щ]HT‘СUФСSPХQ€њљ[Ьљ]HH€Ш]YЫЬћHHSPQСWРРUQУФ–WФTТPРS€Y][Ы[Y™™XЭИHQUSУђSСQ‘‘PХКВ€›[Э™QY™™XЭHSХ‘WСQ‘‘PХР”‘PRЧФРФ‘QS‹€њ™P]XЪСY™™XЭH•QK€JK€›XZЩ\РЫЫќXЭH•QK€љ][™У[Э™HH•QK€ЫЫќ\ЭY™™XЭHУУ•TХСQ‘‘PХХУФ”СS—РУУ‘USУ—УС—Ф‘U—УSУ”Л€ЫЫќ\ЭШ]YЫЬћHHУУ•TХРРUQУФ–WРХUK€ЫЫќ\ЭЫЫX›ФЭ\ќ\’YH€ЫЫќ\ЭЫЫX›У[Э™\ИHМK€]P[љ[TШЬљ\HР]P[љ[S[Э™WФЮXЪXС[™ЬЛ€K‚€УSХ‘WФХУTS‘ЧХS••SWHB€В€›[YHHУУTХS‘ФХ’S‘К”ЭЫ\[™И[ќќ[HЉK€™\ШЬљ\[Ы€HУУTХS‘ФХ’S‘К€”ЭЫ\И\›Э[™[™Ьљ[K—€‚€”Э›Ы™Щ\€Yќ\€HZ[\™K€ЉK€™Y™™XЭHQ‘‘PХФХУTS‘ЧХS••SK€њЭЩ\€HНK€ќ\HHTWСФ“ХS‘€XШЭ\XЮHHL€њHL€ќ\™Щ]HT‘СUФСSPХQ€њљ[Ьљ]HH€Ш]YЫЬћHHSPQСWРРUQУФ–WФTТPРS€›XZЩ\РЫЫќXЭH•QK€љЪXЪЪ[™У[Э™HH•QK€њЪЮP]P[›™YH—СVђTУUQУSХ‘WС“QФЛ€ЫЫќ\ЭY™™XЭHУУ•TХСQ‘‘PХРђQWФХT•WФ‘U—УSУ”Л€ЫЫќ\ЭШ]YЫЬћHHУУ•TХРРUQУФ–WХХQТ€ЫЫќ\ЭЫЫX›ФЭ\ќ\’YH€ЫЫќ\ЭЫЫX›У[Э™\ИHМK€]P[љ[TШЬљ\HР]P[љ[S[Э™WФЭЫ\[™Х[ќќ[K€K‚€УSХ‘WФТQХЧР“У‘WHB€В€›[YHHУУTХS‘ФХ’S‘К”ЪYЭИ›Ы™HЉK€™\ШЬљ\[Ы€HУУTХS‘ФХ’S‘К€”ЭљZЩ\ИЪ]H][ќY€‚€›Ы™K€ZYЪ›ЬY™[њЩK€ЉK€™Y™™XЭHQ‘‘PХТU€њЭЩ\€HK€ќ\HHTWСТФХ€XШЭ\XЮHHL€њHL€ќ\™Щ]HT‘СUФСSPХQ€њљ[Ьљ]HH€Ш]YЫЬћHHSPQСWРРUQУФ–WФTТPРS€Y][Ы[Y™™XЭИHQUSУђSСQ‘‘PХКВ€›[Э™QY™™XЭHSХ‘WСQ‘‘PХСQ—УRS•TЧМK€Ъ[ЩHHЊ€JK€ЫЫќ\ЭY™™XЭHУУ•TХСQ‘‘PХФТQ•Т•QСWРUS•SУ‹€ЫЫќ\ЭШ]YЫЬћHHУУ•TХРРUQУФ–WХХQТ€ЫЫќ\ЭЫЫX›ФЭ\ќ\’YHУУP“ЧФХT•T—ФТQХЧР“У‘K€ЫЫќ\ЭЫЫX›У[Э™\ИHРУУP“ЧФХT•T—Р“У‘WРУP‹УУP“ЧФХT•T—Р“У‘SQTђS‘ЛУУP“ЧФХT•T—Р“У‘WФ•TТK€]P[љ[TШЬљ\HР]P[љ[S[Э™WФЪYЭР›Ы™K€K‚€УSХ‘WРPРСST“РТЧHB€В€›[YHHУУTХS‘ФХ’S‘КђXШЩ[\›ШЪИЉK€™\ШЬљ\[Ы€HУУTХS‘ФХ’S‘К€’]ИЪ]HYЪ\ЬYY€‚€њ›ШЪИ][Ш^\ИЫЩ\Иљ\њЭ€ЉK€™Y™™XЭHQ‘‘PХТU€њЭЩ\€H€ќ\HHTWФ“РТЛ€XШЭ\XЮHHL€њHЊ€ќ\™Щ]HT‘СUФСSPХQ€њљ[Ьљ]HHK€Ш]YЫЬћHHSPQСWРРUQУФ–WФTТPРS€›XZЩ\РЫЫќXЭH•QK€ЫЫќ\ЭY™™XЭHУУ•TХСQ‘‘PХУ‘VРTPSСPT“QT‹€ЫЫќ\ЭШ]YЫЬћHHУУ•TХРРUQУФ–WХХQТ€ЫЫќ\ЭЫЫX›ФЭ\ќ\’YH€ЫЫќ\ЭЫЫX›У[Э™\ИHМK€]P[љ[TШЬљ\HР]P[љ[S[Э™WРXШЩ[\›ШЪЛ€K‚€УSХ‘WУTURQUSУ—HB€В€›[YHHУУTХS‘ФХ’S‘К“\]ZY][Ы€ЉK€™\ШЬљ\[Ы€HУУTХS‘ФХ’S‘К€”Ы[\ИH›ЩHЪ]Ш]\‹—€‚€ђШ[€ЭЩ\€Y™[њЩK€ЉK€™Y™™XЭHQ‘‘PХТU€њЭЩ\€HK€ќ\HHTWХРUT‹€XШЭ\XЮHHL€њHL€ќ\™Щ]HT‘СUФСSPХQ€њљ[Ьљ]HH€Ш]YЫЬћHHSPQСWРРUQУФ–WФTТPРS€›XZЩ\РЫЫќXЭH•QK€Y][Ы[Y™™XЭИHQUSУђSСQ‘‘PХКВ€›[Э™QY™™XЭHSХ‘WСQ‘‘PХСQ—УRS•TЧМK€Ъ[ЩHHЊ€JK€ЫЫќ\ЭY™™XЭHУУ•TХСQ‘‘PХФТQ•Т•QСWРUS•SУ‹€ЫЫќ\ЭШ]YЫЬћHHУУ•TХРРUQУФ–WХХQТ€ЫЫќ\ЭЫЫX›ФЭ\ќ\’YH€ЫЫќ\ЭЫЫX›У[Э™\ИHРУУP“ЧФХT•T—ФђRS—СSђС_K€]P[љ[TШЬљ\HР]P[љ[S[Э™WУ\]ZY][Ы‹€K‚€УSХ‘WФ’TУPUPЧУTСT—HB€В€›[YHHУУTХS‘ФХ’S‘К”љ\ЫX]XИ\Щ\€ЉK€™\ШЬљ\[Ы€HУУTХS‘ФХ’S‘К€ђHYЪЭЩ\€\Щ\€]€‚€™›ЬЩ\И™XЪ\™ЩH™^\›‹€ЉK€™Y™™XЭHQ‘‘PХТU€њЭЩ\€HMЊ€ќ\HHTWФЦPТPЛ€XШЭ\XЮHHL€њHL€ќ\™Щ]HT‘СUФСSPХQ€њљ[Ьљ]HH€Ш]YЫЬћHHSPQСWРРUQУФ–WФФPТPS€Y][Ы[Y™™XЭИHQUSУђSСQ‘‘PХКВ€›[Э™QY™™XЭHSХ‘WСQ‘‘PХФ‘PТT‘СK€њЩ[€H•QK€JK€ЫЫќ\ЭY™™XЭHУУ•TХСQ‘‘PХТђSTЧУХT”ЧР•UУRTФЧУУ‘WХT“‹€ЫЫќ\ЭШ]YЫЬћHHУУ•TХРРUQУФ–WФУPT•€ЫЫќ\ЭЫЫX›ФЭ\ќ\’YH€ЫЫќ\ЭЫЫX›У[Э™\ИHМK€]P[љ[TШЬљ\HР]P[љ[S[Э™WФљ\ЫX]XУ\Щ\‹€K‚€УSХ‘WФФPХђSХQQ—HB€В€›[YHHУУTХS‘ФХ’S‘К”ЬXЭ[YY€ЉK€™\ШЬљ\[Ы€HУУTХS‘ФХ’S‘К€”ЭX[ИH\™Щ]	ЬИЭ]€‚€›ЫЬЭЛ[€]XЪЬЛ€ЉK€™Y™™XЭHQ‘‘PХТU€њЭЩ\€HL€ќ\HHTWСТФХ€XШЭ\XЮHHL€њHL€ќ\™Щ]HT‘СUФСSPХQ€њљ[Ьљ]HH€Ш]YЫЬћHHSPQСWРРUQУФ–WФTТPРS€Y][Ы[Y™™XЭИHQUSУђSСQ‘‘PХКВ€›[Э™QY™™XЭHSХ‘WСQ‘‘PХФХPSФХUЛ€њ™P]XЪСY™™XЭH•QK€JK€љYЫ›Ь™\ФЭXњЭ]]HH•QK€›XZЩ\РЫЫќXЭH•QK€›Y]›Ы›ЫYP[›™YH•QK€ЫЫќ\ЭY™™XЭHУУ•TХСQ‘‘PХРTPSРTЧСУУСРTЧФ‘U—УУ‘TЛ€ЫЫќ\ЭШ]YЫЬћHHУУ•TХРРUQУФ–WФУPT•€ЫЫќ\ЭЫЫX›ФЭ\ќ\’YH€ЫЫќ\ЭЫЫX›У[Э™\ИHМK€]P[љ[TШЬљ\HР]P[љ[S[Э™WФЬXЭ[YY‹€K‚€УSХ‘WФХS”ХQSФХ’RСWHB€В€›[YHHУУTХS‘ФХ’S‘К”Э[њЭY[ЭљZЩHЉK€™\ШЬљ\[Ы€HУУTХS‘ФХ’S‘К€ђHЭ[‹YќY[YЭљZЩH]€‚€љYЫ›Ь™\ИXљ[]Y\Л€ЉK€™Y™™XЭHQ‘‘PХТU€њЭЩ\€HL€ќ\HHTWФХQS€XШЭ\XЮHHL€њHK€ќ\™Щ]HT‘СUФСSPХQ€њљ[Ьљ]HH€Ш]YЫЬћHHSPQСWРРUQУФ–WФTТPРS€›XZЩ\РЫЫќXЭH•QK€љYЫ›Ь™\Х\™Щ]Xљ[]HH•QK€›Y]›Ы›ЫYP[›™YH—ХTUQУSХ‘WС“QФИЏHСS—О€ЫЫќ\ЭY™™XЭHУУ•TХСQ‘‘PХФХT•WУSУ”ЧФРSQWХTWРTPS€ЫЫќ\ЭШ]YЫЬћHHУУ•TХРРUQУФ–WРУУУ€ЫЫќ\ЭЫЫX›ФЭ\ќ\’YH€ЫЫќ\ЭЫЫX›У[Э™\ИHМK€]P[љ[TШЬљ\HР]P[љ[S[Э™WФЭ[њЭY[ЭљZЩK€K‚€УSХ‘WУSУУ‘СRTХР‘PSWHB€В€›[YHHУУTХS‘ФХ’S‘К“[ЫЫ™ЩZ\Э™X[HЉK€™\ШЬљ\[Ы€HУУTХS‘ФХ’S‘К€ђH[ЫЫ‹\ЭЩ\™Y™X[H]€‚€љYЫ›Ь™\ИXљ[]Y\Л€ЉK€™Y™™XЭHQ‘‘PХТU€њЭЩ\€HL€ќ\HHTWСТФХ€XШЭ\XЮHHL€њHK€ќ\™Щ]HT‘СUФСSPХQ€њљ[Ьљ]HH€Ш]YЫЬћHHSPQСWРРUQУФ–WФФPТPS€љYЫ›Ь™\Х\™Щ]Xљ[]HH•QK€›Y]›Ы›ЫYP[›™YH—ХTUQУSХ‘WС“QФИЏHСS—О€ЫЫќ\ЭY™™XЭHУУ•TХСQ‘‘PХФХT•WУSУ”ЧФРSQWХTWРTPS€ЫЫќ\ЭШ]YЫЬћHHУУ•TХРРUQУФ–WФУPT•€ЫЫќ\ЭЫЫX›ФЭ\ќ\’YH€ЫЫќ\ЭЫЫX›У[Э™\ИHМK€]P[љ[TШЬљ\HР]P[љ[S[Э™WУ[ЫЫ™ЩZ\Э™X[K€K‚€УSХ‘WХPT‘•SУУТЧHB€В€›[YHHУУTХS‘ФХ’S‘К•X\™ќ[ЫЪИЉK€™\ШЬљ\[Ы€HУУTХS‘ФХ’S‘К€•H\Щ\€X\њИ\›Ь[™Ч€‚€ђ]XЪИ[™Ь€]XЪЛ€ЉK€™Y™™XЭHQ‘‘PХУ“Р“WФ“РT‹€њЭЩ\€H€ќ\HHTWУ“Ф“PS€XШЭ\XЮHH€њHЊ€ќ\™Щ]HT‘СUФСSPХQ€њљ[Ьљ]HH€Ш]YЫЬћHHSPQСWРРUQУФ–WФХUTЛ€ћ“[Э™HHИ™Y™™XЭH—СQ‘‘PХСQ—ХTМHK€љYЫ›Ь™\Ф›ЭXЭH•QK€›XYЪXРЫШ]Y™™XЭYH•QK€ЫЫќ\ЭY™™XЭHУУ•TХСQ‘‘PХР‘UT—ТQ—УTХ€ЫЫќ\ЭШ]YЫЬћHHУУ•TХРРUQУФ–WРХUK€ЫЫќ\ЭЫЫX›ФЭ\ќ\’YH€ЫЫќ\ЭЫЫX›У[Э™\ИHМK€]P[љ[TШЬљ\HР]P[љ[S[Э™WХX\™ќ[ЫЪЛ€K‚€УSХ‘WЦ’S‘ЧЦђTHB€В€›[YHHУУTХS‘ФХ’S‘К–љ[™И\ЉK€™\ШЬљ\[Ы€HУУTХS‘ФХ’S‘К€ђ[€[XЭљYљYY[\XЭ]€‚€Ш[€Ш]\ЩH›[Ъ[™Л€ЉK€™Y™™XЭHQ‘‘PХТU€њЭЩ\€H€ќ\HHTWСSPХ’PЛ€XШЭ\XЮHHL€њHL€ќ\™Щ]HT‘СUФСSPХQ€њљ[Ьљ]HH€Ш]YЫЬћHHSPQСWРРUQУФ–WФTТPРS€›XZЩ\РЫЫќXЭH•QK€Y][Ы[Y™™XЭИHQUSУђSСQ‘‘PХКВ€›[Э™QY™™XЭHSХ‘WСQ‘‘PХС“SђТ€Ъ[ЩHHМ€JK€ЫЫќ\ЭY™™XЭHУУ•TХСQ‘‘PХТQТWРTPSS‘Л€ЫЫќ\ЭШ]YЫЬћHHУУ•TХРРUQУФ–WРУУУ€ЫЫќ\ЭЫЫX›ФЭ\ќ\’YH€ЫЫќ\ЭЫЫX›У[Э™\ИHРУУP“ЧФХT•T—РТT‘С_K€]P[љ[TШЬљ\HР]P[љ[S[Э™WЦљ[™Ц\€K‚€УSХ‘WУђUT‘TЧУPQ‘TФЧHB€В€›[YHHУУTХS‘ФХ’S‘К“]\™IЬИXY™\ЬИЉK€™\ШЬљ\[Ы€HУУTХS‘ФХ’S‘К€’[™\ИH›ЩIЬИЪ]€‚€ќHЭЩ\€Щ€]\™K€ЉK€™Y™™XЭHQ‘‘PХС’VQФTђСS•СSPQСK€њЭЩ\€HK€ќ\HHTWСђRT–K€XШЭ\XЮHHL€њHL€ќ\™Щ]HT‘СUФСSPХQ€њљ[Ьљ]HH€Ш]YЫЬћHHSPQСWРРUQУФ–WФФPТPS€\™Э[Y[ќHИ™[XYЩT\Щ[ќYЩHHLK€›Y]›Ы›ЫYP[›™YH—ХTUQУSХ‘WС“QФИЏHСS—О€ЫЫќ\ЭY™™XЭHУУ•TХСQ‘‘PХРђQWФХT•WУSУ”ЧХТUСУУСРTPSЛ€ЫЫќ\ЭШ]YЫЬћHHУУ•TХРРUQУФ–WРХUK€ЫЫќ\ЭЫЫX›ФЭ\ќ\’YH€ЫЫќ\ЭЫЫX›У[Э™\ИHМK€]P[љ[TШЬљ\HР]P[љ[S[Э™WУ]\™\УXY™\ЬЛ€K‚€УSХ‘WУUSWРUPТЧHB€В€›[YHHУУTХS‘ФХ’S‘К“][KP]XЪИЉK€™\ШЬљ\[Ы€HУУTХS‘ФХ’S‘К€ђ[€]XЪИ]Ъ[™Щ\Ч€‚€ќЪ]Y[[ЬљY\Л€ЉK€™Y™™XЭHQ‘‘PХРТS‘СWХTWУУ—ТUSK€њЭЩ\€H—ХTUQУSХ‘WСUHЏHСS—ОИLЊ€L€ќ\HHTWУ“Ф“PS€XШЭ\XЮHHL€њHL€ќ\™Щ]HT‘СUФСSPХQ€њљ[Ьљ]HH€Ш]YЫЬћHHSPQСWРРUQУФ–WФTТPРS€\™Э[Y[ќHИљЫY™™XЭHУСQ‘‘PХУQSSФ–HK€›XZЩ\РЫЫќXЭH•QK€ЫЫќ\ЭY™™XЭHУУ•TХСQ‘‘PХФРФђSP“WУ‘VХT“—УФ‘T‹€ЫЫќ\ЭШ]YЫЬћHHУУ•TХРРUQУФ–WР‘PUUK€ЫЫќ\ЭЫЫX›ФЭ\ќ\’YH€ЫЫќ\ЭЫЫX›У[Э™\ИHМK€]P[љ[TШЬљ\HР]P[љ[S[Э™WУ][P]XЪЛ€K‚€УSХ‘WУRS‘Р“ХУ—HB€В€›[YHHУУTХS‘ФХ’S‘К“Z[™›ЭЫ€ЉK€™\ШЬљ\[Ы€HУУTХS‘ФХ’S‘К€’]^Щ\ИH\Щ\‰ЬИXY€‚€ќИ[XYЩH]™\ћ][™И\›Э[™€ЉK€™Y™™XЭHQ‘‘PХУPVТНLФ‘PУТS€њЭЩ\€HML€ќ\HHTWС’T‘K€XШЭ\XЮHHL€њHK€ќ\™Щ]HT‘СUС“СTЧРS‘РSK€њљ[Ьљ]HH€Ш]YЫЬћHHSPQСWРРUQУФ–WФФPТPS€›Y]›Ы›ЫYP[›™YH•QK€™[\[›™YH•QK€ЫЫќ\ЭY™™XЭHУУ•TХСQ‘‘PХХTСT—УSФ‘WСPTТSWФХT•Q€ЫЫќ\ЭШ]YЫЬћHHУУ•TХРРUQУФ–WР‘PUUK€ЫЫќ\ЭЫЫX›ФЭ\ќ\’YH€ЫЫќ\ЭЫЫX›У[Э™\ИHМK€]P[љ[TШЬљ\HР]P[љ[S[Э™WУZ[™›ЭЫ‹€K‚€УSХ‘WФTУPWС’TХЧHB€В€›[YHHУУTХS‘ФХ’S‘К”\ЫXHљ\ЭИЉK€™\ШЬљ\[Ы€HУУTХS‘ФХ’S‘К€’]ИЪ][XЭљXШ[љ\ЭЛ—€‚€“›Ь›X[[Э™\И\›€[XЭљXЛ€ЉK€™Y™™XЭHQ‘‘PХТU€њЭЩ\€HL€ќ\HHTWСSPХ’PЛ€XШЭ\XЮHHL€њHMK€ќ\™Щ]HT‘СUФСSPХQ€њљ[Ьљ]HH€Ш]YЫЬћHHSPQСWРРUQУФ–WФTТPРS€›XZЩ\РЫЫќXЭH•QK€њ[Ъ[™У[Э™HH•QK€›Y]›Ы›ЫYP[›™YH•QK€ЫЫќ\ЭY™™XЭHУУ•TХСQ‘‘PХХУФ”СS—РУУ‘USУ—УС—Ф‘U—УSУ”Л€ЫЫќ\ЭШ]YЫЬћHHУУ•TХРРUQУФ–WРУУУ€ЫЫќ\ЭЫЫX›ФЭ\ќ\’YH€ЫЫќ\ЭЫЫX›У[Э™\ИHМK€Y][Ы[Y™™XЭИHQUSУђSСQ‘‘PХКВ€›[Э™QY™™XЭHSХ‘WСQ‘‘PХТSУ—СSQСK€JK€]P[љ[TШЬљ\HР]P[љ[S[Э™WФ\ЫXQљ\ЭЛ€K‚€УSХ‘WФХУ—ССVTСT—HB€В€›[YHHУУTХS‘ФХ’S‘К”ЭЫ€Щ^\Щ\€ЉK€™\ШЬљ\[Ы€HУУTХS‘ФХ’S‘К€•\Щ\‰ЬИYЪ\Э]XЪИЭ]€‚€™]\›Z[™\И]ИШ]YЫЬћK€ЉK€™Y™™XЭHQ‘‘PХФХУ—ССVTСT‹€њЭЩ\€HL€ќ\HHTWФЦPТPЛ€XШЭ\XЮHHL€њHK€ќ\™Щ]HT‘СUФСSPХQ€њљ[Ьљ]HH€Ш]YЫЬћHHSPQСWРРUQУФ–WФФPТPS€љYЫ›Ь™\Х\™Щ]Xљ[]HH•QK€›Y]›Ы›ЫYP[›™YH•QK€ЫЫќ\ЭY™™XЭHУУ•TХСQ‘‘PХР‘UT—ТQ—ФРSQWХTK€ЫЫќ\ЭШ]YЫЬћHHУУ•TХРРUQУФ–WФУPT•€ЫЫќ\ЭЫЫX›ФЭ\ќ\’YH€ЫЫќ\ЭЫЫX›У[Э™\ИHМK€]P[љ[TШЬљ\HР]P[љ[S[Э™WФЭЫ‘Щ^\Щ\‹€K‚€УSХ‘WЦ’TWЦђTHB€В€›[YHHУУTХS‘ФХ’S‘К–љ\H\ЉK€™\ШЬљ\[Ы€HУУTХS‘ФХ’S‘К€‘[XЭљXИќ\њЭИ[Ш^\ИЫЧ€‚€™љ\њЭ[™[™HЬљ]XШ[]€ЉK€™Y™™XЭHQ‘‘PХТU€њЭЩ\€H—ХTUQУSХ‘WСUHЏHСS—ОИЊ€L€ќ\HHTWСSPХ’PЛ€XШЭ\XЮHHL€њH—ХTUQУSХ‘WСUHЏHСS—ОИL€MK€ќ\™Щ]HT‘СUФСSPХQ€њљ[Ьљ]HH‹€Ш]YЫЬћHHSPQСWРРUQУФ–WФTТPРS€›XZЩ\РЫЫќXЭH•QK€›Z\њ›Ь“[Э™P[›™YH—ХTUQУSХ‘WС“QФИСS—О€[Ш^\РЬљ]XШ[]H•QK€›Y]›Ы›ЫYP[›™YH•QK€ЛИЪY€—ХTUQУSХ‘WСUHЏHСS—О€ЛИY][Ы[Y™™XЭИHQUSУђSСQ‘‘PХКВ€ЛИ›[Э™QY™™XЭHSХ‘WСQ‘‘PХСU”ЧФTЧМK€ЛИњЩ[€H•QK€ЛИJK€ЛИЩ[™Y‚€]P[љ[TШЬљ\HР]P[љ[S[Э™WЦљ\V\€K‚€УSХ‘WФФTТWФФTТHB€В€›[YHHУУTХS‘ФХ’S‘К”Ь\ЪHЬ\ЪЉK€™\ШЬљ\[Ы€HУУTХS‘ФХ’S‘К€ђHYЩH[XЭљYљYYШ]™H]€‚€›X^H\[^™HH›Щ\Л€ЉK€™Y™™XЭHQ‘‘PХТU€њЭЩ\€HL€ќ\HHTWХРUT‹€XШЭ\XЮHHL€њHMK€ќ\™Щ]HT‘СUР“Х€њљ[Ьљ]HH€Ш]YЫЬћHHSPQСWРРUQУФ–WФФPТPS€›Z\њ›Ь“[Э™P[›™YH—ХTUQУSХ‘WС“QФИСS—О€›Y]›Ы›ЫYP[›™YH•QK€Y][Ы[Y™™XЭИHQUSУђSСQ‘‘PХКВ€›[Э™QY™™XЭHSХ‘WСQ‘‘PХФTђSTТTЛ€Ъ[ЩHHМ€JK€]P[љ[TШЬљ\HР]P[љ[S[Э™WФЬ\ЪTЬ\Ъ€K‚€УSХ‘WС“РUWСђSHB€В€›[YHHУУTХS‘ФХ’S‘К‘›Ш]H[ЉK€™\ШЬљ\[Ы€HУУTХS‘ФХ’S‘К€‘›Ш]И[€Z\€[™]™\И]€‚€[™ЫK€X^HШ]\ЩH›[Ъ[™Л€ЉK€™Y™™XЭHQ‘‘PХТU€њЭЩ\€HL€ќ\HHTWС“RS‘Л€XШЭ\XЮHHMK€њHMK€ќ\™Щ]HT‘СUФСSPХQ€њљ[Ьљ]HH€Ш]YЫЬћHHSPQСWРРUQУФ–WФTТPРS€›XZЩ\РЫЫќXЭH•QK€›Z\њ›Ь“[Э™P[›™YH—ХTUQУSХ‘WС“QФИСS—О€™Ь]љ]P[›™YH•QK€›Y]›Ы›ЫYP[›™YH•QK€Y][Ы[Y™™XЭИHQUSУђSСQ‘‘PХКВ€›[Э™QY™™XЭHSХ‘WСQ‘‘PХС“SђТ€Ъ[ЩHHМ€њЪY\‘›ЬЩSЭ™\њљYHH•QK€JK€]P[љ[TШЬљ\HР]P[љ[S[Э™WС›Ш]Q[€K‚€УSХ‘WФRРWФTХЧHB€В€›[YHHУУTХS‘ФХ’S‘К”ZШH\ЭИЉK€™\ШЬљ\[Ы€HУУTХS‘ФХ’S‘К€”ZШXЪIЬИЭ™H[Ь™X\Щ\И]Ч€‚€њЭЩ\‹€]™]™\€Z\ЬЩ\Л€ЉK€™Y™™XЭHQ‘‘PХФ‘UT“‹€њЭЩ\€HK€ќ\HHTWСSPХ’PЛ€XШЭ\XЮHH€њHЊ€ќ\™Щ]HT‘СUФСSPХQ€њљ[Ьљ]HH€Ш]YЫЬћHHSPQСWРРUQУФ–WФФPТPS€›Z\њ›Ь“[Э™P[›™YH—ХTUQУSХ‘WС“QФИСS—О€›Y]›Ы›ЫYP[›™YH•QK€]P[љ[TШЬљ\HР]P[љ[S[Э™WФZШT\ЭЛ€K‚€УSХ‘WР“ХSђЦWР•Pђ“WHB€В€›[YHHУУTХS‘ФХ’S‘Кђ›Э[ЮHќX›HЉK€™\ШЬљ\[Ы€HУУTХS‘ФХ’S‘К€ђ[€]XЪИ]XњЫЬњЧ€‚€ЪY€—ХTUQУSХ‘WСUHЏHСS—О€[H[XYЩH[™›XЭY€ЉK€Щ[ЩB€љ[€H[XYЩH[™›XЭY€ЉK€Щ[™Y‚€™Y™™XЭHQ‘‘PХРP”УФђ‹€њЭЩ\€H—ХTUQУSХ‘WСUHЏHСS—ОИЊ€L€ќ\HHTWХРUT‹€XШЭ\XЮHHL€њH—ХTUQУSХ‘WСUHЏHСS—ОИЊ€MK€ќ\™Щ]HT‘СUФСSPХQ€њљ[Ьљ]HH€Ш]YЫЬћHHSPQСWРРUQУФ–WФФPТPS€\™Э[Y[ќHИXњЫЬ”\Щ[ќYЩHH—ХTUQУSХ‘WСUHЏHСS—ОИL€LK€›Z\њ›Ь“[Э™P[›™YH—ХTUQУSХ‘WС“QФИСS—О€›Y]›Ы›ЫYP[›™YH•QK€љX[[™У[Э™HH—ТPSР“РТТS‘ИЏHСS—Н‹€]P[љ[TШЬљ\HР]P[љ[S[Э™WР›Э[ЮPќX›K€K‚€УSХ‘WР•V––WР•V–—HB€В€›[YHHУУTХS‘ФХ’S‘Кђќ^ћћHќ^ћ€ЉK€™\ШЬљ\[Ы€HУУTХS‘ФХ’S‘К€”ЪЫЭИH›ЫЩ€[XЭљXЪ]W€‚€ќ][Ш^\И\[^™\Л€ЉK€™Y™™XЭHQ‘‘PХТU€њЭЩ\€H—ХTUQУSХ‘WСUHЏHСS—ОИЊ€L€ќ\HHTWСSPХ’PЛ€XШЭ\XЮHHL€њH—ХTUQУSХ‘WСUHЏHСS—ОИЊ€MK€ќ\™Щ]HT‘СUФСSPХQ€њљ[Ьљ]HH€Ш]YЫЬћHHSPQСWРРUQУФ–WФФPТPS€›Z\њ›Ь“[Э™P[›™YH—ХTUQУSХ‘WС“QФИСS—О€›Y]›Ы›ЫYP[›™YH•QK€Y][Ы[Y™™XЭИHQUSУђSСQ‘‘PХКВ€›[Э™QY™™XЭHSХ‘WСQ‘‘PХФTђSTТTЛ€JK€]P[љ[TШЬљ\HР]P[љ[S[Э™WРќ^ћћPќ^ћ‹€K‚€УSХ‘WФТV–“WФУQWHB€В€›[YHHУУTХS‘ФХ’S‘К”Ъ^ћ›HЫYHЉK€™\ШЬљ\[Ы€HУУTХS‘ФХ’S‘К€•\Щ\€ЫШZЩY[€љ\™HЪ\™Щ\Л—€‚€“X]™\ИH›ЩHЪ]Hќ\›‹€ЉK€™Y™™XЭHQ‘‘PХТU€њЭЩ\€H—ХTUQУSХ‘WСUHЏHСS—ОИЊ€L€ќ\HHTWС’T‘K€XШЭ\XЮHHL€њH—ХTUQУSХ‘WСUHЏHСS—ОИЊ€MK€ќ\™Щ]HT‘СUФСSPХQ€њљ[Ьљ]HH€Ш]YЫЬћHHSPQСWРРUQУФ–WФTТPРS€›XZЩ\РЫЫќXЭH•QK€›Z\њ›Ь“[Э™P[›™YH—ХTUQУSХ‘WС“QФИСS—О€ќ]ЬХ\Щ\€H•QK€›Y]›Ы›ЫYP[›™YH•QK€Y][Ы[Y™™XЭИHQUSУђSСQ‘‘PХКВ€›[Э™QY™™XЭHSХ‘WСQ‘‘PХР•T“‹€JK€]P[љ[TШЬљ\HР]P[љ[S[Э™WФЪ^ћ›TЫYK€K‚€УSХ‘WСУU–WСУХЧHB€В€›[YHHУУTХS‘ФХ’S‘К‘Ы]ћHЫЭИЉK€™\ШЬљ\[Ы€HУУTХS‘ФХ’S‘К€•[ZЪ[™]XИ›ЬЩH]Щ]Ч€‚€ќШ[ЭЩ\љ[™ИЬ€]И[XYЩK€ЉK€™Y™™XЭHQ‘‘PХТU€њЭЩ\€H—ХTUQУSХ‘WСUHЏHСS—ОИ€L€ќ\HHTWФЦPТPЛ€XШЭ\XЮHH—ХTUQУSХ‘WСUHЏHСS—ОИMH€L€њHMK€ќ\™Щ]HT‘СUФСSPХQ€њљ[Ьљ]HH€Ш]YЫЬћHHSPQСWРРUQУФ–WФФPТPS€›Z\њ›Ь“[Э™P[›™YH—ХTUQУSХ‘WС“QФИСS—О€›Y]›Ы›ЫYP[›™YH•QK€Y][Ы[Y™™XЭИHQUSУђSСQ‘‘PХКВ€›[Э™QY™™XЭHSХ‘WСQ‘‘PХУQТФРФ‘QS‹€JK€]P[љ[TШЬљ\HР]P[љ[S[Э™WСЫ]ћQЫЭЛ€K‚€УSХ‘WРђQWРђQHB€В€›[YHHУУTХS‘ФХ’S‘КђYHYЉK€™\ШЬљ\[Ы€HУУTХS‘ФХ’S‘К€ђXЭ[™ИYK]XЪЬЛ€Щ]Ч€‚€ќШ[ЭЩ\љ[™И]XЪИ[XYЩK€ЉK€™Y™™XЭHQ‘‘PХТU€њЭЩ\€H—ХTUQУSХ‘WСUHЏHСS—ОИ€L€ќ\HHTWСT’Л€XШЭ\XЮHH—ХTUQУSХ‘WСUHЏHСS—ОИMH€L€њHMK€ќ\™Щ]HT‘СUФСSPХQ€њљ[Ьљ]HH€Ш]YЫЬћHHSPQСWРРUQУФ–WФФPТPS€›Z\њ›Ь“[Э™P[›™YH—ХTUQУSХ‘WС“QФИСS—О€›Y]›Ы›ЫYP[›™YH•QK€Y][Ы[Y™™XЭИHQUSУђSСQ‘‘PХКВ€›[Э™QY™™XЭHSХ‘WСQ‘‘PХФ‘Q“PХ€JK€]P[љ[TШЬљ\HР]P[љ[S[Э™WРYPY€K‚€УSХ‘WФРTWФСQQHB€В€›[YHHУУTХS‘ФХ’S‘К”Ш\HЩYYЉK€™\ШЬљ\[Ы€HУУTХS‘ФХ’S‘К€‘ЪX[ќЭ[ИШШ]\њИЩYYЧ€‚€ќ]Z[€]™\ћH\›‹€ЉK€™Y™™XЭHQ‘‘PХТU€њЭЩ\€H—ХTUQУSХ‘WСUHЏHСS—ОИL€L€ќ\HHTWСФђTФЛ€XШЭ\XЮHH—ХTUQУSХ‘WСUHЏHСS—ОИL€L€њH—ХTUQУSХ‘WСUHЏHСS—ОИL€MK€ќ\™Щ]HT‘СUФСSPХQ€њљ[Ьљ]HH€Ш]YЫЬћHHSPQСWРРUQУФ–WФTТPРS€›Z\њ›Ь“[Э™P[›™YH—ХTUQУSХ‘WС“QФИСS—О€›XYЪXРЫШ]Y™™XЭYH•QK€›Y]›Ы›ЫYP[›™YH•QK€Y][Ы[Y™™XЭИHQUSУђSСQ‘‘PХКВ€›[Э™QY™™XЭHSХ‘WСQ‘‘PХУQPТФСQQ€JK€]P[љ[TШЬљ\HР]P[љ[S[Э™WФШ\TЩYY€K‚€УSХ‘WС”‘QV–WС”“ФХHB€В€›[YHHУУTХS‘ФХ’S‘К‘њ™Y^ћHњ›ЬЭЉK€™\ШЬљ\[Ы€HУУTХS‘ФХ’S‘К€ђЬћ\Э[њ›ЫHЫЫ^™H]Л—€‚€‘[[Z[]\И[Э]Ъ[™Щ\Л€ЉK€™Y™™XЭHQ‘‘PХТU€њЭЩ\€H—ХTUQУSХ‘WСUHЏHСS—ОИL€L€ќ\HHTWТPСK€XШЭ\XЮHH—ХTUQУSХ‘WСUHЏHСS—ОИL€L€њH—ХTUQУSХ‘WСUHЏHСS—ОИL€MK€ќ\™Щ]HT‘СUФСSPХQ€њљ[Ьљ]HH€Ш]YЫЬћHHSPQСWРРUQУФ–WФФPТPS€›Z\њ›Ь“[Э™P[›™YH—ХTUQУSХ‘WС“QФИСS—О€›Y]›Ы›ЫYP[›™YH•QK€Y][Ы[Y™™XЭИHQUSУђSСQ‘‘PХКВ€›[Э™QY™™XЭHSХ‘WСQ‘‘PХТV‘K€JK€]P[љ[TШЬљ\HР]P[љ[S[Э™WСњ™Y^ћQњ›ЬЭ€K‚€УSХ‘WФФT’УWФХТT“HB€В€›[YHHУУTХS‘ФХ’S‘К”Ь\љЫHЭЪ\›ЉK€™\ШЬљ\[Ы€HУУTХS‘ФХ’S‘К€•Ь\›ЩHЪ]Ъ\›Ъ[™Щ—€‚€њШЩ[ќ€X[И\ќIЬИЭ]\Л€ЉK€™Y™™XЭHQ‘‘PХТU€њЭЩ\€H—ХTUQУSХ‘WСUHЏHСS—ОИLЊ€L€ќ\HHTWСђRT–K€XШЭ\XЮHH—ХTUQУSХ‘WСUHЏHСS—ОИH€L€њH—ХTUQУSХ‘WСUHЏHСS—ОИH€MK€ќ\™Щ]HT‘СUФСSPХQ€њљ[Ьљ]HH€Ш]YЫЬћHHSPQСWРРUQУФ–WФФPТPS€›Z\њ›Ь“[Э™P[›™YH—ХTUQУSХ‘WС“QФИСS—О€›Y]›Ы›ЫYP[›™YH•QK€Y][Ы[Y™™XЭИHQUSУђSСQ‘‘PХКВ€›[Э™QY™™XЭHSХ‘WСQ‘‘PХРT“УPUTђTK€JK€]P[љ[TШЬљ\HР]P[љ[S[Э™WФЬ\љЫTЭЪ\›€K‚€УSХ‘WХ‘QU‘QWХ“УVWHB€В€›[YHHУУTХS‘ФХ’S‘К•™Y]™YH›Ы^HЉK€™\ШЬљ\[Ы€HУУTХS‘ФХ’S‘К€‘Y]™YIЬИЭ™H[Ь™X\Щ\И]Ч€‚€њЭЩ\‹€]™]™\€Z\ЬЩ\Л€ЉK€™Y™™XЭHQ‘‘PХФ‘UT“‹€њЭЩ\€HK€ќ\HHTWУ“Ф“PS€XШЭ\XЮHH€њHЊ€ќ\™Щ]HT‘СUФСSPХQ€њљ[Ьљ]HH€Ш]YЫЬћHHSPQСWРРUQУФ–WФTТPРS€›XZЩ\РЫЫќXЭH•QK€›Z\њ›Ь“[Э™P[›™YH—ХTUQУSХ‘WС“QФИСS—О€›Y]›Ы›ЫYP[›™YH•QK€]P[љ[TШЬљ\HР]P[љ[S[Э™WХ™Y]™YU›Ы^K€K‚€УSХ‘WСХP“WТT“У—РђTТHB€В€›[YHHУУTХS‘ФХ’S‘К‘ЭX›H\›Ы€\ЪЉK€™\ШЬљ\[Ы€HУУTХS‘ФХ’S‘К€•H\Щ\€Ь[њИ[™]ИЪ]€‚€љ]И\›\Л€X^HШ]\ЩH›[Ъ€ЉK€™Y™™XЭHQ‘‘PХТU€њЭЩ\€HЊ€ќ\HHTWФХQS€XШЭ\XЮHHL€њHK€ќ\™Щ]HT‘СUФСSPХQ€њљ[Ьљ]HH€Ш]YЫЬћHHSPQСWРРUQУФ–WФTТPРS€›XZЩ\РЫЫќXЭH•QK€њ[Ъ[™У[Э™HH•QK€њЭљZЩPЫЭ[ќH‹€›Z[љ[Z^™QЭX›Q[XYЩHH—ХTUQУSХ‘WС“QФИСS—О€›Y]›Ы›ЫYP[›™YH•QK€Y][Ы[Y™™XЭИHQUSУђSСQ‘‘PХКВ€›[Э™QY™™XЭHSХ‘WСQ‘‘PХС“SђТ€Ъ[ЩHHМ€JK€ЫЫќ\ЭY™™XЭHУУ•TХСQ‘‘PХФ‘TUUSУ—У“ХР“Ф’S‘Л€ЫЫќ\ЭШ]YЫЬћHHУУ•TХРРUQУФ–WХХQТ€ЫЫќ\ЭЫЫX›ФЭ\ќ\’YH€ЫЫќ\ЭЫЫX›У[Э™\ИHМK€]P[љ[TШЬљ\HР]P[љ[S[Э™WСЭX›R\›Ыђ\Ъ€K‚€УSХ‘WСSђSPVРРS““У—HB€В€›[YHHУУTХS‘ФХ’S‘К‘[[X^Ш[››Ы€ЉK€™\ШЬљ\[Ы€HУУTХS‘ФХ’S‘К€•[›X\Ъ\ИЫЬ™H[™\™ЮK—€‚€ЊћYШZ[њЭ[[X^Y›Щ\Л€ЉK€™Y™™XЭHQ‘‘PХСSђSPVСХP“WСQЛ€њЭЩ\€HL€ќ\HHTWСђQУУ‹€XШЭ\XЮHHL€њHK€ќ\™Щ]HT‘СUФСSPХQ€њљ[Ьљ]HH€Ш]YЫЬћHHSPQСWРРUQУФ–WФФPТPS€›Z\њ›Ь“[Э™P[›™YH•QK€›Y]›Ы›ЫYP[›™YH•QK€ЫЬXШ][›™YH•QK€њЫY\[Р[›™YH•QK€љ[њЭќXЭ[›™YH•QK€›Z[ZXР[›™YH•QK€™[ЫЬ™P[›™YH•QK€\ЬЪ\Э[›™YH—СVђTУUQУSХ‘WС“QФЛ€њ\™[ќ[›Ы™[›™YH•QK€ЫЫќ\ЭY™™XЭHУУ•TХСQ‘‘PХХTСT—УSФ‘WСPTТSWФХT•Q€ЫЫќ\ЭШ]YЫЬћHHУУ•TХРРUQУФ–WФУPT•€ЫЫќ\ЭЫЫX›ФЭ\ќ\’YH€ЫЫќ\ЭЫЫX›У[Э™\ИHМK€]P[љ[TШЬљ\HР]P[љ[S[Э™WС[[X^Ш[››Ы‹€K‚€УSХ‘WФУ’TWФТХHB€В€›[YHHУУTХS‘ФХ’S‘К”Ыљ\HЪЭЉK€™\ШЬљ\[Ы€HУУTХS‘ФХ’S‘К€•H\Щ\€YЫ›Ь™\ИY™™XЭЧ€‚€ќ]]И[€[Э™\Л€ЉK€™Y™™XЭHQ‘‘PХФУ’TWФТХ€њЭЩ\€HK€ќ\HHTWХРUT‹€XШЭ\XЮHHL€Ьљ]XШ[]ЭYЩHH—ХTUQУSХ‘WСUHЏHСS—МИИH€‹€њHMK€ќ\™Щ]HT‘СUФСSPХQ€њљ[Ьљ]HH€Ш]YЫЬћHHSPQСWРРUQУФ–WФФPТPS€ЫЫќ\ЭY™™XЭHУУ•TХСQ‘‘PХФХT•WУSУ”ЧФРSQWХTWРTPS€ЫЫќ\ЭШ]YЫЬћHHУУ•TХРРUQУФ–WР‘PUUK€ЫЫќ\ЭЫЫX›ФЭ\ќ\’YH€ЫЫќ\ЭЫЫX›У[Э™\ИHМK€]P[љ[TШЬљ\HР]P[љ[S[Э™WФЫљ\TЪЭ€K‚€УSХ‘WТђUЧУРТЧHB€В€›[YHHУУTХS‘ФХ’S‘К’]ИШЪИЉK€™\ШЬљ\[Ы€HУУTХS‘ФХ’S‘К€”™]™[ќИH\Щ\€[™€‚€ќH\™Щ]њ›ЫH\ШШ\[™Л€ЉK€™Y™™XЭHQ‘‘PХТU€њЭЩ\€H€ќ\HHTWСT’Л€XШЭ\XЮHHL€њHL€ќ\™Щ]HT‘СUФСSPХQ€њљ[Ьљ]HH€Ш]YЫЬћHHSPQСWРРUQУФ–WФTТPРS€›XZЩ\РЫЫќXЭH•QK€љ][™У[Э™HH•QK€Y][Ы[Y™™XЭИHQUSУђSСQ‘‘PХКВ€›[Э™QY™™XЭHSХ‘WСQ‘‘PХХђTР“Х€JK€ЫЫќ\ЭY™™XЭHУУ•TХСQ‘‘PХСУ•СVТUWРUQQSђСK€ЫЫќ\ЭШ]YЫЬћHHУУ•TХРРUQУФ–WХХQТ€ЫЫќ\ЭЫЫX›ФЭ\ќ\’YH€ЫЫќ\ЭЫЫX›У[Э™\ИHМK€]P[љ[TШЬљ\HР]P[љ[S[Э™WТ]УШЪЛ€K‚€УSХ‘WФХQ‘—РТQRФЧHB€В€›[YHHУУTХS‘ФХ’S‘К”ЭY™€ЪYZЬИЉK€™\ШЬљ\[Ы€HУУTХS‘ФХ’S‘К€ђЫЫњЭ[Y\ИH\Щ\‰ЬИ™\њћK€‚€ќ[€Ъ\њHZ\Щ\ИY‹€ЉK€™Y™™XЭHQ‘‘PХФХQ‘—РТQRФЛ€њЭЩ\€H€ќ\HHTWУ“Ф“PS€XШЭ\XЮHH€њHL€ќ\™Щ]HT‘СUХTСT‹€њљ[Ьљ]HH€Ш]YЫЬћHHSPQСWРРUQУФ–WФХUTЛ€њЫ]ЪY™™XЭYH•QK€љYЫ›Ь™\Ф›ЭXЭH•QK€›Z\њ›Ь“[Э™P[›™YH•QK€ЫЫќ\ЭY™™XЭHУУ•TХСQ‘‘PХТST“Х‘WРУУ‘USУ—Ф‘U‘S•У‘T•“ХTУ‘TФЛ€ЫЫќ\ЭШ]YЫЬћHHУУ•TХРРUQУФ–WРХUK€ЫЫќ\ЭЫЫX›ФЭ\ќ\’YH€ЫЫќ\ЭЫЫX›У[Э™\ИHМK€]P[љ[TШЬљ\HР]P[љ[S[Э™WФЭY™ђЪYZЬЛ€K‚€УSХ‘WУ“ЧФ‘U‘PUHB€В€›[YHHУУTХS‘ФХ’S‘К“›И™]™X]ЉK€™\ШЬљ\[Ы€HУУTХS‘ФХ’S‘К€”Z\Щ\И[Щ€H\Щ\‰ЬЧ€‚€њЭ]Иќ]™]™[ќИ\ШШ\K€ЉK€™Y™™XЭHQ‘‘PХУ“ЧФ‘U‘PU€њЭЩ\€H€ќ\HHTWС’QТS‘Л€XШЭ\XЮHH€њHK€ќ\™Щ]HT‘СUХTСT‹€њљ[Ьљ]HH€Ш]YЫЬћHHSPQСWРРUQУФ–WФХUTЛ€њЫ]ЪY™™XЭYH•QK€љYЫ›Ь™\Ф›ЭXЭH•QK€›Z\њ›Ь“[Э™P[›™YH•QK€ЫЫќ\ЭY™™XЭHУУ•TХСQ‘‘PХТST“Х‘WРУУ‘USУ—Ф‘U‘S•У‘T•“ХTУ‘TФЛ€ЫЫќ\ЭШ]YЫЬћHHУУ•TХРРUQУФ–WХХQТ€ЫЫќ\ЭЫЫX›ФЭ\ќ\’YH€ЫЫќ\ЭЫЫX›У[Э™\ИHМK€]P[љ[TШЬљ\HР]P[љ[S[Э™WУ›Ф™]™X]€K‚€УSХ‘WХT—ФТХHB€В€›[YHHУУTХS‘ФХ’S‘К•\€ЪЭЉK€™\ШЬљ\[Ы€HУУTХS‘ФХ’S‘К€“ЭЩ\њИH›ЩIЬИЬYY[™€‚€›XZЩ\И]ЩXZИИљ\™K€ЉK€™Y™™XЭHQ‘‘PХХT—ФТХ€њЭЩ\€H€ќ\HHTWФ“РТЛ€XШЭ\XЮHHL€њHMK€ќ\™Щ]HT‘СUФСSPХQ€њљ[Ьљ]HH€Ш]YЫЬћHHSPQСWРРUQУФ–WФХUTЛ€›XYЪXРЫШ]Y™™XЭYH•QK€ЫЫќ\ЭY™™XЭHУУ•TХСQ‘‘PХРђQWФХT•WФ‘U—УSУ”Л€ЫЫќ\ЭШ]YЫЬћHHУУ•TХРРUQУФ–WР‘PUUK€ЫЫќ\ЭЫЫX›ФЭ\ќ\’YH€ЫЫќ\ЭЫЫX›У[Э™\ИHМK€]P[љ[TШЬљ\HР]P[љ[S[Э™WХ\”ЪЭ€K‚€УSХ‘WУPQТPЧФХСT—HB€В€›[YHHУУTХS‘ФХ’S‘К“XYЪXИЭЩ\€ЉK€™\ШЬљ\[Ы€HУУTХS‘ФХ’S‘К€“XYЪXИЭЩ\€Ъ[™Щ\ИW€‚€ќ\™Щ][ќИHЮXЪXИ\K€ЉK€™Y™™XЭHQ‘‘PХФУРRЛ€њЭЩ\€H€ќ\HHTWФЦPТPЛ€XШЭ\XЮHHL€њHЊ€ќ\™Щ]HT‘СUФСSPХQ€њљ[Ьљ]HH€Ш]YЫЬћHHSPQСWРРUQУФ–WФХUTЛ€\™Э[Y[ќHИќ\HHTWФЦPТPИK€›XYЪXРЫШ]Y™™XЭYH•QK€њЭЩ\“[Э™HH•QK€ЫЫќ\ЭY™™XЭHУУ•TХСQ‘‘PХФХT•WУSУ—ХТUТ•QСTЧРUS•SУ‹€ЫЫќ\ЭШ]YЫЬћHHУУ•TХРРUQУФ–WРХUK€ЫЫќ\ЭЫЫX›ФЭ\ќ\’YH€ЫЫќ\ЭЫЫX›У[Э™\ИHМK€]P[љ[TШЬљ\HР]P[љ[S[Э™WУXYЪXФЭЩ\‹€K‚€УSХ‘WСђQУУ—СT•ЧHB€В€›[YHHУУTХS‘ФХ’S‘К‘YЫЫ€\ќИЉK€™\ШЬљ\[Ы€HУУTХS‘ФХ’S‘К€•H\Щ\€]XЪЬИЪXЩK€ЫЧ€‚€ќ\™Щ]И\™H]ЫЩHXXЪ€ЉK€™Y™™XЭHQ‘‘PХТU€њЭЩ\€HL€ќ\HHTWСђQУУ‹€XШЭ\XЮHHL€њHL€ќ\™Щ]HT‘СUФУPT•€њљ[Ьљ]HH€Ш]YЫЬћHHSPQСWРРUQУФ–WФTТPРS€њЭљZЩPЫЭ[ќH‹€њ\™[ќ[›Ы™[›™YH•QK€ЫЫќ\ЭY™™XЭHУУ•TХСQ‘‘PХФ‘TUUSУ—У“ХР“Ф’S‘Л€ЫЫќ\ЭШ]YЫЬћHHУУ•TХРРUQУФ–WРУУУ€ЫЫќ\ЭЫЫX›ФЭ\ќ\’YH€ЫЫќ\ЭЫЫX›У[Э™\ИHМK€]P[љ[TШЬљ\HР]P[љ[S[Э™WСYЫЫ‘\ќЛ€K‚€УSХ‘WХPUSQWHB€В€›[YHHУУTХS‘ФХ’S‘К•X][YHЉK€™\ШЬљ\[Ы€HУУTХS‘ФХ’S‘К€ђ[Ърк[[Ы€]™HX][YW€‚€[™X]Z\€™\њљY\Л€ЉK€™Y™™XЭHQ‘‘PХХPUSQK€њЭЩ\€H€ќ\HHTWУ“Ф“PS€XШЭ\XЮHH€њHL€ќ\™Щ]HT‘СUРSРђUT”Л€њљ[Ьљ]HH€Ш]YЫЬћHHSPQСWРРUQУФ–WФХUTЛ€љYЫ›Ь™\Ф›ЭXЭH•QK€љYЫ›Ь™\ФЭXњЭ]]HH•QK€›Z\њ›Ь“[Э™P[›™YH•QK€ЫЫќ\ЭY™™XЭHУУ•TХСQ‘‘PХУPRСWС“УХТS‘ЧУSУ”ЧУ‘T•“ХTЛ€ЫЫќ\ЭШ]YЫЬћHHУУ•TХРРUQУФ–WР‘PUUK€ЫЫќ\ЭЫЫX›ФЭ\ќ\’YH€ЫЫќ\ЭЫЫX›У[Э™\ИHМK€]P[љ[TШЬљ\HР]P[љ[S[Э™WХX][YK€K‚€УSХ‘WУРХУРТЧHB€В€›[YHHУУTХS‘ФХ’S‘К“ШЭЫШЪИЉK€™\ШЬљ\[Ы€HУУTХS‘ФХ’S‘К€•\ИH›ЩHИЭЩ\€Y—€‚€[™Ь€Y€XXЪ\›‹€ЉK€™Y™™XЭHQ‘‘PХУРХУРТЛ€њЭЩ\€H€ќ\HHTWС’QТS‘Л€XШЭ\XЮHHL€њHMK€ќ\™Щ]HT‘СUФСSPХQ€њљ[Ьљ]HH€Ш]YЫЬћHHSPQСWРРUQУФ–WФХUTЛ€ЫЫќ\ЭY™™XЭHУУ•TХСQ‘‘PХСУ•СVТUWРUQQSђСK€ЫЫќ\ЭШ]YЫЬћHHУУ•TХРРUQУФ–WРУУУ€ЫЫќ\ЭЫЫX›ФЭ\ќ\’YH€ЫЫќ\ЭЫЫX›У[Э™\ИHМK€]P[љ[TШЬљ\HР]P[љ[S[Э™WУШЭЫШЪЛ€K‚€УSХ‘WР“УР‘PRЧHB€В€›[YHHУУTХS‘ФХ’S‘Кђ›Ы™XZИЉK€™\ШЬљ\[Ы€HУУTХS‘ФХ’S‘К€‘ЭX›HЭЩ\€Y€H\Щ\—€‚€›[Э™\И™Y›Ь™HH\™Щ]€ЉK€™Y™™XЭHQ‘‘PХР“УР‘PRЛ€њЭЩ\€HK€ќ\HHTWСSPХ’PЛ€XШЭ\XЮHHL€њHL€ќ\™Щ]HT‘СUФСSPХQ€њљ[Ьљ]HH€Ш]YЫЬћHHSPQСWРРUQУФ–WФTТPРS€›XZЩ\РЫЫќXЭH•QK€ЫЫќ\ЭY™™XЭHУУ•TХСQ‘‘PХР‘UT—ТQ—С’T”Х€ЫЫќ\ЭШ]YЫЬћHHУУ•TХРРUQУФ–WХХQТ€ЫЫќ\ЭЫЫX›ФЭ\ќ\’YH€ЫЫќ\ЭЫЫX›У[Э™\ИHМK€]P[љ[TШЬљ\HР]P[љ[S[Э™WР›Ы™XZЛ€K‚€УSХ‘WС’TТSХTЧФ‘S‘HB€В€›[YHHУУTХS‘ФХ’S‘К‘љ\Ъ[Э\И™[™ЉK€™\ШЬљ\[Ы€HУУTХS‘ФХ’S‘К€‘ЭX›HЭЩ\€Y€H\Щ\—€‚€›[Э™\И™Y›Ь™HH\™Щ]€ЉK€™Y™™XЭHQ‘‘PХР“УР‘PRЛ€њЭЩ\€HK€ќ\HHTWХРUT‹€XШЭ\XЮHHL€њHL€ќ\™Щ]HT‘СUФСSPХQ€њљ[Ьљ]HH€Ш]YЫЬћHHSPQСWРРUQУФ–WФTТPРS€›XZЩ\РЫЫќXЭH•QK€љ][™У[Э™HH•QK€ЫЫќ\ЭY™™XЭHУУ•TХСQ‘‘PХР‘UT—ТQ—С’T”Х€ЫЫќ\ЭШ]YЫЬћHHУУ•TХРРUQУФ–WХХQТ€ЫЫќ\ЭЫЫX›ФЭ\ќ\’YH€ЫЫќ\ЭЫЫX›У[Э™\ИHМK€]P[љ[TШЬљ\HР]P[љ[S[Э™WСљ\Ъ[Э\Ф™[™€K‚€УSХ‘WРУХT•РТS‘СWHB€В€›[YHHУУTХS‘ФХ’S‘КђЫЭ\ќЪ[™ЩHЉK€™\ШЬљ\[Ы€HУУTХS‘ФХ’S‘К€•H\Щ\€ЭШ\ИY™™XЭИЫ—€‚€™Z]\€ЪYHЩ€HљY[€ЉK€™Y™™XЭHQ‘‘PХРУХT•РТS‘СK€њЭЩ\€H€ќ\HHTWУ“Ф“PS€XШЭ\XЮHHL€њHL€ќ\™Щ]HT‘СUС’QS€њљ[Ьљ]HH€Ш]YЫЬћHHSPQСWРРUQУФ–WФХUTЛ€љYЫ›Ь™\Ф›ЭXЭH•QK€ЫЫќ\ЭY™™XЭHУУ•TХСQ‘‘PХУPRСWС“УХТS‘ЧУSУ”ЧУ‘T•“ХTЛ€ЫЫќ\ЭШ]YЫЬћHHУУ•TХРРUQУФ–WРУУУ€ЫЫќ\ЭЫЫX›ФЭ\ќ\’YH€ЫЫќ\ЭЫЫX›У[Э™\ИHМK€]P[љ[TШЬљ\HР]P[љ[S[Э™WРЫЭ\ќЪ[™ЩK€K‚€УSХ‘WРУS‘УФ“ХTЧФУХSHB€В€›[YHHУУTХS‘ФХ’S‘КђЫ[™ЫЬ›Э\ИЫЭ[ЉK€™\ШЬљ\[Ы€HУУTХS‘ФХ’S‘К€•H\Щ\€\Щ\ИЫЫYHЩ€]Ч€‚€’ИZ\ЩH[]ИЭ]Л€ЉK€™Y™™XЭHQ‘‘PХРУS‘УФ“ХTЧФУХS€њЭЩ\€H€ќ\HHTWСђQУУ‹€XШЭ\XЮHHL€њHK€ќ\™Щ]HT‘СUХTСT‹€њљ[Ьљ]HH€Ш]YЫЬћHHSPQСWРРUQУФ–WФХUTЛ€њЫ]ЪY™™XЭYH•QK€љYЫ›Ь™\Ф›ЭXЭH•QK€›Z\њ›Ь“[Э™P[›™YH•QK€њЫЭ[™[Э™HH•QK€™[ЩS[Э™HH•QK€›Y]›Ы›ЫYP[›™YH•QK€ЫЫќ\ЭY™™XЭHУУ•TХСQ‘‘PХТST“Х‘WРУУ‘USУ—Ф‘U‘S•У‘T•“ХTУ‘TФЛ€ЫЫќ\ЭШ]YЫЬћHHУУ•TХРРUQУФ–WХХQТ€ЫЫќ\ЭЫЫX›ФЭ\ќ\’YH€ЫЫќ\ЭЫЫX›У[Э™\ИHМK€]P[љ[TШЬљ\HР]P[љ[S[Э™WРЫ[™ЫЬ›Э\ФЫЭ[€K‚€УSХ‘WР“СWФ‘TФЧHB€В€›[YHHУУTХS‘ФХ’S‘Кђ›ЩH™\ЬИЉK€™\ШЬљ\[Ы€HУУTХS‘ФХ’S‘К€‘Щ\И[Ь™H[XYЩHW€‚€љYЪ\€H\Щ\‰ЬИY‹€ЉK€™Y™™XЭHQ‘‘PХР“СWФ‘TФЛ€њЭЩ\€H€ќ\HHTWС’QТS‘Л€XШЭ\XЮHHL€њHL€ќ\™Щ]HT‘СUФСSPХQ€њљ[Ьљ]HH€Ш]YЫЬћHHSPQСWРРUQУФ–WФTТPРS€›XZЩ\РЫЫќXЭH•QK€›Y]›Ы›ЫYP[›™YH•QK€њЪЮP]P[›™YH—СVђTУUQУSХ‘WС“QФЛ€ЫЫќ\ЭY™™XЭHУУ•TХСQ‘‘PХР‘UT—ТQ—ФРSQWХTK€ЫЫќ\ЭШ]YЫЬћHHУУ•TХРРUQУФ–WР‘PUUK€ЫЫќ\ЭЫЫX›ФЭ\ќ\’YH€ЫЫќ\ЭЫЫX›У[Э™\ИHМK€]P[љ[TШЬљ\HР]P[љ[S[Э™WР›ЩT™\ЬЛ€K‚€УSХ‘WСPУФђUWHB€В€›[YHHУУTХS‘ФХ’S‘К‘XЫЬ]HЉK€™\ШЬљ\[Ы€HУУTХS‘ФХ’S‘К€•H\Щ\€Ъ\њHZ\Щ\Ч€‚€ќH\™Щ]	ЬИ]И[™Ьђ]Л€ЉK€™Y™™XЭHQ‘‘PХСPУФђUK€њЭЩ\€H€ќ\HHTWСђRT–K€XШЭ\XЮHH€њHMK€ќ\™Щ]HT‘СUФСSPХQ€њљ[Ьљ]HH€Ш]YЫЬћHHSPQСWРРUQУФ–WФХUTЛ€љYЫ›Ь™\Ф›ЭXЭH•QK€›Z\њ›Ь“[Э™P[›™YH•QK€›Y]›Ы›ЫYP[›™YH•QK€ЫЫќ\ЭY™™XЭHУУ•TХСQ‘‘PХТST“Х‘WРУУ‘USУ—Ф‘U‘S•У‘T•“ХTУ‘TФЛ€ЫЫќ\ЭШ]YЫЬћHHУУ•TХРРUQУФ–WРХUK€ЫЫќ\ЭЫЫX›ФЭ\ќ\’YH€ЫЫќ\ЭЫЫX›У[Э™\ИHМK€]P[љ[TШЬљ\HР]P[љ[S[Э™WСXЫЬ]K€K‚€УSХ‘WС•SWР‘PUS‘ЧHB€В€›[YHHУУTХS‘ФХ’S‘К‘ќ[H™X][™ИЉK€™\ШЬљ\[Ы€HУУTХS‘ФХ’S‘К€”^\ИHќ[HИ]XЪЛ—€‚€•H›ЩIЬИЬYY\ИЭЩ\™Y€ЉK€™Y™™XЭHQ‘‘PХТU€њЭЩ\€H€ќ\HHTWСФђTФЛ€XШЭ\XЮHHL€њHL€ќ\™Щ]HT‘СUФСSPХQ€њљ[Ьљ]HH€Ш]YЫЬћHHSPQСWРРUQУФ–WФTТPРS€›Y]›Ы›ЫYP[›™YH•QK€њЫЭ[™[Э™HH•QK€Y][Ы[Y™™XЭИHQUSУђSСQ‘‘PХКВ€›[Э™QY™™XЭHSХ‘WСQ‘‘PХФФУRS•TЧМK€Ъ[ЩHHL€JK€ЫЫќ\ЭY™™XЭHУУ•TХСQ‘‘PХРђQWФХT•WФ‘U—УSУ”Л€ЫЫќ\ЭШ]YЫЬћHHУУ•TХРРUQУФ–WФУPT•€ЫЫќ\ЭЫЫX›ФЭ\ќ\’YH€ЫЫќ\ЭЫЫX›У[Э™\ИHМK€]P[љ[TШЬљ\HР]P[љ[S[Э™WСќ[P™X][™Л€K‚€УSХ‘WФУђTХђTHB€В€›[YHHУУTХS‘ФХ’S‘К”Ы\\ЉK€™\ШЬљ\[Ы€HУУTХS‘ФХ’S‘К€”Ы\™\ИH\™Щ][€HЫ\€‚€ќ\›Ь€›Э\€Иљ]™H\›њЛ€ЉK€™Y™™XЭHQ‘‘PХТU€њЭЩ\€HНK€ќ\HHTWСФђTФЛ€XШЭ\XЮHHL€њHMK€ќ\™Щ]HT‘СUФСSPХQ€њљ[Ьљ]HH€Ш]YЫЬћHHSPQСWРРUQУФ–WФTТPРS€›XZЩ\РЫЫќXЭH•QK€›Y]›Ы›ЫYP[›™YH•QK€њЪЮP]P[›™YH—СVђTУUQУSХ‘WС“QФЛ€Y][Ы[Y™™XЭИHQUSУђSСQ‘‘PХКВ€›[Э™QY™™XЭHSХ‘WСQ‘‘PХХФђT€›][\Эљ[™ЛќЬ\YH—УTСЧХФђTQФУђTХђT€JK€ЫЫќ\ЭY™™XЭHУУ•TХСQ‘‘PХСУ•СVТUWРUQQSђСK€ЫЫќ\ЭШ]YЫЬћHHУУ•TХРРUQУФ–WХХQТ€ЫЫќ\ЭЫЫX›ФЭ\ќ\’YH€ЫЫќ\ЭЫЫX›У[Э™\ИHМK€]P[љ[TШЬљ\HР]P[љ[S[Э™WФЫ\\€K‚€УSХ‘WФT“ЧРђSHB€В€›[YHHУУTХS‘ФХ’S‘К”\›И[ЉK€™\ШЬљ\[Ы€HУУTХS‘ФХ’S‘К€“][Ъ\ИHљY\ћH[]W€‚€ќ\™Щ]€]X^HШ]\ЩHHќ\›‹€ЉK€™Y™™XЭHQ‘‘PХТU€њЭЩ\€HLЊ€ќ\HHTWС’T‘K€XШЭ\XЮHHL€њHK€ќ\™Щ]HT‘СUФСSPХQ€њљ[Ьљ]HH€Ш]YЫЬћHHSPQСWРРUQУФ–WФTТPРS€ќ]ЬХ\Щ\€H•QK€[\ЭXУ[Э™HH•QK€›Y]›Ы›ЫYP[›™YH•QK€Y][Ы[Y™™XЭИHQUSУђSСQ‘‘PХКВ€›[Э™QY™™XЭHSХ‘WСQ‘‘PХР•T“‹€Ъ[ЩHHL€JK€ЫЫќ\ЭY™™XЭHУУ•TХСQ‘‘PХХTСT—УSФ‘WСPTТSWФХT•Q€ЫЫќ\ЭШ]YЫЬћHHУУ•TХРРUQУФ–WР‘PUUK€ЫЫќ\ЭЫЫX›ФЭ\ќ\’YH€ЫЫќ\ЭЫЫX›У[Э™\ИHМK€]P[љ[TШЬљ\HР]P[љ[S[Э™WФ\›Р[€K‚€УSХ‘WР‘RSSХР“QWHB€В€›[YHHУУTХS‘ФХ’S‘Кђ™Z[[Э›YHЉK€™\ШЬљ\[Ы€HУУTХS‘ФХ’S‘К€”ЭљZЩ\И\ИHЭЫЬ™€X[Ић€‚€™[XYЩHИ[[X^Y›Щ\Л€ЉK€™Y™™XЭHQ‘‘PХСSђSPVСХP“WСQЛ€њЭЩ\€HL€ќ\HHTWФХQS€XШЭ\XЮHHL€њHK€ќ\™Щ]HT‘СUФСSPХQ€њљ[Ьљ]HH€Ш]YЫЬћHHSPQСWРРUQУФ–WФTТPРS€›XZЩ\РЫЫќXЭH•QK€њЫXЪ[™У[Э™HH•QK€›Y]›Ы›ЫYP[›™YH•QK€ЫЬXШ][›™YH•QK€›Z[ZXР[›™YH•QK€\ЬЪ\Э[›™YH—СVђTУUQУSХ‘WС“QФЛ€ЫЫќ\ЭY™™XЭHУУ•TХСQ‘‘PХХTСT—УSФ‘WСPTТSWФХT•Q€ЫЫќ\ЭШ]YЫЬћHHУУ•TХРРUQУФ–WХХQТ€ЫЫќ\ЭЫЫX›ФЭ\ќ\’YH€ЫЫќ\ЭЫЫX›У[Э™\ИHМK€]P[љ[TШЬљ\HР]P[љ[S[Э™WР™Z[[Э›YK€K‚€УSХ‘WР‘RSSХРђTТHB€В€›[YHHУУTХS‘ФХ’S‘Кђ™Z[[Э\ЪЉK€™\ШЬљ\[Ы€HУУTХS‘ФХ’S‘К€ђ]XЪЬИ\ИHЪY[€X[Ић€‚€™[XYЩHИ[[X^Y›Щ\Л€ЉK€™Y™™XЭHQ‘‘PХСSђSPVСХP“WСQЛ€њЭЩ\€HL€ќ\HHTWФХQS€XШЭ\XЮHHL€њHK€ќ\™Щ]HT‘СUФСSPХQ€њљ[Ьљ]HH€Ш]YЫЬћHHSPQСWРРUQУФ–WФTТPРS€›XZЩ\РЫЫќXЭH•QK€›Y]›Ы›ЫYP[›™YH•QK€ЫЬXШ][›™YH•QK€›Z[ZXР[›™YH•QK€\ЬЪ\Э[›™YH—СVђTУUQУSХ‘WС“QФЛ€ЫЫќ\ЭY™™XЭHУУ•TХСQ‘‘PХХTСT—УSФ‘WСPTТSWФХT•Q€ЫЫќ\ЭШ]YЫЬћHHУУ•TХРРUQУФ–WХХQТ€ЫЫќ\ЭЫЫX›ФЭ\ќ\’YH€ЫЫќ\ЭЫЫX›У[Э™\ИHМK€]P[љ[TШЬљ\HР]P[љ[S[Э™WР™Z[[Э\Ъ€K‚€УSХ‘WРUTђWХТQSHB€В€›[YHHУУTХS‘ФХ’S‘Кђ]\HЪY[ЉK€™\ШЬљ\[Ы€HУУTХS‘ФХ’S‘К€”Z\Щ\ИЬYYИ]XЪЛ€W€‚€•\H\И\ЩYЫ€]И›Ь›K€ЉK€™Y™™XЭHQ‘‘PХРUTђWХТQS€њЭЩ\€HLL€ќ\HHTWСSPХ’PЛ€XШЭ\XЮHHL€њHL€ќ\™Щ]HT‘СUФСSPХQ€њљ[Ьљ]HH€Ш]YЫЬћHHSPQСWРРUQУФ–WФTТPРS€›Y]›Ы›ЫYP[›™YH•QK€Y][Ы[Y™™XЭИHQUSУђSСQ‘‘PХКВ€›[Э™QY™™XЭHSХ‘WСQ‘‘PХФФФTЧМK€њЩ[€H•QK€Ъ[ЩHHL€JK€ЫЫќ\ЭY™™XЭHУУ•TХСQ‘‘PХР‘UT—ТQ—С’T”Х€ЫЫќ\ЭШ]YЫЬћHHУУ•TХРРUQУФ–WР‘PUUK€ЫЫќ\ЭЫЫX›ФЭ\ќ\’YH€ЫЫќ\ЭЫЫX›У[Э™\ИHМK€]P[љ[TШЬљ\HР]P[љ[S[Э™WР]\UЪY[€K‚€УSХ‘WР”‘PRТS‘ЧФХТTWHB€В€›[YHHУУTХS‘ФХ’S‘Кђњ™XZЪ[™ИЭЪ\HЉK€™\ШЬљ\[Ы€HУУTХS‘ФХ’S‘К€”ЭЪ[™ЬИ]ИZ[И]XЪЛ—€‚€“ЭЩ\њИH]ИЩ€ЬЩH]€ЉK€™Y™™XЭHQ‘‘PХТU€њЭЩ\€HЊ€ќ\HHTWСђQУУ‹€XШЭ\XЮHHL€њHMK€ќ\™Щ]HT‘СUР“Х€њљ[Ьљ]HH€Ш]YЫЬћHHSPQСWРРUQУФ–WФTТPРS€›XZЩ\РЫЫќXЭH•QK€›Y]›Ы›ЫYP[›™YH•QK€Y][Ы[Y™™XЭИHQUSУђSСQ‘‘PХКВ€›[Э™QY™™XЭHSХ‘WСQ‘‘PХРUЧУRS•TЧМK€Ъ[ЩHHL€JK€ЫЫќ\ЭY™™XЭHУУ•TХСQ‘‘PХРђQWФХT•WФ‘U—УSУ”Л€ЫЫќ\ЭШ]YЫЬћHHУУ•TХРРUQУФ–WРУУУ€ЫЫќ\ЭЫЫX›ФЭ\ќ\’YH€ЫЫќ\ЭЫЫX›У[Э™\ИHМK€]P[љ[TШЬљ\HР]P[љ[S[Э™WРњ™XZЪ[™ФЭЪ\K€K‚€УSХ‘WР”ђSђТФТСWHB€В€›[YHHУУTХS‘ФХ’S‘Кђњ[ЪЪЩHЉK€™\ШЬљ\[Ы€HУУTХS‘ФХ’S‘К€•H\Щ\€ЪЩ\ИH\™Щ]€‚€ќЪ]HЪ[ќYњ[Ъ€ЉK€™Y™™XЭHQ‘‘PХТU€њЭЩ\€H€ќ\HHTWСФђTФЛ€XШЭ\XЮHHL€њH€ќ\™Щ]HT‘СUФСSPХQ€њљ[Ьљ]HH€Ш]YЫЬћHHSPQСWРРUQУФ–WФTТPРS€›XZЩ\РЫЫќXЭH•QK€›Y]›Ы›ЫYP[›™YH•QK€ЫЫќ\ЭY™™XЭHУУ•TХСQ‘‘PХТQТWРTPSS‘Л€ЫЫќ\ЭШ]YЫЬћHHУУ•TХРРUQУФ–WРУУУ€ЫЫќ\ЭЫЫX›ФЭ\ќ\’YH€ЫЫќ\ЭЫЫX›У[Э™\ИHМK€]P[љ[TШЬљ\HР]P[љ[S[Э™WРњ[ЪЪЩK€K‚€УSХ‘WУХ‘T‘’U‘WHB€В€›[YHHУУTХS‘ФХ’S‘К“Э™\™љ]™HЉK€™\ШЬљ\[Ы€HУУTХS‘ФХ’S‘К€•H\Щ\€Ш[™ЬИ]ИЭZ]\‹€‚€Ш]\Ъ[™ИЭ›Ы™ИљXњ][ЫњЛ€ЉK€™Y™™XЭHQ‘‘PХТU€њЭЩ\€H€ќ\HHTWСSPХ’PЛ€XШЭ\XЮHHL€њHL€ќ\™Щ]HT‘СUР“Х€њљ[Ьљ]HH€Ш]YЫЬћHHSPQСWРРUQУФ–WФФPТPS€њЫЭ[™[Э™HH•QK€љYЫ›Ь™\ФЭXњЭ]]HH—ХTUQУSХ‘WС“QФИЏHСS—Н‹€›Y]›Ы›ЫYP[›™YH•QK€ЫЫќ\ЭY™™XЭHУУ•TХСQ‘‘PХРђQWФХT•WФ‘U—УSУ”Л€ЫЫќ\ЭШ]YЫЬћHHУУ•TХРРUQУФ–WРУУУ€ЫЫќ\ЭЫЫX›ФЭ\ќ\’YH€ЫЫќ\ЭЫЫX›У[Э™\ИHМK€]P[љ[TШЬљ\HР]P[љ[S[Э™WУЭ™\™љ]™K€K‚€УSХ‘WРTWРPТQHB€В€›[YHHУУTХS‘ФХ’S‘Кђ\HXЪYЉK€™\ШЬљ\[Ы€HУУTХS‘ФХ’S‘К€ђ]XЪЬИЪ]\ќ\HXЪY€‚€ќИЭЩ\€H›ЩIЬИЬ€Y‹€ЉK€™Y™™XЭHQ‘‘PХТU€њЭЩ\€H€ќ\HHTWСФђTФЛ€XШЭ\XЮHHL€њHL€ќ\™Щ]HT‘СUФСSPХQ€њљ[Ьљ]HH€Ш]YЫЬћHHSPQСWРРUQУФ–WФФPТPS€›Y]›Ы›ЫYP[›™YH•QK€Y][Ы[Y™™XЭИHQUSУђSСQ‘‘PХКВ€›[Э™QY™™XЭHSХ‘WСQ‘‘PХФФСQ—УRS•TЧМK€Ъ[ЩHHL€JK€ЫЫќ\ЭY™™XЭHУУ•TХСQ‘‘PХФХT•WФ‘U—УSУ”Л€ЫЫќ\ЭШ]YЫЬћHHУУ•TХРРUQУФ–WХХQТ€ЫЫќ\ЭЫЫX›ФЭ\ќ\’YH€ЫЫќ\ЭЫЫX›У[Э™\ИHМK€]P[љ[TШЬљ\HР]P[љ[S[Э™WР\PXЪY€K‚€УSХ‘WСФђU—РTWHB€В€›[YHHУУTХS‘ФХ’S‘К‘Ь]€\HЉK€™\ШЬљ\[Ы€HУУTХS‘ФХ’S‘К€‘›ЬИ[€\Hњ›ЫHX›Э™K—€‚€“ЭЩ\њИH›ЩIЬИY™[њЩK€ЉK€™Y™™XЭHQ‘‘PХСФђU—РTK€њЭЩ\€H€ќ\HHTWСФђTФЛ€XШЭ\XЮHHL€њHL€ќ\™Щ]HT‘СUФСSPХQ€њљ[Ьљ]HH€Ш]YЫЬћHHSPQСWРРUQУФ–WФTТPРS€›Y]›Ы›ЫYP[›™YH•QK€Y][Ы[Y™™XЭИHQUSУђSСQ‘‘PХКВ€›[Э™QY™™XЭHSХ‘WСQ‘‘PХСQ—УRS•TЧМK€Ъ[ЩHHL€JK€ЫЫќ\ЭY™™XЭHУУ•TХСQ‘‘PХФХT•WФ‘U—УSУ”Л€ЫЫќ\ЭШ]YЫЬћHHУУ•TХРРUQУФ–WРХUK€ЫЫќ\ЭЫЫX›ФЭ\ќ\’YH€ЫЫќ\ЭЫЫX›У[Э™\ИHМK€]P[љ[TШЬљ\HР]P[љ[S[Э™WСЬ]ђ\K€K‚€УSХ‘WФФT’UР”‘PRЧHB€В€›[YHHУУTХS‘ФХ’S‘К”Ь\љ]њ™XZИЉK€™\ШЬљ\[Ы€HУУTХS‘ФХ’S‘К€ђ]XЪЬИЪ]Ь\љ]Xњ™XZЪ[™Ч€‚€™›ЬЩK€ЭЩ\њИЬ€]Л€ЉK€™Y™™XЭHQ‘‘PХТU€њЭЩ\€HНK€ќ\HHTWСђRT–K€XШЭ\XЮHHL€њHMK€ќ\™Щ]HT‘СUФСSPХQ€њљ[Ьљ]HH€Ш]YЫЬћHHSPQСWРРUQУФ–WФTТPРS€›XZЩ\РЫЫќXЭH•QK€›Y]›Ы›ЫYP[›™YH•QK€Y][Ы[Y™™XЭИHQUSУђSСQ‘‘PХКВ€›[Э™QY™™XЭHSХ‘WСQ‘‘PХФФРUЧУRS•TЧМK€Ъ[ЩHHL€JK€ЫЫќ\ЭY™™XЭHУУ•TХСQ‘‘PХРђQWФХT•WФ‘U—УSУ”Л€ЫЫќ\ЭШ]YЫЬћHHУУ•TХРРUQУФ–WРХUK€ЫЫќ\ЭЫЫX›ФЭ\ќ\’YH€ЫЫќ\ЭЫЫX›У[Э™\ИHМK€]P[љ[TШЬљ\HР]P[љ[S[Э™WФЬ\љ]њ™XZЛ€K‚€УSХ‘WФХђS‘СWФХPSWHB€В€›[YHHУУTХS‘ФХ’S‘К”Э[™ЩHЭX[HЉK€™\ШЬљ\[Ы€HУУTХS‘ФХ’S‘К€‘[Z]ИHЭ[™ЩHЭX[HЧ€‚€њЭ[ќX[HЫЫ™ќ\ЩHH›ЩK€ЉK€™Y™™XЭHQ‘‘PХТU€њЭЩ\€HL€ќ\HHTWСђRT–K€XШЭ\XЮHHMK€њHL€ќ\™Щ]HT‘СUФСSPХQ€њљ[Ьљ]HH€Ш]YЫЬћHHSPQСWРРUQУФ–WФФPТPS€›Y]›Ы›ЫYP[›™YH•QK€Y][Ы[Y™™XЭИHQUSУђSСQ‘‘PХКВ€›[Э™QY™™XЭHSХ‘WСQ‘‘PХРУУ‘•TТSУ‹€Ъ[ЩHHЊ€JK€ЫЫќ\ЭY™™XЭHУУ•TХСQ‘‘PХРђQWФХT•WС”“У•УSУ‹€ЫЫќ\ЭШ]YЫЬћHHУУ•TХРРUQУФ–WФУPT•€ЫЫќ\ЭЫЫX›ФЭ\ќ\’YH€ЫЫќ\ЭЫЫX›У[Э™\ИHМK€]P[љ[TШЬљ\HР]P[љ[S[Э™WФЭ[™ЩTЭX[K€K‚€УSХ‘WУQ‘WСUЧHB€В€›[YHHУУTХS‘ФХ’S‘К“Y™H]ИЉK€™\ШЬљ\[Ы€HУУTХS‘ФХ’S‘К€”ШШ]\њИШ]\€И™\ЭЬ™W€‚€ќHЩ€]Щ[€[™[Y\Л€ЉK€™Y™™XЭHQ‘‘PХУQ‘WСUЛ€њЭЩ\€H€ќ\HHTWХРUT‹€XШЭ\XЮHH€њHL€ќ\™Щ]HT‘СUХTСT‹€њљ[Ьљ]HH€Ш]YЫЬћHHSPQСWРРUQУФ–WФХUTЛ€њЫ]ЪY™™XЭYH•QK€љYЫ›Ь™\Ф›ЭXЭH•QK€љYЫ›Ь™\ФЭXњЭ]]HH•QK€›Z\њ›Ь“[Э™P[›™YH•QK€љX[[™У[Э™HH•QK€›Y]›Ы›ЫYP[›™YH•QK€ЫЫќ\ЭY™™XЭHУУ•TХСQ‘‘PХФUPSUWСTS‘ЧУУ—ХSRS‘Л€ЫЫќ\ЭШ]YЫЬћHHУУ•TХРРUQУФ–WРХUK€ЫЫќ\ЭЫЫX›ФЭ\ќ\’YH€ЫЫќ\ЭЫЫX›У[Э™\ИHМK€]P[љ[TШЬљ\HР]P[љ[S[Э™WУY™Q]Л€K‚€УSХ‘WУР”Х•PХHB€В€›[YHHУУTХS‘ФХ’S‘К“ШњЭќXЭЉK€™\ШЬљ\[Ы€HУУTХS‘ФХ’S‘К€”›ЭXЭИ]Щ[‹\њЪW€‚€›ЭЩ\љ[™ИY€Ы€ЫЫќXЭ€ЉK€™Y™™XЭHQ‘‘PХФ“ХPХ€њЭЩ\€H€ќ\HHTWСT’Л€XШЭ\XЮHHL€њHL€ќ\™Щ]HT‘СUХTСT‹€њљ[Ьљ]HH€Ш]YЫЬћHHSPQСWРРUQУФ–WФХUTЛ€\™Э[Y[ќHИњ›ЭXЭY]ЩH“ХPХУР”Х•PХK€љYЫ›Ь™\Ф›ЭXЭH•QK€›Z\њ›Ь“[Э™P[›™YH•QK€›Y]›Ы›ЫYP[›™YH•QK€љ[њЭќXЭ[›™YH•QK€ЫЫќ\ЭY™™XЭHУУ•TХСQ‘‘PХРU“ТQФХT•K€ЫЫќ\ЭШ]YЫЬћHHУУ•TХРРUQУФ–WРУУУ€ЫЫќ\ЭЫЫX›ФЭ\ќ\’YH€ЫЫќ\ЭЫЫX›У[Э™\ИHМK€]P[љ[TШЬљ\HР]P[љ[S[Э™WУШњЭќXЭ€K‚€УSХ‘WСђSСWФХT”‘S‘T—HB€В€›[YHHУУTХS‘ФХ’S‘К‘[ЩHЭ\њ™[™\€ЉK€™\ШЬљ\[Ы€HУУTХS‘ФХ’S‘К€ђ›ЭЬИИЭX€H›ЩW€‚€ќЪ]Z\‹€]™]™\€Z\ЬЩ\Л€ЉK€™Y™™XЭHQ‘‘PХТU€њЭЩ\€H€ќ\HHTWСT’Л€XШЭ\XЮHH€њHL€ќ\™Щ]HT‘СUФСSPХQ€њљ[Ьљ]HH€Ш]YЫЬћHHSPQСWРРUQУФ–WФTТPРS€›XZЩ\РЫЫќXЭH•QK€›Y]›Ы›ЫYP[›™YH•QK€ЫЫќ\ЭY™™XЭHУУ•TХСQ‘‘PХР‘UT—ТQ—С’T”Х€ЫЫќ\ЭШ]YЫЬћHHУУ•TХРРUQУФ–WХХQТ€ЫЫќ\ЭЫЫX›ФЭ\ќ\’YH€ЫЫќ\ЭЫЫX›У[Э™\ИHМK€]P[љ[TШЬљ\HР]P[љ[S[Э™WС[ЩTЭ\њ™[™\‹€K‚€УSХ‘WУQUSФ—РTФРUSHB€В€›[YHHУУTХS‘ФХ’S‘К“Y][Ь€\ЬШ][ЉK€™\ШЬљ\[Ы€HУУTХS‘ФХ’S‘К€ђ]XЪЬИЪ]HXЪИYZЛ—€‚€•H\Щ\€]\Э[€™\Э€ЉK€™Y™™XЭHQ‘‘PХТU€њЭЩ\€HMМ€ќ\HHTWС’QТS‘Л€XШЭ\XЮHHL€њHK€ќ\™Щ]HT‘СUФСSPХQ€њљ[Ьљ]HH€Ш]YЫЬћHHSPQСWРРUQУФ–WФTТPРS€›Y]›Ы›ЫYP[›™YH•QK€љ[њЭќXЭ[›™YH•QK€Y][Ы[Y™™XЭИHQUSУђSСQ‘‘PХКВ€›[Э™QY™™XЭHSХ‘WСQ‘‘PХФ‘PТT‘СK€њЩ[€H•QK€JK€ЫЫќ\ЭY™™XЭHУУ•TХСQ‘‘PХТђSTЧУХT”ЧР•UУRTФЧУУ‘WХT“‹€ЫЫќ\ЭШ]YЫЬћHHУУ•TХРРUQУФ–WХХQТ€ЫЫќ\ЭЫЫX›ФЭ\ќ\’YH€ЫЫќ\ЭЫЫX›У[Э™\ИHМK€]P[љ[TШЬљ\HР]P[љ[S[Э™WУY][Ьђ\ЬШ][€K‚€УSХ‘WСUT“ђP‘PSWHB€В€›[YHHУУTХS‘ФХ’S‘К‘]\›X™X[HЉK€™\ШЬљ\[Ы€HУУTХS‘ФХ’S‘К€‘]\›]\ЙИЭ›Ы™Щ\Э[Э™K—€‚€•H\Щ\€™\ЭИ™^\›‹€ЉK€™Y™™XЭHQ‘‘PХТU€њЭЩ\€HMЊ€ќ\HHTWСђQУУ‹€XШЭ\XЮHHL€њHK€ќ\™Щ]HT‘СUФСSPХQ€њљ[Ьљ]HH€Ш]YЫЬћHHSPQСWРРUQУФ–WФФPТPS€›Y]›Ы›ЫYP[›™YH•QK€Y][Ы[Y™™XЭИHQUSУђSСQ‘‘PХКВ€›[Э™QY™™XЭHSХ‘WСQ‘‘PХФ‘PТT‘СK€њЩ[€H•QK€JK€ЫЫќ\ЭY™™XЭHУУ•TХСQ‘‘PХТђSTЧУХT”ЧР•UУRTФЧУУ‘WХT“‹€ЫЫќ\ЭШ]YЫЬћHHУУ•TХРРUQУФ–WФУPT•€ЫЫќ\ЭЫЫX›ФЭ\ќ\’YH€ЫЫќ\ЭЫЫX›У[Э™\ИHМK€]P[љ[TШЬљ\HР]P[љ[S[Э™WС]\›X™X[K€K‚€УSХ‘WФХQSР‘PSWHB€В€›[YHHУУTХS‘ФХ’S‘К”ЭY[™X[HЉK€™\ШЬљ\[Ы€HУУTХS‘ФХ’S‘К€‘љ\™\ИH™X[HЩ€ЭY[њ›ЫW€‚€љ]И›ЩK€]\ќИH\Щ\‹€ЉK€™Y™™XЭHQ‘‘PХУPVТНLФ‘PУТS€њЭЩ\€HM€ќ\HHTWФХQS€XШЭ\XЮHHMK€њHK€ќ\™Щ]HT‘СUФСSPХQ€њљ[Ьљ]HH€Ш]YЫЬћHHSPQСWРРUQУФ–WФФPТPS€›Y]›Ы›ЫYP[›™YH•QK€ЫЫќ\ЭY™™XЭHУУ•TХСQ‘‘PХХTСT—УSФ‘WСPTТSWФХT•Q€ЫЫќ\ЭШ]YЫЬћHHУУ•TХРРUQУФ–WР‘PUUK€ЫЫќ\ЭЫЫX›ФЭ\ќ\’YH€ЫЫќ\ЭЫЫX›У[Э™\ИHМK€]P[љ[TШЬљ\HР]P[љ[S[Э™WФЭY[™X[K€K‚€УSХ‘WСVS‘S‘ЧС“ФђСWHB€В€›[YHHУУTХS‘ФХ’S‘К‘^[™[™И›ЬЩHЉK€™\ШЬљ\[Ы€HУУTХS‘ФХ’S‘К€”ЭЩ\€ЫЩ\И\[™[XYЩ\Ч€‚€[›Щ\ИЫ€ЮXЪXИ\њZ[‹€ЉK€™Y™™XЭHQ‘‘PХХT”ђRS—Р“УФХ€њЭЩ\€H€ќ\HHTWФЦPТPЛ€XШЭ\XЮHHL€њHL€ќ\™Щ]HT‘СUФСSPХQ€њљ[Ьљ]HH€Ш]YЫЬћHHSPQСWРРUQУФ–WФФPТPS€\™Э[Y[ќќ\њZ[ђ›ЫЬЭHВ€ќ\њZ[€HХUTЧС’QSФЦPТPЧХT”ђRS‹€њ\Щ[ќHL€™Ь›Э[™ЪXЪИHФ“ХS‘РТPТЧХTСT‹€љ]Р›Э›Щ\ИH•QK€K€ЫЫќ\ЭY™™XЭHУУ•TХСQ‘‘PХФХT•WФ‘U—УSУ”Л€ЫЫќ\ЭШ]YЫЬћHHУУ•TХРРUQУФ–WФУPT•€ЫЫќ\ЭЫЫX›ФЭ\ќ\’YH€ЫЫќ\ЭЫЫX›У[Э™\ИHРУУP“ЧФХT•T—ФЦPТPЧХT”ђRSџK€]P[љ[TШЬљ\HР]P[љ[S[Э™WС^[™[™С›ЬЩK€K‚€УSХ‘WФХQSФ“УT—HB€В€›[YHHУУTХS‘ФХ’S‘К”ЭY[›Ы\€ЉK€™\ШЬљ\[Ы€HУУTХS‘ФХ’S‘К€‘\Э›Ю\И\њZ[‹€Z[ИY—€‚€™Ь›Э[™\Ы‰Э\њZ[‹€ЉK€™Y™™XЭHQ‘‘PХФХQSФ“УT‹€њЭЩ\€HLМ€ќ\HHTWФХQS€XШЭ\XЮHHL€њHK€ќ\™Щ]HT‘СUФСSPХQ€њљ[Ьљ]HH€Ш]YЫЬћHHSPQСWРРUQУФ–WФTТPРS€›XZЩ\РЫЫќXЭH•QK€њЪЮP]P[›™YH•QK€ЫЫќ\ЭY™™XЭHУУ•TХСQ‘‘PХХУФ”СS—РУУ‘USУ—УС—Ф‘U—УSУ”Л€ЫЫќ\ЭШ]YЫЬћHHУУ•TХРРUQУФ–WХХQТ€ЫЫќ\ЭЫЫX›ФЭ\ќ\’YH€ЫЫќ\ЭЫЫX›У[Э™\ИHМK€]P[љ[TШЬљ\HР]P[љ[S[Э™WФЭY[›Ы\‹€K‚€УSХ‘WФРРSWФТХHB€В€›[YHHУУTХS‘ФХ’S‘К”ШШ[HЪЭЉK€™\ШЬљ\[Ы€HУУTХS‘ФХ’S‘К€”ЪЫЭИШШ[\И€ИH[Y\Л—€‚€•\ИЬYYЭЩ\њИY™[њЩK€ЉK€™Y™™XЭHQ‘‘PХТU€њЭЩ\€HЌK€ќ\HHTWСђQУУ‹€XШЭ\XЮHHL€њHЊ€ќ\™Щ]HT‘СUФСSPХQ€њљ[Ьљ]HH€Ш]YЫЬћHHSPQСWРРUQУФ–WФTТPРS€›][R]H•QK€ЫЫќ\ЭY™™XЭHУУ•TХСQ‘‘PХУ‘VРTPSСPT“QT‹€ЫЫќ\ЭШ]YЫЬћHHУУ•TХРРUQУФ–WРУУУ€ЫЫќ\ЭЫЫX›ФЭ\ќ\’YH€ЫЫќ\ЭЫЫX›У[Э™\ИHМK€Y][Ы[Y™™XЭИHQUSУђSСQ‘‘PХКВ€›[Э™QY™™XЭHSХ‘WСQ‘‘PХФРРSWФТХ€JK€]P[љ[TШЬљ\HР]P[љ[S[Э™WФШШ[TЪЭ€K‚€УSХ‘WУQUSФ—Р‘PSWHB€В€›[YHHУУTХS‘ФХ’S‘К“Y][Ь€™X[HЉK€™\ШЬљ\[Ы€HУУTХS‘ФХ’S‘К€ђH‹]\›€[Э™H]Z\Щ\Ч€‚€”Ь€]XЪИ™Y›Ь™H]XЪЪ[™Л€ЉK€™Y™™XЭHQ‘‘PХХУЧХT“”ЧРUPТЛ€њЭЩ\€HLЊ€ќ\HHTWФ“РТЛ€XШЭ\XЮHHL€њHL€ќ\™Щ]HT‘СUФСSPХQ€њљ[Ьљ]HH€Ш]YЫЬћHHSPQСWРРUQУФ–WФФPТPS€њЫY\[Р[›™YH•QK€љ[њЭќXЭ[›™YH•QK€\™Э[Y[ќќЫХ\›ђ]XЪИHИњЭљ[™ТYHХ’S‘ТQУQUSФђ‘PSPТT‘ТS‘ИK€Y][Ы[Y™™XЭИHQUSУђSСQ‘‘PХКВ€›[Э™QY™™XЭHSХ‘WСQ‘‘PХФФРUЧФTЧМK€њЩ[€H•QK€›ЫђЪ\™ЩU\›“Ы›HH•QK€JK€ЫЫќ\ЭY™™XЭHУУ•TХСQ‘‘PХХTСT—УSФ‘WСPTТSWФХT•Q€ЫЫќ\ЭШ]YЫЬћHHУУ•TХРРUQУФ–WРУУУ€ЫЫќ\ЭЫЫX›ФЭ\ќ\’YH€ЫЫќ\ЭЫЫX›У[Э™\ИHМK€]P[љ[TШЬљ\HР]P[љ[S[Э™WУY][Ьђ™X[K€K‚€УSХ‘WФТSФТQWРT“WHB€В€›[YHHУУTХS‘ФХ’S‘К”Ъ[ЪYH\›HЉK€™\ШЬљ\[Ы€HУУTХS‘ФХ’S‘К€‘X[И™]\€Щ€\ЪXШ[[™€‚€њЬXЪX[[XYЩK€X^HЪ\ЫЫ‹€ЉK€™Y™™XЭHQ‘‘PХФТSФТQWРT“K€њЭЩ\€HL€ќ\HHTWФТTУУ‹€XШЭ\XЮHHL€њHL€ќ\™Щ]HT‘СUФСSPХQ€њљ[Ьљ]HH€Ш]YЫЬћHHSPQСWРРUQУФ–WФФPТPS€Y][Ы[Y™™XЭИHQUSУђSСQ‘‘PХКВ€›[Э™QY™™XЭHSХ‘WСQ‘‘PХФТTУУ‹€Ъ[ЩHHЊ€JK€ЫЫќ\ЭY™™XЭHУУ•TХСQ‘‘PХР‘UT—ТQ—ФРSQWХTK€ЫЫќ\ЭШ]YЫЬћHHУУ•TХРРUQУФ–WФУPT•€ЫЫќ\ЭЫЫX›ФЭ\ќ\’YH€ЫЫќ\ЭЫЫX›У[Э™\ИHМK€]P[љ[TШЬљ\HР]P[љ[S[Э™WФЪ[ЪYP\›K€K‚€УSХ‘WУRTХWСVФТSУ—HB€В€›[YHHУУTХS‘ФХ’S‘К“Z\ЭH^ЬЪ[Ы€ЉK€™\ШЬљ\[Ы€HУУTХS‘ФХ’S‘К€’]]™\ћ][™И[™Z[ќ—€‚€”ЭЩ\њИ\Ы€Z\ЭH\њZ[‹€ЉK€™Y™™XЭHQ‘‘PХХT”ђRS—Р“УФХ€њЭЩ\€HL€ќ\HHTWСђRT–K€XШЭ\XЮHHL€њHK€ќ\™Щ]HT‘СUС“СTЧРS‘РSK€њљ[Ьљ]HH€Ш]YЫЬћHHSPQСWРРUQУФ–WФФPТPS€™^ЬЪ[Ы€H•QK€™[\[›™YH•QK€\™Э[Y[ќќ\њZ[ђ›ЫЬЭHВ€ќ\њZ[€HХUTЧС’QSУRTХWХT”ђRS‹€њ\Щ[ќHL€™Ь›Э[™ЪXЪИHФ“ХS‘РТPТЧХTСT‹€K€ЫЫќ\ЭY™™XЭHУУ•TХСQ‘‘PХСФ‘PUРTPSР•UУ“ЧУSФ‘WУSХ‘TЛ€ЫЫќ\ЭШ]YЫЬћHHУУ•TХРРUQУФ–WРХUK€ЫЫќ\ЭЫЫX›ФЭ\ќ\’YH€ЫЫќ\ЭЫЫX›У[Э™\ИHРУУP“ЧФХT•T—УRTХWХT”ђRSџK€]P[љ[TШЬљ\HР]P[љ[S[Э™WУZ\ЭQ^ЬЪ[Ы‹€K‚€УSХ‘WСФђTФЦWСУQWHB€В€›[YHHУУTХS‘ФХ’S‘К‘Ь\ЬЮHЫYHЉK€™\ШЬљ\[Ы€HУУTХS‘ФХ’S‘К€‘ЫY[™ИЫ€Ь›Э[™]Л€ЫЩ\Ч€‚€™љ\њЭЫ€Ь\ЬЮH\њZ[‹€ЉK€™Y™™XЭHQ‘‘PХСФђTФЦWСУQK€њЭЩ\€H—ХTUQУSХ‘WСUHЏHСS—ОHИMH€М€ќ\HHTWСФђTФЛ€XШЭ\XЮHHL€њHЊ€ќ\™Щ]HT‘СUФСSPХQ€њљ[Ьљ]HH€Ш]YЫЬћHHSPQСWРРUQУФ–WФTТPРS€›XZЩ\РЫЫќXЭH•QK€њЪЮP]P[›™YH—СVђTУUQУSХ‘WС“QФЛ€ЫЫќ\ЭY™™XЭHУУ•TХСQ‘‘PХУ‘VРTPSСPT“QT‹€ЫЫќ\ЭШ]YЫЬћHHУУ•TХРРUQУФ–WФУPT•€ЫЫќ\ЭЫЫX›ФЭ\ќ\’YH€ЫЫќ\ЭЫЫX›У[Э™\ИHРУУP“ЧФХT•T—СФђTФЦWХT”ђRSџK€]P[љ[TШЬљ\HР]P[љ[S[Э™WСЬ\ЬЮQЫYK€K‚€УSХ‘WФ’TТS‘ЧХ“УQСWHB€В€›[YHHУУTХS‘ФХ’S‘К”љ\Ъ[™И›ЫYЩHЉK€™\ШЬљ\[Ы€HУУTХS‘ФХ’S‘К€•\И[Э™IЬИЭЩ\€ЭX›\Ч€‚€ќЪ[€Ы€[XЭљXИ\њZ[‹€ЉK€™Y™™XЭHQ‘‘PХХT”ђRS—Р“УФХ€њЭЩ\€HМ€ќ\HHTWСSPХ’PЛ€XШЭ\XЮHHL€њHЊ€ќ\™Щ]HT‘СUФСSPХQ€њљ[Ьљ]HH€Ш]YЫЬћHHSPQСWРРUQУФ–WФФPТPS€\™Э[Y[ќќ\њZ[ђ›ЫЬЭHВ€ќ\њZ[€HХUTЧС’QSСSPХ’PЧХT”ђRS‹€њ\Щ[ќHL€™Ь›Э[™ЪXЪИHФ“ХS‘РТPТЧХT‘СU€K€ЫЫќ\ЭY™™XЭHУУ•TХСQ‘‘PХТQТWРTPSS‘Л€ЫЫќ\ЭШ]YЫЬћHHУУ•TХРРUQУФ–WР‘PUUK€ЫЫќ\ЭЫЫX›ФЭ\ќ\’YH€ЫЫќ\ЭЫЫX›У[Э™\ИHРУУP“ЧФХT•T—СSPХ’PЧХT”ђRSџK€]P[љ[TШЬљ\HР]P[љ[S[Э™WФљ\Ъ[™Х›ЫYЩK€K‚€УSХ‘WХT”ђRS—ФSСWHB€В€›[YHHУУTХS‘ФХ’S‘К•\њZ[€[ЩHЉK€™\ШЬљ\[Ы€HУУTХS‘ФХ’S‘К€•\H[™ЭЩ\€Ъ[™Щ\Ч€‚€™\[™[™ИЫ€H\њZ[‹€ЉK€™Y™™XЭHQ‘‘PХХT”ђRS—ФSСK€њЭЩ\€HL€ќ\HHTWУ“Ф“PS€XШЭ\XЮHHL€њHL€ќ\™Щ]HT‘СUФСSPХQ€њљ[Ьљ]HH€Ш]YЫЬћHHSPQСWРРUQУФ–WФФPТPS€њ[ЩS[Э™HH•QK€ЫЫќ\ЭY™™XЭHЧХTUQУSХ‘WСQ‘‘PХИЏHСS—Н€ИУУ•TХСQ‘‘PХФ‘TUUSУ—У“ХР“Ф’S‘И€УУ•TХСQ‘‘PХТQТWРTPSS‘Л€ЫЫќ\ЭШ]YЫЬћHHУУ•TХРРUQУФ–WРХUK€ЫЫќ\ЭЫЫX›ФЭ\ќ\’YH€ЫЫќ\ЭЫЫX›У[Э™\ИHРУУP“ЧФХT•T—СSPХ’PЧХT”ђRS‹УУP“ЧФХT•T—УRTХWХT”ђRS‹УУP“ЧФХT•T—СФђTФЦWХT”ђRS‹УУP“ЧФХT•T—ФЦPТPЧХT”ђRSџK€]P[љ[TШЬљ\HР]P[љ[S[Э™WХ\њZ[”[ЩK€K‚€УSХ‘WФТТUT—ФУPPТЧHB€В€›[YHHУУTХS‘ФХ’S‘К”ЪЪ]\€ЫXXЪИЉK€™\ШЬљ\[Ы€HУУTХS‘ФХ’S‘К€•\Щ\€ЪЪ]\њИ™Z[™›ЩHЧ€‚€]XЪЛ€ЭЩ\њИ›ЩIЬИЬ€]Л€ЉK€™Y™™XЭHQ‘‘PХТU€њЭЩ\€HМ€ќ\HHTWР•QЛ€XШЭ\XЮHHL€њHL€ќ\™Щ]HT‘СUФСSPХQ€њљ[Ьљ]HH€Ш]YЫЬћHHSPQСWРРUQУФ–WФTТPРS€›XZЩ\РЫЫќXЭH•QK€Y][Ы[Y™™XЭИHQUSУђSСQ‘‘PХКВ€›[Э™QY™™XЭHSХ‘WСQ‘‘PХФФРUЧУRS•TЧМK€Ъ[ЩHHL€JK€ЫЫќ\ЭY™™XЭHУУ•TХСQ‘‘PХРђQWФХT•WФ‘U—УSУ”Л€ЫЫќ\ЭШ]YЫЬћHHУУ•TХРРUQУФ–WРХUK€ЫЫќ\ЭЫЫX›ФЭ\ќ\’YH€ЫЫќ\ЭЫЫX›У[Э™\ИHМK€]P[љ[TШЬљ\HР]P[љ[S[Э™WФЪЪ]\”ЫXXЪЛ€K‚€УSХ‘WР•T“’S‘ЧТ‘PSХTЦWHB€В€›[YHHУУTХS‘ФХ’S‘Кђќ\›љ[™И™X[Э\ЮHЉK€™\ШЬљ\[Ы€HУУTХS‘ФХ’S‘К€‘›Щ\И]]™HЭ]И\Y€‚€™\љ[™ИH\›€Щ]ќ\›™Y€ЉK€™Y™™XЭHQ‘‘PХТU€њЭЩ\€HМ€ќ\HHTWС’T‘K€XШЭ\XЮHHL€њHK€ќ\™Щ]HT‘СUР“Х€њљ[Ьљ]HH€Ш]YЫЬћHHSPQСWРРUQУФ–WФФPТPS€Y][Ы[Y™™XЭИHQUSУђSСQ‘‘PХКВ€›[Э™QY™™XЭHSХ‘WСQ‘‘PХР•T“‹€›Ы›RY•\™Щ]Z\ЩYЭ]ИH•QK€Ъ[ЩHHL€JK€ЫЫќ\ЭY™™XЭHУУ•TХСQ‘‘PХФХT•WУSУ—ХТUТ•QСTЧРUS•SУ‹€ЫЫќ\ЭШ]YЫЬћHHУУ•TХРРUQУФ–WР‘PUUK€ЫЫќ\ЭЫЫX›ФЭ\ќ\’YH€ЫЫќ\ЭЫЫX›У[Э™\ИHМK€]P[љ[TШЬљ\HР]P[љ[S[Э™WРќ\›љ[™Т™X[Э\ЮK€K‚€УSХ‘WУTТУХUHB€В€›[YHHУУTХS‘ФХ’S‘К“\ЪЭ]ЉK€™\ШЬљ\[Ы€HУУTХS‘ФХ’S‘К€’Y€\Щ\‰ЬИЭ]ИЩ\™HЭЩ\™Y€‚€ќ\И\›‹ЭЩ\€\ИЭX›Y€ЉK€™Y™™XЭHQ‘‘PХУTТУХU€њЭЩ\€HНK€ќ\HHTWСT’Л€XШЭ\XЮHHL€њHK€ќ\™Щ]HT‘СUФСSPХQ€њљ[Ьљ]HH€Ш]YЫЬћHHSPQСWРРUQУФ–WФTТPРS€›XZЩ\РЫЫќXЭH•QK€ЫЫќ\ЭY™™XЭHУУ•TХСQ‘‘PХФХT•WФ‘U—УSУ‹€ЫЫќ\ЭШ]YЫЬћHHУУ•TХРРUQУФ–WРУУУ€ЫЫќ\ЭЫЫX›ФЭ\ќ\’YH€ЫЫќ\ЭЫЫX›У[Э™\ИHМK€]P[љ[TШЬљ\HР]P[љ[S[Э™WУ\ЪЭ]€K‚€УSХ‘WФУT‘СRTХHB€В€›[YHHУУTХS‘ФХ’S‘К”Ы\™ЩZ\ЭЉK€™\ШЬљ\[Ы€HУУTХS‘ФХ’S‘К€ђЫЫќ›Ы›ЩIЬИ][HИ]XЪЛ—€‚€‘Z[ИY€›ЩH\И›И][K€ЉK€™Y™™XЭHQ‘‘PХФУT‘СRTХ€њЭЩ\€HLL€ќ\HHTWСТФХ€XШЭ\XЮHHL€њHK€ќ\™Щ]HT‘СUФСSPХQ€њљ[Ьљ]HH€Ш]YЫЬћHHSPQСWРРUQУФ–WФTТPРS€ЫЫќ\ЭY™™XЭHУУ•TХСQ‘‘PХР‘UT—ТQ—С’T”Х€ЫЫќ\ЭШ]YЫЬћHHУУ•TХРРUQУФ–WФУPT•€ЫЫќ\ЭЫЫX›ФЭ\ќ\’YH€ЫЫќ\ЭЫЫX›У[Э™\ИHМK€]P[љ[TШЬљ\HР]P[љ[S[Э™WФЫ\™ЩZ\Э€K‚€УSХ‘WРУФ”“ФТU‘WСРTЧHB€В€›[YHHУУTХS‘ФХ’S‘КђЫЬњ›ЬЪ]™HШ\ИЉK€™\ШЬљ\[Ы€HУУTХS‘ФХ’S‘К€’YЪHXЪYXИШ\ИY[И][\Ч€‚€љ[ћHЭ\њ›Э[™[™ИЪрк[[Ы‹€ЉK€™Y™™XЭHQ‘‘PХРУФ”“ФТU‘WСРTЛ€њЭЩ\€H€ќ\HHTWФТTУУ‹€XШЭ\XЮHHL€њH€ќ\™Щ]HT‘СUС“СTЧРS‘РSK€њљ[Ьљ]HH€Ш]YЫЬћHHSPQСWРРUQУФ–WФХUTЛ€›XYЪXРЫШ]Y™™XЭYH•QK€ЫЫќ\ЭY™™XЭHУУ•TХСQ‘‘PХХУФ”СS—РУУ‘USУ—УС—Ф‘U—УSУ”Л€ЫЫќ\ЭШ]YЫЬћHHУУ•TХРРUQУФ–WРУУУ€ЫЫќ\ЭЫЫX›ФЭ\ќ\’YH€ЫЫќ\ЭЫЫX›У[Э™\ИHМK€]P[љ[TШЬљ\HР]P[љ[S[Э™WРЫЬњ›ЬЪ]™QШ\Л€K‚€УSХ‘WРУРPТS‘ЧHB€В€›[YHHУУTХS‘ФХ’S‘КђЫШXЪ[™ИЉK€™\ШЬљ\[Ы€HУУTХS‘ФХ’S‘К€”›Ь\›HЫШXЪ\И[Y\ИЧ€‚€ќ\Z\€]XЪИ[™Y™[њЩK€ЉK€™Y™™XЭHQ‘‘PХРУРPТS‘Л€њЭЩ\€H€ќ\HHTWС’QТS‘Л€XШЭ\XЮHH€њHL€ќ\™Щ]HT‘СUРSK€њљ[Ьљ]HH€Ш]YЫЬћHHSPQСWРРUQУФ–WФХUTЛ€љYЫ›Ь™\Ф›ЭXЭH•QK€љYЫ›Ь™\ФЭXњЭ]]HH•QK€›Z\њ›Ь“[Э™P[›™YH•QK€ЫЫќ\ЭY™™XЭHУУ•TХСQ‘‘PХТST“Х‘WРУУ‘USУ—Ф‘U‘S•У‘T•“ХTУ‘TФЛ€ЫЫќ\ЭШ]YЫЬћHHУУ•TХРРUQУФ–WРУУУ€ЫЫќ\ЭЫЫX›ФЭ\ќ\’YH€ЫЫќ\ЭЫЫX›У[Э™\ИHМK€]P[љ[TШЬљ\HР]P[љ[S[Э™WРЫШXЪ[™Л€K‚€УSХ‘WС“TХT“—HB€В€›[YHHУУTХS‘ФХ’S‘К‘›\\›€ЉK€™\ШЬљ\[Ы€HУУTХS‘ФХ’S‘К€ђ]XЪЬИ[™ќ\Ъ\ИXЪИЧ€‚€њЭЪ]ЪЪ]H\ќHЪрк[[Ы‹€ЉK€™Y™™XЭHQ‘‘PХТUСTРРTK€њЭЩ\€HЊ€ќ\HHTWХРUT‹€XШЭ\XЮHHL€њHЊ€ќ\™Щ]HT‘СUФСSPХQ€њљ[Ьљ]HH€Ш]YЫЬћHHSPQСWРРUQУФ–WФTТPРS€›XZЩ\РЫЫќXЭH•QK€ЫЫќ\ЭY™™XЭHУУ•TХСQ‘‘PХРU“ТQФХT•K€ЫЫќ\ЭШ]YЫЬћHHУУ•TХРРUQУФ–WРУУУ€ЫЫќ\ЭЫЫX›ФЭ\ќ\’YH€ЫЫќ\ЭЫЫX›У[Э™\ИHМK€]P[љ[TШЬљ\HР]P[љ[S[Э™WС›\\›‹€K‚€УSХ‘WХ’TWРVSHB€В€›[YHHУУTХS‘ФХ’S‘К•љ\H^[ЉK€™\ШЬљ\[Ы€HУУTХS‘ФХ’S‘К€ђHЛZЪXЪИ]XЪИ]Щ]Ч€‚€›[Ь™HЭЩ\™ќ[Ъ]XXЪ]€ЉK€™Y™™XЭHQ‘‘PХХ’TWТТPТЛ€њЭЩ\€HЊ€ќ\HHTWТPСK€XШЭ\XЮHHL€њHL€ќ\™Щ]HT‘СUФСSPХQ€њљ[Ьљ]HH€Ш]YЫЬћHHSPQСWРРUQУФ–WФTТPРS€›XZЩ\РЫЫќXЭH•QK€љЪXЪЪ[™У[Э™HH•QK€њЭљZЩPЫЭ[ќHЛ€ЫЫќ\ЭY™™XЭHУУ•TХСQ‘‘PХР‘UT—ТQ—ФРSQWХTK€ЫЫќ\ЭШ]YЫЬћHHУУ•TХРРUQУФ–WР‘PUUK€ЫЫќ\ЭЫЫX›ФЭ\ќ\’YH€ЫЫќ\ЭЫЫX›У[Э™\ИHМK€]P[љ[TШЬљ\HР]P[љ[S[Э™WХљ\P^[€K‚€УSХ‘WСPSХТS‘Р‘PUHB€В€›[YHHУУTХS‘ФХ’S‘К‘X[Ъ[™Ш™X]ЉK€™\ШЬљ\[Ы€HУУTХS‘ФХ’S‘К€•\Щ\€Ы[\ИH\™Щ]Ъ]€‚€ќЪ[™ЬИ[™]ИЪXЩH[€H›ЭЛ€ЉK€™Y™™XЭHQ‘‘PХТU€њЭЩ\€H€ќ\HHTWС“RS‘Л€XШЭ\XЮHHL€њHL€ќ\™Щ]HT‘СUФСSPХQ€њљ[Ьљ]HH€Ш]YЫЬћHHSPQСWРРUQУФ–WФTТPРS€›XZЩ\РЫЫќXЭH•QK€њЭљZЩPЫЭ[ќH‹€ЫЫќ\ЭY™™XЭHУУ•TХСQ‘‘PХФ‘TUUSУ—У“ХР“Ф’S‘Л€ЫЫќ\ЭШ]YЫЬћHHУУ•TХРРUQУФ–WРУУУ€ЫЫќ\ЭЫЫX›ФЭ\ќ\’YH€ЫЫќ\ЭЫЫX›У[Э™\ИHМK€]P[љ[TШЬљ\HР]P[љ[S[Э™WСX[Ъ[™Ш™X]€K‚€УSХ‘WФРУФђТS‘ЧФРS‘ЧHB€В€›[YHHУУTХS‘ФХ’S‘К”ШЫЬЪ[™ИШ[™ИЉK€™\ШЬљ\[Ы€HУУTХS‘ФХ’S‘К€•›ЭЬИШЫЬЪ[™ИШ[™]€‚€ќH\™Щ]€X^HX]™HHќ\›‹€ЉK€™Y™™XЭHQ‘‘PХТU€њЭЩ\€HМ€ќ\HHTWСФ“ХS‘€XШЭ\XЮHHL€њHL€ќ\™Щ]HT‘СUФСSPХQ€њљ[Ьљ]HH€Ш]YЫЬћHHSPQСWРРUQУФ–WФФPТPS€ќ]ЬХ\Щ\€H•QK€Y][Ы[Y™™XЭИHQUSУђSСQ‘‘PХКВ€›[Э™QY™™XЭHSХ‘WСQ‘‘PХР•T“‹€Ъ[ЩHHМ€JK€ЫЫќ\ЭY™™XЭHУУ•TХСQ‘‘PХТQТWРTPSS‘Л€ЫЫќ\ЭШ]YЫЬћHHУУ•TХРРUQУФ–WХХQТ€ЫЫќ\ЭЫЫX›ФЭ\ќ\’YH€ЫЫќ\ЭЫЫX›У[Э™\ИHМK€]P[љ[TШЬљ\HР]P[љ[S[Э™WФШЫЬЪ[™ФШ[™Л€K‚€УSХ‘WТ•S‘УWТPSS‘ЧHB€В€›[YHHУУTХS‘ФХ’S‘К’ќ[™ЫHX[[™ИЉK€™\ШЬљ\[Ы€HУУTХS‘ФХ’S‘К€’X[И[™Э]\ИЩ—€‚€љ]Щ[€[™[Y\И[€]K€ЉK€™Y™™XЭHQ‘‘PХТ•S‘УWТPSS‘Л€њЭЩ\€H€ќ\HHTWСФђTФЛ€XШЭ\XЮHH€њHL€ќ\™Щ]HT‘СUХTСT‹€њљ[Ьљ]HH€Ш]YЫЬћHHSPQСWРРUQУФ–WФХUTЛ€љYЫ›Ь™\Ф›ЭXЭH•QK€љYЫ›Ь™\ФЭXњЭ]]HH•QK€›Z\њ›Ь“[Э™P[›™YH•QK€љX[[™У[Э™HH•QK€›Y]›Ы›ЫYP[›™YH•QK€ЫЫќ\ЭY™™XЭHУУ•TХСQ‘‘PХФUPSUWСTS‘ЧУУ—ХSRS‘Л€ЫЫќ\ЭШ]YЫЬћHHУУ•TХРРUQУФ–WФУPT•€ЫЫќ\ЭЫЫX›ФЭ\ќ\’YH€ЫЫќ\ЭЫЫX›У[Э™\ИHМK€]P[љ[TШЬљ\HР]P[љ[S[Э™WТќ[™ЫRX[[™Л€K‚€УSХ‘WХТPТСQР“ХЧHB€В€›[YHHУУTХS‘ФХ’S‘К•ЪXЪЩY›ЭИЉK€™\ШЬљ\[Ы€HУУTХS‘ФХ’S‘К€“X\Э\љ[™ИH\љИЭ[K€‚€њЭљZЩ\ИЪ]HЬљ]XШ[]€ЉK€™Y™™XЭHQ‘‘PХТU€њЭЩ\€H—ХTUQУSХ‘WСUHЏHСS—ОHИНH€€ќ\HHTWСT’Л€XШЭ\XЮHHL€њHK€ќ\™Щ]HT‘СUФСSPХQ€њљ[Ьљ]HH€Ш]YЫЬћHHSPQСWРРUQУФ–WФTТPРS€›XZЩ\РЫЫќXЭH•QK€[Ш^\РЬљ]XШ[]H•QK€њ[Ъ[™У[Э™HH•QK€›Y]›Ы›ЫYP[›™YH•QK€ЫЫќ\ЭY™™XЭHУУ•TХСQ‘‘PХТђSTЧУХT”ЧР•UУRTФЧУУ‘WХT“‹€ЫЫќ\ЭШ]YЫЬћHHУУ•TХРРUQУФ–WРУУУ€ЫЫќ\ЭЫЫX›ФЭ\ќ\’YH€ЫЫќ\ЭЫЫX›У[Э™\ИHМK€]P[љ[TШЬљ\HР]P[љ[S[Э™WХЪXЪЩY›ЭЛ€K‚€УSХ‘WФХT‘ТS‘ЧФХ’RСTЧHB€В€›[YHHУУTХS‘ФХ’S‘К”Э\™Ъ[™ИЭљZЩ\ИЉK€™\ШЬљ\[Ы€HУУTХS‘ФХ’S‘К€“X\Э\љ[™ИHШ]\€Э[K€‚€њЭљZЩ\ИЪ]ИЬљ]XШ[]Л€ЉK€™Y™™XЭHQ‘‘PХТU€њЭЩ\€HЌK€ќ\HHTWХРUT‹€XШЭ\XЮHHL€њHK€ќ\™Щ]HT‘СUФСSPХQ€њљ[Ьљ]HH€Ш]YЫЬћHHSPQСWРРUQУФ–WФTТPРS€›XZЩ\РЫЫќXЭH•QK€[Ш^\РЬљ]XШ[]H•QK€њ[Ъ[™У[Э™HH•QK€њЭљZЩPЫЭ[ќHЛ€›Y]›Ы›ЫYP[›™YH•QK€ЫЫќ\ЭY™™XЭHУУ•TХСQ‘‘PХФХT•WУSУ”ЧФРSQWХTWРTPS€ЫЫќ\ЭШ]YЫЬћHHУУ•TХРРUQУФ–WХХQТ€ЫЫќ\ЭЫЫX›ФЭ\ќ\’YH€ЫЫќ\ЭЫЫX›У[Э™\ИHМK€]P[љ[TШЬљ\HР]P[љ[S[Э™WФЭ\™Ъ[™ФЭљZЩ\Л€K‚€УSХ‘WХS‘T—РРQСWHB€В€›[YHHУУTХS‘ФХ’S‘К•[™\€ШYЩHЉK€™\ШЬљ\[Ы€HУУTХS‘ФХ’S‘К€•\ИH›ЩH[€HШYЩHЩ—€‚€™[XЭљXЪ]H›Ь€ђ’S‘S‘ЧХT“”И€\›њЛ€ЉK€™Y™™XЭHQ‘‘PХТU€њЭЩ\€H€ќ\HHTWСSPХ’PЛ€XШЭ\XЮHHL€њHMK€ќ\™Щ]HT‘СUФСSPХQ€њљ[Ьљ]HH€Ш]YЫЬћHHSPQСWРРUQУФ–WФФPТPS€›Y]›Ы›ЫYP[›™YH•QK€Y][Ы[Y™™XЭИHQUSУђSСQ‘‘PХКВ€›[Э™QY™™XЭHSХ‘WСQ‘‘PХХФђT€›][\Эљ[™ЛќЬ\YH—УTСЧХФђTQХS‘T—РРQСK€JK€ЫЫќ\ЭY™™XЭHУУ•TХСQ‘‘PХСУ•СVТUWРUQQSђСK€ЫЫќ\ЭШ]YЫЬћHHУУ•TХРРUQУФ–WРУУУ€ЫЫќ\ЭЫЫX›ФЭ\ќ\’YH€ЫЫќ\ЭЫЫX›У[Э™\ИHМK€]P[љ[TШЬљ\HР]P[љ[S[Э™WХ[™\ђШYЩK€K‚€УSХ‘WСђQУУ—СS‘T‘ЦWHB€В€›[YHHУУTХS‘ФХ’S‘К‘YЫЫ€[™\™ЮHЉK€™\ШЬљ\[Ы€HУУTХS‘ФХ’S‘К€•HYЪ\€H\Щ\‰ЬИ€‚€ќH[Ь™H[XYЩHШ]\ЩY€ЉK€™Y™™XЭHQ‘‘PХФХСT—РђTСQУУ—ХTСT—Т€њЭЩ\€HML€ќ\HHTWСђQУУ‹€XШЭ\XЮHHL€њHK€ќ\™Щ]HT‘СUР“Х€њљ[Ьљ]HH€Ш]YЫЬћHHSPQСWРРUQУФ–WФФPТPS€›Y]›Ы›ЫYP[›™YH•QK€ЫЫќ\ЭY™™XЭHЧХTUQУSХ‘WСQ‘‘PХИЏHСS—Н€ИУУ•TХСQ‘‘PХХTСT—УSФ‘WСPTТSWФХT•Q€УУ•TХСQ‘‘PХР‘UT—ХТS—УUT‹€ЫЫќ\ЭШ]YЫЬћHHУУ•TХРРUQУФ–WРУУУ€ЫЫќ\ЭЫЫX›ФЭ\ќ\’YH€ЫЫќ\ЭЫЫX›У[Э™\ИHМK€]P[љ[TШЬљ\HР]P[љ[S[Э™WСYЫЫ‘[™\™ЮK€K‚€УSХ‘WС”‘QV’S‘ЧСУT‘WHB€В€›[YHHУУTХS‘ФХ’S‘К‘њ™Y^љ[™ИЫ\™HЉK€™\ШЬљ\[Ы€HУУTХS‘ФХ’S‘К€”ЪЫЭИЮXЪXИЭЩ\€њ›ЫW€‚€ЪY€—ХTСWС”“ФХ’UHOH•QB€ќH^Y\Л€X^Hњ›ЬЭљ]K€ЉK€Щ[ЩB€ќH^Y\Л€X^Hњ™Y^™HH›ЩK€ЉK€Щ[™Y‚€њЭЩ\€HL€™Y™™XЭHQ‘‘PХТU€ќ\HHTWФЦPТPЛ€XШЭ\XЮHHL€њHL€ќ\™Щ]HT‘СUФСSPХQ€њљ[Ьљ]HH€Ш]YЫЬћHHSPQСWРРUQУФ–WФФPТPS€›Y]›Ы›ЫYP[›™YH•QK€Y][Ы[Y™™XЭИHQUSУђSСQ‘‘PХКВ€›[Э™QY™™XЭHSХ‘WСQ‘‘PХС”‘QV‘WУФ—С”“ФХ’UK€Ъ[ЩHHL€JK€ЫЫќ\ЭY™™XЭHУУ•TХСQ‘‘PХТQТWРTPSS‘Л€ЫЫќ\ЭШ]YЫЬћHHУУ•TХРРUQУФ–WРХUK€ЫЫќ\ЭЫЫX›ФЭ\ќ\’YH€ЫЫќ\ЭЫЫX›У[Э™\ИHМK€]P[љ[TШЬљ\HР]P[љ[S[Э™WСњ™Y^љ[™СЫ\™K€K‚€УSХ‘WС’QT–WХФђUHB€В€›[YHHУУTХS‘ФХ’S‘К‘љY\ћHЬ]ЉK€™\ШЬљ\[Ы€HУУTХS‘ФХ’S‘К€ђ[€]XЪИќY[YћH[Э\—€‚€ќЬ]€X^HШ]\ЩH›[Ъ[™Л€ЉK€™Y™™XЭHQ‘‘PХТU€њЭЩ\€HL€ќ\HHTWСT’Л€XШЭ\XЮHHL€њHL€ќ\™Щ]HT‘СUР“Х€њљ[Ьљ]HH€Ш]YЫЬћHHSPQСWРРUQУФ–WФФPТPS€›Y]›Ы›ЫYP[›™YH•QK€Y][Ы[Y™™XЭИHQUSУђSСQ‘‘PХКВ€›[Э™QY™™XЭHSХ‘WСQ‘‘PХС“SђТ€Ъ[ЩHHЊ€JK€ЫЫќ\ЭY™™XЭHУУ•TХСQ‘‘PХТQТWРTPSS‘Л€ЫЫќ\ЭШ]YЫЬћHHУУ•TХРРUQУФ–WР‘PUUK€ЫЫќ\ЭЫЫX›ФЭ\ќ\’YH€ЫЫќ\ЭЫЫX›У[Э™\ИHМK€]P[љ[TШЬљ\HР]P[љ[S[Э™WСљY\ћUЬ]€K‚€УSХ‘WХS‘T“ХTЧТТPТЧHB€В€›[YHHУУTХS‘ФХ’S‘К•[™\›Э\ИЪXЪИЉK€™\ШЬљ\[Ы€HУУTХS‘ФХ’S‘К€•\Щ\ИHYЪљ[™Л[ZЩHЪXЪЧ€‚€ќИ]€ЭЩ\њИ›ЩIЬИY™[њЩK€ЉK€™Y™™XЭHQ‘‘PХТU€њЭЩ\€HL€ќ\HHTWС’QТS‘Л€XШЭ\XЮHHL€њHL€ќ\™Щ]HT‘СUФСSPХQ€њљ[Ьљ]HH€Ш]YЫЬћHHSPQСWРРUQУФ–WФTТPРS€›XZЩ\РЫЫќXЭH•QK€љЪXЪЪ[™У[Э™HH•QK€›Y]›Ы›ЫYP[›™YH•QK€Y][Ы[Y™™XЭИHQUSУђSСQ‘‘PХКВ€›[Э™QY™™XЭHSХ‘WСQ‘‘PХСQ—УRS•TЧМK€Ъ[ЩHHL€JK€ЫЫќ\ЭY™™XЭHУУ•TХСQ‘‘PХТQТWРTPSS‘Л€ЫЫќ\ЭШ]YЫЬћHHУУ•TХРРUQУФ–WХХQТ€ЫЫќ\ЭЫЫX›ФЭ\ќ\’YH€ЫЫќ\ЭЫЫX›У[Э™\ИHМK€]P[љ[TШЬљ\HР]P[љ[S[Э™WХ[™\›Э\ТЪXЪЛ€K‚€УSХ‘WСУPТPSУSђСWHB€В€›[YHHУУTХS‘ФХ’S‘К‘ЫXЪX[[ЩHЉK€™\ШЬљ\[Ы€HУУTХS‘ФХ’S‘К€’\›ИH›^ћ\™XЫШZЩY€‚€љXЪXЫH[ЩH]›Щ\Л€ЉK€™Y™™XЭHQ‘‘PХТU€њЭЩ\€H—ХTUQУSХ‘WСUHЏHСS—ОHИLЊ€LМ€ќ\HHTWТPСK€XШЭ\XЮHHL€њHK€ќ\™Щ]HT‘СUР“Х€њљ[Ьљ]HH€Ш]YЫЬћHHSPQСWРРUQУФ–WФTТPРS€›Y]›Ы›ЫYP[›™YH•QK€ЫЫќ\ЭY™™XЭHУУ•TХСQ‘‘PХР‘UT—ТQ—УTХ€ЫЫќ\ЭШ]YЫЬћHHУУ•TХРРUQУФ–WР‘PUUK€ЫЫќ\ЭЫЫX›ФЭ\ќ\’YH€ЫЫќ\ЭЫЫX›У[Э™\ИHМK€]P[љ[TШЬљ\HР]P[љ[S[Э™WСЫXЪX[[ЩK€K‚€УSХ‘WРTХђSРђT”ђQСWHB€В€›[YHHУУTХS‘ФХ’S‘Кђ\Э[\њYЩHЉK€™\ШЬљ\[Ы€HУУTХS‘ФХ’S‘К€”Щ[™ИHњљYЪќ[[[Э[ќ€‚€›Щ€ЫX[ЪЬЭИ]›Щ\Л€ЉK€™Y™™XЭHQ‘‘PХТU€њЭЩ\€HLЊ€ќ\HHTWСТФХ€XШЭ\XЮHHL€њHK€ќ\™Щ]HT‘СUР“Х€њљ[Ьљ]HH€Ш]YЫЬћHHSPQСWРРUQУФ–WФФPТPS€›Y]›Ы›ЫYP[›™YH•QK€ЫЫќ\ЭY™™XЭHУУ•TХСQ‘‘PХР‘UT—ТQ—С’T”Х€ЫЫќ\ЭШ]YЫЬћHHУУ•TХРРUQУФ–WФУPT•€ЫЫќ\ЭЫЫX›ФЭ\ќ\’YH€ЫЫќ\ЭЫЫX›У[Э™\ИHМK€]P[љ[TШЬљ\HР]P[љ[S[Э™WР\Э[\њYЩK€K‚€УSХ‘WСQT’QWФФSHB€В€›[YHHУУTХS‘ФХ’S‘К‘Y\љYHЬ[ЉK€™\ШЬљ\[Ы€HУУTХS‘ФХ’S‘К€ђ]XЪЬИЪ]ЮXЪXИЭЩ\‹—€‚€‘›ЩIЬИ\Э[Э™H\ИИЭ]€ЉK€™Y™™XЭHQ‘‘PХТU€њЭЩ\€H€ќ\HHTWФЦPТPЛ€XШЭ\XЮHHL€њHK€ќ\™Щ]HT‘СUФСSPХQ€њљ[Ьљ]HH€Ш]YЫЬћHHSPQСWРРUQУФ–WФФPТPS€њЫЭ[™[Э™HH•QK€љYЫ›Ь™\ФЭXњЭ]]HH—ХTUQУSХ‘WС“QФИЏHСS—Н‹€ЫЫќ\ЭY™™XЭHУУ•TХСQ‘‘PХР‘UT—ХТS—УUT‹€ЫЫќ\ЭШ]YЫЬћHHУУ•TХРРUQУФ–WФУPT•€ЫЫќ\ЭЫЫX›ФЭ\ќ\’YH€ЫЫќ\ЭЫЫX›У[Э™\ИHМK€Y][Ы[Y™™XЭИHQUSУђSСQ‘‘PХКВ€›[Э™QY™™XЭHSХ‘WСQ‘‘PХСQT’QWФФS€Ъ[ЩHHL€JK€]P[љ[TШЬљ\HР]P[љ[S[Э™WСY\љYTЬ[€K‚€УSХ‘WСT‘WРУUЧHB€В€›[YHHУУTХS‘ФХ’S‘К‘\™HЫ]ИЉK€™\ШЬљ\[Ы€HУУTХS‘ФХ’S‘К€’YЪЬљ]XШ[]Ъ[ЩK€X^W€‚€њ\[^™KЪ\ЫЫ€Ь€›ЭЬЩK€ЉK€™Y™™XЭHQ‘‘PХТU€њЭЩ\€H—ХTUQУSХ‘WСUHЏHСS—ОHИ€Њ€ќ\HHTWФТTУУ‹€XШЭ\XЮHHL€њHMK€ќ\™Щ]HT‘СUФСSPХQ€њљ[Ьљ]HH€Ш]YЫЬћHHSPQСWРРUQУФ–WФTТPРS€њЫXЪ[™У[Э™HH•QK€›XZЩ\РЫЫќXЭH•QK€Y][Ы[Y™™XЭИHQUSУђSСQ‘‘PХКВ€›[Э™QY™™XЭHSХ‘WСQ‘‘PХСT‘WРУUЛ€Ъ[ЩHHL€JK€]P[љ[TШЬљ\HР]P[љ[S[Э™WС\™PЫ]Л€K‚€УSХ‘WФЦTТQSРђTТHB€В€›[YHHУУTХS‘ФХ’S‘К”Ю\ЪY[\ЪЉK€™\ШЬљ\[Ы€HУУTХS‘ФХ’S‘К€’]ИH›ЩHЪ]ЮXЪXЧ€‚€™[™\™ЮK€X^HZ\ЩHY™[њЩK€ЉK€™Y™™XЭHQ‘‘PХТU€њЭЩ\€HМ€ќ\HHTWФЦPТPЛ€XШЭ\XЮHHL€њHL€ќ\™Щ]HT‘СUФСSPХQ€њљ[Ьљ]HH€Ш]YЫЬћHHSPQСWРРUQУФ–WФTТPРS€›XZЩ\РЫЫќXЭH•QK€Y][Ы[Y™™XЭИHQUSУђSСQ‘‘PХКВ€›[Э™QY™™XЭHSХ‘WСQ‘‘PХСQ—ФTЧМK€њЩ[€H•QK€Ъ[ЩHHL€JK€]P[љ[TШЬљ\HР]P[љ[S[Э™WФЮ\ЪY[\Ъ€K‚€УSХ‘WФХСT—ФТQ•HB€В€›[YHHУУTХS‘ФХ’S‘К”ЭЩ\€ЪYќЉK€™\ШЬљ\[Ы€HУУTХS‘ФХ’S‘К€•H\Щ\€ЭШ\И]И]XЪЧ€‚€[™Y™[њЩHЭ]Л€ЉK€™Y™™XЭHQ‘‘PХФХСT—Х’PТЛ€њЭЩ\€H€ќ\HHTWУ“Ф“PS€XШЭ\XЮHH€њHL€ќ\™Щ]HT‘СUХTСT‹€њљ[Ьљ]HH€Ш]YЫЬћHHSPQСWРРUQУФ–WФХUTЛ€њЫ]ЪY™™XЭYH•QK€љYЫ›Ь™\Ф›ЭXЭH•QK€›Z\њ›Ь“[Э™P[›™YH•QK€›Y]›Ы›ЫYP[›™YH•QK€]P[љ[TШЬљ\HР]P[љ[S[Э™WФЭЩ\”ЪYќџK‚€УSХ‘WФХУ‘WРVWHB€В€›[YHHУУTХS‘ФХ’S‘К”ЭЫ™H^HЉK€™\ШЬљ\[Ы€HУУTХS‘ФХ’S‘К€”Щ]ИЪ\њ›ШЪЬИ]\ќ€‚€ќH›ЩK€ЉK€™Y™™XЭHQ‘‘PХФХУ‘WРVK€њЭЩ\€HЌK€ќ\HHTWФ“РТЛ€XШЭ\XЮHHL€њHMK€ќ\™Щ]HT‘СUФСSPХQ€њљ[Ьљ]HH€Ш]YЫЬћHHSPQСWРРUQУФ–WФTТPРS€›XZЩ\РЫЫќXЭH•QK€њЫXЪ[™У[Э™HH•QK€Y][Ы[Y™™XЭИHQUSУђSСQ‘‘PХКВ€њЪY\‘›ЬЩSЭ™\њљYHH•QK€JK€]P[љ[TШЬљ\HР]P[љ[S[Э™WФЭЫ™P^K€K‚€УSХ‘WФФ’S‘ХQWФХФ“WHB€В€›[YHHУУTХS‘ФХ’S‘К”Ьљ[™ЭYHЭЬ›HЉK€™\ШЬљ\[Ы€HУУTХS‘ФХ’S‘К€•Ь\ИH›ЩH[€љY\ЩHЪ[™Л—€‚€•\љY\ИЪ]H\Щ\‰ЬИ›Ь›K€ЉK€™Y™™XЭHQ‘‘PХТU€њЭЩ\€H—ХTUQУSХ‘WСUHЏHСS—ОHИL€MK€ќ\HHTWСђRT–K€XШЭ\XЮHH€њHK€ќ\™Щ]HT‘СUР“Х€њљ[Ьљ]HH€Ш]YЫЬћHHSPQСWРРUQУФ–WФФPТPS€ќЪ[™[Э™HH•QK€›Y]›Ы›ЫYP[›™YH•QK€Y][Ы[Y™™XЭИHQUSУђSСQ‘‘PХКВ€›[Э™QY™™XЭHSХ‘WСQ‘‘PХРUЧУRS•TЧМK€Ъ[ЩHHМ€JK€]P[љ[TШЬљ\HР]P[љ[S[Э™WФЬљ[™ЭYTЭЬ›K€K‚€УSХ‘WУVTХPРSФХСT—HB€В€›[YHHУУTХS‘ФХ’S‘К“^\ЭXШ[ЭЩ\€ЉK€™\ШЬљ\[Ы€HУУTХS‘ФХ’S‘К€ђH^\Э\љ[Э\ИЭЩ\€ЭљZЩ\Л€‚€њZ\Ъ[™ИH\Щ\‰ЬИЬ€]Л€ЉK€™Y™™XЭHQ‘‘PХТU€њЭЩ\€HМ€ќ\HHTWФЦPТPЛ€XШЭ\XЮHHL€њHL€ќ\™Щ]HT‘СUФСSPХQ€њљ[Ьљ]HH€Ш]YЫЬћHHSPQСWРРUQУФ–WФФPТPS€Y][Ы[Y™™XЭИHQUSУђSСQ‘‘PХКВ€›[Э™QY™™XЭHSХ‘WСQ‘‘PХФФРUЧФTЧМK€њЩ[€H•QK€Ъ[ЩHHL€JK€]P[љ[TШЬљ\HР]P[љ[S[Э™WУ^\ЭXШ[ЭЩ\‹€K‚€УSХ‘WФђQТS‘ЧС•T–WHB€В€›[YHHУУTХS‘ФХ’S‘К”YЪ[™Иќ\ћHЉK€™\ШЬљ\[Ы€HУУTХS‘ФХ’S‘К€ђH[\YЩHЩ€€ИИ\›њЧ€‚€ќ]ЫЫ™ќ\Щ\ИH\Щ\‹€ЉK€™Y™™XЭHQ‘‘PХТU€њЭЩ\€H—ХTUQУSХ‘WСUHЏHСS—ОHИLЊ€L€ќ\HHTWС’T‘K€XШЭ\XЮHHL€њHL€ќ\™Щ]HT‘СUФђS‘УK€њљ[Ьљ]HH€Ш]YЫЬћHHSPQСWРРUQУФ–WФTТPРS€›Y]›Ы›ЫYP[›™YH•QK€Y][Ы[Y™™XЭИHQUSУђSСQ‘‘PХКВ€›[Э™QY™™XЭHSХ‘WСQ‘‘PХХђTТ€њЩ[€H•QK€JK€ЫЫќ\ЭY™™XЭHЧХTUQУSХ‘WСQ‘‘PХИЏHСS—Н€ИУУ•TХСQ‘‘PХХTСT—УSФ‘WСPTТSWФХT•Q€УУ•TХСQ‘‘PХТђSTЧУХT”ЧР•UУRTФЧУУ‘WХT“‹€ЫЫќ\ЭЫЫX›ФЭ\ќ\’YH€ЫЫќ\ЭЫЫX›У[Э™\ИHМK€]P[љ[TШЬљ\HР]P[љ[S[Э™WФYЪ[™Сќ\ћK€K‚€УSХ‘WХРU‘WРФђTТHB€В€›[YHHУУTХS‘ФХ’S‘К•Ш]™HЬ\ЪЉK€™\ШЬљ\[Ы€HУУTХS‘ФХ’S‘К€ђHЫ[HЪ›ЭYY[€Ш]\‹—€‚€’][ЫИ\ќИH\Щ\‹€ЉK€™Y™™XЭHQ‘‘PХФ‘PУТS€њЭЩ\€H—ХTUQУSХ‘WСUHЏHСS—ОHИLЊ€НK€ќ\HHTWХРUT‹€XШЭ\XЮHHL€њHL€ќ\™Щ]HT‘СUФСSPХQ€њљ[Ьљ]HH€Ш]YЫЬћHHSPQСWРРUQУФ–WФTТPРS€\™Э[Y[ќHИњ™XЫЪ[\Щ[ќYЩHHМИK€›XZЩ\РЫЫќXЭH•QK€њЪЮP]P[›™YH—СVђTУUQУSХ‘WС“QФЛ€ЫЫќ\ЭY™™XЭHУУ•TХСQ‘‘PХХTСT—УSФ‘WСPTТSWФХT•Q€ЫЫќ\ЭЫЫX›ФЭ\ќ\’YH€ЫЫќ\ЭЫЫX›У[Э™\ИHМK€]P[љ[TШЬљ\HР]P[љ[S[Э™WХШ]™PЬ\Ъ€K‚€УSХ‘WРТФ“Р“TХHB€В€›[YHHУУTХS‘ФХ’S‘КђЪЬ›Ш›\ЭЉK€™\ШЬљ\[Ы€HУУTХS‘ФХ’S‘К€ђH\Щ\‹Z\ќ[™И›\ЭЩ—€‚€[X\ЬЩYЪЬ›Ь[€ЉK€™Y™™XЭHQ‘‘PХРТФ“Р“TХ€њЭЩ\€H—ХTUQУSХ‘WСUHЏHСS—ОHИML€LЊ€ќ\HHTWСФђTФЛ€XШЭ\XЮHHMK€њHK€ќ\™Щ]HT‘СUФСSPХQ€њљ[Ьљ]HH€Ш]YЫЬћHHSPQСWРРUQУФ–WФФPТPS€]P[љ[TШЬљ\HР]P[љ[S[Э™WРЪЬ›Ш›\Э€K‚€УSХ‘WУSХS•RS—СРSWHB€В€›[YHHУУTХS‘ФХ’S‘К“[Э[ќZ[€Ш[HЉK€™\ШЬљ\[Ы€HУУTХS‘ФХ’S‘К€‘ЪX[ќЪ[љЬИЩ€XЩH[XYЩW€‚€ќH›ЩK€]X^H›[Ъ€ЉK€™Y™™XЭHQ‘‘PХТU€њЭЩ\€HL€ќ\HHTWТPСK€XШЭ\XЮHHK€њH—ХTUQУSХ‘WСUHЏHСS—ОHИL€K€ќ\™Щ]HT‘СUФСSPХQ€њљ[Ьљ]HH€Ш]YЫЬћHHSPQСWРРUQУФ–WФTТPРS€Y][Ы[Y™™XЭИHQUSУђSСQ‘‘PХКВ€›[Э™QY™™XЭHSХ‘WСQ‘‘PХС“SђТ€Ъ[ЩHHМ€JK€]P[љ[TШЬљ\HР]P[љ[S[Э™WУ[Э[ќZ[‘Ш[K€K‚€УSХ‘WХ’PХФ–WСSђСWHB€В€›[YHHУУTХS‘ФХ’S‘К•љXЭЬћH[ЩHЉK€™\ШЬљ\[Ы€HУУTХS‘ФХ’S‘К€‘[Щ\ИИZ\ЩH]XЪЛ€‚€‘Y™[њЩH[™ЬYY€ЉK€™Y™™XЭHQ‘‘PХХ’PХФ–WСSђСK€њЭЩ\€H€ќ\HHTWС’QТS‘Л€XШЭ\XЮHH€њHЊ€ќ\™Щ]HT‘СUХTСT‹€њљ[Ьљ]HH€Ш]YЫЬћHHSPQСWРРUQУФ–WФХUTЛ€™[ЩS[Э™HH•QK€њЫ]ЪY™™XЭYH•QK€љYЫ›Ь™\Ф›ЭXЭH•QK€›Z\њ›Ь“[Э™P[›™YH•QK€ЫЫќ\ЭY™™XЭHУУ•TХСQ‘‘PХТST“Х‘WРУУ‘USУ—Ф‘U‘S•У‘T•“ХTУ‘TФЛ€ЫЫќ\ЭЫЫX›ФЭ\ќ\’YH€ЫЫќ\ЭЫЫX›У[Э™\ИHМK€]P[љ[TШЬљ\HР]P[љ[S[Э™WХљXЭЬћQ[ЩK€K‚€УSХ‘WТPQУ‘ЧФ•TТHB€В€›[YHHУУTХS‘ФХ’S‘К’XYЫ™Иќ\ЪЉK€™\ШЬљ\[Ы€HУУTХS‘ФХ’S‘К€’]ИЪ]Hќ[X›ЩHXЪЫK—€‚€“ЭЩ\њИH\Щ\њЙЬИY™[њЩ\Л€ЉK€™Y™™XЭHQ‘‘PХТU€њЭЩ\€H—ХTUQУSХ‘WСUHЏHСS—ОHИLЊ€L€ќ\HHTWСФ“ХS‘€XШЭ\XЮHHL€њHK€ќ\™Щ]HT‘СUФСSPХQ€њљ[Ьљ]HH€Ш]YЫЬћHHSPQСWРРUQУФ–WФTТPРS€›XZЩ\РЫЫќXЭH•QK€њ[Ъ[™У[Э™HH•QK€Y][Ы[Y™™XЭИHQUSУђSСQ‘‘PХКВ€›[Э™QY™™XЭHSХ‘WСQ‘‘PХСQ—ФФQ—СХУ‹€њЩ[€H•QK€JK€ЫЫќ\ЭY™™XЭHУУ•TХСQ‘‘PХХTСT—УSФ‘WСPTТSWФХT•Q€ЫЫќ\ЭЫЫX›ФЭ\ќ\’YH€ЫЫќ\ЭЫЫX›У[Э™\ИHМK€]P[љ[TШЬљ\HР]P[љ[S[Э™WТXYЫ™Фќ\Ъ€K‚€УSХ‘WРђTђ—РђT”ђQСWHB€В€›[YHHУУTХS‘ФХ’S‘Кђ\€\њYЩHЉK€™\ШЬљ\[Ы€HУУTХS‘ФХ’S‘К€ђШ[€Ъ\ЫЫ€Ы€[\XЭ€ЭЩ\њЧ€‚€ќ\YШZ[њЭЪ\ЫЫ™Y›Щ\Л€ЉK€™Y™™XЭHQ‘‘PХСХP“WФХСT—УУ—РT‘ЧФХUTЛ€њЭЩ\€HЊ€ќ\HHTWФТTУУ‹€XШЭ\XЮHHL€њH—ХTUQУSХ‘WСUHЏHСS—ОHИL€MK€ќ\™Щ]HT‘СUФСSPХQ€њљ[Ьљ]HH€Ш]YЫЬћHHSPQСWРРUQУФ–WФTТPРS€\™Э[Y[ќHИњЭ]\ИHХUTМWФУ—РS–HK€Y][Ы[Y™™XЭИHQUSУђSСQ‘‘PХКВ€›[Э™QY™™XЭHSХ‘WСQ‘‘PХФТTУУ‹€Ъ[ЩHHL€JK€]P[љ[TШЬљ\HР]P[љ[S[Э™WР\ђ\њYЩK€K‚€УSХ‘WСTФT—ХТS‘ЧHB€В€›[YHHУУTХS‘ФХ’S‘К‘\Ь\€Ъ[™ИЉK€™\ШЬљ\[Ы€HУУTХS‘ФХ’S‘К€’YЪЬљ]XШ[]][Л—€‚€•\ИH\Щ\‰ЬИЬYY€ЉK€™Y™™XЭHQ‘‘PХТU€њЭЩ\€H—ХTUQУSХ‘WСUHЏHСS—ОHИ€НK€ќ\HHTWФЦPТPЛ€XШЭ\XЮHH—ХTUQУSХ‘WСUHЏHСS—ОHИL€L€Ьљ]XШ[]ЭYЩHH—ХTUQУSХ‘WСUHЏHСS—МИИH€‹€њHL€ќ\™Щ]HT‘СUФСSPХQ€њљ[Ьљ]HH€Ш]YЫЬћHHSPQСWРРUQУФ–WФФPТPS€Y][Ы[Y™™XЭИHQUSУђSСQ‘‘PХКВ€›[Э™QY™™XЭHSХ‘WСQ‘‘PХФФФTЧМK€њЩ[€H•QK€Ъ[ЩHHL€JK€]P[љ[TШЬљ\HР]P[љ[S[Э™WС\Ь\•Ъ[™Л€K‚€УSХ‘WР’UT—УPSPСWHB€В€›[YHHУУTХS‘ФХ’S‘Кђљ]\€X[XЩHЉK€™\ШЬљ\[Ы€HУУTХS‘ФХ’S‘К€ђHЬ[™KXЪ[[™И™\Щ[ќY[ќ—€‚€“ЭЩ\њИH›ЩIЬИ]XЪЛ€ЉK€™Y™™XЭHQ‘‘PХТU€њЭЩ\€H—ХTUQУSХ‘WСUHЏHСS—ОHИНH€Њ€ќ\HHTWСТФХ€XШЭ\XЮHHL€њHMK€ќ\™Щ]HT‘СUФСSPХQ€њљ[Ьљ]HH€Ш]YЫЬћHHSPQСWРРUQУФ–WФФPТPS€Y][Ы[Y™™XЭИHQUSУђSСQ‘‘PХКВ€›[Э™QY™™XЭHSХ‘WСQ‘‘PХРUЧУRS•TЧМK€Ъ[ЩHHL€JK€]P[љ[TШЬљ\HР]P[љ[S[Э™WРљ]\“X[XЩK€K‚€УSХ‘WФТST—HB€В€›[YHHУУTХS‘ФХ’S‘К”Ъ[\€ЉK€™\ШЬљ\[Ы€HУУTХS‘ФХ’S‘К€•H\Щ\€\™[њИZ\€ЪЪ[‹€‚€њЪ\њHZ\Ъ[™И]ИY™[њЩK€ЉK€™Y™™XЭHQ‘‘PХСQ‘S”СWХTМ‹€њЭЩ\€H€ќ\HHTWФХQS€XШЭ\XЮHH€њHL€ќ\™Щ]HT‘СUХTСT‹€њљ[Ьљ]HH€Ш]YЫЬћHHSPQСWРРUQУФ–WФХUTЛ€њЫ]ЪY™™XЭYH•QK€љYЫ›Ь™\Ф›ЭXЭH•QK€›Z\њ›Ь“[Э™P[›™YH•QK€]P[љ[TШЬљ\HР]P[љ[S[Э™WФЪ[\‹€K‚€УSХ‘WХ’TWРT”“ХФЧHB€В€›[YHHУУTХS‘ФХ’S‘К•љ\H\њ›ЭЬИЉK€™\ШЬљ\[Ы€HУУTХS‘ФХ’S‘К€’YЪЬљ]XШ[]][Л—€‚€“X^HЭЩ\€Y™[њЩHЬ€›[Ъ€ЉK€™Y™™XЭHQ‘‘PХТU€њЭЩ\€H—ХTUQУSХ‘WСUHЏHСS—ОHИL€L€ќ\HHTWС’QТS‘Л€XШЭ\XЮHHL€њH—ХTUQУSХ‘WСUHЏHСS—ОHИL€MK€Ьљ]XШ[]ЭYЩHH—ХTUQУSХ‘WСUHЏHСS—МИИH€‹€ќ\™Щ]HT‘СUФСSPХQ€њљ[Ьљ]HH€Ш]YЫЬћHHSPQСWРРUQУФ–WФTТPРS€Y][Ы[Y™™XЭИHQUSУђSСQ‘‘PХКВ€›[Э™QY™™XЭHSХ‘WСQ‘‘PХСQ—УRS•TЧМK€Ъ[ЩHHL€K€В€›[Э™QY™™XЭHSХ‘WСQ‘‘PХС“SђТ€Ъ[ЩHHМ€JK€]P[љ[TШЬљ\HР]P[љ[S[Э™WХљ\P\њ›ЭЬЛ€K‚€УSХ‘WТS‘‘T“ђSФTђQWHB€В€›[YHHУУTХS‘ФХ’S‘К’[™™\›[\YHЉK€™\ШЬљ\[Ы€HУУTХS‘ФХ’S‘К€’\ќИH›ЩH\™\€Y€]\Ч€‚€[€Z[Y[ќ€X^HX]™HHќ\›‹€ЉK€™Y™™XЭHQ‘‘PХСХP“WФХСT—УУ—РT‘ЧФХUTЛ€њЭЩ\€HЊ€ќ\HHTWСТФХ€XШЭ\XЮHHL€њHMK€ќ\™Щ]HT‘СUФСSPХQ€њљ[Ьљ]HH€Ш]YЫЬћHHSPQСWРРUQУФ–WФФPТPS€\™Э[Y[ќHИњЭ]\ИHХUTМWРS–HK€Y][Ы[Y™™XЭИHQUSУђSСQ‘‘PХКВ€›[Э™QY™™XЭHSХ‘WСQ‘‘PХР•T“‹€Ъ[ЩHHМ€JK€]P[љ[TШЬљ\HР]P[љ[S[Э™WТ[™™\›[\YK€K‚€УSХ‘WРСPTСSTФЧСQСWHB€В€›[YHHУУTХS‘ФХ’S‘КђЩX\Щ[\ЬИYЩHЉK€™\ШЬљ\[Ы€HУУTХS‘ФХ’S‘К€”Щ]ИЬZЩ\И]\ќW€‚€™›ЩK€ЉK€™Y™™XЭHQ‘‘PХРСPTСSTФЧСQСK€њЭЩ\€HЌK€ќ\HHTWСT’Л€XШЭ\XЮHHL€њHMK€ќ\™Щ]HT‘СUФСSPХQ€њљ[Ьљ]HH€Ш]YЫЬћHHSPQСWРРUQУФ–WФTТPРS€›XZЩ\РЫЫќXЭH•QK€њЫXЪ[™У[Э™HH•QK€Y][Ы[Y™™XЭИHQUSУђSСQ‘‘PХКВ€њЪY\‘›ЬЩSЭ™\њљYHH•QK€JK€]P[љ[TШЬљ\HР]P[љ[S[Э™WРЩX\Щ[\ЬСYЩK€K‚€УSХ‘WР“PRХТS‘ФХФ“WHB€В€›[YHHУУTХS‘ФХ’S‘Кђ›XZЭЪ[™ЭЬ›HЉK€™\ШЬљ\[Ы€HУУTХS‘ФХ’S‘К€’]ИЪ]њќ][ЫЫЪ[™Л—€‚€“X^HЭЩ\€H›ЩIЬИЬYY€ЉK€™Y™™XЭHQ‘‘PХТU€њЭЩ\€H—ХTUQУSХ‘WСUHЏHСS—ОHИL€MK€ќ\HHTWС“RS‘Л€XШЭ\XЮHH€њH—ХTUQУSХ‘WСUHЏHСS—ОHИL€K€ќ\™Щ]HT‘СUР“Х€њљ[Ьљ]HH€Ш]YЫЬћHHSPQСWРРUQУФ–WФФPТPS€ќЪ[™[Э™HH•QK€[Ш^\Т]Т[”Z[€H•QK€Y][Ы[Y™™XЭИHQUSУђSСQ‘‘PХКВ€›[Э™QY™™XЭHSХ‘WСQ‘‘PХФФУRS•TЧМK€Ъ[ЩHHМ€JK€]P[љ[TШЬљ\HР]P[љ[S[Э™WР›XZЭЪ[™ЭЬ›K€K‚€УSХ‘WХТS“УФХФ“WHB€В€›[YHHУУTХS‘ФХ’S‘К•Ъ[›ЫЭЬ›HЉK€™\ШЬљ\[Ы€HУУTХS‘ФХ’S‘К€’]ИЪ]Hњќ][[\\Э—€‚€“X^H[™›XЭ\[\Ъ\Л€ЉK€™Y™™XЭHQ‘‘PХТU€њЭЩ\€H—ХTUQУSХ‘WСUHЏHСS—ОHИL€MK€ќ\HHTWСSPХ’PЛ€XШЭ\XЮHH€њH—ХTUQУSХ‘WСUHЏHСS—ОHИL€K€ќ\™Щ]HT‘СUР“Х€њљ[Ьљ]HH€Ш]YЫЬћHHSPQСWРРUQУФ–WФФPТPS€ќЪ[™[Э™HH•QK€[Ш^\Т]Т[”Z[€H•QK€Y][Ы[Y™™XЭИHQUSУђSСQ‘‘PХКВ€›[Э™QY™™XЭHSХ‘WСQ‘‘PХФTђSTТTЛ€Ъ[ЩHHЊ€JK€]P[љ[TШЬљ\HР]P[љ[S[Э™WХЪ[›ЫЭЬ›K€K‚€УSХ‘WФРS‘СPT—ФХФ“WHB€В€›[YHHУУTХS‘ФХ’S‘К”Ш[™ЩX\€ЭЬ›HЉK€™\ШЬљ\[Ы€HУУTХS‘ФХ’S‘К€’]ИЪ]њќ][HЭШ[™—€‚€“X^H[™›XЭHќ\›‹€ЉK€™Y™™XЭHQ‘‘PХТU€њЭЩ\€H—ХTUQУSХ‘WСUHЏHСS—ОHИL€MK€ќ\HHTWСФ“ХS‘€XШЭ\XЮHH€њH—ХTUQУSХ‘WСUHЏHСS—ОHИL€K€ќ\™Щ]HT‘СUР“Х€њљ[Ьљ]HH€Ш]YЫЬћHHSPQСWРРUQУФ–WФФPТPS€ќЪ[™[Э™HH•QK€[Ш^\Т]Т[”Z[€H•QK€Y][Ы[Y™™XЭИHQUSУђSСQ‘‘PХКВ€›[Э™QY™™XЭHSХ‘WСQ‘‘PХР•T“‹€Ъ[ЩHHЊ€JK€]P[љ[TШЬљ\HР]P[љ[S[Э™WФШ[™ЩX\”ЭЬ›K€K‚€УSХ‘WУSђT—Р“TФТS‘ЧHB€В€›[YHHУУTХS‘ФХ’S‘К“[\€›\ЬЪ[™ИЉK€™\ШЬљ\[Ы€HУУTХS‘ФХ’S‘К€•H\Щ\€X[И[™Э\™\Ч€‚€љ]Щ[€[™]И[K€ЉK€™Y™™XЭHQ‘‘PХТ•S‘УWТPSS‘Л€њЭЩ\€H€ќ\HHTWФЦPТPЛ€XШЭ\XЮHH€њHL€ќ\™Щ]HT‘СUХTСT‹€њљ[Ьљ]HH€Ш]YЫЬћHHSPQСWРРUQУФ–WФХUTЛ€њЫ]ЪY™™XЭYH•QK€љYЫ›Ь™\Ф›ЭXЭH•QK€›Z\њ›Ь“[Э™P[›™YH•QK€љX[[™У[Э™HH•QK€]P[љ[TШЬљ\HР]P[љ[S[Э™WУ[\ђ›\ЬЪ[™Л€K‚€УSХ‘WХRСWТPT•HB€В€›[YHHУУTХS‘ФХ’S‘К•ZЩHX\ќЉK€™\ШЬљ\[Ы€HУУTХS‘ФХ’S‘К€•H\Щ\€YќИ]ИЬ\љ]ИЧ€‚€љX[[™Э™[™Э[€]Щ[‹€ЉK€™Y™™XЭHQ‘‘PХХRСWТPT•€њЭЩ\€H€ќ\HHTWФЦPТPЛ€XШЭ\XЮHH€њHL€ќ\™Щ]HT‘СUХTСT‹€њљ[Ьљ]HH€Ш]YЫЬћHHSPQСWРРUQУФ–WФХUTЛ€њЫ]ЪY™™XЭYH•QK€љYЫ›Ь™\Ф›ЭXЭH•QK€›Z\њ›Ь“[Э™P[›™YH•QK€]P[љ[TШЬљ\HР]P[љ[S[Э™WХZЩRX\ќ€K‚€УSХ‘WХTђWР“TХHB€В€›[YHHУУTХS‘ФХ’S‘К•\H›\ЭЉK€™\ШЬљ\[Ы€HУУTХS‘ФХ’S‘К€’Y€H\Щ\‰ЬИ\\Э[^™Y€‚€љ]]ИЪ]]И\H\K€ЉK€™Y™™XЭHQ‘‘PХХTђWР“TХ€њЭЩ\€H€ќ\HHTWУ“Ф“PS€XШЭ\XЮHHL€њHL€ќ\™Щ]HT‘СUФСSPХQ€њљ[Ьљ]HH€Ш]YЫЬћHHSPQСWРРUQУФ–WФФPТPS€™›ЬЩT™\ЬЭ\™HH•QK€Y][Ы[Y™™XЭИHQUSУђSСQ‘‘PХКВ€›[Э™QY™™XЭHSХ‘WСQ‘‘PХХTђWР“TХ€њЩ[€H•QK€JK€]P[љ[TШЬљ\HР]P[љ[S[Э™WХ\P›\Э€K‚€УSХ‘WФТSЧХђTHB€В€›[YHHУУTХS‘ФХ’S‘К”Ъ[И\ЉK€™\ШЬљ\[Ы€HУУTХS‘ФХ’S‘К€”›ЭXЭИ]Щ[‹ЭЩ\љ[™Ч€‚€”ЬYYЫ€ЫЫќXЭ€ЉK€™Y™™XЭHQ‘‘PХФ“ХPХ€њЭЩ\€H€ќ\HHTWР•QЛ€XШЭ\XЮHH€њHL€ќ\™Щ]HT‘СUХTСT‹€њљ[Ьљ]HH€Ш]YЫЬћHHSPQСWРРUQУФ–WФХUTЛ€\™Э[Y[ќHИњ›ЭXЭY]ЩH“ХPХФТSЧХђTK€љYЫ›Ь™\Ф›ЭXЭH•QK€›Z\њ›Ь“[Э™P[›™YH•QK€›Y]›Ы›ЫYP[›™YH•QK€]P[љ[TШЬљ\HР]P[љ[S[Э™WФЪ[Х\€K‚€УSХ‘WРVWТТPТЧHB€В€›[YHHУУTХS‘ФХ’S‘Кђ^HЪXЪИЉK€™\ШЬљ\[Ы€HУУTХS‘ФХ’S‘К€“X^HZ\ЬИ[™\ќHЪXЪЩ\‹—€‚€“X^HШ]\ЩHЫЫ™ќ\Ъ[Ы‹€ЉK€™Y™™XЭHQ‘‘PХФ‘PУТSТQ—УRTФЛ€њЭЩ\€HLЊ€ќ\HHTWС’QТS‘Л€XШЭ\XЮHHL€њHL€ќ\™Щ]HT‘СUФСSPХQ€њљ[Ьљ]HH€Ш]YЫЬћHHSPQСWРРUQУФ–WФTТPРS€›XZЩ\РЫЫќXЭH•QK€љЪXЪЪ[™У[Э™HH•QK€Y][Ы[Y™™XЭИHQUSУђSСQ‘‘PХКВ€›[Э™QY™™XЭHSХ‘WСQ‘‘PХРУУ‘•TТSУ‹€Ъ[ЩHHМ€JK€]P[љ[TШЬљ\HР]P[љ[S[Э™WР^RЪXЪЛ€K‚€УSХ‘WУTХФ‘TФPХЧHB€В€›[YHHУУTХS‘ФХ’S‘К“\Э™\ЬXЭИЉK€™\ШЬљ\[Ы€HУУTХS‘ФХ’S‘К€•\И[Э™HX[И[Ь™H[XYЩW€‚€™›Ь€XXЪY™X]Y[K€ЉK€™Y™™XЭHQ‘‘PХУTХФ‘TФPХЛ€њЭЩ\€HL€ќ\HHTWСТФХ€XШЭ\XЮHHL€њHL€ќ\™Щ]HT‘СUФСSPХQ€њљ[Ьљ]HH€Ш]YЫЬћHHSPQСWРРUQУФ–WФTТPРS€]P[љ[TШЬљ\HР]P[љ[S[Э™WУ\Э™\ЬXЭЛ€K‚€УSХ‘WУSRSђWРФђTТHB€В€›[YHHУУTХS‘ФХ’S‘К“[Z[HЬ\ЪЉK€™\ШЬљ\[Ы€HУУTХS‘ФХ’S‘К€ђHZ[™XY™™XЭ[™ИYЪ€‚€љ\њЪHЭЩ\њИЬ€Y‹€ЉK€™Y™™XЭHQ‘‘PХТU€њЭЩ\€H€ќ\HHTWФЦPТPЛ€XШЭ\XЮHHL€њHL€ќ\™Щ]HT‘СUФСSPХQ€њљ[Ьљ]HH€Ш]YЫЬћHHSPQСWРРUQУФ–WФФPТPS€Y][Ы[Y™™XЭИHQUSУђSСQ‘‘PХКВ€›[Э™QY™™XЭHSХ‘WСQ‘‘PХФФСQ—УRS•TЧМ‹€Ъ[ЩHHL€JK€]P[љ[TШЬљ\HР]P[љ[S[Э™WУ[Z[PЬ\Ъ€K‚€УSХ‘WУФ‘T—ХTHB€В€›[YHHУУTХS‘ФХ’S‘К“Ь™\€\ЉK€™\ШЬљ\[Ы€HУУTХS‘ФХ’S‘К€ђ›ЫЬЭИH\Щ\‰ЬИЭ]Ч€‚€™\[™[™ИЫ€]ЭYЪ\љK€ЉK€™Y™™XЭHQ‘‘PХТU€њЭЩ\€H€ќ\HHTWСђQУУ‹€XШЭ\XЮHHL€њHL€ќ\™Щ]HT‘СUФСSPХQ€њљ[Ьљ]HH€Ш]YЫЬћHHSPQСWРРUQУФ–WФTТPРS€›Z\њ›Ь“[Э™P[›™YH•QK€›Y]›Ы›ЫYP[›™YH•QK€Y][Ы[Y™™XЭИHQUSУђSСQ‘‘PХКВ€›[Э™QY™™XЭHSХ‘WСQ‘‘PХУФ‘T—ХT€њЩ[€H•QK€Ъ[ЩHHL€JK€]P[љ[TШЬљ\HР]P[љ[S[Э™WУЬ™\•\€K‚€УSХ‘WТ‘UФSђТHB€В€›[YHHУУTХS‘ФХ’S‘К’™][ЪЉK€™\ШЬљ\[Ы€HУУTХS‘ФХ’S‘К€ђH[Ъ\И›ЭЫ€]›[™[™Ч€‚€њЬYYИЭљZЩHљ\њЭ€ЉK€™Y™™XЭHQ‘‘PХТU€њЭЩ\€HЊ€ќ\HHTWХРUT‹€XШЭ\XЮHHL€њHMK€ќ\™Щ]HT‘СUФСSPХQ€њљ[Ьљ]HHK€Ш]YЫЬћHHSPQСWРРUQУФ–WФTТPРS€›XZЩ\РЫЫќXЭH•QK€њ[Ъ[™У[Э™HH•QK€›Y]›Ы›ЫYP[›™YH•QK€ЫЫќ\ЭY™™XЭHУУ•TХСQ‘‘PХУ‘VРTPSСPT“QT‹€ЫЫќ\ЭЫЫX›ФЭ\ќ\’YH€ЫЫќ\ЭЫЫX›У[Э™\ИHМK€]P[љ[TШЬљ\HР]P[љ[S[Э™WТ™][Ъ€K‚€УSХ‘WФФPЦWСVђPХHB€В€›[YHHУУTХS‘ФХ’S‘К”ЬXЮH^XЭЉK€™\ШЬљ\[Ы€HУУTХS‘ФХ’S‘К€”Ъ\њH\И\™Щ]	ЬИ]XЪЛ€‚€љ\њЪHЭЩ\њИ]ИY™[њЩK€ЉK€™Y™™XЭHQ‘‘PХФФPЦWСVђPХ€њЭЩ\€H€ќ\HHTWСФђTФЛ€XШЭ\XЮHH€њHMK€ќ\™Щ]HT‘СUФСSPХQ€њљ[Ьљ]HH€Ш]YЫЬћHHSPQСWРРUQУФ–WФХUTЛ€›XYЪXРЫШ]Y™™XЭYH•QK€›Y]›Ы›ЫYP[›™YH•QK€]P[љ[TШЬљ\HР]P[љ[S[Э™WФЬXЮQ^XЭ€K‚€УSХ‘WФФS—УХUHB€В€›[YHHУУTХS‘ФХ’S‘К”Ь[€Э]ЉK€™\ШЬљ\[Ы€HУУTХS‘ФХ’S‘К€‘ќ\љ[Э\ЫHЭZ[њИ]ИYЬЛ—€‚€’\њЪHЭЩ\њИ\Щ\‰ЬИЬYY€ЉK€™Y™™XЭHQ‘‘PХТU€њЭЩ\€HL€ќ\HHTWФХQS€XШЭ\XЮHHL€њHK€ќ\™Щ]HT‘СUФСSPХQ€њљ[Ьљ]HH€Ш]YЫЬћHHSPQСWРРUQУФ–WФTТPРS€›XZЩ\РЫЫќXЭH•QK€њЪЮP]P[›™YH—СVђTУUQУSХ‘WС“QФЛ€Y][Ы[Y™™XЭИHQUSУђSСQ‘‘PХКВ€›[Э™QY™™XЭHSХ‘WСQ‘‘PХФФУRS•TЧМ‹€њЩ[€H•QK€JK€]P[љ[TШЬљ\HР]P[љ[S[Э™WФЬ[“Э]€K‚€УSХ‘WФФSUSУ—Р“УP—HB€В€›[YHHУУTХS‘ФХ’S‘К”Ь[][Ы€›ЫX€ЉK€™\ШЬљ\[Ы€HУУTХS‘ФХ’S‘К€•H\Щ\‰ЬИ™[ЭЬИ]Ы™W€‚€ќИ[€[Y\И[€H›ЭЛ€ЉK€™Y™™XЭHQ‘‘PХФФSUSУ—Р“УP‹€њЭЩ\€HЊ€ќ\HHTWУ“Ф“PS€XШЭ\XЮHHL€њHL€ќ\™Щ]HT‘СUФСSPХQ€њљ[Ьљ]HH€Ш]YЫЬћHHSPQСWРРUQУФ–WФTТPРS€›XZЩ\РЫЫќXЭH•QK€њЫXЪ[™У[Э™HH•QK€›Y]›Ы›ЫYP[›™YH•QK€њЭљZЩPЫЭ[ќHL€]P[љ[TШЬљ\HР]P[љ[S[Э™WФЬ[][Ыђ›ЫX‹€K‚€УSХ‘WТPСWФФS“‘T—HB€В€›[YHHУУTХS‘ФХ’S‘К’XЩHЬ[›™\€ЉK€™\ШЬљ\[Ы€HУУTХS‘ФХ’S‘К€’XЩKXЫЭ™\™Y™Y]]H›ЩW€‚€[™\Э›ЮHH\њZ[‹€ЉK€™Y™™XЭHQ‘‘PХТPСWФФS“‘T‹€њЭЩ\€H€ќ\HHTWТPСK€XШЭ\XЮHHL€њHMK€ќ\™Щ]HT‘СUФСSPХQ€њљ[Ьљ]HH€Ш]YЫЬћHHSPQСWРРUQУФ–WФTТPРS€›XZЩ\РЫЫќXЭH•QK€њЪЮP]P[›™YH—СVђTУUQУSХ‘WС“QФЛ€]P[љ[TШЬљ\HР]P[љ[S[Э™WТXЩTЬ[›™\‹€K‚€УSХ‘WСУRU‘WФ•TТHB€В€›[YHHУУTХS‘ФХ’S‘К‘ЫZ]™Hќ\ЪЉK€™\ШЬљ\[Ы€HУУTХS‘ФХ’S‘К€‘›ЩH]XЪЬИ™^\›€Ш[‰Э€‚€›Z\ЬИ[™ИЭX›H[XYЩK€ЉK€™Y™™XЭHQ‘‘PХТU€њЭЩ\€HLЊ€ќ\HHTWСђQУУ‹€XШЭ\XЮHHL€њHK€ќ\™Щ]HT‘СUФСSPХQ€њљ[Ьљ]HH€Ш]YЫЬћHHSPQСWРРUQУФ–WФTТPРS€›XZЩ\РЫЫќXЭH•QK€Y][Ы[Y™™XЭИHQUSУђSСQ‘‘PХКВ€›[Э™QY™™XЭHSХ‘WСQ‘‘PХСУRU‘WФ•TТ€њЩ[€H•QK€JK€]P[љ[TШЬљ\HР]P[љ[S[Э™WСЫZ]™Tќ\Ъ€K‚€УSХ‘WФ‘U’UђSР“TФТS‘ЧHB€В€›[YHHУУTХS‘ФХ’S‘К”™]љ][›\ЬЪ[™ИЉK€™\ШЬљ\[Ы€HУУTХS‘ФХ’S‘К€”™]љ]™\ИHZ[ќY\ќHФУSџW€‚€[™™\ЭЬ™\И[€Щ€]И€ЉK€™Y™™XЭHQ‘‘PХФ‘U’UђSР“TФТS‘Л€њЭЩ\€H€ќ\HHTWУ“Ф“PS€XШЭ\XЮHH€њHK€ќ\™Щ]HT‘СUХTСT‹€њљ[Ьљ]HH€Ш]YЫЬћHHSPQСWРРUQУФ–WФХUTЛ€љYЫ›Ь™\Ф›ЭXЭH•QK€›Z\њ›Ь“[Э™P[›™YH•QK€›Y]›Ы›ЫYP[›™YH•QK€љX[[™У[Э™HH•QK€њЪЩ]Ъ[›™YH
+—ФТСUТРђS”ИЏHСS—ОJK€]P[љ[TШЬљ\HР]P[љ[S[Э™WФ™]љ][›\ЬЪ[™Л€K‚€УSХ‘WФРSРХT‘WHB€В€›[YHHУУTХS‘ФХ’S‘К”Ш[Э\™HЉK€™\ШЬљ\[Ы€HУУTХS‘ФХ’S‘К€’\ќИ›ЩH]™\ћH\›‹€ЭX›W€‚€™[XYЩHИЭY[[™Ш]\‹€ЉK€™Y™™XЭHQ‘‘PХТU€њЭЩ\€H€ќ\HHTWФ“РТЛ€XШЭ\XЮHHL€њHMK€ќ\™Щ]HT‘СUФСSPХQ€њљ[Ьљ]HH€Ш]YЫЬћHHSPQСWРРUQУФ–WФTТPРS€›Y]›Ы›ЫYP[›™YH•QK€Y][Ы[Y™™XЭИHQUSУђSСQ‘‘PХКВ€›[Э™QY™™XЭHSХ‘WСQ‘‘PХФРSРХT‘K€Ъ[ЩHHL€JK€]P[љ[TШЬљ\HР]P[љ[S[Э™WФШ[Э\™K€K‚€УSХ‘WХ’TWСU‘WHB€В€›[YHHУУTХS‘ФХ’S‘К•љ\H]™HЉK€™\ШЬљ\[Ы€HУУTХS‘ФХ’S‘К€’]И\™Щ]Ъ]Ь\Ъ\Ч€‚€›Щ€Ш]\€И[Y\И[€H›ЭЛ€ЉK€™Y™™XЭHQ‘‘PХТU€њЭЩ\€HМ€ќ\HHTWХРUT‹€XШЭ\XЮHHMK€њHL€ќ\™Щ]HT‘СUФСSPХQ€њљ[Ьљ]HH€Ш]YЫЬћHHSPQСWРРUQУФ–WФTТPРS€›XZЩ\РЫЫќXЭH•QK€њЭљZЩPЫЭ[ќHЛ€]P[љ[TШЬљ\HР]P[љ[S[Э™WХљ\Q]™K€K‚€УSХ‘WУSФ•SФФS—HB€В€›[YHHУУTХS‘ФХ’S‘К“[Ьќ[Ь[€ЉK€™\ШЬљ\[Ы€HУУTХS‘ФХ’S‘К€‘\\Щ\И\[Э™\И[™YXЪ€‚€”ЩYY€Ъ\ЫЫњИYXЩ[ќ›Щ\Л€ЉK€™Y™™XЭHQ‘‘PХФђTQФФS‹€њЭЩ\€HМ€ќ\HHTWФТTУУ‹€XШЭ\XЮHHL€њHMK€ќ\™Щ]HT‘СUР“Х€њљ[Ьљ]HH€Ш]YЫЬћHHSPQСWРРUQУФ–WФTТPРS€›XZЩ\РЫЫќXЭH•QK€Y][Ы[Y™™XЭИHQUSУђSСQ‘‘PХКВ€›[Э™QY™™XЭHSХ‘WСQ‘‘PХФТTУУ‹€Ъ[ЩHHL€JK€]P[љ[TШЬљ\HР]P[љ[S[Э™WУ[Ьќ[Ь[‹€K‚€УSХ‘WСУСWHB€В€›[YHHУУTХS‘ФХ’S‘К‘ЫЩHЉK€™\ШЬљ\[Ы€HУУTХS‘ФХ’S‘К€ђЪ[™Щ\И\Щ\‰ЬИ[™[IЬЧ€‚€ђXљ[]H[ќИH\™Щ]	ЬЛ€ЉK€™Y™™XЭHQ‘‘PХСУСK€њЭЩ\€H€ќ\HHTWУ“Ф“PS€XШЭ\XЮHHL€њHL€ќ\™Щ]HT‘СUФСSPХQ€њљ[Ьљ]HH€Ш]YЫЬћHHSPQСWРРUQУФ–WФХUTЛ€љYЫ›Ь™\Ф›ЭXЭH•QK€›Z\њ›Ь“[Э™P[›™YH•QK€›Y]›Ы›ЫYP[›™YH•QK€]P[љ[TШЬљ\HР]P[љ[S[Э™WСЫЩK€K‚€УSХ‘WС’SUРUРVWHB€В€›[YHHУУTХS‘ФХ’S‘К‘љ[]]Ш^HЉK€™\ШЬљ\[Ы€HУУTХS‘ФХ’S‘К€”Ъ\њH›ЫЬЭИЩ™™[њЩ\И[™€‚€”ЬYYћH\Ъ[™И]ИЭЫ€€ЉK€™Y™™XЭHQ‘‘PХС’SUРUРVK€њЭЩ\€H€ќ\HHTWУ“Ф“PS€XШЭ\XЮHH€њHL€ќ\™Щ]HT‘СUХTСT‹€њљ[Ьљ]HH€Ш]YЫЬћHHSPQСWРРUQУФ–WФХUTЛ€ћ“[Э™HHИ™Y™™XЭH—СQ‘‘PХФ‘PУХ‘T—ТK€њЫ]ЪY™™XЭYH•QK€љYЫ›Ь™\Ф›ЭXЭH•QK€›Z\њ›Ь“[Э™P[›™YH•QK€›Y]›Ы›ЫYP[›™YH•QK€]P[љ[TШЬљ\HР]P[љ[S[Э™WСљ[]]Ш^K€K‚€УSХ‘WТУХХХЧРУPU‘WHB€В€›[YHHУУTХS‘ФХ’S‘К’ЫЭЭЭИЫX]™HЉK€™\ШЬљ\[Ы€HУУTХS‘ФХ’S‘К€•\Щ\€Ы\Ъ\ИH›ЩHYќ\—€‚€љЫЭЭЭЪ[™Л€]™]™\€Z\ЬЩ\Л€ЉK€™Y™™XЭHQ‘‘PХТU€њЭЩ\€HK€ќ\HHTWСT’Л€XШЭ\XЮHH€њHL€ќ\™Щ]HT‘СUФСSPХQ€њљ[Ьљ]HH€Ш]YЫЬћHHSPQСWРРUQУФ–WФTТPРS€›XZЩ\РЫЫќXЭH•QK€њЫXЪ[™У[Э™HH•QK€]P[љ[TШЬљ\HР]P[љ[S[Э™WТЫЭЭЭРЫX]™K€K‚€УSХ‘WС“ХСT—Х’PТЧHB€В€›[YHHУУTХS‘ФХ’S‘К‘›ЭЩ\€љXЪИЉK€™\ШЬљ\[Ы€HУУTХS‘ФХ’S‘К€”љYЩЩY›Э\]Y]€[Ш^\ИЩ]Ч€‚€HЬљ]XШ[]™]™\€Z\ЬЪ[™Л€ЉK€™Y™™XЭHQ‘‘PХТU€њЭЩ\€HМ€ќ\HHTWСФђTФЛ€XШЭ\XЮHH€њHL€ќ\™Щ]HT‘СUФСSPХQ€њљ[Ьљ]HH€Ш]YЫЬћHHSPQСWРРUQУФ–WФTТPРS€[Ш^\РЬљ]XШ[]H•QK€]P[љ[TШЬљ\HР]P[љ[S[Э™WС›ЭЩ\•љXЪЛ€K‚€УSХ‘WХФђТФУУ‘ЧHB€В€›[YHHУУTХS‘ФХ’S‘К•ЬЪЫЫ™ИЉK€™\ШЬљ\[Ы€HУУTХS‘ФХ’S‘К€‘›[Y\ИШЫЬЪH\™Щ]—€‚€ђ›ЫЬЭИH\Щ\‰ЬИЬ€]Л€ЉK€™Y™™XЭHQ‘‘PХТU€њЭЩ\€H€ќ\HHTWС’T‘K€XШЭ\XЮHHL€њHL€ќ\™Щ]HT‘СUФСSPХQ€њљ[Ьљ]HH€Ш]YЫЬћHHSPQСWРРUQУФ–WФФPТPS€њЫЭ[™[Э™HH•QK€љYЫ›Ь™\ФЭXњЭ]]HH—ХTUQУSХ‘WС“QФИЏHСS—Н‹€Y][Ы[Y™™XЭИHQUSУђSСQ‘‘PХКВ€›[Э™QY™™XЭHSХ‘WСQ‘‘PХФФРUЧФTЧМK€њЩ[€H•QK€Ъ[ЩHHL€JK€]P[љ[TШЬљ\HР]P[љ[S[Э™WХЬЪЫЫ™Л€K‚€УSХ‘WРTUPWФХTHB€В€›[YHHУУTХS‘ФХ’S‘Кђ\]XHЭ\ЉK€™\ШЬљ\[Ы€HУУTХS‘ФХ’S‘К€’]ИЪ]YЪ›ZY[ЩW€‚€њЭ\Л€\ИH\Щ\‰ЬИЬYY€ЉK€™Y™™XЭHQ‘‘PХТU€њЭЩ\€H€ќ\HHTWХРUT‹€XШЭ\XЮHHL€њHL€ќ\™Щ]HT‘СUФСSPХQ€њљ[Ьљ]HH€Ш]YЫЬћHHSPQСWРРUQУФ–WФTТPРS€›XZЩ\РЫЫќXЭH•QK€™[ЩS[Э™HH•QK€Y][Ы[Y™™XЭИHQUSУђSСQ‘‘PХКВ€›[Э™QY™™XЭHSХ‘WСQ‘‘PХФФФTЧМK€њЩ[€H•QK€Ъ[ЩHHL€JK€]P[љ[TШЬљ\HР]P[љ[S[Э™WР\]XTЭ\€K‚€УSХ‘WФђQТS‘ЧР•SHB€В€›[YHHУУTХS‘ФХ’S‘К”YЪ[™Иќ[ЉK€™\ШЬљ\[Ы€HУУTХS‘ФХ’S‘К€•XЪЫH]њ™XZЬИ\њљY\њЛ—€‚€•\Щ\‰ЬИ›Ь›H]\›Z[™\И\K€ЉK€™Y™™XЭHQ‘‘PХФђQТS‘ЧР•S€њЭЩ\€HL€ќ\HHTWУ“Ф“PS€XШЭ\XЮHHL€њHL€ќ\™Щ]HT‘СUФСSPХQ€њљ[Ьљ]HH€Ш]YЫЬћHHSPQСWРРUQУФ–WФTТPРS€Y][Ы[Y™™XЭИHQUSУђSСQ‘‘PХКВ€›[Э™QY™™XЭHSХ‘WСQ‘‘PХР”‘PRЧФРФ‘QS‹€њ™P]XЪСY™™XЭH•QK€JK€›XZЩ\РЫЫќXЭH•QK€›Y]›Ы›ЫYP[›™YH•QK€]P[љ[TШЬљ\HР]P[љ[S[Э™WФYЪ[™Рќ[€K‚€УSХ‘WУPRСWТUФђRS—HB€В€›[YHHУУTХS‘ФХ’S‘К“XZЩH]Z[€ЉK€™\ШЬљ\[Ы€HУУTХS‘ФХ’S‘К€“ЭЩ\њИH\Щ\‰ЬИЬ€]Л—€‚€“[Ы™^H\И™XЫЭ™\™YYќ\‹€ЉK€™Y™™XЭHQ‘‘PХТU€њЭЩ\€HLЊ€ќ\HHTWФХQS€XШЭ\XЮHHL€њHK€ќ\™Щ]HT‘СUР“Х€њљ[Ьљ]HH€Ш]YЫЬћHHSPQСWРРUQУФ–WФФPТPS€›Y]›Ы›ЫYP[›™YH•QK€Y][Ы[Y™™XЭИHQUSУђSСQ‘‘PХКВ€›[Э™QY™™XЭHSХ‘WСQ‘‘PХФVQVK€K€В€›[Э™QY™™XЭHSХ‘WСQ‘‘PХФФРUЧУRS•TЧМK€њЩ[€H•QK€JK€]P[љ[TШЬљ\HР]P[љ[S[Э™WУXZЩR]Z[‹€K‚€УSХ‘WФ•RSђUSУ—HB€В€›[YHHУУTХS‘ФХ’S‘К”ќZ[][Ы€ЉK€™\ШЬљ\[Ы€HУУTХS‘ФХ’S‘К€”Э[[[ЫњИHќZ[›Э\И\Ш\Э\—€‚€[™Э]И[€H›ЩIЬИ€ЉK€™Y™™XЭHQ‘‘PХС’VQФTђСS•СSPQСK€њЭЩ\€HK€ќ\HHTWСT’Л€XШЭ\XЮHHL€њHL€ќ\™Щ]HT‘СUФСSPХQ€њљ[Ьљ]HH€Ш]YЫЬћHHSPQСWРРUQУФ–WФФPТPS€\™Э[Y[ќHИ™[XYЩT\Щ[ќYЩHHLK€›Y]›Ы›ЫYP[›™YH•QK€ЫЫќ\ЭY™™XЭHУУ•TХСQ‘‘PХРђQWФХT•WУSУ”ЧХТUСУУСРTPSЛ€ЫЫќ\ЭЫЫX›ФЭ\ќ\’YH€ЫЫќ\ЭЫЫX›У[Э™\ИHМK€]P[љ[TШЬљ\HР]P[љ[S[Э™WФќZ[][Ы‹€K‚€УSХ‘WРУУTТSУ—РУХT”СWHB€В€›[YHHУУTХS‘ФХ’S‘КђЫЫ\Ъ[Ы€ЫЭ\њЩHЉK€™\ШЬљ\[Ы€HУУTХS‘ФХ’S‘К€”™Z\ЭЬљXИ^ЬЪ[Ы€]	ЬЧ€‚€њЭ›Ы™Щ\€Y€Э\\€Y™™XЭ]™K€ЉK€™Y™™XЭHQ‘‘PХРУУTТSУ—РУХT”СK€њЭЩ\€HL€ќ\HHTWС’QТS‘Л€XШЭ\XЮHHL€њHK€ќ\™Щ]HT‘СUФСSPХQ€њљ[Ьљ]HH€Ш]YЫЬћHHSPQСWРРUQУФ–WФTТPРS€›XZЩ\РЫЫќXЭH•QK€›Y]›Ы›ЫYP[›™YH•QK€]P[љ[TШЬљ\HР]P[љ[S[Э™WРЫЫ\Ъ[ЫђЫЭ\њЩK€K‚€УSХ‘WСSPХ“ЧС’Q•HB€В€›[YHHУУTХS‘ФХ’S‘К‘[XЭ›ИљYќЉK€™\ШЬљ\[Ы€HУУTХS‘ФХ’S‘К€‘ќ]\љ\ЭXИ[XЭљXЪ]K€]	ЬЧ€‚€њЭ›Ы™Щ\€Y€Э\\€Y™™XЭ]™K€ЉK€™Y™™XЭHQ‘‘PХРУУTТSУ—РУХT”СK€њЭЩ\€HL€ќ\HHTWСSPХ’PЛ€XШЭ\XЮHHL€њHK€ќ\™Щ]HT‘СUФСSPХQ€њљ[Ьљ]HH€Ш]YЫЬћHHSPQСWРРUQУФ–WФФPТPS€›XZЩ\РЫЫќXЭH•QK€›Y]›Ы›ЫYP[›™YH•QK€]P[љ[TШЬљ\HР]P[љ[S[Э™WС[XЭ›СљYќ€K‚€УSХ‘WФТQХRSHB€В€›[YHHУУTХS‘ФХ’S‘К”ЪYZ[ЉK€™\ШЬљ\[Ы€HУУTХS‘ФХ’S‘К€ђЬ™X]\ИHЭXњЭ]]H›Ь—€‚€љ]Щ[€™Y›Ь™HЭЪ]Ъ[™ИЭ]€ЉK€™Y™™XЭHQ‘‘PХФТQХRS€њЭЩ\€H€ќ\HHTWУ“Ф“PS€XШЭ\XЮHH€њHL€ќ\™Щ]HT‘СUХTСT‹€њљ[Ьљ]HH€Ш]YЫЬћHHSPQСWРРUQУФ–WФХUTЛ€ћ“[Э™HHИ™Y™™XЭH—СQ‘‘PХФ‘TСUФХUИK€љYЫ›Ь™\Ф›ЭXЭH•QK€›Z\њ›Ь“[Э™P[›™YH•QK€›Y]›Ы›ЫYP[›™YH•QK€]P[љ[TШЬљ\HР]P[љ[S[Э™WФЪYZ[€K‚€УSХ‘WРТSWФ‘PСTSУ—HB€В€›[YHHУУTХS‘ФХ’S‘КђЪ[H™XЩ\[Ы€ЉK€ЪY€—Ф‘Q‘T”‘QТPСWХСPUT€OH—ТPСWХСPUT—ТRS€™\ШЬљ\[Ы€HУУTХS‘ФХ’S‘К€ђY›ЪЩHЭ[[[ЫњИZ[ЭЬ›K—€‚€•H\Щ\€[ЫИЭЪ]Ъ\ИЭ]€ЉK€Щ[ЩB€™\ШЬљ\[Ы€HУУTХS‘ФХ’S‘К€ђY›ЪЩHЭ[[[ЫњИЫ›ЭЬЭЬ›K—€‚€•H\Щ\€[ЫИЭЪ]Ъ\ИЭ]€ЉK€Щ[™Y‚€™Y™™XЭHQ‘‘PХХСPUT—РS‘ФХТUТ€њЭЩ\€H€ќ\HHTWТPСK€XШЭ\XЮHH€њHL€ќ\™Щ]HT‘СUС’QS€њљ[Ьљ]HH€Ш]YЫЬћHHSPQСWРРUQУФ–WФХUTЛ€ћ“[Э™HHИ™Y™™XЭH—СQ‘‘PХФФХTМHK€љYЫ›Ь™\Ф›ЭXЭH•QK€›Z\њ›Ь“[Э™P[›™YH•QK€›Y]›Ы›ЫYP[›™YH•QK€\™Э[Y[ќHИќЩX]\•\HH
+—Ф‘Q‘T”‘QТPСWХСPUT€OH—ТPСWХСPUT—ТRS
+HИђUWХСPUT—ТRS€ђUWХСPUT—ФУ“ХИK€]P[љ[TШЬљ\HР]P[љ[S[Э™WРЪ[T™XЩ\[Ы‹€K‚€УSХ‘WХQWХTHB€В€›[YHHУУTХS‘ФХ’S‘К•YH\ЉK€™\ШЬљ\[Ы€HУУTХS‘ФХ’S‘К€•\Щ\€YY\И\^\™И[™€‚€њZ\Щ\И]И]XЪИ[™ЬYY€ЉK€™Y™™XЭHQ‘‘PХХQWХT€њЭЩ\€H€ќ\HHTWУ“Ф“PS€XШЭ\XЮHH€њHL€ќ\™Щ]HT‘СUХTСT‹€њљ[Ьљ]HH€Ш]YЫЬћHHSPQСWРРUQУФ–WФХUTЛ€љYЫ›Ь™\Ф›ЭXЭH•QK€›Z\њ›Ь“[Э™P[›™YH•QK€›Y]›Ы›ЫYP[›™YH•QK€]P[љ[TШЬљ\HР]P[љ[S[Э™WХYU\€K‚€УSХ‘WФУ“ХФРРTWHB€В€›[YHHУУTХS‘ФХ’S‘К”Ы›ЭЬШШ\HЉK€ЪY€—Ф‘Q‘T”‘QТPСWХСPUT€OH—ТPСWХСPUT—ТRS€™\ШЬљ\[Ы€HУУTХS‘ФХ’S‘К€”Э[[[ЫњИHZ[ЭЬ›H]€‚€њЭљZЩ\И]™\ћH\›‹€ЉK€Щ[ЩB€™\ШЬљ\[Ы€HУУTХS‘ФХ’S‘К€”Э[[[ЫњИHЫ›ЭЬЭЬ›H]€‚€›\ЭИ›Ь€љ]™H\›њЛ€ЉK€Щ[™Y‚€™Y™™XЭHQ‘‘PХХСPUT‹€њЭЩ\€H€ќ\HHTWТPСK€XШЭ\XЮHH€њHL€ќ\™Щ]HT‘СUС’QS€њљ[Ьљ]HH€Ш]YЫЬћHHSPQСWРРUQУФ–WФХUTЛ€\™Э[Y[ќHИќЩX]\•\HH
+—Ф‘Q‘T”‘QТPСWХСPUT€OH—ТPСWХСPUT—ТRS
+HИђUWХСPUT—ТRS€ђUWХСPUT—ФУ“ХИK€ћ“[Э™HHИ™Y™™XЭH—СQ‘‘PХФФХTМHK€љYЫ›Ь™\Ф›ЭXЭH•QK€›Z\њ›Ь“[Э™P[›™YH•QK€›Y]›Ы›ЫYP[›™YH•QK€ЫЫќ\ЭY™™XЭHЧХTUQУSХ‘WСQ‘‘PХИЏHСS—Н€ИУУ•TХСQ‘‘PХРђQWФХT•WУSУ”ЧХТUСУУСРTPSИ€УУ•TХСQ‘‘PХРђQWФХT•WФ‘U—УSУ”Л€ЫЫќ\ЭШ]YЫЬћHHУУ•TХРРUQУФ–WР‘PUUK€ЫЫќ\ЭЫЫX›ФЭ\ќ\’YH€ЫЫќ\ЭЫЫX›У[Э™\ИHМK€]P[љ[TШЬљ\H
+—Ф‘Q‘T”‘QТPСWХСPUT€OH—ТPСWХСPUT—ТRS
+HИР]P[љ[S[Э™WТZ[€Р]P[љ[S[Э™WФЫ›ЭЬШШ\K€K‚€УSХ‘WФХSђСWHB€В€›[YHHУУTХS‘ФХ’S‘К”Э[ЩHЉK€™\ШЬљ\[Ы€HУУTХS‘ФХ’S‘К€•H\Щ\€Э[Щ\ИЫ€H›ЩK€‚€›ЭЩ\љ[™И]ИЬYY€ЉK€™Y™™XЭHQ‘‘PХТU€њЭЩ\€HL€ќ\HHTWР•QЛ€XШЭ\XЮHHL€њHЊ€ќ\™Щ]HT‘СUФСSPХQ€њљ[Ьљ]HH€Ш]YЫЬћHHSPQСWРРUQУФ–WФTТPРS€›XZЩ\РЫЫќXЭH•QK€›Y]›Ы›ЫYP[›™YH•QK€Y][Ы[Y™™XЭИHQUSУђSСQ‘‘PХКВ€›[Э™QY™™XЭHSХ‘WСQ‘‘PХФФУRS•TЧМK€Ъ[ЩHHL€JK€]P[љ[TШЬљ\HР]P[љ[S[Э™WФЭ[ЩK€K‚€УSХ‘WХђRS“V‘WHB€В€›[YHHУУTХS‘ФХ’S‘К•Z[›^™HЉK€™\ШЬљ\[Ы€HУУTХS‘ФХ’S‘К€•H\Щ\€]XЪЬИЭY[›K€‚€њZ\Ъ[™И]ИЬYY€ЉK€™Y™™XЭHQ‘‘PХТU€њЭЩ\€HL€ќ\HHTWСФђTФЛ€XШЭ\XЮHHL€њHЊ€ќ\™Щ]HT‘СUФСSPХQ€њљ[Ьљ]HH€Ш]YЫЬћHHSPQСWРРUQУФ–WФTТPРS€›XZЩ\РЫЫќXЭH•QK€›Y]›Ы›ЫYP[›™YH•QK€Y][Ы[Y™™XЭИHQUSУђSСQ‘‘PХКВ€›[Э™QY™™XЭHSХ‘WСQ‘‘PХФФФTЧМK€њЩ[€H•QK€Ъ[ЩHHL€JK€ЫЫќ\ЭY™™XЭHУУ•TХСQ‘‘PХР‘UT—ХТUСУУСРУУ‘USУ‹€ЫЫќ\ЭЫЫX›ФЭ\ќ\’YH€ЫЫќ\ЭЫЫX›У[Э™\ИHМK€]P[љ[TШЬљ\HР]P[љ[S[Э™WХZ[›^™K€K‚€УSХ‘WРТSS‘ЧХРUT—HB€В€›[YHHУУTХS‘ФХ’S‘КђЪ[[™ИШ]\€ЉK€™\ШЬљ\[Ы€HУУTХS‘ФХ’S‘К€ђHЪЭЩ\€Ъ]XЩKXЫЫШ]\—€‚€›ЭЩ\њИH\™Щ]	ЬИ]XЪЛ€ЉK€™Y™™XЭHQ‘‘PХТU€њЭЩ\€HL€ќ\HHTWХРUT‹€XШЭ\XЮHHL€њHЊ€ќ\™Щ]HT‘СUФСSPХQ€њљ[Ьљ]HH€Ш]YЫЬћHHSPQСWРРUQУФ–WФФPТPS€›Y]›Ы›ЫYP[›™YH•QK€Y][Ы[Y™™XЭИHQUSУђSСQ‘‘PХКВ€›[Э™QY™™XЭHSХ‘WСQ‘‘PХРUЧУRS•TЧМK€Ъ[ЩHHL€JK€ЫЫќ\ЭY™™XЭHУУ•TХСQ‘‘PХР‘UT—ТQ—УTХ€ЫЫќ\ЭЫЫX›ФЭ\ќ\’YH€ЫЫќ\ЭЫЫX›У[Э™\ИHМK€]P[љ[TШЬљ\HР]P[љ[S[Э™WРЪ[[™ХШ]\‹€K‚€УSХ‘WТTT—С’SHB€В€›[YHHУУTХS‘ФХ’S‘К’\\€љ[ЉK€™\ШЬљ\[Ы€HУУTХS‘ФХ’S‘К€ђHЬ[›љ[™ИЪ[ќY\ќ€‚€ћ\\ЬЩ\ИH›ЩIЬИ›ЭXЭ€ЉK€™Y™™XЭHQ‘‘PХТU€њЭЩ\€HL€ќ\HHTWУ“Ф“PS€XШЭ\XЮHHL€њHK€ќ\™Щ]HT‘СUФСSPХQ€њљ[Ьљ]HH€Ш]YЫЬћHHSPQСWРРUQУФ–WФTТPРS€›XZЩ\РЫЫќXЭH•QK€љYЫ›Ь™\Ф›ЭXЭH•QK€›Y]›Ы›ЫYP[›™YH•QK€]P[љ[TШЬљ\HР]P[љ[S[Э™WТ\\‘љ[€K‚€УSХ‘WХТS—Р‘PSWHB€В€›[YHHУУTХS‘ФХ’S‘К•Ъ[€™X[HЉK€™\ШЬљ\[Ы€HУУTХS‘ФХ’S‘К€“^\ЭXШ[^YKX™X[\И]]€‚€ќH\™Щ]ЪXЩH[€H›ЭЛ€ЉK€™Y™™XЭHQ‘‘PХТU€њЭЩ\€H€ќ\HHTWФЦPТPЛ€XШЭ\XЮHHL€њHL€ќ\™Щ]HT‘СUФСSPХQ€њљ[Ьљ]HH€Ш]YЫЬћHHSPQСWРРUQУФ–WФФPТPS€њЭљZЩPЫЭ[ќH‹€›Y]›Ы›ЫYP[›™YH•QK€]P[љ[TШЬљ\HР]P[љ[S[Э™WХЪ[ђ™X[K€K‚€УSХ‘WФђQСWС’TХHB€В€›[YHHУУTХS‘ФХ’S‘К”YЩHљ\ЭЉK€™\ШЬљ\[Ы€HУУTХS‘ФХ’S‘К€•H[Ь™HH\Щ\€\И™Y[—€‚€љ]HЭ›Ы™Щ\€H[Э™K€ЉK€™Y™™XЭHQ‘‘PХФђQСWС’TХ€њЭЩ\€HL€ќ\HHTWСТФХ€XШЭ\XЮHHL€њHL€ќ\™Щ]HT‘СUФСSPХQ€њљ[Ьљ]HH€Ш]YЫЬћHHSPQСWРРUQУФ–WФTТPРS€›XZЩ\РЫЫќXЭH•QK€њ[Ъ[™У[Э™HH•QK€›Y]›Ы›ЫYP[›™YH•QK€]P[љ[TШЬљ\HР]P[љ[S[Э™WФYЩQљ\Э€K‚€УSХ‘WРT“SФ—РРS““У—HB€В€›[YHHУУTХS‘ФХ’S‘Кђ\›[Ь€Ш[››Ы€ЉK€™\ШЬљ\[Ы€HУУTХS‘ФХ’S‘К€ђHЭ›Ы™И]XЪИќ]ЭЩ\њЧ€‚€ќHY™[њЪ]™HЭ]Л€ЉK€™Y™™XЭHQ‘‘PХТU€њЭЩ\€HLЊ€ќ\HHTWС’T‘K€XШЭ\XЮHHL€њHK€ќ\™Щ]HT‘СUФСSPХQ€њљ[Ьљ]HH€Ш]YЫЬћHHSPQСWРРUQУФ–WФФPТPS€›Y]›Ы›ЫYP[›™YH•QK€Y][Ы[Y™™XЭИHQUSУђSСQ‘‘PХКВ€›[Э™QY™™XЭHSХ‘WСQ‘‘PХСQ—ФФQ—СХУ‹€њЩ[€H•QK€JK€ЫЫќ\ЭY™™XЭHУУ•TХСQ‘‘PХХTСT—УSФ‘WСPTТSWФХT•Q€ЫЫќ\ЭЫЫX›ФЭ\ќ\’YH€ЫЫќ\ЭЫЫX›У[Э™\ИHМK€]P[љ[TШЬљ\HР]P[љ[S[Э™WР\›[ЬђШ[››Ы‹€K‚€УSХ‘WР’UT—Р“QWHB€В€›[YHHУУTХS‘ФХ’S‘Кђљ]\€›YHЉK€™\ШЬљ\[Ы€HУУTХS‘ФХ’S‘К€ђ[€]XЪИ]XњЫЬњЧ€‚€љ[€H[XYЩH[™›XЭY€ЉK€™Y™™XЭHQ‘‘PХРP”УФђ‹€њЭЩ\€HL€ќ\HHTWС’T‘K€XШЭ\XЮHHL€њHL€ќ\™Щ]HT‘СUФСSPХQ€њљ[Ьљ]HH€Ш]YЫЬћHHSPQСWРРUQУФ–WФTТPРS€\™Э[Y[ќHИXњЫЬ”\Щ[ќYЩHHLK€›XZЩ\РЫЫќXЭH•QK€њЫXЪ[™У[Э™HH•QK€љX[[™У[Э™HH•QK€]P[љ[TШЬљ\HР]P[љ[S[Э™WРљ]\ђ›YK€K‚€УSХ‘WСХP“WФТРТЧHB€В€›[YHHУУTХS‘ФХ’S‘К‘ЭX›HЪШЪИЉK€™\ШЬљ\[Ы€HУУTХS‘ФХ’S‘К€‘\ШЪ\™Щ\И[[XЭљXЪ]K€‚€›ЬЪ[™ИH[XЭљXИ\K€ЉK€™Y™™XЭHQ‘‘PХСђRSТQ—У“ХРT‘ЧХTK€њЭЩ\€HLЊ€ќ\HHTWСSPХ’PЛ€XШЭ\XЮHHL€њHK€ќ\™Щ]HT‘СUФСSPХQ€њљ[Ьљ]HH€Ш]YЫЬћHHSPQСWРРUQУФ–WФTТPРS€›XZЩ\РЫЫќXЭH•QK€њ[Ъ[™У[Э™HH•QK€›Y]›Ы›ЫYP[›™YH•QK€\™Э[Y[ќHИќ\HHTWСSPХ’PИK€Y][Ы[Y™™XЭИHQUSУђSСQ‘‘PХКВ€›[Э™QY™™XЭHSХ‘WСQ‘‘PХФ‘SSХ‘WРT‘ЧХTK€њЩ[€H•QK€JK€]P[љ[TШЬљ\HР]P[љ[S[Э™WСЭX›TЪШЪЛ€K‚€УSХ‘WСТQРUУ—ТSSQT—HB€В€›[YHHУУTХS‘ФХ’S‘К‘ЪYШ]Ы€[[Y\€ЉK€™\ШЬљ\[Ы€HУУTХS‘ФХ’S‘К€”ЭЪ[™ЬИHYЩH[[Y\‹€Ш[‰Э€‚€™H\ЩYЪXЩH[€H›ЭЛ€ЉK€™Y™™XЭHQ‘‘PХТU€њЭЩ\€HMЊ€ќ\HHTWФХQS€XШЭ\XЮHHL€њHK€ќ\™Щ]HT‘СUФСSPХQ€њљ[Ьљ]HH€Ш]YЫЬћHHSPQСWРРUQУФ–WФTТPРS€Ш[ќ\ЩUЪXЩHH•QK€]P[љ[TШЬљ\HР]P[љ[S[Э™WСЪYШ]Ы’[[Y\‹€K‚€УSХ‘WРУУQUTSђСWHB€В€›[YHHУУTХS‘ФХ’S‘КђЫЫY]\[ЩHЉK€™\ШЬљ\[Ы€HУУTХS‘ФХ’S‘К€”™][X]\ИЭ›Ы™ЫHYШZ[њЭ€‚€ќЪИ\Э\ќH\Щ\‹€ЉK€™Y™™XЭHQ‘‘PХФ‘Q“PХСSPQСK€њЭЩ\€HK€ќ\HHTWСT’Л€XШЭ\XЮHHL€њHL€ќ\™Щ]HT‘СUСTS‘Л€њљ[Ьљ]HH€Ш]YЫЬћHHSPQСWРРUQУФ–WФTТPРS€\™Э[Y[ќHВ€њ™Y›XЭ[XYЩK™[XYЩT\Щ[ќHML€њ™Y›XЭ[XYЩK™[XYЩPШ]YЫЬљY\ИH]HSPQСWРРUQУФ–WФTТPРS]HSPQСWРРUQУФ–WФФPТPS€K€›XZЩ\РЫЫќXЭH•QK€›YQљ\њЭ[›™YH•QK€›Y]›Ы›ЫYP[›™YH•QK€ЫЫќ\ЭY™™XЭHУУ•TХСQ‘‘PХР‘UT—ТQ—УTХ€ЫЫќ\ЭЫЫX›ФЭ\ќ\’YH€ЫЫќ\ЭЫЫX›У[Э™\ИHМK€]P[љ[TШЬљ\HР]P[љ[S[Э™WРЫЫY]\[ЩK€K‚€УSХ‘WРTUPWРХUT—HB€В€›[YHHУУTХS‘ФХ’S‘Кђ\]XHЭ]\€ЉK€™\ШЬљ\[Ы€HУУTХS‘ФХ’S‘К€”™\ЬЭ\љ^™YШ]\€Э]Ъ]W€‚€љYЪЬљ]XШ[Z]][Л€ЉK€™Y™™XЭHQ‘‘PХТU€њЭЩ\€HМ€ќ\HHTWХРUT‹€XШЭ\XЮHHL€Ьљ]XШ[]ЭYЩHH—ХTUQУSХ‘WСUHЏHСS—МИИH€‹€њHЊ€ќ\™Щ]HT‘СUФСSPХQ€њљ[Ьљ]HH€Ш]YЫЬћHHSPQСWРРUQУФ–WФTТPРS€њЫXЪ[™У[Э™HH•QK€]P[љ[TШЬљ\HР]P[љ[S[Э™WР\]XPЭ]\‹€K‚€УSХ‘WР“V’S‘ЧХФ”UQWHB€В€›[YHHУУTХS‘ФХ’S‘Кђ›^љ[™ИЬњ]YHЉK€™\ШЬљ\[Ы€HУУTХS‘ФХ’S‘К‹KKHЉK€™Y™™XЭHQ‘‘PХТU€њЭЩ\€H€ќ\HHTWС’T‘K€XШЭ\XЮHHL€њHL€ќ\™Щ]HT‘СUФСSPХQ€њљ[Ьљ]HH€Ш]YЫЬћHHSPQСWРРUQУФ–WФTТPРS€›Z\њ›Ь“[Э™P[›™YH•QK€›YQљ\њЭ[›™YH•QK€›Z[ZXР[›™YH•QK€›Y]›Ы›ЫYP[›™YH•QK€ЫЬXШ][›™YH•QK€њЫY\[Р[›™YH•QK€љ[њЭќXЭ[›™YH•QK€™[ЫЬ™P[›™YH•QK€\ЬЪ\Э[›™YH•QK€њЪЩ]Ъ[›™YH
+—ФТСUТРђS”ИЏHСS—ОJK€Y][Ы[Y™™XЭИHQUSУђSСQ‘‘PХКВ€›[Э™QY™™XЭHSХ‘WСQ‘‘PХР•T“‹€Ъ[ЩHHМ€JK€]P[љ[TШЬљ\HР]P[љ[S[Э™WР›^љ[™ХЬњ]YK€K‚€УSХ‘WХТPТСQХФ”UQWHB€В€›[YHHУУTХS‘ФХ’S‘К•ЪXЪЩYЬњ]YHЉK€™\ШЬљ\[Ы€HУУTХS‘ФХ’S‘К‹KKHЉK€™Y™™XЭHQ‘‘PХТU€њЭЩ\€H€ќ\HHTWСT’Л€XШЭ\XЮHHL€њHL€ќ\™Щ]HT‘СUФСSPХQ€њљ[Ьљ]HH€Ш]YЫЬћHHSPQСWРРUQУФ–WФTТPРS€›Z\њ›Ь“[Э™P[›™YH•QK€›YQљ\њЭ[›™YH•QK€›Z[ZXР[›™YH•QK€›Y]›Ы›ЫYP[›™YH•QK€ЫЬXШ][›™YH•QK€њЫY\[Р[›™YH•QK€љ[њЭќXЭ[›™YH•QK€™[ЫЬ™P[›™YH•QK€\ЬЪ\Э[›™YH•QK€њЪЩ]Ъ[›™YH
+—ФТСUТРђS”ИЏHСS—ОJK€Y][Ы[Y™™XЭИHQUSУђSСQ‘‘PХКВ€›[Э™QY™™XЭHSХ‘WСQ‘‘PХФУQT€Ъ[ЩHHL€JK€]P[љ[TШЬљ\HР]P[љ[S[Э™WХЪXЪЩYЬњ]YK€K‚€УSХ‘WУ“ЦSХTЧХФ”UQWHB€В€›[YHHУУTХS‘ФХ’S‘К“›Ю[Э\ИЬњ]YHЉK€™\ШЬљ\[Ы€HУУTХS‘ФХ’S‘К‹KKHЉK€™Y™™XЭHQ‘‘PХТU€њЭЩ\€HL€ќ\HHTWФТTУУ‹€XШЭ\XЮHHL€њHL€ќ\™Щ]HT‘СUФСSPХQ€њљ[Ьљ]HH€Ш]YЫЬћHHSPQСWРРUQУФ–WФTТPРS€›Z\њ›Ь“[Э™P[›™YH•QK€›YQљ\њЭ[›™YH•QK€›Z[ZXР[›™YH•QK€›Y]›Ы›ЫYP[›™YH•QK€ЫЬXШ][›™YH•QK€њЫY\[Р[›™YH•QK€љ[њЭќXЭ[›™YH•QK€™[ЫЬ™P[›™YH•QK€\ЬЪ\Э[›™YH•QK€њЪЩ]Ъ[›™YH
+—ФТСUТРђS”ИЏHСS—ОJK€Y][Ы[Y™™XЭИHQUSУђSСQ‘‘PХКВ€›[Э™QY™™XЭHSХ‘WСQ‘‘PХФТTУУ‹€Ъ[ЩHHМ€JK€]P[љ[TШЬљ\HР]P[љ[S[Э™WУ›Ю[Э\ХЬњ]YK€K‚€УSХ‘WРУУPђUХФ”UQWHB€В€›[YHHУУTХS‘ФХ’S‘КђЫЫX]Ьњ]YHЉK€™\ШЬљ\[Ы€HУУTХS‘ФХ’S‘К‹KKHЉK€™Y™™XЭHQ‘‘PХТU€њЭЩ\€HL€ќ\HHTWС’QТS‘Л€XШЭ\XЮHHL€њHL€ќ\™Щ]HT‘СUФСSPХQ€њљ[Ьљ]HH€Ш]YЫЬћHHSPQСWРРUQУФ–WФTТPРS€›Z\њ›Ь“[Э™P[›™YH•QK€›YQљ\њЭ[›™YH•QK€›Z[ZXР[›™YH•QK€›Y]›Ы›ЫYP[›™YH•QK€ЫЬXШ][›™YH•QK€њЫY\[Р[›™YH•QK€љ[њЭќXЭ[›™YH•QK€™[ЫЬ™P[›™YH•QK€\ЬЪ\Э[›™YH•QK€њЪЩ]Ъ[›™YH
+—ФТСUТРђS”ИЏHСS—ОJK€Y][Ы[Y™™XЭИHQUSУђSСQ‘‘PХКВ€›[Э™QY™™XЭHSХ‘WСQ‘‘PХФTђSTТTЛ€Ъ[ЩHHМ€JK€]P[љ[TШЬљ\HР]P[љ[S[Э™WРЫЫX]Ьњ]YK€K‚€УSХ‘WУPQТPРSХФ”UQWHB€В€›[YHHУУTХS‘ФХ’S‘К“XYЪXШ[Ьњ]YHЉK€™\ШЬљ\[Ы€HУУTХS‘ФХ’S‘К‹KKHЉK€™Y™™XЭHQ‘‘PХТU€њЭЩ\€HL€ќ\HHTWСђRT–K€XШЭ\XЮHHL€њHL€ќ\™Щ]HT‘СUФСSPХQ€њљ[Ьљ]HH€Ш]YЫЬћHHSPQСWРРUQУФ–WФTТPРS€›Z\њ›Ь“[Э™P[›™YH•QK€›YQљ\њЭ[›™YH•QK€›Z[ZXР[›™YH•QK€›Y]›Ы›ЫYP[›™YH•QK€ЫЬXШ][›™YH•QK€њЫY\[Р[›™YH•QK€љ[њЭќXЭ[›™YH•QK€™[ЫЬ™P[›™YH•QK€\ЬЪ\Э[›™YH•QK€њЪЩ]Ъ[›™YH
+—ФТСUТРђS”ИЏHСS—ОJK€Y][Ы[Y™™XЭИHQUSУђSСQ‘‘PХКВ€›[Э™QY™™XЭHSХ‘WСQ‘‘PХРУУ‘•TТSУ‹€Ъ[ЩHHМ€JK€]P[љ[TШЬљ\HР]P[љ[S[Э™WУXYЪXШ[Ьњ]YK€K‚€УSХ‘WФЦP“QWHB€В€›[YHHУУTХS‘ФХ’S‘К”ЮX›YHЉK€™\ШЬљ\[Ы€HУУTХS‘ФХ’S‘К€•\И[Э™IЬИЭЩ\€[Ь™X\Щ\Ч€‚€ќЪ[€Ы€[XЭљXИ\њZ[‹€ЉK€™Y™™XЭHQ‘‘PХХT”ђRS—Р“УФХ€њЭЩ\€H€ќ\HHTWФЦPТPЛ€XШЭ\XЮHHL€њHMK€ќ\™Щ]HT‘СUФСSPХQ€њљ[Ьљ]HH€Ш]YЫЬћHHSPQСWРРUQУФ–WФTТPРS€\™Э[Y[ќќ\њZ[ђ›ЫЬЭHВ€ќ\њZ[€HХUTЧС’QSСSPХ’PЧХT”ђRS‹€њ\Щ[ќHL€™Ь›Э[™ЪXЪИHФ“ХS‘РТPТЧУ“У‘K€K€›XZЩ\РЫЫќXЭH•QK€њЫXЪ[™У[Э™HH•QK€]P[љ[TШЬљ\HР]P[љ[S[Э™WФЮX›YK€K‚€УSХ‘WТQ“ЧФХPSWHB€В€›[YHHУУTХS‘ФХ’S‘К’Y›ИЭX[HЉK€™\ШЬљ\[Ы€HУУTХS‘ФХ’S‘К€•\И[Э™IЬИЭЩ\€[Ь™X\Щ\Ч€‚€ќ[™\€\њЪЭ[›YЪ€ЉK€™Y™™XЭHQ‘‘PХТQ“ЧФХPSK€њЭЩ\€H€ќ\HHTWХРUT‹€XШЭ\XЮHHL€њHMK€ќ\™Щ]HT‘СUФСSPХQ€њљ[Ьљ]HH€Ш]YЫЬћHHSPQСWРРUQУФ–WФФPТPS€ќ]ЬХ\Щ\€H•QK€]P[љ[TШЬљ\HР]P[љ[S[Э™WТY›ФЭX[K€K‚€УSХ‘WР“УСУSУУ—HB€В€›[YHHУУTХS‘ФХ’S‘Кђ›ЫЩ[ЫЫ€ЉK€™\ШЬљ\[Ы€HУУTХS‘ФХ’S‘К€•[›X\Ъ\ИH›ЫЩ[ЫЫ‹—€‚€ђШ[‰Э™H\ЩYЪXЩH[€H›ЭЛ€ЉK€™Y™™XЭHQ‘‘PХТU€њЭЩ\€HM€ќ\HHTWУ“Ф“PS€XШЭ\XЮHHL€њHK€ќ\™Щ]HT‘СUФСSPХQ€њљ[Ьљ]HH€Ш]YЫЬћHHSPQСWРРUQУФ–WФФPТPS€Ш[ќ\ЩUЪXЩHH•QK€]P[љ[TШЬљ\HР]P[љ[S[Э™WР›ЫЩ[ЫЫ‹€K‚€УSХ‘WУPUТWСУХТWHB€В€›[YHHУУTХS‘ФХ’S‘К“X]ЪHЫЭЪHЉK€™\ШЬљ\[Ы€HУУTХS‘ФХ’S‘К€ђXњЫЬњИ[€H[XYЩW€‚€љ[™›XЭY€X^HШ]\ЩHHќ\›‹€ЉK€™Y™™XЭHQ‘‘PХРP”УФђ‹€њЭЩ\€H€ќ\HHTWСФђTФЛ€XШЭ\XЮHHL€њHMK€ќ\™Щ]HT‘СUР“Х€њљ[Ьљ]HH€Ш]YЫЬћHHSPQСWРРUQУФ–WФФPТPS€\™Э[Y[ќHИXњЫЬ”\Щ[ќYЩHHLK€ќ]ЬХ\Щ\€H•QK€љX[[™У[Э™HH•QK€Y][Ы[Y™™XЭИHQUSУђSСQ‘‘PХКВ€›[Э™QY™™XЭHSХ‘WСQ‘‘PХР•T“‹€Ъ[ЩHHЊ€JK€]P[љ[TШЬљ\HР]P[љ[S[Э™WУX]ЪQЫЭЪK€K‚€УSХ‘WФЦT•TР“УP—HB€В€›[YHHУУTХS‘ФХ’S‘К”Ю\ќ\›ЫX€ЉK€™\ШЬљ\[Ы€HУУTХS‘ФХ’S‘К€“ЭЩ\њИH›ЩIЬИЬYY€‚€™XXЪ\›€›Ь€И\›њЛ€ЉK€™Y™™XЭHQ‘‘PХТU€њЭЩ\€HЊ€ќ\HHTWСФђTФЛ€XШЭ\XЮHHK€њHL€ќ\™Щ]HT‘СUФСSPХQ€њљ[Ьљ]HH€Ш]YЫЬћHHSPQСWРРUQУФ–WФФPТPS€[\ЭXУ[Э™HH•QK€Y][Ы[Y™™XЭИHQUSУђSСQ‘‘PХКВ€›[Э™QY™™XЭHSХ‘WСQ‘‘PХФЦT•TР“УP‹€Ъ[ЩHHL€JK€]P[љ[TШЬљ\HР]P[љ[S[Э™WФЮ\ќ\›ЫX‹€K‚€УSХ‘WТU–WРХQСSHB€В€›[YHHУУTХS‘ФХ’S‘К’]ћHЭYЩ[ЉK€™\ШЬљ\[Ы€HУУTХS‘ФХ’S‘К€•\HЪ[™Щ\ИЪ][X\ЪЛ—€‚€’YЪЬљ]XШ[Z]][Л€ЉK€™Y™™XЭHQ‘‘PХТU–WРХQСS€њЭЩ\€HL€ќ\HHTWСФђTФЛ€XШЭ\XЮHHL€њHL€Ьљ]XШ[]ЭYЩHH—ХTUQУSХ‘WСUHЏHСS—МИИH€‹€ќ\™Щ]HT‘СUФСSPХQ€њљ[Ьљ]HH€Ш]YЫЬћHHSPQСWРРUQУФ–WФTТPРS€]P[љ[TШЬљ\HР]P[љ[S[Э™WТ]ћPЭYЩ[€K‚€УSХ‘WСSPХ“ЧФТХHB€В€›[YHHУУTХS‘ФХ’S‘К‘[XЭ›ИЪЭЉK€™\ШЬљ\[Ы€HУУTХS‘ФХ’S‘К€‘Ш]\њИ[XЭљXЪ]K[—€‚€™љ\™\ИHYЪ]›ЫYЩHЪЭ€ЉK€™Y™™XЭHQ‘‘PХХУЧХT“”ЧРUPТЛ€њЭЩ\€HLМ€ќ\HHTWСSPХ’PЛ€XШЭ\XЮHHL€њHL€ќ\™Щ]HT‘СUФСSPХQ€њљ[Ьљ]HH€Ш]YЫЬћHHSPQСWРРUQУФ–WФФPТPS€њЫY\[Р[›™YH•QK€љ[њЭќXЭ[›™YH•QK€\™Э[Y[ќќЫХ\›ђ]XЪИHИњЭљ[™ТYHХ’S‘ТQСSPХ“ФТХТT‘ТS‘ЛќЩX]\€H—ХСPUT—ФђRS€K€Y][Ы[Y™™XЭИHQUSУђSСQ‘‘PХКВ€›[Э™QY™™XЭHSХ‘WСQ‘‘PХФФРUЧФTЧМK€њЩ[€H•QK€›ЫђЪ\™ЩU\›“Ы›HH•QK€њЪY\‘›ЬЩSЭ™\њљYHH•QK€JK€]P[љ[TШЬљ\HР]P[љ[S[Э™WС[XЭ›ФЪЭ€K‚€УSХ‘WХTђWФХT”ХФ“WHB€В€›[YHHУУTХS‘ФХ’S‘К•\HЭ\њЭЬ›HЉK€™\ШЬљ\[Ы€HУУTХS‘ФХ’S‘К€’[€\\YЫЬЙЬИЭ[\—€‚€‘›Ь›K]]И[›Щ\Л€ЉK€™Y™™XЭHQ‘‘PХХTђWФХT”ХФ“K€њЭЩ\€HLЊ€ќ\HHTWУ“Ф“PS€XШЭ\XЮHHL€њHK€ќ\™Щ]HT‘СUФСSPХQ€њљ[Ьљ]HH€Ш]YЫЬћHHSPQСWРРUQУФ–WФФPТPS€\ЬЪ\Э[›™YH•QK€ЫЬXШ][›™YH•QK€›Z[ZXР[›™YH•QK€њЪЩ]Ъ[›™YH
+—ФТСUТРђS”ИЏHСS—ОJK€]P[љ[TШЬљ\HР]P[љ[S[Э™WХ\TЭ\њЭЬ›K€K‚€УSХ‘WС’PТУWР‘PSWHB€В€›[YHHУУTХS‘ФХ’S‘К‘љXЪЫH™X[HЉK€™\ШЬљ\[Ы€HУУTХS‘ФХ’S‘К€”ЪЫЭИH™X[HЩ€YЪ—€‚€”ЫЫY][Y\ИЪXЩH\ИЭ›Ы™Л€ЉK€™Y™™XЭHQ‘‘PХС’PТУWР‘PSK€њЭЩ\€H€ќ\HHTWСђQУУ‹€XШЭ\XЮHHL€њHK€ќ\™Щ]HT‘СUФСSPХQ€њљ[Ьљ]HH€Ш]YЫЬћHHSPQСWРРUQУФ–WФФPТPS€]P[љ[TШЬљ\HР]P[љ[S[Э™WСљXЪЫP™X[K€K‚€УSХ‘WР•T“’S‘ЧР•SРT’ЧHB€В€›[YHHУУTХS‘ФХ’S‘Кђќ\›љ[™Иќ[Ш\љИЉK€™\ШЬљ\[Ы€HУУTХS‘ФХ’S‘К€‘]Y\И]XЪЛ[™ќ\›њЧ€‚€ќH›ЩHY€ЭќXЪЛ€ЉK€™Y™™XЭHQ‘‘PХФ“ХPХ€њЭЩ\€H€ќ\HHTWС’T‘K€XШЭ\XЮHH€њHL€ќ\™Щ]HT‘СUХTСT‹€њљ[Ьљ]HH€Ш]YЫЬћHHSPQСWРРUQУФ–WФХUTЛ€\™Э[Y[ќHИњ›ЭXЭY]ЩH“ХPХР•T“’S‘ЧР•SРT’ИK€ћ“[Э™HHИ™Y™™XЭH—СQ‘‘PХФ‘TСUФХUИK€љYЫ›Ь™\Ф›ЭXЭH•QK€›Z\њ›Ь“[Э™P[›™YH•QK€ЫЬXШ][›™YH•QK€\ЬЪ\Э[›™YH•QK€]P[љ[TШЬљ\HР]P[љ[S[Э™WРќ\›љ[™Рќ[Ш\љЛ€K‚€УSХ‘WХS‘TђУTHB€В€›[YHHУУTХS‘ФХ’S‘К•[™\Ы\ЉK€™\ШЬљ\[Ы€HФЭXЪЩ\”[Ъ\ШЬљ\[Ы‹€™Y™™XЭHQ‘‘PХФХPТСT—ФSђТ€њЭЩ\€HМ€ќ\HHTWСSPХ’PЛ€XШЭ\XЮHHL€њHK€ќ\™Щ]HT‘СUФСSPХQ€њљ[Ьљ]HHK€Ш]YЫЬћHHSPQСWРРUQУФ–WФФPТPS€ЫЫќ\ЭY™™XЭHУУ•TХСQ‘‘PХР‘UT—ТQ—С’T”Х€ЫЫќ\ЭЫЫX›ФЭ\ќ\’YH€ЫЫќ\ЭЫЫX›У[Э™\ИHМK€]P[љ[TШЬљ\HР]P[љ[S[Э™WХ[™\Ы\€K‚€УSХ‘WУRQТWРУPU‘WHB€В€›[YHHУУTХS‘ФХ’S‘К“ZYЪHЫX]™HЉK€™\ШЬљ\[Ы€HС™Z[ќ\ШЬљ\[Ы‹€™Y™™XЭHQ‘‘PХТU€њЭЩ\€HMK€ќ\HHTWФ“РТЛ€XШЭ\XЮHHL€њHK€ќ\™Щ]HT‘СUФСSPХQ€њљ[Ьљ]HH€Ш]YЫЬћHHSPQСWРРUQУФ–WФTТPРS€›XZЩ\РЫЫќXЭH•QK€љYЫ›Ь™\Ф›ЭXЭH•QK€њЫXЪ[™У[Э™HH•QK€]P[љ[TШЬљ\HР]P[љ[S[Э™WУZYЪPЫX]™K€K‚€УSХ‘WХPТSУ—РХUT—HB€В€›[YHHУУTХS‘ФХ’S‘К•XЪ[Ы€Э]\€ЉK€™\ШЬљ\[Ы€HУУTХS‘ФХ’S‘К€“][Ъ\И\ќXЫH›Y\И]€‚€ќH\™Щ]€ЭљZЩ\ИЪXЩK€ЉK€™Y™™XЭHQ‘‘PХТU€њЭЩ\€HL€ќ\HHTWФХQS€XШЭ\XЮHH€њHL€ќ\™Щ]HT‘СUФСSPХQ€њљ[Ьљ]HH€Ш]YЫЬћHHSPQСWРРUQУФ–WФФPТPS€њЭљZЩPЫЭ[ќH‹€њЫXЪ[™У[Э™HH•QK€]P[љ[TШЬљ\HР]P[љ[S[Э™WХXЪ[ЫђЭ]\‹€K‚€УSХ‘WТT‘Ф‘TФЧHB€В€›[YHHУУTХS‘ФХ’S‘К’\™™\ЬИЉK€™\ШЬљ\[Ы€HХЬљ[™УЭ]\ШЬљ\[Ы‹€™Y™™XЭHQ‘‘PХФХСT—РђTСQУУ—ХT‘СUТ€њЭЩ\€HL€ќ\HHTWФХQS€XШЭ\XЮHHL€њHL€ќ\™Щ]HT‘СUФСSPХQ€њљ[Ьљ]HH€Ш]YЫЬћHHSPQСWРРUQУФ–WФTТPРS€›XZЩ\РЫЫќXЭH•QK€]P[љ[TШЬљ\HР]P[љ[S[Э™WТ\™™\ЬЛ€K‚€УSХ‘WСђQУУ—РТQT—HB€В€›[YHHУУTХS‘ФХ’S‘К‘YЫЫ€ЪY\€ЉK€™\ШЬљ\[Ы€HУУTХS‘ФХ’S‘К€’[Ь™X\Щ\И[Y\ЙИЬљ]XШ[]€‚€њ][Л\ЬXЪX[HY€YЫЫњЛ€ЉK€™Y™™XЭHQ‘‘PХСђQУУ—РТQT‹€њЭЩ\€H€ќ\HHTWСђQУУ‹€XШЭ\XЮHH€њHMK€ќ\™Щ]HT‘СUРSK€њљ[Ьљ]HH€Ш]YЫЬћHHSPQСWРРUQУФ–WФХUTЛ€љYЫ›Ь™\ФЭXњЭ]]HH•QK€]P[љ[TШЬљ\HР]P[љ[S[Э™WСYЫЫђЪY\‹€K‚€УSХ‘WРST’S‘ЧХ“ТPСWHB€В€›[YHHУУTХS‘ФХ’S‘Кђ[\љ[™И›ЪXЩHЉK€™\ШЬљ\[Ы€HУУTХS‘ФХ’S‘К€ђЫЫ™ќ\Щ\И›ЩHY€]ИЭ]Ч€‚€ќЩ\™H›ЫЬЭY\И\›‹€ЉK€™Y™™XЭHQ‘‘PХТU€њЭЩ\€H€ќ\HHTWСђRT–K€XШЭ\XЮHHL€њHL€ќ\™Щ]HT‘СUФСSPХQ€њљ[Ьљ]HH€Ш]YЫЬћHHSPQСWРРUQУФ–WФФPТPS€њЫЭ[™[Э™HH•QK€љYЫ›Ь™\ФЭXњЭ]]HH—ХTUQУSХ‘WС“QФИЏHСS—Н‹€Y][Ы[Y™™XЭИHQUSУђSСQ‘‘PХКВ€›[Э™QY™™XЭHSХ‘WСQ‘‘PХРУУ‘•TТSУ‹€›Ы›RY•\™Щ]Z\ЩYЭ]ИH•QK€Ъ[ЩHHL€JK€]P[љ[TШЬљ\HР]P[љ[S[Э™WР[\љ[™Х›ЪXЩK€K‚€УSХ‘WХSTT—С“T‘WHB€В€›[YHHУУTХS‘ФХ’S‘К•[\\€›\™HЉK€™\ШЬљ\[Ы€HУУTХS‘ФХ’S‘К€ђH\Ь\][Ы€]XЪЛ€ЭЩ\—€‚€™ЭX›\ИY€\Э[Э™HZ[Y€ЉK€™Y™™XЭHQ‘‘PХФХУTS‘ЧХS••SK€њЭЩ\€HНK€ќ\HHTWС’T‘K€XШЭ\XЮHHL€њHL€ќ\™Щ]HT‘СUФСSPХQ€њљ[Ьљ]HH€Ш]YЫЬћHHSPQСWРРUQУФ–WФTТPРS€›XZЩ\РЫЫќXЭH•QK€]P[љ[TШЬљ\HР]P[љ[S[Э™WХ[\\‘›\™K€K‚€УSХ‘WФХTTђСSФУSWHB€В€›[YHHУУTХS‘ФХ’S‘К”Э\\Щ[Ы[HЉK€™\ШЬљ\[Ы€HУУTХS‘ФХ’S‘К€ђ[€[XЭљYљYYЫ[K€Y€]€‚€›Z\ЬЩ\ЛH\Щ\€\И\ќ€ЉK€™Y™™XЭHQ‘‘PХФ‘PУТSТQ—УRTФЛ€њЭЩ\€HL€ќ\HHTWСSPХ’PЛ€XШЭ\XЮHHMK€њHMK€ќ\™Щ]HT‘СUФСSPХQ€њљ[Ьљ]HH€Ш]YЫЬћHHSPQСWРРUQУФ–WФTТPРS€›XZЩ\РЫЫќXЭH•QK€›Z[љ[Z^™QЭX›Q[XYЩHH•QK€ЫЫќ\ЭY™™XЭHУУ•TХСQ‘‘PХХTСT—УSФ‘WСPTТSWФХT•Q€ЫЫќ\ЭЫЫX›ФЭ\ќ\’YH€ЫЫќ\ЭЫЫX›У[Э™\ИHМK€]P[љ[TШЬљ\HР]P[љ[S[Э™WФЭ\\Щ[Ы[K€K‚€УSХ‘WФЦPТPЧУ“ТTСWHB€В€›[YHHУУTХS‘ФХ’S‘К”ЮXЪXИ›Ъ\ЩHЉK€™\ШЬљ\[Ы€HУУTХS‘ФХ’S‘К€”ЫЭ[™Ш]™\И][XYЩH[™€‚€њ™]™[ќX[[™И›Ь€€\›њЛ€ЉK€™Y™™XЭHQ‘‘PХТU€њЭЩ\€HНK€ќ\HHTWФЦPТPЛ€XШЭ\XЮHHL€њHL€ќ\™Щ]HT‘СUФСSPХQ€њљ[Ьљ]HH€Ш]YЫЬћHHSPQСWРРUQУФ–WФФPТPS€њЫЭ[™[Э™HH•QK€љYЫ›Ь™\ФЭXњЭ]]HH—ХTUQУSХ‘WС“QФИЏHСS—Н‹€Y][Ы[Y™™XЭИHQUSУђSСQ‘‘PХКВ€›[Э™QY™™XЭHSХ‘WСQ‘‘PХФЦPТPЧУ“ТTСK€Ъ[ЩHHL€JK€]P[љ[TШЬљ\HР]P[љ[S[Э™WФЮXЪXУ›Ъ\ЩK€K‚€УSХ‘WХTT—ТS‘HB€В€™Y™™XЭHQ‘‘PХХTT—ТS‘€›[YHHУУTХS‘ФХ’S‘К•\\€[™ЉK€™\ШЬљ\[Ы€HУУTХS‘ФХ’S‘К€“XZЩ\ИH\™Щ]›[ЪY—€‚€њ™XYZ[™ИHљ[Ьљ]H[Э™K€ЉK€њЭЩ\€HЌK€ќ\HHTWС’QТS‘Л€XШЭ\XЮHHL€њHMK€ќ\™Щ]HT‘СUФСSPХQ€њљ[Ьљ]HHЛ€Ш]YЫЬћHHSPQСWРРUQУФ–WФTТPРS€›XZЩ\РЫЫќXЭH•QK€Y][Ы[Y™™XЭИHQUSУђSСQ‘‘PХКВ€›[Э™QY™™XЭHSХ‘WСQ‘‘PХС“SђТ€Ъ[ЩHHL€JK€]P[љ[TШЬљ\HР]P[љ[S[Э™WХ\\’[™€K‚€УSХ‘WУPSQУђS•РТRS—HB€В€›[YHHУУTХS‘ФХ’S‘К“X[YЫ[ќЪZ[€ЉK€™\ШЬљ\[Ы€HУУTХS‘ФХ’S‘К€ђHЫЬњ›ЬЪ]™HЪZ[€]XЪЧ€‚€ќ]X^HYHЪ\ЫЫ‹€ЉK€™Y™™XЭHQ‘‘PХТU€њЭЩ\€HL€ќ\HHTWФТTУУ‹€XШЭ\XЮHHL€њHK€ќ\™Щ]HT‘СUФСSPХQ€њљ[Ьљ]HH€Ш]YЫЬћHHSPQСWРРUQУФ–WФФPТPS€Y][Ы[Y™™XЭИHQUSУђSСQ‘‘PХКВ€›[Э™QY™™XЭHSХ‘WСQ‘‘PХХЦPЛ€Ъ[ЩHHL€JK€]P[љ[TШЬљ\HР]P[љ[S[Э™WУX[YЫ[ќЪZ[‹€K‚€ЛИ‹S[Э™\В€УSХ‘WР”‘PRУ‘PТЧР“U—HB€В€›[YHHУУTХS‘ФХ’S‘Кђњ™XZЫ™XЪИ›]€ЉK€™\ШЬљ\[Ы€HУУTХS‘ФХ’S‘К€ђќZ[И[ЫY[ќ[H[™Ь\Ъ\Ч€‚€љ[ќИH›ЩK€ЭЩ\€\љY\Л€ЉK€™Y™™XЭHQ‘‘PХТU€њЭЩ\€HK€ќ\HHTWУ“Ф“PS€XШЭ\XЮHH€њHK€ќ\™Щ]HT‘СUФСSPХQ€њљ[Ьљ]HH€Ш]YЫЬћHHSPQСWРРUQУФ–WФTТPРSЛЩ]\›Z[™Yњ›ЫH[Э™H\B€]P[љ[TШЬљ\HР]P[љ[S[Э™WРњ™XZЫ™XЪР›]‹€K€УSХ‘WРSУХUФSSQSS‘ЧHB€В€›[YHHУУTХS‘ФХ’S‘Кђ[SЭ][[Y[[™ИЉK€™\ШЬљ\[Ы€HУУTХS‘ФХ’S‘К€”[\И[€[™\™ЮHЬ€[ќЧ€‚€ќH\™Щ]€ЭЩ\€\љY\Л€ЉK€™Y™™XЭHQ‘‘PХТU€њЭЩ\€HK€ќ\HHTWС’QТS‘Л€XШЭ\XЮHH€њHK€ќ\™Щ]HT‘СUФСSPХQ€њљ[Ьљ]HH€Ш]YЫЬћHHSPQСWРРUQУФ–WФTТPРS€]P[љ[TШЬљ\HР]P[љ[S[Э™WР[Э][[Y[[™Л€K€УSХ‘WФХTT”УУ’PЧФТЦTХ’RСWHB€В€›[YHHУУTХS‘ФХ’S‘К”Э\\њЫЫљXИЪЮ\ЭљZЩHЉK€™\ШЬљ\[Ы€HУУTХS‘ФХ’S‘К€”ЫШ\њИ\[™[[Y]ИЭШ\™€‚€ќH\™Щ]€ЭЩ\€\љY\Л€ЉK€™Y™™XЭHQ‘‘PХТU€њЭЩ\€HK€ќ\HHTWС“RS‘Л€XШЭ\XЮHH€њHK€ќ\™Щ]HT‘СUФСSPХQ€њљ[Ьљ]HH€Ш]YЫЬћHHSPQСWРРUQУФ–WФTТPРS€]P[љ[TШЬљ\HР]P[љ[S[Э™WФЭ\\њЫЫљXФЪЮ\ЭљZЩK€K€УSХ‘WРPТQСХУ”ХT—HB€В€›[YHHУУTХS‘ФХ’S‘КђXЪYЭЫњЭ\€ЉK€™\ШЬљ\[Ы€HУУTХS‘ФХ’S‘К€”Ъ[љЬИH\™Щ][€HЪ\ЫЫ—€‚€њЭШ[\€ЭЩ\€\љY\Л€ЉK€™Y™™XЭHQ‘‘PХТU€њЭЩ\€HK€ќ\HHTWФТTУУ‹€XШЭ\XЮHH€њHK€ќ\™Щ]HT‘СUФСSPХQ€њљ[Ьљ]HH€Ш]YЫЬћHHSPQСWРРUQУФ–WФTТPРS€]P[љ[TШЬљ\HР]P[љ[S[Э™WРXЪYЭЫњЭ\‹€K€УSХ‘WХPХУ’PЧФђQСWHB€В€›[YHHУУTХS‘ФХ’S‘К•XЭЫљXИYЩHЉK€™\ШЬљ\[Ы€HУУTХS‘ФХ’S‘К€ђќ\њ›ЭЬИY\[™Ы[\И[ќЧ€‚€ќH\™Щ]€ЭЩ\€\љY\Л€ЉK€™Y™™XЭHQ‘‘PХТU€њЭЩ\€HK€ќ\HHTWСФ“ХS‘€XШЭ\XЮHH€њHK€ќ\™Щ]HT‘СUФСSPХQ€њљ[Ьљ]HH€Ш]YЫЬћHHSPQСWРРUQУФ–WФTТPРS€њЪЮP]P[›™YH—СVђTУUQУSХ‘WС“QФЛ€]P[љ[TШЬљ\HР]P[љ[S[Э™WХXЭЫљXФYЩK€K€УSХ‘WРУУ•S‘S•SРФ•TТHB€В€›[YHHУУTХS‘ФХ’S‘КђЫЫќ[™[ќ[Ьќ\ЪЉK€™\ШЬљ\[Ы€HУУTХS‘ФХ’S‘К€‘›ЬИHYЩH›ШЪИ[Э[ќZ[—€‚€›Ы€H›ЩK€ЭЩ\€\љY\Л€ЉK€™Y™™XЭHQ‘‘PХТU€њЭЩ\€HK€ќ\HHTWФ“РТЛ€XШЭ\XЮHH€њHK€ќ\™Щ]HT‘СUФСSPХQ€њљ[Ьљ]HH€Ш]YЫЬћHHSPQСWРРUQУФ–WФTТPРS€]P[љ[TШЬљ\HР]P[љ[S[Э™WРЫЫќ[™[ќ[Ьќ\Ъ€K€УSХ‘WФРUђQСWФФS—УХUHB€В€›[YHHУУTХS‘ФХ’S‘К”Ш]YЩHЬ[‹SЭ]ЉK€™\ШЬљ\[Ы€HУУTХS‘ФХ’S‘К€”Ь]И™XYИЩ€Ъ[ИЧ€‚€љ[™H›ЩK€ЭЩ\€\љY\Л€ЉK€™Y™™XЭHQ‘‘PХТU€њЭЩ\€HK€ќ\HHTWР•QЛ€XШЭ\XЮHH€њHK€ќ\™Щ]HT‘СUФСSPХQ€њљ[Ьљ]HH€Ш]YЫЬћHHSPQСWРРUQУФ–WФTТPРS€]P[љ[TШЬљ\HР]P[љ[S[Э™WФШ]YЩTЬ[“Э]€K€УSХ‘WУ‘U‘T—СS‘S‘ЧУ’QТPT‘WHB€В€›[YHHУУTХS‘ФХ’S‘К“™]™\‹Q[™[™ИљYЪX\™HЉK€™\ШЬљ\[Ы€HУУTХS‘ФХ’S‘К€‘Y\\ЩX]YЬќYЩ\И\€‚€ќH\™Щ]€ЭЩ\€\љY\Л€ЉK€™Y™™XЭHQ‘‘PХТU€њЭЩ\€HK€ќ\HHTWСТФХ€XШЭ\XЮHH€њHK€ќ\™Щ]HT‘СUФСSPХQ€њљ[Ьљ]HH€Ш]YЫЬћHHSPQСWРРUQУФ–WФTТPРS€]P[љ[TШЬљ\HР]P[љ[S[Э™WУ™]™\‘[™[™УљYЪX\™K€K€УSХ‘WРУФ’ФРФ‘UЧРФђTТHB€В€›[YHHУУTХS‘ФХ’S‘КђЫЬљЬШЬ™]ИЬ\ЪЉK€™\ШЬљ\[Ы€HУУTХS‘ФХ’S‘К€”Ь[њИ™\ћH\Э[™[\Ч€‚€ќH\™Щ]€ЭЩ\€\љY\Л€ЉK€™Y™™XЭHQ‘‘PХТU€њЭЩ\€HK€ќ\HHTWФХQS€XШЭ\XЮHH€њHK€ќ\™Щ]HT‘СUФСSPХQ€њљ[Ьљ]HH€Ш]YЫЬћHHSPQСWРРUQУФ–WФTТPРS€]P[љ[TШЬљ\HР]P[љ[S[Э™WРЫЬљЬШЬ™]РЬ\Ъ€K€УSХ‘WТS‘‘T““ЧУХ‘T‘’U‘WHB€В€›[YHHУУTХS‘ФХ’S‘К’[™™\››ИЭ™\™љ]™HЉK€™\ШЬљ\[Ы€HУУTХS‘ФХ’S‘К€ђњ™X]\И[ќ[њЩHљ\™H]€‚€ќH\™Щ]€ЭЩ\€\љY\Л€ЉK€™Y™™XЭHQ‘‘PХТU€њЭЩ\€HK€ќ\HHTWС’T‘K€XШЭ\XЮHH€њHK€ќ\™Щ]HT‘СUФСSPХQ€њљ[Ьљ]HH€Ш]YЫЬћHHSPQСWРРUQУФ–WФTТPРS€]P[љ[TШЬљ\HР]P[љ[S[Э™WТ[™™\››УЭ™\™љ]™K€K€УSХ‘WТQ“ЧХ“Ф•VHB€В€›[YHHУУTХS‘ФХ’S‘К’Y›И›Ьќ^ЉK€™\ШЬљ\[Ы€HУУTХS‘ФХ’S‘К€ђHYЩHЪ\›ЫЫЭШ[ЭЬЧ€‚€ќH\™Щ]€ЭЩ\€\љY\Л€ЉK€™Y™™XЭHQ‘‘PХТU€њЭЩ\€HK€ќ\HHTWХРUT‹€XШЭ\XЮHH€њHK€ќ\™Щ]HT‘СUФСSPХQ€њљ[Ьљ]HH€Ш]YЫЬћHHSPQСWРРUQУФ–WФTТPРS€]P[љ[TШЬљ\HР]P[љ[S[Э™WТY›Х›Ьќ^€K€УSХ‘WР“УУWСУУWHB€В€›[YHHУУTХS‘ФХ’S‘Кђ›ЫЫHЫЫHЉK€™\ШЬљ\[Ы€HУУTХS‘ФХ’S‘К€•\Щ\И[ќ[™\™ЮHИ]XЪЧ€‚€ќH\™Щ]€ЭЩ\€\љY\Л€ЉK€™Y™™XЭHQ‘‘PХТU€њЭЩ\€HK€ќ\HHTWСФђTФЛ€XШЭ\XЮHH€њHK€ќ\™Щ]HT‘СUФСSPХQ€њљ[Ьљ]HH€Ш]YЫЬћHHSPQСWРРUQУФ–WФTТPРS€]P[љ[TШЬљ\HР]P[љ[S[Э™WР›ЫЫQЫЫK€K€УSХ‘WСТQРU“УТU“РЧHB€В€›[YHHУУTХS‘ФХ’S‘К‘ЪYШ]›Ы]›ШИЉK€™\ШЬљ\[Ы€HУУTХS‘ФХ’S‘К€’]ИH›ЩHЪ]ЭЩ\™ќ[€‚€™[XЭљXЪ]K€ЭЩ\€\љY\Л€ЉK€™Y™™XЭHQ‘‘PХТU€њЭЩ\€HK€ќ\HHTWСSPХ’PЛ€XШЭ\XЮHH€њHK€ќ\™Щ]HT‘СUФСSPХQ€њљ[Ьљ]HH€Ш]YЫЬћHHSPQСWРРUQУФ–WФTТPРS€]P[љ[TШЬљ\HР]P[љ[S[Э™WСЪYШ]›Ы]›ШЛ€K€УSХ‘WФТUT‘QФЦPТWHB€В€›[YHHУУTХS‘ФХ’S‘К”Ъ]\™YЮXЪHЉK€™\ШЬљ\[Ы€HУУTХS‘ФХ’S‘К€ђЫЫќ›ЫИH\™Щ]Ч€‚€љ\ќ]€ЭЩ\€\љY\Л€ЉK€™Y™™XЭHQ‘‘PХТU€њЭЩ\€HK€ќ\HHTWФЦPТPЛ€XШЭ\XЮHH€њHK€ќ\™Щ]HT‘СUФСSPХQ€њљ[Ьљ]HH€Ш]YЫЬћHHSPQСWРРUQУФ–WФTТPРS€]P[љ[TШЬљ\HР]P[љ[S[Э™WФЪ]\™YЮXЪK€K€УSХ‘WФХP–‘T“ЧФУSSQT—HB€В€›[YHHУУTХS‘ФХ’S‘К”ЭXћ™\›ИЫ[[Y\€ЉK€™\ШЬљ\[Ы€HУУTХS‘ФХ’S‘К€‘›ЬИH[\[™њ™Y^™\Ч€‚€ќH\™Щ]€ЭЩ\€\љY\Л€ЉK€™Y™™XЭHQ‘‘PХТU€њЭЩ\€HK€ќ\HHTWТPСK€XШЭ\XЮHH€њHK€ќ\™Щ]HT‘СUФСSPХQ€њљ[Ьљ]HH€Ш]YЫЬћHHSPQСWРРUQУФ–WФTТPРS€]P[љ[TШЬљ\HР]P[љ[S[Э™WФЭXћ™\›ФЫ[[Y\‹€K€УSХ‘WСUђTХUS‘ЧСђRСWHB€В€›[YHHУУTХS‘ФХ’S‘К‘]\Э][™ИZЩHЉK€™\ШЬљ\[Ы€HУУTХS‘ФХ’S‘К€‘]™[ЬИ]\H[™]XЪЬЧ€‚€ќH\™Щ]€ЭЩ\€\љY\Л€ЉK€™Y™™XЭHQ‘‘PХТU€њЭЩ\€HK€ќ\HHTWСђQУУ‹€XШЭ\XЮHH€њHK€ќ\™Щ]HT‘СUФСSPХQ€њљ[Ьљ]HH€Ш]YЫЬћHHSPQСWРРUQУФ–WФTТPРS€]P[љ[TШЬљ\HР]P[љ[S[Э™WС]\Э][™СZЩK€K€УSХ‘WР“PТЧТУWСPУTСWHB€В€›[YHHУУTХS‘ФХ’S‘Кђ›XЪИЫHXЫ\ЩHЉK€™\ШЬљ\[Ы€HУУTХS‘ФХ’S‘К€”ЭXЪЬИH\™Щ][ќИ\љЧ€‚€™[™\™ЮK€ЭЩ\€\љY\Л€ЉK€™Y™™XЭHQ‘‘PХТU€њЭЩ\€HK€ќ\HHTWСT’Л€XШЭ\XЮHH€њHK€ќ\™Щ]HT‘СUФСSPХQ€њљ[Ьљ]HH€Ш]YЫЬћHHSPQСWРРUQУФ–WФTТPРS€]P[љ[TШЬљ\HР]P[љ[S[Э™WР›XЪТЫQXЫ\ЩK€K€УSХ‘WХТS’УWХPТУWHB€В€›[YHHУУTХS‘ФХ’S‘К•Ъ[љЫHXЪЫHЉK€™\ШЬљ\[Ы€HУУTХS‘ФХ’S‘К€•Ю\ИЪ]H\™Щ][€W€‚€Ъ\›Z[™ИЬXЩK€ЭЩ\€\љY\Л€ЉK€™Y™™XЭHQ‘‘PХТU€њЭЩ\€HK€ќ\HHTWСђRT–K€XШЭ\XЮHH€њHK€ќ\™Щ]HT‘СUФСSPХQ€њљ[Ьљ]HH€Ш]YЫЬћHHSPQСWРРUQУФ–WФTТPРS€]P[љ[TШЬљ\HР]P[љ[S[Э™WХЪ[љЫUXЪЫK€K€УSХ‘WРРUTХ“ФRРWHB€В€›[YHHУУTХS‘ФХ’S‘КђШ]\Э›ЬZШHЉK€™\ШЬљ\[Ы€HУУTХS‘ФХ’S‘К€”ZШXЪH\Щ\ИHX^[[Э[ќ€‚€›Щ€[XЭљXЪ]H[™Э[Щ\Л€ЉK€™Y™™XЭHQ‘‘PХТU€њЭЩ\€HЊL€ќ\HHTWСSPХ’PЛ€XШЭ\XЮHH€њHK€ќ\™Щ]HT‘СUФСSPХQ€њљ[Ьљ]HH€Ш]YЫЬћHHSPQСWРРUQУФ–WФTТPРS€]P[љ[TШЬљ\HР]P[љ[S[Э™WРШ]\Э›ЬZШK€K€УSХ‘WМLХ“УХS‘Tђ“УHB€В€›[YHHУУTХS‘ФХ’S‘КЊL›Ы[™\›ЫЉK€™\ШЬљ\[Ы€HУУTХS‘ФХ’S‘К€ђШ\ZШXЪH[›X\Ъ\И›Ы—€‚€’YЪЬљ]XШ[Z]][Л€ЉK€™Y™™XЭHQ‘‘PХТU€њЭЩ\€HNMK€ќ\HHTWСSPХ’PЛ€XШЭ\XЮHH€Ьљ]XШ[]ЭYЩHH‹€њHK€ќ\™Щ]HT‘СUФСSPХQ€њљ[Ьљ]HH€Ш]YЫЬћHHSPQСWРРUQУФ–WФФPТPS€]P[љ[TШЬљ\HР]P[љ[S[Э™WМL›Ы[™\›Ы€K€УSХ‘WФХТСQФФT’ФХT‘‘T—HB€В€›[YHHУУTХS‘ФХ’S‘К”ЭЪЩYЬ\љЬЭ\™™\€ЉK€™\ШЬљ\[Ы€HУУTХS‘ФХ’S‘К€ђ[Ы[€ZXЪH]XЪЬИЪ]€‚€™ќ[›ЬЩK€Ш]\Щ\И\[\Ъ\Л€ЉK€™Y™™XЭHQ‘‘PХТU€њЭЩ\€HMНK€ќ\HHTWСSPХ’PЛ€XШЭ\XЮHH€њHK€ќ\™Щ]HT‘СUФСSPХQ€њљ[Ьљ]HH€Ш]YЫЬћHHSPQСWРРUQУФ–WФФPТPS€Y][Ы[Y™™XЭИHQUSУђSСQ‘‘PХКВ€›[Э™QY™™XЭHSХ‘WСQ‘‘PХФTђSTТTЛ€Ъ[ЩHHL€JK€]P[љ[TШЬљ\HР]P[љ[S[Э™WФЭЪЩYЬ\љЬЭ\™™\‹€K€УSХ‘WСV‘SQWСU“Р“УФХHB€В€›[YHHУУTХS‘ФХ’S‘К‘^™[YH]›Ш›ЫЬЭЉK€™\ШЬљ\[Ы€HУУTХS‘ФХ’S‘К€‘Y]™YHЩ]И[™\™ЮHњ›ЫW€‚€љ]ИњљY[™Л€›ЫЬЭИЭ]Л€ЉK€™Y™™XЭHQ‘‘PХСV‘SQWСU“Р“УФХ€њЭЩ\€H€ќ\HHTWУ“Ф“PS€XШЭ\XЮHH€њHK€ќ\™Щ]HT‘СUХTСT‹€њљ[Ьљ]HH€Ш]YЫЬћHHSPQСWРРUQУФ–WФХUTЛ€]P[љ[TШЬљ\HР]P[љ[S[Э™WС^™[YQ]›Ш›ЫЬЭ€K€УSХ‘WФS‘T’V’S‘ЧФSђРRСWHB€В€›[YHHУУTХS‘ФХ’S‘К”[™\љ^љ[™И[ШZЩHЉK€™\ШЬљ\[Ы€HУУTХS‘ФХ’S‘К€”Ы›Ь›^[™\™Щ]XШ[H[Э™\Ч€‚€[™]XЪЬИЪ]ќ[›ЬЩK€ЉK€™Y™™XЭHQ‘‘PХТU€њЭЩ\€HЊL€ќ\HHTWУ“Ф“PS€XШЭ\XЮHH€њHK€ќ\™Щ]HT‘СUФСSPХQ€њљ[Ьљ]HH€Ш]YЫЬћHHSPQСWРРUQУФ–WФTТPРS€]P[љ[TШЬљ\HР]P[љ[S[Э™WФ[™\љ^љ[™Ф[ШZЩK€K€УSХ‘WССS‘TТTЧФХTT““ХђWHB€В€›[YHHУУTХS‘ФХ’S‘К‘Щ[™\Ъ\ИЭ\\››ЭHЉK€™\ШЬљ\[Ы€HУУTХS‘ФХ’S‘К€“Y]И]XЪЬИЪ]ќ[›ЬЩK—€‚€”ЮXЪXШ[HЪ\™Щ\И\њZ[‹€ЉK€™Y™™XЭHQ‘‘PХТU€њЭЩ\€HNK€ќ\HHTWФЦPТPЛ€XШЭ\XЮHH€њHK€ќ\™Щ]HT‘СUФСSPХQ€њљ[Ьљ]HH€Ш]YЫЬћHHSPQСWРРUQУФ–WФФPТPS€]P[љ[TШЬљ\HР]P[љ[S[Э™WСЩ[™\Ъ\ФЭ\\››ЭK€Y][Ы[Y™™XЭИHQUSУђSСQ‘‘PХКВ€›[Э™QY™™XЭHSХ‘WСQ‘‘PХФЦPТPЧХT”ђRS‹€Ъ[ЩHHL€JK€K€УSХ‘WФТS’TХT—РT”“ХЧФђRQHB€В€›[YHHУУTХS‘ФХ’S‘К”Ъ[љ\Э\€\њ›ЭИZYЉK€™\ШЬљ\[Ы€HУУTХS‘ФХ’S‘К€‘XЪYY^YHЪЫЭИЫЭ[ќ\ЬЧ€‚€\њ›ЭЬИЪ]ќ[›ЬЩK€ЉK€™Y™™XЭHQ‘‘PХТU€њЭЩ\€HN€ќ\HHTWСТФХ€XШЭ\XЮHH€њHK€ќ\™Щ]HT‘СUФСSPХQ€њљ[Ьљ]HH€Ш]YЫЬћHHSPQСWРРUQУФ–WФTТPРS€]P[љ[TШЬљ\HР]P[љ[S[Э™WФЪ[љ\Э\ђ\њ›ЭФZY€K€УSХ‘WУPSPТSХTЧУSУУ”РUSHB€В€›[YHHУУTХS‘ФХ’S‘К“X[XЪ[Э\И[ЫЫњШ][ЉK€™\ШЬљ\[Ы€HУУTХS‘ФХ’S‘К€’[Ъ[™\›Ш\€Ь\Ъ\И[ќЧ€‚€ќH\™Щ]Ъ]ќ[›ЬЩK€ЉK€™Y™™XЭHQ‘‘PХТU€њЭЩ\€HN€ќ\HHTWСT’Л€XШЭ\XЮHH€њHK€ќ\™Щ]HT‘СUФСSPХQ€њљ[Ьљ]HH€Ш]YЫЬћHHSPQСWРРUQУФ–WФTТPРS€›Z[љ[Z^™QЭX›Q[XYЩHH•QK€]P[љ[TШЬљ\HР]P[љ[S[Э™WУX[XЪ[Э\У[ЫЫњШ][€K€УSХ‘WУРСPS’PЧУФT‘UWHB€В€›[YHHУУTХS‘ФХ’S‘К“ШЩX[љXИЬ\™]HЉK€™\ШЬљ\[Ы€HУУTХS‘ФХ’S‘К€”љ[X\љ[HЭ[[[ЫњИHX\ЬЪ]™W€‚€[[Э[ќЩ€Ш]\€]H›ЩK€ЉK€™Y™™XЭHQ‘‘PХТU€њЭЩ\€HNMK€ќ\HHTWХРUT‹€XШЭ\XЮHH€њHK€ќ\™Щ]HT‘СUФСSPХQ€њљ[Ьљ]HH€Ш]YЫЬћHHSPQСWРРUQУФ–WФФPТPS€]P[љ[TШЬљ\HР]P[љ[S[Э™WУШЩX[љXУЬ\™]K€K€УSХ‘WФФS•T‘QФХФ“TТT‘ЧHB€В€›[YHHУУTХS‘ФХ’S‘К”Ь[ќ\™YЭЬ›\Ъ\™ИЉK€™\ШЬљ\[Ы€HУУTХS‘ФХ’S‘К€“XШ[њ›ШИ]XЪЬИЪ]ќ[€‚€™›ЬЩK€™[[Э™\И[\њZ[‹€ЉK€™Y™™XЭHQ‘‘PХТPСWФФS“‘T‹€њЭЩ\€HNL€ќ\HHTWФ“РТЛ€XШЭ\XЮHH€њHK€ќ\™Щ]HT‘СUФСSPХQ€њљ[Ьљ]HH€Ш]YЫЬћHHSPQСWРРUQУФ–WФTТPРS€]P[љ[TШЬљ\HР]P[љ[S[Э™WФЬ[ќ\™YЭЬ›\Ъ\™Л€K€УSХ‘WУUЧФУ•QСУWС“Ф‘U‘T—HB€В€›[YHHУУTХS‘ФХ’S‘К“]	ЬИЫќYЩЫH›Ь™]™\€ЉK€™\ШЬљ\[Ы€HУУTХS‘ФХ’S‘К€“Z[ZZЮ]H[Ъ\ИH\™Щ]€‚€ќЪ]ќ[›ЬЩK€ЉK€™Y™™XЭHQ‘‘PХТU€њЭЩ\€HNL€ќ\HHTWСђRT–K€XШЭ\XЮHH€њHK€ќ\™Щ]HT‘СUФСSPХQ€њљ[Ьљ]HH€Ш]YЫЬћHHSPQСWРРUQУФ–WФTТPРS€]P[љ[TШЬљ\HР]P[љ[S[Э™WУ]ФЫќYЩЫQ›Ь™]™\‹€K€УSХ‘WРУS‘УФ“ХTЧФУХS“V‘WHB€В€›[YHHУУTХS‘ФХ’S‘КђЫ[™ЫЬ›Э\ИЫЭ[›^™HЉK€™\ШЬљ\[Ы€HУУTХS‘ФХ’S‘К€’ЫЫ[[Л[И]XЪЬИЪ]ќ[€‚€™›ЬЩK€›ЫЬЭИ[Э]Л€ЉK€™Y™™XЭHQ‘‘PХТU€њЭЩ\€HNK€ќ\HHTWСђQУУ‹€XШЭ\XЮHH€њHK€ќ\™Щ]HT‘СUР“Х€њљ[Ьљ]HH€Ш]YЫЬћHHSPQСWРРUQУФ–WФФPТPS€њЫЭ[™[Э™HH•QK€љYЫ›Ь™\ФЭXњЭ]]HH—ХTUQУSХ‘WС“QФИЏHСS—Н‹€Y][Ы[Y™™XЭИHQUSУђSСQ‘‘PХКВ€›[Э™QY™™XЭHSХ‘WСQ‘‘PХРSФХUЧХT€њЩ[€H•QK€Ъ[ЩHHL€JK€]P[љ[TШЬљ\HР]P[љ[S[Э™WРЫ[™ЫЬ›Э\ФЫЭ[›^™K€K€УSХ‘WСХPT‘PS—УС—РSУWHB€В€›[YHHУУTХS‘ФХ’S‘К‘ЭX\™X[€Щ€[ЫHЉK€™\ШЬљ\[Ы€HУУTХS‘ФХ’S‘К€•H[™Ь\љ]Ърк[[Ы—€‚€™Ь™X]H™YXЩ\ИH›ЩIЬИ€ЉK€™Y™™XЭHQ‘‘PХС’VQФTђСS•СSPQСK€њЭЩ\€HK€ќ\HHTWСђRT–K€XШЭ\XЮHH€њHK€ќ\™Щ]HT‘СUФСSPХQ€њљ[Ьљ]HH€Ш]YЫЬћHHSPQСWРРUQУФ–WФФPТPS€\™Э[Y[ќHИ™[XYЩT\Щ[ќYЩHHНHK€]P[љ[TШЬљ\HР]P[љ[S[Э™WСЭX\™X[“Щђ[ЫK€K€УSХ‘WФСPT’S‘ЧФХS”ђV‘WФУPTТHB€В€›[YHHУУTХS‘ФХ’S‘К”ЩX\љ[™ИЭ[њ^™HЫX\ЪЉK€™\ШЬљ\[Ы€HУУTХS‘ФХ’S‘К€”ЫЫШ[[И]XЪЬИЪ]ќ[€‚€™›ЬЩK€YЫ›Ь™\ИXљ[]Y\Л€ЉK€™Y™™XЭHQ‘‘PХТU€њЭЩ\€HЊ€ќ\HHTWФХQS€XШЭ\XЮHH€њHK€ќ\™Щ]HT‘СUФСSPХQ€њљ[Ьљ]HH€Ш]YЫЬћHHSPQСWРРUQУФ–WФTТPРS€љYЫ›Ь™\Х\™Щ]Xљ[]HH•QK€]P[љ[TШЬљ\HР]P[љ[S[Э™WФЩX\љ[™ФЭ[њ^™TЫX\Ъ€K€УSХ‘WУQSђPТS‘ЧУSУУ”ђV‘WУPQSХ“УWHB€В€›[YHHУУTХS‘ФХ’S‘К“Y[XЪ[™И[ЫЫњ^™HXY[Э›ЫHЉK€™\ШЬљ\[Ы€HУУTХS‘ФХ’S‘К€“[[H]XЪЬИЪ]ќ[€‚€™›ЬЩK€YЫ›Ь™\ИXљ[]Y\Л€ЉK€™Y™™XЭHQ‘‘PХТU€њЭЩ\€HЊ€ќ\HHTWСТФХ€XШЭ\XЮHH€њHK€ќ\™Щ]HT‘СUФСSPХQ€њљ[Ьљ]HH€Ш]YЫЬћHHSPQСWРРUQУФ–WФФPТPS€љYЫ›Ь™\Х\™Щ]Xљ[]HH•QK€]P[љ[TШЬљ\HР]P[љ[S[Э™WУY[XЪ[™У[ЫЫњ^™SXY[Э›ЫK€K€УSХ‘WУQТХUР•T“”ЧХWФТЦWHB€В€›[YHHУУTХS‘ФХ’S‘К“YЪ]ќ\›њИHЪЮHЉK€™\ШЬљ\[Ы€HУУTХS‘ФХ’S‘К€•\Щ\И™XЬ›Ю›XIЬИYЪ\Э€‚€]XЪЛ€YЫ›Ь™\ИXљ[]Y\Л€ЉK€™Y™™XЭHQ‘‘PХФХУ—ССVTСT‹€њЭЩ\€HЊ€ќ\HHTWФЦPТPЛ€XШЭ\XЮHH€њHK€ќ\™Щ]HT‘СUФСSPХQ€њљ[Ьљ]HH€Ш]YЫЬћHHSPQСWРРUQУФ–WФФPТPS€љYЫ›Ь™\Х\™Щ]Xљ[]HH•QK€]P[љ[TШЬљ\HР]P[љ[S[Э™WУYЪ]ќ\›њХTЪЮK€K€УSХ‘WФУХSФХPSS‘ЧНЧФХT—ФХ’RСWHB€В€›[YHHУУTХS‘ФХ’S‘К”ЫЭ[TЭX[[™ИЛTЭ\€ЭљZЩHЉK€™\ШЬљ\[Ы€HУУTХS‘ФХ’S‘К€“X\њЪYЭИ[Ъ\И[™€‚€љЪXЪЬИЪ]ќ[›ЬЩK€ЉK€™Y™™XЭHQ‘‘PХТU€њЭЩ\€HNMK€ќ\HHTWСТФХ€XШЭ\XЮHH€њHK€ќ\™Щ]HT‘СUФСSPХQ€њљ[Ьљ]HH€Ш]YЫЬћHHSPQСWРРUQУФ–WФTТPРS€]P[љ[TШЬљ\HР]P[љ[S[Э™WФЫЭ[ЭX[[™НФЭ\”ЭљZЩK€K‚€УSХ‘WУPVСХPT‘HB€В€›[YHHУУTХS‘ФХ’S‘К“X^ЭX\™ЉK€™\ШЬљ\[Ы€HФ›ЭXЭ\ШЬљ\[Ы‹€™Y™™XЭHQ‘‘PХФ“ХPХ€њЭЩ\€H€ќ\HHTWУ“Ф“PS€XШЭ\XЮHH€њHL€ќ\™Щ]HT‘СUХTСT‹€њљ[Ьљ]HH€Ш]YЫЬћHHSPQСWРРUQУФ–WФХUTЛ€\™Э[Y[ќHИњ›ЭXЭY]ЩH“ХPХУPVСХPT‘K€]P[љ[TШЬљ\HР]P[љ[S[Э™WУX^ЭX\™€K‚€УSХ‘WУPVС“T‘WHB€В€›[YHHУУTХS‘ФХ’S‘К“X^›\™HЉK€™\ШЬљ\[Ы€HУУTХS‘ФХ’S‘К€‘љ\™H[[X^]XЪЛ—€‚€’[ќ[њЪYљY\ИЭ[€›Ь€H\›њЛ€ЉK€™Y™™XЭHQ‘‘PХУPVУSХ‘K€њЭЩ\€HK€ќ\HHTWС’T‘K€XШЭ\XЮHH€њHL€ќ\™Щ]HT‘СUФСSPХQ€њљ[Ьљ]HH€Ш]YЫЬћHHSPQСWРРUQУФ–WФTТPРS€]P[љ[TШЬљ\HР]P[љ[S[Э™WУX^›\™K€Y][Ы[Y™™XЭИHQUSУђSСQ‘‘PХКВ€›[Э™QY™™XЭHSХ‘WСQ‘‘PХФХS‹€JK€K‚€УSХ‘WУPVС“UTђ–WHB€В€›[YHHУУTХS‘ФХ’S‘К“X^›]\ћHЉK€™\ШЬљ\[Ы€HУУTХS‘ФХ’S‘К€ђќYИ[[X^]XЪЛ—€‚€“ЭЩ\њИ›ЩIЬИЬ€]ИЭ]€ЉK€™Y™™XЭHQ‘‘PХУPVУSХ‘K€њЭЩ\€HK€ќ\HHTWР•QЛ€XШЭ\XЮHH€њHL€ќ\™Щ]HT‘СUФСSPХQ€њљ[Ьљ]HH€Ш]YЫЬћHHSPQСWРРUQУФ–WФTТPРS€]P[љ[TШЬљ\HР]P[љ[S[Э™WУX^›]\ћK€Y][Ы[Y™™XЭИHQUSУђSСQ‘‘PХКВ€›[Э™QY™™XЭHSХ‘WСQ‘‘PХУХСT—ФФРUЧФТQK€JK€K‚€УSХ‘WУPVУQТ’S‘ЧHB€В€›[YHHУУTХS‘ФХ’S‘К“X^YЪљ[™ИЉK€™\ШЬљ\[Ы€HУУTХS‘ФХ’S‘К€‘[XЭљXИ[[X^]XЪЛ—€‚€•\›њИH\њZ[€[XЭљXЛ€ЉK€™Y™™XЭHQ‘‘PХУPVУSХ‘K€њЭЩ\€HK€ќ\HHTWСSPХ’PЛ€XШЭ\XЮHH€њHL€ќ\™Щ]HT‘СUФСSPХQ€њљ[Ьљ]HH€Ш]YЫЬћHHSPQСWРРUQУФ–WФTТPРS€]P[љ[TШЬљ\HР]P[љ[S[Э™WУX^YЪљ[™Л€Y][Ы[Y™™XЭИHQUSУђSСQ‘‘PХКВ€›[Э™QY™™XЭHSХ‘WСQ‘‘PХСSPХ’PЧХT”ђRS‹€JK€K‚€УSХ‘WУPVФХ’RСWHB€В€›[YHHУУTХS‘ФХ’S‘К“X^ЭљZЩHЉK€™\ШЬљ\[Ы€HУУTХS‘ФХ’S‘К€“›Ь›X[[[X^]XЪЛ—€‚€“ЭЩ\њИ›ЩIЬИЬYYЭ]€ЉK€™Y™™XЭHQ‘‘PХУPVУSХ‘K€њЭЩ\€HK€ќ\HHTWУ“Ф“PS€XШЭ\XЮHH€њHL€ќ\™Щ]HT‘СUФСSPХQ€њљ[Ьљ]HH€Ш]YЫЬћHHSPQСWРРUQУФ–WФTТPРS€]P[љ[TШЬљ\HР]P[љ[S[Э™WУX^ЭљZЩK€Y][Ы[Y™™XЭИHQUSУђSСQ‘‘PХКВ€›[Э™QY™™XЭHSХ‘WСQ‘‘PХУХСT—ФФQQФТQK€JK€K‚€УSХ‘WУPVТУ•PТУWHB€В€›[YHHУУTХS‘ФХ’S‘К“X^ЫќXЪЫHЉK€™\ШЬљ\[Ы€HУУTХS‘ФХ’S‘К€‘љYЪ[™И[[X^]XЪЛ—€‚€ђ›ЫЬЭИ[H]XЪИЭ]Л€ЉK€™Y™™XЭHQ‘‘PХУPVУSХ‘K€њЭЩ\€HK€ќ\HHTWС’QТS‘Л€XШЭ\XЮHH€њHL€ќ\™Щ]HT‘СUФСSPХQ€њљ[Ьљ]HH€Ш]YЫЬћHHSPQСWРРUQУФ–WФTТPРS€]P[љ[TШЬљ\HР]P[љ[S[Э™WУX^ЫќXЪЫK€Y][Ы[Y™™XЭИHQUSУђSСQ‘‘PХКВ€›[Э™QY™™XЭHSХ‘WСQ‘‘PХФђRTСWХPSWРUPТЛ€JK€K‚€УSХ‘WУPVФS•TУWHB€В€›[YHHУУTХS‘ФХ’S‘К“X^[ќ\ЫHЉK€™\ШЬљ\[Ы€HУУTХS‘ФХ’S‘К€‘ЪЬЭ[[X^]XЪЛ—€‚€“ЭЩ\њИ›ЩIЬИY™[њЩHЭ]€ЉK€™Y™™XЭHQ‘‘PХУPVУSХ‘K€њЭЩ\€HK€ќ\HHTWСТФХ€XШЭ\XЮHH€њHL€ќ\™Щ]HT‘СUФСSPХQ€њљ[Ьљ]HH€Ш]YЫЬћHHSPQСWРРUQУФ–WФTТPРS€]P[љ[TШЬљ\HР]P[љ[S[Э™WУX^[ќ\ЫK€Y][Ы[Y™™XЭИHQUSУђSСQ‘‘PХКВ€›[Э™QY™™XЭHSХ‘WСQ‘‘PХУХСT—СQ‘S”СWФТQK€JK€K‚€УSХ‘WУPVТRSХФ“WHB€В€›[YHHУУTХS‘ФХ’S‘К“X^Z[ЭЬ›HЉK€™\ШЬљ\[Ы€HУУTХS‘ФХ’S‘К€’XЩH[[X^]XЪЛ—€‚€”Э[[[ЫњИZ[›Ь€H\›њЛ€ЉK€™Y™™XЭHQ‘‘PХУPVУSХ‘K€њЭЩ\€HK€ќ\HHTWТPСK€XШЭ\XЮHH€њHL€ќ\™Щ]HT‘СUФСSPХQ€њљ[Ьљ]HH€Ш]YЫЬћHHSPQСWРРUQУФ–WФTТPРS€]P[љ[TШЬљ\HР]P[љ[S[Э™WУX^Z[ЭЬ›K€Y][Ы[Y™™XЭИHQUSУђSСQ‘‘PХКВ€›[Э™QY™™XЭHSХ‘WСQ‘‘PХТRS€JK€K‚€УSХ‘WУPVУУЦ‘WHB€В€›[YHHУУTХS‘ФХ’S‘К“X^ЫЮ™HЉK€™\ШЬљ\[Ы€HУУTХS‘ФХ’S‘К€”Ъ\ЫЫ€[[X^]XЪЛ—€‚€ђ›ЫЬЭИ[HЬ€]ИЭ]Л€ЉK€™Y™™XЭHQ‘‘PХУPVУSХ‘K€њЭЩ\€HK€ќ\HHTWФТTУУ‹€XШЭ\XЮHH€њHL€ќ\™Щ]HT‘СUФСSPХQ€њљ[Ьљ]HH€Ш]YЫЬћHHSPQСWРРUQУФ–WФTТPРS€]P[љ[TШЬљ\HР]P[љ[S[Э™WУX^ЫЮ™K€Y][Ы[Y™™XЭИHQUSУђSСQ‘‘PХКВ€›[Э™QY™™XЭHSХ‘WСQ‘‘PХФђRTСWХPSWФФРUЛ€JK€K‚€УSХ‘WУPVССVTСT—HB€В€›[YHHУУTХS‘ФХ’S‘К“X^Щ^\Щ\€ЉK€™\ШЬљ\[Ы€HУУTХS‘ФХ’S‘К€•Ш]\€[[X^]XЪЛ—€‚€”Э[[[ЫњИZ[€›Ь€H\›њЛ€ЉK€™Y™™XЭHQ‘‘PХУPVУSХ‘K€њЭЩ\€HK€ќ\HHTWХРUT‹€XШЭ\XЮHH€њHL€ќ\™Щ]HT‘СUФСSPХQ€њљ[Ьљ]HH€Ш]YЫЬћHHSPQСWРРUQУФ–WФTТPРS€]P[љ[TШЬљ\HР]P[љ[S[Э™WУX^Щ^\Щ\‹€Y][Ы[Y™™XЭИHQUSУђSСQ‘‘PХКВ€›[Э™QY™™XЭHSХ‘WСQ‘‘PХФђRS‹€JK€K‚€УSХ‘WУPVРRT”Х‘PSWHB€В€›[YHHУУTХS‘ФХ’S‘К“X^Z\њЭ™X[HЉK€™\ШЬљ\[Ы€HУУTХS‘ФХ’S‘К€‘›Z[™И[[X^]XЪЛ—€‚€ђ›ЫЬЭИ[HЬYYЭ]Л€ЉK€™Y™™XЭHQ‘‘PХУPVУSХ‘K€њЭЩ\€HK€ќ\HHTWС“RS‘Л€XШЭ\XЮHH€њHL€ќ\™Щ]HT‘СUФСSPХQ€њљ[Ьљ]HH€Ш]YЫЬћHHSPQСWРРUQУФ–WФTТPРS€]P[љ[TШЬљ\HР]P[љ[S[Э™WУX^Z\њЭ™X[K€Y][Ы[Y™™XЭИHQUSУђSСQ‘‘PХКВ€›[Э™QY™™XЭHSХ‘WСQ‘‘PХФђRTСWХPSWФФQQ€JK€K‚€УSХ‘WУPVФХT‘ђSHB€В€›[YHHУУTХS‘ФХ’S‘К“X^Э\™[ЉK€™\ШЬљ\[Ы€HУУTХS‘ФХ’S‘К€‘Z\ћH[[X^]XЪЛ—€‚€•\›њИH\њZ[€Z\ЭK€ЉK€™Y™™XЭHQ‘‘PХУPVУSХ‘K€њЭЩ\€HK€ќ\HHTWСђRT–K€XШЭ\XЮHH€њHL€ќ\™Щ]HT‘СUФСSPХQ€њљ[Ьљ]HH€Ш]YЫЬћHHSPQСWРРUQУФ–WФTТPРS€]P[љ[TШЬљ\HР]P[љ[S[Э™WУX^Э\™[€Y][Ы[Y™™XЭИHQUSУђSСQ‘‘PХКВ€›[Э™QY™™XЭHSХ‘WСQ‘‘PХУRTХWХT”ђRS‹€JK€K‚€УSХ‘WУPVХЦT“UТS‘HB€В€›[YHHУУTХS‘ФХ’S‘К“X^Ю\›]Ъ[™ЉK€™\ШЬљ\[Ы€HУУTХS‘ФХ’S‘К€‘YЫЫ€[[X^]XЪЛ—€‚€“ЭЩ\њИ›ЩIЬИ]XЪИЭ]€ЉK€™Y™™XЭHQ‘‘PХУPVУSХ‘K€њЭЩ\€HK€ќ\HHTWСђQУУ‹€XШЭ\XЮHH€њHL€ќ\™Щ]HT‘СUФСSPХQ€њљ[Ьљ]HH€Ш]YЫЬћHHSPQСWРРUQУФ–WФTТPРS€]P[љ[TШЬљ\HР]P[љ[S[Э™WУX^Ю\›]Ъ[™€Y][Ы[Y™™XЭИHQUSУђSСQ‘‘PХКВ€›[Э™QY™™XЭHSХ‘WСQ‘‘PХУХСT—РUPТЧФТQK€JK€K‚€УSХ‘WУPVУRS‘ХФ“WHB€В€›[YHHУУTХS‘ФХ’S‘К“X^Z[™ЭЬ›HЉK€™\ШЬљ\[Ы€HУУTХS‘ФХ’S‘К€”ЮXЪXИ[[X^]XЪЛ—€‚€•\›њИH\њZ[€ЮXЪXЛ€ЉK€™Y™™XЭHQ‘‘PХУPVУSХ‘K€њЭЩ\€HK€ќ\HHTWФЦPТPЛ€XШЭ\XЮHH€њHL€ќ\™Щ]HT‘СUФСSPХQ€њљ[Ьљ]HH€Ш]YЫЬћHHSPQСWРРUQУФ–WФTТPРS€]P[љ[TШЬљ\HР]P[љ[S[Э™WУX^Z[™ЭЬ›K€Y][Ы[Y™™XЭИHQUSУђSСQ‘‘PХКВ€›[Э™QY™™XЭHSХ‘WСQ‘‘PХФЦPТPЧХT”ђRS‹€JK€K‚€УSХ‘WУPVФ“РТСђSHB€В€›[YHHУУTХS‘ФХ’S‘К“X^›ШЪЩ[ЉK€™\ШЬљ\[Ы€HУУTХS‘ФХ’S‘К€”›ШЪИ[[X^]XЪЛ—€‚€”Э[[[ЫњИHШ[™ЭЬ›K€ЉK€™Y™™XЭHQ‘‘PХУPVУSХ‘K€њЭЩ\€HK€ќ\HHTWФ“РТЛ€XШЭ\XЮHH€њHL€ќ\™Щ]HT‘СUФСSPХQ€њљ[Ьљ]HH€Ш]YЫЬћHHSPQСWРРUQУФ–WФTТPРS€]P[љ[TШЬљ\HР]P[љ[S[Э™WУX^›ШЪЩ[€Y][Ы[Y™™XЭИHQUSУђSСQ‘‘PХКВ€›[Э™QY™™XЭHSХ‘WСQ‘‘PХФРS‘ХФ“K€JK€K‚€УSХ‘WУPVФUPRСWHB€В€›[YHHУУTХS‘ФХ’S‘К“X^]XZЩHЉK€™\ШЬљ\[Ы€HУУTХS‘ФХ’S‘К€‘Ь›Э[™[[X^]XЪЛ—€‚€ђ›ЫЬЭИ[HЬ€Y€Э]Л€ЉK€™Y™™XЭHQ‘‘PХУPVУSХ‘K€њЭЩ\€HK€ќ\HHTWСФ“ХS‘€XШЭ\XЮHH€њHL€ќ\™Щ]HT‘СUФСSPХQ€њљ[Ьљ]HH€Ш]YЫЬћHHSPQСWРРUQУФ–WФTТPРS€њЪЮP]P[›™YH—СVђTУUQУSХ‘WС“QФЛ€]P[љ[TШЬљ\HР]P[љ[S[Э™WУX^]XZЩK€Y][Ы[Y™™XЭИHQUSУђSСQ‘‘PХКВ€›[Э™QY™™XЭHSХ‘WСQ‘‘PХФђRTСWХPSWФФСQ‹€JK€K‚€УSХ‘WУPVСT’У‘TФЧHB€В€›[YHHУУTХS‘ФХ’S‘К“X^\љЫ™\ЬИЉK€™\ШЬљ\[Ы€HУУTХS‘ФХ’S‘К€‘\љИ[[X^]XЪЛ—€‚€“ЭЩ\њИ›ЩIЬИЬ€Y€Э]€ЉK€™Y™™XЭHQ‘‘PХУPVУSХ‘K€њЭЩ\€HK€ќ\HHTWСT’Л€XШЭ\XЮHH€њHL€ќ\™Щ]HT‘СUФСSPХQ€њљ[Ьљ]HH€Ш]YЫЬћHHSPQСWРРUQУФ–WФTТPРS€]P[љ[TШЬљ\HР]P[љ[S[Э™WУX^\љЫ™\ЬЛ€Y][Ы[Y™™XЭИHQUSУђSСQ‘‘PХКВ€›[Э™QY™™XЭHSХ‘WСQ‘‘PХУХСT—ФФСQ—ФТQK€JK€K‚€УSХ‘WУPVУХ‘T‘Ф“ХХHB€В€›[YHHУУTХS‘ФХ’S‘К“X^Э™\™Ь›ЭЭЉK€™\ШЬљ\[Ы€HУУTХS‘ФХ’S‘К€‘Ь\ЬИ[[X^]XЪЛ—€‚€•\›њИH\њZ[€Ь\ЬЮK€ЉK€™Y™™XЭHQ‘‘PХУPVУSХ‘K€њЭЩ\€HL€ќ\HHTWСФђTФЛ€XШЭ\XЮHH€њHL€ќ\™Щ]HT‘СUФСSPХQ€њљ[Ьљ]HH€Ш]YЫЬћHHSPQСWРРUQУФ–WФTТPРS€]P[љ[TШЬљ\HР]P[љ[S[Э™WУX^Э™\™Ь›ЭЭ€Y][Ы[Y™™XЭИHQUSУђSСQ‘‘PХКВ€›[Э™QY™™XЭHSХ‘WСQ‘‘PХСФђTФЦWХT”ђRS‹€JK€K‚€УSХ‘WУPVФХQSФRСWHB€В€›[YHHУУTХS‘ФХ’S‘К“X^ЭY[ЬZЩHЉK€™\ШЬљ\[Ы€HУУTХS‘ФХ’S‘К€”ЭY[[[X^]XЪЛ—€‚€ђ›ЫЬЭИ[HY™[њЩHЭ]Л€ЉK€™Y™™XЭHQ‘‘PХУPVУSХ‘K€њЭЩ\€HL€ќ\HHTWФХQS€XШЭ\XЮHH€њHL€ќ\™Щ]HT‘СUФСSPХQ€њљ[Ьљ]HH€Ш]YЫЬћHHSPQСWРРUQУФ–WФTТPРS€]P[љ[TШЬљ\HР]P[љ[S[Э™WУX^ЭY[ЬZЩK€Y][Ы[Y™™XЭИHQUSУђSСQ‘‘PХКВ€›[Э™QY™™XЭHSХ‘WСQ‘‘PХФђRTСWХPSWСQ‘S”СK€JK€K‚€УSХ‘WСЧУPVХ’S‘WУTТHB€В€›[YHHУУTХS‘ФХ’S‘К‘ЛSX^љ[™H\ЪЉK€™\ШЬљ\[Ы€HУУTХS‘ФХ’S‘К€‘Л[X^™[ќ\Ш]\€]XЪЛ—€‚€‘[XYЩ\И›Ь€\›њЛ€ЉKЛРS’SHСВ€™Y™™XЭHQ‘‘PХУPVУSХ‘K€њЭЩ\€HL€ќ\HHTWСФђTФЛ€XШЭ\XЮHH€њHL€ќ\™Щ]HT‘СUФСSPХQ€њљ[Ьљ]HH€Ш]YЫЬћHHSPQСWРРUQУФ–WФTТPРS€]P[љ[TШЬљ\HР]P[љ[S[Э™WСУX^љ[™S\Ъ€Y][Ы[Y™™XЭИHQUSУђSСQ‘‘PХКВ€›[Э™QY™™XЭHSХ‘WСQ‘‘PХХ’S‘WУTТ€JK€K‚€УSХ‘WСЧУPVХТS’T‘WHB€В€›[YHHУУTХS‘ФХ’S‘К‘ЛSX^Ъ[љ\™HЉK€™\ШЬљ\[Ы€HУУTХS‘ФХ’S‘К€‘Л[X^Ъ\љ^\™]XЪЛ—€‚€‘[XYЩ\И›Ь€\›њЛ€ЉKЛРS’SHСВ€™Y™™XЭHQ‘‘PХУPVУSХ‘K€њЭЩ\€HL€ќ\HHTWС’T‘K€XШЭ\XЮHH€њHL€ќ\™Щ]HT‘СUФСSPХQ€њљ[Ьљ]HH€Ш]YЫЬћHHSPQСWРРUQУФ–WФTТPРS€]P[љ[TШЬљ\HР]P[љ[S[Э™WСУX^Ъ[љ\™K€Y][Ы[Y™™XЭИHQUSУђSСQ‘‘PХКВ€›[Э™QY™™XЭHSХ‘WСQ‘‘PХХТS’T‘K€JK€K‚€УSХ‘WСЧУPVРРS““УђQWHB€В€›[YHHУУTХS‘ФХ’S‘К‘ЛSX^Ш[››ЫYHЉK€™\ШЬљ\[Ы€HУУTХS‘ФХ’S‘К€‘Л[X^›\ЭЪ\ЩH]XЪЛ—€‚€‘[XYЩ\И›Ь€\›њЛ€ЉKЛРS’SHСВ€™Y™™XЭHQ‘‘PХУPVУSХ‘K€њЭЩ\€HL€ќ\HHTWХРUT‹€XШЭ\XЮHH€њHL€ќ\™Щ]HT‘СUФСSPХQ€њљ[Ьљ]HH€Ш]YЫЬћHHSPQСWРРUQУФ–WФTТPРS€]P[љ[TШЬљ\HР]P[љ[S[Э™WСУX^Ш[››ЫYK€Y][Ы[Y™™XЭИHQUSУђSСQ‘‘PХКВ€›[Э™QY™™XЭHSХ‘WСQ‘‘PХРРS““УђQK€JK€K‚€УSХ‘WСЧУPVР‘Q•QWHB€В€›[YHHУУTХS‘ФХ’S‘К‘ЛSX^™YќYHЉK€™\ШЬљ\[Ы€HУУTХS‘ФХ’S‘К€‘Л[X^ќ]\™њ™YH]XЪЛ—€‚€”Ъ\ЫЫ‹\[\Ъ\ЛЬ€ЫY\€ЉKЛРS’SHСВ€™Y™™XЭHQ‘‘PХУPVУSХ‘K€њЭЩ\€HL€ќ\HHTWР•QЛ€XШЭ\XЮHH€њHL€ќ\™Щ]HT‘СUФСSPХQ€њљ[Ьљ]HH€Ш]YЫЬћHHSPQСWРРUQУФ–WФTТPРS€]P[љ[TШЬљ\HР]P[љ[S[Э™WСУX^™YќYK€Y][Ы[Y™™XЭИHQUSУђSСQ‘‘PХКВ€›[Э™QY™™XЭHSХ‘WСQ‘‘PХСQ‘‘PХФФФ‘WФТQK€JK€K‚€УSХ‘WСЧУPVХ“УРФђTТHB€В€›[YHHУУTХS‘ФХ’S‘К‘ЛSX^›ЫЬ\ЪЉK€™\ШЬљ\[Ы€HУУTХS‘ФХ’S‘К€‘Л[X^ZШXЪH]XЪЛ—€‚€”\[^™\ИЬЫ™[ќЛ€ЉKЛРS’SHСВ€™Y™™XЭHQ‘‘PХУPVУSХ‘K€њЭЩ\€HL€ќ\HHTWСSPХ’PЛ€XШЭ\XЮHH€њHL€ќ\™Щ]HT‘СUФСSPХQ€њљ[Ьљ]HH€Ш]YЫЬћHHSPQСWРРUQУФ–WФTТPРS€]P[љ[TШЬљ\HР]P[љ[S[Э™WСУX^›ЫЬ\Ъ€Y][Ы[Y™™XЭИHQUSУђSСQ‘‘PХКВ€›[Э™QY™™XЭHSХ‘WСQ‘‘PХФTђSV‘WФТQK€JK€K‚€УSХ‘WСЧУPVСУУФ•TТHB€В€›[YHHУУTХS‘ФХ’S‘К‘ЛSX^ЫЫќ\ЪЉK€™\ШЬљ\[Ы€HУУTХS‘ФХ’S‘К€‘Л[X^Y[ЭЭ]XЪЛ—€‚€ђЫЫ™ќ\Щ\И[™X\›њИ[Ы™^K€ЉKЛРS’SHСВ€™Y™™XЭHQ‘‘PХУPVУSХ‘K€њЭЩ\€HL€ќ\HHTWУ“Ф“PS€XШЭ\XЮHH€њHL€ќ\™Щ]HT‘СUФСSPХQ€њљ[Ьљ]HH€Ш]YЫЬћHHSPQСWРРUQУФ–WФTТPРS€]P[љ[TШЬљ\HР]P[љ[S[Э™WСУX^ЫЫќ\Ъ€Y][Ы[Y™™XЭИHQUSУђSСQ‘‘PХКВ€›[Э™QY™™XЭHSХ‘WСQ‘‘PХРУУ‘•TСWФVWСVWФТQK€JK€K‚€УSХ‘WСЧУPVРТWФХ’RСWHB€В€›[YHHУУTХS‘ФХ’S‘К‘ЛSX^ЪHЭљZЩHЉK€™\ШЬљ\[Ы€HУУTХS‘ФХ’S‘К€‘Л[X^XXЪ[\]XЪЛ—€‚€ђ›ЫЬЭИЬљ]XШ[Z]][Л€ЉKЛРS’SHСВ€™Y™™XЭHQ‘‘PХУPVУSХ‘K€њЭЩ\€HL€ќ\HHTWС’QТS‘Л€XШЭ\XЮHH€њHL€ќ\™Щ]HT‘СUФСSPХQ€њљ[Ьљ]HH€Ш]YЫЬћHHSPQСWРРUQУФ–WФTТPРS€]P[љ[TШЬљ\HР]P[љ[S[Э™WСУX^ЪTЭљZЩK€Y][Ы[Y™™XЭИHQUSУђSСQ‘‘PХКВ€›[Э™QY™™XЭHSХ‘WСQ‘‘PХРФ’UФTЧФТQK€JK€K‚€УSХ‘WСЧУPVХT”“Ф—HB€В€›[YHHУУTХS‘ФХ’S‘К‘ЛSX^\њ›Ь€ЉK€™\ШЬљ\[Ы€HУУTХS‘ФХ’S‘К€‘Л[X^Щ[™Ш\€]XЪЛ—€‚€”™]™[ќИ›Щ\Ињ›ЫH\ШШ\[™Л€ЉKЛРS’SHСВ€™Y™™XЭHQ‘‘PХУPVУSХ‘K€њЭЩ\€HL€ќ\HHTWСТФХ€XШЭ\XЮHH€њHL€ќ\™Щ]HT‘СUФСSPХQ€њљ[Ьљ]HH€Ш]YЫЬћHHSPQСWРРUQУФ–WФTТPРS€]P[љ[TШЬљ\HР]P[љ[S[Э™WСУX^\њ›Ь‹€Y][Ы[Y™™XЭИHQUSУђSСQ‘‘PХКВ€›[Э™QY™™XЭHSХ‘WСQ‘‘PХФ‘U‘S•СTРРTWФТQK€JK€K‚€УSХ‘WСЧУPVС“РSWР•T”ХHB€В€›[YHHУУTХS‘ФХ’S‘К‘ЛSX^›Ш[Hќ\њЭЉK€™\ШЬљ\[Ы€HУУTХS‘ФХ’S‘К€‘Л[X^Ъ[™Ы\€]XЪЛ—€‚€’\њЪHЭЩ\њИ›ЩIЬИЬYY€ЉKЛРS’SHСВ€™Y™™XЭHQ‘‘PХУPVУSХ‘K€њЭЩ\€HL€ќ\HHTWХРUT‹€XШЭ\XЮHH€њHL€ќ\™Щ]HT‘СUФСSPХQ€њљ[Ьљ]HH€Ш]YЫЬћHHSPQСWРРUQУФ–WФTТPРS€]P[љ[TШЬљ\HР]P[љ[S[Э™WСУX^›Ш[Pќ\њЭ€Y][Ы[Y™™XЭИHQUSУђSСQ‘‘PХКВ€›[Э™QY™™XЭHSХ‘WСQ‘‘PХУХСT—ФФQQМ—ФТQK€JK€K‚€УSХ‘WСЧУPVФ‘TУУђSђСWHB€В€›[YHHУУTХS‘ФХ’S‘К‘ЛSX^™\ЫЫ[ЩHЉK€™\ШЬљ\[Ы€HУУTХS‘ФХ’S‘К€‘Л[X^\\И]XЪЛ—€‚€”™YXЩ\И[XYЩH›Ь€H\›њЛ€ЉKЛРS’SHСВ€™Y™™XЭHQ‘‘PХУPVУSХ‘K€њЭЩ\€HL€ќ\HHTWТPСK€XШЭ\XЮHH€њHL€ќ\™Щ]HT‘СUФСSPХQ€њљ[Ьљ]HH€Ш]YЫЬћHHSPQСWРРUQУФ–WФTТPРS€]P[љ[TШЬљ\HР]P[љ[S[Э™WСУX^™\ЫЫ[ЩK€Y][Ы[Y™™XЭИHQUSУђSСQ‘‘PХКВ€›[Э™QY™™XЭHSХ‘WСQ‘‘PХРUT“ФђWХ‘RS€JK€K‚€УSХ‘WСЧУPVРХQWHB€В€›[YHHУУTХS‘ФХ’S‘К‘ЛSX^ЭYHЉK€™\ШЬљ\[Ы€HУУTХS‘ФХ’S‘К€‘Л[X^Y]™YH]XЪЛ—€‚€’[™]X]\ИЬЫ™[ќЛ€ЉKЛРS’SHСВ€™Y™™XЭHQ‘‘PХУPVУSХ‘K€њЭЩ\€HL€ќ\HHTWУ“Ф“PS€XШЭ\XЮHH€њHL€ќ\™Щ]HT‘СUФСSPХQ€њљ[Ьљ]HH€Ш]YЫЬћHHSPQСWРРUQУФ–WФTТPРS€]P[љ[TШЬљ\HР]P[љ[S[Э™WСУX^ЭYK€Y][Ы[Y™™XЭИHQUSУђSСQ‘‘PХКВ€›[Э™QY™™XЭHSХ‘WСQ‘‘PХТS‘ђUPUWФТQK€JK€K‚€УSХ‘WСЧУPVФ‘TS’TТHB€В€›[YHHУУTХS‘ФХ’S‘К‘ЛSX^™\[љ\ЪЉK€™\ШЬљ\[Ы€HУУTХS‘ФХ’S‘К€‘Л[X^Ы›Ь›^]XЪЛ—€‚€”™\ЭЬ™\ИX][€™\њљY\Л€ЉKЛРS’SHСВ€™Y™™XЭHQ‘‘PХУPVУSХ‘K€њЭЩ\€HL€ќ\HHTWУ“Ф“PS€XШЭ\XЮHH€њHL€ќ\™Щ]HT‘СUФСSPХQ€њљ[Ьљ]HH€Ш]YЫЬћHHSPQСWРРUQУФ–WФTТPРS€]P[љ[TШЬљ\HР]P[љ[S[Э™WСУX^™\[љ\Ъ€Y][Ы[Y™™XЭИHQUSУђSСQ‘‘PХКВ€›[Э™QY™™XЭHSХ‘WСQ‘‘PХФ‘PЦPУWР‘T”’QTЛ€JK€K‚€УSХ‘WСЧУPVУPSСФ—HB€В€›[YHHУУTХS‘ФХ’S‘К‘ЛSX^X[ЩЬ€ЉK€™\ШЬљ\[Ы€HУУTХS‘ФХ’S‘К€‘Л[X^Ш\›ЩЬ€]XЪЛ—€‚€”Ъ\ЫЫњИЬЫ™[ќЛ€ЉKЛРS’SHСВ€™Y™™XЭHQ‘‘PХУPVУSХ‘K€њЭЩ\€HL€ќ\HHTWФТTУУ‹€XШЭ\XЮHH€њHL€ќ\™Щ]HT‘СUФСSPХQ€њљ[Ьљ]HH€Ш]YЫЬћHHSPQСWРРUQУФ–WФTТPРS€]P[љ[TШЬљ\HР]P[љ[S[Э™WСУX^X[ЩЬ‹€Y][Ы[Y™™XЭИHQUSУђSСQ‘‘PХКВ€›[Э™QY™™XЭHSХ‘WСQ‘‘PХФТTУУ—ФТQK€JK€K‚€УSХ‘WСЧУPVУQSХУ—HB€В€›[YHHУУTХS‘ФХ’S‘К‘ЛSX^Y[ЭЫ€ЉK€™\ШЬљ\[Ы€HУУTХS‘ФХ’S‘К€‘Л[X^Y[Y][]XЪЛ—€‚€”™]™[ќИ™\X][Э™H\ЩK€ЉKЛРS’SHСВ€™Y™™XЭHQ‘‘PХУPVУSХ‘K€њЭЩ\€HL€ќ\HHTWФХQS€XШЭ\XЮHH€њHL€ќ\™Щ]HT‘СUФСSPХQ€њљ[Ьљ]HH€Ш]YЫЬћHHSPQСWРРUQУФ–WФTТPРS€]P[љ[TШЬљ\HР]P[љ[S[Э™WСУX^Y[ЭЫ‹€Y][Ы[Y™™XЭИHQUSУђSСQ‘‘PХКВ€›[Э™QY™™XЭHSХ‘WСQ‘‘PХХФ“QS•ФТQK€JK€K‚€УSХ‘WСЧУPVС•SWФУУЧHB€В€›[YHHУУTХS‘ФХ’S‘К‘ЛSX^ќ[HЫЫИЉK€™\ШЬљ\[Ы€HУУTХS‘ФХ’S‘К€‘Л[X^љ[X›ЫЫH]XЪЛ—€‚€’YЫ›Ь™\И\™Щ]	ЬИXљ[]Y\Л€ЉKЛРS’SHСВ€™Y™™XЭHQ‘‘PХУPVУSХ‘K€њЭЩ\€HL€ќ\HHTWСФђTФЛ€XШЭ\XЮHH€њHL€ќ\™Щ]HT‘СUФСSPХQ€њљ[Ьљ]HH€Ш]YЫЬћHHSPQСWРРUQУФ–WФTТPРS€љYЫ›Ь™\Х\™Щ]Xљ[]HH•QK€]P[љ[TШЬљ\HР]P[љ[S[Э™WСУX^ќ[TЫЫЛ€Y][Ы[Y™™XЭИHQUSУђSСQ‘‘PХКВ€›[Э™QY™™XЭHSХ‘WСQ‘‘PХС’VQФХСT‹€JK€K‚€УSХ‘WСЧУPVС’T‘PђSHB€В€›[YHHУУTХS‘ФХ’S‘К‘ЛSX^љ\™X[ЉK€™\ШЬљ\[Ы€HУУTХS‘ФХ’S‘К€‘Л[X^Ъ[™\XЩH]XЪЛ—€‚€’YЫ›Ь™\И\™Щ]	ЬИXљ[]Y\Л€ЉKЛРS’SHСВ€™Y™™XЭHQ‘‘PХУPVУSХ‘K€њЭЩ\€HL€ќ\HHTWС’T‘K€XШЭ\XЮHH€њHL€ќ\™Щ]HT‘СUФСSPХQ€њљ[Ьљ]HH€Ш]YЫЬћHHSPQСWРРUQУФ–WФTТPРS€љYЫ›Ь™\Х\™Щ]Xљ[]HH•QK€]P[љ[TШЬљ\HР]P[љ[S[Э™WСУX^љ\™X[€Y][Ы[Y™™XЭИHQUSУђSСQ‘‘PХКВ€›[Э™QY™™XЭHSХ‘WСQ‘‘PХС’VQФХСT‹€JK€K‚€УSХ‘WСЧУPVТQ“ФУ’TWHB€В€›[YHHУУTХS‘ФХ’S‘К‘ЛSX^Y›ЬЫљ\HЉK€™\ШЬљ\[Ы€HУУTХS‘ФХ’S‘К€‘Л[X^[ќ[[Ы€]XЪЛ—€‚€’YЫ›Ь™\И\™Щ]	ЬИXљ[]Y\Л€ЉKЛРS’SHСВ€™Y™™XЭHQ‘‘PХУPVУSХ‘K€њЭЩ\€HL€ќ\HHTWХРUT‹€XШЭ\XЮHH€њHL€ќ\™Щ]HT‘СUФСSPХQ€њљ[Ьљ]HH€Ш]YЫЬћHHSPQСWРРUQУФ–WФTТPРS€љYЫ›Ь™\Х\™Щ]Xљ[]HH•QK€]P[љ[TШЬљ\HР]P[љ[S[Э™WСУX^Y›ЬЫљ\K€Y][Ы[Y™™XЭИHQUSУђSСQ‘‘PХКВ€›[Э™QY™™XЭHSХ‘WСQ‘‘PХС’VQФХСT‹€JK€K‚€УSХ‘WСЧУPVХТS‘ФђQСWHB€В€›[YHHУУTХS‘ФХ’S‘К‘ЛSX^Ъ[™YЩHЉK€™\ШЬљ\[Ы€HУУTХS‘ФХ’S‘К€‘Л[X^ЫЬќљZЫљYЪ]XЪЛ—€‚€”™[[Э™\ИЬЫ™[ќШЬ™Y[њЛ€ЉKЛРS’SHСВ€™Y™™XЭHQ‘‘PХУPVУSХ‘K€њЭЩ\€HL€ќ\HHTWС“RS‘Л€XШЭ\XЮHH€њHL€ќ\™Щ]HT‘СUФСSPХQ€њљ[Ьљ]HH€Ш]YЫЬћHHSPQСWРРUQУФ–WФTТPРS€]P[љ[TШЬљ\HР]P[љ[S[Э™WСУX^Ъ[™YЩK€Y][Ы[Y™™XЭИHQUSУђSСQ‘‘PХКВ€›[Э™QY™™XЭHSХ‘WСQ‘‘PХСQ“СЛ€JK€K‚€УSХ‘WСЧУPVСФђU’UTЧHB€В€›[YHHУУTХS‘ФХ’S‘К‘ЛSX^Ь]љ]\ИЉK€™\ШЬљ\[Ы€HУУTХS‘ФХ’S‘К€‘Л[X^Ь™Y]H]XЪЛ—€‚€ђЪ[™Щ\ИЬ]љ]H›Ь€H\›њЛ€ЉKЛРS’SHСВ€™Y™™XЭHQ‘‘PХУPVУSХ‘K€њЭЩ\€HL€ќ\HHTWФЦPТPЛ€XШЭ\XЮHH€њHL€ќ\™Щ]HT‘СUФСSPХQ€њљ[Ьљ]HH€Ш]YЫЬћHHSPQСWРРUQУФ–WФTТPРS€]P[љ[TШЬљ\HР]P[љ[S[Э™WСУX^Ь]љ]\Л€Y][Ы[Y™™XЭИHQUSУђSСQ‘‘PХКВ€›[Э™QY™™XЭHSХ‘WСQ‘‘PХСФђU’UK€JK€K‚€УSХ‘WСЧУPVФХУ‘TХT‘СWHB€В€›[YHHУУTХS‘ФХ’S‘К‘ЛSX^ЭЫ™\Э\™ЩHЉK€™\ШЬљ\[Ы€HУУTХS‘ФХ’S‘К€‘Л[X^™Y]И]XЪЛ—€‚€”ШШ]\њИЪ\њ›ШЪЬЛ€ЉKЛРS’SHСВ€™Y™™XЭHQ‘‘PХУPVУSХ‘K€њЭЩ\€HL€ќ\HHTWХРUT‹€XШЭ\XЮHH€њHL€ќ\™Щ]HT‘СUФСSPХQ€њљ[Ьљ]HH€Ш]YЫЬћHHSPQСWРРUQУФ–WФTТPРS€]P[љ[TШЬљ\HР]P[љ[S[Э™WСУX^ЭЫ™\Э\™ЩK€Y][Ы[Y™™XЭИHQUSУђSСQ‘‘PХКВ€›[Э™QY™™XЭHSХ‘WСQ‘‘PХФХPSФ“РТЛ€JK€K‚€УSХ‘WСЧУPVХ“УРSUHB€В€›[YHHУУTХS‘ФХ’S‘К‘ЛSX^›ЫШ[]ЉK€™\ШЬљ\[Ы€HУУTХS‘ФХ’S‘К€‘Л[X^ЫШ[ЬЬШ[]XЪЛ—€‚€‘[XYЩ\И›Ь€\›њЛ€ЉKЛРS’SHСВ€™Y™™XЭHQ‘‘PХУPVУSХ‘K€њЭЩ\€HL€ќ\HHTWФ“РТЛ€XШЭ\XЮHH€њHL€ќ\™Щ]HT‘СUФСSPХQ€њљ[Ьљ]HH€Ш]YЫЬћHHSPQСWРРUQУФ–WФTТPРS€]P[љ[TШЬљ\HР]P[љ[S[Э™WСУX^›ЫШ[]€Y][Ы[Y™™XЭИHQUSУђSСQ‘‘PХКВ€›[Э™QY™™XЭHSХ‘WСQ‘‘PХХ“УРSU€JK€K‚€УSХ‘WСЧУPVХT•‘TФЧHB€В€›[YHHУУTХS‘ФХ’S‘К‘ЛSX^\ќ™\ЬИЉK€™\ШЬљ\[Ы€HУУTХS‘ФХ’S‘К€‘Л[X^›\H]XЪЛ—€‚€“ЭЩ\њИ›ЩIЬИ]\Ъ]™[™\ЬЛ€ЉKЛРS’SHСВ€™Y™™XЭHQ‘‘PХУPVУSХ‘K€њЭЩ\€HL€ќ\HHTWСФђTФЛ€XШЭ\XЮHH€њHL€ќ\™Щ]HT‘СUФСSPХQ€њљ[Ьљ]HH€Ш]YЫЬћHHSPQСWРРUQУФ–WФTТPРS€]P[љ[TШЬљ\HР]P[љ[S[Э™WСУX^\ќ™\ЬЛ€Y][Ы[Y™™XЭИHQUSУђSСQ‘‘PХКВ€›[Э™QY™™XЭHSХ‘WСQ‘‘PХУХСT—СUђTТU‘S‘TФЧФТQK€JK€K‚€УSХ‘WСЧУPVФХСQU‘TФЧHB€В€›[YHHУУTХS‘ФХ’S‘К‘ЛSX^ЭЩY]™\ЬИЉK€™\ШЬљ\[Ы€HУУTХS‘ФХ’S‘К€‘Л[X^\][€]XЪЛ—€‚€’X[И[HЭ]\ИЫЫ™][ЫњЛ€ЉKЛРS’SHСВ€™Y™™XЭHQ‘‘PХУPVУSХ‘K€њЭЩ\€HL€ќ\HHTWСФђTФЛ€XШЭ\XЮHH€њHL€ќ\™Щ]HT‘СUФСSPХQ€њљ[Ьљ]HH€Ш]YЫЬћHHSPQСWРРUQУФ–WФTТPРS€]P[љ[TШЬљ\HР]P[љ[S[Э™WСУX^ЭЩY]™\ЬЛ€Y][Ы[Y™™XЭИHQUSУђSСQ‘‘PХКВ€›[Э™QY™™XЭHSХ‘WСQ‘‘PХРT“УPUTђTK€JK€K‚€УSХ‘WСЧУPVФРS‘“TХHB€В€›[YHHУУTХS‘ФХ’S‘К‘ЛSX^Ш[™›\ЭЉK€™\ШЬљ\[Ы€HУУTХS‘ФХ’S‘К€‘Л[X^Ш[™XЫЫ™H]XЪЛ—€‚€•\И›Щ\И[€HШ[™ЭЬ›K€ЉKЛРS’SHСВ€™Y™™XЭHQ‘‘PХУPVУSХ‘K€њЭЩ\€HL€ќ\HHTWСФ“ХS‘€XШЭ\XЮHH€њHL€ќ\™Щ]HT‘СUФСSPХQ€њљ[Ьљ]HH€Ш]YЫЬћHHSPQСWРРUQУФ–WФTТPРS€]P[љ[TШЬљ\HР]P[љ[S[Э™WСУX^Ш[™›\Э€Y][Ы[Y™™XЭИHQUSУђSСQ‘‘PХКВ€›[Э™QY™™XЭHSХ‘WСQ‘‘PХФРS‘“TХФТQK€JK€K‚€УSХ‘WСЧУPVФХS—ФТРТЧHB€В€›[YHHУУTХS‘ФХ’S‘К‘ЛSX^Э[€ЪШЪИЉK€™\ШЬљ\[Ы€HУУTХS‘ФХ’S‘К€‘Л[X^ЮљXЪ]H]XЪЛ—€‚€”Ъ\ЫЫњИЬ€\[^™\И›Щ\Л€ЉKЛРS’SHСВ€™Y™™XЭHQ‘‘PХУPVУSХ‘K€њЭЩ\€HL€ќ\HHTWСSPХ’PЛ€XШЭ\XЮHH€њHL€ќ\™Щ]HT‘СUФСSPХQ€њљ[Ьљ]HH€Ш]YЫЬћHHSPQСWРРUQУФ–WФTТPРS€]P[љ[TШЬљ\HР]P[љ[S[Э™WСУX^Э[”ЪШЪЛ€Y][Ы[Y™™XЭИHQUSУђSСQ‘‘PХКВ€›[Э™QY™™XЭHSХ‘WСQ‘‘PХФТTУУ—ФTђSV‘WФТQK€JK€K‚€УSХ‘WСЧУPVРСS•Q‘T““ЧHB€В€›[YHHУУTХS‘ФХ’S‘К‘ЛSX^Щ[ќY™\››ИЉK€™\ШЬљ\[Ы€HУУTХS‘ФХ’S‘К€‘Л[X^Щ[ќ\ЪЫЬЪ]XЪЛ—€‚€•\И›Щ\И[€›[Y\Л€ЉKЛРS’SHСВ€™Y™™XЭHQ‘‘PХУPVУSХ‘K€њЭЩ\€HL€ќ\HHTWС’T‘K€XШЭ\XЮHH€њHL€ќ\™Щ]HT‘СUФСSPХQ€њљ[Ьљ]HH€Ш]YЫЬћHHSPQСWРРUQУФ–WФTТPРS€]P[љ[TШЬљ\HР]P[љ[S[Э™WСУX^Щ[ќY™\››Л€Y][Ы[Y™™XЭИHQUSУђSСQ‘‘PХКВ€›[Э™QY™™XЭHSХ‘WСQ‘‘PХС’T‘WФФS—ФТQK€JK€K‚€УSХ‘WСЧУPVФУRUWHB€В€›[YHHУУTХS‘ФХ’S‘К‘ЛSX^ЫZ]HЉK€™\ШЬљ\[Ы€HУУTХS‘ФХ’S‘К€‘Л[X^]\™[™H]XЪЛ—€‚€ђЫЫ™ќ\Щ\ИЬЫ™[ќЛ€ЉKЛРS’SHСВ€™Y™™XЭHQ‘‘PХУPVУSХ‘K€њЭЩ\€HL€ќ\HHTWСђRT–K€XШЭ\XЮHH€њHL€ќ\™Щ]HT‘СUФСSPХQ€њљ[Ьљ]HH€Ш]YЫЬћHHSPQСWРРUQУФ–WФTТPРS€]P[љ[TШЬљ\HР]P[љ[S[Э™WСУX^ЫZ]K€Y][Ы[Y™™XЭИHQUSУђSСQ‘‘PХКВ€›[Э™QY™™XЭHSХ‘WСQ‘‘PХРУУ‘•TСWФТQK€JK€K‚‚€УSХ‘WСЧУPVФУ“УЦ‘WHB€В€›[YHHУУTХS‘ФХ’S‘К‘ЛSX^Ы›ЫЮ™HЉK€™\ШЬљ\[Ы€HУУTХS‘ФХ’S‘К€‘Л[X^Ьљ[[\Ы\›]XЪЛ—€‚€“[И›Щ\И[ќИЫY\€ЉKЛРS’SHСВ€™Y™™XЭHQ‘‘PХУPVУSХ‘K€њЭЩ\€HL€ќ\HHTWСT’Л€XШЭ\XЮHH€њHL€ќ\™Щ]HT‘СUФСSPХQ€њљ[Ьљ]HH€Ш]YЫЬћHHSPQСWРРUQУФ–WФTТPРS€]P[љ[TШЬљ\HР]P[љ[S[Э™WСУX^Ы›ЫЮ™K€Y][Ы[Y™™XЭИHQUSУђSСQ‘‘PХКВ€›[Э™QY™™XЭHSХ‘WСQ‘‘PХЦPUУ—С“СK€JK€K‚€УSХ‘WСЧУPVС’SђSWHB€В€›[YHHУУTХS‘ФХ’S‘К‘ЛSX^љ[[HЉK€™\ШЬљ\[Ы€HУУTХS‘ФХ’S‘К€‘Л[X^[Ь™[ZYH]XЪЛ—€‚€’X[И[H€ЉKЛРS’SHСВ€™Y™™XЭHQ‘‘PХУPVУSХ‘K€њЭЩ\€HL€ќ\HHTWСђRT–K€XШЭ\XЮHH€њHL€ќ\™Щ]HT‘СUФСSPХQ€њљ[Ьљ]HH€Ш]YЫЬћHHSPQСWРРUQУФ–WФTТPРS€]P[љ[TШЬљ\HР]P[љ[S[Э™WСУX^љ[[K€Y][Ы[Y™™XЭИHQUSУђSСQ‘‘PХКВ€›[Э™QY™™XЭHSХ‘WСQ‘‘PХТPSХPSK€JK€K‚€УSХ‘WСЧУPVФХQSХT‘СWHB€В€›[YHHУУTХS‘ФХ’S‘К‘ЛSX^ЭY[Э\™ЩHЉK€™\ШЬљ\[Ы€HУУTХS‘ФХ’S‘К€‘Л[X^ЫЬ\ZZ]XЪЛ—€‚€”ШШ]\њИЪ\њЬZЩ\Л€ЉKЛРS’SHСВ€™Y™™XЭHQ‘‘PХУPVУSХ‘K€њЭЩ\€HL€ќ\HHTWФХQS€XШЭ\XЮHH€њHL€ќ\™Щ]HT‘СUФСSPХQ€њљ[Ьљ]HH€Ш]YЫЬћHHSPQСWРРUQУФ–WФTТPРS€]P[љ[TШЬљ\HР]P[љ[S[Э™WСУX^ЭY[Э\™ЩK€Y][Ы[Y™™XЭИHQUSУђSСQ‘‘PХКВ€›[Э™QY™™XЭHSХ‘WСQ‘‘PХФХQSХT‘СK€JK€K‚€УSХ‘WСЧУPVСTUSУ—HB€В€›[YHHУУTХS‘ФХ’S‘К‘ЛSX^\][Ы€ЉK€™\ШЬљ\[Ы€HУУTХS‘ФХ’S‘К€‘Л[X^\[YЫ€]XЪЛ—€‚€”™YXЩ\И\™Щ]	ЬИ€ЉKЛРS’SHСВ€™Y™™XЭHQ‘‘PХУPVУSХ‘K€њЭЩ\€HL€ќ\HHTWСђQУУ‹€XШЭ\XЮHH€њHL€ќ\™Щ]HT‘СUФСSPХQ€њљ[Ьљ]HH€Ш]YЫЬћHHSPQСWРРUQУФ–WФTТPРS€]P[љ[TШЬљ\HР]P[љ[S[Э™WСУX^\][Ы‹€Y][Ы[Y™™XЭИHQUSУђSСQ‘‘PХКВ€›[Э™QY™™XЭHSХ‘WСQ‘‘PХФФUK€JK€K‚€УSХ‘WСЧУPVУУ‘WР“ХЧHB€В€›[YHHУУTХS‘ФХ’S‘К‘ЛSX^Ы™H›ЭИЉK€™\ШЬљ\[Ы€HСУX^Ы™P›ЭС\ШЬљ\[Ы‹ЛРS’SHСВ€™Y™™XЭHQ‘‘PХУPVУSХ‘K€њЭЩ\€HL€ќ\HHTWСT’Л€XШЭ\XЮHH€њHL€ќ\™Щ]HT‘СUФСSPХQ€њљ[Ьљ]HH€Ш]YЫЬћHHSPQСWРРUQУФ–WФTТPРS€љYЫ›Ь™\Ф›ЭXЭH•QK€]P[љ[TШЬљ\HР]P[љ[S[Э™WСУX^Ы™P›ЭЛ€K‚€УSХ‘WСЧУPVФђTQС“ХЧHB€В€›[YHHУУTХS‘ФХ’S‘К‘ЛSX^\Y›ЭИЉK€™\ШЬљ\[Ы€HСУX^Ы™P›ЭС\ШЬљ\[Ы‹ЛРS’SHСВ€™Y™™XЭHQ‘‘PХУPVУSХ‘K€њЭЩ\€HL€ќ\HHTWХРUT‹€XШЭ\XЮHH€њHL€ќ\™Щ]HT‘СUФСSPХQ€њљ[Ьљ]HH€Ш]YЫЬћHHSPQСWРРUQУФ–WФTТPРS€љYЫ›Ь™\Ф›ЭXЭH•QK€]P[љ[TШЬљ\HР]P[љ[S[Э™WСУX^\Y›ЭЛ€K‚€УSХ‘WС“УС—С•T–WHB€В€›[YHHУУTХS‘ФХ’S‘К‘›ЫЩ€ќ\ћHЉK€™\ШЬљ\[Ы€HУУTХS‘ФХ’S‘КђHќ\љ[Э\И›\њћHЩ€›Y™‹—“X^HЭЩ\€H\™Щ]	ЬИЬYY€ЉK€™Y™™XЭHQ‘‘PХТU€њЭЩ\€HL€ќ\HHTWСђRT–K€XШЭ\XЮHHL€њHL€ќ\™Щ]HT‘СUФСSPХQ€њљ[Ьљ]HH€Ш]YЫЬћHHSPQСWРРUQУФ–WФФPТPS€Y][Ы[Y™™XЭИHQUSУђSСQ‘‘PХКВ€›[Э™QY™™XЭHSХ‘WСQ‘‘PХФФУRS•TЧМK€Ъ[ЩHHЊ€JK€ЫЫќ\ЭY™™XЭHУУ•TХСQ‘‘PХРђQWФХT•WС”“У•УSУ‹€ЫЫќ\ЭШ]YЫЬћHHУУ•TХРРUQУФ–WРХUK€]P[љ[TШЬљ\HР]P[љ[S[Э™WС^ћ›[™СЫX[K€K‚€УSХ‘WУQQРWФ’RУЧHB€В€›[YHHУУTХS‘ФХ’S‘К“YYШHљZЫИЉK€™\ШЬљ\[Ы€HУУTХS‘ФХ’S‘КђќZ[ИЭЩ\€Ъ]›Y™‹њZ\Ъ[™ИЬ€]ЛЬ€Y—[™ЬYY€ЉK€™Y™™XЭHQ‘‘PХФURU‘T—СSђСK€њЭЩ\€H€ќ\HHTWСђRT–K€XШЭ\XЮHH€њHK€ќ\™Щ]HT‘СUХTСT‹€њљ[Ьљ]HH€Ш]YЫЬћHHSPQСWРРUQУФ–WФХUTЛ€ћ“[Э™HHИ™Y™™XЭH—СQ‘‘PХФ‘TСUФХUИK€њЫ]ЪY™™XЭYH•QK€љYЫ›Ь™\Ф›ЭXЭH•QK€›Z\њ›Ь“[Э™P[›™YH•QK€ЫЫќ\ЭY™™XЭHУУ•TХСQ‘‘PХТST“Х‘WРУУ‘USУ—Ф‘U‘S•У‘T•“ХTУ‘TФЛ€ЫЫќ\ЭШ]YЫЬћHHУУ•TХРРUQУФ–WРХUK€]P[љ[TШЬљ\HР]P[љ[S[Э™WФ]Z]™\‘[ЩK€K‚€УSХ‘WУQSХХУRSRPЧHB€В€›[YHHУУTХS‘ФХ’S‘К“Y[ЭЭZ[ZXИЉK€™\ШЬљ\[Ы€HУУTХS‘ФХ’S‘КђЫЬY\ИY[ЭЭ	ЬИ[Э™\И[™™љYЪИЪ][H[ќ[ђљZќ]H\ИЭЪ]ЪYЭ]€ЉK€™Y™™XЭHQ‘‘PХСЧУ“ХS‘Л€њЭЩ\€H€ќ\HHTWУ“Ф“PS€XШЭ\XЮHH€њHL€ќ\™Щ]HT‘СUХTСT‹€њљ[Ьљ]HH€Ш]YЫЬћHHSPQСWРРUQУФ–WФХUTЛ€љYЫ›Ь™\Ф›ЭXЭH•QK€›Z\њ›Ь“[Э™P[›™YH•QK€ЫЫќ\ЭY™™XЭHУУ•TХСQ‘‘PХТST“Х‘WРУУ‘USУ—Ф‘U‘S•У‘T•“ХTУ‘TФЛ€ЫЫќ\ЭШ]YЫЬћHHУУ•TХРРUQУФ–WРХUK€]P[љ[TШЬљ\HР]P[љ[S[Э™WУZ[ZXЛ€KџNВ
