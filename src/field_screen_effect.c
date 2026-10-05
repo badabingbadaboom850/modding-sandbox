@@ -51,8 +51,8 @@ static void Task_ExitDoor(u8);
 static bool32 WaitForWeatherFadeIn(void);
 static void Task_SpinEnterWarp(u8 taskId);
 static void Task_EnableScriptAfterMusicFade(u8 taskId);
-static void Task_InstantWarpAndLoadMap(u8 taskId);
-static void FieldCB_InstantWarpExit(void);
+static void UNUSED Task_InstantWarpAndLoadMap(u8 taskId);
+static void UNUSED FieldCB_InstantWarpExit(void);
 
 static void ExitStairsMovement(s16*, s16*, s16*, s16*, s16*);
 static void GetStairsMovementDirection(u32, s16*, s16*);
