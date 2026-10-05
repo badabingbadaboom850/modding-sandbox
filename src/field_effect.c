@@ -1155,12 +1155,10 @@ static void Task_HallOfFameRecord(u8 taskId)
 
 static void HallOfFameRecordEffect_Init(struct Task *task)
 {
-    u8 taskId;
     task->tState++;
     // Keep the balls behind the player when the bottom row overlaps their head.
     task->tBallSpriteId = CreateGlowingPokeballsEffect(task->tNumMons, task->tFirstBallX, task->tFirstBallY,
                                                       FALSE, gSprites[gPlayerAvatar.spriteId].subpriority + 1);
-    taskId = FindTaskIdByFunc(Task_HallOfFameRecord);
     //CreateHofMonitorSprite(taskId, 120, 24, FALSE);
     //CreateHofMonitorSprite(taskId, 40, 8, TRUE);
     //CreateHofMonitorSprite(taskId, 72, 8, TRUE);
@@ -1361,7 +1359,7 @@ static void SpriteCB_PokecenterMonitor(struct Sprite *sprite)
     }
 }
 
-static void CreateHofMonitorSprite(s16 taskId, s16 x, s16 y, bool8 isSmallMonitor)
+static void UNUSED CreateHofMonitorSprite(s16 taskId, s16 x, s16 y, bool8 isSmallMonitor)
 {
     u8 spriteId;
     if (!isSmallMonitor)
