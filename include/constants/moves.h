@@ -907,6 +907,9 @@ enum __attribute__((packed)) Move
 
     // Add any custom moves here, not further down!
     MOVE_DARK_AERO = MOVES_COUNT_GEN9,
+    MOVE_FLOOF_FURY,
+    MOVE_MEGA_RIKO,
+    MOVE_MEOWTH_MIMIC,
 
     MOVES_COUNT,
 
