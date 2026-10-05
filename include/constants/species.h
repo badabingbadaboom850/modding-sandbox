@@ -1693,7 +1693,9 @@
 
 #define SPECIES_GARDEVOIR_MEGA_Z                       1576
 #define SPECIES_DIALGA_PRIMAL                          1577
-#define SPECIES_EGG                                     (SPECIES_DIALGA_PRIMAL + 1)
+#define SPECIES_RIKO                                   1578
+#define SPECIES_BIJUU                                  1579
+#define SPECIES_EGG                                     (SPECIES_BIJUU + 1)
 
 #define NUM_SPECIES SPECIES_EGG
 
