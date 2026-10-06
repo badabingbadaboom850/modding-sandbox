@@ -959,10 +959,14 @@ NewBarkTown_Lab_Text_AideGivePotion:
 	.string "this for your errand.$"
 
 NewBarkTown_Lab_Text_AideAlwaysBusy:
+	.string "People whisper about three legendary\n"
+	.string "girls named Riko, Penny, and Bijuu.\p"
 	.string "There are only three of us, so\n"
 	.string "we're always busy.$"
 
 NewBarkTown_Lab_Text_AideSave:
+	.string "People say Riko, Penny, and Bijuu\n"
+	.string "are the legendary trio nearby.\p"
 	.string "Don't forget to save your game\n"
 	.string "regularly!\p"
 	.string "Press the Start button, then\n"
