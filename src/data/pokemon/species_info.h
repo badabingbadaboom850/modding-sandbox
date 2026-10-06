@@ -396,7 +396,7 @@ const struct SpeciesInfo gSpeciesInfo[] =
         .iconSprite = gMonIcon_RikoIce, .iconPalette = gMonIconPalette_RikoIce,
         .shinyIconPalette = gMonShinyIconPalette_RikoIce, .pokemonJumpType = PKMN_JUMP_TYPE_NORMAL,
         SHADOW(-2, 8, SHADOW_SIZE_S)
-        .teachingType = ALL_TEACHABLES, .levelUpLearnset = sCetoddleLevelUpLearnset,
+        .teachingType = ALL_TEACHABLES, .levelUpLearnset = sSwinubLevelUpLearnset,
     },
 
     [SPECIES_RIKO_PSYCHIC] =
@@ -513,7 +513,7 @@ const struct SpeciesInfo gSpeciesInfo[] =
         .iconSprite = gMonIcon_BijuuVenom, .iconPalette = gMonIconPalette_BijuuVenom,
         .shinyIconPalette = gMonShinyIconPalette_BijuuVenom, .pokemonJumpType = PKMN_JUMP_TYPE_FAST,
         SHADOW(-2, 8, SHADOW_SIZE_S)
-        .teachingType = ALL_TEACHABLES, .levelUpLearnset = sShroodleLevelUpLearnset,
+        .teachingType = ALL_TEACHABLES, .levelUpLearnset = sKoffingLevelUpLearnset,
     },
 
     [SPECIES_BIJUU_GROUND] =
@@ -536,7 +536,7 @@ const struct SpeciesInfo gSpeciesInfo[] =
         .iconSprite = gMonIcon_BijuuTerra, .iconPalette = gMonIconPalette_BijuuTerra,
         .shinyIconPalette = gMonShinyIconPalette_BijuuTerra, .pokemonJumpType = PKMN_JUMP_TYPE_FAST,
         SHADOW(-2, 8, SHADOW_SIZE_S)
-        .teachingType = ALL_TEACHABLES, .levelUpLearnset = sToedscoolLevelUpLearnset,
+        .teachingType = ALL_TEACHABLES, .levelUpLearnset = sPhanpyLevelUpLearnset,
     },
 
     [SPECIES_BIJUU_ROCK] =
@@ -582,7 +582,7 @@ const struct SpeciesInfo gSpeciesInfo[] =
         .iconSprite = gMonIcon_BijuuBug, .iconPalette = gMonIconPalette_BijuuBug,
         .shinyIconPalette = gMonShinyIconPalette_BijuuBug, .pokemonJumpType = PKMN_JUMP_TYPE_FAST,
         SHADOW(-2, 8, SHADOW_SIZE_S)
-        .teachingType = ALL_TEACHABLES, .levelUpLearnset = sTarountulaLevelUpLearnset,
+        .teachingType = ALL_TEACHABLES, .levelUpLearnset = sSewaddleLevelUpLearnset,
     },
 
     [SPECIES_BIJUU_GHOST] =
@@ -605,7 +605,7 @@ const struct SpeciesInfo gSpeciesInfo[] =
         .iconSprite = gMonIcon_BijuuGhost, .iconPalette = gMonIconPalette_BijuuGhost,
         .shinyIconPalette = gMonShinyIconPalette_BijuuGhost, .pokemonJumpType = PKMN_JUMP_TYPE_FAST,
         SHADOW(-2, 8, SHADOW_SIZE_S)
-        .teachingType = ALL_TEACHABLES, .levelUpLearnset = sGreavardLevelUpLearnset,
+        .teachingType = ALL_TEACHABLES, .levelUpLearnset = sMisdreavusLevelUpLearnset,
     },
 
     [SPECIES_BIJUU_DARK] =
@@ -628,7 +628,7 @@ const struct SpeciesInfo gSpeciesInfo[] =
         .iconSprite = gMonIcon_BijuuDark, .iconPalette = gMonIconPalette_BijuuDark,
         .shinyIconPalette = gMonShinyIconPalette_BijuuDark, .pokemonJumpType = PKMN_JUMP_TYPE_FAST,
         SHADOW(-2, 8, SHADOW_SIZE_S)
-        .teachingType = ALL_TEACHABLES, .levelUpLearnset = sMaschiffLevelUpLearnset,
+        .teachingType = ALL_TEACHABLES, .levelUpLearnset = sSableyeLevelUpLearnset,
     },
 
     [SPECIES_BIJUU_STEEL] =
