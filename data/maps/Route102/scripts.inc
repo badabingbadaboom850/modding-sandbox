@@ -1,6 +1,31 @@
 Route102_MapScripts::
 	.byte 0
 
+Route102_EventScript_BijuuEncounter::
+	lock
+	faceplayer
+	goto_if_unset FLAG_RECEIVED_FIRST_BALLS, Route102_EventScript_BijuuTooShy
+	msgbox Route102_Text_BijuuAppears, MSGBOX_DEFAULT
+	playmoncry SPECIES_BIJUU, CRY_MODE_ENCOUNTER
+	setwildbattle SPECIES_BIJUU, 8
+	dowildbattle
+	specialvar VAR_RESULT, GetBattleOutcome
+	goto_if_eq VAR_RESULT, B_OUTCOME_CAUGHT, Route102_EventScript_BijuuCaught
+	release
+	end
+
+Route102_EventScript_BijuuTooShy::
+	msgbox Route102_Text_BijuuTooShy, MSGBOX_NPC
+	release
+	end
+
+Route102_EventScript_BijuuCaught::
+	removeobject LOCALID_ROUTE102_BIJUU
+	setflag FLAG_CAUGHT_BIJUU
+	msgbox Route102_Text_BijuuCaught, MSGBOX_DEFAULT
+	release
+	end
+
 Route102_EventScript_LittleBoy::
 	msgbox Route102_Text_ImNotVeryTall, MSGBOX_NPC
 	end
@@ -107,3 +132,18 @@ Route102_Text_RouteSignOldale:
 Route102_Text_RouteSignPetalburg:
 	.string "Route 102\n"
 	.string "{LEFT_ARROW} Petalburg City$"
+
+Route102_Text_BijuuAppears:
+	.string "The shy cat copies your movements.\p"
+	.string "She steps close, then watches you\n"
+	.string "with bright, curious eyes.$"
+
+Route102_Text_BijuuTooShy:
+	.string "A shy cat watches from the grass.\n"
+	.string "It copies your movements, then hides.\p"
+	.string "You should come back with Poké Balls.$"
+
+Route102_Text_BijuuCaught:
+	.string "Bijuu trusts you enough to stay.\p"
+	.string "She was sent to a PC Box if your\n"
+	.string "party was full.$"
