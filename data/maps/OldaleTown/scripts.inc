@@ -381,7 +381,9 @@ OldaleTown_Text_DiscoveredFootprints:
 	.string "I just discovered the footprints of\n"
 	.string "a rare Pokémon!\p"
 	.string "Wait until I finish sketching\n"
-	.string "them, okay?\pThree kinds of tracks cross here.\nThe old story names Riko, Penny,\nand Bijuu, but no one sees them.$"
+	.string "them, okay?\pSmall pawprints copy my steps, then\n"
+	.string "lead toward Route 102. Could this be\n"
+	.string "Bijuu from the old tale?$"
 
 OldaleTown_Text_FinishedSketchingFootprints:
 	.string "I finished sketching the footprints of\n"
