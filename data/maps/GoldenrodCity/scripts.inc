@@ -350,7 +350,7 @@ GoldenrodCity_Text_Lass:
 	.string "People are talking about\n"
 	.string "three rare Pokemon together.\p"
 	.string "A shy cat was last seen near\n"
-	.string "Route 31. No one got close.$
+	.string "Route 31. No one got close.$"
 
 
 

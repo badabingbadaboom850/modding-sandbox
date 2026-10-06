@@ -233,7 +233,7 @@ BlackthornYoungsterText:
 	.string "Climbers tell a story about\n"
 	.string "three rare Pokemon together.\p"
 	.string "One looked like a cat.\n"
-	.string "They vanished quickly.$
+	.string "They vanished quickly.$"
 
 
 

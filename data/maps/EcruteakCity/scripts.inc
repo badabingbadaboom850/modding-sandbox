@@ -349,7 +349,7 @@ EcruteakCity_Text_Youngster:
 	.string "Travelers from the east tell\n"
 	.string "of three rare Pokemon together.\p"
 	.string "One looked like a shy cat.\n"
-	.string "The group vanished nearby.$
+	.string "The group vanished nearby.$"
 
 
 

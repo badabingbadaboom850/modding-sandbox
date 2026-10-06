@@ -248,7 +248,7 @@ NewBarkTown_Text_FatManState3:
 	.string "Travelers saw three rare\n"
 	.string "Pokemon on Route 31.\p"
 	.string "A shy cat was with them.\n"
-	.string "She slipped into the grass.$
+	.string "She slipped into the grass.$"
 
 
 

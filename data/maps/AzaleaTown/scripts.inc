@@ -419,7 +419,7 @@ AzaleaTown_Text_Youngster:
 	.string "Cutters saw three rare Pokemon\n"
 	.string "pass through Ilex Forest.\p"
 	.string "A shy cat was with them.\n"
-	.string "They vanished fast.$
+	.string "They vanished fast.$"
 
 
 

@@ -312,7 +312,7 @@ OlivineCity_Text_Sailor2:
 	.string "Crews in port report three rare\n"
 	.string "Pokemon near Route 31.\p"
 	.string "One was a shy cat. No one got\n"
-	.string "close before they vanished.$
+	.string "close before they vanished.$"
 
 
 

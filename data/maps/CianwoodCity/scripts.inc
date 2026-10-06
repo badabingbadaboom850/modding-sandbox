@@ -130,7 +130,7 @@ CianwoodCity_Text_Youngster:
 	.string "Sailors saw three rare Pokemon\n"
 	.string "traveling together.\p"
 	.string "One was a shy cat.\n"
-	.string "Last seen near Route 31.$
+	.string "Last seen near Route 31.$"
 
 
 

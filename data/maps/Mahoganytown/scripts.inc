@@ -312,7 +312,7 @@ MahoganyTown_Text_Lass:
     .string "Anglers saw three rare Pokemon\n"
     .string "together near Route 31.\p"
     .string "A shy cat was with them.\n"
-    .string "They vanished into the grass.$
+    .string "They vanished into the grass.$"
 
 
 

@@ -314,7 +314,7 @@ CherrygroveCity_Text_GuideGentRoute30:
 	.string "One trainer saw three rare\n"
 	.string "Pokemon on Route 31.\p"
 	.string "A shy cat was with them.\n"
-	.string "Then they all slipped away.$
+	.string "Then they all slipped away.$"
 
 
 
@@ -368,7 +368,7 @@ CherrygroveCity_Text_TeacherHaveMapCard:
 	.string "People returning from Route\n"
 	.string "31 saw three rare Pokemon.\p"
 	.string "One looked like a shy cat.\n"
-	.string "No one could keep up.$
+	.string "No one could keep up.$"
 
 
 

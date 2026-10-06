@@ -431,7 +431,7 @@ VioletCity_Text_Boy:
 	.string "Travelers saw a trio of rare\n"
 	.string "Pokemon near Route 31.\p"
 	.string "One looked like a shy cat.\n"
-	.string "They all vanished.$
+	.string "They all vanished.$"
 
 
 
