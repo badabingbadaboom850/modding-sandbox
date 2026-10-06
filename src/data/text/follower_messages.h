@@ -225,6 +225,9 @@ static const u8 sSurpriseMsg16[] = _("{STR_VAR_1} sensed something strange\nand 
 static const u8 sSurpriseMsg17[] = _("{STR_VAR_1} is scared and snuggled\nup to you!");
 static const u8 sSurpriseMsg18[] = _("{STR_VAR_1} is feeling an unusual\npresence…");
 static const u8 sSurpriseMsg19[] = _("{STR_VAR_1} is getting tense with\nnervous energy.");
+static const u8 sSurpriseMsg21[] = _("Whoa! {STR_VAR_1} is absolutely\nbreathtaking!");
+static const u8 sSurpriseMsg22[] = _("Everyone nearby stopped to\nmarvel at {STR_VAR_1}!");
+static const u8 sSurpriseMsg23[] = _("{STR_VAR_1} left you completely\nspeechless!");
 // Conditional messages, index 20
 static const u8 sSurpriseMsg20[] = _("{STR_VAR_1} seems to be very\nsurprised that it is raining!");
 
@@ -240,7 +243,7 @@ const struct FollowerMsgInfo gFollowerSurpriseMessages[] = {
     {sSurpriseMsg17, EventScript_FollowerCuddling},
     {sSurpriseMsg18},
     {sSurpriseMsg19, EventScript_FollowerLookAround},
-    {sSurpriseMsg20},
+    {sSurpriseMsg20}, {sSurpriseMsg21}, {sSurpriseMsg22}, {sSurpriseMsg23},
 };
 
 // Unconditional curious messages

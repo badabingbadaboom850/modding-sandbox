@@ -534,15 +534,123 @@ $(C_BUILDDIR)/graphics.o: override CFLAGS += -Wno-missing-braces
 # Have to be explicit or else missing files won't be reported.
 $(C_BUILDDIR)/move_relearner.o: $(C_SUBDIR)/move_relearner.c $(DATA_SRC_SUBDIR)/tutor_moves.h
 
-RIKO_FIRE_GFX := graphics/pokemon/riko_fire/front.4bpp.smol \
-                  graphics/pokemon/riko_fire/back.4bpp.smol \
-                  graphics/pokemon/riko_fire/normal.gbapal \
-                  graphics/pokemon/riko_fire/shiny.gbapal
+RIKO_VARIANT_GFX := graphics/pokemon/riko_fire/front.4bpp.smol \
+                   graphics/pokemon/riko_fire/back.4bpp.smol \
+                   graphics/pokemon/riko_fire/normal.gbapal \
+                   graphics/pokemon/riko_fire/shiny.gbapal \
+                   graphics/pokemon/riko_fire/icon.4bpp \
+                   graphics/pokemon/riko_fire/icon_normal.gbapal \
+                   graphics/pokemon/riko_fire/icon_shiny.gbapal
+                   graphics/pokemon/riko_water/front.4bpp.smol \
+                   graphics/pokemon/riko_water/back.4bpp.smol \
+                   graphics/pokemon/riko_water/normal.gbapal \
+                   graphics/pokemon/riko_water/shiny.gbapal \
+                   graphics/pokemon/riko_water/icon.4bpp \
+                   graphics/pokemon/riko_water/icon_normal.gbapal \
+                   graphics/pokemon/riko_water/icon_shiny.gbapal
+                   graphics/pokemon/riko_grass/front.4bpp.smol \
+                   graphics/pokemon/riko_grass/back.4bpp.smol \
+                   graphics/pokemon/riko_grass/normal.gbapal \
+                   graphics/pokemon/riko_grass/shiny.gbapal \
+                   graphics/pokemon/riko_grass/icon.4bpp \
+                   graphics/pokemon/riko_grass/icon_normal.gbapal \
+                   graphics/pokemon/riko_grass/icon_shiny.gbapal
+                   graphics/pokemon/riko_electric/front.4bpp.smol \
+                   graphics/pokemon/riko_electric/back.4bpp.smol \
+                   graphics/pokemon/riko_electric/normal.gbapal \
+                   graphics/pokemon/riko_electric/shiny.gbapal \
+                   graphics/pokemon/riko_electric/icon.4bpp \
+                   graphics/pokemon/riko_electric/icon_normal.gbapal \
+                   graphics/pokemon/riko_electric/icon_shiny.gbapal
+                   graphics/pokemon/riko_ice/front.4bpp.smol \
+                   graphics/pokemon/riko_ice/back.4bpp.smol \
+                   graphics/pokemon/riko_ice/normal.gbapal \
+                   graphics/pokemon/riko_ice/shiny.gbapal \
+                   graphics/pokemon/riko_ice/icon.4bpp \
+                   graphics/pokemon/riko_ice/icon_normal.gbapal \
+                   graphics/pokemon/riko_ice/icon_shiny.gbapal
+                   graphics/pokemon/riko_psychic/front.4bpp.smol \
+                   graphics/pokemon/riko_psychic/back.4bpp.smol \
+                   graphics/pokemon/riko_psychic/normal.gbapal \
+                   graphics/pokemon/riko_psychic/shiny.gbapal \
+                   graphics/pokemon/riko_psychic/icon.4bpp \
+                   graphics/pokemon/riko_psychic/icon_normal.gbapal \
+                   graphics/pokemon/riko_psychic/icon_shiny.gbapal
+                   graphics/pokemon/riko_flying/front.4bpp.smol \
+                   graphics/pokemon/riko_flying/back.4bpp.smol \
+                   graphics/pokemon/riko_flying/normal.gbapal \
+                   graphics/pokemon/riko_flying/shiny.gbapal \
+                   graphics/pokemon/riko_flying/icon.4bpp \
+                   graphics/pokemon/riko_flying/icon_normal.gbapal \
+                   graphics/pokemon/riko_flying/icon_shiny.gbapal
+                   graphics/pokemon/riko_dragon/front.4bpp.smol \
+                   graphics/pokemon/riko_dragon/back.4bpp.smol \
+                   graphics/pokemon/riko_dragon/normal.gbapal \
+                   graphics/pokemon/riko_dragon/shiny.gbapal \
+                   graphics/pokemon/riko_dragon/icon.4bpp \
+                   graphics/pokemon/riko_dragon/icon_normal.gbapal \
+                   graphics/pokemon/riko_dragon/icon_shiny.gbapal
+                   graphics/pokemon/bijuu_fighting/front.4bpp.smol \
+                   graphics/pokemon/bijuu_fighting/back.4bpp.smol \
+                   graphics/pokemon/bijuu_fighting/normal.gbapal \
+                   graphics/pokemon/bijuu_fighting/shiny.gbapal \
+                   graphics/pokemon/bijuu_fighting/icon.4bpp \
+                   graphics/pokemon/bijuu_fighting/icon_normal.gbapal \
+                   graphics/pokemon/bijuu_fighting/icon_shiny.gbapal
+                   graphics/pokemon/bijuu_poison/front.4bpp.smol \
+                   graphics/pokemon/bijuu_poison/back.4bpp.smol \
+                   graphics/pokemon/bijuu_poison/normal.gbapal \
+                   graphics/pokemon/bijuu_poison/shiny.gbapal \
+                   graphics/pokemon/bijuu_poison/icon.4bpp \
+                   graphics/pokemon/bijuu_poison/icon_normal.gbapal \
+                   graphics/pokemon/bijuu_poison/icon_shiny.gbapal
+                   graphics/pokemon/bijuu_ground/front.4bpp.smol \
+                   graphics/pokemon/bijuu_ground/back.4bpp.smol \
+                   graphics/pokemon/bijuu_ground/normal.gbapal \
+                   graphics/pokemon/bijuu_ground/shiny.gbapal \
+                   graphics/pokemon/bijuu_ground/icon.4bpp \
+                   graphics/pokemon/bijuu_ground/icon_normal.gbapal \
+                   graphics/pokemon/bijuu_ground/icon_shiny.gbapal
+                   graphics/pokemon/bijuu_rock/front.4bpp.smol \
+                   graphics/pokemon/bijuu_rock/back.4bpp.smol \
+                   graphics/pokemon/bijuu_rock/normal.gbapal \
+                   graphics/pokemon/bijuu_rock/shiny.gbapal \
+                   graphics/pokemon/bijuu_rock/icon.4bpp \
+                   graphics/pokemon/bijuu_rock/icon_normal.gbapal \
+                   graphics/pokemon/bijuu_rock/icon_shiny.gbapal
+                   graphics/pokemon/bijuu_bug/front.4bpp.smol \
+                   graphics/pokemon/bijuu_bug/back.4bpp.smol \
+                   graphics/pokemon/bijuu_bug/normal.gbapal \
+                   graphics/pokemon/bijuu_bug/shiny.gbapal \
+                   graphics/pokemon/bijuu_bug/icon.4bpp \
+                   graphics/pokemon/bijuu_bug/icon_normal.gbapal \
+                   graphics/pokemon/bijuu_bug/icon_shiny.gbapal
+                   graphics/pokemon/bijuu_ghost/front.4bpp.smol \
+                   graphics/pokemon/bijuu_ghost/back.4bpp.smol \
+                   graphics/pokemon/bijuu_ghost/normal.gbapal \
+                   graphics/pokemon/bijuu_ghost/shiny.gbapal \
+                   graphics/pokemon/bijuu_ghost/icon.4bpp \
+                   graphics/pokemon/bijuu_ghost/icon_normal.gbapal \
+                   graphics/pokemon/bijuu_ghost/icon_shiny.gbapal
+                   graphics/pokemon/bijuu_dark/front.4bpp.smol \
+                   graphics/pokemon/bijuu_dark/back.4bpp.smol \
+                   graphics/pokemon/bijuu_dark/normal.gbapal \
+                   graphics/pokemon/bijuu_dark/shiny.gbapal \
+                   graphics/pokemon/bijuu_dark/icon.4bpp \
+                   graphics/pokemon/bijuu_dark/icon_normal.gbapal \
+                   graphics/pokemon/bijuu_dark/icon_shiny.gbapal
+                   graphics/pokemon/bijuu_steel/front.4bpp.smol \
+                   graphics/pokemon/bijuu_steel/back.4bpp.smol \
+                   graphics/pokemon/bijuu_steel/normal.gbapal \
+                   graphics/pokemon/bijuu_steel/shiny.gbapal \
+                   graphics/pokemon/bijuu_steel/icon.4bpp \
+                   graphics/pokemon/bijuu_steel/icon_normal.gbapal \
+                   graphics/pokemon/bijuu_steel/icon_shiny.gbapal
 RIKO_MEGA_GFX := graphics/pokemon/riko/mega/front.4bpp.smol \
                  graphics/pokemon/riko/mega/back.4bpp.smol \
                  graphics/pokemon/riko/mega/normal.gbapal \
                  graphics/pokemon/riko/mega/shiny.gbapal
-$(C_BUILDDIR)/pokemon.o: $(C_SUBDIR)/pokemon.c $(DATA_SRC_SUBDIR)/pokemon/teachable_learnsets.h $(LEGACY_LEVEL_UP_HEADER) $(RIKO_FIRE_GFX) $(RIKO_MEGA_GFX)
+$(C_BUILDDIR)/pokemon.o: $(C_SUBDIR)/pokemon.c $(DATA_SRC_SUBDIR)/pokemon/teachable_learnsets.h $(LEGACY_LEVEL_UP_HEADER) $(RIKO_VARIANT_GFX) $(RIKO_MEGA_GFX)
 
 # As a side effect, they're evaluated immediately instead of when the rule is invoked.
 # It doesn't look like $(shell) can be deferred so there might not be a better way (Icedude_907: there is soon).
