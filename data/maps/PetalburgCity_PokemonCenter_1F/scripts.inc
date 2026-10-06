@@ -60,14 +60,18 @@ PetalburgCity_PokemonCenter_1F_Text_PCStorageSystem:
 
 PetalburgCity_PokemonCenter_1F_Text_OranBerryRegainedHP:
 	.string "When my Pokémon ate an\n"
-	.string "Oran Berry, it regained Hp!$"
+	.string "Oran Berry, it regained Hp!\p"
+	.string "Riko calls that a snack with benefits.\n"
+	.string "Bijuu is still trying to copy the taste.$"
 
 PetalburgCity_PokemonCenter_1F_Text_ManyTypesOfPokemon:
 	.string "There are many types of Pokémon.\p"
 	.string "All types have their strengths and\n"
 	.string "weaknesses against other types.\p"
 	.string "Depending on the types of Pokémon,\n"
-	.string "a battle could be easy or hard.$"
+	.string "a battle could be easy or hard.\p"
+	.string "Riko changes type and makes everyone\n"
+	.string "guess what she will do next.$"
 
 PetalburgCity_PokemonCenter_1F_Text_TreeckoIsGrassType:
 	.string "For example, your Treecko\n"

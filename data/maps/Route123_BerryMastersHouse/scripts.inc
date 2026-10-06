@@ -133,4 +133,5 @@ Route123_BerryMastersHouse_EventScript_GaveBerry::
 Route123_BerryMastersHouse_Text_FloofBerryQuip:
 	.string "Riko says berries are for eating.\p"
 	.string "Unless Bijuu wants one too. Then\n"
-	.string "it is for copying!$"
+	.string "it is for copying! Penny just wants\n"
+	.string "a quiet place to enjoy hers.$"
