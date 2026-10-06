@@ -350,7 +350,11 @@ OldaleTown_Text_SavingMyProgress:
 OldaleTown_Text_IWorkAtPokemonMart:
 	.string "Hi!\n"
 	.string "I work at a Pokémon Mart.\p"
-	.string "Can I get you to come with me?$"
+	.string "Can I get you to come with me?\p"
+	.string "Riko follows if there are snacks.\n"
+	.string "Penny follows if it is somewhere cozy.\p"
+	.string "Bijuu follows whoever looks most\n"
+	.string "interesting.$"
 
 OldaleTown_Text_ThisIsAPokemonMart:
 	.string "This is a Pokémon Mart.\n"
@@ -383,7 +387,10 @@ OldaleTown_Text_FinishedSketchingFootprints:
 	.string "I finished sketching the footprints of\n"
 	.string "a rare Pokémon.\p"
 	.string "But it turns out they were only my\n"
-	.string "own footprints…$"
+	.string "own footprints…\p"
+	.string "Riko says they are still impressive.\n"
+	.string "Penny says they need a better artist.\p"
+	.string "Bijuu has already copied the pose.$"
 
 OldaleTown_Text_MayLetsGoBack:
 	.string "May: {PLAYER}{KUN}!\n"
