@@ -537,7 +537,7 @@
 #define P_FAMILY_NYMBLE                  FALSE
 #define P_FAMILY_PAWMI                   P_GEN_9_POKEMON
 #define P_FAMILY_TANDEMAUS               P_GEN_9_POKEMON
-#define P_FAMILY_FIDOUGH                 FALSE
+#define P_FAMILY_FIDOUGH                 P_GEN_9_POKEMON
 #define P_FAMILY_SMOLIV                  FALSE
 #define P_FAMILY_SQUAWKABILLY            FALSE
 #define P_FAMILY_NACLI                   P_GEN_9_POKEMON
