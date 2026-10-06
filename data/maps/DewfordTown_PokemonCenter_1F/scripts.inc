@@ -37,7 +37,11 @@ DewfordTown_PokemonCenter_1F_Text_StoneCavern:
 	.string "legendary girls seen near the caverns.\p"
 	.string "One brings snacks, one brings calm, and\n"
 	.string "one brings a suspiciously perfect copy.\p"
-	.string "Riko says the story sounds familiar.$
+	.string "Riko says the story sounds familiar.\p"
+	.string "The elders say the trio never stays in\n"
+	.string "one place for long.\p"
+	.string "They leave behind smiles, strange stories,\n"
+	.string "and a very confused crowd.$
 
 DewfordTown_PokemonCenter_1F_Text_FaintedMonCanUseHM:
 	.string "Even if a Pokémon faints and can't\n"
