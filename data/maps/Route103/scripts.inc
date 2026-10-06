@@ -315,25 +315,21 @@ Route103_Text_BrendanRoute103Pokemon:
 	.string "that one that live on Route 103…$"
 
 Route103_Text_BrendanLetsBattle:
-	.string "Hey, it's {PLAYER}!\p"
-	.string "…Oh, yeah, Dad gave you a Pokémon.\p"
-	.string "Since we're here, how about a little\n"
-	.string "battle?\p"
-	.string "I'll teach you what being a Trainer's\n"
-	.string "about!$"
+	.string "Hey, {PLAYER}! There you are!\p"
+	.string "Ready to battle, cutie?\p"
+	.string "Penny looks ready to win.\n"
+	.string "Riko can try to keep up!$"
 
 Route103_Text_BrendanDefeated:
-	.string "Huh, {PLAYER}, you're not too shabby.$"
+	.string "Wow! You got me!\p"
+	.string "Penny was pretty cool out there.\n"
+	.string "Do not tell Riko I said that!$"
 
 Route103_Text_BrendanTimeToHeadBack:
-	.string "Brendan: I think I get it.\n"
-	.string "I think I know why my dad has his eye\l"
-	.string "out for you now.\p"
-	.string "Look, your Pokémon already likes you,\n"
-	.string "even though you just got it.\p"
-	.string "{PLAYER}, I get the feeling that you\n"
-	.string "could befriend any Pokémon with ease.\p"
-	.string "We should head back to the Lab.$"
+	.string "Brendan: You and Penny work so well.\p"
+	.string "Riko is a good cheerleader.\p"
+	.string "You are cute when you win.\p"
+	.string "Come on, back to the Lab!$"
 
 Route103_Text_ShouldHaveBroughtPotion:
 	.string "My Pokémon is staggeringly tired…\n"

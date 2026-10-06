@@ -505,22 +505,19 @@ Route119_Text_MayExplainFly:
 	.string "Well, let's meet again somewhere!$"
 
 Route119_Text_BrendanIntro:
-	.string "Brendan: {PLAYER}! So this is where\n"
-	.string "you've been looking for Pokémon?\p"
-	.string "Let me see how good you got.\n"
-	.string "I'll test you!\p"
-	.string "Now!\n"
-	.string "It's a battle, so battle!$"
+	.string "Brendan: Hey, {PLAYER}! Ready to go?\p"
+	.string "Penny looks ready to win again.\n"
+	.string "Riko, try to keep up!$"
 
 Route119_Text_BrendanDefeat:
-	.string "Hmm…\n"
-	.string "You've gotten pretty darn decent.$"
+	.string "You won again!\p"
+	.string "Penny is way cooler than Riko.\n"
+	.string "Do not let Riko hear that!$"
 
 Route119_Text_BrendanIllGiveYouThis:
-	.string "Brendan: I'd say you're good enough\n"
-	.string "to search for Pokémon anywhere.\p"
-	.string "Here, I'll give you this.\n"
-	.string "Try it out.$"
+	.string "Brendan: You earned this, cutie.\p"
+	.string "Penny is still my favorite.\n"
+	.string "Just do not tell Riko!$"
 
 Route119_Text_BrendanExplainFly:
 	.string "Brendan: Use Fly, and your Pokémon\n"

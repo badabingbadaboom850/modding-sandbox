@@ -777,21 +777,20 @@ Route110_Text_MayExplainItemfinder:
 	.string "harder for the next time.$"
 
 Route110_Text_BrendanLetsBattle:
-	.string "Brendan: Hey, {PLAYER}.\n"
-	.string "So this is where you were.\l"
-	.string "How's it going?\p"
-	.string "Have you been raising your Pokémon?\n"
-	.string "I'll check for you.$"
+	.string "Brendan: Hey, {PLAYER}! There you are!\p"
+	.string "Penny is ready to win again.\n"
+	.string "Riko can try to keep up!$"
 
 Route110_Text_BrendanDefeated:
-	.string "Hmm…\n"
-	.string "You're pretty good.$"
+	.string "You got me again!\p"
+	.string "You are cute when you try hard.\p"
+	.string "Penny did most of the work.\n"
+	.string "Riko gets a little loud!$"
 
 Route110_Text_BrendanTakeThis:
-	.string "Brendan: {PLAYER}, you've trained\n"
-	.string "without me noticing…\p"
-	.string "Good enough!\n"
-	.string "Here, take this.$"
+	.string "Brendan: You and Penny trained hard.\p"
+	.string "Riko gets some credit too.\p"
+	.string "Here, take this!$"
 
 Route110_Text_BrendanExplainItemfinder:
 	.string "Brendan: That's an Itemfinder.\p"
