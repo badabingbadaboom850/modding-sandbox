@@ -211,7 +211,8 @@ SootopolisCity_Gym_1F_Text_JuanIntro:
 	.string "Please, you shall bear witness to\n"
 	.string "our artistry.\p"
 	.string "A grand illusion of water sculpted\n"
-	.string "by Pokémon and myself!\p"\n\t.string "A battle with the trio?\nWhat a rare honor!"
+	.string "by Pokémon and myself!\p"
+	.string "A battle with the trio?\nWhat a rare honor!"
 
 @ NOTE: This defeat text actually causes a buffer overflow. It's about 50 bytes too long for
 @ the gDisplayedStringBattle buffer that it's put into, and it stomps all over the gBattleTextBuffs

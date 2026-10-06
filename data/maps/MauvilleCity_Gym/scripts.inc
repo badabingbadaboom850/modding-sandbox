@@ -341,7 +341,8 @@ MauvilleCity_Gym_Text_WattsonIntro:
 	.string "Wahahahah!\n"
 	.string "Now, that is amusing!\p"
 	.string "Then, I, Wattson, the Leader of\n"
-	.string "Mauville Gym, shall electrify you!\p"\n\t.string "Wahahaha! The trio is here!\nLet us see who sparks first!"
+	.string "Mauville Gym, shall electrify you!\p"
+	.string "Wahahaha! The trio is here!\nLet us see who sparks first!"
 
 MauvilleCity_Gym_Text_WattsonDefeat:
 	.string "Wahahahah!\n"
