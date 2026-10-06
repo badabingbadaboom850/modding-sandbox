@@ -83,64 +83,64 @@
             "encounter_rate": 20,
             "mons": [
               {
+                "species": "SPECIES_PIDGEY",
                 "min_level": 2,
-                "max_level": 3,
-                "species": "SPECIES_RIKO"
+                "max_level": 3
               },
               {
+                "species": "SPECIES_PIDGEY",
                 "min_level": 2,
-                "max_level": 3,
-                "species": "SPECIES_BIJUU"
+                "max_level": 3
               },
               {
+                "species": "SPECIES_ZIGZAGOON",
                 "min_level": 2,
-                "max_level": 3,
-                "species": "SPECIES_RIKO_FIRE"
+                "max_level": 3
               },
               {
+                "species": "SPECIES_ZIGZAGOON",
                 "min_level": 2,
-                "max_level": 3,
-                "species": "SPECIES_RIKO_WATER"
+                "max_level": 3
               },
               {
+                "species": "SPECIES_RATTATA",
                 "min_level": 2,
-                "max_level": 3,
-                "species": "SPECIES_RIKO_GRASS"
+                "max_level": 3
               },
               {
+                "species": "SPECIES_HOPPIP",
                 "min_level": 2,
-                "max_level": 3,
-                "species": "SPECIES_RIKO_ELECTRIC"
+                "max_level": 3
               },
               {
+                "species": "SPECIES_RATTATA",
                 "min_level": 2,
-                "max_level": 3,
-                "species": "SPECIES_RIKO_ICE"
+                "max_level": 3
               },
               {
+                "species": "SPECIES_HOOTHOOT",
                 "min_level": 2,
-                "max_level": 3,
-                "species": "SPECIES_RIKO_PSYCHIC"
+                "max_level": 3
               },
               {
+                "species": "SPECIES_HOPPIP",
                 "min_level": 2,
-                "max_level": 2,
-                "species": "SPECIES_RIKO_FLYING"
+                "max_level": 3
               },
               {
+                "species": "SPECIES_HOOTHOOT",
                 "min_level": 2,
-                "max_level": 2,
-                "species": "SPECIES_RIKO_DRAGON"
+                "max_level": 3
               },
               {
+                "species": "SPECIES_RATTATA",
                 "min_level": 2,
-                "max_level": 2,
-                "species": "SPECIES_RATTATA"
+                "max_level": 2
               },
               {
+                "species": "SPECIES_HOOTHOOT",
                 "min_level": 2,
-                "max_level": 2,
-                "species": "SPECIES_HOPPIP"
+                "max_level": 2
               }
             ]
           }
@@ -152,64 +152,64 @@
             "encounter_rate": 20,
             "mons": [
               {
+                "species": "SPECIES_GEODUDE",
                 "min_level": 2,
-                "max_level": 3,
-                "species": "SPECIES_GEODUDE"
+                "max_level": 3
               },
               {
+                "species": "SPECIES_GEODUDE",
                 "min_level": 2,
-                "max_level": 3,
-                "species": "SPECIES_GEODUDE"
+                "max_level": 3
               },
               {
+                "species": "SPECIES_BUDEW",
                 "min_level": 2,
-                "max_level": 3,
-                "species": "SPECIES_BUDEW"
+                "max_level": 3
               },
               {
+                "species": "SPECIES_PHANPY",
                 "min_level": 2,
-                "max_level": 2,
-                "species": "SPECIES_PHANPY"
+                "max_level": 3
               },
               {
+                "species": "SPECIES_NIDORAN_M",
                 "min_level": 2,
-                "max_level": 2,
-                "species": "SPECIES_BIJUU_FIGHTING"
+                "max_level": 3
               },
               {
+                "species": "SPECIES_BUDEW",
                 "min_level": 2,
-                "max_level": 2,
-                "species": "SPECIES_BIJUU_POISON"
+                "max_level": 3
               },
               {
+                "species": "SPECIES_NIDORAN_F",
                 "min_level": 2,
-                "max_level": 3,
-                "species": "SPECIES_BIJUU_GROUND"
+                "max_level": 3
               },
               {
+                "species": "SPECIES_NIDORAN_M",
                 "min_level": 2,
-                "max_level": 3,
-                "species": "SPECIES_BIJUU_ROCK"
+                "max_level": 3
               },
               {
+                "species": "SPECIES_NIDORAN_F",
                 "min_level": 2,
-                "max_level": 3,
-                "species": "SPECIES_BIJUU_BUG"
+                "max_level": 3
               },
               {
+                "species": "SPECIES_GROWLITHE",
                 "min_level": 2,
-                "max_level": 3,
-                "species": "SPECIES_BIJUU_GHOST"
+                "max_level": 3
               },
               {
+                "species": "SPECIES_PHANPY",
                 "min_level": 2,
-                "max_level": 3,
-                "species": "SPECIES_BIJUU_DARK"
+                "max_level": 3
               },
               {
+                "species": "SPECIES_GROWLITHE",
                 "min_level": 2,
-                "max_level": 4,
-                "species": "SPECIES_BIJUU_STEEL"
+                "max_level": 3
               }
             ]
           }
@@ -2799,7 +2799,7 @@
               {
                 "min_level": 14,
                 "max_level": 17,
-                "species": "SPECIES_WIMPOD"
+                "species": "SPECIES_RIKO_GRASS"
               },
               {
                 "min_level": 17,
@@ -3032,7 +3032,7 @@
               {
                 "min_level": 19,
                 "max_level": 23,
-                "species": "SPECIES_CHARCADET"
+                "species": "SPECIES_RIKO_FIRE"
               }
             ]
           }
@@ -3101,7 +3101,7 @@
               {
                 "min_level": 19,
                 "max_level": 23,
-                "species": "SPECIES_CHARCADET"
+                "species": "SPECIES_BIJUU_GHOST"
               }
             ]
           }
@@ -3168,9 +3168,9 @@
                 "species": "SPECIES_MILTANK"
               },
               {
-                "min_level": 19,
+                "min_level": 20,
                 "max_level": 26,
-                "species": "SPECIES_TAUROS"
+                "species": "SPECIES_RIKO_ELECTRIC"
               }
             ]
           },
@@ -3328,7 +3328,7 @@
               {
                 "min_level": 21,
                 "max_level": 25,
-                "species": "SPECIES_PYUKUMUKU"
+                "species": "SPECIES_RIKO_WATER"
               }
             ]
           },
@@ -4508,7 +4508,7 @@
               {
                 "min_level": 21,
                 "max_level": 28,
-                "species": "SPECIES_MAWILE"
+                "species": "SPECIES_BIJUU_ROCK"
               },
               {
                 "min_level": 22,
@@ -4667,7 +4667,7 @@
               {
                 "min_level": 22,
                 "max_level": 28,
-                "species": "SPECIES_GOLETT"
+                "species": "SPECIES_RIKO_PSYCHIC"
               }
             ]
           },
@@ -5124,12 +5124,12 @@
               {
                 "min_level": 25,
                 "max_level": 29,
-                "species": "SPECIES_FLAAFFY"
+                "species": "SPECIES_BIJUU_DARK"
               },
               {
                 "min_level": 27,
                 "max_level": 29,
-                "species": "SPECIES_SKARMORY"
+                "species": "SPECIES_RIKO_FLYING"
               }
             ]
           },
@@ -5435,9 +5435,9 @@
                 "species": "SPECIES_MAGMAR"
               },
               {
-                "min_level": 36,
-                "max_level": 40,
-                "species": "SPECIES_ELECTABUZZ"
+                "min_level": 31,
+                "max_level": 35,
+                "species": "SPECIES_BIJUU_POISON"
               }
             ]
           },
@@ -5591,7 +5591,7 @@
               {
                 "min_level": 32,
                 "max_level": 41,
-                "species": "SPECIES_SNEASEL"
+                "species": "SPECIES_RIKO_ICE"
               }
             ]
           }
@@ -5729,7 +5729,7 @@
               {
                 "min_level": 33,
                 "max_level": 40,
-                "species": "SPECIES_MR_RIME"
+                "species": "SPECIES_BIJUU_STEEL"
               }
             ]
           }
@@ -6281,7 +6281,7 @@
               {
                 "min_level": 45,
                 "max_level": 55,
-                "species": "SPECIES_NOIVERN"
+                "species": "SPECIES_RIKO_DRAGON"
               }
             ]
           },
@@ -6589,7 +6589,7 @@
               {
                 "min_level": 40,
                 "max_level": 47,
-                "species": "SPECIES_SCOLIPEDE"
+                "species": "SPECIES_BIJUU_FIGHTING"
               }
             ]
           },
@@ -6738,7 +6738,7 @@
               {
                 "min_level": 35,
                 "max_level": 35,
-                "species": "SPECIES_DUNSPARCE"
+                "species": "SPECIES_BIJUU_GROUND"
               },
               {
                 "min_level": 33,
@@ -10667,7 +10667,7 @@
               {
                 "min_level": 17,
                 "max_level": 18,
-                "species": "SPECIES_PINSIR"
+                "species": "SPECIES_BIJUU_BUG"
               }
             ]
           }
