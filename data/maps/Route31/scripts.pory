@@ -1,4 +1,3 @@
-raw `
 Route31_MapScripts::
 	map_script MAP_SCRIPT_ON_TRANSITION, Route31_OnTransition
 	map_script MAP_SCRIPT_ON_RESUME, SetTimeEncounters
@@ -28,7 +27,7 @@ Route31_EventScript_BijuuChase1::
 	closemessage
 	applymovement LOCALID_ROUTE31_BIJUU, Route31_Movement_BijuuRun1
 	waitmovement 0
-	setobjectxyperm LOCALID_ROUTE31_BIJUU, 36, 12
+	setobjectxyperm LOCALID_ROUTE31_BIJUU, 32, 12
 	setvar VAR_ROUTE31_BIJUU_CHASE, 1
 	msgbox Route31_Text_BijuuRun1, MSGBOX_DEFAULT
 	closemessage
@@ -40,7 +39,7 @@ Route31_EventScript_BijuuChase2::
 	closemessage
 	applymovement LOCALID_ROUTE31_BIJUU, Route31_Movement_BijuuRun2
 	waitmovement 0
-	setobjectxyperm LOCALID_ROUTE31_BIJUU, 32, 12
+	setobjectxyperm LOCALID_ROUTE31_BIJUU, 36, 12
 	setvar VAR_ROUTE31_BIJUU_CHASE, 2
 	msgbox Route31_Text_BijuuRun3, MSGBOX_DEFAULT
 	closemessage
@@ -286,65 +285,3 @@ Route31_Movement_BijuuRun2:
 	step_end
 
 
-`
-
-script Route31_Expert {
-    lock
-    faceplayer
-    if (flag(FLAG_ROUTE31_EXPERT)) {
-        setflag(FLAG_ROUTE31_EXPERT_QUALIFIED)
-        msgbox("Air Balloon lets a Pokémon avoid 
-				Ground-type moves until it 
-				takes a hit.
-				
-				It might prove useful in the 
-				coming battles.
-				
-				Held items similar to this can
-				be activated once per battle.
-
-				They will be restored after the
-				battle is over.")
-        release
-        end
-    }
-    msgbox("I'm what they call a route expert. 
-	
-			If you manage to beat every trainer on 
-			Route 30 and 31, come find me again 
-			and we will have a battle.
-			
-			I'll make it worth your while,
-			if you manage to win.")
-    if (flag(FLAG_ROUTE31_EXPERT_QUALIFIED) || (defeated(TRAINER_WADE) && defeated(TRAINER_JOEY) && defeated(TRAINER_MIKEY) && defeated(TRAINER_DON))) {
-        setflag(FLAG_ROUTE31_EXPERT_QUALIFIED)
-        msgbox("Oh, you have indeed defeated 
-				all the trainers on this route.
-				
-				I will battle you as promised.")
-        trainerbattle_no_intro(TRAINER_ROUTE_31_EXPERT, "Popped off...")
-		createfieldmugshot(MUGSHOT_COOLTRAINER_M)
-        msgbox("You are better than I had assumed. 
-				
-				Take this for your victory.")
-        giveitem(ITEM_AIR_BALLOON)
-        setflag(FLAG_ROUTE31_EXPERT)
-        addvar(VAR_ROUTE_EXPERTS_DEFEATED, 1)
-        special(Achievement_CheckAll)
-		createfieldmugshot(MUGSHOT_COOLTRAINER_M)
-        msgbox("Air Balloon lets a Pokémon avoid 
-				Ground-type moves until it 
-				takes a hit.
-				
-				It might prove useful in the 
-				coming battles.
-				
-				Held items similar to this can
-				be activated once per battle.
-				
-				They will be restored after the
-				battle is over.")
-    }
-    release
-    end
-}

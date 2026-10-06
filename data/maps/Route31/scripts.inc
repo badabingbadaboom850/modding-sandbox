@@ -24,7 +24,7 @@ Route31_EventScript_BijuuChase1::
 	closemessage
 	applymovement LOCALID_ROUTE31_BIJUU, Route31_Movement_BijuuRun1
 	waitmovement 0
-	setobjectxyperm LOCALID_ROUTE31_BIJUU, 36, 12
+	setobjectxyperm LOCALID_ROUTE31_BIJUU, 32, 12
 	setvar VAR_ROUTE31_BIJUU_CHASE, 1
 	msgbox Route31_Text_BijuuRun1, MSGBOX_DEFAULT
 	closemessage
@@ -36,7 +36,7 @@ Route31_EventScript_BijuuChase2::
 	closemessage
 	applymovement LOCALID_ROUTE31_BIJUU, Route31_Movement_BijuuRun2
 	waitmovement 0
-	setobjectxyperm LOCALID_ROUTE31_BIJUU, 32, 12
+	setobjectxyperm LOCALID_ROUTE31_BIJUU, 36, 12
 	setvar VAR_ROUTE31_BIJUU_CHASE, 2
 	msgbox Route31_Text_BijuuRun3, MSGBOX_DEFAULT
 	closemessage
