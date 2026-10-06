@@ -336,10 +336,13 @@ PlayersHouse_1F_Text_DidYouMeetProfBirch:
 PlayersHouse_1F_Text_YouShouldRestABit:
 	.string "Mom: How are you doing, {PLAYER}?\n"
 	.string "You look a little tired.\p"
-	.string "I think you should rest a bit.$"
+	.string "I think you should rest a bit.\p"
+	.string "Riko can guard the snacks, Penny can curl up,\n"
+	.string "and Bijuu will watch the whole room.$"
 
 PlayersHouse_1F_Text_TakeCareHoney:
-	.string "Mom: Take care, honey!$"
+	.string "Mom: Take care, honey!\p"
+	.string "Give Riko, Penny, and Bijuu a pat for me.$"
 
 PlayersHouse_1F_Text_GotDadsBadgeHeresSomethingFromMom:
 	.string "Mom: Oh? Did Dad give you that Badge?\p"
