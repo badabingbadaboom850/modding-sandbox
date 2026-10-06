@@ -9,8 +9,37 @@ Route31_EventScript_BijuuEncounter::
 	faceplayer
 	goto_if_unset FLAG_RECEIVED_FIRST_BALLS, Route31_EventScript_BijuuTooShy
 	checkitem ITEM_POKE_BALL, 1
-	goto_if_eq VAR_RESULT, TRUE, Route31_EventScript_BijuuReadyToBattle
+	goto_if_eq VAR_RESULT, TRUE, Route31_EventScript_BijuuChaseCheck
 	msgbox Route31_Text_BijuuTooShy, MSGBOX_NPC
+	release
+	end
+
+Route31_EventScript_BijuuChaseCheck::
+	goto_if_eq VAR_ROUTE31_BIJUU_CHASE, 0, Route31_EventScript_BijuuChase1
+	goto_if_eq VAR_ROUTE31_BIJUU_CHASE, 1, Route31_EventScript_BijuuChase2
+	goto Route31_EventScript_BijuuReadyToBattle
+
+Route31_EventScript_BijuuChase1::
+	msgbox Route31_Text_BijuuSpotted, MSGBOX_DEFAULT
+	closemessage
+	applymovement LOCALID_ROUTE31_BIJUU, Route31_Movement_BijuuRun1
+	waitmovement 0
+	setobjectxyperm LOCALID_ROUTE31_BIJUU, 30, 12
+	setvar VAR_ROUTE31_BIJUU_CHASE, 1
+	msgbox Route31_Text_BijuuRun1, MSGBOX_DEFAULT
+	closemessage
+	release
+	end
+
+Route31_EventScript_BijuuChase2::
+	msgbox Route31_Text_BijuuRun2, MSGBOX_DEFAULT
+	closemessage
+	applymovement LOCALID_ROUTE31_BIJUU, Route31_Movement_BijuuRun2
+	waitmovement 0
+	setobjectxyperm LOCALID_ROUTE31_BIJUU, 32, 12
+	setvar VAR_ROUTE31_BIJUU_CHASE, 2
+	msgbox Route31_Text_BijuuRun3, MSGBOX_DEFAULT
+	closemessage
 	release
 	end
 
@@ -304,3 +333,29 @@ Route31_Expert_Text_3:
 Route31_Expert_Text_4:
 	.string "You are better than I had assumed. \p"
 	.string "Take this for your victory.$"
+
+Route31_Text_BijuuSpotted:
+	.string "Wait... is that Bijuu?\\p"
+	.string "She darts away!$"
+
+Route31_Text_BijuuRun1:
+	.string "Bijuu glances back, then races\\n"
+	.string "farther along the path!$"
+
+Route31_Text_BijuuRun2:
+	.string "You catch up, but Bijuu darts\\n"
+	.string "away again!$"
+
+Route31_Text_BijuuRun3:
+	.string "Bijuu finally stops and turns to\\n"
+	.string "face you!$"
+
+Route31_Movement_BijuuRun1:
+	walk_fast_right
+	walk_fast_right
+	step_end
+
+Route31_Movement_BijuuRun2:
+	walk_fast_right
+	walk_fast_right
+	step_end
