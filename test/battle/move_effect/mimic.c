@@ -48,3 +48,20 @@ SINGLE_BATTLE_TEST("Mimic fails if target has not used any move yet")
         }
     }
 }
+
+SINGLE_BATTLE_TEST("Meowth Mimic copies the target's last move until Bijuu switches out")
+{
+    GIVEN {
+        PLAYER(SPECIES_BIJUU) { Speed(50); Moves(MOVE_MEOWTH_MIMIC); }
+        OPPONENT(SPECIES_WOBBUFFET) { Speed(100); Moves(MOVE_POUND); }
+    } WHEN {
+        TURN { MOVE(opponent, MOVE_POUND); MOVE(player, MOVE_MEOWTH_MIMIC); }
+    } SCENE {
+        ANIMATION(ANIM_TYPE_MOVE, MOVE_POUND, opponent);
+        ANIMATION(ANIM_TYPE_MOVE, MOVE_MEOWTH_MIMIC, player);
+        MESSAGE("Bijuu learned Pound!");
+    } THEN {
+        EXPECT_EQ(player->moves[0], MOVE_POUND);
+        EXPECT_EQ(player->volatiles.mimickedMoves, 1);
+    }
+}
