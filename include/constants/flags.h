@@ -1749,7 +1749,8 @@
 #define FLAG_TM_PICKUP_MIGRATION_COMPLETE           0x103D
 
 #define FLAG_PYRAMID_ACHIEVEMENT_MIGRATION_COMPLETE 0x1041
-#define CUSTOM_FLAGS_END                            FLAG_PYRAMID_ACHIEVEMENT_MIGRATION_COMPLETE
+#define FLAG_CAUGHT_BIJUU                           0x1042
+#define CUSTOM_FLAGS_END                            FLAG_CAUGHT_BIJUU
 
 
 #define FLAG_0x1500                                 0x1500
