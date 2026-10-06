@@ -676,7 +676,11 @@ LittlerootTown_ProfessorBirchsLab_Text_BirchAwayOnFieldwork:
 	.string "Penny for disappearing when noticed,\l"
 	.string "and Bijuu for copying whatever it sees.\p"
 	.string "No one knows where they came from, but\n"
-	.string "they may be closer than anyone realizes.$"
+	.string "they may be closer than anyone realizes.\p"
+	.string "The latest report says the trio may be\n"
+	.string "traveling with a new Trainer.\p"
+	.string "The Trainer may not even know how rare\n"
+	.string "the three girls really are!$"
 
 LittlerootTown_ProfessorBirchsLab_Text_BirchIsntOneForDeskWork:
 	.string "The Prof isn't one for doing desk work.\n"
