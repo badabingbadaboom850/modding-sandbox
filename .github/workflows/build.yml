@@ -6,6 +6,7 @@ on:
     branches:
       - master
       - upcoming
+      - feat/riko-bijuu-mega-forms
   pull_request:
 
 env:
