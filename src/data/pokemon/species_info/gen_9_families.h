@@ -1560,7 +1560,7 @@ const struct SpeciesInfo gSpeciesInfoGen9[] =
         .abilities = { ABILITY_OWN_TEMPO, ABILITY_NONE, ABILITY_KLUTZ },
         .innates = { ABILITY_SWEET_VEIL },
         .bodyColor = BODY_COLOR_YELLOW,
-        .speciesName = _("Fidough"),
+        .speciesName = _("Penny"),
         .cryId = CRY_FIDOUGH,
         .natDexNum = NATIONAL_DEX_FIDOUGH,
         .categoryName = _("Puppy"),
@@ -1568,7 +1568,7 @@ const struct SpeciesInfo gSpeciesInfoGen9[] =
         .weight = 109,
         .description = COMPOUND_STRING(
             "This Pokémon is smooth and moist\n"
-            "to the touch. Yeast in Fidough's\n"
+            "to the touch. Yeast in Penny's\n"
             "breath induces fermentation in the\n"
             "Pokémon's vicinity."),
         .pokemonScale = 356,
