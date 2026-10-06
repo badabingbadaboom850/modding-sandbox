@@ -32,7 +32,10 @@ DewfordTown_PokemonCenter_1F_Text_StoneCavern:
 	.string "Riko would charge in dramatically.\n"
 	.string "Penny would bring a snack for the trip.\p"
 	.string "Bijuu would pretend it already knew\n"
-	.string "what was inside the cavern.$"
+	.string "what was inside the cavern.\p"
+	.string "Some island elders whisper that the\n"
+	.string "caverns once guarded three sleeping\l"
+	.string "legends. Riko wants to wake them up.$"
 
 DewfordTown_PokemonCenter_1F_Text_FaintedMonCanUseHM:
 	.string "Even if a Pokémon faints and can't\n"
