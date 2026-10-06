@@ -668,7 +668,15 @@ LittlerootTown_ProfessorBirchsLab_Text_BirchAwayOnFieldwork:
 	.string "The Prof isn't one for doing desk work.\n"
 	.string "He's the type of person who would\l"
 	.string "rather go outside and experience\l"
-	.string "things than read about them here.$"
+	.string "things than read about them here.\p"
+	.string "Actually, the lab has been tracking a\n"
+	.string "strange legendary trio: Riko, Penny,\l"
+	.string "and Bijuu.\p"
+	.string "Riko is known for dramatic entrances,\n"
+	.string "Penny for disappearing when noticed,\l"
+	.string "and Bijuu for copying whatever it sees.\p"
+	.string "No one knows where they came from, but\n"
+	.string "they may be closer than anyone realizes.$"
 
 LittlerootTown_ProfessorBirchsLab_Text_BirchIsntOneForDeskWork:
 	.string "The Prof isn't one for doing desk work.\n"
