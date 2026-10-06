@@ -123,7 +123,9 @@ Route102_Text_CatchWholeBunchOfPokemon:
 	.string "Pokémon! Maybe one will be as\n"
 	.string "dramatic as Riko!\p"
 	.string "Maybe one will be as patient as Penny,\n"
-	.string "or as mysterious as Bijuu.$"
+	.string "or as mysterious as Bijuu.\p"
+	.string "A shy cat watches by the berry trees.\n"
+	.string "It copies every step, then hides.$"
 
 Route102_Text_RouteSignOldale:
 	.string "Route 102\n"
@@ -141,7 +143,7 @@ Route102_Text_BijuuAppears:
 Route102_Text_BijuuTooShy:
 	.string "A shy cat watches from the grass.\n"
 	.string "It copies your movements, then hides.\p"
-	.string "You should come back with Poké Balls.$"
+	.string "You should come back with Poke Balls.$"
 
 Route102_Text_BijuuCaught:
 	.string "Bijuu trusts you enough to stay.\p"
