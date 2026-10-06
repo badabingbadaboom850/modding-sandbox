@@ -23125,22 +23125,4 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_ALL] =
         .battleAnimScript = gBattleAnimMove_QuiverDance,
     },
 
-    [MOVE_MEOWTH_MIMIC] =
-    {
-        .name = COMPOUND_STRING("Meowth Mimic"),
-        .description = COMPOUND_STRING("Copies Meowth's moves and\nfights with them until\nBijuu is switched out."),
-        .effect = EFFECT_DO_NOTHING,
-        .power = 0,
-        .type = TYPE_NORMAL,
-        .accuracy = 0,
-        .pp = 10,
-        .target = TARGET_USER,
-        .priority = 0,
-        .category = DAMAGE_CATEGORY_STATUS,
-        .ignoresProtect = TRUE,
-        .mirrorMoveBanned = TRUE,
-        .contestEffect = CONTEST_EFFECT_IMPROVE_CONDITION_PREVENT_NERVOUSNESS,
-        .contestCategory = CONTEST_CATEGORY_CUTE,
-        .battleAnimScript = gBattleAnimMove_Mimic,
-    },
 };

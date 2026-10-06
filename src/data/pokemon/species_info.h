@@ -222,7 +222,9 @@ const struct SpeciesInfo gSpeciesInfo[] =
         .iconSprite = gMonIcon_Bijuu, .iconPalette = gMonIconPalette_Bijuu,
         .shinyIconPalette = gMonShinyIconPalette_Bijuu, .pokemonJumpType = PKMN_JUMP_TYPE_FAST,
         SHADOW(-2, 8, SHADOW_SIZE_S)
-        .teachingType = ALL_TEACHABLES, .levelUpLearnset = sBijuuLevelUpLearnset,
+        .levelUpLearnset = sMeowthLevelUpLearnset,
+        .teachableLearnset = sMeowthTeachableLearnset,
+        .eggMoveLearnset = sMeowthEggMoveLearnset,
     },
 #endif
 
