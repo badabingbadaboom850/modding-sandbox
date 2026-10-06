@@ -200,7 +200,34 @@ const struct SpeciesInfo gSpeciesInfo[] =
         .shinyIconPalette = gMonShinyIconPalette_Riko, .pokemonJumpType = PKMN_JUMP_TYPE_NORMAL,
         SHADOW(-2, 8, SHADOW_SIZE_S)
         .teachingType = ALL_TEACHABLES, .levelUpLearnset = sRikoLevelUpLearnset,
+        .formSpeciesIdTable = sRikoFormSpeciesIdTable, .formChangeTable = sRikoFormChangeTable,
     },
+#if P_GEN_9_MEGA_EVOLUTIONS
+    [SPECIES_MEGA_RIKO] =
+    {
+        .baseHP = 90, .baseAttack = 85, .baseDefense = 95, .baseSpeed = 130,
+        .baseSpAttack = 135, .baseSpDefense = 125,
+        .types = MON_TYPES(TYPE_NORMAL, TYPE_FAIRY), .catchRate = 45, .expYield = 300,
+        .evYield_SpAttack = 2, .evYield_Speed = 1, .genderRatio = PERCENT_FEMALE(50),
+        .eggCycles = 20, .friendship = STANDARD_FRIENDSHIP, .growthRate = GROWTH_MEDIUM_SLOW,
+        .eggGroups = MON_EGG_GROUPS(EGG_GROUP_FIELD, EGG_GROUP_FAIRY),
+        .abilities = { ABILITY_PIXILATE, ABILITY_PIXILATE, ABILITY_PIXILATE },
+        .bodyColor = BODY_COLOR_WHITE, .speciesName = _("Riko"), .cryId = CRY_SYLVEON,
+        .natDexNum = NATIONAL_DEX_RIKO, .categoryName = _("Mega Fluff Bunny"), .height = 6, .weight = 95,
+        .description = COMPOUND_STRING("Mega Evolution intensifies its\nfairy energy, making its coat\nshine like a charm."),
+        .pokemonScale = 256, .trainerScale = 256,
+        .frontPic = gMonFrontPic_Riko, .frontPicSize = MON_COORDS_SIZE(64, 64), .frontPicYOffset = 0,
+        .frontAnimFrames = sAnims_SingleFramePlaceHolder, .backPic = gMonBackPic_Riko,
+        .backPicSize = MON_COORDS_SIZE(64, 64), .backPicYOffset = 0,
+        .palette = gMonPalette_Riko, .shinyPalette = gMonShinyPalette_Riko,
+        .iconSprite = gMonIcon_Riko, .iconPalette = gMonIconPalette_Riko,
+        .shinyIconPalette = gMonShinyIconPalette_Riko, .pokemonJumpType = PKMN_JUMP_TYPE_NORMAL,
+        SHADOW(-2, 8, SHADOW_SIZE_S)
+        .isMegaEvolution = TRUE,
+        .teachingType = ALL_TEACHABLES, .levelUpLearnset = sRikoLevelUpLearnset,
+        .formSpeciesIdTable = sRikoFormSpeciesIdTable, .formChangeTable = sRikoFormChangeTable,
+    },
+#endif
 #endif
 #if P_FAMILY_BIJUU
     [SPECIES_BIJUU] =
@@ -225,7 +252,35 @@ const struct SpeciesInfo gSpeciesInfo[] =
         .levelUpLearnset = sMeowthLevelUpLearnset,
         .teachableLearnset = sMeowthTeachableLearnset,
         .eggMoveLearnset = sMeowthEggMoveLearnset,
+        .formSpeciesIdTable = sBijuuFormSpeciesIdTable, .formChangeTable = sBijuuFormChangeTable,
     },
+#if P_GEN_9_MEGA_EVOLUTIONS
+    [SPECIES_MEGA_BIJUU] =
+    {
+        .baseHP = 80, .baseAttack = 125, .baseDefense = 90, .baseSpeed = 145,
+        .baseSpAttack = 105, .baseSpDefense = 85,
+        .types = MON_TYPES(TYPE_NORMAL), .catchRate = 60, .expYield = 280, .evYield_Speed = 3,
+        .genderRatio = PERCENT_FEMALE(50), .eggCycles = 20, .friendship = STANDARD_FRIENDSHIP,
+        .growthRate = GROWTH_MEDIUM_SLOW, .eggGroups = MON_EGG_GROUPS(EGG_GROUP_FIELD),
+        .abilities = { ABILITY_TECHNICIAN, ABILITY_TECHNICIAN, ABILITY_TECHNICIAN },
+        .bodyColor = BODY_COLOR_BROWN, .speciesName = _("Bijuu"), .cryId = CRY_MEOWTH,
+        .natDexNum = NATIONAL_DEX_BIJUU, .categoryName = _("Mega Copy Cat"), .height = 7, .weight = 120,
+        .description = COMPOUND_STRING("Mega Evolution lets it reproduce\nMeowth's techniques with\nperfect precision."),
+        .pokemonScale = 256, .trainerScale = 256,
+        .frontPic = gMonFrontPic_Bijuu, .frontPicSize = MON_COORDS_SIZE(64, 64), .frontPicYOffset = 0,
+        .frontAnimFrames = sAnims_SingleFramePlaceHolder, .backPic = gMonBackPic_Bijuu,
+        .backPicSize = MON_COORDS_SIZE(64, 64), .backPicYOffset = 0,
+        .palette = gMonPalette_Bijuu, .shinyPalette = gMonShinyPalette_Bijuu,
+        .iconSprite = gMonIcon_Bijuu, .iconPalette = gMonIconPalette_Bijuu,
+        .shinyIconPalette = gMonShinyIconPalette_Bijuu, .pokemonJumpType = PKMN_JUMP_TYPE_FAST,
+        SHADOW(-2, 8, SHADOW_SIZE_S)
+        .isMegaEvolution = TRUE,
+        .levelUpLearnset = sMeowthLevelUpLearnset,
+        .teachableLearnset = sMeowthTeachableLearnset,
+        .eggMoveLearnset = sMeowthEggMoveLearnset,
+        .formSpeciesIdTable = sBijuuFormSpeciesIdTable, .formChangeTable = sBijuuFormChangeTable,
+    },
+#endif
 #endif
 
     /*
