@@ -246,9 +246,9 @@ NewBarkTown_Text_FatManState3:
 	.string "I hear Prof. Elm discovered\n"
 	.string "some new Pokémon.\p"
 	.string "Keep this quiet.\p"
-	.string "Travelers whisper of a shy cat\n"
-	.string "on Route 31. She copies your\n"
-	.string "steps, then vanishes.$"
+	.string "A traveler says she saw a shy cat\n"
+	.string "on Route 31. It watched her for a\n"
+	.string "moment, then vanished into the grass.$"
 
 NewBarkTown_Text_LassState2:
 	.string "Wait, {PLAYER}!\p"
@@ -265,10 +265,10 @@ NewBarkTown_Text_LassState4:
 	.string "Hi, {PLAYER}! Leaving again?\p"
 	.string "You should tell your mom if\n"
 	.string "you are leaving.\p"
-	.string "People whisper about a strange\n"
-	.string "cat between Cherrygrove and\n"
-	.string "Violet. She watches trainers who\n"
-	.string "travel with a special Pokémon.$"
+	.string "There's a story going around about\n"
+	.string "a cat between Cherrygrove and\n"
+	.string "Violet. A few trainers say she\n"
+	.string "follows them, then slips away.$"
 
 NewBarkTown_Text_LassState5:
 	.string "Call your mom on your Pokégear\n"

@@ -56,7 +56,7 @@ PetalburgCity_PokemonCenter_1F_Text_PCStorageSystem:
 	.string "That PC-based Pokémon Storage\n"
 	.string "System…\p"
 	.string "Whoever made it must be some kind\n"
-	.string "of a scientific wizard!\pPeople whisper of three girls\nwho help tired Pokemon. Riko,\nPenny, and Bijuu, they say.$"
+	.string "of a scientific wizard!\pA few travelers have told stories\nabout three girls helping Pokemon\nin trouble. Riko, Penny, and Bijuu,\nthey say. They never stay for thanks.$"
 
 PetalburgCity_PokemonCenter_1F_Text_OranBerryRegainedHP:
 	.string "When my Pokémon ate an\n"
