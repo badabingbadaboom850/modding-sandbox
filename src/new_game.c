@@ -276,13 +276,12 @@ void NewGameInitData(void)
     ClearPlayerLinkBattleRecords();
     InitSeedotSizeRecord();
     InitLotadSizeRecord();
-    // Testing aid: start fresh saves with Riko and Bijuu in the party.
+    // Start with Riko and Penny. The selected starter is added by ChooseStarter.
     gPlayerPartyCount = 0;
     ZeroPlayerPartyMons();
-    gPlayerPartyCount = 3;
+    gPlayerPartyCount = 2;
     CreateRandomMon(&gPlayerParty[0], SPECIES_RIKO, 5);
-    CreateRandomMon(&gPlayerParty[1], SPECIES_BIJUU, 5);
-    CreateRandomMon(&gPlayerParty[2], SPECIES_RIKO_FIRE, 5);
+    CreateRandomMon(&gPlayerParty[1], SPECIES_FIDOUGH, 5);
     ResetPokemonStorageSystem();
     ResetHallOfFameArchive();
     DeactivateAllRoamers();
