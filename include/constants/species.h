@@ -1695,7 +1695,9 @@
 #define SPECIES_DIALGA_PRIMAL                          1577
 #define SPECIES_RIKO                                   1578
 #define SPECIES_BIJUU                                  1579
-#define SPECIES_EGG                                     (SPECIES_BIJUU + 1)
+#define SPECIES_MEGA_RIKO                              1580
+#define SPECIES_MEGA_BIJUU                             1581
+#define SPECIES_EGG                                     (SPECIES_MEGA_BIJUU + 1)
 
 #define NUM_SPECIES SPECIES_EGG
 
