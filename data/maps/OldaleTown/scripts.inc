@@ -391,7 +391,10 @@ OldaleTown_Text_FinishedSketchingFootprints:
 	.string "People here whisper about three\n"
 	.string "legendary girls: Riko, Penny, and Bijuu.\p"
 	.string "Riko says they must have excellent\n"
-	.string "dramatic timing.$"
+	.string "dramatic timing.\p"
+	.string "People say the trio visits quiet towns,\n"
+	.string "then leaves before anyone can ask\l"
+	.string "where they came from.$"
 
 OldaleTown_Text_MayLetsGoBack:
 	.string "May: {PLAYER}{KUN}!\n"
