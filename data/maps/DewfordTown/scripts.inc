@@ -633,7 +633,7 @@ DewfordTown_Text_TinyIslandCommunity:
 	.string "everyone picks up on it right away.\p"
 	.string "Riko is popular for dramatic entrances.\n"
 	.string "Penny is popular for being adorable.\p"
-	.string "Bijuu is popular for copying both.$"
+	.string "Bijuu is popular for copying both.\pEven island folk know the story.\nRiko, Penny, and Bijuu are said\nto cross the sea unseen.$"
 
 DewfordTown_Text_TownSign:
 	.string "Dewford Town\n"
@@ -726,7 +726,7 @@ DewfordTown_Text_ThrowInFishingAdvice:
 	.string "Has anyone seen the Trainer who travels\n"
 	.string "with them?\p"
 	.string "If so, keep it quiet. The legends may be\n"
-	.string "trying to stay hidden.$"
+	.string "trying to stay hidden.\pOld fishermen watch for three\nlights at sea. One is Riko, one\nPenny, one Bijuu, or so they say.$"
 
 DewfordTown_Text_ThatsTooBadThen:
 	.string "Oh, is that so?\n"
@@ -766,7 +766,7 @@ DewfordTown_Text_XIsTheBiggestHappeningThingRight:
 	.string "“{STR_VAR_1}”\l"
 	.string "is the biggest happening thing, right?\p"
 	.string "Around here, Riko, Penny, and Bijuu\n"
-	.string "are the real trendsetters.$"
+	.string "are the real trendsetters.\pThe names are all the rage, too.\nRiko, Penny, and Bijuu, the three\nlegendary girls no one can find.$"
 
 DewfordTown_Text_TellMeWhatsNewAndIn:
 	.string "Hunh?\n"

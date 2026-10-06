@@ -70,7 +70,7 @@ PetalburgCity_Mart_Text_WeakWillGrowStronger:
 	.string "Riko agrees, although she also expects\n"
 	.string "compliments and a snack.\p"
 	.string "Penny says encouragement works better\n"
-	.string "than shouting. Bijuu is taking notes.$"
+	.string "than shouting. Bijuu is taking notes.\pA clerk heard the trio helps\nsmall Pokemon grow strong.\nRiko, Penny, and Bijuu.$"
 
 PetalburgCity_Mart_Text_RepelIsUseful:
 	.string "Do you use Repel?\n"
@@ -79,7 +79,7 @@ PetalburgCity_Mart_Text_RepelIsUseful:
 	.string "Penny would rather avoid the tall grass\n"
 	.string "altogether, honestly.\p"
 	.string "Riko would charge through it for a treat.\n"
-	.string "Bijuu would copy whatever startled her.$"
+	.string "Bijuu would copy whatever startled her.\pBijuu can copy a Pokemon cry.\nSome say it learned every sound\nfrom its legendary sisters.$"
 
 PetalburgCity_Mart_Text_TakeSomeAntidotesWithYou:
 	.string "Do you have any Antidotes with\n"
@@ -90,5 +90,5 @@ PetalburgCity_Mart_Text_TakeSomeAntidotesWithYou:
 	.string "Bijuu would probably copy the poison\n"
 	.string "if nobody stopped it.\p"
 	.string "Riko would demand a snack afterward,\n"
-	.string "and Penny would check everyone twice.$"
+	.string "and Penny would check everyone twice.\pThe old tales say Riko walks\nthrough danger without fear.\nPenny watches every step.$"
 

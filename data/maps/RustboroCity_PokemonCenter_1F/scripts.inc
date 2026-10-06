@@ -34,7 +34,7 @@ RustboroCity_PokemonCenter_1F_Text_PokemonHavePersonalities:
 	.string "It's fascinating how Pokémon have\n"
 	.string "personalities!\p"
 	.string "Riko is bold, Penny is cautious,\n"
-	.string "and Bijuu is always observing.$"
+	.string "and Bijuu is always observing.\pThe legendary girls have their\nown natures. Riko is bold, Penny\nis gentle, Bijuu is curious.$"
 
 RustboroCity_PokemonCenter_1F_Text_MaleAndFemalePokemon:
 	.string "Just like people, there are male and\n"
@@ -43,7 +43,7 @@ RustboroCity_PokemonCenter_1F_Text_MaleAndFemalePokemon:
 	.string "they're different.\p"
 	.string "Riko is bold, Penny is careful, and\n"
 	.string "Bijuu is always studying everyone.\p"
-	.string "They make a very strange research team.$"
+	.string "They make a very strange research team.\pThe tale names three girls,\nRiko, Penny, and Bijuu. Their\norigins remain a mystery.$"
 
 RustboroCity_PokemonCenter_1F_Text_HMCutNextDoor:
 	.string "The man next door gave me an HM!\p"
@@ -61,5 +61,5 @@ RustboroCity_PokemonCenter_1F_Text_HMCutNextDoor:
 	.string "A new report says the trio has a fourth\n"
 	.string "companion now.\p"
 	.string "Some people think the Trainer is a hero.\n"
-	.string "Others think the Trainer is just lucky!$"
+	.string "Others think the Trainer is just lucky!\pThey say Riko opens a path,\nPenny guides the lost, and Bijuu\ncan copy any tool or trick.$"
 

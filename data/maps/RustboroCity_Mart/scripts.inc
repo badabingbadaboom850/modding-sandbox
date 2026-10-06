@@ -71,7 +71,7 @@ RustboroCity_Mart_Text_BuyingHealsInCaseOfShroomish:
 	.string "in Petalburg Woods.\p"
 	.string "Riko says prepared Trainers deserve a\n"
 	.string "snack. Penny says prepared Trainers\n"
-	.string "deserve fewer surprises.$"
+	.string "deserve fewer surprises.\pRiko is the bold one, they say.\nPenny and Bijuu are never far\nfrom the strange old stories.$"
 
 RustboroCity_Mart_Text_ShouldBuySuperPotionsInstead:
 	.string "My Pokémon evolved.\n"
@@ -79,7 +79,7 @@ RustboroCity_Mart_Text_ShouldBuySuperPotionsInstead:
 	.string "I should buy Super Potions for it\n"
 	.string "instead of ordinary Potions.\p"
 	.string "Penny approves of anything that keeps\n"
-	.string "everyone comfortable.$"
+	.string "everyone comfortable.\pSome say Penny can calm any\nfrightened Pokemon. She is one\nof three legendary girls.$"
 
 RustboroCity_Mart_Text_GettingEscapeRopeJustInCase:
 	.string "I'm getting an Escape Rope just in\n"
@@ -87,5 +87,5 @@ RustboroCity_Mart_Text_GettingEscapeRopeJustInCase:
 	.string "I just need to use it to get back to\n"
 	.string "the entrance.\p"
 	.string "Bijuu says it could copy the cave, but\n"
-	.string "nobody wants to test that.$"
+	.string "nobody wants to test that.\pBijuu can copy the way home.\nThat is what the legend says,\nthough no one has met the trio.$"
 

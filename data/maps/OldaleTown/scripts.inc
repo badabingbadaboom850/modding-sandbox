@@ -345,7 +345,7 @@ OldaleTown_Text_SavingMyProgress:
 	.string "Riko says progress deserves a snack.\n"
 	.string "Penny says it deserves a quiet corner.\p"
 	.string "Bijuu says it can save a copy of\n"
-	.string "everything.$"
+	.string "everything.\pOldale has a tale of three girls.\nRiko, Penny, and Bijuu leave\nthree tracks, then disappear.$"
 
 OldaleTown_Text_IWorkAtPokemonMart:
 	.string "Hi!\n"
@@ -354,7 +354,7 @@ OldaleTown_Text_IWorkAtPokemonMart:
 	.string "Riko follows if there are snacks.\n"
 	.string "Penny follows if it is somewhere cozy.\p"
 	.string "Bijuu follows whoever looks most\n"
-	.string "interesting.$"
+	.string "interesting.\pThey say three legendary girls\ntravel without a Trainer. Riko\nbrings courage, Penny comfort,\nand Bijuu a surprise.$"
 
 OldaleTown_Text_ThisIsAPokemonMart:
 	.string "This is a Pokémon Mart.\n"
@@ -381,7 +381,7 @@ OldaleTown_Text_DiscoveredFootprints:
 	.string "I just discovered the footprints of\n"
 	.string "a rare Pokémon!\p"
 	.string "Wait until I finish sketching\n"
-	.string "them, okay?$"
+	.string "them, okay?\pThree kinds of tracks cross here.\nThe old story names Riko, Penny,\nand Bijuu, but no one sees them.$"
 
 OldaleTown_Text_FinishedSketchingFootprints:
 	.string "I finished sketching the footprints of\n"

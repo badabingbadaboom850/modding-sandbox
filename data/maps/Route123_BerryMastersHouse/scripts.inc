@@ -134,4 +134,4 @@ Route123_BerryMastersHouse_Text_FloofBerryQuip:
 	.string "Riko says berries are for eating.\p"
 	.string "Unless Bijuu wants one too. Then\n"
 	.string "it is for copying! Penny just wants\n"
-	.string "a quiet place to enjoy hers.$"
+	.string "a quiet place to enjoy hers.\pRiko follows the berry scent.\nPenny waits for a quiet moment.\nBijuu copies my sorting trick.\pThree girls, one old legend.\nThey say kindness brings them\nclose to a home.$"

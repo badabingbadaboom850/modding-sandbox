@@ -41,7 +41,7 @@ DewfordTown_PokemonCenter_1F_Text_StoneCavern:
 	.string "The elders say the trio never stays in\n"
 	.string "one place for long.\p"
 	.string "They leave behind smiles, strange stories,\n"
-	.string "and a very confused crowd.$
+	.string "and a very confused crowd.\pThree cries echo from the cavern.\nPeople say Riko, Penny, and Bijuu\nare the girls in the old story.$
 
 DewfordTown_PokemonCenter_1F_Text_FaintedMonCanUseHM:
 	.string "Even if a Pokémon faints and can't\n"
@@ -50,5 +50,5 @@ DewfordTown_PokemonCenter_1F_Text_FaintedMonCanUseHM:
 	.string "Bijuu says fainting is no reason to stop\n"
 	.string "copying useful tricks.\p"
 	.string "Riko would cheer, Penny would supervise,\n"
-	.string "and Bijuu would ask for a rematch.$"
+	.string "and Bijuu would ask for a rematch.\pThe legend says Penny stays\nwith the tired. Riko scouts ahead,\nand Bijuu watches every move.$"
 
