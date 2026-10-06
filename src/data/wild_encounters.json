@@ -4359,7 +4359,7 @@
               {
                 "min_level": 22,
                 "max_level": 26,
-                "species": "SPECIES_NIDORINO"
+                "species": "SPECIES_BIJUU_FIGHTING"
               }
             ]
           },
@@ -5283,7 +5283,7 @@
               {
                 "min_level": 27,
                 "max_level": 31,
-                "species": "SPECIES_INDEEDEE_F"
+                "species": "SPECIES_RIKO_DRAGON"
               }
             ]
           },
@@ -6279,9 +6279,9 @@
                 "species": "SPECIES_NOIVERN"
               },
               {
+                "species": "SPECIES_NOIVERN",
                 "min_level": 45,
-                "max_level": 55,
-                "species": "SPECIES_RIKO_DRAGON"
+                "max_level": 55
               }
             ]
           },
@@ -6587,9 +6587,9 @@
                 "species": "SPECIES_SCOLIPEDE"
               },
               {
+                "species": "SPECIES_SCOLIPEDE",
                 "min_level": 40,
-                "max_level": 47,
-                "species": "SPECIES_BIJUU_FIGHTING"
+                "max_level": 47
               }
             ]
           },
