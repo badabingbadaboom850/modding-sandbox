@@ -17,6 +17,7 @@ Route123_BerryMastersHouse_EventScript_BerryMaster::
 	addvar VAR_RESULT, FIRST_BERRY_INDEX
 	giveitem VAR_RESULT
 	goto_if_eq VAR_RESULT, FALSE, Common_EventScript_ShowBagIsFull
+	msgbox Route123_BerryMastersHouse_Text_FloofBerryQuip, MSGBOX_DEFAULT
 	setflag FLAG_GARBAGEFLAG
 	msgbox Route123_BerryMastersHouse_Text_WhyBeStingyTakeAnother, MSGBOX_DEFAULT
 	random NUM_BERRY_MASTER_BERRIES
@@ -128,3 +129,8 @@ Route123_BerryMastersHouse_EventScript_GaveBerry::
 	release
 	end
 
+
+Route123_BerryMastersHouse_Text_FloofBerryQuip:
+	.string "Riko says berries are for eating.\p"
+	.string "Unless Bijuu wants one too. Then\n"
+	.string "it is for copying!$"
