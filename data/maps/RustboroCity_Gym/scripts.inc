@@ -181,7 +181,7 @@ RustboroCity_Gym_Text_RoxanneIntro:
 	.string "apply what I learned at the Pokémon\l"
 	.string "Trainer's School in battle.\p"
 	.string "Would you kindly demonstrate how you\n"
-	.string "battle, and with which Pokémon?$"
+	.string "battle, and with which Pokémon?\p"\n\t.string "I never thought I would battle\nthe legendary trio!"
 
 RustboroCity_Gym_Text_RoxanneDefeat:
 	.string "So…\n"

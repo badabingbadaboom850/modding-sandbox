@@ -385,7 +385,7 @@ DewfordTown_Gym_Text_BrawlyIntro:
 	.string "of these parts, and I've grown tough\l"
 	.string "in the pitch-black cave!\p"
 	.string "So you wanted to challenge me?\n"
-	.string "Let me see what you're made of!$"
+	.string "Let me see what you're made of!\p"\n\t.string "The trio is here at last!\nLet us ride this wave!"
 
 DewfordTown_Gym_Text_BrawlyDefeat:
 	.string "Whoah, wow! You made a much bigger\n"
