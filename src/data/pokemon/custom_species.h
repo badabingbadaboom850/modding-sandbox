@@ -25,13 +25,4 @@ const u16 gMonShinyPalette_Bijuu[] = INCBIN_U16("graphics/pokemon/bijuu/shiny.gb
 const u8 gMonIcon_Bijuu[] = INCBIN_U8("graphics/pokemon/bijuu/icon.4bpp");
 const u16 gMonIconPalette_Bijuu[] = INCBIN_U16("graphics/pokemon/bijuu/icon_normal.gbapal");
 const u16 gMonShinyIconPalette_Bijuu[] = INCBIN_U16("graphics/pokemon/bijuu/icon_shiny.gbapal");
-static const struct LevelUpMove sBijuuLevelUpLearnset[] = {
-    LEVEL_UP_MOVE(1, MOVE_SCRATCH), LEVEL_UP_MOVE(1, MOVE_GROWL),
-    LEVEL_UP_MOVE(5, MOVE_FAKE_OUT), LEVEL_UP_MOVE(9, MOVE_FURY_SWIPES),
-    LEVEL_UP_MOVE(13, MOVE_BITE), LEVEL_UP_MOVE(17, MOVE_PAY_DAY),
-    LEVEL_UP_MOVE(21, MOVE_TAUNT), LEVEL_UP_MOVE(25, MOVE_SWIFT),
-    LEVEL_UP_MOVE(29, MOVE_NASTY_PLOT), LEVEL_UP_MOVE(34, MOVE_SLASH),
-    LEVEL_UP_MOVE(39, MOVE_U_TURN), LEVEL_UP_MOVE(44, MOVE_COPYCAT),
-    LEVEL_UP_MOVE(49, MOVE_DOUBLE_EDGE), LEVEL_UP_MOVE(55, MOVE_MEOWTH_MIMIC), LEVEL_UP_END
-};
 #endif
