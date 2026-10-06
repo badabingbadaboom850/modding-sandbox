@@ -722,7 +722,11 @@ DewfordTown_Text_ThrowInFishingAdvice:
 	.string "story: three legendary girls cross the\l"
 	.string "region when the right signs appear.\p"
 	.string "They say one is fluffy, one is gentle,\n"
-	.string "and one can become anyone at all.$"
+	.string "and one can become anyone at all.\p"
+	.string "Has anyone seen the Trainer who travels\n"
+	.string "with them?\p"
+	.string "If so, keep it quiet. The legends may be\n"
+	.string "trying to stay hidden.$"
 
 DewfordTown_Text_ThatsTooBadThen:
 	.string "Oh, is that so?\n"
