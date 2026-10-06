@@ -734,7 +734,10 @@ PetalburgCity_Text_FullPartyExplanation:
 	.string "It is automatically sent to a Storage\n"
 	.string "Box over a PC connection.\p"
 	.string "Riko says the Box should be labeled\n"
-	.string "SNACKS. Bijuu says it should be SECRET.$"
+	.string "SNACKS. Bijuu says it should be SECRET.\p"
+	.string "Have you heard about the legendary trio?\n"
+	.string "They are said to appear wherever a\l"
+	.string "Trainer needs help.$"
 
 PetalburgCity_Text_GymSign:
 	.string "Petalburg City Pokémon Gym\n"
