@@ -306,7 +306,6 @@ const struct SpeciesInfo gSpeciesInfo[] =
         .teachableLearnset = sMeowthTeachableLearnset,
         .eggMoveLearnset = sMeowthEggMoveLearnset,
         .formSpeciesIdTable = sBijuuFormSpeciesIdTable, .formChangeTable = sBijuuFormChangeTable,
-    },
         OVERWORLD(
             sPicTable_Bijuu,
             SIZE_32x32,
@@ -316,7 +315,7 @@ const struct SpeciesInfo gSpeciesInfo[] =
             gOverworldPalette_Bijuu,
             gShinyOverworldPalette_Bijuu
         )
-,
+    },
 #endif
 #endif
 
