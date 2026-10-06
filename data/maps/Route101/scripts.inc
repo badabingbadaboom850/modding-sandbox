@@ -295,7 +295,9 @@ Route101_Text_WildPokemonInTallGrass:
 	.string "Wild Pokémon will jump out at you in\n"
 	.string "tall grass.\p"
 	.string "If you want to catch Pokémon, you have\n"
-	.string "to go into the tall grass and search.$"
+	.string "to go into the tall grass and search.\p"
+	.string "Riko charges in, Penny watches the\n"
+	.string "edges, and Bijuu copies the surprise.$"
 
 Route101_Text_RouteSign:
 	.string "Route 101\n"
