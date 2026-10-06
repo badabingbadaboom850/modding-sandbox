@@ -388,15 +388,10 @@ OldaleTown_Text_FinishedSketchingFootprints:
 	.string "a rare Pokémon.\p"
 	.string "But it turns out they were only my\n"
 	.string "own footprints…\p"
-	.string "Riko says they are still impressive.\n"
-	.string "Penny says they need a better artist.\p"
-	.string "Bijuu has already copied the pose.\p"
-	.string "The sketcher also heard gossip about\n"
-	.string "three legendary girls passing through.\p"
-	.string "Riko says the legends must have\n"
-	.string "excellent dramatic timing.\p"
-	.string "Penny hopes they are friendly. Bijuu\n"
-	.string "has already started copying the rumor.$
+	.string "People here whisper about three\n"
+	.string "legendary girls: Riko, Penny, and Bijuu.\p"
+	.string "Riko says they must have excellent\n"
+	.string "dramatic timing.$"
 
 OldaleTown_Text_MayLetsGoBack:
 	.string "May: {PLAYER}{KUN}!\n"
