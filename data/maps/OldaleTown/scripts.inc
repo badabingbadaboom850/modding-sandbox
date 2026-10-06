@@ -390,7 +390,11 @@ OldaleTown_Text_FinishedSketchingFootprints:
 	.string "own footprints…\p"
 	.string "Riko says they are still impressive.\n"
 	.string "Penny says they need a better artist.\p"
-	.string "Bijuu has already copied the pose.$"
+	.string "Bijuu has already copied the pose.\p"
+	.string "The sketcher also found three enormous\n"
+	.string "marks nearby—stone, ice, and steel.\p"
+	.string "Riko says the legends must have\n"
+	.string "excellent dramatic timing.$"
 
 OldaleTown_Text_MayLetsGoBack:
 	.string "May: {PLAYER}{KUN}!\n"
