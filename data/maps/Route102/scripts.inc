@@ -89,13 +89,14 @@ Route102_Text_LetsGoBack:
 Route102_Text_ImNotVeryTall:
 	.string "I'm…not very tall, so I sink right\n"
 	.string "into tall grass.\p"
-	.string "The grass goes up my nose and…\n"
-	.string "Fwafwafwafwafwa…\p"
-	.string "Fwatchoo!$"
+	.string "Penny would disappear in here too…\n"
+	.string "though she'd probably emerge covered\n"
+	.string "in leaves and looking very proud!$"
 
 Route102_Text_CatchWholeBunchOfPokemon:
 	.string "I'm going to catch a whole bunch of\n"
-	.string "Pokémon!$"
+	.string "Pokémon! Maybe one will be as\n"
+	.string "dramatic as Riko!$""
 
 Route102_Text_RouteSignOldale:
 	.string "Route 102\n"

@@ -720,9 +720,9 @@ PetalburgCity_Text_ThisIsGymSign:
 
 PetalburgCity_Text_WaterReflection:
 	.string "My face is reflected in the water.\p"
-	.string "It's a shining grin full of hope…\p"
-	.string "Or it could be a look of somber silence\n"
-	.string "struggling with fear…\p"
+	.string "It looks brave and determined…\p"
+	.string "Or maybe I just saw Riko's fluffy\n"
+	.string "reflection beside mine.\p"
 	.string "What do you see reflected in your face?$"
 
 PetalburgCity_Text_FullPartyExplanation:
