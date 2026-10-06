@@ -28,10 +28,14 @@ DewfordTown_PokemonCenter_1F_Text_StoneCavern:
 	.string "There's a stone cavern at the edge\n"
 	.string "of town.\p"
 	.string "I've heard you can find rare stones\n"
-	.string "there.$"
+	.string "there.\p"
+	.string "Riko would charge in dramatically.\n"
+	.string "Penny would bring a snack for the trip.$"
 
 DewfordTown_PokemonCenter_1F_Text_FaintedMonCanUseHM:
 	.string "Even if a Pokémon faints and can't\n"
 	.string "battle, it can still use a move learned\l"
-	.string "from a Hidden Machine (HM).$"
+	.string "from a Hidden Machine (HM).\p"
+	.string "Bijuu says fainting is no reason to stop\n"
+	.string "copying useful tricks.$"
 
