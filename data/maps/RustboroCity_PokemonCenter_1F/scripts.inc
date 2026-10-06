@@ -57,5 +57,9 @@ RustboroCity_PokemonCenter_1F_Text_HMCutNextDoor:
 	.string "One demands snacks, one avoids attention,\l"
 	.string "and one copies anything interesting.\p"
 	.string "Nobody knows where they came from - or\n"
-	.string "why they always seem to be nearby.$"
+	.string "why they always seem to be nearby.\p"
+	.string "A new report says the trio has a fourth\n"
+	.string "companion now.\p"
+	.string "Some people think the Trainer is a hero.\n"
+	.string "Others think the Trainer is just lucky!$"
 
