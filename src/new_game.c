@@ -277,10 +277,11 @@ void NewGameInitData(void)
     InitSeedotSizeRecord();
     InitLotadSizeRecord();
     // Testing aid: start fresh saves with Riko and Bijuu in the party.
+    gPlayerPartyCount = 0;
+    ZeroPlayerPartyMons();
     gPlayerPartyCount = 2;
     CreateRandomMon(&gPlayerParty[0], SPECIES_RIKO, 5);
     CreateRandomMon(&gPlayerParty[1], SPECIES_BIJUU, 5);
-    ZeroPlayerPartyMons();
     ResetPokemonStorageSystem();
     ResetHallOfFameArchive();
     DeactivateAllRoamers();
