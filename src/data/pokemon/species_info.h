@@ -199,6 +199,15 @@ const struct SpeciesInfo gSpeciesInfo[] =
         .iconSprite = gMonIcon_Riko, .iconPalette = gMonIconPalette_Riko,
         .shinyIconPalette = gMonShinyIconPalette_Riko, .pokemonJumpType = PKMN_JUMP_TYPE_NORMAL,
         SHADOW(-2, 8, SHADOW_SIZE_S)
+        OVERWORLD(
+            sPicTable_Riko,
+            SIZE_32x32,
+            SHADOW_SIZE_M,
+            TRACKS_FOOT,
+            sAnimTable_Following,
+            gOverworldPalette_Riko,
+            gShinyOverworldPalette_Riko
+        )
         .teachingType = ALL_TEACHABLES, .levelUpLearnset = sRikoLevelUpLearnset,
         .formSpeciesIdTable = sRikoFormSpeciesIdTable, .formChangeTable = sRikoFormChangeTable,
     },
@@ -224,6 +233,15 @@ const struct SpeciesInfo gSpeciesInfo[] =
         .shinyIconPalette = gMonShinyIconPalette_Riko, .pokemonJumpType = PKMN_JUMP_TYPE_NORMAL,
         SHADOW(-2, 8, SHADOW_SIZE_S)
         .isMegaEvolution = TRUE,
+        OVERWORLD(
+            sPicTable_Riko,
+            SIZE_32x32,
+            SHADOW_SIZE_M,
+            TRACKS_FOOT,
+            sAnimTable_Following,
+            gOverworldPalette_Riko,
+            gShinyOverworldPalette_Riko
+        )
         .teachingType = ALL_TEACHABLES, .levelUpLearnset = sRikoLevelUpLearnset,
         .formSpeciesIdTable = sRikoFormSpeciesIdTable, .formChangeTable = sRikoFormChangeTable,
     },
@@ -249,6 +267,15 @@ const struct SpeciesInfo gSpeciesInfo[] =
         .iconSprite = gMonIcon_Bijuu, .iconPalette = gMonIconPalette_Bijuu,
         .shinyIconPalette = gMonShinyIconPalette_Bijuu, .pokemonJumpType = PKMN_JUMP_TYPE_FAST,
         SHADOW(-2, 8, SHADOW_SIZE_S)
+        OVERWORLD(
+            sPicTable_Bijuu,
+            SIZE_32x32,
+            SHADOW_SIZE_M,
+            TRACKS_FOOT,
+            sAnimTable_Following,
+            gOverworldPalette_Bijuu,
+            gShinyOverworldPalette_Bijuu
+        )
         .levelUpLearnset = sMeowthLevelUpLearnset,
         .teachableLearnset = sMeowthTeachableLearnset,
         .eggMoveLearnset = sMeowthEggMoveLearnset,
@@ -279,7 +306,16 @@ const struct SpeciesInfo gSpeciesInfo[] =
         .teachableLearnset = sMeowthTeachableLearnset,
         .eggMoveLearnset = sMeowthEggMoveLearnset,
         .formSpeciesIdTable = sBijuuFormSpeciesIdTable, .formChangeTable = sBijuuFormChangeTable,
-    },
+    }        OVERWORLD(
+            sPicTable_Bijuu,
+            SIZE_32x32,
+            SHADOW_SIZE_M,
+            TRACKS_FOOT,
+            sAnimTable_Following,
+            gOverworldPalette_Bijuu,
+            gShinyOverworldPalette_Bijuu
+        )
+,
 #endif
 #endif
 
@@ -304,6 +340,15 @@ const struct SpeciesInfo gSpeciesInfo[] =
         .iconSprite = gMonIcon_RikoFire, .iconPalette = gMonIconPalette_RikoFire,
         .shinyIconPalette = gMonShinyIconPalette_RikoFire, .pokemonJumpType = PKMN_JUMP_TYPE_NORMAL,
         SHADOW(-2, 8, SHADOW_SIZE_S)
+        OVERWORLD(
+            sPicTable_RikoFire,
+            SIZE_32x32,
+            SHADOW_SIZE_M,
+            TRACKS_FOOT,
+            sAnimTable_Following,
+            gOverworldPalette_RikoFire,
+            gShinyOverworldPalette_RikoFire
+        )
         .teachingType = ALL_TEACHABLES, .levelUpLearnset = sFuecocoLevelUpLearnset,
     },
 
@@ -327,6 +372,15 @@ const struct SpeciesInfo gSpeciesInfo[] =
         .iconSprite = gMonIcon_RikoWater, .iconPalette = gMonIconPalette_RikoWater,
         .shinyIconPalette = gMonShinyIconPalette_RikoWater, .pokemonJumpType = PKMN_JUMP_TYPE_NORMAL,
         SHADOW(-2, 8, SHADOW_SIZE_S)
+        OVERWORLD(
+            sPicTable_RikoWater,
+            SIZE_32x32,
+            SHADOW_SIZE_M,
+            TRACKS_FOOT,
+            sAnimTable_Following,
+            gOverworldPalette_RikoWater,
+            gShinyOverworldPalette_RikoWater
+        )
         .teachingType = ALL_TEACHABLES, .levelUpLearnset = sQuaxlyLevelUpLearnset,
     },
 
@@ -350,6 +404,15 @@ const struct SpeciesInfo gSpeciesInfo[] =
         .iconSprite = gMonIcon_RikoGrass, .iconPalette = gMonIconPalette_RikoGrass,
         .shinyIconPalette = gMonShinyIconPalette_RikoGrass, .pokemonJumpType = PKMN_JUMP_TYPE_NORMAL,
         SHADOW(-2, 8, SHADOW_SIZE_S)
+        OVERWORLD(
+            sPicTable_RikoGrass,
+            SIZE_32x32,
+            SHADOW_SIZE_M,
+            TRACKS_FOOT,
+            sAnimTable_Following,
+            gOverworldPalette_RikoGrass,
+            gShinyOverworldPalette_RikoGrass
+        )
         .teachingType = ALL_TEACHABLES, .levelUpLearnset = sSprigatitoLevelUpLearnset,
     },
 
@@ -373,6 +436,15 @@ const struct SpeciesInfo gSpeciesInfo[] =
         .iconSprite = gMonIcon_RikoElectric, .iconPalette = gMonIconPalette_RikoElectric,
         .shinyIconPalette = gMonShinyIconPalette_RikoElectric, .pokemonJumpType = PKMN_JUMP_TYPE_NORMAL,
         SHADOW(-2, 8, SHADOW_SIZE_S)
+        OVERWORLD(
+            sPicTable_RikoElectric,
+            SIZE_32x32,
+            SHADOW_SIZE_M,
+            TRACKS_FOOT,
+            sAnimTable_Following,
+            gOverworldPalette_RikoElectric,
+            gShinyOverworldPalette_RikoElectric
+        )
         .teachingType = ALL_TEACHABLES, .levelUpLearnset = sPawmiLevelUpLearnset,
     },
 
@@ -396,6 +468,15 @@ const struct SpeciesInfo gSpeciesInfo[] =
         .iconSprite = gMonIcon_RikoIce, .iconPalette = gMonIconPalette_RikoIce,
         .shinyIconPalette = gMonShinyIconPalette_RikoIce, .pokemonJumpType = PKMN_JUMP_TYPE_NORMAL,
         SHADOW(-2, 8, SHADOW_SIZE_S)
+        OVERWORLD(
+            sPicTable_RikoIce,
+            SIZE_32x32,
+            SHADOW_SIZE_M,
+            TRACKS_FOOT,
+            sAnimTable_Following,
+            gOverworldPalette_RikoIce,
+            gShinyOverworldPalette_RikoIce
+        )
         .teachingType = ALL_TEACHABLES, .levelUpLearnset = sSwinubLevelUpLearnset,
     },
 
@@ -419,6 +500,15 @@ const struct SpeciesInfo gSpeciesInfo[] =
         .iconSprite = gMonIcon_RikoPsychic, .iconPalette = gMonIconPalette_RikoPsychic,
         .shinyIconPalette = gMonShinyIconPalette_RikoPsychic, .pokemonJumpType = PKMN_JUMP_TYPE_NORMAL,
         SHADOW(-2, 8, SHADOW_SIZE_S)
+        OVERWORLD(
+            sPicTable_RikoPsychic,
+            SIZE_32x32,
+            SHADOW_SIZE_M,
+            TRACKS_FOOT,
+            sAnimTable_Following,
+            gOverworldPalette_RikoPsychic,
+            gShinyOverworldPalette_RikoPsychic
+        )
         .teachingType = ALL_TEACHABLES, .levelUpLearnset = sFlittleLevelUpLearnset,
     },
 
@@ -442,6 +532,15 @@ const struct SpeciesInfo gSpeciesInfo[] =
         .iconSprite = gMonIcon_RikoFlying, .iconPalette = gMonIconPalette_RikoFlying,
         .shinyIconPalette = gMonShinyIconPalette_RikoFlying, .pokemonJumpType = PKMN_JUMP_TYPE_NORMAL,
         SHADOW(-2, 8, SHADOW_SIZE_S)
+        OVERWORLD(
+            sPicTable_RikoFlying,
+            SIZE_32x32,
+            SHADOW_SIZE_M,
+            TRACKS_FOOT,
+            sAnimTable_Following,
+            gOverworldPalette_RikoFlying,
+            gShinyOverworldPalette_RikoFlying
+        )
         .teachingType = ALL_TEACHABLES, .levelUpLearnset = sWattrelLevelUpLearnset,
     },
 
@@ -465,6 +564,15 @@ const struct SpeciesInfo gSpeciesInfo[] =
         .iconSprite = gMonIcon_RikoDragon, .iconPalette = gMonIconPalette_RikoDragon,
         .shinyIconPalette = gMonShinyIconPalette_RikoDragon, .pokemonJumpType = PKMN_JUMP_TYPE_NORMAL,
         SHADOW(-2, 8, SHADOW_SIZE_S)
+        OVERWORLD(
+            sPicTable_RikoDragon,
+            SIZE_32x32,
+            SHADOW_SIZE_M,
+            TRACKS_FOOT,
+            sAnimTable_Following,
+            gOverworldPalette_RikoDragon,
+            gShinyOverworldPalette_RikoDragon
+        )
         .teachingType = ALL_TEACHABLES, .levelUpLearnset = sFrigibaxLevelUpLearnset,
     },
 
@@ -490,6 +598,15 @@ const struct SpeciesInfo gSpeciesInfo[] =
         .iconSprite = gMonIcon_BijuuFighting, .iconPalette = gMonIconPalette_BijuuFighting,
         .shinyIconPalette = gMonShinyIconPalette_BijuuFighting, .pokemonJumpType = PKMN_JUMP_TYPE_FAST,
         SHADOW(-2, 8, SHADOW_SIZE_S)
+        OVERWORLD(
+            sPicTable_BijuuFighting,
+            SIZE_32x32,
+            SHADOW_SIZE_M,
+            TRACKS_FOOT,
+            sAnimTable_Following,
+            gOverworldPalette_BijuuFighting,
+            gShinyOverworldPalette_BijuuFighting
+        )
         .teachingType = ALL_TEACHABLES, .levelUpLearnset = sFlamigoLevelUpLearnset,
     },
 
@@ -513,6 +630,15 @@ const struct SpeciesInfo gSpeciesInfo[] =
         .iconSprite = gMonIcon_BijuuPoison, .iconPalette = gMonIconPalette_BijuuPoison,
         .shinyIconPalette = gMonShinyIconPalette_BijuuPoison, .pokemonJumpType = PKMN_JUMP_TYPE_FAST,
         SHADOW(-2, 8, SHADOW_SIZE_S)
+        OVERWORLD(
+            sPicTable_BijuuPoison,
+            SIZE_32x32,
+            SHADOW_SIZE_M,
+            TRACKS_FOOT,
+            sAnimTable_Following,
+            gOverworldPalette_BijuuPoison,
+            gShinyOverworldPalette_BijuuPoison
+        )
         .teachingType = ALL_TEACHABLES, .levelUpLearnset = sKoffingLevelUpLearnset,
     },
 
@@ -536,6 +662,15 @@ const struct SpeciesInfo gSpeciesInfo[] =
         .iconSprite = gMonIcon_BijuuGround, .iconPalette = gMonIconPalette_BijuuGround,
         .shinyIconPalette = gMonShinyIconPalette_BijuuGround, .pokemonJumpType = PKMN_JUMP_TYPE_FAST,
         SHADOW(-2, 8, SHADOW_SIZE_S)
+        OVERWORLD(
+            sPicTable_BijuuGround,
+            SIZE_32x32,
+            SHADOW_SIZE_M,
+            TRACKS_FOOT,
+            sAnimTable_Following,
+            gOverworldPalette_BijuuGround,
+            gShinyOverworldPalette_BijuuGround
+        )
         .teachingType = ALL_TEACHABLES, .levelUpLearnset = sPhanpyLevelUpLearnset,
     },
 
@@ -559,6 +694,15 @@ const struct SpeciesInfo gSpeciesInfo[] =
         .iconSprite = gMonIcon_BijuuRock, .iconPalette = gMonIconPalette_BijuuRock,
         .shinyIconPalette = gMonShinyIconPalette_BijuuRock, .pokemonJumpType = PKMN_JUMP_TYPE_FAST,
         SHADOW(-2, 8, SHADOW_SIZE_S)
+        OVERWORLD(
+            sPicTable_BijuuRock,
+            SIZE_32x32,
+            SHADOW_SIZE_M,
+            TRACKS_FOOT,
+            sAnimTable_Following,
+            gOverworldPalette_BijuuRock,
+            gShinyOverworldPalette_BijuuRock
+        )
         .teachingType = ALL_TEACHABLES, .levelUpLearnset = sNacliLevelUpLearnset,
     },
 
@@ -582,6 +726,15 @@ const struct SpeciesInfo gSpeciesInfo[] =
         .iconSprite = gMonIcon_BijuuBug, .iconPalette = gMonIconPalette_BijuuBug,
         .shinyIconPalette = gMonShinyIconPalette_BijuuBug, .pokemonJumpType = PKMN_JUMP_TYPE_FAST,
         SHADOW(-2, 8, SHADOW_SIZE_S)
+        OVERWORLD(
+            sPicTable_BijuuBug,
+            SIZE_32x32,
+            SHADOW_SIZE_M,
+            TRACKS_FOOT,
+            sAnimTable_Following,
+            gOverworldPalette_BijuuBug,
+            gShinyOverworldPalette_BijuuBug
+        )
         .teachingType = ALL_TEACHABLES, .levelUpLearnset = sSewaddleLevelUpLearnset,
     },
 
@@ -605,6 +758,15 @@ const struct SpeciesInfo gSpeciesInfo[] =
         .iconSprite = gMonIcon_BijuuGhost, .iconPalette = gMonIconPalette_BijuuGhost,
         .shinyIconPalette = gMonShinyIconPalette_BijuuGhost, .pokemonJumpType = PKMN_JUMP_TYPE_FAST,
         SHADOW(-2, 8, SHADOW_SIZE_S)
+        OVERWORLD(
+            sPicTable_BijuuGhost,
+            SIZE_32x32,
+            SHADOW_SIZE_M,
+            TRACKS_FOOT,
+            sAnimTable_Following,
+            gOverworldPalette_BijuuGhost,
+            gShinyOverworldPalette_BijuuGhost
+        )
         .teachingType = ALL_TEACHABLES, .levelUpLearnset = sMisdreavusLevelUpLearnset,
     },
 
@@ -628,6 +790,15 @@ const struct SpeciesInfo gSpeciesInfo[] =
         .iconSprite = gMonIcon_BijuuDark, .iconPalette = gMonIconPalette_BijuuDark,
         .shinyIconPalette = gMonShinyIconPalette_BijuuDark, .pokemonJumpType = PKMN_JUMP_TYPE_FAST,
         SHADOW(-2, 8, SHADOW_SIZE_S)
+        OVERWORLD(
+            sPicTable_BijuuDark,
+            SIZE_32x32,
+            SHADOW_SIZE_M,
+            TRACKS_FOOT,
+            sAnimTable_Following,
+            gOverworldPalette_BijuuDark,
+            gShinyOverworldPalette_BijuuDark
+        )
         .teachingType = ALL_TEACHABLES, .levelUpLearnset = sSableyeLevelUpLearnset,
     },
 
@@ -651,6 +822,15 @@ const struct SpeciesInfo gSpeciesInfo[] =
         .iconSprite = gMonIcon_BijuuSteel, .iconPalette = gMonIconPalette_BijuuSteel,
         .shinyIconPalette = gMonShinyIconPalette_BijuuSteel, .pokemonJumpType = PKMN_JUMP_TYPE_FAST,
         SHADOW(-2, 8, SHADOW_SIZE_S)
+        OVERWORLD(
+            sPicTable_BijuuSteel,
+            SIZE_32x32,
+            SHADOW_SIZE_M,
+            TRACKS_FOOT,
+            sAnimTable_Following,
+            gOverworldPalette_BijuuSteel,
+            gShinyOverworldPalette_BijuuSteel
+        )
         .teachingType = ALL_TEACHABLES, .levelUpLearnset = sTinkatinkLevelUpLearnset,
     },
 

@@ -646,11 +646,65 @@ RIKO_VARIANT_GFX := graphics/pokemon/riko_fire/front.4bpp.smol \
                    graphics/pokemon/bijuu_steel/icon.4bpp \
                    graphics/pokemon/bijuu_steel/icon_normal.gbapal \
                    graphics/pokemon/bijuu_steel/icon_shiny.gbapal
+RIKO_OVERWORLD_GFX := graphics/pokemon/riko/overworld.4bpp \
+                     graphics/pokemon/riko/overworld_normal.gbapal \
+                     graphics/pokemon/riko/overworld_shiny.gbapal \
+                     graphics/pokemon/bijuu/overworld.4bpp \
+                     graphics/pokemon/bijuu/overworld_normal.gbapal \
+                     graphics/pokemon/bijuu/overworld_shiny.gbapal \
+                     graphics/pokemon/riko_fire/overworld.4bpp \
+                     graphics/pokemon/riko_fire/overworld_normal.gbapal \
+                     graphics/pokemon/riko_fire/overworld_shiny.gbapal \
+                     graphics/pokemon/riko_water/overworld.4bpp \
+                     graphics/pokemon/riko_water/overworld_normal.gbapal \
+                     graphics/pokemon/riko_water/overworld_shiny.gbapal \
+                     graphics/pokemon/riko_grass/overworld.4bpp \
+                     graphics/pokemon/riko_grass/overworld_normal.gbapal \
+                     graphics/pokemon/riko_grass/overworld_shiny.gbapal \
+                     graphics/pokemon/riko_electric/overworld.4bpp \
+                     graphics/pokemon/riko_electric/overworld_normal.gbapal \
+                     graphics/pokemon/riko_electric/overworld_shiny.gbapal \
+                     graphics/pokemon/riko_ice/overworld.4bpp \
+                     graphics/pokemon/riko_ice/overworld_normal.gbapal \
+                     graphics/pokemon/riko_ice/overworld_shiny.gbapal \
+                     graphics/pokemon/riko_psychic/overworld.4bpp \
+                     graphics/pokemon/riko_psychic/overworld_normal.gbapal \
+                     graphics/pokemon/riko_psychic/overworld_shiny.gbapal \
+                     graphics/pokemon/riko_flying/overworld.4bpp \
+                     graphics/pokemon/riko_flying/overworld_normal.gbapal \
+                     graphics/pokemon/riko_flying/overworld_shiny.gbapal \
+                     graphics/pokemon/riko_dragon/overworld.4bpp \
+                     graphics/pokemon/riko_dragon/overworld_normal.gbapal \
+                     graphics/pokemon/riko_dragon/overworld_shiny.gbapal \
+                     graphics/pokemon/bijuu_fighting/overworld.4bpp \
+                     graphics/pokemon/bijuu_fighting/overworld_normal.gbapal \
+                     graphics/pokemon/bijuu_fighting/overworld_shiny.gbapal \
+                     graphics/pokemon/bijuu_poison/overworld.4bpp \
+                     graphics/pokemon/bijuu_poison/overworld_normal.gbapal \
+                     graphics/pokemon/bijuu_poison/overworld_shiny.gbapal \
+                     graphics/pokemon/bijuu_ground/overworld.4bpp \
+                     graphics/pokemon/bijuu_ground/overworld_normal.gbapal \
+                     graphics/pokemon/bijuu_ground/overworld_shiny.gbapal \
+                     graphics/pokemon/bijuu_rock/overworld.4bpp \
+                     graphics/pokemon/bijuu_rock/overworld_normal.gbapal \
+                     graphics/pokemon/bijuu_rock/overworld_shiny.gbapal \
+                     graphics/pokemon/bijuu_bug/overworld.4bpp \
+                     graphics/pokemon/bijuu_bug/overworld_normal.gbapal \
+                     graphics/pokemon/bijuu_bug/overworld_shiny.gbapal \
+                     graphics/pokemon/bijuu_ghost/overworld.4bpp \
+                     graphics/pokemon/bijuu_ghost/overworld_normal.gbapal \
+                     graphics/pokemon/bijuu_ghost/overworld_shiny.gbapal \
+                     graphics/pokemon/bijuu_dark/overworld.4bpp \
+                     graphics/pokemon/bijuu_dark/overworld_normal.gbapal \
+                     graphics/pokemon/bijuu_dark/overworld_shiny.gbapal \
+                     graphics/pokemon/bijuu_steel/overworld.4bpp \
+                     graphics/pokemon/bijuu_steel/overworld_normal.gbapal \
+                     graphics/pokemon/bijuu_steel/overworld_shiny.gbapal
 RIKO_MEGA_GFX := graphics/pokemon/riko/mega/front.4bpp.smol \
                  graphics/pokemon/riko/mega/back.4bpp.smol \
                  graphics/pokemon/riko/mega/normal.gbapal \
                  graphics/pokemon/riko/mega/shiny.gbapal
-$(C_BUILDDIR)/pokemon.o: $(C_SUBDIR)/pokemon.c $(DATA_SRC_SUBDIR)/pokemon/teachable_learnsets.h $(LEGACY_LEVEL_UP_HEADER) $(RIKO_VARIANT_GFX) $(RIKO_MEGA_GFX)
+$(C_BUILDDIR)/pokemon.o: $(C_SUBDIR)/pokemon.c $(DATA_SRC_SUBDIR)/pokemon/teachable_learnsets.h $(LEGACY_LEVEL_UP_HEADER) $(RIKO_VARIANT_GFX) $(RIKO_MEGA_GFX) $(RIKO_OVERWORLD_GFX)
 
 # As a side effect, they're evaluated immediately instead of when the rule is invoked.
 # It doesn't look like $(shell) can be deferred so there might not be a better way (Icedude_907: there is soon).
