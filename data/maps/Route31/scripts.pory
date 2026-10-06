@@ -120,20 +120,20 @@ Route31_EventScript_ItemAntidote::
 	end
 
 Route31_Text_BijuuAppears:
-	.string "The shy cat copies your steps.\\p"
+	.string "The shy cat copies your steps.\p"
 	.string "She steps close, watching you\\n"
 	.string "with bright, curious eyes.$"
 
 Route31_Text_BijuuTooShy:
 	.string "A shy cat watches from the\\n"
-	.string "grass.\\p"
+	.string "grass.\p"
 	.string "It copies your movements, then\\n"
-	.string "hides.\\p"
+	.string "hides.\p"
 	.string "You should come back with\\n"
 	.string "Poke Balls.$"
 
 Route31_Text_BijuuCaught:
-	.string "Bijuu trusts you enough to stay.\\p"
+	.string "Bijuu trusts you enough to stay.\p"
 	.string "She was sent to a PC Box if your\\n"
 	.string "party was full.$"
 
