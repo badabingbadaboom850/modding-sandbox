@@ -3663,11 +3663,12 @@ Double Battle: No
 AI: Basic Trainer
 Mugshot: Purple
 
-Totodile
+Fidough
 Level: 5
+Ability: Own Tempo
 IVs: 0 HP / 0 Atk / 0 Def / 0 SpA / 0 SpD / 0 Spe
-- Scratch
-- Leer
+- Tackle
+- Tail Whip
 
 === TRAINER_RIVAL_TOTODILE_2 ===
 Name: {RIVAL}
@@ -3680,37 +3681,41 @@ Double Battle: No
 AI: Smart Trainer
 Mugshot: Yellow
 
-Haunter
+Fidough
 Level: 20
+Ability: Own Tempo
 IVs: 10 HP / 10 Atk / 10 Def / 10 SpA / 10 SpD / 10 Spe
-- Shadow Punch
-- Confuse Ray
-- Curse
-- Lick
-
-Pawniard
-Level: 20
-IVs: 10 HP / 10 Atk / 10 Def / 10 SpA / 10 SpD / 10 Spe
-- Fury Cutter
-- Metal Claw
-- Torment
-- Leer
-
-Pidgeotto
-Level: 21
-IVs: 10 HP / 10 Atk / 10 Def / 10 SpA / 10 SpD / 10 Spe
-- Wing Attack
-- Quick Attack
-- Featherdance
-- Mud-Slap
-
-Croconaw
-Level: 21
-IVs: 10 HP / 10 Atk / 10 Def / 10 SpA / 10 SpD / 10 Spe
-- Water Gun
-- Ice Fang
 - Bite
-- Scary Face
+- Charm
+- Play Rough
+- Work Up
+
+Fidough
+Level: 20
+Ability: Own Tempo
+IVs: 10 HP / 10 Atk / 10 Def / 10 SpA / 10 SpD / 10 Spe
+- Play Rough
+- Tail Whip
+- Bite
+- Protect
+
+Fidough
+Level: 21
+Ability: Own Tempo
+IVs: 10 HP / 10 Atk / 10 Def / 10 SpA / 10 SpD / 10 Spe
+- Bite
+- Charm
+- Play Rough
+- Work Up
+
+Fidough
+Level: 21
+Ability: Own Tempo
+IVs: 10 HP / 10 Atk / 10 Def / 10 SpA / 10 SpD / 10 Spe
+- Play Rough
+- Tail Whip
+- Bite
+- Protect
 
 === TRAINER_RIVAL_TOTODILE_3 ===
 Name: {RIVAL}
@@ -3722,76 +3727,105 @@ Double Battle: No
 AI: Smart Trainer
 Mugshot: Blue
 
-Haunter
+Fidough
 Level: 31
-IVs: 20 HP / 20 Atk / 20 Def / 20 SpA / 20 SpD / 20 Spe
+Ability: Own Tempo
+IVs: 10 HP / 10 Atk / 10 Def / 10 SpA / 10 SpD / 10 Spe
+- Bite
+- Play Rough
+- Charm
+- Work Up
 
-Pawniard
+Fidough
 Level: 31
-IVs: 20 HP / 20 Atk / 20 Def / 20 SpA / 20 SpD / 20 Spe
+Ability: Own Tempo
+IVs: 10 HP / 10 Atk / 10 Def / 10 SpA / 10 SpD / 10 Spe
+- Play Rough
+- Bite
+- Tail Whip
+- Protect
 
-Staravia
+Fidough
 Level: 32
-IVs: 20 HP / 20 Atk / 20 Def / 20 SpA / 20 SpD / 20 Spe
+Ability: Own Tempo
+IVs: 10 HP / 10 Atk / 10 Def / 10 SpA / 10 SpD / 10 Spe
+- Bite
+- Play Rough
+- Charm
+- Work Up
 
-Weepinbell
+Fidough
 Level: 31
-IVs: 20 HP / 20 Atk / 20 Def / 20 SpA / 20 SpD / 20 Spe
+Ability: Own Tempo
+IVs: 10 HP / 10 Atk / 10 Def / 10 SpA / 10 SpD / 10 Spe
+- Play Rough
+- Bite
+- Tail Whip
+- Protect
 
-Croconaw
+Fidough
 Level: 33
+Ability: Own Tempo
+IVs: 10 HP / 10 Atk / 10 Def / 10 SpA / 10 SpD / 10 Spe
+- Bite
+- Play Rough
+- Charm
+- Work Up
+
+=== TRAINER_RIVAL_TOTODILE_4 ===
+Name: {RIVAL}
+Class: Rival
+Pic: Silver
+Gender: Male
+Music: Silver
+Double Battle: No
+AI: Smart Trainer
+Mugshot: Blue
+
+Fidough
+Level: 48
+Ability: Own Tempo
 IVs: 20 HP / 20 Atk / 20 Def / 20 SpA / 20 SpD / 20 Spe
-
-
-=== TRAINER_RIVAL_TOTODILE_4 ===
-Name: {RIVAL}
-Class: Rival
-Pic: Silver
-Gender: Male
-Music: Silver
-Double Battle: No
-AI: Smart Trainer
-Mugshot: Blue
-
-Gengar
-Level: 48
-IVs: 10 HP / 10 Atk / 10 Def / 10 SpA / 10 SpD / 10 Spe
-- Hypnosis
-- Thunderbolt
-- Shadow Ball
-- Dream Eater
-
-Bisharp
-Level: 48
-IVs: 10 HP / 10 Atk / 10 Def / 10 SpA / 10 SpD / 10 Spe
-- Night Slash
-- Low Sweep
-- Iron Head
-- Aerial Ace
-
-Staraptor
-Level: 48
-IVs: 10 HP / 10 Atk / 10 Def / 10 SpA / 10 SpD / 10 Spe
-- Brave Bird
-- Close Combat
-- U-Turn
-- Facade
-
-Victreebel
-Level: 49
-IVs: 10 HP / 10 Atk / 10 Def / 10 SpA / 10 SpD / 10 Spe
-- Solar Beam
-- Giga Drain
-- Sludge Bomb
-- Sleep Powder
-
-Feraligatr @ Life Orb
-Level: 49
-IVs: 10 HP / 10 Atk / 10 Def / 10 SpA / 10 SpD / 10 Spe
+- Play Rough
 - Crunch
-- Ice Punch
-- Liquidation
-- Strength
+- Work Up
+- Protect
+
+Fidough
+Level: 48
+Ability: Own Tempo
+IVs: 20 HP / 20 Atk / 20 Def / 20 SpA / 20 SpD / 20 Spe
+- Play Rough
+- Charm
+- Bite
+- Rest
+
+Fidough
+Level: 48
+Ability: Own Tempo
+IVs: 20 HP / 20 Atk / 20 Def / 20 SpA / 20 SpD / 20 Spe
+- Play Rough
+- Crunch
+- Charm
+- Helping Hand
+
+Fidough
+Level: 49
+Ability: Own Tempo
+IVs: 20 HP / 20 Atk / 20 Def / 20 SpA / 20 SpD / 20 Spe
+- Play Rough
+- Crunch
+- Work Up
+- Protect
+
+Fidough @ Sitrus Berry
+Level: 49
+Ability: Own Tempo
+IVs: 20 HP / 20 Atk / 20 Def / 20 SpA / 20 SpD / 20 Spe
+- Play Rough
+- Charm
+- Bite
+- Rest
 
 === TRAINER_RIVAL_TOTODILE_4 ===
 Name: {RIVAL}
@@ -3804,50 +3838,50 @@ AI: Smart Trainer
 Mugshot: Blue
 Difficulty: Hard
 
-Gengar @ Focus Sash
+Fidough
 Level: 49
-IVs: 31 HP / 31 Atk / 31 Def / 31 SpA / 31 SpD / 31 Spe
-EVs: 252 SpA / 252 Spe
-- Hypnosis
-- Thunderbolt
-- Shadow Ball
-- Dream Eater
+Ability: Own Tempo
+IVs: 24 HP / 24 Atk / 24 Def / 24 SpA / 24 SpD / 24 Spe
+- Play Rough
+- Crunch
+- Work Up
+- Protect
 
-Bisharp @ Chople Berry
+Fidough
 Level: 50
-IVs: 31 HP / 31 Atk / 31 Def / 31 SpA / 31 SpD / 31 Spe
-EVs: 252 Atk / 252 Spe
-- Night Slash
-- Low Sweep
-- Iron Head
-- Aerial Ace
+Ability: Own Tempo
+IVs: 24 HP / 24 Atk / 24 Def / 24 SpA / 24 SpD / 24 Spe
+- Play Rough
+- Charm
+- Bite
+- Rest
 
-Staraptor @ Sharp Beak
+Fidough
 Level: 49
-IVs: 31 HP / 31 Atk / 31 Def / 31 SpA / 31 SpD / 31 Spe
-EVs: 252 Atk / 252 Spe
-- Brave Bird
-- Close Combat
-- U-Turn
-- Facade
+Ability: Own Tempo
+IVs: 24 HP / 24 Atk / 24 Def / 24 SpA / 24 SpD / 24 Spe
+- Play Rough
+- Crunch
+- Charm
+- Helping Hand
 
-Victreebel @ Black Sludge
+Fidough
 Level: 50
-IVs: 31 HP / 31 Atk / 31 Def / 31 SpA / 31 SpD / 31 Spe
-EVs: 252 SpA / 252 HP
-- Solar Beam
-- Giga Drain
-- Sludge Bomb
-- Sleep Powder
+Ability: Own Tempo
+IVs: 24 HP / 24 Atk / 24 Def / 24 SpA / 24 SpD / 24 Spe
+- Play Rough
+- Crunch
+- Work Up
+- Protect
 
-Feraligatr @ Life Orb
+Fidough @ Sitrus Berry
 Level: 51
-IVs: 31 HP / 31 Atk / 31 Def / 31 SpA / 31 SpD / 31 Spe
-EVs: 252 Atk / 252 HP
-- Crunch
-- Ice Punch
-- Liquidation
-- Strength
+Ability: Own Tempo
+IVs: 24 HP / 24 Atk / 24 Def / 24 SpA / 24 SpD / 24 Spe
+- Play Rough
+- Charm
+- Bite
+- Rest
 
 === TRAINER_RIVAL_TOTODILE_5 ===
 Name: {RIVAL}
@@ -3859,60 +3893,59 @@ Double Battle: No
 AI: Smart Trainer
 Mugshot: Pink
 
-Gengar @ Air Balloon  
-Ability: Cursed Body  
-Level: 65  
-IVs: 12 HP / 12 Atk / 12 Def / 12 SpA / 12 SpD / 12 Spe 
-- Hypnosis  
-- Thunderbolt  
-- Shadow Ball  
-- Dream Eater  
+Fidough
+Level: 65
+Ability: Own Tempo
+IVs: 20 HP / 20 Atk / 20 Def / 20 SpA / 20 SpD / 20 Spe
+- Play Rough
+- Crunch
+- Work Up
+- Protect
 
-Kingambit @ Air Balloon  
-Ability: Supreme Overlord  
-Level: 65  
-IVs: 12 HP / 12 Atk / 12 Def / 12 SpA / 12 SpD / 12 Spe
-- Kowtow Cleave  
-- Iron Head  
-- Low Kick  
-- Zen Headbutt  
+Fidough @ Leftovers
+Level: 65
+Ability: Own Tempo
+IVs: 20 HP / 20 Atk / 20 Def / 20 SpA / 20 SpD / 20 Spe
+- Play Rough
+- Charm
+- Bite
+- Rest
 
-Staraptor @ Sharp Beak  
-Ability: Intimidate  
-Level: 65  
-IVs: 12 HP / 12 Atk / 12 Def / 12 SpA / 12 SpD / 12 Spe
-- Brave Bird  
-- Close Combat  
-- U-Turn  
-- Facade  
+Fidough
+Level: 65
+Ability: Own Tempo
+IVs: 20 HP / 20 Atk / 20 Def / 20 SpA / 20 SpD / 20 Spe
+- Play Rough
+- Crunch
+- Charm
+- Helping Hand
 
-Victreebel @ Occa Berry  
-Ability: Gluttony  
-Level: 65  
-IVs: 12 HP / 12 Atk / 12 Def / 12 SpA / 12 SpD / 12 Spe
-- Solar Beam  
-- Giga Drain  
-- Sludge Bomb  
-- Sleep Powder  
+Fidough
+Level: 65
+Ability: Own Tempo
+IVs: 20 HP / 20 Atk / 20 Def / 20 SpA / 20 SpD / 20 Spe
+- Play Rough
+- Crunch
+- Work Up
+- Protect
 
-Feraligatr @ Bondstone  
-Ability: Sheer Force  
-Level: 65  
-IVs: 12 HP / 12 Atk / 12 Def / 12 SpA / 12 SpD / 12 Spe
-- Crunch  
-- Ice Punch  
-- Liquidation  
-- Aqua Jet  
+Fidough
+Level: 65
+Ability: Own Tempo
+IVs: 20 HP / 20 Atk / 20 Def / 20 SpA / 20 SpD / 20 Spe
+- Play Rough
+- Charm
+- Bite
+- Rest
 
-Armarouge @ Salac Berry  
-Ability: Flash Fire  
-Level: 65  
-IVs: 12 HP / 12 Atk / 12 Def / 12 SpA / 12 SpD / 12 Spe
-Quirky Nature  
-- Armor Cannon  
-- Aura Sphere  
-- Calm Mind  
-- Energy Ball
+Fidough @ Sitrus Berry
+Level: 65
+Ability: Own Tempo
+IVs: 20 HP / 20 Atk / 20 Def / 20 SpA / 20 SpD / 20 Spe
+- Play Rough
+- Crunch
+- Charm
+- Helping Hand
 
 === TRAINER_RIVAL_TOTODILE_5 ===
 Name: {RIVAL}
@@ -3925,61 +3958,59 @@ AI: Smart Trainer
 Mugshot: Pink
 Difficulty: Hard
 
-Gengar @ Air Balloon  
-Ability: Cursed Body  
-Level: 66  
-EVs: 252 Spe / 252 SpA
-IVs: 0 Atk  
-- Hypnosis  
-- Thunderbolt  
-- Shadow Ball  
-- Dream Eater  
+Fidough
+Level: 66
+Ability: Own Tempo
+IVs: 31 HP / 31 Atk / 31 Def / 31 SpA / 31 SpD / 31 Spe
+- Play Rough
+- Crunch
+- Work Up
+- Protect
 
-Kingambit @ Air Balloon  
-Ability: Supreme Overlord  
-Level: 67 
-EVs: 252 HP / 252 Atk 
-- Kowtow Cleave  
-- Iron Head  
-- Low Kick  
-- Sucker Punch  
+Fidough @ Leftovers
+Level: 67
+Ability: Own Tempo
+IVs: 31 HP / 31 Atk / 31 Def / 31 SpA / 31 SpD / 31 Spe
+- Play Rough
+- Charm
+- Bite
+- Rest
 
-Staraptor @ Sharp Beak  
-Ability: Intimidate  
-EVs: 252 Atk / 252 Spe
-Level: 66  
-- Brave Bird  
-- Close Combat  
-- U-Turn  
-- Facade  
+Fidough
+Level: 66
+Ability: Own Tempo
+IVs: 31 HP / 31 Atk / 31 Def / 31 SpA / 31 SpD / 31 Spe
+- Play Rough
+- Crunch
+- Charm
+- Helping Hand
 
-Victreebel @ Occa Berry  
-Ability: Gluttony  
-Level: 67  
-EVs: 252 SpA / 252 HP  
-- Solar Beam  
-- Giga Drain  
-- Sludge Bomb  
-- Sleep Powder  
+Fidough
+Level: 67
+Ability: Own Tempo
+IVs: 31 HP / 31 Atk / 31 Def / 31 SpA / 31 SpD / 31 Spe
+- Play Rough
+- Crunch
+- Work Up
+- Protect
 
-Feraligatr @ Bondstone  
-Ability: Sheer Force  
-EVs: 252 Atk / 252 Spe
-Level: 67  
-- Crunch  
-- Ice Punch  
-- Liquidation  
-- Aqua Jet  
+Fidough
+Level: 67
+Ability: Own Tempo
+IVs: 31 HP / 31 Atk / 31 Def / 31 SpA / 31 SpD / 31 Spe
+- Play Rough
+- Charm
+- Bite
+- Rest
 
-Armarouge @ Salac Berry  
-Ability: Flash Fire  
-Level: 66  
-EVs: 252 SpA / 252 Spe
-Quirky Nature  
-- Armor Cannon  
-- Aura Sphere  
-- Calm Mind  
-- Energy Ball
+Fidough @ Sitrus Berry
+Level: 66
+Ability: Own Tempo
+IVs: 31 HP / 31 Atk / 31 Def / 31 SpA / 31 SpD / 31 Spe
+- Play Rough
+- Crunch
+- Charm
+- Helping Hand
 
 === TRAINER_RIVAL_TOTODILE_6 ===
 Name: {RIVAL}
@@ -3992,53 +4023,59 @@ Double Battle: No
 AI: Basic Trainer
 Mugshot: Green
 
-Ursaluna Bloodmoon @ Chesto Berry
+Fidough
 Level: 64
-IVs: 31 HP / 31 Atk / 31 Def / 31 SpA / 31 SpD / 31 Spe
-- Fake Tears
-- Moonblast
-- Ancient Power
+Ability: Own Tempo
+IVs: 20 HP / 20 Atk / 20 Def / 20 SpA / 20 SpD / 20 Spe
+- Play Rough
+- Crunch
+- Work Up
+- Protect
+
+Fidough @ Leftovers
+Level: 64
+Ability: Own Tempo
+IVs: 20 HP / 20 Atk / 20 Def / 20 SpA / 20 SpD / 20 Spe
+- Play Rough
+- Charm
+- Bite
 - Rest
 
-Crobat @ Leftovers
+Fidough
 Level: 64
-IVs: 31 HP / 31 Atk / 31 Def / 31 SpA / 31 SpD / 31 Spe
-- Toxic
-- Double Team
-- Confuse Ray
-- Wing Attack
-
-Victreebel @ Scope Lens
-Level: 64
-IVs: 31 HP / 31 Atk / 31 Def / 31 SpA / 31 SpD / 31 Spe
-- Sludge Bomb
-- Razor Leaf
-- Sleep Powder
-- Growth
-
-Houndoom @ Charcoal
-Level: 64
-IVs: 31 HP / 31 Atk / 31 Def / 31 SpA / 31 SpD / 31 Spe
-- Fire Blast
-- Iron Tail
+Ability: Own Tempo
+IVs: 20 HP / 20 Atk / 20 Def / 20 SpA / 20 SpD / 20 Spe
+- Play Rough
 - Crunch
-- Double Team
+- Charm
+- Helping Hand
 
-Feraligatr @ Scope Lens
+Fidough
 Level: 64
-IVs: 31 HP / 31 Atk / 31 Def / 31 SpA / 31 SpD / 31 Spe
-- Ice Beam
-- Surf
-- Slash
-- Earthquake
-
-Tyranitar @ Quick Claw
-Level: 64
-IVs: 31 HP / 31 Atk / 31 Def / 31 SpA / 31 SpD / 31 Spe
+Ability: Own Tempo
+IVs: 20 HP / 20 Atk / 20 Def / 20 SpA / 20 SpD / 20 Spe
+- Play Rough
 - Crunch
-- Earthquake
-- Rock Slide
-- Fire Blast
+- Work Up
+- Protect
+
+Fidough
+Level: 64
+Ability: Own Tempo
+IVs: 20 HP / 20 Atk / 20 Def / 20 SpA / 20 SpD / 20 Spe
+- Play Rough
+- Charm
+- Bite
+- Rest
+
+Fidough @ Sitrus Berry
+Level: 64
+Ability: Own Tempo
+IVs: 20 HP / 20 Atk / 20 Def / 20 SpA / 20 SpD / 20 Spe
+- Play Rough
+- Crunch
+- Charm
+- Helping Hand
 
 === TRAINER_RIVAL_TOTODILE_7 ===
 Name: {RIVAL}
@@ -4051,53 +4088,59 @@ Double Battle: No
 AI: Basic Trainer
 Mugshot: Pink
 
-Ursaluna Bloodmoon @ Chesto Berry
+Fidough
 Level: 68
-IVs: 31 HP / 31 Atk / 31 Def / 31 SpA / 31 SpD / 31 Spe
-- Fake Tears
-- Moonblast
-- Ancient Power
+Ability: Own Tempo
+IVs: 20 HP / 20 Atk / 20 Def / 20 SpA / 20 SpD / 20 Spe
+- Play Rough
+- Crunch
+- Work Up
+- Protect
+
+Fidough @ Leftovers
+Level: 68
+Ability: Own Tempo
+IVs: 20 HP / 20 Atk / 20 Def / 20 SpA / 20 SpD / 20 Spe
+- Play Rough
+- Charm
+- Bite
 - Rest
 
-Crobat @ Leftovers
+Fidough
 Level: 68
-IVs: 31 HP / 31 Atk / 31 Def / 31 SpA / 31 SpD / 31 Spe
-- Toxic
-- Double Team
-- Confuse Ray
-- Fly
-
-Victreebel @ Scope Lens
-Level: 68
-IVs: 31 HP / 31 Atk / 31 Def / 31 SpA / 31 SpD / 31 Spe
-- Sludge Bomb
-- Razor Leaf
-- Sleep Powder
-- Growth
-
-Houndoom @ Charcoal
-Level: 68
-IVs: 31 HP / 31 Atk / 31 Def / 31 SpA / 31 SpD / 31 Spe
-- Fire Blast
-- Iron Tail
+Ability: Own Tempo
+IVs: 20 HP / 20 Atk / 20 Def / 20 SpA / 20 SpD / 20 Spe
+- Play Rough
 - Crunch
-- Double Team
+- Charm
+- Helping Hand
 
-Feraligatr @ Scope Lens
+Fidough
 Level: 68
-IVs: 31 HP / 31 Atk / 31 Def / 31 SpA / 31 SpD / 31 Spe
-- Ice Beam
-- Surf
-- Slash
-- Earthquake
-
-Tyranitar @ Quick Claw
-Level: 68
-IVs: 31 HP / 31 Atk / 31 Def / 31 SpA / 31 SpD / 31 Spe
+Ability: Own Tempo
+IVs: 20 HP / 20 Atk / 20 Def / 20 SpA / 20 SpD / 20 Spe
+- Play Rough
 - Crunch
-- Earthquake
-- Rock Slide
-- Fire Blast
+- Work Up
+- Protect
+
+Fidough
+Level: 68
+Ability: Own Tempo
+IVs: 20 HP / 20 Atk / 20 Def / 20 SpA / 20 SpD / 20 Spe
+- Play Rough
+- Charm
+- Bite
+- Rest
+
+Fidough @ Sitrus Berry
+Level: 68
+Ability: Own Tempo
+IVs: 20 HP / 20 Atk / 20 Def / 20 SpA / 20 SpD / 20 Spe
+- Play Rough
+- Crunch
+- Charm
+- Helping Hand
 
 === TRAINER_ALFRED ===
 Name: Alfred
@@ -4525,45 +4568,50 @@ Double Battle: No
 AI: Basic Trainer
 Mugshot: Pink
 
-Ursaluna Bloodmoon @ Chesto Berry
+Fidough
 Level: 68
-IVs: 31 HP / 31 Atk / 31 Def / 31 SpA / 31 SpD / 31 Spe
-- Fake Tears
-- Moonblast
-- Ancient Power
+Ability: Own Tempo
+IVs: 20 HP / 20 Atk / 20 Def / 20 SpA / 20 SpD / 20 Spe
+- Play Rough
+- Crunch
+- Work Up
+- Protect
+
+Fidough @ Leftovers
+Level: 68
+Ability: Own Tempo
+IVs: 20 HP / 20 Atk / 20 Def / 20 SpA / 20 SpD / 20 Spe
+- Play Rough
+- Charm
+- Bite
 - Rest
 
-Crobat @ Leftovers
+Fidough
 Level: 68
-IVs: 31 HP / 31 Atk / 31 Def / 31 SpA / 31 SpD / 31 Spe
-- Toxic
-- Double Team
-- Confuse Ray
-- Fly
-
-Houndoom @ Charcoal
-Level: 68
-IVs: 31 HP / 31 Atk / 31 Def / 31 SpA / 31 SpD / 31 Spe
-- Fire Blast
-- Iron Tail
+Ability: Own Tempo
+IVs: 20 HP / 20 Atk / 20 Def / 20 SpA / 20 SpD / 20 Spe
+- Play Rough
 - Crunch
-- Sunny Day
+- Charm
+- Helping Hand
 
-Meganium @ Miracle Seed
+Fidough
 Level: 68
-IVs: 31 HP / 31 Atk / 31 Def / 31 SpA / 31 SpD / 31 Spe
-- Reflect
-- Giga Drain
-- Solar Beam
-- Body Slam
-
-Tyranitar @ Quick Claw
-Level: 68
-IVs: 31 HP / 31 Atk / 31 Def / 31 SpA / 31 SpD / 31 Spe
+Ability: Own Tempo
+IVs: 20 HP / 20 Atk / 20 Def / 20 SpA / 20 SpD / 20 Spe
+- Play Rough
 - Crunch
-- Earthquake
-- Rock Slide
-- Fire Blast
+- Work Up
+- Protect
+
+Fidough @ Sitrus Berry
+Level: 68
+Ability: Own Tempo
+IVs: 20 HP / 20 Atk / 20 Def / 20 SpA / 20 SpD / 20 Spe
+- Play Rough
+- Charm
+- Bite
+- Rest
 
 === TRAINER_KEN ===
 Name: Ken
@@ -4592,11 +4640,12 @@ Double Battle: No
 AI: Basic Trainer
 Mugshot: Purple
 
-Chikorita
+Fidough
 Level: 5
+Ability: Own Tempo
 IVs: 0 HP / 0 Atk / 0 Def / 0 SpA / 0 SpD / 0 Spe
 - Tackle
-- Growl
+- Tail Whip
 
 === TRAINER_RIVAL_CHIKORITA_3 ===
 Name: {RIVAL}
@@ -4608,25 +4657,50 @@ Double Battle: No
 AI: Smart Trainer
 Mugshot: Blue
 
-Floatzel
+Fidough
 Level: 31
-IVs: 20 HP / 20 Atk / 20 Def / 20 SpA / 20 SpD / 20 Spe
+Ability: Own Tempo
+IVs: 10 HP / 10 Atk / 10 Def / 10 SpA / 10 SpD / 10 Spe
+- Bite
+- Play Rough
+- Charm
+- Work Up
 
-Pawniard
+Fidough
 Level: 31
-IVs: 20 HP / 20 Atk / 20 Def / 20 SpA / 20 SpD / 20 Spe
+Ability: Own Tempo
+IVs: 10 HP / 10 Atk / 10 Def / 10 SpA / 10 SpD / 10 Spe
+- Play Rough
+- Bite
+- Tail Whip
+- Protect
 
-Staravia
+Fidough
 Level: 32
-IVs: 20 HP / 20 Atk / 20 Def / 20 SpA / 20 SpD / 20 Spe
+Ability: Own Tempo
+IVs: 10 HP / 10 Atk / 10 Def / 10 SpA / 10 SpD / 10 Spe
+- Bite
+- Play Rough
+- Charm
+- Work Up
 
-Lampent
+Fidough
 Level: 32
-IVs: 20 HP / 20 Atk / 20 Def / 20 SpA / 20 SpD / 20 Spe
+Ability: Own Tempo
+IVs: 10 HP / 10 Atk / 10 Def / 10 SpA / 10 SpD / 10 Spe
+- Play Rough
+- Bite
+- Tail Whip
+- Protect
 
-Bayleef
+Fidough
 Level: 32
-IVs: 20 HP / 20 Atk / 20 Def / 20 SpA / 20 SpD / 20 Spe
+Ability: Own Tempo
+IVs: 10 HP / 10 Atk / 10 Def / 10 SpA / 10 SpD / 10 Spe
+- Bite
+- Play Rough
+- Charm
+- Work Up
 
 === TRAINER_RIVAL_CHIKORITA_2 ===
 Name: {RIVAL}
@@ -4639,37 +4713,41 @@ Double Battle: No
 AI: Smart Trainer
 Mugshot: Yellow
 
-Haunter
+Fidough
 Level: 20
+Ability: Own Tempo
 IVs: 10 HP / 10 Atk / 10 Def / 10 SpA / 10 SpD / 10 Spe
-- Shadow Punch
-- Confuse Ray
-- Curse
-- Lick
+- Bite
+- Charm
+- Play Rough
+- Work Up
 
-Pawniard
+Fidough
 Level: 20
+Ability: Own Tempo
 IVs: 10 HP / 10 Atk / 10 Def / 10 SpA / 10 SpD / 10 Spe
-- Fury Cutter
-- Metal Claw
-- Torment
-- Leer
+- Play Rough
+- Tail Whip
+- Bite
+- Protect
 
-Pidgeotto
+Fidough
 Level: 21
+Ability: Own Tempo
 IVs: 10 HP / 10 Atk / 10 Def / 10 SpA / 10 SpD / 10 Spe
-- Wing Attack
-- Quick Attack
-- Featherdance
-- Mud-Slap
+- Bite
+- Charm
+- Play Rough
+- Work Up
 
-Bayleef
+Fidough
 Level: 21
+Ability: Own Tempo
 IVs: 10 HP / 10 Atk / 10 Def / 10 SpA / 10 SpD / 10 Spe
-- Razor Leaf
-- Leech Seed
-- Reflect
-- Magical Leaf
+- Play Rough
+- Tail Whip
+- Bite
+- Protect
 
 === TRAINER_MISTY ===
 Name: Misty
@@ -6823,37 +6901,41 @@ Double Battle: No
 AI: Smart Trainer
 Mugshot: Yellow
 
-Haunter
+Fidough
 Level: 20
+Ability: Own Tempo
 IVs: 10 HP / 10 Atk / 10 Def / 10 SpA / 10 SpD / 10 Spe
-- Shadow Punch
-- Confuse Ray
-- Curse
-- Lick
+- Bite
+- Charm
+- Play Rough
+- Work Up
 
-Pawniard
+Fidough
 Level: 20
+Ability: Own Tempo
 IVs: 10 HP / 10 Atk / 10 Def / 10 SpA / 10 SpD / 10 Spe
-- Fury Cutter
-- Metal Claw
-- Torment
-- Leer
+- Play Rough
+- Tail Whip
+- Bite
+- Protect
 
-Pidgeotto
+Fidough
 Level: 21
+Ability: Own Tempo
 IVs: 10 HP / 10 Atk / 10 Def / 10 SpA / 10 SpD / 10 Spe
-- Wing Attack
-- Quick Attack
-- Featherdance
-- Mud-Slap
+- Bite
+- Charm
+- Play Rough
+- Work Up
 
-Quilava
+Fidough
 Level: 22
+Ability: Own Tempo
 IVs: 10 HP / 10 Atk / 10 Def / 10 SpA / 10 SpD / 10 Spe
-- Flame Wheel
-- Mud-Slap
-- Quick Attack
-- Rollout
+- Play Rough
+- Tail Whip
+- Bite
+- Protect
 
 === TRAINER_HEIDI ===
 Name: Heidi
@@ -6903,60 +6985,59 @@ Double Battle: No
 AI: Smart Trainer
 Mugshot: Pink
 
-Gengar @ Air Balloon  
-Ability: Cursed Body  
-Level: 65  
-IVs: 12 HP / 12 Atk / 12 Def / 12 SpA / 12 SpD / 12 Spe 
-- Hypnosis  
-- Thunderbolt  
-- Shadow Ball  
-- Dream Eater  
+Fidough
+Level: 65
+Ability: Own Tempo
+IVs: 20 HP / 20 Atk / 20 Def / 20 SpA / 20 SpD / 20 Spe
+- Play Rough
+- Crunch
+- Work Up
+- Protect
 
-Kingambit @ Expert Belt  
-Ability: Supreme Overlord  
-Level: 65  
-IVs: 12 HP / 12 Atk / 12 Def / 12 SpA / 12 SpD / 12 Spe 
-- Kowtow Cleave  
-- Iron Head  
-- Grass Knot  
-- Poison Jab  
+Fidough @ Leftovers
+Level: 65
+Ability: Own Tempo
+IVs: 20 HP / 20 Atk / 20 Def / 20 SpA / 20 SpD / 20 Spe
+- Play Rough
+- Charm
+- Bite
+- Rest
 
-Staraptor @ Sharp Beak  
-Ability: Intimidate  
-Level: 65  
-IVs: 12 HP / 12 Atk / 12 Def / 12 SpA / 12 SpD / 12 Spe 
-- Brave Bird  
-- Close Combat  
-- U-Turn  
-- Facade  
+Fidough
+Level: 65
+Ability: Own Tempo
+IVs: 20 HP / 20 Atk / 20 Def / 20 SpA / 20 SpD / 20 Spe
+- Play Rough
+- Crunch
+- Charm
+- Helping Hand
 
-Clodsire @ Rocky Helmet  
-Ability: Water Absorb  
-Level: 65  
-IVs: 12 HP / 12 Atk / 12 Def / 12 SpA / 12 SpD / 12 Spe 
-- Earthquake  
-- Sludge Bomb  
-- Yawn  
-- Muddy Water  
+Fidough
+Level: 65
+Ability: Own Tempo
+IVs: 20 HP / 20 Atk / 20 Def / 20 SpA / 20 SpD / 20 Spe
+- Play Rough
+- Crunch
+- Work Up
+- Protect
 
-Typhlosion @ Bondstone
-Ability: Flash Fire  
-Level: 65  
-IVs: 12 HP / 12 Atk / 12 Def / 12 SpA / 12 SpD / 12 Spe 
-- Flamethrower  
-- Scorching Sands  
-- Wild Charge  
-- Focus Blast  
+Fidough
+Level: 65
+Ability: Own Tempo
+IVs: 20 HP / 20 Atk / 20 Def / 20 SpA / 20 SpD / 20 Spe
+- Play Rough
+- Charm
+- Bite
+- Rest
 
-Eelektross @ Leftovers  
-Ability: Levitate  
-Level: 65  
-IVs: 12 HP / 12 Atk / 12 Def / 12 SpA / 12 SpD / 12 Spe 
-- Body Press  
-- Bulk Up  
-- Thunder Punch  
-- Crunch 
-
+Fidough @ Sitrus Berry
+Level: 65
+Ability: Own Tempo
+IVs: 20 HP / 20 Atk / 20 Def / 20 SpA / 20 SpD / 20 Spe
+- Play Rough
+- Crunch
+- Charm
+- Helping Hand
 
 === TRAINER_RIVAL_CYNDAQUIL_5 ===
 Name: {RIVAL}
@@ -6969,66 +7050,59 @@ AI: Smart Trainer
 Mugshot: Pink
 Difficulty: Hard
 
-Gengar @ Air Balloon  
-Ability: Cursed Body  
-Level: 66  
-EVs: 252 Spe / 252 SpA
-IVs: 31 HP / 31 Atk / 31 Def / 31 SpA / 31 SpD / 31 Spe  
-- Hypnosis  
-- Thunderbolt  
-- Shadow Ball  
-- Dream Eater  
+Fidough
+Level: 66
+Ability: Own Tempo
+IVs: 31 HP / 31 Atk / 31 Def / 31 SpA / 31 SpD / 31 Spe
+- Play Rough
+- Crunch
+- Work Up
+- Protect
 
-Kingambit @ Expert Belt  
-Ability: Supreme Overlord  
-EVs: 252 Atk / 252 HP
-Level: 67  
-IVs: 31 HP / 31 Atk / 31 Def / 31 SpA / 31 SpD / 31 Spe  
-- Kowtow Cleave  
-- Iron Head  
-- Grass Knot  
-- Poison Jab  
+Fidough @ Leftovers
+Level: 67
+Ability: Own Tempo
+IVs: 31 HP / 31 Atk / 31 Def / 31 SpA / 31 SpD / 31 Spe
+- Play Rough
+- Charm
+- Bite
+- Rest
 
-Staraptor @ Sharp Beak  
-Ability: Intimidate  
-EVs: 252 Atk / 252 Spe
-Level: 66  
-IVs: 31 HP / 31 Atk / 31 Def / 31 SpA / 31 SpD / 31 Spe  
-- Brave Bird  
-- Close Combat  
-- U-Turn  
-- Facade  
+Fidough
+Level: 66
+Ability: Own Tempo
+IVs: 31 HP / 31 Atk / 31 Def / 31 SpA / 31 SpD / 31 Spe
+- Play Rough
+- Crunch
+- Charm
+- Helping Hand
 
-Clodsire @ Rocky Helmet  
-Ability: Water Absorb  
-EVs: 252 HP / 252 Def
-Level: 67  
-IVs: 31 HP / 31 Atk / 31 Def / 31 SpA / 31 SpD / 31 Spe  
-- Earthquake  
-- Sludge Bomb  
-- Yawn  
-- Muddy Water  
+Fidough
+Level: 67
+Ability: Own Tempo
+IVs: 31 HP / 31 Atk / 31 Def / 31 SpA / 31 SpD / 31 Spe
+- Play Rough
+- Crunch
+- Work Up
+- Protect
 
-Typhlosion @ Bondstone
-Ability: Flash Fire  
-EVs: 252 SpA / 252 Spe
-Level: 67  
-IVs: 31 HP / 31 Atk / 31 Def / 31 SpA / 31 SpD / 31 Spe  
-- Flamethrower  
-- Scorching Sands  
-- Eruption  
-- Focus Blast  
+Fidough
+Level: 67
+Ability: Own Tempo
+IVs: 31 HP / 31 Atk / 31 Def / 31 SpA / 31 SpD / 31 Spe
+- Play Rough
+- Charm
+- Bite
+- Rest
 
-Eelektross @ Leftovers  
-Ability: Levitate  
-EVs: 252 HP / 252 Atk
-Level: 66  
-IVs: 31 HP / 31 Atk / 31 Def / 31 SpA / 31 SpD / 31 Spe  
-- Body Press  
-- Bulk Up  
-- Thunder Punch  
-- Crunch 
-
+Fidough @ Sitrus Berry
+Level: 66
+Ability: Own Tempo
+IVs: 31 HP / 31 Atk / 31 Def / 31 SpA / 31 SpD / 31 Spe
+- Play Rough
+- Crunch
+- Charm
+- Helping Hand
 
 === TRAINER_RIVAL_CYNDAQUIL_4 ===
 Name: {RIVAL}
@@ -7040,45 +7114,50 @@ Double Battle: No
 AI: Smart Trainer
 Mugshot: Blue
 
-Gengar
+Fidough
 Level: 48
-IVs: 10 HP / 10 Atk / 10 Def / 10 SpA / 10 SpD / 10 Spe
-- Hypnosis
-- Thunderbolt
-- Shadow Ball
-- Dream Eater
+Ability: Own Tempo
+IVs: 20 HP / 20 Atk / 20 Def / 20 SpA / 20 SpD / 20 Spe
+- Play Rough
+- Crunch
+- Work Up
+- Protect
 
-Bisharp
+Fidough
 Level: 48
-IVs: 10 HP / 10 Atk / 10 Def / 10 SpA / 10 SpD / 10 Spe
-- Night Slash
-- Low Sweep
-- Iron Head
-- Aerial Ace
+Ability: Own Tempo
+IVs: 20 HP / 20 Atk / 20 Def / 20 SpA / 20 SpD / 20 Spe
+- Play Rough
+- Charm
+- Bite
+- Rest
 
-Staraptor
+Fidough
 Level: 48
-IVs: 10 HP / 10 Atk / 10 Def / 10 SpA / 10 SpD / 10 Spe
-- Brave Bird
-- Close Combat
-- U-Turn
-- Facade
+Ability: Own Tempo
+IVs: 20 HP / 20 Atk / 20 Def / 20 SpA / 20 SpD / 20 Spe
+- Play Rough
+- Crunch
+- Charm
+- Helping Hand
 
-Clodsire
+Fidough
 Level: 48
-IVs: 10 HP / 10 Atk / 10 Def / 10 SpA / 10 SpD / 10 Spe
-- Earthquake
-- Sludge Bomb
-- Yawn
-- Muddy Water
+Ability: Own Tempo
+IVs: 20 HP / 20 Atk / 20 Def / 20 SpA / 20 SpD / 20 Spe
+- Play Rough
+- Crunch
+- Work Up
+- Protect
 
-Typhlosion @ Charcoal
+Fidough @ Sitrus Berry
 Level: 48
-IVs: 10 HP / 10 Atk / 10 Def / 10 SpA / 10 SpD / 10 Spe
-- Flamethrower
-- Scorching Sands
-- Swift
-- Focus Blast
+Ability: Own Tempo
+IVs: 20 HP / 20 Atk / 20 Def / 20 SpA / 20 SpD / 20 Spe
+- Play Rough
+- Charm
+- Bite
+- Rest
 
 === TRAINER_RIVAL_CYNDAQUIL_4 ===
 Name: {RIVAL}
@@ -7091,50 +7170,50 @@ AI: Smart Trainer
 Mugshot: Blue
 Difficulty: Hard
 
-Gengar @ Focus Sash
+Fidough
 Level: 49
-IVs: 31 HP / 31 Atk / 31 Def / 31 SpA / 31 SpD / 31 Spe
-EVs: 252 SpA / 252 Spe
-- Hypnosis
-- Thunderbolt
-- Shadow Ball
-- Dream Eater
+Ability: Own Tempo
+IVs: 24 HP / 24 Atk / 24 Def / 24 SpA / 24 SpD / 24 Spe
+- Play Rough
+- Crunch
+- Work Up
+- Protect
 
-Bisharp @ Chople Berry
+Fidough
 Level: 50
-IVs: 31 HP / 31 Atk / 31 Def / 31 SpA / 31 SpD / 31 Spe
-EVs: 252 Atk / 252 Spe
-- Night Slash
-- Low Sweep
-- Iron Head
-- Aerial Ace
+Ability: Own Tempo
+IVs: 24 HP / 24 Atk / 24 Def / 24 SpA / 24 SpD / 24 Spe
+- Play Rough
+- Charm
+- Bite
+- Rest
 
-Staraptor @ Sharp Beak
+Fidough
 Level: 49
-IVs: 31 HP / 31 Atk / 31 Def / 31 SpA / 31 SpD / 31 Spe
-EVs: 252 Atk / 252 Spe
-- Brave Bird
-- Close Combat
-- U-Turn
-- Facade
+Ability: Own Tempo
+IVs: 24 HP / 24 Atk / 24 Def / 24 SpA / 24 SpD / 24 Spe
+- Play Rough
+- Crunch
+- Charm
+- Helping Hand
 
-Clodsire @ Shuca Berry
+Fidough
 Level: 50
-IVs: 31 HP / 31 Atk / 31 Def / 31 SpA / 31 SpD / 31 Spe
-EVs: 252 SpA / 252 HP
-- Earthquake
-- Sludge Bomb
-- Yawn
-- Muddy Water
+Ability: Own Tempo
+IVs: 24 HP / 24 Atk / 24 Def / 24 SpA / 24 SpD / 24 Spe
+- Play Rough
+- Crunch
+- Work Up
+- Protect
 
-Typhlosion @ Choice Specs
+Fidough @ Sitrus Berry
 Level: 51
-IVs: 31 HP / 31 Atk / 31 Def / 31 SpA / 31 SpD / 31 Spe
-EVs: 252 SpA / 252 Spe
-- Flamethrower
-- Scorching Sands
-- Swift
-- Focus Blast
+Ability: Own Tempo
+IVs: 24 HP / 24 Atk / 24 Def / 24 SpA / 24 SpD / 24 Spe
+- Play Rough
+- Charm
+- Bite
+- Rest
 
 === TRAINER_DUFF_AND_EDA ===
 Name: Duff & Eda
@@ -10857,61 +10936,59 @@ Double Battle: No
 AI: Smart Trainer
 Mugshot: Pink
 
-Floatzel @ Salac Berry  
-Ability: Water Veil  
-Level: 65  
-IVs: 12 HP / 12 Atk / 12 Def / 12 SpA / 12 SpD / 12 Spe
-Jolly Nature  
-- Ice Spinner  
-- Liquidation  
-- Brick Break  
-- Flip Turn  
+Fidough
+Level: 65
+Ability: Own Tempo
+IVs: 20 HP / 20 Atk / 20 Def / 20 SpA / 20 SpD / 20 Spe
+- Play Rough
+- Crunch
+- Work Up
+- Protect
 
-Kingambit @ Expert Belt  
-Ability: Supreme Overlord  
-Level: 65  
-IVs: 12 HP / 12 Atk / 12 Def / 12 SpA / 12 SpD / 12 Spe
-- Kowtow Cleave  
-- Iron Head  
-- Facade  
-- Low Kick  
+Fidough @ Leftovers
+Level: 65
+Ability: Own Tempo
+IVs: 20 HP / 20 Atk / 20 Def / 20 SpA / 20 SpD / 20 Spe
+- Play Rough
+- Charm
+- Bite
+- Rest
 
-Staraptor @ Sharp Beak  
-Ability: Intimidate  
-Level: 65  
-IVs: 12 HP / 12 Atk / 12 Def / 12 SpA / 12 SpD / 12 Spe
-- Brave Bird  
-- Close Combat  
-- U-Turn  
-- Facade  
+Fidough
+Level: 65
+Ability: Own Tempo
+IVs: 20 HP / 20 Atk / 20 Def / 20 SpA / 20 SpD / 20 Spe
+- Play Rough
+- Crunch
+- Charm
+- Helping Hand
 
-Chandelure @ Absorb Bulb  
-Ability: Flash Fire  
-Level: 65  
-IVs: 12 HP / 12 Atk / 12 Def / 12 SpA / 12 SpD / 12 Spe
-- Flamethrower  
-- Shadow Ball  
-- Energy Ball  
-- Dark Pulse  
+Fidough
+Level: 65
+Ability: Own Tempo
+IVs: 20 HP / 20 Atk / 20 Def / 20 SpA / 20 SpD / 20 Spe
+- Play Rough
+- Crunch
+- Work Up
+- Protect
 
-Meganium @ Bondstone  
-Ability: Leaf Guard  
-Level: 65  
-IVs: 12 HP / 12 Atk / 12 Def / 12 SpA / 12 SpD / 12 Spe
-Mild Nature  
-- Giga Drain  
-- Draining Kiss  
-- Light Screen  
-- Solar Beam  
+Fidough
+Level: 65
+Ability: Own Tempo
+IVs: 20 HP / 20 Atk / 20 Def / 20 SpA / 20 SpD / 20 Spe
+- Play Rough
+- Charm
+- Bite
+- Rest
 
-Haxorus @ Assault Vest  
-Ability: Mold Breaker  
-Level: 65  
-IVs: 12 HP / 12 Atk / 12 Def / 12 SpA / 12 SpD / 12 Spe
-- Dragon Claw  
-- Earthquake  
-- First Impression  
-- Iron Head  
+Fidough @ Sitrus Berry
+Level: 65
+Ability: Own Tempo
+IVs: 20 HP / 20 Atk / 20 Def / 20 SpA / 20 SpD / 20 Spe
+- Play Rough
+- Crunch
+- Charm
+- Helping Hand
 
 === TRAINER_RIVAL_CHIKORITA_5 ===
 Name: {RIVAL}
@@ -10924,67 +11001,59 @@ AI: Smart Trainer
 Mugshot: Pink
 Difficulty: Hard
 
-Floatzel @ Salac Berry  
-Ability: Water Veil  
-Level: 66  
-EVs: 252 Spe / 252 Atk
+Fidough
+Level: 66
+Ability: Own Tempo
 IVs: 31 HP / 31 Atk / 31 Def / 31 SpA / 31 SpD / 31 Spe
-Jolly Nature  
-- Ice Spinner  
-- Liquidation  
-- Brick Break  
-- Flip Turn  
+- Play Rough
+- Crunch
+- Work Up
+- Protect
 
-Kingambit @ Expert Belt  
-Ability: Supreme Overlord
-EVs: 252 Atk / 252 HP  
-Level: 67  
+Fidough @ Leftovers
+Level: 67
+Ability: Own Tempo
 IVs: 31 HP / 31 Atk / 31 Def / 31 SpA / 31 SpD / 31 Spe
-- Kowtow Cleave  
-- Iron Head  
-- Sucker Punch
-- Low Kick  
+- Play Rough
+- Charm
+- Bite
+- Rest
 
-Staraptor @ Sharp Beak  
-Ability: Intimidate  
-EVs: 252 Atk / 252 Spe
-Level: 66  
+Fidough
+Level: 66
+Ability: Own Tempo
 IVs: 31 HP / 31 Atk / 31 Def / 31 SpA / 31 SpD / 31 Spe
-- Brave Bird  
-- Close Combat  
-- U-Turn  
-- Facade  
+- Play Rough
+- Crunch
+- Charm
+- Helping Hand
 
-Chandelure @ Absorb Bulb  
-Ability: Flash Fire  
-EVs: 252 SpA / 252 Spe
-Level: 66  
+Fidough
+Level: 66
+Ability: Own Tempo
 IVs: 31 HP / 31 Atk / 31 Def / 31 SpA / 31 SpD / 31 Spe
-- Flamethrower  
-- Shadow Ball  
-- Energy Ball  
-- Dark Pulse  
+- Play Rough
+- Crunch
+- Work Up
+- Protect
 
-Meganium @ Bondstone  
-Ability: Leaf Guard  
-EVs: 252 SpA / 252 HP
-Level: 67  
+Fidough
+Level: 67
+Ability: Own Tempo
 IVs: 31 HP / 31 Atk / 31 Def / 31 SpA / 31 SpD / 31 Spe
-Mild Nature  
-- Giga Drain  
-- Draining Kiss  
-- Light Screen  
-- Solar Beam  
+- Play Rough
+- Charm
+- Bite
+- Rest
 
-Haxorus @ Assault Vest  
-Ability: Mold Breaker  
-EVs: 252 Atk / 252 Spe
-Level: 66  
+Fidough @ Sitrus Berry
+Level: 66
+Ability: Own Tempo
 IVs: 31 HP / 31 Atk / 31 Def / 31 SpA / 31 SpD / 31 Spe
-- Dragon Claw  
-- Earthquake  
-- First Impression  
-- Iron Head  
+- Play Rough
+- Crunch
+- Charm
+- Helping Hand
 
 === TRAINER_TULLY ===
 Name: Tully
@@ -11913,45 +11982,50 @@ Double Battle: No
 AI: Smart Trainer
 Mugshot: Pink
 
-Floatzel
+Fidough
 Level: 48
-IVs: 10 HP / 10 Atk / 10 Def / 10 SpA / 10 SpD / 10 Spe
-- Ice Spinner
-- Liquidation
-- Brick Break
-- Taunt
+Ability: Own Tempo
+IVs: 20 HP / 20 Atk / 20 Def / 20 SpA / 20 SpD / 20 Spe
+- Play Rough
+- Crunch
+- Work Up
+- Protect
 
-Bisharp
+Fidough
 Level: 48
-IVs: 10 HP / 10 Atk / 10 Def / 10 SpA / 10 SpD / 10 Spe
-- Night Slash
-- Low Sweep
-- Iron Head
-- Aerial Ace
+Ability: Own Tempo
+IVs: 20 HP / 20 Atk / 20 Def / 20 SpA / 20 SpD / 20 Spe
+- Play Rough
+- Charm
+- Bite
+- Rest
 
-Staraptor
+Fidough
 Level: 48
-IVs: 10 HP / 10 Atk / 10 Def / 10 SpA / 10 SpD / 10 Spe
-- Brave Bird
-- Close Combat
-- U-Turn
-- Facade
+Ability: Own Tempo
+IVs: 20 HP / 20 Atk / 20 Def / 20 SpA / 20 SpD / 20 Spe
+- Play Rough
+- Crunch
+- Charm
+- Helping Hand
 
-Chandelure
+Fidough
 Level: 49
-IVs: 10 HP / 10 Atk / 10 Def / 10 SpA / 10 SpD / 10 Spe
-- Flamethrower
-- Shadow Ball
-- Energy Ball
-- Acid Armor
+Ability: Own Tempo
+IVs: 20 HP / 20 Atk / 20 Def / 20 SpA / 20 SpD / 20 Spe
+- Play Rough
+- Crunch
+- Work Up
+- Protect
 
-Meganium @ Big Root
+Fidough @ Sitrus Berry
 Level: 49
-IVs: 10 HP / 10 Atk / 10 Def / 10 SpA / 10 SpD / 10 Spe
-- Giga Drain
-- Draining Kiss
-- Light Screen
-- Leech Seed
+Ability: Own Tempo
+IVs: 20 HP / 20 Atk / 20 Def / 20 SpA / 20 SpD / 20 Spe
+- Play Rough
+- Charm
+- Bite
+- Rest
 
 === TRAINER_RIVAL_CHIKORITA_4 ===
 Name: {RIVAL}
@@ -11964,50 +12038,50 @@ AI: Smart Trainer
 Mugshot: Pink
 Difficulty: Hard
 
-Floatzel @ Focus Sash
+Fidough
 Level: 49
-IVs: 31 HP / 31 Atk / 31 Def / 31 SpA / 31 SpD / 31 Spe
-EVs: 252 Atk / 252 Spe
-- Ice Spinner
-- Liquidation
-- Brick Break
-- Taunt
+Ability: Own Tempo
+IVs: 24 HP / 24 Atk / 24 Def / 24 SpA / 24 SpD / 24 Spe
+- Play Rough
+- Crunch
+- Work Up
+- Protect
 
-Bisharp @ Chople Berry
+Fidough
 Level: 50
-IVs: 31 HP / 31 Atk / 31 Def / 31 SpA / 31 SpD / 31 Spe
-EVs: 252 Atk / 252 Spe
-- Night Slash
-- Low Sweep
-- Iron Head
-- Aerial Ace
+Ability: Own Tempo
+IVs: 24 HP / 24 Atk / 24 Def / 24 SpA / 24 SpD / 24 Spe
+- Play Rough
+- Charm
+- Bite
+- Rest
 
-Staraptor @ Sharp Beak
+Fidough
 Level: 49
-IVs: 31 HP / 31 Atk / 31 Def / 31 SpA / 31 SpD / 31 Spe
-EVs: 252 Atk / 252 Spe
-- Brave Bird
-- Close Combat
-- U-Turn
-- Facade
+Ability: Own Tempo
+IVs: 24 HP / 24 Atk / 24 Def / 24 SpA / 24 SpD / 24 Spe
+- Play Rough
+- Crunch
+- Charm
+- Helping Hand
 
-Chandelure @ Charcoal
+Fidough
 Level: 50
-IVs: 31 HP / 31 Atk / 31 Def / 31 SpA / 31 SpD / 31 Spe
-EVs: 252 SpA / 252 Spe
-- Flamethrower
-- Shadow Ball
-- Energy Ball
-- Acid Armor
+Ability: Own Tempo
+IVs: 24 HP / 24 Atk / 24 Def / 24 SpA / 24 SpD / 24 Spe
+- Play Rough
+- Crunch
+- Work Up
+- Protect
 
-Meganium @ Big Root
+Fidough @ Sitrus Berry
 Level: 51
-IVs: 31 HP / 31 Atk / 31 Def / 31 SpA / 31 SpD / 31 Spe
-EVs: 252 SpA / 252 HP
-- Giga Drain
-- Draining Kiss
-- Light Screen
-- Leech Seed
+Ability: Own Tempo
+IVs: 24 HP / 24 Atk / 24 Def / 24 SpA / 24 SpD / 24 Spe
+- Play Rough
+- Charm
+- Bite
+- Rest
 
 === TRAINER_JO_AND_ZOE ===
 Name: Jo&Zoe
@@ -12036,11 +12110,12 @@ Double Battle: No
 AI: Basic Trainer
 Mugshot: Purple
 
-Cyndaquil
+Fidough
 Level: 5
+Ability: Own Tempo
 IVs: 0 HP / 0 Atk / 0 Def / 0 SpA / 0 SpD / 0 Spe
 - Tackle
-- Leer
+- Tail Whip
 
 === TRAINER_RIVAL_CYNDAQUIL_3 ===
 Name: {RIVAL}
@@ -12052,25 +12127,50 @@ Double Battle: No
 AI: Smart Trainer
 Mugshot: Blue
 
-Haunter
+Fidough
 Level: 30
-IVs: 20 HP / 20 Atk / 20 Def / 20 SpA / 20 SpD / 20 Spe
+Ability: Own Tempo
+IVs: 10 HP / 10 Atk / 10 Def / 10 SpA / 10 SpD / 10 Spe
+- Bite
+- Play Rough
+- Charm
+- Work Up
 
-Pawniard
+Fidough
 Level: 30
-IVs: 20 HP / 20 Atk / 20 Def / 20 SpA / 20 SpD / 20 Spe
+Ability: Own Tempo
+IVs: 10 HP / 10 Atk / 10 Def / 10 SpA / 10 SpD / 10 Spe
+- Play Rough
+- Bite
+- Tail Whip
+- Protect
 
-Staravia
+Fidough
 Level: 31
-IVs: 20 HP / 20 Atk / 20 Def / 20 SpA / 20 SpD / 20 Spe
+Ability: Own Tempo
+IVs: 10 HP / 10 Atk / 10 Def / 10 SpA / 10 SpD / 10 Spe
+- Bite
+- Play Rough
+- Charm
+- Work Up
 
-Clodsire
+Fidough
 Level: 30
-IVs: 20 HP / 20 Atk / 20 Def / 20 SpA / 20 SpD / 20 Spe
+Ability: Own Tempo
+IVs: 10 HP / 10 Atk / 10 Def / 10 SpA / 10 SpD / 10 Spe
+- Play Rough
+- Bite
+- Tail Whip
+- Protect
 
-Quilava
+Fidough
 Level: 32
-IVs: 20 HP / 20 Atk / 20 Def / 20 SpA / 20 SpD / 20 Spe
+Ability: Own Tempo
+IVs: 10 HP / 10 Atk / 10 Def / 10 SpA / 10 SpD / 10 Spe
+- Bite
+- Play Rough
+- Charm
+- Work Up
 
 === TRAINER_RIVAL_CHIKORITA_6 ===
 Name: {RIVAL}
@@ -12083,45 +12183,50 @@ Double Battle: No
 AI: Basic Trainer
 Mugshot: Green
 
-Ursaluna Bloodmoon @ Chesto Berry
+Fidough
 Level: 64
-IVs: 31 HP / 31 Atk / 31 Def / 31 SpA / 31 SpD / 31 Spe
-- Fake Tears
-- Moonblast
-- Ancient Power
+Ability: Own Tempo
+IVs: 20 HP / 20 Atk / 20 Def / 20 SpA / 20 SpD / 20 Spe
+- Play Rough
+- Crunch
+- Work Up
+- Protect
+
+Fidough @ Leftovers
+Level: 64
+Ability: Own Tempo
+IVs: 20 HP / 20 Atk / 20 Def / 20 SpA / 20 SpD / 20 Spe
+- Play Rough
+- Charm
+- Bite
 - Rest
 
-Crobat @ Leftovers
+Fidough
 Level: 64
-IVs: 31 HP / 31 Atk / 31 Def / 31 SpA / 31 SpD / 31 Spe
-- Toxic
-- Double Team
-- Confuse Ray
-- Wing Attack
-
-Houndoom @ Charcoal
-Level: 64
-IVs: 31 HP / 31 Atk / 31 Def / 31 SpA / 31 SpD / 31 Spe
-- Fire Blast
-- Iron Tail
+Ability: Own Tempo
+IVs: 20 HP / 20 Atk / 20 Def / 20 SpA / 20 SpD / 20 Spe
+- Play Rough
 - Crunch
-- Sunny Day
+- Charm
+- Helping Hand
 
-Meganium @ Miracle Seed
+Fidough
 Level: 64
-IVs: 31 HP / 31 Atk / 31 Def / 31 SpA / 31 SpD / 31 Spe
-- Reflect
-- Giga Drain
-- Solar Beam
-- Body Slam
-
-Tyranitar @ Quick Claw
-Level: 64
-IVs: 31 HP / 31 Atk / 31 Def / 31 SpA / 31 SpD / 31 Spe
+Ability: Own Tempo
+IVs: 20 HP / 20 Atk / 20 Def / 20 SpA / 20 SpD / 20 Spe
+- Play Rough
 - Crunch
-- Earthquake
-- Rock Slide
-- Fire Blast
+- Work Up
+- Protect
+
+Fidough @ Sitrus Berry
+Level: 64
+Ability: Own Tempo
+IVs: 20 HP / 20 Atk / 20 Def / 20 SpA / 20 SpD / 20 Spe
+- Play Rough
+- Charm
+- Bite
+- Rest
 
 === TRAINER_JASMINE_1_3 ===
 Name: Jasmine
@@ -12356,45 +12461,50 @@ Double Battle: No
 AI: Basic Trainer
 Mugshot: Pink
 
-Ursaluna Bloodmoon @ Chesto Berry
+Fidough
 Level: 68
-IVs: 31 HP / 31 Atk / 31 Def / 31 SpA / 31 SpD / 31 Spe
-- Fake Tears
-- Moonblast
-- Ancient Power
+Ability: Own Tempo
+IVs: 20 HP / 20 Atk / 20 Def / 20 SpA / 20 SpD / 20 Spe
+- Play Rough
+- Crunch
+- Work Up
+- Protect
+
+Fidough @ Leftovers
+Level: 68
+Ability: Own Tempo
+IVs: 20 HP / 20 Atk / 20 Def / 20 SpA / 20 SpD / 20 Spe
+- Play Rough
+- Charm
+- Bite
 - Rest
 
-Crobat @ Leftovers
+Fidough
 Level: 68
-IVs: 31 HP / 31 Atk / 31 Def / 31 SpA / 31 SpD / 31 Spe
-- Toxic
-- Double Team
-- Confuse Ray
-- Fly
-
-Victreebel @ Scope Lens
-Level: 68
-IVs: 31 HP / 31 Atk / 31 Def / 31 SpA / 31 SpD / 31 Spe
-- Sludge Bomb
-- Razor Leaf
-- Sleep Powder
-- Growth
-
-Typhlosion @ Charcoal
-Level: 68
-IVs: 31 HP / 31 Atk / 31 Def / 31 SpA / 31 SpD / 31 Spe
-- Fire Blast
-- Earthquake
-- Iron Tail
-- Thunder Punch
-
-Tyranitar @ Quick Claw
-Level: 68
-IVs: 31 HP / 31 Atk / 31 Def / 31 SpA / 31 SpD / 31 Spe
+Ability: Own Tempo
+IVs: 20 HP / 20 Atk / 20 Def / 20 SpA / 20 SpD / 20 Spe
+- Play Rough
 - Crunch
-- Earthquake
-- Rock Slide
-- Fire Blast
+- Charm
+- Helping Hand
+
+Fidough
+Level: 68
+Ability: Own Tempo
+IVs: 20 HP / 20 Atk / 20 Def / 20 SpA / 20 SpD / 20 Spe
+- Play Rough
+- Crunch
+- Work Up
+- Protect
+
+Fidough @ Sitrus Berry
+Level: 68
+Ability: Own Tempo
+IVs: 20 HP / 20 Atk / 20 Def / 20 SpA / 20 SpD / 20 Spe
+- Play Rough
+- Charm
+- Bite
+- Rest
 
 === TRAINER_RIVAL_CYNDAQUIL_6 ===
 Name: {RIVAL}
@@ -12407,45 +12517,50 @@ Double Battle: No
 AI: Basic Trainer
 Mugshot: Green
 
-Ursaluna Bloodmoon @ Chesto Berry
+Fidough
 Level: 64
-IVs: 31 HP / 31 Atk / 31 Def / 31 SpA / 31 SpD / 31 Spe
-- Fake Tears
-- Moonblast
-- Ancient Power
+Ability: Own Tempo
+IVs: 20 HP / 20 Atk / 20 Def / 20 SpA / 20 SpD / 20 Spe
+- Play Rough
+- Crunch
+- Work Up
+- Protect
+
+Fidough @ Leftovers
+Level: 64
+Ability: Own Tempo
+IVs: 20 HP / 20 Atk / 20 Def / 20 SpA / 20 SpD / 20 Spe
+- Play Rough
+- Charm
+- Bite
 - Rest
 
-Crobat @ Leftovers
+Fidough
 Level: 64
-IVs: 31 HP / 31 Atk / 31 Def / 31 SpA / 31 SpD / 31 Spe
-- Toxic
-- Double Team
-- Confuse Ray
-- Wing Attack
-
-Victreebel @ Scope Lens
-Level: 64
-IVs: 31 HP / 31 Atk / 31 Def / 31 SpA / 31 SpD / 31 Spe
-- Sludge Bomb
-- Razor Leaf
-- Sleep Powder
-- Growth
-
-Typhlosion @ Charcoal
-Level: 64
-IVs: 31 HP / 31 Atk / 31 Def / 31 SpA / 31 SpD / 31 Spe
-- Fire Blast
-- Earthquake
-- Iron Tail
-- Thunder Punch
-
-Tyranitar @ Quick Claw
-Level: 64
-IVs: 31 HP / 31 Atk / 31 Def / 31 SpA / 31 SpD / 31 Spe
+Ability: Own Tempo
+IVs: 20 HP / 20 Atk / 20 Def / 20 SpA / 20 SpD / 20 Spe
+- Play Rough
 - Crunch
-- Earthquake
-- Rock Slide
-- Fire Blast
+- Charm
+- Helping Hand
+
+Fidough
+Level: 64
+Ability: Own Tempo
+IVs: 20 HP / 20 Atk / 20 Def / 20 SpA / 20 SpD / 20 Spe
+- Play Rough
+- Crunch
+- Work Up
+- Protect
+
+Fidough @ Sitrus Berry
+Level: 64
+Ability: Own Tempo
+IVs: 20 HP / 20 Atk / 20 Def / 20 SpA / 20 SpD / 20 Spe
+- Play Rough
+- Charm
+- Bite
+- Rest
 
 === TRAINER_ZACH ===
 Name: Zach
@@ -14050,11 +14165,11 @@ Double Battle: No
 AI: Basic Trainer
 Mugshot: Purple
 
-Marill
+Fidough
 Level: 4
-Ability: Thick Fat
+Ability: Own Tempo
 IVs: 0 HP / 0 Atk / 0 Def / 0 SpA / 0 SpD / 0 Spe
-- Pound
+- Tackle
 - Tail Whip
 
 === TRAINER_RIVALGOLD1 ===
@@ -14066,11 +14181,11 @@ Double Battle: No
 AI: Basic Trainer
 Mugshot: Purple
 
-Marill
+Fidough
 Level: 4
-Ability: Thick Fat
+Ability: Own Tempo
 IVs: 0 HP / 0 Atk / 0 Def / 0 SpA / 0 SpD / 0 Spe
-- Pound
+- Tackle
 - Tail Whip
 
 === TRAINER_RIVALCRYSTAL2 ===
@@ -14082,18 +14197,32 @@ Double Battle: No
 AI: Smart Trainer
 Mugshot: Purple
 
-Zorua
+Fidough
 Level: 22
+Ability: Own Tempo
 IVs: 10 HP / 10 Atk / 10 Def / 10 SpA / 10 SpD / 10 Spe
+- Bite
+- Charm
+- Play Rough
+- Work Up
 
-Oricorio Sensu
+Fidough
 Level: 22
+Ability: Own Tempo
 IVs: 10 HP / 10 Atk / 10 Def / 10 SpA / 10 SpD / 10 Spe
+- Play Rough
+- Tail Whip
+- Bite
+- Protect
 
-Azumarill
+Fidough
 Level: 23
-Ability: Thick Fat
+Ability: Own Tempo
 IVs: 10 HP / 10 Atk / 10 Def / 10 SpA / 10 SpD / 10 Spe
+- Bite
+- Charm
+- Play Rough
+- Work Up
 
 === TRAINER_RIVALGOLD2 ===
 Name: Gold
@@ -14104,18 +14233,32 @@ Double Battle: No
 AI: Smart Trainer
 Mugshot: Purple
 
-Zorua
+Fidough
 Level: 22
+Ability: Own Tempo
 IVs: 10 HP / 10 Atk / 10 Def / 10 SpA / 10 SpD / 10 Spe
+- Bite
+- Charm
+- Play Rough
+- Work Up
 
-Oricorio Sensu
+Fidough
 Level: 22
+Ability: Own Tempo
 IVs: 10 HP / 10 Atk / 10 Def / 10 SpA / 10 SpD / 10 Spe
+- Play Rough
+- Tail Whip
+- Bite
+- Protect
 
-Azumarill
+Fidough
 Level: 22
-Ability: Thick Fat
+Ability: Own Tempo
 IVs: 10 HP / 10 Atk / 10 Def / 10 SpA / 10 SpD / 10 Spe
+- Bite
+- Charm
+- Play Rough
+- Work Up
 
 === TRAINER_RIVAL_CRYSTAL_ICEPATH ===
 Name: Crystal
@@ -14126,48 +14269,50 @@ Double Battle: No
 AI: Smart Trainer
 Mugshot: Purple
 
-Azumarill @ Quick Claw
+Fidough
 Level: 54
-Ability: Huge Power
-IVs: 24 HP / 24 Atk / 24 Def / 24 SpA / 24 SpD / 24 Spe
+Ability: Own Tempo
+IVs: 20 HP / 20 Atk / 20 Def / 20 SpA / 20 SpD / 20 Spe
 - Play Rough
-- Aqua Tail
-- Aqua Jet
-- Ice Punch
+- Crunch
+- Work Up
+- Protect
 
-Zoroark @ Focus Sash
+Fidough
 Level: 54
-Ability: Illusion
-IVs: 24 HP / 24 Atk / 24 Def / 24 SpA / 24 SpD / 24 Spe
-- Dark Pulse
-- Flamethrower
-- Nasty Plot
-- Foul Play
+Ability: Own Tempo
+IVs: 20 HP / 20 Atk / 20 Def / 20 SpA / 20 SpD / 20 Spe
+- Play Rough
+- Charm
+- Bite
+- Rest
 
-Oricorio Sensu @ Sharp Beak
+Fidough
 Level: 54
-IVs: 24 HP / 24 Atk / 24 Def / 24 SpA / 24 SpD / 24 Spe
-- Revelation Dance
-- Air Slash
-- Shadow Ball
-- Roost
+Ability: Own Tempo
+IVs: 20 HP / 20 Atk / 20 Def / 20 SpA / 20 SpD / 20 Spe
+- Play Rough
+- Crunch
+- Charm
+- Helping Hand
 
-Flygon @ Sitrus Berry
+Fidough
 Level: 55
-IVs: 24 HP / 24 Atk / 24 Def / 24 SpA / 24 SpD / 24 Spe
-- Bug Buzz
-- Dragon Pulse
-- Earthquake
-- Fire Blast
+Ability: Own Tempo
+IVs: 20 HP / 20 Atk / 20 Def / 20 SpA / 20 SpD / 20 Spe
+- Play Rough
+- Crunch
+- Work Up
+- Protect
 
-Ampharos @ Electrite
+Fidough @ Sitrus Berry
 Level: 55
-Ability: Static
-IVs: 24 HP / 24 Atk / 24 Def / 24 SpA / 24 SpD / 24 Spe
-- Thunderbolt
-- Power Gem
-- Light Screen
-- Dragon Pulse
+Ability: Own Tempo
+IVs: 20 HP / 20 Atk / 20 Def / 20 SpA / 20 SpD / 20 Spe
+- Play Rough
+- Charm
+- Bite
+- Rest
 
 === TRAINER_RIVAL_CRYSTAL_ICEPATH ===
 Name: Crystal
@@ -14179,63 +14324,59 @@ AI: Smart Trainer
 Mugshot: Purple
 Difficulty: Hard
 
-Azumarill @ Sitrus Berry
+Fidough
 Level: 56
-Ability: Huge Power
-IVs: 31 HP / 31 Atk / 31 Def / 31 SpA / 31 SpD / 31 Spe
-EVs: 200 Atk / 200 Spe / 4 HP
-Adamant Nature
+Ability: Own Tempo
+IVs: 24 HP / 24 Atk / 24 Def / 24 SpA / 24 SpD / 24 Spe
 - Play Rough
-- Aqua Tail
-- Aqua Jet
-- Belly Drum
+- Crunch
+- Work Up
+- Protect
 
-Zoroark @ Focus Sash
+Fidough
 Level: 56
-Ability: Illusion
-IVs: 31 HP / 31 Atk / 31 Def / 31 SpA / 31 SpD / 31 Spe
-EVs: 200 SpA / 200 Spe
-- Dark Pulse
-- Flamethrower
-- Nasty Plot
-- Foul Play
+Ability: Own Tempo
+IVs: 24 HP / 24 Atk / 24 Def / 24 SpA / 24 SpD / 24 Spe
+- Play Rough
+- Charm
+- Bite
+- Rest
 
-Oricorio Sensu @ Sharp Beak
+Fidough
 Level: 56
-IVs: 31 HP / 31 Atk / 31 Def / 31 SpA / 31 SpD / 31 Spe
-EVs: 200 SpA / 200 Spe
-- Revelation Dance
-- Air Slash
-- Shadow Ball
-- Roost
+Ability: Own Tempo
+IVs: 24 HP / 24 Atk / 24 Def / 24 SpA / 24 SpD / 24 Spe
+- Play Rough
+- Crunch
+- Charm
+- Helping Hand
 
-Flygon @ Sitrus Berry
+Fidough
 Level: 57
-IVs: 31 HP / 31 Atk / 31 Def / 31 SpA / 31 SpD / 31 Spe
-EVs: 200 SpA / 200 Spe
-- Bug Buzz
-- Dragon Pulse
-- Earthquake
-- Fire Blast
+Ability: Own Tempo
+IVs: 24 HP / 24 Atk / 24 Def / 24 SpA / 24 SpD / 24 Spe
+- Play Rough
+- Crunch
+- Work Up
+- Protect
 
-Gogoat @ Assault Vest
+Fidough
 Level: 57
-IVs: 31 HP / 31 Atk / 31 Def / 31 SpA / 31 SpD / 31 Spe
-EVs: 200 Atk / 200 Spe
-- Horn Leech
-- Milk Drink
-- Earthquake
-- Aerial Ace
+Ability: Own Tempo
+IVs: 24 HP / 24 Atk / 24 Def / 24 SpA / 24 SpD / 24 Spe
+- Play Rough
+- Charm
+- Bite
+- Rest
 
-Ampharos @ Electrite
+Fidough @ Sitrus Berry
 Level: 58
-Ability: Static
-IVs: 31 HP / 31 Atk / 31 Def / 31 SpA / 31 SpD / 31 Spe
-EVs: 200 SpA / 200 HP
-- Thunderbolt
-- Power Gem
-- Light Screen
-- Dragon Pulse
+Ability: Own Tempo
+IVs: 24 HP / 24 Atk / 24 Def / 24 SpA / 24 SpD / 24 Spe
+- Play Rough
+- Crunch
+- Charm
+- Helping Hand
 
 === TRAINER_RIVAL_GOLD_ICEPATH ===
 Name: Gold
@@ -14246,49 +14387,50 @@ Double Battle: No
 AI: Smart Trainer
 Mugshot: Purple
 
-Azumarill @ Quick Claw
+Fidough
 Level: 54
-Ability: Huge Power
-IVs: 24 HP / 24 Atk / 24 Def / 24 SpA / 24 SpD / 24 Spe
+Ability: Own Tempo
+IVs: 20 HP / 20 Atk / 20 Def / 20 SpA / 20 SpD / 20 Spe
 - Play Rough
-- Aqua Tail
-- Aqua Jet
-- Ice Punch
+- Crunch
+- Work Up
+- Protect
 
-Zoroark @ Focus Sash
+Fidough
 Level: 54
-Ability: Illusion
-IVs: 24 HP / 24 Atk / 24 Def / 24 SpA / 24 SpD / 24 Spe
-- Dark Pulse
-- Flamethrower
-- Nasty Plot
-- Foul Play
+Ability: Own Tempo
+IVs: 20 HP / 20 Atk / 20 Def / 20 SpA / 20 SpD / 20 Spe
+- Play Rough
+- Charm
+- Bite
+- Rest
 
-Oricorio Sensu @ Sharp Beak
+Fidough
 Level: 54
-IVs: 24 HP / 24 Atk / 24 Def / 24 SpA / 24 SpD / 24 Spe
-- Revelation Dance
-- Air Slash
-- Shadow Ball
-- Roost
+Ability: Own Tempo
+IVs: 20 HP / 20 Atk / 20 Def / 20 SpA / 20 SpD / 20 Spe
+- Play Rough
+- Crunch
+- Charm
+- Helping Hand
 
-Flygon @ Sitrus Berry
+Fidough
 Level: 55
-IVs: 24 HP / 24 Atk / 24 Def / 24 SpA / 24 SpD / 24 Spe
-- Bug Buzz
-- Dragon Pulse
-- Earthquake
-- Fire Blast
+Ability: Own Tempo
+IVs: 20 HP / 20 Atk / 20 Def / 20 SpA / 20 SpD / 20 Spe
+- Play Rough
+- Crunch
+- Work Up
+- Protect
 
-Ampharos @ Electrite
+Fidough @ Sitrus Berry
 Level: 55
-Ability: Static
-IVs: 24 HP / 24 Atk / 24 Def / 24 SpA / 24 SpD / 24 Spe
-- Thunderbolt
-- Power Gem
-- Light Screen
-- Dragon Pulse
-
+Ability: Own Tempo
+IVs: 20 HP / 20 Atk / 20 Def / 20 SpA / 20 SpD / 20 Spe
+- Play Rough
+- Charm
+- Bite
+- Rest
 
 === TRAINER_RIVAL_GOLD_ICEPATH ===
 Name: Gold
@@ -14300,63 +14442,59 @@ AI: Smart Trainer
 Mugshot: Purple
 Difficulty: Hard
 
-Azumarill @ Sitrus Berry
+Fidough
 Level: 56
-Ability: Huge Power
-IVs: 31 HP / 31 Atk / 31 Def / 31 SpA / 31 SpD / 31 Spe
-EVs: 200 Atk / 200 Spe / 4 HP
-Adamant Nature
+Ability: Own Tempo
+IVs: 24 HP / 24 Atk / 24 Def / 24 SpA / 24 SpD / 24 Spe
 - Play Rough
-- Aqua Tail
-- Aqua Jet
-- Belly Drum
+- Crunch
+- Work Up
+- Protect
 
-Zoroark @ Focus Sash
+Fidough
 Level: 56
-Ability: Illusion
-IVs: 31 HP / 31 Atk / 31 Def / 31 SpA / 31 SpD / 31 Spe
-EVs: 200 SpA / 200 Spe
-- Dark Pulse
-- Flamethrower
-- Nasty Plot
-- Foul Play
+Ability: Own Tempo
+IVs: 24 HP / 24 Atk / 24 Def / 24 SpA / 24 SpD / 24 Spe
+- Play Rough
+- Charm
+- Bite
+- Rest
 
-Oricorio Sensu @ Sharp Beak
+Fidough
 Level: 56
-IVs: 31 HP / 31 Atk / 31 Def / 31 SpA / 31 SpD / 31 Spe
-EVs: 200 SpA / 200 Spe
-- Revelation Dance
-- Air Slash
-- Shadow Ball
-- Roost
+Ability: Own Tempo
+IVs: 24 HP / 24 Atk / 24 Def / 24 SpA / 24 SpD / 24 Spe
+- Play Rough
+- Crunch
+- Charm
+- Helping Hand
 
-Flygon @ Sitrus Berry
+Fidough
 Level: 57
-IVs: 31 HP / 31 Atk / 31 Def / 31 SpA / 31 SpD / 31 Spe
-EVs: 200 SpA / 200 Spe
-- Bug Buzz
-- Dragon Pulse
-- Earthquake
-- Fire Blast
+Ability: Own Tempo
+IVs: 24 HP / 24 Atk / 24 Def / 24 SpA / 24 SpD / 24 Spe
+- Play Rough
+- Crunch
+- Work Up
+- Protect
 
-Gogoat @ Assault Vest
+Fidough
 Level: 57
-IVs: 31 HP / 31 Atk / 31 Def / 31 SpA / 31 SpD / 31 Spe
-EVs: 200 Atk / 200 Spe
-- Horn Leech
-- Milk Drink
-- Earthquake
-- Aerial Ace
+Ability: Own Tempo
+IVs: 24 HP / 24 Atk / 24 Def / 24 SpA / 24 SpD / 24 Spe
+- Play Rough
+- Charm
+- Bite
+- Rest
 
-Ampharos @ Electrite
+Fidough @ Sitrus Berry
 Level: 58
-Ability: Static
-IVs: 31 HP / 31 Atk / 31 Def / 31 SpA / 31 SpD / 31 Spe
-EVs: 200 SpA / 200 HP
-- Thunderbolt
-- Power Gem
-- Light Screen
-- Dragon Pulse
+Ability: Own Tempo
+IVs: 24 HP / 24 Atk / 24 Def / 24 SpA / 24 SpD / 24 Spe
+- Play Rough
+- Crunch
+- Charm
+- Helping Hand
 
 === TRAINER_RIVAL_CRYSTAL_FINAL ===
 Name: Crystal
@@ -14367,65 +14505,59 @@ Double Battle: No
 AI: Smart Trainer
 Mugshot: Purple
 
-Iron Treads @ Leftovers
-Ability: Quark Drive
-EVs: 252 Atk / 4 SpD / 252 Spe
+Fidough
 Level: 73
-Jolly Nature
-- Stealth Rock
-- Earthquake
-- Knock Off
-- Rapid Spin
-
-Zoroark-Hisui @ Heavy-Duty Boots
-Ability: Illusion
-EVs: 252 SpA / 4 SpD / 252 Spe
-Level: 73
-Timid Nature
-- Shadow Ball
-- Focus Blast
-- Hyper Voice
-- Nasty Plot
-
-Baxcalibur @ Loaded Dice
-Ability: Thermal Exchange
-EVs: 252 Atk / 4 SpD / 252 Spe
-Level: 73
-Adamant Nature
-- Icicle Spear
-- Glaive Rush
-- Earthquake
-- Dragon Dance
-
-Azumarill @ Sitrus Berry
-Ability: Huge Power
-EVs: 4 HP / 252 Atk / 252 Spe
-Level: 74
-Adamant Nature
-- Belly Drum
+Ability: Own Tempo
+IVs: 20 HP / 20 Atk / 20 Def / 20 SpA / 20 SpD / 20 Spe
 - Play Rough
-- Liquidation
-- Aqua Jet
+- Crunch
+- Work Up
+- Protect
 
-Ampharos @ Electrite
-Level: 75
-Ability: Static
-IVs: 31 HP / 31 Atk / 31 Def / 31 SpA / 31 SpD / 31 Spe
-EVs: 252 SpA / 252 HP
-- Thunderbolt
-- Power Gem
-- Light Screen
-- Volt Switch
+Fidough @ Leftovers
+Level: 73
+Ability: Own Tempo
+IVs: 20 HP / 20 Atk / 20 Def / 20 SpA / 20 SpD / 20 Spe
+- Play Rough
+- Charm
+- Bite
+- Rest
 
-Tangrowth @ Rocky Helmet
-Ability: Regenerator
-EVs: 244 HP / 252 Def / 12 SpD
+Fidough
+Level: 73
+Ability: Own Tempo
+IVs: 20 HP / 20 Atk / 20 Def / 20 SpA / 20 SpD / 20 Spe
+- Play Rough
+- Crunch
+- Charm
+- Helping Hand
+
+Fidough
 Level: 74
-Relaxed Nature
-- Giga Drain
-- Knock Off
-- Focus Blast
-- Sleep Powder
+Ability: Own Tempo
+IVs: 20 HP / 20 Atk / 20 Def / 20 SpA / 20 SpD / 20 Spe
+- Play Rough
+- Crunch
+- Work Up
+- Protect
+
+Fidough
+Level: 75
+Ability: Own Tempo
+IVs: 20 HP / 20 Atk / 20 Def / 20 SpA / 20 SpD / 20 Spe
+- Play Rough
+- Charm
+- Bite
+- Rest
+
+Fidough @ Sitrus Berry
+Level: 74
+Ability: Own Tempo
+IVs: 20 HP / 20 Atk / 20 Def / 20 SpA / 20 SpD / 20 Spe
+- Play Rough
+- Crunch
+- Charm
+- Helping Hand
 
 === TRAINER_RIVAL_CRYSTAL_FINAL ===
 Name: Crystal
@@ -14437,65 +14569,59 @@ AI: Smart Trainer
 Mugshot: Purple
 Difficulty: Hard
 
-Iron Treads @ Leftovers
-Ability: Quark Drive
-EVs: 252 Atk / 4 SpD / 252 Spe
+Fidough
 Level: 75
-Jolly Nature
-- Stealth Rock
-- Earthquake
-- Knock Off
-- Rapid Spin
-
-Zoroark-Hisui @ Heavy-Duty Boots
-Ability: Illusion
-EVs: 252 SpA / 4 SpD / 252 Spe
-Level: 75
-Timid Nature
-- Shadow Ball
-- Focus Blast
-- Hyper Voice
-- Nasty Plot
-
-Baxcalibur @ Loaded Dice
-Ability: Thermal Exchange
-EVs: 252 Atk / 4 SpD / 252 Spe
-Level: 75
-Adamant Nature
-- Icicle Spear
-- Glaive Rush
-- Earthquake
-- Dragon Dance
-
-Azumarill @ Sitrus Berry
-Ability: Huge Power
-EVs: 4 HP / 252 Atk / 252 Spe
-Level: 75
-Adamant Nature
-- Belly Drum
-- Play Rough
-- Liquidation
-- Aqua Jet
-
-Ampharos @ Electrite
-Level: 76
-Ability: Static
+Ability: Own Tempo
 IVs: 31 HP / 31 Atk / 31 Def / 31 SpA / 31 SpD / 31 Spe
-EVs: 252 SpA / 252 HP
-- Thunderbolt
-- Power Gem
-- Light Screen
-- Volt Switch
+- Play Rough
+- Crunch
+- Work Up
+- Protect
 
-Iron Leaves @ Life Orb
-Ability: Quark Drive
-EVs: 96 HP / 160 Atk / 252 Spe
+Fidough @ Leftovers
+Level: 75
+Ability: Own Tempo
+IVs: 31 HP / 31 Atk / 31 Def / 31 SpA / 31 SpD / 31 Spe
+- Play Rough
+- Charm
+- Bite
+- Rest
+
+Fidough
+Level: 75
+Ability: Own Tempo
+IVs: 31 HP / 31 Atk / 31 Def / 31 SpA / 31 SpD / 31 Spe
+- Play Rough
+- Crunch
+- Charm
+- Helping Hand
+
+Fidough
+Level: 75
+Ability: Own Tempo
+IVs: 31 HP / 31 Atk / 31 Def / 31 SpA / 31 SpD / 31 Spe
+- Play Rough
+- Crunch
+- Work Up
+- Protect
+
+Fidough
 Level: 76
-Jolly Nature
-- Swords Dance
-- Leaf Blade
-- Psyblade
-- Close Combat
+Ability: Own Tempo
+IVs: 31 HP / 31 Atk / 31 Def / 31 SpA / 31 SpD / 31 Spe
+- Play Rough
+- Charm
+- Bite
+- Rest
+
+Fidough @ Sitrus Berry
+Level: 76
+Ability: Own Tempo
+IVs: 31 HP / 31 Atk / 31 Def / 31 SpA / 31 SpD / 31 Spe
+- Play Rough
+- Crunch
+- Charm
+- Helping Hand
 
 === TRAINER_RIVAL_GOLD_FINAL ===
 Name: Gold
@@ -14506,65 +14632,59 @@ Double Battle: No
 AI: Smart Trainer
 Mugshot: Purple
 
-Iron Treads @ Leftovers
-Ability: Quark Drive
-EVs: 252 Atk / 4 SpD / 252 Spe
+Fidough
 Level: 73
-Jolly Nature
-- Stealth Rock
-- Earthquake
-- Knock Off
-- Rapid Spin
-
-Zoroark-Hisui @ Heavy-Duty Boots
-Ability: Illusion
-EVs: 252 SpA / 4 SpD / 252 Spe
-Level: 73
-Timid Nature
-- Shadow Ball
-- Focus Blast
-- Hyper Voice
-- Nasty Plot
-
-Baxcalibur @ Loaded Dice
-Ability: Thermal Exchange
-EVs: 252 Atk / 4 SpD / 252 Spe
-Level: 73
-Adamant Nature
-- Icicle Spear
-- Glaive Rush
-- Earthquake
-- Dragon Dance
-
-Azumarill @ Sitrus Berry
-Ability: Huge Power
-EVs: 4 HP / 252 Atk / 252 Spe
-Level: 74
-Adamant Nature
-- Belly Drum
+Ability: Own Tempo
+IVs: 20 HP / 20 Atk / 20 Def / 20 SpA / 20 SpD / 20 Spe
 - Play Rough
-- Liquidation
-- Aqua Jet
+- Crunch
+- Work Up
+- Protect
 
-Ampharos @ Electrite
-Level: 75
-Ability: Static
-IVs: 31 HP / 31 Atk / 31 Def / 31 SpA / 31 SpD / 31 Spe
-EVs: 252 SpA / 252 HP
-- Thunderbolt
-- Power Gem
-- Light Screen
-- Volt Switch
+Fidough @ Leftovers
+Level: 73
+Ability: Own Tempo
+IVs: 20 HP / 20 Atk / 20 Def / 20 SpA / 20 SpD / 20 Spe
+- Play Rough
+- Charm
+- Bite
+- Rest
 
-Tangrowth @ Rocky Helmet
-Ability: Regenerator
-EVs: 244 HP / 252 Def / 12 SpD
+Fidough
+Level: 73
+Ability: Own Tempo
+IVs: 20 HP / 20 Atk / 20 Def / 20 SpA / 20 SpD / 20 Spe
+- Play Rough
+- Crunch
+- Charm
+- Helping Hand
+
+Fidough
 Level: 74
-Relaxed Nature
-- Giga Drain
-- Knock Off
-- Focus Blast
-- Sleep Powder
+Ability: Own Tempo
+IVs: 20 HP / 20 Atk / 20 Def / 20 SpA / 20 SpD / 20 Spe
+- Play Rough
+- Crunch
+- Work Up
+- Protect
+
+Fidough
+Level: 75
+Ability: Own Tempo
+IVs: 20 HP / 20 Atk / 20 Def / 20 SpA / 20 SpD / 20 Spe
+- Play Rough
+- Charm
+- Bite
+- Rest
+
+Fidough @ Sitrus Berry
+Level: 74
+Ability: Own Tempo
+IVs: 20 HP / 20 Atk / 20 Def / 20 SpA / 20 SpD / 20 Spe
+- Play Rough
+- Crunch
+- Charm
+- Helping Hand
 
 === TRAINER_RIVAL_GOLD_FINAL ===
 Name: Gold
@@ -14576,65 +14696,59 @@ AI: Smart Trainer
 Mugshot: Purple
 Difficulty: Hard
 
-Iron Treads @ Leftovers
-Ability: Quark Drive
-EVs: 252 Atk / 4 SpD / 252 Spe
+Fidough
 Level: 75
-Jolly Nature
-- Stealth Rock
-- Earthquake
-- Knock Off
-- Rapid Spin
-
-Zoroark-Hisui @ Heavy-Duty Boots
-Ability: Illusion
-EVs: 252 SpA / 4 SpD / 252 Spe
-Level: 75
-Timid Nature
-- Shadow Ball
-- Focus Blast
-- Hyper Voice
-- Nasty Plot
-
-Baxcalibur @ Loaded Dice
-Ability: Thermal Exchange
-EVs: 252 Atk / 4 SpD / 252 Spe
-Level: 75
-Adamant Nature
-- Icicle Spear
-- Glaive Rush
-- Earthquake
-- Dragon Dance
-
-Azumarill @ Sitrus Berry
-Ability: Huge Power
-EVs: 4 HP / 252 Atk / 252 Spe
-Level: 75
-Adamant Nature
-- Belly Drum
-- Play Rough
-- Liquidation
-- Aqua Jet
-
-Ampharos @ Electrite
-Level: 76
-Ability: Static
+Ability: Own Tempo
 IVs: 31 HP / 31 Atk / 31 Def / 31 SpA / 31 SpD / 31 Spe
-EVs: 252 SpA / 252 HP
-- Thunderbolt
-- Power Gem
-- Light Screen
-- Volt Switch
+- Play Rough
+- Crunch
+- Work Up
+- Protect
 
-Iron Leaves @ Life Orb
-Ability: Quark Drive
-EVs: 96 HP / 160 Atk / 252 Spe
+Fidough @ Leftovers
+Level: 75
+Ability: Own Tempo
+IVs: 31 HP / 31 Atk / 31 Def / 31 SpA / 31 SpD / 31 Spe
+- Play Rough
+- Charm
+- Bite
+- Rest
+
+Fidough
+Level: 75
+Ability: Own Tempo
+IVs: 31 HP / 31 Atk / 31 Def / 31 SpA / 31 SpD / 31 Spe
+- Play Rough
+- Crunch
+- Charm
+- Helping Hand
+
+Fidough
+Level: 75
+Ability: Own Tempo
+IVs: 31 HP / 31 Atk / 31 Def / 31 SpA / 31 SpD / 31 Spe
+- Play Rough
+- Crunch
+- Work Up
+- Protect
+
+Fidough
 Level: 76
-Jolly Nature
-- Swords Dance
-- Leaf Blade
-- Psyblade
-- Close Combat
+Ability: Own Tempo
+IVs: 31 HP / 31 Atk / 31 Def / 31 SpA / 31 SpD / 31 Spe
+- Play Rough
+- Charm
+- Bite
+- Rest
+
+Fidough @ Sitrus Berry
+Level: 76
+Ability: Own Tempo
+IVs: 31 HP / 31 Atk / 31 Def / 31 SpA / 31 SpD / 31 Spe
+- Play Rough
+- Crunch
+- Charm
+- Helping Hand
 
 === TRAINER_KEIRA ===
 Name: Keira
