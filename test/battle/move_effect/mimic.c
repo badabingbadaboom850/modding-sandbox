@@ -48,4 +48,3 @@ SINGLE_BATTLE_TEST("Mimic fails if target has not used any move yet")
         }
     }
 }
-
