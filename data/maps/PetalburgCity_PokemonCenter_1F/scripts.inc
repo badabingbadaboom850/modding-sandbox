@@ -56,18 +56,22 @@ PetalburgCity_PokemonCenter_1F_Text_PCStorageSystem:
 	.string "That PC-based Pokémon Storage\n"
 	.string "System…\p"
 	.string "Whoever made it must be some kind\n"
-	.string "of a scientific wizard!$"
+	.string "of a scientific wizard!\pPeople whisper of three girls\nwho help tired Pokemon. Riko,\nPenny, and Bijuu, they say.$"
 
 PetalburgCity_PokemonCenter_1F_Text_OranBerryRegainedHP:
 	.string "When my Pokémon ate an\n"
-	.string "Oran Berry, it regained Hp!$"
+	.string "Oran Berry, it regained Hp!\p"
+	.string "Riko calls that a snack with benefits.\n"
+	.string "Bijuu is still trying to copy the taste.\pThe story says Riko brings snacks,\nPenny makes the brave feel safe,\nand Bijuu copies the nurse.$"
 
 PetalburgCity_PokemonCenter_1F_Text_ManyTypesOfPokemon:
 	.string "There are many types of Pokémon.\p"
 	.string "All types have their strengths and\n"
 	.string "weaknesses against other types.\p"
 	.string "Depending on the types of Pokémon,\n"
-	.string "a battle could be easy or hard.$"
+	.string "a battle could be easy or hard.\p"
+	.string "Riko changes type and makes everyone\n"
+	.string "guess what she will do next.\pThree girls, three mysteries.\nRiko, Penny, and Bijuu are said\nto visit kind Pokemon Centers.$"
 
 PetalburgCity_PokemonCenter_1F_Text_TreeckoIsGrassType:
 	.string "For example, your Treecko\n"

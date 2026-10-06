@@ -701,7 +701,10 @@ PetalburgCity_EventScript_GymBoy::
 PetalburgCity_Text_WhereIsWally:
 	.string "Where has our Wally gone?\p"
 	.string "We have to leave for Verdanturf Town\n"
-	.string "very soon…$"
+	.string "very soon…\p"
+	.string "Riko would make an entrance before\n"
+	.string "leaving. Penny would pack everyone a\n"
+	.string "snack. Bijuu would copy the goodbye.\pWally heard a tale of three girls.\nRiko guards the road, Penny helps\nthe lost find home, Bijuu copies.$"
 
 PetalburgCity_Text_AreYouRookieTrainer:
 	.string "Hiya! Are you maybe…\n"
@@ -720,16 +723,21 @@ PetalburgCity_Text_ThisIsGymSign:
 
 PetalburgCity_Text_WaterReflection:
 	.string "My face is reflected in the water.\p"
-	.string "It's a shining grin full of hope…\p"
-	.string "Or it could be a look of somber silence\n"
-	.string "struggling with fear…\p"
-	.string "What do you see reflected in your face?$"
+	.string "It looks brave and determined…\p"
+	.string "Or maybe I just saw Riko's fluffy\n"
+	.string "reflection beside mine.\p"
+	.string "What do you see reflected in your face?\pThree lights appear on still water.\nRiko, Penny, and Bijuu, the\nlegendary girls.$"
 
 PetalburgCity_Text_FullPartyExplanation:
 	.string "Let's say you have six Pokémon.\n"
 	.string "If you catch another one…\p"
 	.string "It is automatically sent to a Storage\n"
-	.string "Box over a PC connection.$"
+	.string "Box over a PC connection.\p"
+	.string "Riko says the Box should be labeled\n"
+	.string "SNACKS. Bijuu says it should be SECRET.\p"
+	.string "Have you heard about the legendary trio?\n"
+	.string "They are said to appear wherever a\l"
+	.string "Trainer needs help.\pTravelers say the trio helps\nPokemon in need, then slips away\nbefore anyone can thank them.$"
 
 PetalburgCity_Text_GymSign:
 	.string "Petalburg City Pokémon Gym\n"

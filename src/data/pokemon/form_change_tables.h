@@ -2224,5 +2224,30 @@ static const struct FormChange sTerapagosFormChangeTable[] =
 };
 #endif //P_FAMILY_TERAPAGOS
 
+ 
+#if P_FAMILY_RIKO
+static const struct FormChange sRikoFormChangeTable[] =
+{
+#if P_GEN_9_MEGA_EVOLUTIONS
+    {FORM_CHANGE_BATTLE_MEGA_EVOLUTION_ITEM, SPECIES_MEGA_RIKO, ITEM_BONDSTONE},
+#endif
+    {FORM_CHANGE_FAINT,                      SPECIES_RIKO},
+    {FORM_CHANGE_END_BATTLE,                 SPECIES_RIKO},
+    {FORM_CHANGE_TERMINATOR},
+};
+#endif //P_FAMILY_RIKO
+
+#if P_FAMILY_BIJUU
+static const struct FormChange sBijuuFormChangeTable[] =
+{
+#if P_GEN_9_MEGA_EVOLUTIONS
+    {FORM_CHANGE_BATTLE_MEGA_EVOLUTION_ITEM, SPECIES_MEGA_BIJUU, ITEM_BONDSTONE},
+#endif
+    {FORM_CHANGE_FAINT,                      SPECIES_BIJUU},
+    {FORM_CHANGE_END_BATTLE,                 SPECIES_BIJUU},
+    {FORM_CHANGE_TERMINATOR},
+};
+#endif //P_FAMILY_BIJUU
+
 #undef WHEN_LEARNED
 #undef WHEN_FORGOTTEN

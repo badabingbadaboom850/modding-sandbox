@@ -54,6 +54,7 @@
 #include "union_room_chat.h"
 #include "constants/map_groups.h"
 #include "constants/items.h"
+#include "constants/species.h"
 #include "constants/party_menu.h"
 #include "difficulty.h"
 #include "follower_npc.h"
@@ -275,8 +276,12 @@ void NewGameInitData(void)
     ClearPlayerLinkBattleRecords();
     InitSeedotSizeRecord();
     InitLotadSizeRecord();
+    // Start with Riko and Penny. The selected starter is added by ChooseStarter.
     gPlayerPartyCount = 0;
     ZeroPlayerPartyMons();
+    gPlayerPartyCount = 2;
+    CreateRandomMon(&gPlayerParty[0], SPECIES_RIKO, 5);
+    CreateRandomMon(&gPlayerParty[1], SPECIES_FIDOUGH, 5);
     ResetPokemonStorageSystem();
     ResetHallOfFameArchive();
     DeactivateAllRoamers();
@@ -287,6 +292,11 @@ void NewGameInitData(void)
     gSaveBlock1Ptr->registeredShortcutsMagic = REGISTERED_SHORTCUTS_SAVE_MAGIC;
     gSaveBlock1Ptr->registeredShortcutsMagicInv = REGISTERED_SHORTCUTS_SAVE_MAGIC_INV;
     ClearBag();
+#if P_GEN_9_MEGA_EVOLUTIONS
+    // Testing aid: make Mega Evolution available immediately in fresh saves.
+    AddBagItem(ITEM_MEGA_RING, 1);
+    AddBagItem(ITEM_BONDSTONE, 1);
+#endif
     NewGameInitPCItems();
     ClearPokeblocks();
     ClearDecorationInventories();

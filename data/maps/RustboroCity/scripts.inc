@@ -1018,7 +1018,7 @@ RustboroCity_Text_WeShortenItToDevon:
 	.string "The Devon Corporation…\n"
 	.string "We all just shorten it to Devon.\p"
 	.string "That company makes all sorts of\n"
-	.string "convenient products.$"
+	.string "convenient products.\pDevon logged three strange forms.\nThe old report names Riko, Penny,\nand Bijuu, the legendary girls.$"
 
 RustboroCity_Text_SneakyLookingManWentAroundCorner:
 	.string "Hm? A sneaky-looking man?\p"
@@ -1048,7 +1048,7 @@ RustboroCity_Text_GymLeaderIsntEasyWithFire:
 	.string "It's not going to be easy winning with\n"
 	.string "my Fire-type Pokémon…\p"
 	.string "Fire-type Pokémon don't match up\n"
-	.string "well against Rock-type Pokémon…$"
+	.string "well against Rock-type Pokémon…\pThey say Riko, Penny, and Bijuu\nleave a bright trail after battle.\nSome call them the flame trio.$"
 
 RustboroCity_Text_MrBrineyWalksInTheTunnel:
 	.string "The old sailor Mr. Briney lives in\n"
@@ -1067,7 +1067,7 @@ RustboroCity_Text_MrBrineyLovesPeeko:
 RustboroCity_Text_WowYouHavePokemon:
 	.string "Wow, you have Pokémon with you, too.\p"
 	.string "When I get bigger, I'm going to go\n"
-	.string "places with Pokémon, too.$"
+	.string "places with Pokémon, too.\pMy sister says the three girls\nare real. Riko, Penny, and Bijuu.\nI hope they visit Rustboro.$"
 
 RustboroCity_Text_CatchRarePokemonIfIGoToSchool:
 	.string "Pokémon Trainer's School!\p"

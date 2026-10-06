@@ -668,19 +668,35 @@ LittlerootTown_ProfessorBirchsLab_Text_BirchAwayOnFieldwork:
 	.string "The Prof isn't one for doing desk work.\n"
 	.string "He's the type of person who would\l"
 	.string "rather go outside and experience\l"
-	.string "things than read about them here.$"
+	.string "things than read about them here.\p"
+	.string "Actually, the lab has been tracking a\n"
+	.string "strange legendary trio: Riko, Penny,\l"
+	.string "and Bijuu.\p"
+	.string "Riko is known for dramatic entrances,\n"
+	.string "Penny for disappearing when noticed,\l"
+	.string "and Bijuu for copying whatever it sees.\p"
+	.string "No one knows where they came from, but\n"
+	.string "they may be closer than anyone realizes.\p"
+	.string "The latest report says the trio may be\n"
+	.string "traveling with a new Trainer.\p"
+	.string "The Trainer may not even know how rare\n"
+	.string "the three girls really are!$"
 
 LittlerootTown_ProfessorBirchsLab_Text_BirchIsntOneForDeskWork:
 	.string "The Prof isn't one for doing desk work.\n"
 	.string "He's the type of person who would\l"
 	.string "rather go outside and experience\l"
-	.string "things than read about them here.$"
+	.string "things than read about them here.\p"
+	.string "People in the lab whisper about a\n"
+	.string "legendary trio: Riko, Penny, and Bijuu.$"
 
 LittlerootTown_ProfessorBirchsLab_Text_BirchEnjoysRivalsHelpToo:
 	.string "Prof. Birch is studying the habitats\n"
 	.string "and distribution of Pokémon.\p"
 	.string "The Prof enjoys {RIVAL}'s help, too.\n"
-	.string "There's a lot of love there.$"
+	.string "There's a lot of love there.\p"
+	.string "The aide has heard rumors of a\n"
+	.string "legendary trio: Riko, Penny, and Bijuu.$"
 
 LittlerootTown_ProfessorBirchsLab_Text_LikeYouToHavePokemon:
 	.string "Prof. Birch: So, {PLAYER}{KUN}.\p"

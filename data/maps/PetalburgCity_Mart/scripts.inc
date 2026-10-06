@@ -66,17 +66,29 @@ PetalburgCity_Mart_Text_WeakWillGrowStronger:
 	.string "Even if a Pokémon is weak now,\n"
 	.string "it will grow stronger.\p"
 	.string "The most important thing is love!\n"
-	.string "Love for your Pokémon!$"
+	.string "Love for your Pokémon!\p"
+	.string "Riko agrees, although she also expects\n"
+	.string "compliments and a snack.\p"
+	.string "Penny says encouragement works better\n"
+	.string "than shouting. Bijuu is taking notes.\pA clerk heard the trio helps\nsmall Pokemon grow strong.\nRiko, Penny, and Bijuu.$"
 
 PetalburgCity_Mart_Text_RepelIsUseful:
 	.string "Do you use Repel?\n"
 	.string "It keeps Pokémon away, so it's\l"
-	.string "useful when you're in a hurry.$"
+	.string "useful when you're in a hurry.\p"
+	.string "Penny would rather avoid the tall grass\n"
+	.string "altogether, honestly.\p"
+	.string "Riko would charge through it for a treat.\n"
+	.string "Bijuu would copy whatever startled her.\pBijuu can copy a Pokemon cry.\nSome say it learned every sound\nfrom its legendary sisters.$"
 
 PetalburgCity_Mart_Text_TakeSomeAntidotesWithYou:
 	.string "Do you have any Antidotes with\n"
 	.string "you?\p"
 	.string "If you walk around with a poisoned\n"
 	.string "Pokémon, it will lose Hp until it faints.\l"
-	.string "Take some Antidotes with you.$"
+	.string "Take some Antidotes with you.\p"
+	.string "Bijuu would probably copy the poison\n"
+	.string "if nobody stopped it.\p"
+	.string "Riko would demand a snack afterward,\n"
+	.string "and Penny would check everyone twice.\pThe old tales say Riko walks\nthrough danger without fear.\nPenny watches every step.$"
 

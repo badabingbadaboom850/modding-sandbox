@@ -2603,3 +2603,24 @@ static const u16 sTerapagosFormSpeciesIdTable[] = {
     FORM_SPECIES_END,
 };
 #endif //P_FAMILY_TERAPAGOS
+
+ 
+#if P_FAMILY_RIKO
+static const u16 sRikoFormSpeciesIdTable[] = {
+    SPECIES_RIKO,
+#if P_GEN_9_MEGA_EVOLUTIONS
+    SPECIES_MEGA_RIKO,
+#endif
+    FORM_SPECIES_END,
+};
+#endif //P_FAMILY_RIKO
+
+#if P_FAMILY_BIJUU
+static const u16 sBijuuFormSpeciesIdTable[] = {
+    SPECIES_BIJUU,
+#if P_GEN_9_MEGA_EVOLUTIONS
+    SPECIES_MEGA_BIJUU,
+#endif
+    FORM_SPECIES_END,
+};
+#endif //P_FAMILY_BIJUU

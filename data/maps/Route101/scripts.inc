@@ -285,13 +285,19 @@ Route101_Text_TakeTiredPokemonToPokeCenter:
 	.string "If Pokémon get tired, take them to\n"
 	.string "a Pokémon Center.\p"
 	.string "There's a Pokémon Center in Oldale\n"
-	.string "Town right close by.$"
+	.string "Town right close by.\p"
+	.string "Riko says a rest is important after\n"
+	.string "a dramatic entrance. Penny agrees.\p"
+	.string "Bijuu is already practicing the\n"
+	.string "nurse's greeting.\pA traveler saw three girls nearby.\nRiko ran ahead, Penny checked\neveryone, Bijuu copied the nurse.$"
 
 Route101_Text_WildPokemonInTallGrass:
 	.string "Wild Pokémon will jump out at you in\n"
 	.string "tall grass.\p"
 	.string "If you want to catch Pokémon, you have\n"
-	.string "to go into the tall grass and search.$"
+	.string "to go into the tall grass and search.\p"
+	.string "Riko charges in, Penny watches the\n"
+	.string "edges, and Bijuu copies the surprise.\pThree sets of tracks cross the grass.\nThe tale names Riko, Penny,\nand Bijuu, but no Trainer was there.$"
 
 Route101_Text_RouteSign:
 	.string "Route 101\n"

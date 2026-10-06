@@ -1,6 +1,38 @@
 Route102_MapScripts::
 	.byte 0
 
+Route102_EventScript_BijuuEncounter::
+	lock
+	faceplayer
+	goto_if_unset FLAG_RECEIVED_FIRST_BALLS, Route102_EventScript_BijuuTooShy
+	checkitem ITEM_POKE_BALL, 1
+	goto_if_eq VAR_RESULT, TRUE, Route102_EventScript_BijuuReadyToBattle
+	msgbox Route102_Text_BijuuTooShy, MSGBOX_NPC
+	release
+	end
+
+Route102_EventScript_BijuuReadyToBattle::
+	msgbox Route102_Text_BijuuAppears, MSGBOX_DEFAULT
+	playmoncry SPECIES_BIJUU, CRY_MODE_ENCOUNTER
+	setwildbattle SPECIES_BIJUU, 8
+	dowildbattle
+	specialvar VAR_RESULT, GetBattleOutcome
+	goto_if_eq VAR_RESULT, B_OUTCOME_CAUGHT, Route102_EventScript_BijuuCaught
+	release
+	end
+
+Route102_EventScript_BijuuTooShy::
+	msgbox Route102_Text_BijuuTooShy, MSGBOX_NPC
+	release
+	end
+
+Route102_EventScript_BijuuCaught::
+	removeobject LOCALID_ROUTE102_BIJUU
+	setflag FLAG_CAUGHT_BIJUU
+	msgbox Route102_Text_BijuuCaught, MSGBOX_DEFAULT
+	release
+	end
+
 Route102_EventScript_LittleBoy::
 	msgbox Route102_Text_ImNotVeryTall, MSGBOX_NPC
 	end
@@ -89,13 +121,18 @@ Route102_Text_LetsGoBack:
 Route102_Text_ImNotVeryTall:
 	.string "I'm…not very tall, so I sink right\n"
 	.string "into tall grass.\p"
-	.string "The grass goes up my nose and…\n"
-	.string "Fwafwafwafwafwa…\p"
-	.string "Fwatchoo!$"
+	.string "Penny would disappear in here too…\n"
+	.string "though she'd probably emerge covered\n"
+	.string "in leaves and looking very proud!$"
 
 Route102_Text_CatchWholeBunchOfPokemon:
 	.string "I'm going to catch a whole bunch of\n"
-	.string "Pokémon!$"
+	.string "Pokémon! Maybe one will be as\n"
+	.string "dramatic as Riko!\p"
+	.string "Maybe one will be as patient as Penny,\n"
+	.string "or as mysterious as Bijuu.\p"
+	.string "A shy cat watches by the berry trees.\n"
+	.string "It copies every step, then hides.$"
 
 Route102_Text_RouteSignOldale:
 	.string "Route 102\n"
@@ -104,3 +141,18 @@ Route102_Text_RouteSignOldale:
 Route102_Text_RouteSignPetalburg:
 	.string "Route 102\n"
 	.string "{LEFT_ARROW} Petalburg City$"
+
+Route102_Text_BijuuAppears:
+	.string "The shy cat copies your movements.\p"
+	.string "She steps close, then watches you\n"
+	.string "with bright, curious eyes.$"
+
+Route102_Text_BijuuTooShy:
+	.string "A shy cat watches from the grass.\n"
+	.string "It copies your movements, then hides.\p"
+	.string "You should come back with Poke Balls.$"
+
+Route102_Text_BijuuCaught:
+	.string "Bijuu trusts you enough to stay.\p"
+	.string "She was sent to a PC Box if your\n"
+	.string "party was full.$"

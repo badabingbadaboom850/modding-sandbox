@@ -190,7 +190,7 @@ const struct SpeciesInfo gSpeciesInfo[] =
         .abilities = { ABILITY_CUTE_CHARM, ABILITY_NONE, ABILITY_FLUFFY },
         .bodyColor = BODY_COLOR_WHITE, .speciesName = _("Riko"), .cryId = CRY_SYLVEON,
         .natDexNum = NATIONAL_DEX_RIKO, .categoryName = _("Fluff Bunny"), .height = 6, .weight = 95,
-        .description = COMPOUND_STRING("Its fluffy coat holds fairy\nenergy and charms all who\nstroke it."),
+        .description = COMPOUND_STRING("Its fluffy coat stores fairy\nenergy. It demands compliments,\nsnacks, and a dramatic entrance."),
         .pokemonScale = 256, .trainerScale = 256,
         .frontPic = gMonFrontPic_Riko, .frontPicSize = MON_COORDS_SIZE(64, 64), .frontPicYOffset = 0,
         .frontAnimFrames = sAnims_SingleFramePlaceHolder, .backPic = gMonBackPic_Riko,
@@ -199,8 +199,53 @@ const struct SpeciesInfo gSpeciesInfo[] =
         .iconSprite = gMonIcon_Riko, .iconPalette = gMonIconPalette_Riko,
         .shinyIconPalette = gMonShinyIconPalette_Riko, .pokemonJumpType = PKMN_JUMP_TYPE_NORMAL,
         SHADOW(-2, 8, SHADOW_SIZE_S)
+        OVERWORLD(
+            sPicTable_Riko,
+            SIZE_32x32,
+            SHADOW_SIZE_M,
+            TRACKS_FOOT,
+            sAnimTable_Following,
+            gOverworldPalette_Riko,
+            gShinyOverworldPalette_Riko
+        )
         .teachingType = ALL_TEACHABLES, .levelUpLearnset = sRikoLevelUpLearnset,
+        .formSpeciesIdTable = sRikoFormSpeciesIdTable, .formChangeTable = sRikoFormChangeTable,
     },
+#if P_GEN_9_MEGA_EVOLUTIONS
+    [SPECIES_MEGA_RIKO] =
+    {
+        .baseHP = 90, .baseAttack = 85, .baseDefense = 95, .baseSpeed = 130,
+        .baseSpAttack = 135, .baseSpDefense = 125,
+        .types = MON_TYPES(TYPE_NORMAL, TYPE_FAIRY), .catchRate = 45, .expYield = 300,
+        .evYield_SpAttack = 2, .evYield_Speed = 1, .genderRatio = PERCENT_FEMALE(50),
+        .eggCycles = 20, .friendship = STANDARD_FRIENDSHIP, .growthRate = GROWTH_MEDIUM_SLOW,
+        .eggGroups = MON_EGG_GROUPS(EGG_GROUP_FIELD, EGG_GROUP_FAIRY),
+        .abilities = { ABILITY_PIXILATE, ABILITY_PIXILATE, ABILITY_PIXILATE },
+        .bodyColor = BODY_COLOR_WHITE, .speciesName = _("Riko"), .cryId = CRY_SYLVEON,
+        .natDexNum = NATIONAL_DEX_RIKO, .categoryName = _("Fluff Bunny"), .height = 6, .weight = 95,
+        .description = COMPOUND_STRING("When it Mega Evolves, its three\nheads share one mighty, fluffy\nroar."),
+        .pokemonScale = 256, .trainerScale = 256,
+        .frontPic = gMonFrontPic_RikoMega, .frontPicSize = MON_COORDS_SIZE(64, 64), .frontPicYOffset = 0,
+        .frontAnimFrames = sAnims_SingleFramePlaceHolder, .backPic = gMonBackPic_RikoMega,
+        .backPicSize = MON_COORDS_SIZE(64, 64), .backPicYOffset = 0,
+        .palette = gMonPalette_RikoMega, .shinyPalette = gMonShinyPalette_RikoMega,
+        .iconSprite = gMonIcon_Riko, .iconPalette = gMonIconPalette_Riko,
+        .shinyIconPalette = gMonShinyIconPalette_Riko, .pokemonJumpType = PKMN_JUMP_TYPE_NORMAL,
+        SHADOW(-2, 8, SHADOW_SIZE_S)
+        .isMegaEvolution = TRUE,
+        OVERWORLD(
+            sPicTable_Riko,
+            SIZE_32x32,
+            SHADOW_SIZE_M,
+            TRACKS_FOOT,
+            sAnimTable_Following,
+            gOverworldPalette_Riko,
+            gShinyOverworldPalette_Riko
+        )
+        .teachingType = ALL_TEACHABLES, .levelUpLearnset = sRikoLevelUpLearnset,
+        .formSpeciesIdTable = sRikoFormSpeciesIdTable, .formChangeTable = sRikoFormChangeTable,
+    },
+#endif
 #endif
 #if P_FAMILY_BIJUU
     [SPECIES_BIJUU] =
@@ -213,7 +258,7 @@ const struct SpeciesInfo gSpeciesInfo[] =
         .abilities = { ABILITY_LIMBER, ABILITY_NONE, ABILITY_TECHNICIAN },
         .bodyColor = BODY_COLOR_BROWN, .speciesName = _("Bijuu"), .cryId = CRY_MEOWTH,
         .natDexNum = NATIONAL_DEX_BIJUU, .categoryName = _("Copy Cat"), .height = 7, .weight = 120,
-        .description = COMPOUND_STRING("It studies Meowth's tricks,\ncopying techniques in the\nblink of an eye."),
+        .description = COMPOUND_STRING("It studies every creature nearby,\nthen copies their tricks before\nthey know they were observed."),
         .pokemonScale = 256, .trainerScale = 256,
         .frontPic = gMonFrontPic_Bijuu, .frontPicSize = MON_COORDS_SIZE(64, 64), .frontPicYOffset = 0,
         .frontAnimFrames = sAnims_SingleFramePlaceHolder, .backPic = gMonBackPic_Bijuu,
@@ -222,10 +267,573 @@ const struct SpeciesInfo gSpeciesInfo[] =
         .iconSprite = gMonIcon_Bijuu, .iconPalette = gMonIconPalette_Bijuu,
         .shinyIconPalette = gMonShinyIconPalette_Bijuu, .pokemonJumpType = PKMN_JUMP_TYPE_FAST,
         SHADOW(-2, 8, SHADOW_SIZE_S)
+        OVERWORLD(
+            sPicTable_Bijuu,
+            SIZE_32x32,
+            SHADOW_SIZE_M,
+            TRACKS_FOOT,
+            sAnimTable_Following,
+            gOverworldPalette_Bijuu,
+            gShinyOverworldPalette_Bijuu
+        )
         .levelUpLearnset = sMeowthLevelUpLearnset,
         .teachableLearnset = sMeowthTeachableLearnset,
         .eggMoveLearnset = sMeowthEggMoveLearnset,
+        .formSpeciesIdTable = sBijuuFormSpeciesIdTable, .formChangeTable = sBijuuFormChangeTable,
     },
+#if P_GEN_9_MEGA_EVOLUTIONS
+    [SPECIES_MEGA_BIJUU] =
+    {
+        .baseHP = 80, .baseAttack = 125, .baseDefense = 90, .baseSpeed = 145,
+        .baseSpAttack = 105, .baseSpDefense = 85,
+        .types = MON_TYPES(TYPE_NORMAL), .catchRate = 60, .expYield = 280, .evYield_Speed = 3,
+        .genderRatio = PERCENT_FEMALE(50), .eggCycles = 20, .friendship = STANDARD_FRIENDSHIP,
+        .growthRate = GROWTH_MEDIUM_SLOW, .eggGroups = MON_EGG_GROUPS(EGG_GROUP_FIELD),
+        .abilities = { ABILITY_TECHNICIAN, ABILITY_TECHNICIAN, ABILITY_TECHNICIAN },
+        .bodyColor = BODY_COLOR_BROWN, .speciesName = _("Bijuu"), .cryId = CRY_MEOWTH,
+        .natDexNum = NATIONAL_DEX_BIJUU, .categoryName = _("Copy Cat"), .height = 7, .weight = 120,
+        .description = COMPOUND_STRING("Its copied techniques become\nperfectly precise, though it still\npretends not to be listening."),
+        .pokemonScale = 256, .trainerScale = 256,
+        .frontPic = gMonFrontPic_Bijuu, .frontPicSize = MON_COORDS_SIZE(64, 64), .frontPicYOffset = 0,
+        .frontAnimFrames = sAnims_SingleFramePlaceHolder, .backPic = gMonBackPic_Bijuu,
+        .backPicSize = MON_COORDS_SIZE(64, 64), .backPicYOffset = 0,
+        .palette = gMonPalette_Bijuu, .shinyPalette = gMonShinyPalette_Bijuu,
+        .iconSprite = gMonIcon_Bijuu, .iconPalette = gMonIconPalette_Bijuu,
+        .shinyIconPalette = gMonShinyIconPalette_Bijuu, .pokemonJumpType = PKMN_JUMP_TYPE_FAST,
+        SHADOW(-2, 8, SHADOW_SIZE_S)
+        .isMegaEvolution = TRUE,
+        .levelUpLearnset = sMeowthLevelUpLearnset,
+        .teachableLearnset = sMeowthTeachableLearnset,
+        .eggMoveLearnset = sMeowthEggMoveLearnset,
+        .formSpeciesIdTable = sBijuuFormSpeciesIdTable, .formChangeTable = sBijuuFormChangeTable,
+        OVERWORLD(
+            sPicTable_Bijuu,
+            SIZE_32x32,
+            SHADOW_SIZE_M,
+            TRACKS_FOOT,
+            sAnimTable_Following,
+            gOverworldPalette_Bijuu,
+            gShinyOverworldPalette_Bijuu
+        )
+    },
+#endif
+#endif
+
+#if P_FAMILY_RIKO
+    [SPECIES_RIKO_FIRE] =
+    {
+        .baseHP = 90, .baseAttack = 75, .baseDefense = 85, .baseSpeed = 110,
+        .baseSpAttack = 105, .baseSpDefense = 95,
+        .types = MON_TYPES(TYPE_FIRE), .catchRate = 45, .expYield = 240,
+        .evYield_SpAttack = 2, .genderRatio = PERCENT_FEMALE(50),
+        .eggCycles = 20, .friendship = STANDARD_FRIENDSHIP, .growthRate = GROWTH_MEDIUM_SLOW,
+        .eggGroups = MON_EGG_GROUPS(EGG_GROUP_FIELD, EGG_GROUP_FAIRY),
+        .abilities = { ABILITY_CUTE_CHARM, ABILITY_NONE, ABILITY_FLUFFY },
+        .bodyColor = BODY_COLOR_WHITE, .speciesName = _("RikoFire"), .cryId = CRY_SYLVEON,
+        .natDexNum = NATIONAL_DEX_RIKO, .categoryName = _("Fluff Bunny"), .height = 6, .weight = 95,
+        .description = COMPOUND_STRING("Riko's fur crackles with\nwarmth. It mistakes every\ncampfire for a cozy bed."),
+        .pokemonScale = 256, .trainerScale = 256,
+        .frontPic = gMonFrontPic_RikoFire, .frontPicSize = MON_COORDS_SIZE(64, 64), .frontPicYOffset = 0,
+        .frontAnimFrames = sAnims_SingleFramePlaceHolder, .backPic = gMonBackPic_RikoFire,
+        .backPicSize = MON_COORDS_SIZE(64, 64), .backPicYOffset = 0,
+        .palette = gMonPalette_RikoFire, .shinyPalette = gMonShinyPalette_RikoFire,
+        .iconSprite = gMonIcon_RikoFire, .iconPalette = gMonIconPalette_RikoFire,
+        .shinyIconPalette = gMonShinyIconPalette_RikoFire, .pokemonJumpType = PKMN_JUMP_TYPE_NORMAL,
+        SHADOW(-2, 8, SHADOW_SIZE_S)
+        OVERWORLD(
+            sPicTable_RikoFire,
+            SIZE_32x32,
+            SHADOW_SIZE_M,
+            TRACKS_FOOT,
+            sAnimTable_Following,
+            gOverworldPalette_RikoFire,
+            gShinyOverworldPalette_RikoFire
+        )
+        .teachingType = ALL_TEACHABLES, .levelUpLearnset = sFuecocoLevelUpLearnset,
+    },
+
+    [SPECIES_RIKO_WATER] =
+    {
+        .baseHP = 90, .baseAttack = 75, .baseDefense = 85, .baseSpeed = 110,
+        .baseSpAttack = 105, .baseSpDefense = 95,
+        .types = MON_TYPES(TYPE_WATER), .catchRate = 45, .expYield = 240,
+        .evYield_SpAttack = 2, .genderRatio = PERCENT_FEMALE(50),
+        .eggCycles = 20, .friendship = STANDARD_FRIENDSHIP, .growthRate = GROWTH_MEDIUM_SLOW,
+        .eggGroups = MON_EGG_GROUPS(EGG_GROUP_FIELD, EGG_GROUP_FAIRY),
+        .abilities = { ABILITY_CUTE_CHARM, ABILITY_NONE, ABILITY_FLUFFY },
+        .bodyColor = BODY_COLOR_WHITE, .speciesName = _("RikoWater"), .cryId = CRY_SYLVEON,
+        .natDexNum = NATIONAL_DEX_RIKO, .categoryName = _("Fluff Bunny"), .height = 6, .weight = 95,
+        .description = COMPOUND_STRING("Riko's fur gleams with\nwater energy. It still refuses\nto skip snack time."),
+        .pokemonScale = 256, .trainerScale = 256,
+        .frontPic = gMonFrontPic_RikoWater, .frontPicSize = MON_COORDS_SIZE(64, 64), .frontPicYOffset = 0,
+        .frontAnimFrames = sAnims_SingleFramePlaceHolder, .backPic = gMonBackPic_RikoWater,
+        .backPicSize = MON_COORDS_SIZE(64, 64), .backPicYOffset = 0,
+        .palette = gMonPalette_RikoWater, .shinyPalette = gMonShinyPalette_RikoWater,
+        .iconSprite = gMonIcon_RikoWater, .iconPalette = gMonIconPalette_RikoWater,
+        .shinyIconPalette = gMonShinyIconPalette_RikoWater, .pokemonJumpType = PKMN_JUMP_TYPE_NORMAL,
+        SHADOW(-2, 8, SHADOW_SIZE_S)
+        OVERWORLD(
+            sPicTable_RikoWater,
+            SIZE_32x32,
+            SHADOW_SIZE_M,
+            TRACKS_FOOT,
+            sAnimTable_Following,
+            gOverworldPalette_RikoWater,
+            gShinyOverworldPalette_RikoWater
+        )
+        .teachingType = ALL_TEACHABLES, .levelUpLearnset = sQuaxlyLevelUpLearnset,
+    },
+
+    [SPECIES_RIKO_GRASS] =
+    {
+        .baseHP = 90, .baseAttack = 75, .baseDefense = 85, .baseSpeed = 110,
+        .baseSpAttack = 105, .baseSpDefense = 95,
+        .types = MON_TYPES(TYPE_GRASS), .catchRate = 45, .expYield = 240,
+        .evYield_SpAttack = 2, .genderRatio = PERCENT_FEMALE(50),
+        .eggCycles = 20, .friendship = STANDARD_FRIENDSHIP, .growthRate = GROWTH_MEDIUM_SLOW,
+        .eggGroups = MON_EGG_GROUPS(EGG_GROUP_FIELD, EGG_GROUP_FAIRY),
+        .abilities = { ABILITY_CUTE_CHARM, ABILITY_NONE, ABILITY_FLUFFY },
+        .bodyColor = BODY_COLOR_WHITE, .speciesName = _("RikoGrass"), .cryId = CRY_SYLVEON,
+        .natDexNum = NATIONAL_DEX_RIKO, .categoryName = _("Fluff Bunny"), .height = 6, .weight = 95,
+        .description = COMPOUND_STRING("Riko's coat carries fresh\nforest energy. It loves soft\ngrass almost as much as treats."),
+        .pokemonScale = 256, .trainerScale = 256,
+        .frontPic = gMonFrontPic_RikoGrass, .frontPicSize = MON_COORDS_SIZE(64, 64), .frontPicYOffset = 0,
+        .frontAnimFrames = sAnims_SingleFramePlaceHolder, .backPic = gMonBackPic_RikoGrass,
+        .backPicSize = MON_COORDS_SIZE(64, 64), .backPicYOffset = 0,
+        .palette = gMonPalette_RikoGrass, .shinyPalette = gMonShinyPalette_RikoGrass,
+        .iconSprite = gMonIcon_RikoGrass, .iconPalette = gMonIconPalette_RikoGrass,
+        .shinyIconPalette = gMonShinyIconPalette_RikoGrass, .pokemonJumpType = PKMN_JUMP_TYPE_NORMAL,
+        SHADOW(-2, 8, SHADOW_SIZE_S)
+        OVERWORLD(
+            sPicTable_RikoGrass,
+            SIZE_32x32,
+            SHADOW_SIZE_M,
+            TRACKS_FOOT,
+            sAnimTable_Following,
+            gOverworldPalette_RikoGrass,
+            gShinyOverworldPalette_RikoGrass
+        )
+        .teachingType = ALL_TEACHABLES, .levelUpLearnset = sSprigatitoLevelUpLearnset,
+    },
+
+    [SPECIES_RIKO_ELECTRIC] =
+    {
+        .baseHP = 90, .baseAttack = 75, .baseDefense = 85, .baseSpeed = 110,
+        .baseSpAttack = 105, .baseSpDefense = 95,
+        .types = MON_TYPES(TYPE_ELECTRIC), .catchRate = 45, .expYield = 240,
+        .evYield_SpAttack = 2, .genderRatio = PERCENT_FEMALE(50),
+        .eggCycles = 20, .friendship = STANDARD_FRIENDSHIP, .growthRate = GROWTH_MEDIUM_SLOW,
+        .eggGroups = MON_EGG_GROUPS(EGG_GROUP_FIELD, EGG_GROUP_FAIRY),
+        .abilities = { ABILITY_CUTE_CHARM, ABILITY_NONE, ABILITY_FLUFFY },
+        .bodyColor = BODY_COLOR_WHITE, .speciesName = _("RikoVolt"), .cryId = CRY_SYLVEON,
+        .natDexNum = NATIONAL_DEX_RIKO, .categoryName = _("Fluff Bunny"), .height = 6, .weight = 95,
+        .description = COMPOUND_STRING("Riko's fluff holds a bright\ncharge. Its zoomies become\neven harder to predict."),
+        .pokemonScale = 256, .trainerScale = 256,
+        .frontPic = gMonFrontPic_RikoElectric, .frontPicSize = MON_COORDS_SIZE(64, 64), .frontPicYOffset = 0,
+        .frontAnimFrames = sAnims_SingleFramePlaceHolder, .backPic = gMonBackPic_RikoElectric,
+        .backPicSize = MON_COORDS_SIZE(64, 64), .backPicYOffset = 0,
+        .palette = gMonPalette_RikoElectric, .shinyPalette = gMonShinyPalette_RikoElectric,
+        .iconSprite = gMonIcon_RikoElectric, .iconPalette = gMonIconPalette_RikoElectric,
+        .shinyIconPalette = gMonShinyIconPalette_RikoElectric, .pokemonJumpType = PKMN_JUMP_TYPE_NORMAL,
+        SHADOW(-2, 8, SHADOW_SIZE_S)
+        OVERWORLD(
+            sPicTable_RikoElectric,
+            SIZE_32x32,
+            SHADOW_SIZE_M,
+            TRACKS_FOOT,
+            sAnimTable_Following,
+            gOverworldPalette_RikoElectric,
+            gShinyOverworldPalette_RikoElectric
+        )
+        .teachingType = ALL_TEACHABLES, .levelUpLearnset = sPawmiLevelUpLearnset,
+    },
+
+    [SPECIES_RIKO_ICE] =
+    {
+        .baseHP = 90, .baseAttack = 75, .baseDefense = 85, .baseSpeed = 110,
+        .baseSpAttack = 105, .baseSpDefense = 95,
+        .types = MON_TYPES(TYPE_ICE), .catchRate = 45, .expYield = 240,
+        .evYield_SpAttack = 2, .genderRatio = PERCENT_FEMALE(50),
+        .eggCycles = 20, .friendship = STANDARD_FRIENDSHIP, .growthRate = GROWTH_MEDIUM_SLOW,
+        .eggGroups = MON_EGG_GROUPS(EGG_GROUP_FIELD, EGG_GROUP_FAIRY),
+        .abilities = { ABILITY_CUTE_CHARM, ABILITY_NONE, ABILITY_FLUFFY },
+        .bodyColor = BODY_COLOR_WHITE, .speciesName = _("RikoIce"), .cryId = CRY_SYLVEON,
+        .natDexNum = NATIONAL_DEX_RIKO, .categoryName = _("Fluff Bunny"), .height = 6, .weight = 95,
+        .description = COMPOUND_STRING("Riko's coat gathers cool\nenergy. It leaves tiny frost\nprints near the treat bowl."),
+        .pokemonScale = 256, .trainerScale = 256,
+        .frontPic = gMonFrontPic_RikoIce, .frontPicSize = MON_COORDS_SIZE(64, 64), .frontPicYOffset = 0,
+        .frontAnimFrames = sAnims_SingleFramePlaceHolder, .backPic = gMonBackPic_RikoIce,
+        .backPicSize = MON_COORDS_SIZE(64, 64), .backPicYOffset = 0,
+        .palette = gMonPalette_RikoIce, .shinyPalette = gMonShinyPalette_RikoIce,
+        .iconSprite = gMonIcon_RikoIce, .iconPalette = gMonIconPalette_RikoIce,
+        .shinyIconPalette = gMonShinyIconPalette_RikoIce, .pokemonJumpType = PKMN_JUMP_TYPE_NORMAL,
+        SHADOW(-2, 8, SHADOW_SIZE_S)
+        OVERWORLD(
+            sPicTable_RikoIce,
+            SIZE_32x32,
+            SHADOW_SIZE_M,
+            TRACKS_FOOT,
+            sAnimTable_Following,
+            gOverworldPalette_RikoIce,
+            gShinyOverworldPalette_RikoIce
+        )
+        .teachingType = ALL_TEACHABLES, .levelUpLearnset = sSwinubLevelUpLearnset,
+    },
+
+    [SPECIES_RIKO_PSYCHIC] =
+    {
+        .baseHP = 90, .baseAttack = 75, .baseDefense = 85, .baseSpeed = 110,
+        .baseSpAttack = 105, .baseSpDefense = 95,
+        .types = MON_TYPES(TYPE_PSYCHIC), .catchRate = 45, .expYield = 240,
+        .evYield_SpAttack = 2, .genderRatio = PERCENT_FEMALE(50),
+        .eggCycles = 20, .friendship = STANDARD_FRIENDSHIP, .growthRate = GROWTH_MEDIUM_SLOW,
+        .eggGroups = MON_EGG_GROUPS(EGG_GROUP_FIELD, EGG_GROUP_FAIRY),
+        .abilities = { ABILITY_CUTE_CHARM, ABILITY_NONE, ABILITY_FLUFFY },
+        .bodyColor = BODY_COLOR_WHITE, .speciesName = _("RikoMind"), .cryId = CRY_SYLVEON,
+        .natDexNum = NATIONAL_DEX_RIKO, .categoryName = _("Fluff Bunny"), .height = 6, .weight = 95,
+        .description = COMPOUND_STRING("Riko's thoughts are loud\nand mostly concern snacks,\npraise, and dramatic entrances."),
+        .pokemonScale = 256, .trainerScale = 256,
+        .frontPic = gMonFrontPic_RikoPsychic, .frontPicSize = MON_COORDS_SIZE(64, 64), .frontPicYOffset = 0,
+        .frontAnimFrames = sAnims_SingleFramePlaceHolder, .backPic = gMonBackPic_RikoPsychic,
+        .backPicSize = MON_COORDS_SIZE(64, 64), .backPicYOffset = 0,
+        .palette = gMonPalette_RikoPsychic, .shinyPalette = gMonShinyPalette_RikoPsychic,
+        .iconSprite = gMonIcon_RikoPsychic, .iconPalette = gMonIconPalette_RikoPsychic,
+        .shinyIconPalette = gMonShinyIconPalette_RikoPsychic, .pokemonJumpType = PKMN_JUMP_TYPE_NORMAL,
+        SHADOW(-2, 8, SHADOW_SIZE_S)
+        OVERWORLD(
+            sPicTable_RikoPsychic,
+            SIZE_32x32,
+            SHADOW_SIZE_M,
+            TRACKS_FOOT,
+            sAnimTable_Following,
+            gOverworldPalette_RikoPsychic,
+            gShinyOverworldPalette_RikoPsychic
+        )
+        .teachingType = ALL_TEACHABLES, .levelUpLearnset = sFlittleLevelUpLearnset,
+    },
+
+    [SPECIES_RIKO_FLYING] =
+    {
+        .baseHP = 90, .baseAttack = 75, .baseDefense = 85, .baseSpeed = 110,
+        .baseSpAttack = 105, .baseSpDefense = 95,
+        .types = MON_TYPES(TYPE_FLYING), .catchRate = 45, .expYield = 240,
+        .evYield_SpAttack = 2, .genderRatio = PERCENT_FEMALE(50),
+        .eggCycles = 20, .friendship = STANDARD_FRIENDSHIP, .growthRate = GROWTH_MEDIUM_SLOW,
+        .eggGroups = MON_EGG_GROUPS(EGG_GROUP_FIELD, EGG_GROUP_FAIRY),
+        .abilities = { ABILITY_CUTE_CHARM, ABILITY_NONE, ABILITY_FLUFFY },
+        .bodyColor = BODY_COLOR_WHITE, .speciesName = _("RikoWing"), .cryId = CRY_SYLVEON,
+        .natDexNum = NATIONAL_DEX_RIKO, .categoryName = _("Fluff Bunny"), .height = 6, .weight = 95,
+        .description = COMPOUND_STRING("Riko's fluff catches the\nwind. It considers every breeze\na personal spotlight."),
+        .pokemonScale = 256, .trainerScale = 256,
+        .frontPic = gMonFrontPic_RikoFlying, .frontPicSize = MON_COORDS_SIZE(64, 64), .frontPicYOffset = 0,
+        .frontAnimFrames = sAnims_SingleFramePlaceHolder, .backPic = gMonBackPic_RikoFlying,
+        .backPicSize = MON_COORDS_SIZE(64, 64), .backPicYOffset = 0,
+        .palette = gMonPalette_RikoFlying, .shinyPalette = gMonShinyPalette_RikoFlying,
+        .iconSprite = gMonIcon_RikoFlying, .iconPalette = gMonIconPalette_RikoFlying,
+        .shinyIconPalette = gMonShinyIconPalette_RikoFlying, .pokemonJumpType = PKMN_JUMP_TYPE_NORMAL,
+        SHADOW(-2, 8, SHADOW_SIZE_S)
+        OVERWORLD(
+            sPicTable_RikoFlying,
+            SIZE_32x32,
+            SHADOW_SIZE_M,
+            TRACKS_FOOT,
+            sAnimTable_Following,
+            gOverworldPalette_RikoFlying,
+            gShinyOverworldPalette_RikoFlying
+        )
+        .teachingType = ALL_TEACHABLES, .levelUpLearnset = sWattrelLevelUpLearnset,
+    },
+
+    [SPECIES_RIKO_DRAGON] =
+    {
+        .baseHP = 90, .baseAttack = 75, .baseDefense = 85, .baseSpeed = 110,
+        .baseSpAttack = 105, .baseSpDefense = 95,
+        .types = MON_TYPES(TYPE_DRAGON), .catchRate = 45, .expYield = 240,
+        .evYield_SpAttack = 2, .genderRatio = PERCENT_FEMALE(50),
+        .eggCycles = 20, .friendship = STANDARD_FRIENDSHIP, .growthRate = GROWTH_MEDIUM_SLOW,
+        .eggGroups = MON_EGG_GROUPS(EGG_GROUP_FIELD, EGG_GROUP_FAIRY),
+        .abilities = { ABILITY_CUTE_CHARM, ABILITY_NONE, ABILITY_FLUFFY },
+        .bodyColor = BODY_COLOR_WHITE, .speciesName = _("RikoDrake"), .cryId = CRY_SYLVEON,
+        .natDexNum = NATIONAL_DEX_RIKO, .categoryName = _("Fluff Bunny"), .height = 6, .weight = 95,
+        .description = COMPOUND_STRING("Riko's fairy energy burns\nbright with dragon power. Its\nroar is still surprisingly cute."),
+        .pokemonScale = 256, .trainerScale = 256,
+        .frontPic = gMonFrontPic_RikoDragon, .frontPicSize = MON_COORDS_SIZE(64, 64), .frontPicYOffset = 0,
+        .frontAnimFrames = sAnims_SingleFramePlaceHolder, .backPic = gMonBackPic_RikoDragon,
+        .backPicSize = MON_COORDS_SIZE(64, 64), .backPicYOffset = 0,
+        .palette = gMonPalette_RikoDragon, .shinyPalette = gMonShinyPalette_RikoDragon,
+        .iconSprite = gMonIcon_RikoDragon, .iconPalette = gMonIconPalette_RikoDragon,
+        .shinyIconPalette = gMonShinyIconPalette_RikoDragon, .pokemonJumpType = PKMN_JUMP_TYPE_NORMAL,
+        SHADOW(-2, 8, SHADOW_SIZE_S)
+        OVERWORLD(
+            sPicTable_RikoDragon,
+            SIZE_32x32,
+            SHADOW_SIZE_M,
+            TRACKS_FOOT,
+            sAnimTable_Following,
+            gOverworldPalette_RikoDragon,
+            gShinyOverworldPalette_RikoDragon
+        )
+        .teachingType = ALL_TEACHABLES, .levelUpLearnset = sFrigibaxLevelUpLearnset,
+    },
+
+#endif
+#if P_FAMILY_BIJUU
+    [SPECIES_BIJUU_FIGHTING] =
+    {
+        .baseHP = 80, .baseAttack = 85, .baseDefense = 70, .baseSpeed = 120,
+        .baseSpAttack = 95, .baseSpDefense = 80,
+        .types = MON_TYPES(TYPE_FIGHTING), .catchRate = 60, .expYield = 220,
+        .evYield_Speed = 3, .genderRatio = PERCENT_FEMALE(50),
+        .eggCycles = 20, .friendship = STANDARD_FRIENDSHIP, .growthRate = GROWTH_MEDIUM_SLOW,
+        .eggGroups = MON_EGG_GROUPS(EGG_GROUP_FIELD),
+        .abilities = { ABILITY_LIMBER, ABILITY_NONE, ABILITY_TECHNICIAN },
+        .bodyColor = BODY_COLOR_BROWN, .speciesName = _("BijuuFight"), .cryId = CRY_MEOWTH,
+        .natDexNum = NATIONAL_DEX_BIJUU, .categoryName = _("Copy Cat"), .height = 7, .weight = 120,
+        .description = COMPOUND_STRING("It copies fighting stances\nperfectly, but prefers watching\nothers do the hard part."),
+        .pokemonScale = 256, .trainerScale = 256,
+        .frontPic = gMonFrontPic_BijuuFighting, .frontPicSize = MON_COORDS_SIZE(64, 64), .frontPicYOffset = 0,
+        .frontAnimFrames = sAnims_SingleFramePlaceHolder, .backPic = gMonBackPic_BijuuFighting,
+        .backPicSize = MON_COORDS_SIZE(64, 64), .backPicYOffset = 0,
+        .palette = gMonPalette_BijuuFighting, .shinyPalette = gMonShinyPalette_BijuuFighting,
+        .iconSprite = gMonIcon_BijuuFighting, .iconPalette = gMonIconPalette_BijuuFighting,
+        .shinyIconPalette = gMonShinyIconPalette_BijuuFighting, .pokemonJumpType = PKMN_JUMP_TYPE_FAST,
+        SHADOW(-2, 8, SHADOW_SIZE_S)
+        OVERWORLD(
+            sPicTable_BijuuFighting,
+            SIZE_32x32,
+            SHADOW_SIZE_M,
+            TRACKS_FOOT,
+            sAnimTable_Following,
+            gOverworldPalette_BijuuFighting,
+            gShinyOverworldPalette_BijuuFighting
+        )
+        .teachingType = ALL_TEACHABLES, .levelUpLearnset = sFlamigoLevelUpLearnset,
+    },
+
+    [SPECIES_BIJUU_POISON] =
+    {
+        .baseHP = 80, .baseAttack = 85, .baseDefense = 70, .baseSpeed = 120,
+        .baseSpAttack = 95, .baseSpDefense = 80,
+        .types = MON_TYPES(TYPE_POISON), .catchRate = 60, .expYield = 220,
+        .evYield_Speed = 3, .genderRatio = PERCENT_FEMALE(50),
+        .eggCycles = 20, .friendship = STANDARD_FRIENDSHIP, .growthRate = GROWTH_MEDIUM_SLOW,
+        .eggGroups = MON_EGG_GROUPS(EGG_GROUP_FIELD),
+        .abilities = { ABILITY_LIMBER, ABILITY_NONE, ABILITY_TECHNICIAN },
+        .bodyColor = BODY_COLOR_BROWN, .speciesName = _("BijuuVenom"), .cryId = CRY_MEOWTH,
+        .natDexNum = NATIONAL_DEX_BIJUU, .categoryName = _("Copy Cat"), .height = 7, .weight = 120,
+        .description = COMPOUND_STRING("It studies poison carefully\nand copies the trick only after\nsomeone says not to."),
+        .pokemonScale = 256, .trainerScale = 256,
+        .frontPic = gMonFrontPic_BijuuPoison, .frontPicSize = MON_COORDS_SIZE(64, 64), .frontPicYOffset = 0,
+        .frontAnimFrames = sAnims_SingleFramePlaceHolder, .backPic = gMonBackPic_BijuuPoison,
+        .backPicSize = MON_COORDS_SIZE(64, 64), .backPicYOffset = 0,
+        .palette = gMonPalette_BijuuPoison, .shinyPalette = gMonShinyPalette_BijuuPoison,
+        .iconSprite = gMonIcon_BijuuPoison, .iconPalette = gMonIconPalette_BijuuPoison,
+        .shinyIconPalette = gMonShinyIconPalette_BijuuPoison, .pokemonJumpType = PKMN_JUMP_TYPE_FAST,
+        SHADOW(-2, 8, SHADOW_SIZE_S)
+        OVERWORLD(
+            sPicTable_BijuuPoison,
+            SIZE_32x32,
+            SHADOW_SIZE_M,
+            TRACKS_FOOT,
+            sAnimTable_Following,
+            gOverworldPalette_BijuuPoison,
+            gShinyOverworldPalette_BijuuPoison
+        )
+        .teachingType = ALL_TEACHABLES, .levelUpLearnset = sKoffingLevelUpLearnset,
+    },
+
+    [SPECIES_BIJUU_GROUND] =
+    {
+        .baseHP = 80, .baseAttack = 85, .baseDefense = 70, .baseSpeed = 120,
+        .baseSpAttack = 95, .baseSpDefense = 80,
+        .types = MON_TYPES(TYPE_GROUND), .catchRate = 60, .expYield = 220,
+        .evYield_Speed = 3, .genderRatio = PERCENT_FEMALE(50),
+        .eggCycles = 20, .friendship = STANDARD_FRIENDSHIP, .growthRate = GROWTH_MEDIUM_SLOW,
+        .eggGroups = MON_EGG_GROUPS(EGG_GROUP_FIELD),
+        .abilities = { ABILITY_LIMBER, ABILITY_NONE, ABILITY_TECHNICIAN },
+        .bodyColor = BODY_COLOR_BROWN, .speciesName = _("BijuuTerra"), .cryId = CRY_MEOWTH,
+        .natDexNum = NATIONAL_DEX_BIJUU, .categoryName = _("Copy Cat"), .height = 7, .weight = 120,
+        .description = COMPOUND_STRING("It burrows into soft earth,\nthen emerges looking like it\nplanned the whole thing."),
+        .pokemonScale = 256, .trainerScale = 256,
+        .frontPic = gMonFrontPic_BijuuGround, .frontPicSize = MON_COORDS_SIZE(64, 64), .frontPicYOffset = 0,
+        .frontAnimFrames = sAnims_SingleFramePlaceHolder, .backPic = gMonBackPic_BijuuGround,
+        .backPicSize = MON_COORDS_SIZE(64, 64), .backPicYOffset = 0,
+        .palette = gMonPalette_BijuuGround, .shinyPalette = gMonShinyPalette_BijuuGround,
+        .iconSprite = gMonIcon_BijuuGround, .iconPalette = gMonIconPalette_BijuuGround,
+        .shinyIconPalette = gMonShinyIconPalette_BijuuGround, .pokemonJumpType = PKMN_JUMP_TYPE_FAST,
+        SHADOW(-2, 8, SHADOW_SIZE_S)
+        OVERWORLD(
+            sPicTable_BijuuGround,
+            SIZE_32x32,
+            SHADOW_SIZE_M,
+            TRACKS_FOOT,
+            sAnimTable_Following,
+            gOverworldPalette_BijuuGround,
+            gShinyOverworldPalette_BijuuGround
+        )
+        .teachingType = ALL_TEACHABLES, .levelUpLearnset = sPhanpyLevelUpLearnset,
+    },
+
+    [SPECIES_BIJUU_ROCK] =
+    {
+        .baseHP = 80, .baseAttack = 85, .baseDefense = 70, .baseSpeed = 120,
+        .baseSpAttack = 95, .baseSpDefense = 80,
+        .types = MON_TYPES(TYPE_ROCK), .catchRate = 60, .expYield = 220,
+        .evYield_Speed = 3, .genderRatio = PERCENT_FEMALE(50),
+        .eggCycles = 20, .friendship = STANDARD_FRIENDSHIP, .growthRate = GROWTH_MEDIUM_SLOW,
+        .eggGroups = MON_EGG_GROUPS(EGG_GROUP_FIELD),
+        .abilities = { ABILITY_LIMBER, ABILITY_NONE, ABILITY_TECHNICIAN },
+        .bodyColor = BODY_COLOR_BROWN, .speciesName = _("BijuuRock"), .cryId = CRY_MEOWTH,
+        .natDexNum = NATIONAL_DEX_BIJUU, .categoryName = _("Copy Cat"), .height = 7, .weight = 120,
+        .description = COMPOUND_STRING("It copies the patience of\nstone, at least until it hears\na snack wrapper."),
+        .pokemonScale = 256, .trainerScale = 256,
+        .frontPic = gMonFrontPic_BijuuRock, .frontPicSize = MON_COORDS_SIZE(64, 64), .frontPicYOffset = 0,
+        .frontAnimFrames = sAnims_SingleFramePlaceHolder, .backPic = gMonBackPic_BijuuRock,
+        .backPicSize = MON_COORDS_SIZE(64, 64), .backPicYOffset = 0,
+        .palette = gMonPalette_BijuuRock, .shinyPalette = gMonShinyPalette_BijuuRock,
+        .iconSprite = gMonIcon_BijuuRock, .iconPalette = gMonIconPalette_BijuuRock,
+        .shinyIconPalette = gMonShinyIconPalette_BijuuRock, .pokemonJumpType = PKMN_JUMP_TYPE_FAST,
+        SHADOW(-2, 8, SHADOW_SIZE_S)
+        OVERWORLD(
+            sPicTable_BijuuRock,
+            SIZE_32x32,
+            SHADOW_SIZE_M,
+            TRACKS_FOOT,
+            sAnimTable_Following,
+            gOverworldPalette_BijuuRock,
+            gShinyOverworldPalette_BijuuRock
+        )
+        .teachingType = ALL_TEACHABLES, .levelUpLearnset = sNacliLevelUpLearnset,
+    },
+
+    [SPECIES_BIJUU_BUG] =
+    {
+        .baseHP = 80, .baseAttack = 85, .baseDefense = 70, .baseSpeed = 120,
+        .baseSpAttack = 95, .baseSpDefense = 80,
+        .types = MON_TYPES(TYPE_BUG), .catchRate = 60, .expYield = 220,
+        .evYield_Speed = 3, .genderRatio = PERCENT_FEMALE(50),
+        .eggCycles = 20, .friendship = STANDARD_FRIENDSHIP, .growthRate = GROWTH_MEDIUM_SLOW,
+        .eggGroups = MON_EGG_GROUPS(EGG_GROUP_FIELD),
+        .abilities = { ABILITY_LIMBER, ABILITY_NONE, ABILITY_TECHNICIAN },
+        .bodyColor = BODY_COLOR_BROWN, .speciesName = _("BijuuBug"), .cryId = CRY_MEOWTH,
+        .natDexNum = NATIONAL_DEX_BIJUU, .categoryName = _("Copy Cat"), .height = 7, .weight = 120,
+        .description = COMPOUND_STRING("It watches bugs closely and\ncopies their movements with\nuncanny little precision."),
+        .pokemonScale = 256, .trainerScale = 256,
+        .frontPic = gMonFrontPic_BijuuBug, .frontPicSize = MON_COORDS_SIZE(64, 64), .frontPicYOffset = 0,
+        .frontAnimFrames = sAnims_SingleFramePlaceHolder, .backPic = gMonBackPic_BijuuBug,
+        .backPicSize = MON_COORDS_SIZE(64, 64), .backPicYOffset = 0,
+        .palette = gMonPalette_BijuuBug, .shinyPalette = gMonShinyPalette_BijuuBug,
+        .iconSprite = gMonIcon_BijuuBug, .iconPalette = gMonIconPalette_BijuuBug,
+        .shinyIconPalette = gMonShinyIconPalette_BijuuBug, .pokemonJumpType = PKMN_JUMP_TYPE_FAST,
+        SHADOW(-2, 8, SHADOW_SIZE_S)
+        OVERWORLD(
+            sPicTable_BijuuBug,
+            SIZE_32x32,
+            SHADOW_SIZE_M,
+            TRACKS_FOOT,
+            sAnimTable_Following,
+            gOverworldPalette_BijuuBug,
+            gShinyOverworldPalette_BijuuBug
+        )
+        .teachingType = ALL_TEACHABLES, .levelUpLearnset = sSewaddleLevelUpLearnset,
+    },
+
+    [SPECIES_BIJUU_GHOST] =
+    {
+        .baseHP = 80, .baseAttack = 85, .baseDefense = 70, .baseSpeed = 120,
+        .baseSpAttack = 95, .baseSpDefense = 80,
+        .types = MON_TYPES(TYPE_GHOST), .catchRate = 60, .expYield = 220,
+        .evYield_Speed = 3, .genderRatio = PERCENT_FEMALE(50),
+        .eggCycles = 20, .friendship = STANDARD_FRIENDSHIP, .growthRate = GROWTH_MEDIUM_SLOW,
+        .eggGroups = MON_EGG_GROUPS(EGG_GROUP_FIELD),
+        .abilities = { ABILITY_LIMBER, ABILITY_NONE, ABILITY_TECHNICIAN },
+        .bodyColor = BODY_COLOR_BROWN, .speciesName = _("BijuuGhost"), .cryId = CRY_MEOWTH,
+        .natDexNum = NATIONAL_DEX_BIJUU, .categoryName = _("Copy Cat"), .height = 7, .weight = 120,
+        .description = COMPOUND_STRING("It copies ghostly tricks and\nthen acts innocent when the\nlights flicker."),
+        .pokemonScale = 256, .trainerScale = 256,
+        .frontPic = gMonFrontPic_BijuuGhost, .frontPicSize = MON_COORDS_SIZE(64, 64), .frontPicYOffset = 0,
+        .frontAnimFrames = sAnims_SingleFramePlaceHolder, .backPic = gMonBackPic_BijuuGhost,
+        .backPicSize = MON_COORDS_SIZE(64, 64), .backPicYOffset = 0,
+        .palette = gMonPalette_BijuuGhost, .shinyPalette = gMonShinyPalette_BijuuGhost,
+        .iconSprite = gMonIcon_BijuuGhost, .iconPalette = gMonIconPalette_BijuuGhost,
+        .shinyIconPalette = gMonShinyIconPalette_BijuuGhost, .pokemonJumpType = PKMN_JUMP_TYPE_FAST,
+        SHADOW(-2, 8, SHADOW_SIZE_S)
+        OVERWORLD(
+            sPicTable_BijuuGhost,
+            SIZE_32x32,
+            SHADOW_SIZE_M,
+            TRACKS_FOOT,
+            sAnimTable_Following,
+            gOverworldPalette_BijuuGhost,
+            gShinyOverworldPalette_BijuuGhost
+        )
+        .teachingType = ALL_TEACHABLES, .levelUpLearnset = sMisdreavusLevelUpLearnset,
+    },
+
+    [SPECIES_BIJUU_DARK] =
+    {
+        .baseHP = 80, .baseAttack = 85, .baseDefense = 70, .baseSpeed = 120,
+        .baseSpAttack = 95, .baseSpDefense = 80,
+        .types = MON_TYPES(TYPE_DARK), .catchRate = 60, .expYield = 220,
+        .evYield_Speed = 3, .genderRatio = PERCENT_FEMALE(50),
+        .eggCycles = 20, .friendship = STANDARD_FRIENDSHIP, .growthRate = GROWTH_MEDIUM_SLOW,
+        .eggGroups = MON_EGG_GROUPS(EGG_GROUP_FIELD),
+        .abilities = { ABILITY_LIMBER, ABILITY_NONE, ABILITY_TECHNICIAN },
+        .bodyColor = BODY_COLOR_BROWN, .speciesName = _("BijuuDark"), .cryId = CRY_MEOWTH,
+        .natDexNum = NATIONAL_DEX_BIJUU, .categoryName = _("Copy Cat"), .height = 7, .weight = 120,
+        .description = COMPOUND_STRING("It hides in the shadows,\nstudying everyone before\ncopying their best move."),
+        .pokemonScale = 256, .trainerScale = 256,
+        .frontPic = gMonFrontPic_BijuuDark, .frontPicSize = MON_COORDS_SIZE(64, 64), .frontPicYOffset = 0,
+        .frontAnimFrames = sAnims_SingleFramePlaceHolder, .backPic = gMonBackPic_BijuuDark,
+        .backPicSize = MON_COORDS_SIZE(64, 64), .backPicYOffset = 0,
+        .palette = gMonPalette_BijuuDark, .shinyPalette = gMonShinyPalette_BijuuDark,
+        .iconSprite = gMonIcon_BijuuDark, .iconPalette = gMonIconPalette_BijuuDark,
+        .shinyIconPalette = gMonShinyIconPalette_BijuuDark, .pokemonJumpType = PKMN_JUMP_TYPE_FAST,
+        SHADOW(-2, 8, SHADOW_SIZE_S)
+        OVERWORLD(
+            sPicTable_BijuuDark,
+            SIZE_32x32,
+            SHADOW_SIZE_M,
+            TRACKS_FOOT,
+            sAnimTable_Following,
+            gOverworldPalette_BijuuDark,
+            gShinyOverworldPalette_BijuuDark
+        )
+        .teachingType = ALL_TEACHABLES, .levelUpLearnset = sSableyeLevelUpLearnset,
+    },
+
+    [SPECIES_BIJUU_STEEL] =
+    {
+        .baseHP = 80, .baseAttack = 85, .baseDefense = 70, .baseSpeed = 120,
+        .baseSpAttack = 95, .baseSpDefense = 80,
+        .types = MON_TYPES(TYPE_STEEL), .catchRate = 60, .expYield = 220,
+        .evYield_Speed = 3, .genderRatio = PERCENT_FEMALE(50),
+        .eggCycles = 20, .friendship = STANDARD_FRIENDSHIP, .growthRate = GROWTH_MEDIUM_SLOW,
+        .eggGroups = MON_EGG_GROUPS(EGG_GROUP_FIELD),
+        .abilities = { ABILITY_LIMBER, ABILITY_NONE, ABILITY_TECHNICIAN },
+        .bodyColor = BODY_COLOR_BROWN, .speciesName = _("BijuuSteel"), .cryId = CRY_MEOWTH,
+        .natDexNum = NATIONAL_DEX_BIJUU, .categoryName = _("Copy Cat"), .height = 7, .weight = 120,
+        .description = COMPOUND_STRING("It copies the strength of\nsteel, though its favorite\nweapon remains curiosity."),
+        .pokemonScale = 256, .trainerScale = 256,
+        .frontPic = gMonFrontPic_BijuuSteel, .frontPicSize = MON_COORDS_SIZE(64, 64), .frontPicYOffset = 0,
+        .frontAnimFrames = sAnims_SingleFramePlaceHolder, .backPic = gMonBackPic_BijuuSteel,
+        .backPicSize = MON_COORDS_SIZE(64, 64), .backPicYOffset = 0,
+        .palette = gMonPalette_BijuuSteel, .shinyPalette = gMonShinyPalette_BijuuSteel,
+        .iconSprite = gMonIcon_BijuuSteel, .iconPalette = gMonIconPalette_BijuuSteel,
+        .shinyIconPalette = gMonShinyIconPalette_BijuuSteel, .pokemonJumpType = PKMN_JUMP_TYPE_FAST,
+        SHADOW(-2, 8, SHADOW_SIZE_S)
+        OVERWORLD(
+            sPicTable_BijuuSteel,
+            SIZE_32x32,
+            SHADOW_SIZE_M,
+            TRACKS_FOOT,
+            sAnimTable_Following,
+            gOverworldPalette_BijuuSteel,
+            gShinyOverworldPalette_BijuuSteel
+        )
+        .teachingType = ALL_TEACHABLES, .levelUpLearnset = sTinkatinkLevelUpLearnset,
+    },
+
 #endif
 
     /*

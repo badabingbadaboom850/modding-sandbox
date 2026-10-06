@@ -630,7 +630,10 @@ DewfordTown_EventScript_PhraseNotTrendyEnough::
 DewfordTown_Text_TinyIslandCommunity:
 	.string "Dewford is a tiny island community.\n"
 	.string "If something gets trendy here,\l"
-	.string "everyone picks up on it right away.$"
+	.string "everyone picks up on it right away.\p"
+	.string "Riko is popular for dramatic entrances.\n"
+	.string "Penny is popular for being adorable.\p"
+	.string "Bijuu is popular for copying both.\pEven island folk know the story.\nRiko, Penny, and Bijuu are said\nto cross the sea unseen.$"
 
 DewfordTown_Text_TownSign:
 	.string "Dewford Town\n"
@@ -710,7 +713,20 @@ DewfordTown_Text_ThrowInFishingAdvice:
 	.string "Sometimes you can snag something\n"
 	.string "immediately, but with bigger catches,\l"
 	.string "you need to time the pulls on your Rod\l"
-	.string "to haul them in.$"
+	.string "to haul them in.\p"
+	.string "Riko says fishing needs patience.\n"
+	.string "Penny says it needs snacks.\p"
+	.string "Bijuu says it can copy the fish if\n"
+	.string "the fish makes the first move.\p"
+	.string "The oldest fishermen tell a stranger\n"
+	.string "story: three legendary girls cross the\l"
+	.string "region when the right signs appear.\p"
+	.string "They say one is fluffy, one is gentle,\n"
+	.string "and one can become anyone at all.\p"
+	.string "Has anyone seen the Trainer who travels\n"
+	.string "with them?\p"
+	.string "If so, keep it quiet. The legends may be\n"
+	.string "trying to stay hidden.\pOld fishermen watch for three\nlights at sea. One is Riko, one\nPenny, one Bijuu, or so they say.$"
 
 DewfordTown_Text_ThatsTooBadThen:
 	.string "Oh, is that so?\n"
@@ -748,7 +764,9 @@ DewfordTown_Text_XIsTheBiggestHappeningThingRight:
 	.string "It's the hottest thing in cool!\p"
 	.string "Wherever you're from,\n"
 	.string "“{STR_VAR_1}”\l"
-	.string "is the biggest happening thing, right?$"
+	.string "is the biggest happening thing, right?\p"
+	.string "Around here, Riko, Penny, and Bijuu\n"
+	.string "are the real trendsetters.\pThe names are all the rage, too.\nRiko, Penny, and Bijuu, the three\nlegendary girls no one can find.$"
 
 DewfordTown_Text_TellMeWhatsNewAndIn:
 	.string "Hunh?\n"
