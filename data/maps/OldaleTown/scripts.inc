@@ -391,10 +391,12 @@ OldaleTown_Text_FinishedSketchingFootprints:
 	.string "Riko says they are still impressive.\n"
 	.string "Penny says they need a better artist.\p"
 	.string "Bijuu has already copied the pose.\p"
-	.string "The sketcher also found three enormous\n"
-	.string "marks nearby—stone, ice, and steel.\p"
+	.string "The sketcher also heard gossip about\n"
+	.string "three legendary girls passing through.\p"
 	.string "Riko says the legends must have\n"
-	.string "excellent dramatic timing.$"
+	.string "excellent dramatic timing.\p"
+	.string "Penny hopes they are friendly. Bijuu\n"
+	.string "has already started copying the rumor.$
 
 OldaleTown_Text_MayLetsGoBack:
 	.string "May: {PLAYER}{KUN}!\n"
