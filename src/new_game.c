@@ -54,6 +54,7 @@
 #include "union_room_chat.h"
 #include "constants/map_groups.h"
 #include "constants/items.h"
+#include "constants/species.h"
 #include "constants/party_menu.h"
 #include "difficulty.h"
 #include "follower_npc.h"
@@ -275,7 +276,10 @@ void NewGameInitData(void)
     ClearPlayerLinkBattleRecords();
     InitSeedotSizeRecord();
     InitLotadSizeRecord();
-    gPlayerPartyCount = 0;
+    // Testing aid: start fresh saves with Riko and Bijuu in the party.
+    gPlayerPartyCount = 2;
+    CreateRandomMon(&gPlayerParty[0], SPECIES_RIKO, 5);
+    CreateRandomMon(&gPlayerParty[1], SPECIES_BIJUU, 5);
     ZeroPlayerPartyMons();
     ResetPokemonStorageSystem();
     ResetHallOfFameArchive();
