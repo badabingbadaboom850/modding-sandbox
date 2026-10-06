@@ -701,7 +701,10 @@ PetalburgCity_EventScript_GymBoy::
 PetalburgCity_Text_WhereIsWally:
 	.string "Where has our Wally gone?\p"
 	.string "We have to leave for Verdanturf Town\n"
-	.string "very soon…$"
+	.string "very soon…\p"
+	.string "Riko would make an entrance before\n"
+	.string "leaving. Penny would pack everyone a\n"
+	.string "snack. Bijuu would copy the goodbye.$"
 
 PetalburgCity_Text_AreYouRookieTrainer:
 	.string "Hiya! Are you maybe…\n"
