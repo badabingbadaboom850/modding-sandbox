@@ -700,6 +700,12 @@ RIKO_OVERWORLD_GFX := graphics/pokemon/riko/overworld.4bpp \
                      graphics/pokemon/bijuu_steel/overworld.4bpp \
                      graphics/pokemon/bijuu_steel/overworld_normal.gbapal \
                      graphics/pokemon/bijuu_steel/overworld_shiny.gbapal
+
+# Overworld followers are animated in 32x32 frames. Reorder the PNG's 4x4-tile
+# blocks so each frame is contiguous in the generated 4bpp data.
+$(filter %.4bpp,$(RIKO_OVERWORLD_GFX)): %.4bpp: %.png
+	$(GFX) $< $@ -mwidth 4 -mheight 4
+
 RIKO_MEGA_GFX := graphics/pokemon/riko/mega/front.4bpp.smol \
                  graphics/pokemon/riko/mega/back.4bpp.smol \
                  graphics/pokemon/riko/mega/normal.gbapal \
