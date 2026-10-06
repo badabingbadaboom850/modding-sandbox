@@ -5,6 +5,13 @@ Route102_EventScript_BijuuEncounter::
 	lock
 	faceplayer
 	goto_if_unset FLAG_RECEIVED_FIRST_BALLS, Route102_EventScript_BijuuTooShy
+	checkitem ITEM_POKE_BALL, 1
+	goto_if_eq VAR_RESULT, TRUE, Route102_EventScript_BijuuReadyToBattle
+	msgbox Route102_Text_BijuuTooShy, MSGBOX_NPC
+	release
+	end
+
+Route102_EventScript_BijuuReadyToBattle::
 	msgbox Route102_Text_BijuuAppears, MSGBOX_DEFAULT
 	playmoncry SPECIES_BIJUU, CRY_MODE_ENCOUNTER
 	setwildbattle SPECIES_BIJUU, 8
