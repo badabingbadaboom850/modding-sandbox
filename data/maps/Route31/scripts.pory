@@ -150,20 +150,20 @@ Route31_EventScript_ItemAntidote::
 
 Route31_Text_BijuuAppears:
 	.string "The shy cat copies your steps.\p"
-	.string "She steps close, watching you\\n"
+	.string "She steps close, watching you\n"
 	.string "with bright, curious eyes.$"
 
 Route31_Text_BijuuTooShy:
-	.string "A shy cat watches from the\\n"
+	.string "A shy cat watches from the\n"
 	.string "grass.\p"
-	.string "It copies your movements, then\\n"
+	.string "It copies your movements, then\n"
 	.string "hides.\p"
-	.string "You should come back with\\n"
+	.string "You should come back with\n"
 	.string "Poke Balls.$"
 
 Route31_Text_BijuuCaught:
 	.string "Bijuu trusts you enough to stay.\p"
-	.string "She was sent to a PC Box if your\\n"
+	.string "She was sent to a PC Box if your\n"
 	.string "party was full.$"
 
 Route31_Text_CooltrainerM:
@@ -255,19 +255,19 @@ Route31_Text_Sign:
 Route31_Text_DarkCaveSign:
 	.string "Dark Cave$"
 Route31_Text_BijuuSpotted:
-	.string "Wait... is that Bijuu?\\p"
+	.string "Wait... is that Bijuu?\p"
 	.string "She darts away!$"
 
 Route31_Text_BijuuRun1:
-	.string "Bijuu glances back, then races\\n"
+	.string "Bijuu glances back, then races\n"
 	.string "farther along the path!$"
 
 Route31_Text_BijuuRun2:
-	.string "You catch up, but Bijuu darts\\n"
+	.string "You catch up, but Bijuu darts\n"
 	.string "away again!$"
 
 Route31_Text_BijuuRun3:
-	.string "Bijuu finally stops and turns to\\n"
+	.string "Bijuu finally stops and turns to\n"
 	.string "face you!$"
 
 Route31_Movement_BijuuRun1:

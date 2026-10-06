@@ -335,19 +335,19 @@ Route31_Expert_Text_4:
 	.string "Take this for your victory.$"
 
 Route31_Text_BijuuSpotted:
-	.string "Wait... is that Bijuu?\\p"
+	.string "Wait... is that Bijuu?\p"
 	.string "She darts away!$"
 
 Route31_Text_BijuuRun1:
-	.string "Bijuu glances back, then races\\n"
+	.string "Bijuu glances back, then races\n"
 	.string "farther along the path!$"
 
 Route31_Text_BijuuRun2:
-	.string "You catch up, but Bijuu darts\\n"
+	.string "You catch up, but Bijuu darts\n"
 	.string "away again!$"
 
 Route31_Text_BijuuRun3:
-	.string "Bijuu finally stops and turns to\\n"
+	.string "Bijuu finally stops and turns to\n"
 	.string "face you!$"
 
 Route31_Movement_BijuuRun1:
