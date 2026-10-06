@@ -341,7 +341,11 @@ OldaleTown_Movement_ReturnToOriginalPosition:
 
 OldaleTown_Text_SavingMyProgress:
 	.string "I want to take a rest, so I'm saving my\n"
-	.string "progress.$"
+	.string "progress.\p"
+	.string "Riko says progress deserves a snack.\n"
+	.string "Penny says it deserves a quiet corner.\p"
+	.string "Bijuu says it can save a copy of\n"
+	.string "everything.$"
 
 OldaleTown_Text_IWorkAtPokemonMart:
 	.string "Hi!\n"
