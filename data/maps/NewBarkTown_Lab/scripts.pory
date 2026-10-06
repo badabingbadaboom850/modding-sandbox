@@ -960,7 +960,7 @@ NewBarkTown_Lab_Text_AideGivePotion:
 
 NewBarkTown_Lab_Text_AideAlwaysBusy:
 	.string "Some folks say Riko, Penny, and\n"
-	.string "Bijuu are the legendary trio people\n"
+	.string "Bijuu are the legendary trio people\p"
 	.string "have spotted nearby. Sounds like an\n"
 	.string "old story, but who knows?\p"
 	.string "There are only three of us, so\n"
@@ -968,7 +968,7 @@ NewBarkTown_Lab_Text_AideAlwaysBusy:
 
 NewBarkTown_Lab_Text_AideSave:
 	.string "I've heard a few stories about\n"
-	.string "Riko, Penny, and Bijuu turning up\n"
+	.string "Riko, Penny, and Bijuu turning up\p"
 	.string "nearby. Anyway, save regularly!\p"
 	.string "Don't forget to save your game\n"
 	.string "regularly!\p"

@@ -196,7 +196,7 @@ SootopolisCity_Gym_1F_Text_GymGuidePostVictory:
 
 SootopolisCity_Gym_1F_Text_JuanIntro:
 	.string "Let me ask you.\n"
-	.string "Did you know?\l"
+	.string "Did you know?\p"
 	.string "Ah, I should not be so coy.\p"
 	.string "It was I who taught Wallace everything\n"
 	.string "there is to know about Pokémon.\p"

@@ -72,7 +72,7 @@ Route102_EventScript_Allen::
 
 Route102_Text_WatchMeCatchPokemon:
 	.string "Wally: {PLAYER}…\n"
-	.string "Pokémon hide in tall grass like this,\l"
+	.string "Pokémon hide in tall grass like this,\p"
 	.string "don't they?\p"
 	.string "Please watch me and see if I can\n"
 	.string "catch one properly.\p"
@@ -90,12 +90,12 @@ Route102_Text_ImNotVeryTall:
 	.string "I'm…not very tall, so I sink right\n"
 	.string "into tall grass.\p"
 	.string "Penny would disappear in here too…\n"
-	.string "though she'd probably emerge covered\n"
+	.string "though she'd probably emerge covered\p"
 	.string "in leaves and looking very proud!$"
 
 Route102_Text_CatchWholeBunchOfPokemon:
 	.string "I'm going to catch a whole bunch of\n"
-	.string "Pokémon! Maybe one will be as\n"
+	.string "Pokémon! Maybe one will be as\p"
 	.string "dramatic as Riko!\p"
 	.string "Maybe one will be as patient as Penny.$"
 

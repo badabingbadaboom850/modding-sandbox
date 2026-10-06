@@ -247,7 +247,7 @@ NewBarkTown_Text_FatManState3:
 	.string "some new Pokémon.\p"
 	.string "Keep this quiet.\p"
 	.string "A traveler says she saw a shy cat\n"
-	.string "on Route 31. It watched her for a\n"
+	.string "on Route 31. It watched her for a\p"
 	.string "moment, then vanished into the grass.$"
 
 NewBarkTown_Text_LassState2:
@@ -266,7 +266,7 @@ NewBarkTown_Text_LassState4:
 	.string "You should tell your mom if\n"
 	.string "you are leaving.\p"
 	.string "There's a story going around about\n"
-	.string "a cat between Cherrygrove and\n"
+	.string "a cat between Cherrygrove and\p"
 	.string "Violet. A few trainers say she\n"
 	.string "follows them, then slips away.$"
 

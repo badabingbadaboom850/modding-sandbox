@@ -1001,7 +1001,7 @@ Route104_Text_ThrowBallAtWeakenedPokemon:
 	.string "It will be easier to catch if it's been\n"
 	.string "poisoned, burned, or lulled to sleep.\p"
 	.string "Riko says weaken them first, then make\n"
-	.string "a dramatic entrance. Penny agrees.\pThe legendary girls cross this road.\nRiko leads with courage, Penny\nkeeps the others safe.$"
+	.string "a dramatic entrance. Penny agrees.\pThe legendary girls cross this road.\nRiko leads with courage, Penny\pkeeps the others safe.$"
 
 Route104_Text_OnlyThrowBallAtWildPokemon:
 	.string "You're a thief if you try to steal\n"
@@ -1009,7 +1009,7 @@ Route104_Text_OnlyThrowBallAtWildPokemon:
 	.string "You should throw Poké Balls only at\n"
 	.string "wild Pokémon.\p"
 	.string "Bijuu keeps practicing the throw, just\n"
-	.string "in case it ever finds a Poké Ball.\pSome say Bijuu copies any face.\nThat is why the three girls leave\nno clear sign of where they went.$"
+	.string "in case it ever finds a Poké Ball.\pSome say Bijuu copies any face.\nThat is why the three girls leave\pno clear sign of where they went.$"
 
 Route104_Text_ImNotATrainer:
 	.string "Oh, no, I'm not a Trainer.\p"
@@ -1018,7 +1018,7 @@ Route104_Text_ImNotATrainer:
 	.string "If you don't want to battle, stay out\n"
 	.string "of their sight.\p"
 	.string "Penny calls that a peaceful strategy.\n"
-	.string "Riko calls it missing the fun.\pRiko takes the bold path. Penny\nchooses the safe one. Bijuu copies\nboth. That is the old tale.$"
+	.string "Riko calls it missing the fun.\pRiko takes the bold path. Penny\nchooses the safe one. Bijuu copies\pboth. That is the old tale.$"
 
 Route104_Text_LikeFillingMouthWithSeedsTakeThis:
 	.string "I like going fast,\n"

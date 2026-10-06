@@ -663,18 +663,18 @@ LittlerootTown_ProfessorBirchsLab_Text_BirchAwayOnFieldwork:
 	.string "Ergo, he isn't here.\p"
 	.string "Oh, let me explain what fieldwork is.\p"
 	.string "It is to study things in the natural\n"
-	.string "environment, like fields and mountains,\l"
+	.string "environment, like fields and mountains,\p"
 	.string "instead of a laboratory.\p"
 	.string "The Prof isn't one for doing desk work.\n"
-	.string "He's the type of person who would\l"
+	.string "He's the type of person who would\p"
 	.string "rather go outside and experience\l"
 	.string "things than read about them here.\p"
 	.string "A couple of field reports mention a\n"
-	.string "rare sighting of Riko, Penny, and\n"
+	.string "rare sighting of Riko, Penny, and\p"
 	.string "Bijuu. Birch wants to check whether\n"
 	.string "there's anything to the story.\p"
 	.string "Riko is known for dramatic entrances,\n"
-	.string "Penny for disappearing when noticed,\l"
+	.string "Penny for disappearing when noticed,\p"
 	.string "and Bijuu for copying whatever it sees.\p"
 	.string "No one knows where they came from, but\n"
 	.string "they may be closer than anyone realizes.\p"
@@ -685,11 +685,11 @@ LittlerootTown_ProfessorBirchsLab_Text_BirchAwayOnFieldwork:
 
 LittlerootTown_ProfessorBirchsLab_Text_BirchIsntOneForDeskWork:
 	.string "The Prof isn't one for doing desk work.\n"
-	.string "He's the type of person who would\l"
+	.string "He's the type of person who would\p"
 	.string "rather go outside and experience\l"
 	.string "things than read about them here.\p"
 	.string "One aide heard about a rare sighting\n"
-	.string "of Riko, Penny, and Bijuu. Birch\n"
+	.string "of Riko, Penny, and Bijuu. Birch\p"
 	.string "thinks it may be worth looking into.$"
 
 LittlerootTown_ProfessorBirchsLab_Text_BirchEnjoysRivalsHelpToo:
@@ -763,12 +763,12 @@ LittlerootTown_ProfessorBirchsLab_Text_ReceivedPokedex:
 
 LittlerootTown_ProfessorBirchsLab_Text_ExplainPokedex:
 	.string "Prof. Birch: The Pokédex is a high-tech\n"
-	.string "tool that automatically makes a record\l"
+	.string "tool that automatically makes a record\p"
 	.string "of any Pokémon you meet or catch.\p"
 	.string "My kid, {RIVAL}, goes everywhere\n"
 	.string "with it.\p"
 	.string "Whenever my kid catches a rare Pokémon\n"
-	.string "and records its data in the Pokédex,\l"
+	.string "and records its data in the Pokédex,\p"
 	.string "why, {RIVAL} looks for me while I'm out\l"
 	.string "doing fieldwork, and shows me.$"
 

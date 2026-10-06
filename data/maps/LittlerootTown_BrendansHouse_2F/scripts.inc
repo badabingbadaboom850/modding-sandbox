@@ -303,7 +303,7 @@ PlayersHouse_2F_Text_Notebook:
 	.string "Adventure Rule No. 2\n"
 	.string "Record your progress with Save.\p"
 	.string "Adventure Rule No. 3\n"
-	.string "Riko expects praise, Penny appreciates patience,\n"
+	.string "Riko expects praise, Penny appreciates patience,\p"
 	.string "and Bijuu is probably copying this notebook.\p"
 	.string "The remaining pages are blank…$"
 

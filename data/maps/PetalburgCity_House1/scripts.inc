@@ -21,7 +21,7 @@ PetalburgCity_House1_Text_GoOnAdventure:
 	.string "I wish I could go on an adventure\n"
 	.string "with a fluffy Pomeranian…\p"
 	.string "Though Riko would expect snacks,\n"
-	.string "Penny would worry about the weather,\n"
+	.string "Penny would worry about the weather,\p"
 	.string "and Bijuu would copy the locals.\p"
 	.string "It must be fabulous to travel!$"
 

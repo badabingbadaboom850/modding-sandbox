@@ -305,10 +305,10 @@ LavaridgeTown_Gym_1F_Text_FlanneryIntro:
 	.string "I am Flannery, and I'm the Gym\n"
 	.string "Leader here!\p"
 	.string "Uh…\n"
-	.string "Dare not underestimate me, though\l"
+	.string "Dare not underestimate me, though\p"
 	.string "I have been Leader only a short time!\p"
 	.string "With skills inherited from my grand-\n"
-	.string "father, I shall, uh…demonstrate the\l"
+	.string "father, I shall, uh…demonstrate the\p"
 	.string "hot moves we have honed on this land!\p"
 	.string "The trio is here? I am not\nnervous. Not at all!"
 

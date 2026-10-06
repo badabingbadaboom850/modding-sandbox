@@ -364,7 +364,7 @@ CherrygroveCity_Text_TeacherHaveMapCard:
 	.string "When you're with Pokémon,\n"
 	.string "going anywhere is fun.\p"
 	.string "Two trainers came back from Route\n"
-	.string "31 with the same odd story: a shy\n"
+	.string "31 with the same odd story: a shy\p"
 	.string "cat copied their steps, then ducked\n"
 	.string "into the grass.$"
 

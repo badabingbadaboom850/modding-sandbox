@@ -178,7 +178,7 @@ RustboroCity_Gym_Text_RoxanneIntro:
 	.string "Hello, I am Roxanne, the Rustboro\n"
 	.string "Pokémon Gym Leader.\p"
 	.string "I became a Gym Leader so that I might\n"
-	.string "apply what I learned at the Pokémon\l"
+	.string "apply what I learned at the Pokémon\p"
 	.string "Trainer's School in battle.\p"
 	.string "Would you kindly demonstrate how you\n"
 	.string "battle, and with which Pokémon?\p"

@@ -345,7 +345,7 @@ OldaleTown_Text_SavingMyProgress:
 	.string "Riko says progress deserves a snack.\n"
 	.string "Penny says it deserves a quiet corner.\p"
 	.string "Bijuu says it can save a copy of\n"
-	.string "everything.\pOldale has a tale of three girls.\nRiko, Penny, and Bijuu leave\nthree tracks, then disappear.$"
+	.string "everything.\pOldale has a tale of three girls.\nRiko, Penny, and Bijuu leave\pthree tracks, then disappear.$"
 
 OldaleTown_Text_IWorkAtPokemonMart:
 	.string "Hi!\n"
@@ -354,7 +354,7 @@ OldaleTown_Text_IWorkAtPokemonMart:
 	.string "Riko follows if there are snacks.\n"
 	.string "Penny follows if it is somewhere cozy.\p"
 	.string "Bijuu follows whoever looks most\n"
-	.string "interesting.\pThey say three legendary girls\ntravel without a Trainer. Riko\nbrings courage, Penny comfort,\nand Bijuu a surprise.$"
+	.string "interesting.\pThey say three legendary girls\ntravel without a Trainer. Riko\pbrings courage, Penny comfort,\nand Bijuu a surprise.$"
 
 OldaleTown_Text_ThisIsAPokemonMart:
 	.string "This is a Pokémon Mart.\n"
@@ -382,7 +382,7 @@ OldaleTown_Text_DiscoveredFootprints:
 	.string "a rare Pokémon!\p"
 	.string "Wait until I finish sketching\n"
 	.string "them, okay?\pSmall pawprints copy my steps, then\n"
-	.string "lead toward Route 102. Could this be\n"
+	.string "lead toward Route 102. Could this be\p"
 	.string "Bijuu from the old tale?$"
 
 OldaleTown_Text_FinishedSketchingFootprints:
@@ -391,13 +391,13 @@ OldaleTown_Text_FinishedSketchingFootprints:
 	.string "But it turns out they were only my\n"
 	.string "own footprints…\p"
 	.string "A few townspeople claim they saw\n"
-	.string "three legendary girls nearby:\n"
+	.string "three legendary girls nearby:\p"
 	.string "Riko, Penny, and Bijuu. No one can\n"
 	.string "agree on where they went.\p"
 	.string "Riko says they must have excellent\n"
 	.string "dramatic timing.\p"
 	.string "People say the trio visits quiet towns,\n"
-	.string "then leaves before anyone can ask\l"
+	.string "then leaves before anyone can ask\p"
 	.string "where they came from.$"
 
 OldaleTown_Text_MayLetsGoBack:

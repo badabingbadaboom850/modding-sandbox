@@ -34,7 +34,7 @@ DewfordTown_PokemonCenter_1F_Text_StoneCavern:
 	.string "Bijuu would pretend it already knew\n"
 	.string "what was inside the cavern.\p"
 	.string "Some island elders tell stories of a\n"
-	.string "rare sighting: three legendary girls\n"
+	.string "rare sighting: three legendary girls\p"
 	.string "near the caverns. Nobody agrees on\n"
 	.string "what they saw.\p"
 	.string "One brings snacks, one brings calm, and\n"
@@ -47,10 +47,10 @@ DewfordTown_PokemonCenter_1F_Text_StoneCavern:
 
 DewfordTown_PokemonCenter_1F_Text_FaintedMonCanUseHM:
 	.string "Even if a Pokémon faints and can't\n"
-	.string "battle, it can still use a move learned\l"
+	.string "battle, it can still use a move learned\p"
 	.string "from a Hidden Machine (HM).\p"
 	.string "Bijuu says fainting is no reason to stop\n"
 	.string "copying useful tricks.\p"
 	.string "Riko would cheer, Penny would supervise,\n"
-	.string "and Bijuu would ask for a rematch.\pThe legend says Penny stays\nwith the tired. Riko scouts ahead,\nand Bijuu watches every move.$"
+	.string "and Bijuu would ask for a rematch.\pThe legend says Penny stays\nwith the tired. Riko scouts ahead,\pand Bijuu watches every move.$"
 

@@ -56,13 +56,13 @@ PetalburgCity_PokemonCenter_1F_Text_PCStorageSystem:
 	.string "That PC-based Pokémon Storage\n"
 	.string "System…\p"
 	.string "Whoever made it must be some kind\n"
-	.string "of a scientific wizard!\pA few travelers have told stories\nabout three girls helping Pokemon\nin trouble. Riko, Penny, and Bijuu,\nthey say. They never stay for thanks.$"
+	.string "of a scientific wizard!\pA few travelers have told stories\nabout three girls helping Pokemon\pin trouble. Riko, Penny, and Bijuu,\nthey say. They never stay for thanks.$"
 
 PetalburgCity_PokemonCenter_1F_Text_OranBerryRegainedHP:
 	.string "When my Pokémon ate an\n"
 	.string "Oran Berry, it regained Hp!\p"
 	.string "Riko calls that a snack with benefits.\n"
-	.string "Bijuu is still trying to copy the taste.\pThe story says Riko brings snacks,\nPenny makes the brave feel safe,\nand Bijuu copies the nurse.$"
+	.string "Bijuu is still trying to copy the taste.\pThe story says Riko brings snacks,\nPenny makes the brave feel safe,\pand Bijuu copies the nurse.$"
 
 PetalburgCity_PokemonCenter_1F_Text_ManyTypesOfPokemon:
 	.string "There are many types of Pokémon.\p"
@@ -71,7 +71,7 @@ PetalburgCity_PokemonCenter_1F_Text_ManyTypesOfPokemon:
 	.string "Depending on the types of Pokémon,\n"
 	.string "a battle could be easy or hard.\p"
 	.string "Riko changes type and makes everyone\n"
-	.string "guess what she will do next.\pThree girls, three mysteries.\nRiko, Penny, and Bijuu are said\nto visit kind Pokemon Centers.$"
+	.string "guess what she will do next.\pThree girls, three mysteries.\nRiko, Penny, and Bijuu are said\pto visit kind Pokemon Centers.$"
 
 PetalburgCity_PokemonCenter_1F_Text_TreeckoIsGrassType:
 	.string "For example, your Treecko\n"

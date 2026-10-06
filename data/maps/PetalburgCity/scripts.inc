@@ -703,8 +703,8 @@ PetalburgCity_Text_WhereIsWally:
 	.string "We have to leave for Verdanturf Town\n"
 	.string "very soon…\p"
 	.string "Riko would make an entrance before\n"
-	.string "leaving. Penny would pack everyone a\n"
-	.string "snack. Bijuu would copy the goodbye.\pWally heard a tale of three girls.\nRiko guards the road, Penny helps\nthe lost find home, Bijuu copies.$"
+	.string "leaving. Penny would pack everyone a\p"
+	.string "snack. Bijuu would copy the goodbye.\pWally heard a tale of three girls.\nRiko guards the road, Penny helps\pthe lost find home, Bijuu copies.$"
 
 PetalburgCity_Text_AreYouRookieTrainer:
 	.string "Hiya! Are you maybe…\n"
@@ -726,7 +726,7 @@ PetalburgCity_Text_WaterReflection:
 	.string "It looks brave and determined…\p"
 	.string "Or maybe I just saw Riko's fluffy\n"
 	.string "reflection beside mine.\p"
-	.string "What do you see reflected in your face?\pThree lights appear on still water.\nRiko, Penny, and Bijuu, the\nlegendary girls.$"
+	.string "What do you see reflected in your face?\pThree lights appear on still water.\nRiko, Penny, and Bijuu, the\plegendary girls.$"
 
 PetalburgCity_Text_FullPartyExplanation:
 	.string "Let's say you have six Pokémon.\n"
@@ -736,8 +736,8 @@ PetalburgCity_Text_FullPartyExplanation:
 	.string "Riko says the Box should be labeled\n"
 	.string "SNACKS. Bijuu says it should be SECRET.\p"
 	.string "Have you heard about the legendary trio?\n"
-	.string "They are said to appear wherever a\l"
-	.string "Trainer needs help.\pTravelers say the trio helps\nPokemon in need, then slips away\nbefore anyone can thank them.$"
+	.string "They are said to appear wherever a\p"
+	.string "Trainer needs help.\pTravelers say the trio helps\nPokemon in need, then slips away\pbefore anyone can thank them.$"
 
 PetalburgCity_Text_GymSign:
 	.string "Petalburg City Pokémon Gym\n"

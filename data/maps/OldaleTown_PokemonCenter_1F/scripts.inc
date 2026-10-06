@@ -43,21 +43,21 @@ OldaleTown_PokemonCenter_1F_Text_TrainersCanUsePC:
 	.string "Naturally, that means you're welcome\n"
 	.string "to use it, too.\p"
 	.string "Bijuu likes PCs because they contain\n"
-	.string "so many things worth investigating.\pThe nurse heard a tale of three\ngirls who rest unseen. Riko,\nPenny, and Bijuu, perhaps.$"
+	.string "so many things worth investigating.\pThe nurse heard a tale of three\ngirls who rest unseen. Riko,\pPenny, and Bijuu, perhaps.$"
 
 OldaleTown_PokemonCenter_1F_Text_PokemonCentersAreGreat:
 	.string "Pokémon Centers are great!\p"
 	.string "You can use their services as much\n"
-	.string "as you like, and it's all for free.\l"
+	.string "as you like, and it's all for free.\p"
 	.string "You never have to worry!\p"
 	.string "Penny says the quiet healing room is\n"
-	.string "the best place in any town.\pPenny is said to love a quiet\nhealing room. The old story says\nshe travels with Riko and Bijuu.$"
+	.string "the best place in any town.\pPenny is said to love a quiet\nhealing room. The old story says\pshe travels with Riko and Bijuu.$"
 
 OldaleTown_PokemonCenter_1F_Text_WirelessClubNotAvailable:
 	.string "The Pokémon Wireless Club on\n"
 	.string "the second floor was built recently.\p"
 	.string "But they say they're still making\n"
-	.string "adjustments.\pSome say Bijuu can copy any call.\nThe club heard a voice that sounds\nlike the legendary trio.$"
+	.string "adjustments.\pSome say Bijuu can copy any call.\nThe club heard a voice that sounds\plike the legendary trio.$"
 
 OldaleTown_PokemonCenter_1F_Text_TradedInWirelessClub:
 	.string "The Pokémon Wireless Club on\n"

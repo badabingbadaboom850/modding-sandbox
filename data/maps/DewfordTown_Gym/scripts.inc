@@ -382,7 +382,7 @@ DewfordTown_Gym_Text_BrawlyIntro:
 	.string "I'm Brawly!\n"
 	.string "Dewford's Gym Leader!\p"
 	.string "I've been churned in the rough waves\n"
-	.string "of these parts, and I've grown tough\l"
+	.string "of these parts, and I've grown tough\p"
 	.string "in the pitch-black cave!\p"
 	.string "So you wanted to challenge me?\n"
 	.string "Let me see what you're made of!\p"
