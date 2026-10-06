@@ -297,10 +297,10 @@ const struct SpeciesInfo gSpeciesInfo[] =
         .natDexNum = NATIONAL_DEX_RIKO, .categoryName = _("Fluff Bunny"), .height = 6, .weight = 95,
         .description = COMPOUND_STRING("A playful Riko variant\nwith fire energy."),
         .pokemonScale = 256, .trainerScale = 256,
-        .frontPic = gMonFrontPic_RikoFireFire, .frontPicSize = MON_COORDS_SIZE(64, 64), .frontPicYOffset = 0,
-        .frontAnimFrames = sAnims_SingleFramePlaceHolder, .backPic = gMonBackPic_RikoFireFire,
+        .frontPic = gMonFrontPic_RikoFire, .frontPicSize = MON_COORDS_SIZE(64, 64), .frontPicYOffset = 0,
+        .frontAnimFrames = sAnims_SingleFramePlaceHolder, .backPic = gMonBackPic_RikoFire,
         .backPicSize = MON_COORDS_SIZE(64, 64), .backPicYOffset = 0,
-        .palette = gMonPalette_RikoFireFire, .shinyPalette = gMonShinyPalette_RikoFireFire,
+        .palette = gMonPalette_RikoFire, .shinyPalette = gMonShinyPalette_RikoFire,
         .iconSprite = gMonIcon_RikoFire, .iconPalette = gMonIconPalette_RikoFire,
         .shinyIconPalette = gMonShinyIconPalette_RikoFire, .pokemonJumpType = PKMN_JUMP_TYPE_NORMAL,
         SHADOW(-2, 8, SHADOW_SIZE_S)
