@@ -40,10 +40,16 @@ RustboroCity_PokemonCenter_1F_Text_MaleAndFemalePokemon:
 	.string "Just like people, there are male and\n"
 	.string "female Pokémon.\p"
 	.string "But no one seems to have any idea how\n"
-	.string "they're different.$"
+	.string "they're different.\p"
+	.string "Riko is bold, Penny is careful, and\n"
+	.string "Bijuu is always studying everyone.\p"
+	.string "They make a very strange research team.$"
 
 RustboroCity_PokemonCenter_1F_Text_HMCutNextDoor:
 	.string "The man next door gave me an HM!\p"
 	.string "I used it to teach my Pokémon how to\n"
-	.string "Cut down skinny trees.$"
+	.string "Cut down skinny trees.\p"
+	.string "Riko calls it making an entrance.\n"
+	.string "Penny calls it clearing the path.\p"
+	.string "Bijuu just copies the technique.$"
 
