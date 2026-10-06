@@ -1697,7 +1697,23 @@
 #define SPECIES_BIJUU                                  1579
 #define SPECIES_MEGA_RIKO                              1580
 #define SPECIES_MEGA_BIJUU                             1581
-#define SPECIES_EGG                                     (SPECIES_MEGA_BIJUU + 1)
+#define SPECIES_RIKO_FIRE                              1582
+#define SPECIES_RIKO_WATER                             1583
+#define SPECIES_RIKO_GRASS                             1584
+#define SPECIES_RIKO_ELECTRIC                          1585
+#define SPECIES_RIKO_ICE                               1586
+#define SPECIES_RIKO_PSYCHIC                           1587
+#define SPECIES_RIKO_FLYING                            1588
+#define SPECIES_RIKO_DRAGON                            1589
+#define SPECIES_BIJUU_FIGHTING                         1590
+#define SPECIES_BIJUU_POISON                           1591
+#define SPECIES_BIJUU_GROUND                           1592
+#define SPECIES_BIJUU_ROCK                             1593
+#define SPECIES_BIJUU_BUG                              1594
+#define SPECIES_BIJUU_GHOST                            1595
+#define SPECIES_BIJUU_DARK                             1596
+#define SPECIES_BIJUU_STEEL                            1597
+#define SPECIES_EGG                                     (SPECIES_BIJUU_STEEL + 1)
 
 #define NUM_SPECIES SPECIES_EGG
 
