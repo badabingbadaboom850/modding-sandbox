@@ -717,7 +717,10 @@ DewfordTown_Text_ThrowInFishingAdvice:
 	.string "Riko says fishing needs patience.\n"
 	.string "Penny says it needs snacks.\p"
 	.string "Bijuu says it can copy the fish if\n"
-	.string "the fish makes the first move.$"
+	.string "the fish makes the first move.\p"
+	.string "The oldest fishermen tell a stranger\n"
+	.string "story: three powers beneath the region,\l"
+	.string "waiting for the right signs to answer.$"
 
 DewfordTown_Text_ThatsTooBadThen:
 	.string "Oh, is that so?\n"
