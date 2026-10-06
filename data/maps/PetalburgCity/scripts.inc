@@ -729,7 +729,9 @@ PetalburgCity_Text_FullPartyExplanation:
 	.string "Let's say you have six Pokémon.\n"
 	.string "If you catch another one…\p"
 	.string "It is automatically sent to a Storage\n"
-	.string "Box over a PC connection.$"
+	.string "Box over a PC connection.\p"
+	.string "Riko says the Box should be labeled\n"
+	.string "SNACKS. Bijuu says it should be SECRET.$"
 
 PetalburgCity_Text_GymSign:
 	.string "Petalburg City Pokémon Gym\n"

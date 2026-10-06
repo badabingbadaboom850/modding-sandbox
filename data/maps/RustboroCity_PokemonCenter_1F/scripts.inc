@@ -32,7 +32,9 @@ RustboroCity_PokemonCenter_1F_Text_PokemonHavePersonalities:
 	.string "My Pokémon has a Naive nature, and my\n"
 	.string "friend's has a Jolly nature.\p"
 	.string "It's fascinating how Pokémon have\n"
-	.string "personalities!$"
+	.string "personalities!\p"
+	.string "Riko is bold, Penny is cautious,\n"
+	.string "and Bijuu is always observing.$"
 
 RustboroCity_PokemonCenter_1F_Text_MaleAndFemalePokemon:
 	.string "Just like people, there are male and\n"

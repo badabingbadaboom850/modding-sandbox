@@ -41,13 +41,17 @@ OldaleTown_PokemonCenter_1F_Text_TrainersCanUsePC:
 	.string "That PC in the corner there is\n"
 	.string "for any Pokémon Trainer to use.\p"
 	.string "Naturally, that means you're welcome\n"
-	.string "to use it, too.$"
+	.string "to use it, too.\p"
+	.string "Bijuu likes PCs because they contain\n"
+	.string "so many things worth investigating.$"
 
 OldaleTown_PokemonCenter_1F_Text_PokemonCentersAreGreat:
 	.string "Pokémon Centers are great!\p"
 	.string "You can use their services as much\n"
 	.string "as you like, and it's all for free.\l"
-	.string "You never have to worry!$"
+	.string "You never have to worry!\p"
+	.string "Penny says the quiet healing room is\n"
+	.string "the best place in any town.$"
 
 OldaleTown_PokemonCenter_1F_Text_WirelessClubNotAvailable:
 	.string "The Pokémon Wireless Club on\n"
