@@ -955,14 +955,20 @@ LittlerootTown_Text_ComeHomeIfAnythingHappens:
 LittlerootTown_Text_CanUsePCToStoreItems:
 	.string "If you use a PC, you can store items\n"
 	.string "and Pokémon.\p"
-	.string "The power of science is staggering!$"
+	.string "The power of science is staggering!\p"
+	.string "Riko thinks the PC should have a\n"
+	.string "snack drawer. Penny wants a quiet\n"
+	.string "corner. Bijuu wants to copy the menu.$"
 
 LittlerootTown_Text_BirchSpendsDaysInLab:
 	.string "Prof. Birch spends days in his Lab\n"
 	.string "studying, then he'll suddenly go out in\l"
 	.string "the wild to do more research…\p"
 	.string "When does Prof. Birch spend time\n"
-	.string "at home?$"
+	.string "at home?\p"
+	.string "Riko says research needs dramatic\n"
+	.string "entrances. Penny says it needs breaks.\p"
+	.string "Bijuu just watches from the doorway.$"
 
 LittlerootTown_Text_IfYouGoInGrassPokemonWillJumpOut:
 	.string "Um, um, um!\p"
