@@ -243,11 +243,12 @@ NewBarkTown_Text_FatManState2:
 
 NewBarkTown_Text_FatManState3:
 	.string "Yo, {PLAYER}!\p"
-	.string "I hear Prof. Elm discovered\n"
-	.string "some new Pokémon.\p"
-	.string "A traveler says she saw a shy cat\n"
-	.string "on Route 31. It watched her for a\p"
-	.string "moment, then vanished into the grass.$"
+	.string "I hear Prof Elm discovered some\n"
+	.string "new Pokemon.\p"
+	.string "Travelers saw three rare Pokemon\n"
+	.string "together near Route 31. One was a\p"
+	.string "shy cat, and she slipped into grass.$
+
 
 NewBarkTown_Text_LassState2:
 	.string "Wait, {PLAYER}!\p"

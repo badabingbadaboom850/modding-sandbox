@@ -127,7 +127,12 @@ CianwoodCity_EventScript_Youngster::
 
 CianwoodCity_Text_Youngster:
 	.string "If you use Fly, you can get back\n"
-	.string "to Olivine instantly.$"
+	.string "to Olivine instantly.\p"
+	.string "Some sailors saw a trio of rare\n"
+	.string "Pokemon traveling together.\p"
+	.string "One was a shy cat last seen near\n"
+	.string "Route 31.$
+
 
 CianwoodCity_EventScript_PokefanM::
 	lock

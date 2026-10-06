@@ -410,12 +410,17 @@ AzaleaTown_Text_Teacher:
 	.string "A lot of people do just that.$"
 
 AzaleaTown_Text_Youngster:
-	.string "Cut through Azalea and you'll be\n"
+	.string "Cut through Azalea and you will be\n"
 	.string "in Ilex Forest.\p"
 	.string "But these skinny trees make it\n"
 	.string "impossible to get through.\p"
-	.string "The Charcoal Man's Pokémon\n"
-	.string "can Cut down trees.$"
+	.string "The Charcoal Man's Pokemon\n"
+	.string "can Cut down trees.\p"
+	.string "Cutters say three rare Pokemon\n"
+	.string "passed through Ilex Forest.\p"
+	.string "A shy cat was with them. They were\n"
+	.string "gone before anyone got close.$
+
 
 AzaleaTown_Text_Slowpoke1:
 	.string "Slowpoke:..........\p"

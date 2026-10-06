@@ -345,8 +345,13 @@ GoldenrodCity_Text_Youngster2:
 
 GoldenrodCity_Text_Lass:
 	.string "That man inside rates your\n"
-	.string "Pokémon nicknames.\p"
-	.string "He can even rename them.$"
+	.string "Pokemon nicknames.\p"
+	.string "He can even rename them.\p"
+	.string "People are trading stories about\n"
+	.string "a trio of rare Pokemon.\p"
+	.string "One was a shy cat last seen near\n"
+	.string "Route 31. No one got close.$
+
 
 GoldenrodCity_Text_Gramps:
 	.string "Whew! This city is so big,\n"

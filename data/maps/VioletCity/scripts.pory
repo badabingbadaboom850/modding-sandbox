@@ -425,9 +425,14 @@ VioletCity_Text_Lass:
 	.string "and Geodude.$"
 
 VioletCity_Text_Boy:
-	.string "Hey, you're a Pokémon trainer?\p"
-	.string "If you head to the Academy,\n"
-	.string "you might learn something new!$"
+	.string "Hey, you are a Pokemon trainer?\p"
+	.string "At the Academy, you might learn\n"
+	.string "something new.\p"
+	.string "Travelers saw a trio of rare\n"
+	.string "Pokemon near Route 31.\p"
+	.string "One looked like a shy cat. Then\n"
+	.string "they all vanished.$
+
 
 VioletCity_Text_Gramps:
 	.string "Falkner, from the Violet\n"

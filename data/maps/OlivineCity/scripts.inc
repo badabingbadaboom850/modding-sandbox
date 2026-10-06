@@ -308,13 +308,18 @@ OlivineCity_Text_Sailor2:
 	.string "The league has Jasmine\n"
 	.string "pegged as the sixth\l"
 	.string "strongest Gym Leader!\p"
-	.string "Hah! That's a load of crud.\p"
-	.string "There's no way Pryce could\n"
+	.string "Hah! That is a load of crud.\p"
+	.string "There is no way Pryce could\n"
 	.string "hurt Jasmine's Steel-type\l"
-	.string "Pokémon!\p"
+	.string "Pokemon!\p"
 	.string "Bureaucracy if you ask me.\p"
-	.string "She's something to be feared,\n"
-	.string "that's for sure!$"
+	.string "She is something to be feared,\n"
+	.string "that is for sure!\p"
+	.string "Crews coming into port tell of a\n"
+	.string "trio of rare Pokemon on Route 31.\p"
+	.string "One was a shy cat. No one got close\n"
+	.string "before they vanished.$
+
 
 OlivineCity_Text_Sign:
 	.string "Olivine City\p"
