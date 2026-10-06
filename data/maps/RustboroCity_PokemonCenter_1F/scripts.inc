@@ -51,5 +51,8 @@ RustboroCity_PokemonCenter_1F_Text_HMCutNextDoor:
 	.string "Cut down skinny trees.\p"
 	.string "Riko calls it making an entrance.\n"
 	.string "Penny calls it clearing the path.\p"
-	.string "Bijuu just copies the technique.$"
+	.string "Bijuu just copies the technique.\p"
+	.string "Have you heard the old Rustboro rumor?\n"
+	.string "Three ancient giants sleep somewhere—\l"
+	.string "one of stone, one of ice, and one of metal.$"
 
