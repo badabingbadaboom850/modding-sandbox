@@ -999,20 +999,26 @@ Route104_Text_ThrowBallAtWeakenedPokemon:
 	.string "If you're going to throw a Poké Ball,\n"
 	.string "weaken the wild Pokémon first.\p"
 	.string "It will be easier to catch if it's been\n"
-	.string "poisoned, burned, or lulled to sleep.$"
+	.string "poisoned, burned, or lulled to sleep.\p"
+	.string "Riko says weaken them first, then make\n"
+	.string "a dramatic entrance. Penny agrees.$"
 
 Route104_Text_OnlyThrowBallAtWildPokemon:
 	.string "You're a thief if you try to steal\n"
 	.string "someone else's Pokémon.\p"
 	.string "You should throw Poké Balls only at\n"
-	.string "wild Pokémon.$"
+	.string "wild Pokémon.\p"
+	.string "Bijuu keeps practicing the throw, just\n"
+	.string "in case it ever finds a Poké Ball.$"
 
 Route104_Text_ImNotATrainer:
 	.string "Oh, no, I'm not a Trainer.\p"
 	.string "But that's right, if Trainers lock eyes,\n"
 	.string "it's a challenge to battle.\p"
 	.string "If you don't want to battle, stay out\n"
-	.string "of their sight.$"
+	.string "of their sight.\p"
+	.string "Penny calls that a peaceful strategy.\n"
+	.string "Riko calls it missing the fun.$"
 
 Route104_Text_LikeFillingMouthWithSeedsTakeThis:
 	.string "I like going fast,\n"
@@ -1026,7 +1032,9 @@ Route104_Text_TMsAreOneTimeUse:
 	.string "A TM, Technical Machine, is good only\n"
 	.string "for one-time use.\p"
 	.string "Once you use it, it's gone.\n"
-	.string "Think twice before using it!$"
+	.string "Think twice before using it!\p"
+	.string "Riko wants every move to be exciting.\n"
+	.string "Penny wants every move to be useful.$"
 
 Route104_Text_DontNeedThisTakeIt:
 	.string "This Flower Shop started selling\n"
@@ -1040,7 +1048,9 @@ Route104_Text_FlowerShopSellingSaplings:
 	.string "This Flower Shop started selling\n"
 	.string "saplings recently.\p"
 	.string "It made me so happy, I went overboard\n"
-	.string "shopping. Where should I put them?$"
+	.string "shopping. Where should I put them?\p"
+	.string "Riko would put flowers everywhere.\n"
+	.string "Bijuu would copy the arrangement.$"
 
 Route104_Text_MrBrineysCottage:
 	.string "Mr. Briney's Cottage$"
