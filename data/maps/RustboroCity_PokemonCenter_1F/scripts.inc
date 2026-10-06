@@ -53,6 +53,9 @@ RustboroCity_PokemonCenter_1F_Text_HMCutNextDoor:
 	.string "Penny calls it clearing the path.\p"
 	.string "Bijuu just copies the technique.\p"
 	.string "Have you heard the old Rustboro rumor?\n"
-	.string "Three ancient giants sleep somewhere—\l"
-	.string "one of stone, one of ice, and one of metal.$"
+	.string "Three legendary girls wander the region.\l"
+	.string "One demands snacks, one avoids attention,\l"
+	.string "and one copies anything interesting.\p"
+	.string "Nobody knows where they came from—or\n"
+	.string "why they always seem to be nearby.$"
 
