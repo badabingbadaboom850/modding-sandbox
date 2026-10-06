@@ -216,10 +216,10 @@ const struct SpeciesInfo gSpeciesInfo[] =
         .natDexNum = NATIONAL_DEX_RIKO, .categoryName = _("Fluff Bunny"), .height = 6, .weight = 95,
         .description = COMPOUND_STRING("Mega Evolution intensifies its\nfairy energy, making its coat\nshine like a charm."),
         .pokemonScale = 256, .trainerScale = 256,
-        .frontPic = gMonFrontPic_RikoMega, .frontPicSize = MON_COORDS_SIZE(64, 64), .frontPicYOffset = 0,
-        .frontAnimFrames = sAnims_SingleFramePlaceHolder, .backPic = gMonBackPic_RikoMega,
+        .frontPic = gMonFrontPic_Riko, .frontPicSize = MON_COORDS_SIZE(64, 64), .frontPicYOffset = 0,
+        .frontAnimFrames = sAnims_SingleFramePlaceHolder, .backPic = gMonBackPic_Riko,
         .backPicSize = MON_COORDS_SIZE(64, 64), .backPicYOffset = 0,
-        .palette = gMonPalette_RikoMega, .shinyPalette = gMonShinyPalette_RikoMega,
+        .palette = gMonPalette_Riko, .shinyPalette = gMonShinyPalette_Riko,
         .iconSprite = gMonIcon_Riko, .iconPalette = gMonIconPalette_Riko,
         .shinyIconPalette = gMonShinyIconPalette_Riko, .pokemonJumpType = PKMN_JUMP_TYPE_NORMAL,
         SHADOW(-2, 8, SHADOW_SIZE_S)
