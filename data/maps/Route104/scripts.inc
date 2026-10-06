@@ -1034,7 +1034,11 @@ Route104_Text_TMsAreOneTimeUse:
 	.string "Once you use it, it's gone.\n"
 	.string "Think twice before using it!\p"
 	.string "Riko wants every move to be exciting.\n"
-	.string "Penny wants every move to be useful.$"
+	.string "Penny wants every move to be useful.\p"
+	.string "I heard the legendary trio helps Trainers\n"
+	.string "who treat Pokemon with care.\p"
+	.string "Maybe that is why they keep appearing\n"
+	.string "near the same mysterious Trainer!$"
 
 Route104_Text_DontNeedThisTakeIt:
 	.string "This Flower Shop started selling\n"
