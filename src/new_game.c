@@ -287,6 +287,11 @@ void NewGameInitData(void)
     gSaveBlock1Ptr->registeredShortcutsMagic = REGISTERED_SHORTCUTS_SAVE_MAGIC;
     gSaveBlock1Ptr->registeredShortcutsMagicInv = REGISTERED_SHORTCUTS_SAVE_MAGIC_INV;
     ClearBag();
+#if P_GEN_9_MEGA_EVOLUTIONS
+    // Testing aid: make Mega Evolution available immediately in fresh saves.
+    AddBagItem(ITEM_MEGA_RING, 1);
+    AddBagItem(ITEM_BONDSTONE, 1);
+#endif
     NewGameInitPCItems();
     ClearPokeblocks();
     ClearDecorationInventories();
