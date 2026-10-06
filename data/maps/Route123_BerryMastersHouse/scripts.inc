@@ -40,6 +40,7 @@ Route123_BerryMastersHouse_EventScript_BerryMastersWife::
 	dotimebasedevents
 	goto_if_set FLAG_GARBAGEFLAG, Route123_BerryMastersHouse_EventScript_ReceivedWifeBerryToday
 	msgbox Route123_BerryMastersHouse_Text_HeardAGoodSayingLately, MSGBOX_DEFAULT
+	msgbox Route123_BerryMastersHouse_Text_FloofWifeRumor, MSGBOX_DEFAULT
 	setvar VAR_0x8004, EASY_CHAT_TYPE_GOOD_SAYING
 	call Common_ShowEasyChatScreen
 	lock
@@ -135,3 +136,9 @@ Route123_BerryMastersHouse_Text_FloofBerryQuip:
 	.string "Unless Bijuu wants one too. Then\n"
 	.string "it is for copying! Penny just wants\n"
 	.string "a quiet place to enjoy hers.\pRiko follows the berry scent.\nPenny waits for a quiet moment.\nBijuu copies my sorting trick.\pThree girls, one old legend.\nThey say kindness brings them\nclose to a home.$"
+
+Route123_BerryMastersHouse_Text_FloofWifeRumor:
+	.string "Old stories say kind homes draw\n"
+	.string "three legendary girls. Riko brings\n"
+	.string "courage, Penny warmth, and Bijuu\n"
+	.string "a perfect copy.$"
