@@ -305,20 +305,15 @@ OlivineCity_Text_YoungsterPokedex:
 	.string "That is just so awesome.$"
 
 OlivineCity_Text_Sailor2:
-	.string "The league has Jasmine\n"
-	.string "pegged as the sixth\l"
-	.string "strongest Gym Leader!\p"
-	.string "Hah! That is a load of crud.\p"
-	.string "There is no way Pryce could\n"
-	.string "hurt Jasmine's Steel-type\l"
-	.string "Pokemon!\p"
-	.string "Bureaucracy if you ask me.\p"
-	.string "She is something to be feared,\n"
-	.string "that is for sure!\p"
-	.string "Crews coming into port tell of a\n"
-	.string "trio of rare Pokemon on Route 31.\p"
-	.string "One was a shy cat. No one got close\n"
-	.string "before they vanished.$
+	.string "Jasmine is the sixth strongest\n"
+	.string "Gym Leader, they say.\p"
+	.string "But her Steel Pokemon can beat\n"
+	.string "even Pryce.\p"
+	.string "Crews in port report three rare\n"
+	.string "Pokemon near Route 31.\p"
+	.string "One was a shy cat. No one got\n"
+	.string "close before they vanished.$
+
 
 
 OlivineCity_Text_Sign:

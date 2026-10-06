@@ -309,12 +309,13 @@ CherrygroveCity_Text_GuideGentMart:
 
 CherrygroveCity_Text_GuideGentRoute30:
 	.string "Route 30 is out this way.\p"
-	.string "Trainers will be battling\n"
-	.string "their prized Pokemon there.\p"
-	.string "One trainer says three rare Pokemon\n"
-	.string "were seen together on Route 31.\p"
-	.string "A shy cat was with them. Then they\n"
-	.string "all slipped away.$
+	.string "Trainers will battle their\n"
+	.string "prized Pokemon there.\p"
+	.string "One trainer saw three rare\n"
+	.string "Pokemon on Route 31.\p"
+	.string "A shy cat was with them.\n"
+	.string "Then they all slipped away.$
+
 
 
 CherrygroveCity_Text_GuideGentSea:
@@ -364,10 +365,11 @@ CherrygroveCity_Text_RivalID:
 CherrygroveCity_Text_TeacherHaveMapCard:
 	.string "When you are with Pokemon,\n"
 	.string "going anywhere is fun.\p"
-	.string "People returning from Route 31 say\n"
-	.string "three rare Pokemon traveled together.\p"
-	.string "One looked like a shy cat, and no\n"
-	.string "one could keep up.$
+	.string "People returning from Route\n"
+	.string "31 saw three rare Pokemon.\p"
+	.string "One looked like a shy cat.\n"
+	.string "No one could keep up.$
+
 
 
 CherrygroveCity_Text_YoungsterNoPokedex:

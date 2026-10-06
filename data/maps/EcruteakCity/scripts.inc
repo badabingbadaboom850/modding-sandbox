@@ -344,12 +344,13 @@ EcruteakCity_Text_Fisher_JasmineReturned:
 	.string "night again.$"
 
 EcruteakCity_Text_Youngster:
-	.string "I hear Pokemon are rampaging at the\n"
-	.string "Lake Of Rage. I would like to see that.\p"
-	.string "Travelers arriving from the east\n"
-	.string "tell of a trio of rare Pokemon.\p"
-	.string "One looked like a shy cat. The\n"
-	.string "whole group vanished near Route 31.$
+	.string "Pokemon ran wild at the lake.\p"
+	.string "I would like to see them.\p"
+	.string "Travelers from the east tell\n"
+	.string "of three rare Pokemon together.\p"
+	.string "One looked like a shy cat.\n"
+	.string "The group vanished nearby.$
+
 
 
 EcruteakCity_Text_Gramps3:

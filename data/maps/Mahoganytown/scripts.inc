@@ -307,12 +307,13 @@ MahoganyTown_Text_Fisher:
     .string "out Lake Of Rage right now.$"
 
 MahoganyTown_Text_Lass:
-    .string "Visit Grandma's shop. She sells\n"
-    .string "stuff that nobody else has.\p"
-    .string "Anglers tell of three rare Pokemon\n"
+    .string "The shop sells things no one else\n"
+    .string "has.\p"
+    .string "Anglers saw three rare Pokemon\n"
     .string "together near Route 31.\p"
-    .string "A shy cat was with them. They all\n"
-    .string "vanished into the grass.$
+    .string "A shy cat was with them.\n"
+    .string "They vanished into the grass.$
+
 
 
 MahoganyTown_Text_Sign:

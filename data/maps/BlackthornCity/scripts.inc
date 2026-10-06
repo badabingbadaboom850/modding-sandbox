@@ -229,12 +229,12 @@ BlackthornCooltrainerF1Text:
 	.string "remember some moves?$"
 
 BlackthornYoungsterText:
-	.string "Dragon masters all come from the city\n"
-	.string "of Blackthorn.\p"
-	.string "Climbers tell a story about three\n"
-	.string "rare Pokemon seen together.\p"
-	.string "One looked like a cat. They vanished\n"
-	.string "before anyone got close.$
+	.string "Dragon masters come from here.\p"
+	.string "Climbers tell a story about\n"
+	.string "three rare Pokemon together.\p"
+	.string "One looked like a cat.\n"
+	.string "They vanished quickly.$
+
 
 
 BlackthornCity_MeetSantosText:

@@ -347,10 +347,11 @@ GoldenrodCity_Text_Lass:
 	.string "That man inside rates your\n"
 	.string "Pokemon nicknames.\p"
 	.string "He can even rename them.\p"
-	.string "People are trading stories about\n"
-	.string "a trio of rare Pokemon.\p"
-	.string "One was a shy cat last seen near\n"
+	.string "People are talking about\n"
+	.string "three rare Pokemon together.\p"
+	.string "A shy cat was last seen near\n"
 	.string "Route 31. No one got close.$
+
 
 
 GoldenrodCity_Text_Gramps:
