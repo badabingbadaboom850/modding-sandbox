@@ -33,9 +33,11 @@ DewfordTown_PokemonCenter_1F_Text_StoneCavern:
 	.string "Penny would bring a snack for the trip.\p"
 	.string "Bijuu would pretend it already knew\n"
 	.string "what was inside the cavern.\p"
-	.string "Some island elders whisper that the\n"
-	.string "caverns once guarded three sleeping\l"
-	.string "legends. Riko wants to wake them up.$"
+	.string "Some island elders whisper about three\n"
+	.string "legendary girls seen near the caverns.\p"
+	.string "One brings snacks, one brings calm, and\n"
+	.string "one brings a suspiciously perfect copy.\p"
+	.string "Riko says the story sounds familiar.$
 
 DewfordTown_PokemonCenter_1F_Text_FaintedMonCanUseHM:
 	.string "Even if a Pokémon faints and can't\n"
