@@ -96,7 +96,7 @@ Route102_Text_ImNotVeryTall:
 Route102_Text_CatchWholeBunchOfPokemon:
 	.string "I'm going to catch a whole bunch of\n"
 	.string "Pokémon! Maybe one will be as\n"
-	.string "dramatic as Riko!$""
+	.string "dramatic as Riko!$"
 
 Route102_Text_RouteSignOldale:
 	.string "Route 102\n"
