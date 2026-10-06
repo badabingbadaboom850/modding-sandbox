@@ -719,8 +719,10 @@ DewfordTown_Text_ThrowInFishingAdvice:
 	.string "Bijuu says it can copy the fish if\n"
 	.string "the fish makes the first move.\p"
 	.string "The oldest fishermen tell a stranger\n"
-	.string "story: three powers beneath the region,\l"
-	.string "waiting for the right signs to answer.$"
+	.string "story: three legendary girls cross the\l"
+	.string "region when the right signs appear.\p"
+	.string "They say one is fluffy, one is gentle,\n"
+	.string "and one can become anyone at all.$"
 
 DewfordTown_Text_ThatsTooBadThen:
 	.string "Oh, is that so?\n"
