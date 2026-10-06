@@ -26,3 +26,15 @@ const u8 gMonIcon_Bijuu[] = INCBIN_U8("graphics/pokemon/bijuu/icon.4bpp");
 const u16 gMonIconPalette_Bijuu[] = INCBIN_U16("graphics/pokemon/bijuu/icon_normal.gbapal");
 const u16 gMonShinyIconPalette_Bijuu[] = INCBIN_U16("graphics/pokemon/bijuu/icon_shiny.gbapal");
 #endif
+
+#if P_FAMILY_RIKO
+const u32 gMonFrontPic_RikoFire[] = INCBIN_U32("graphics/pokemon/riko_fire/front.4bpp.smol");
+const u32 gMonBackPic_RikoFire[] = INCBIN_U32("graphics/pokemon/riko_fire/back.4bpp.smol");
+const u16 gMonPalette_RikoFire[] = INCBIN_U16("graphics/pokemon/riko_fire/normal.gbapal");
+const u16 gMonShinyPalette_RikoFire[] = INCBIN_U16("graphics/pokemon/riko_fire/shiny.gbapal");
+
+const u32 gMonFrontPic_RikoMega[] = INCBIN_U32("graphics/pokemon/riko/mega/front.4bpp.smol");
+const u32 gMonBackPic_RikoMega[] = INCBIN_U32("graphics/pokemon/riko/mega/back.4bpp.smol");
+const u16 gMonPalette_RikoMega[] = INCBIN_U16("graphics/pokemon/riko/mega/normal.gbapal");
+const u16 gMonShinyPalette_RikoMega[] = INCBIN_U16("graphics/pokemon/riko/mega/shiny.gbapal");
+#endif

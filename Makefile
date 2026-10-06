@@ -533,7 +533,16 @@ $(C_BUILDDIR)/graphics.o: override CFLAGS += -Wno-missing-braces
 # Dependency rules (for the *.c & *.s sources to .o files)
 # Have to be explicit or else missing files won't be reported.
 $(C_BUILDDIR)/move_relearner.o: $(C_SUBDIR)/move_relearner.c $(DATA_SRC_SUBDIR)/tutor_moves.h
-$(C_BUILDDIR)/pokemon.o: $(C_SUBDIR)/pokemon.c $(DATA_SRC_SUBDIR)/pokemon/teachable_learnsets.h $(LEGACY_LEVEL_UP_HEADER)
+
+RIKO_FIRE_GFX := graphics/pokemon/riko_fire/front.4bpp.smol \\
+                  graphics/pokemon/riko_fire/back.4bpp.smol \\
+                  graphics/pokemon/riko_fire/normal.gbapal \\
+                  graphics/pokemon/riko_fire/shiny.gbapal
+RIKO_MEGA_GFX := graphics/pokemon/riko/mega/front.4bpp.smol \\
+                 graphics/pokemon/riko/mega/back.4bpp.smol \\
+                 graphics/pokemon/riko/mega/normal.gbapal \\
+                 graphics/pokemon/riko/mega/shiny.gbapal
+\n$(C_BUILDDIR)/pokemon.o: $(C_SUBDIR)/pokemon.c $(DATA_SRC_SUBDIR)/pokemon/teachable_learnsets.h $(LEGACY_LEVEL_UP_HEADER) $(RIKO_FIRE_GFX) $(RIKO_MEGA_GFX)
 
 # As a side effect, they're evaluated immediately instead of when the rule is invoked.
 # It doesn't look like $(shell) can be deferred so there might not be a better way (Icedude_907: there is soon).
