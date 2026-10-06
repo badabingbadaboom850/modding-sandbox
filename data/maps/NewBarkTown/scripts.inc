@@ -244,7 +244,11 @@ NewBarkTown_Text_FatManState2:
 NewBarkTown_Text_FatManState3:
 	.string "Yo, {PLAYER}!\p"
 	.string "I hear Prof. Elm discovered\n"
-	.string "some new Pokémon.$"
+	.string "some new Pokémon.\p"
+	.string "Keep this quiet.\p"
+	.string "Travelers whisper of a shy cat\n"
+	.string "on Route 31. She copies your\n"
+	.string "steps, then vanishes.$"
 
 NewBarkTown_Text_LassState2:
 	.string "Wait, {PLAYER}!\p"
@@ -260,7 +264,11 @@ NewBarkTown_Text_LassState3:
 NewBarkTown_Text_LassState4:
 	.string "Hi, {PLAYER}! Leaving again?\p"
 	.string "You should tell your mom if\n"
-	.string "you are leaving.$"
+	.string "you are leaving.\p"
+	.string "People whisper about a strange\n"
+	.string "cat between Cherrygrove and\n"
+	.string "Violet. She watches trainers who\n"
+	.string "travel with a special Pokémon.$"
 
 NewBarkTown_Text_LassState5:
 	.string "Call your mom on your Pokégear\n"

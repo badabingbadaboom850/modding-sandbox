@@ -310,7 +310,11 @@ CherrygroveCity_Text_GuideGentMart:
 CherrygroveCity_Text_GuideGentRoute30:
 	.string "Route 30 is out this way.\p"
 	.string "Trainers will be battling\n"
-	.string "their prized Pokémon there.$"
+	.string "their prized Pokémon there.\p"
+	.string "Some travelers whisper about a\n"
+	.string "mysterious cat in the grass\n"
+	.string "ahead. They say she appears,\n"
+	.string "then vanishes.$"
 
 CherrygroveCity_Text_GuideGentSea:
 	.string "This is the sea, as you can see.\p"
@@ -358,7 +362,11 @@ CherrygroveCity_Text_RivalID:
 
 CherrygroveCity_Text_TeacherHaveMapCard:
 	.string "When you're with Pokémon,\n"
-	.string "going anywhere is fun.$"
+	.string "going anywhere is fun.\p"
+	.string "Have you heard the whisper.\p"
+	.string "A shy cat has been seen on\n"
+	.string "Route 31. She copies your steps,\n"
+	.string "then hides.$"
 
 CherrygroveCity_Text_YoungsterNoPokedex:
 	.string "Mr. Pokémon's house is still\n"
