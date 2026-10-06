@@ -95,52 +95,52 @@
               {
                 "min_level": 2,
                 "max_level": 3,
-                "species": "SPECIES_ZIGZAGOON"
+                "species": "SPECIES_RIKO_FIRE"
               },
               {
                 "min_level": 2,
                 "max_level": 3,
-                "species": "SPECIES_ZIGZAGOON"
+                "species": "SPECIES_RIKO_WATER"
               },
               {
                 "min_level": 2,
                 "max_level": 3,
+                "species": "SPECIES_RIKO_GRASS"
+              },
+              {
+                "min_level": 2,
+                "max_level": 3,
+                "species": "SPECIES_RIKO_ELECTRIC"
+              },
+              {
+                "min_level": 2,
+                "max_level": 3,
+                "species": "SPECIES_RIKO_ICE"
+              },
+              {
+                "min_level": 2,
+                "max_level": 3,
+                "species": "SPECIES_RIKO_PSYCHIC"
+              },
+              {
+                "min_level": 2,
+                "max_level": 2,
+                "species": "SPECIES_RIKO_FLYING"
+              },
+              {
+                "min_level": 2,
+                "max_level": 2,
+                "species": "SPECIES_RIKO_DRAGON"
+              },
+              {
+                "min_level": 2,
+                "max_level": 2,
                 "species": "SPECIES_RATTATA"
               },
               {
                 "min_level": 2,
-                "max_level": 3,
+                "max_level": 2,
                 "species": "SPECIES_HOPPIP"
-              },
-              {
-                "min_level": 2,
-                "max_level": 3,
-                "species": "SPECIES_RATTATA"
-              },
-              {
-                "min_level": 2,
-                "max_level": 3,
-                "species": "SPECIES_HOOTHOOT"
-              },
-              {
-                "min_level": 2,
-                "max_level": 2,
-                "species": "SPECIES_HOPPIP"
-              },
-              {
-                "min_level": 2,
-                "max_level": 2,
-                "species": "SPECIES_HOOTHOOT"
-              },
-              {
-                "min_level": 2,
-                "max_level": 2,
-                "species": "SPECIES_RATTATA"
-              },
-              {
-                "min_level": 2,
-                "max_level": 2,
-                "species": "SPECIES_HOOTHOOT"
               }
             ]
           }
@@ -174,42 +174,42 @@
               {
                 "min_level": 2,
                 "max_level": 2,
-                "species": "SPECIES_NIDORAN_M"
+                "species": "SPECIES_BIJUU_FIGHTING"
               },
               {
                 "min_level": 2,
                 "max_level": 2,
-                "species": "SPECIES_BUDEW"
+                "species": "SPECIES_BIJUU_POISON"
               },
               {
                 "min_level": 2,
                 "max_level": 3,
-                "species": "SPECIES_NIDORAN_F"
+                "species": "SPECIES_BIJUU_GROUND"
               },
               {
                 "min_level": 2,
                 "max_level": 3,
-                "species": "SPECIES_NIDORAN_M"
+                "species": "SPECIES_BIJUU_ROCK"
               },
               {
                 "min_level": 2,
                 "max_level": 3,
-                "species": "SPECIES_NIDORAN_F"
+                "species": "SPECIES_BIJUU_BUG"
               },
               {
                 "min_level": 2,
                 "max_level": 3,
-                "species": "SPECIES_GROWLITHE"
+                "species": "SPECIES_BIJUU_GHOST"
               },
               {
                 "min_level": 2,
                 "max_level": 3,
-                "species": "SPECIES_PHANPY"
+                "species": "SPECIES_BIJUU_DARK"
               },
               {
                 "min_level": 2,
                 "max_level": 4,
-                "species": "SPECIES_GROWLITHE"
+                "species": "SPECIES_BIJUU_STEEL"
               }
             ]
           }
