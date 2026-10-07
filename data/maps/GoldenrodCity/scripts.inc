@@ -341,16 +341,19 @@ GoldenrodCity_Text_CooltrainerF2_GotCard:
 GoldenrodCity_Text_Youngster2:
 	.string "E-he-he-he…\p"
 	.string "I got in trouble for playing in\n"
-	.string "the Dept.Store basement.$"
+	.string "the Dept.Store basement.\p"
+	.string "That basement had so many sounds.\p"
+	.string "I swear Bijuu copied the Game Corner\n"
+	.string "music before I could get out!$
 
 GoldenrodCity_Text_Lass:
 	.string "That man inside rates your\n"
 	.string "Pokemon nicknames.\p"
 	.string "He can even rename them.\p"
-	.string "People are talking about\n"
-	.string "three rare Pokemon together.\p"
-	.string "A shy cat was last seen near\n"
-	.string "Route 31. No one got close.$"
+	.string "Some say Penny is so long she\n"
+	.string "wrapped around the earth twice.\p"
+	.string "She was still wagging when she\n"
+	.string "passed the Radio Tower again!$
 
 
 
