@@ -313,12 +313,12 @@ const struct ItemInfo gItemsInfo[] =
 
     [ITEM_ULTRA_BALL] =
     {
-        .name = ITEM_NAME("Ultra Ball"),
+        .name = ITEM_NAME("Riko Ultra Ball"),
         .price = (I_PRICE >= GEN_7) ? 450 : 1200,
         .description = COMPOUND_STRING(
-            "A better Ball with\n"
+            "A custom Ball with\n"
             "a higher catch rate\n"
-            "than a Great Ball."),
+            "than the Trio Ball."),
         .pocket = POCKET_POKE_BALLS,
         .heldSlot = 0,
         .type = ITEM_USE_BAG_MENU,
@@ -550,12 +550,12 @@ const struct ItemInfo gItemsInfo[] =
 
     [ITEM_MOON_BALL] =
     {
-        .name = ITEM_NAME("Moon Ball"),
+        .name = ITEM_NAME("Bijuu Moon Ball"),
         .price = (I_PRICE >= GEN_7) ? 150 : 300,
         .description = COMPOUND_STRING(
-            "A Ball that works\n"
-            "well on Moon\n"
-            "Stone users."),
+            "A moonlit Ball for\n"
+            "Pokémon that evolve\n"
+            "with a Moon Stone."),
         .pocket = POCKET_POKE_BALLS,
         .heldSlot = 0,
         .type = ITEM_USE_BAG_MENU,
@@ -584,11 +584,11 @@ const struct ItemInfo gItemsInfo[] =
 
     [ITEM_LOVE_BALL] =
     {
-        .name = ITEM_NAME("Love Ball"),
+        .name = ITEM_NAME("Penny Love Ball"),
         .price = (I_PRICE >= GEN_7) ? 150 : 300,
         .description = COMPOUND_STRING(
-            "Works well on\n"
-            "Pokémon of the\n"
+            "A cozy Ball for\n"
+            "same species of the\n"
             "opposite gender."),
         .pocket = POCKET_POKE_BALLS,
         .heldSlot = 0,

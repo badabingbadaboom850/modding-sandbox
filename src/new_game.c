@@ -303,6 +303,9 @@ void NewGameInitData(void)
     AddBagItem(ITEM_PECHA_BERRY, 1);
     // Keep the custom item icons in every fresh save for visual testing.
     AddBagItem(ITEM_GREAT_BALL, 1); // Trio Ball reskin
+    AddBagItem(ITEM_ULTRA_BALL, 1); // Riko Ultra Ball
+    AddBagItem(ITEM_LOVE_BALL, 1); // Penny Love Ball
+    AddBagItem(ITEM_MOON_BALL, 1); // Bijuu Moon Ball
     AddBagItem(ITEM_POTION, 1); // McDonalds Wawa S
     AddBagItem(ITEM_SUPER_POTION, 1); // McDonalds Wawa M
     AddBagItem(ITEM_HYPER_POTION, 1); // McDonalds Wawa L
