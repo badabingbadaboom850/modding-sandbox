@@ -246,6 +246,39 @@ const struct SpeciesInfo gSpeciesInfo[] =
         .formSpeciesIdTable = sRikoFormSpeciesIdTable, .formChangeTable = sRikoFormChangeTable,
     },
 #endif
+    [SPECIES_RIKO_SPIRIT] =
+    {
+        .baseHP = 115, .baseAttack = 115, .baseDefense = 85, .baseSpeed = 100,
+        .baseSpAttack = 90, .baseSpDefense = 75,
+        .types = MON_TYPES(TYPE_FIRE, TYPE_FAIRY), .catchRate = 3, .expYield = 290,
+        .evYield_HP = 1, .evYield_Attack = 2, .genderRatio = PERCENT_FEMALE(50),
+        .eggCycles = 80, .friendship = 35, .growthRate = GROWTH_SLOW,
+        .eggGroups = MON_EGG_GROUPS(EGG_GROUP_NO_EGGS_DISCOVERED),
+        .abilities = { ABILITY_PRESSURE, ABILITY_NONE, ABILITY_FLASH_FIRE },
+        .bodyColor = BODY_COLOR_BLACK, .speciesName = _("RikoSpirit"), .cryId = CRY_ENTEI,
+        .natDexNum = NATIONAL_DEX_RIKO, .categoryName = _("Cerberus"), .height = 15, .weight = 420,
+        .description = COMPOUND_STRING("A spirit born from Riko.\nIts three heads guard its\nfamily with a blazing roar."),
+        .pokemonScale = 256, .trainerScale = 256,
+        .frontPic = gMonFrontPic_RikoSpirit, .frontPicSize = MON_COORDS_SIZE(64, 64), .frontPicYOffset = 0,
+        .frontAnimFrames = sAnims_SingleFramePlaceHolder, .backPic = gMonBackPic_RikoSpirit,
+        .backPicSize = MON_COORDS_SIZE(64, 64), .backPicYOffset = 0,
+        .palette = gMonPalette_RikoSpirit, .shinyPalette = gMonShinyPalette_RikoSpirit,
+        .iconSprite = gMonIcon_RikoSpirit, .iconPalette = gMonIconPalette_RikoSpirit,
+        .shinyIconPalette = gMonShinyIconPalette_RikoSpirit, .pokemonJumpType = PKMN_JUMP_TYPE_NORMAL,
+        SHADOW(-2, 8, SHADOW_SIZE_M)
+        OVERWORLD(
+            sPicTable_RikoSpirit,
+            SIZE_32x32,
+            SHADOW_SIZE_M,
+            TRACKS_FOOT,
+            sAnimTable_Following,
+            gOverworldPalette_RikoSpirit,
+            gShinyOverworldPalette_RikoSpirit
+        )
+        .isSubLegendary = TRUE, .perfectIVCount = LEGENDARY_PERFECT_IV_COUNT,
+        .teachingType = ALL_TEACHABLES, .levelUpLearnset = sRikoSpiritLevelUpLearnset,
+        FOOTPRINT(Riko)
+    },
 #endif
 #if P_FAMILY_BIJUU
     [SPECIES_BIJUU] =

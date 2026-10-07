@@ -257,3 +257,31 @@ const u32 gMonBackPic_RikoMega[] = INCBIN_U32("graphics/pokemon/riko/mega/back.4
 const u16 gMonPalette_RikoMega[] = INCBIN_U16("graphics/pokemon/riko/mega/normal.gbapal");
 const u16 gMonShinyPalette_RikoMega[] = INCBIN_U16("graphics/pokemon/riko/mega/shiny.gbapal");
 #endif
+
+#if P_FAMILY_RIKO
+const u32 gMonFrontPic_RikoSpirit[] = INCBIN_U32("graphics/pokemon/riko_spirit/front.4bpp.smol");
+const u32 gMonBackPic_RikoSpirit[] = INCBIN_U32("graphics/pokemon/riko_spirit/back.4bpp.smol");
+const u16 gMonPalette_RikoSpirit[] = INCBIN_U16("graphics/pokemon/riko_spirit/normal.gbapal");
+const u16 gMonShinyPalette_RikoSpirit[] = INCBIN_U16("graphics/pokemon/riko_spirit/shiny.gbapal");
+const u8 gMonIcon_RikoSpirit[] = INCBIN_U8("graphics/pokemon/riko_spirit/icon.4bpp");
+const u16 gMonIconPalette_RikoSpirit[] = INCBIN_U16("graphics/pokemon/riko_spirit/icon_normal.gbapal");
+const u16 gMonShinyIconPalette_RikoSpirit[] = INCBIN_U16("graphics/pokemon/riko_spirit/icon_shiny.gbapal");
+const u32 gObjectEventPic_RikoSpirit[] = INCBIN_U32("graphics/pokemon/riko_spirit/overworld.4bpp");
+const u16 gOverworldPalette_RikoSpirit[] = INCBIN_U16("graphics/pokemon/riko_spirit/overworld_normal.gbapal");
+const u16 gShinyOverworldPalette_RikoSpirit[] = INCBIN_U16("graphics/pokemon/riko_spirit/overworld_shiny.gbapal");
+static const struct SpriteFrameImage sPicTable_RikoSpirit[] = {
+    overworld_ascending_frames(gObjectEventPic_RikoSpirit, 4, 4),
+};
+static const struct LevelUpMove sRikoSpiritLevelUpLearnset[] = {
+    LEVEL_UP_MOVE( 1, MOVE_BITE),
+    LEVEL_UP_MOVE( 1, MOVE_LEER),
+    LEVEL_UP_MOVE(11, MOVE_EMBER),
+    LEVEL_UP_MOVE(21, MOVE_ROAR),
+    LEVEL_UP_MOVE(31, MOVE_FIRE_SPIN),
+    LEVEL_UP_MOVE(41, MOVE_STOMP),
+    LEVEL_UP_MOVE(51, MOVE_FLAMETHROWER),
+    LEVEL_UP_MOVE(61, MOVE_SWAGGER),
+    LEVEL_UP_MOVE(71, MOVE_FIRE_BLAST),
+    LEVEL_UP_END
+};
+#endif
