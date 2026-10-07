@@ -144,12 +144,19 @@ RuinsOfAlph_Outside_Text_Fisher2:
 
 RuinsOfAlph_Outside_Text_Youngster1:
 	.string "There are many kinds of Unown, so\n"
-	.string "we use them for our secret codes.$"
+	.string "we use them for our secret codes.\p"
+	.string "My grandma says they once asked Riko\n"
+	.string "for fluff to make warm sweaters.\p"
+	.string "Riko agreed, but kept the softest\n"
+	.string "patch for herself!$"
 
 RuinsOfAlph_Outside_Text_Youngster2:
 	.string "A… H… E… A… D… Hmm…\p"
 	.string "What?\p"
-	.string "I'm decoding this message!$"
+	.string "I'm decoding this message!\p"
+	.string "The letters keep appearing in\n"
+	.string "Bijuu's shape. Maybe she has been\n"
+	.string "copying my work again!$
 `
 
 script RuinsofAlph_Scientist {
