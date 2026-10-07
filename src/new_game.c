@@ -66,7 +66,7 @@
 extern const u8 EventScript_ResetAllMapFlags[];
 
 static void ClearFrontierRecord(void);
-static void WarpToTruck(void);
+static void WarpToSpiritEvent(void);
 static void ResetMiniGamesRecords(void);
 static void ResetItemFlags(void);
 static void ResetDexNav(void);
@@ -196,9 +196,10 @@ static void ClearFrontierRecord(void)
     gSaveBlock2Ptr->frontier.opponentNames[1][0] = EOS;
 }
 
-static void WarpToTruck(void)
+// Temporary validation start: one tile south of the Spirit of Riko's entrance trigger.
+static void WarpToSpiritEvent(void)
 {
-    SetWarpDestination(MAP_GROUP(MAP_NEW_BARK_TOWN_PLAYERS_HOUSE_2F), MAP_NUM(MAP_NEW_BARK_TOWN_PLAYERS_HOUSE_2F), WARP_ID_NONE, 1, 6);
+    SetWarpDestination(MAP_GROUP(MAP_SHOAL_CAVE_LOW_TIDE_ICE_ROOM_SUICUNE), MAP_NUM(MAP_SHOAL_CAVE_LOW_TIDE_ICE_ROOM_SUICUNE), WARP_ID_NONE, 8, 9);
     WarpIntoMap();
 }
 
@@ -306,7 +307,7 @@ void NewGameInitData(void)
     InitDewfordTrend();
     ResetFanClub();
     ResetLotteryCorner();
-    WarpToTruck();
+    WarpToSpiritEvent();
     RunScriptImmediately(EventScript_ResetAllMapFlags);
     ResetMiniGamesRecords();
     InitUnionRoomChatRegisteredTexts();
