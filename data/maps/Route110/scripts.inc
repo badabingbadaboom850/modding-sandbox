@@ -777,30 +777,26 @@ Route110_Text_MayExplainItemfinder:
 	.string "harder for the next time.$"
 
 Route110_Text_BrendanLetsBattle:
-	.string "Brendan: Hey, {PLAYER}! There you are!\p"
-	.string "Penny is ready to win again.\n"
-	.string "Riko can try to keep up!$"
-
+	.string "Brendan: Hey, {PLAYER}! I\nmissed you!\p"
+	.string "Ready for another battle,\ncutie?\p"
+	.string "Penny is ready to win\nagain.\n"
+	.string "Riko can try to keep up!$
 Route110_Text_BrendanDefeated:
-	.string "You got me again!\p"
-	.string "You are cute when you try hard.\p"
-	.string "Penny did most of the work.\n"
-	.string "Riko gets a little loud!$"
-
+	.string "You got me again! You\nlooked so cute.\p"
+	.string "Riko smelled like snacks,\nand I lost focus!\p"
+	.string "Just kidding, she is\nadorable too.\n"
+	.string "Penny did most of the work!$
 Route110_Text_BrendanTakeThis:
-	.string "Brendan: You and Penny trained hard.\p"
+	.string "Brendan: You and Penny\ntrained hard.\p"
 	.string "Riko gets some credit too.\p"
-	.string "Here, take this!$"
-
+	.string "You earned this, cutie. Here you go!$
 Route110_Text_BrendanExplainItemfinder:
-	.string "Brendan: That's an Itemfinder.\p"
-	.string "Use it to root around for items that\n"
-	.string "aren't visible.\p"
-	.string "If it senses something, it emits\n"
-	.string "a sound.\p"
-	.string "Anyway, I'm off to look for new\n"
-	.string "Pokémon.$"
-
+	.string "Brendan: That is an\nItemfinder.\p"
+	.string "Use it to search for items\nthat are\n"
+	.string "hidden from view.\p"
+	.string "If it senses something, it\nmakes a sound.\p"
+	.string "Maybe it found an item, or\nmaybe\n"
+	.string "I just got distracted by you again!$
 Route110_Text_RideBikeAtFullSpeed:
 	.string "Wouldn't it be great to ride a Bike\n"
 	.string "at full speed on Cycling Road?$"

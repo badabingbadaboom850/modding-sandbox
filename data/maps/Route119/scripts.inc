@@ -505,28 +505,24 @@ Route119_Text_MayExplainFly:
 	.string "Well, let's meet again somewhere!$"
 
 Route119_Text_BrendanIntro:
-	.string "Brendan: Hey, {PLAYER}! Ready to go?\p"
-	.string "Penny looks ready to win again.\n"
-	.string "Riko, try to keep up!$"
-
+	.string "Brendan: Hey, {PLAYER}! Ready\nto go?\p"
+	.string "I missed you, cutie.\p"
+	.string "Penny looks ready to win\nagain.\n"
+	.string "Riko, try to keep up!$
 Route119_Text_BrendanDefeat:
-	.string "You won again!\p"
-	.string "Penny is way cooler than Riko.\n"
-	.string "Do not let Riko hear that!$"
-
+	.string "You won again! You were\nadorable out there.\p"
+	.string "Penny is way cooler than\nRiko.\n"
+	.string "Do not let Riko hear that!$
 Route119_Text_BrendanIllGiveYouThis:
-	.string "Brendan: You earned this, cutie.\p"
+	.string "Brendan: You earned this,\ncutie.\p"
 	.string "Penny is still my favorite.\n"
-	.string "Just do not tell Riko!$"
-
+	.string "Riko is growing on me, though!$
 Route119_Text_BrendanExplainFly:
-	.string "Brendan: Use Fly, and your Pokémon\n"
-	.string "instantly carries you to any town\l"
-	.string "you've already visited.\p"
-	.string "But you need the Fortree Gym Badge \n"
-	.string "to do that.\p"
-	.string "Anyway, I have to move along.$"
-
+	.string "Brendan: Use Fly, and your\nPokemon\n"
+	.string "can carry you to any town\nyou visited.\p"
+	.string "You need the Fortree Gym\nBadge first.\p"
+	.string "You and the girls are going\nplaces.\n"
+	.string "I will try to keep up!$
 Route119_Text_ScottWayToGoBeSeeingYou:
 	.string "Scott: Hahahah!\n"
 	.string "Way to go, {PLAYER}{KUN}!\p"

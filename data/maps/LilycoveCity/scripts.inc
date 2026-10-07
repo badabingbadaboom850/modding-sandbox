@@ -480,68 +480,49 @@ LilycoveCity_Text_MayYouGoingToBattleFrontier:
 	.string "See you!$"
 
 LilycoveCity_Text_BrendanShoppingLetsBattle:
-	.string "Brendan: Oh, hey, it's {PLAYER}.\p"
-	.string "I'm running an errand for my dad.\n"
-	.string "No, I'm not buying any Dolls.\p"
-	.string "Anyways, it's been a while.\p"
-	.string "Want to have a battle to see who's been\n"
-	.string "raising Pokémon better?$"
-
+	.string "Brendan: Hey, cutie! I am\nrunning an\n"
+	.string "errand for Dad. No Dolls, I\npromise!\p"
+	.string "I was looking for something\nPenny would like.\p"
+	.string "Want to battle before we\nshop?\n"
+	.string "Riko can cheer for us!$
 LilycoveCity_Text_BrendanNoConfidence:
-	.string "Brendan: Oh, what's the matter?\n"
-	.string "Don't have the confidence?$"
-
+	.string "Brendan: No worries, cutie.\p"
+	.string "We can battle when you are\nready.\p"
+	.string "Tell Penny I said hi. And Riko too!$
 LilycoveCity_Text_BrendanBattleMe:
-	.string "Brendan: Want to battle to see who's\n"
-	.string "been raising Pokémon better?$"
-
+	.string "Brendan: Want to battle,\ncutie?\p"
+	.string "Penny and Riko can show me\nwhat\n"
+	.string "they have learned since we last met!$
 LilycoveCity_Text_BrendanWontBeBeaten:
-	.string "Brendan: Aww, but you know I'm not\n"
-	.string "going to lose to no {PLAYER}.$"
-
+	.string "Brendan: I will try my\nbest, cutie.\p"
+	.string "Penny is probably carrying\nthe team.\n"
+	.string "Riko, you can cheer us on!$
 LilycoveCity_Text_BrendanDefeat:
-	.string "Humph…\n"
-	.string "You've done a lot of raising.\p"
-	.string "That stings a bit--I had a head start\n"
-	.string "on you as a Trainer…$"
-
+	.string "Wow, you are incredible!\p"
+	.string "Penny and Riko make a great\nteam.\p"
+	.string "I was too busy thinking you\nlooked cute.\n"
+	.string "That is my excuse, and I am keeping it!$
 LilycoveCity_Text_BrendanGoingBackToLittleroot:
-	.string "Brendan: I…\n"
-	.string "I plan on going home to Littleroot.\p"
-	.string "You know I'm helping out my dad on his\n"
-	.string "Pokédex. It's coming together pretty\l"
-	.string "decently, so I should go show him.$"
-
+	.string "Brendan: I plan to head\nhome to Littleroot.\p"
+	.string "I should show Dad how my\nPokedex is going.\p"
+	.string "I will tell him how amazing\nyou and\n"
+	.string "the girls are. I might brag about you too!$
 LilycoveCity_Text_BrendanYouGoingToCollectBadges:
-	.string "{PLAYER}, what are you going to do?\p"
-	.string "Collect all the Gym Badges and take\n"
-	.string "the Pokémon League challenge?\p"
-	.string "Maybe I'll do that, too…\p"
-	.string "Well, anyway, hang in there!$"
-
+	.string "{PLAYER}, are you going for\nall the Badges\n"
+	.string "and the Pokemon League\nchallenge?\p"
+	.string "You and the girls would be\nunstoppable.\p"
+	.string "I will be cheering for you, cutie!$
 LilycoveCity_Text_BrendanYouGoingToPokemonLeague:
-	.string "{PLAYER}, what are you going to do?\p"
-	.string "Since you're that strong, are you\n"
-	.string "taking the Pokémon League challenge?\p"
-	.string "Heh, even me--if I trained my Pokémon\n"
-	.string "a bit more, I should be stronger than\l"
-	.string "you, {PLAYER}.\p"
-	.string "Well, anyway, hang in there!$"
-
+	.string "{PLAYER}, are you taking on\nthe League?\p"
+	.string "You and the girls have\nworked so hard.\p"
+	.string "I should train more if I\nwant to keep up.\p"
+	.string "Good luck, cutie. I believe in you!$
 LilycoveCity_Text_BrendanYouGoingToBattleFrontier:
-	.string "{PLAYER}, what are you going to do?\p"
-	.string "Are you taking the Battle Frontier\n"
-	.string "challenge?\p"
-	.string "Or, are you going to complete your\n"
-	.string "Pokédex?\p"
-	.string "Since you're that strong, you should\n"
-	.string "consider the Battle Frontier.\p"
-	.string "Heh, if I train my Pokémon a bit more,\n"
-	.string "I'll get stronger than you, {PLAYER}.\p"
-	.string "Maybe I should go to the Battle\n"
-	.string "Frontier.\p"
-	.string "Well, anyway, hang in there!$"
-
+	.string "{PLAYER}, are you taking on\nthe Frontier?\p"
+	.string "Or finishing your Pokedex\nfirst?\p"
+	.string "You and the girls can\nhandle anything.\p"
+	.string "I will train hard and try\nto catch up.\p"
+	.string "Good luck, cutie!$
 LilycoveCity_Text_MovedLootIntoHideoutToday:
 	.string "Fufufu…\p"
 	.string "We moved more loot into our secret\n"

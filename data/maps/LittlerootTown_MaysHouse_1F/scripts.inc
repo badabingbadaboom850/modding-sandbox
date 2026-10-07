@@ -380,25 +380,12 @@ RivalsHouse_1F_Text_MayWhoAreYou:
 	.string "{PLAYER}{KUN}, I'll catch you later!$"
 
 RivalsHouse_1F_Text_BrendanWhoAreYou:
-	.string "Hey!\n"
-	.string "You…\p"
-	.string "Who are you?\p"
-	.string "Oh, you're {PLAYER}, aren't you?\n"
-	.string "Moved in next door, right?\p"
-	.string "I didn't know that you're a girl.\p"
-	.string "Dad, Prof. Birch, said that our new\n"
-	.string "next-door neighbor is a Gym Leader's\l"
-	.string "kid, so I assumed you'd be a guy.\p"
-	.string "My name's Brendan.\n"
-	.string "So, hi, neighbor!\p"
-	.string "Huh? Hey, {PLAYER}, don't you have\n"
-	.string "a Pokémon?\p"
-	.string "Do you want me to go catch you one?\p"
-	.string "Aw, darn, I forgot…\p"
-	.string "I'm supposed to go help my dad catch\n"
-	.string "some wild Pokémon.\p"
-	.string "Some other time, okay?$"
-
+	.string "Hey, you must be {PLAYER},\nour new neighbor!\p"
+	.string "I thought the new neighbor\nwas a guy.\n"
+	.string "You are much cuter than I\nexpected!\p"
+	.string "I am Brendan. It is nice\nto meet you.\p"
+	.string "I was supposed to help Dad\ncatch Pokemon,\n"
+	.string "but I forgot all about it. Oops!$
 RivalsHouse_1F_Text_DoYouHavePokemon:
 	.string "Hi, neighbor!\p"
 	.string "Do you already have your\n"

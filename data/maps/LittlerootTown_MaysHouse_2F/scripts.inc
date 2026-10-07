@@ -337,29 +337,15 @@ RivalsHouse_2F_Text_MayGettingReady:
 	.string "Items ready, and…$"
 
 RivalsHouse_2F_Text_BrendanWhoAreYou:
-	.string "Hey!\n"
-	.string "You…\p"
-	.string "Who are you?\p"
-	.string "Oh, you're {PLAYER}, aren't you?\n"
-	.string "Moved in next door, right?\p"
-	.string "I didn't know that you're a girl.\p"
-	.string "Dad, Prof. Birch, said that our new\n"
-	.string "next-door neighbor is a Gym Leader's\l"
-	.string "kid, so I assumed you'd be a guy.\p"
-	.string "My name's Brendan.\n"
-	.string "So, hi, neighbor!\p"
-	.string "Huh? Hey, {PLAYER}, don't you have\n"
-	.string "a Pokémon?\p"
-	.string "Do you want me to go catch you one?\p"
-	.string "Aw, darn, I forgot…\p"
-	.string "I'm supposed to go help my dad catch\n"
-	.string "some wild Pokémon.\p"
-	.string "Some other time, okay?$"
-
+	.string "Hey, you must be {PLAYER},\nour new neighbor!\p"
+	.string "I thought the new neighbor\nwas a guy.\n"
+	.string "You are much cuter than I\nexpected!\p"
+	.string "I am Brendan. It is nice\nto meet you.\p"
+	.string "I was supposed to help Dad\ncatch Pokemon,\n"
+	.string "but I forgot all about it. Oops!$
 RivalsHouse_2F_Text_BrendanGettingReady:
-	.string "Pokémon fully restored…\n"
-	.string "Items all packed, and…$"
-
+	.string "Pokemon all ready, items all\npacked.\n"
+	.string "Now I just need to look cool!$
 RivalsHouse_2F_Text_ItsRivalsPokeBall:
 	.string "It's {RIVAL}'s Poké Ball!\p"
 	.string "Better leave it right where it is.$"
@@ -381,17 +367,12 @@ RivalsHouse_2F_Text_MayWhereShouldIGoNext:
 	.string "other, {PLAYER}{KUN}?$"
 
 RivalsHouse_2F_Text_BrendanJustCheckingMyPokedex:
-	.string "Brendan: Hey, it's {PLAYER}.\p"
-	.string "I was just checking out my Pokédex.\p"
-	.string "There are still many Pokémon that\n"
-	.string "I need to catch, I know, but this\l"
-	.string "is looking pretty good.\p"
-	.string "Checking this Pokédex out gives me\n"
-	.string "the urge to hit the road again.$"
-
+	.string "Brendan: Hey, {PLAYER}!\nChecking out my Pokedex.\p"
+	.string "There are so many Pokemon\nto meet.\p"
+	.string "I hope I run into you and\nthe girls soon.\p"
+	.string "Mostly you, cutie. Do not tell them!$
 RivalsHouse_2F_Text_BrendanWhereShouldIGoNext:
-	.string "Brendan: I'm having a hard time deciding\n"
-	.string "where I should catch Pokémon next.\p"
-	.string "Hey, {PLAYER}, if I see you while I'm out\n"
-	.string "catching Pokémon, I can pitch you a\l"
-	.string "battle if you'd like.$"
+	.string "Brendan: I cannot decide\nwhere to catch\n"
+	.string "Pokemon next. Any ideas,\n{PLAYER}?\p"
+	.string "Maybe I will visit your\ntown. I hear\n"
+	.string "there is a very cute Trainer there.$
