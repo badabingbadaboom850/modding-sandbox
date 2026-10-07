@@ -3670,6 +3670,20 @@ IVs: 0 HP / 0 Atk / 0 Def / 0 SpA / 0 SpD / 0 Spe
 - Tackle
 - Tail Whip
 
+Fidough
+Level: 5
+Ability: Own Tempo
+IVs: 0 HP / 0 Atk / 0 Def / 0 SpA / 0 SpD / 0 Spe
+- Tackle
+- Tail Whip
+
+Fidough
+Level: 5
+Ability: Own Tempo
+IVs: 0 HP / 0 Atk / 0 Def / 0 SpA / 0 SpD / 0 Spe
+- Tackle
+- Tail Whip
+
 === TRAINER_RIVAL_TOTODILE_2 ===
 Name: {RIVAL}
 Class: Rival
@@ -4639,6 +4653,20 @@ Music: Silver
 Double Battle: No
 AI: Basic Trainer
 Mugshot: Purple
+
+Fidough
+Level: 5
+Ability: Own Tempo
+IVs: 0 HP / 0 Atk / 0 Def / 0 SpA / 0 SpD / 0 Spe
+- Tackle
+- Tail Whip
+
+Fidough
+Level: 5
+Ability: Own Tempo
+IVs: 0 HP / 0 Atk / 0 Def / 0 SpA / 0 SpD / 0 Spe
+- Tackle
+- Tail Whip
 
 Fidough
 Level: 5
@@ -12109,6 +12137,20 @@ Music: Silver
 Double Battle: No
 AI: Basic Trainer
 Mugshot: Purple
+
+Fidough
+Level: 5
+Ability: Own Tempo
+IVs: 0 HP / 0 Atk / 0 Def / 0 SpA / 0 SpD / 0 Spe
+- Tackle
+- Tail Whip
+
+Fidough
+Level: 5
+Ability: Own Tempo
+IVs: 0 HP / 0 Atk / 0 Def / 0 SpA / 0 SpD / 0 Spe
+- Tackle
+- Tail Whip
 
 Fidough
 Level: 5
