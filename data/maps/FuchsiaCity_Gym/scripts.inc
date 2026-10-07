@@ -99,7 +99,9 @@ FuchsiaCity_Gym_Text_Janine_DisappointYou:
 	.string "I'm sorry to disappoint you…\p"
 	.string "I'm only joking!\p"
 	.string "I'm the real deal!\p"
-	.string "Janine of Fuchsia Gym, that's me!$"
+	.string "Janine of Fuchsia Gym, that's me!\p"
+	.string "If they are legends, they will\n"
+	.string "never see my next move!$"
 
 FuchsiaCity_Gym_Text_Janine_ToughOne:
 	.string "Janine: You're a tough one. You\n"

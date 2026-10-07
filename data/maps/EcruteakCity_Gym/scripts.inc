@@ -103,7 +103,9 @@ MortyIntroText:
 	.string "a future where I meet the\l"
 	.string "rainbow-colored Pokémon.\p"
 	.string "You're going to help me reach\n"
-	.string "that level!$"
+	.string "that level!\p"
+	.string "Three legends walk among us!\n"
+	.string "I sense an old spirit call!$"
 
 MortyWinLossText:
 	.string "I'm not good enough yet...\p"

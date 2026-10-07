@@ -251,7 +251,9 @@ CeruleanGym_Text_MistyIntro:
 	.string "Badges, but you'd better not\l"
 	.string "take me too lightly.\p"
 	.string "My Water-type Pokémon are\n"
-	.string "tough!$"
+	.string "tough!\p"
+	.string "Three legends? Try keeping up\n"
+	.string "with my Water Pokemon!$"
 
 CeruleanGym_Text_MistyWinLoss:
 	.string "Misty: You really are good…\p"

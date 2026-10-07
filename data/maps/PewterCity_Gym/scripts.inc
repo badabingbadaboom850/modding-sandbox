@@ -44,7 +44,9 @@ PewterCity_Gym_Text_Brock_Intro:
 	.string "My Pokémon are impervious to most\n"
 	.string "physical attacks. You'll have a hard\l"
 	.string "time inflicting any damage.\p"
-	.string "Come on!$"
+	.string "Come on!\p"
+	.string "Legends or not, Rock types\n"
+	.string "will hold the line!$"
 
 PewterCity_Gym_Text_Brock_WinLoss:
 	.string "Brock: Your Pokémon's powerful attacks\n"

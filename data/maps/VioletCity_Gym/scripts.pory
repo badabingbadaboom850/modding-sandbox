@@ -66,7 +66,9 @@ VioletGym_Text_Falkner_Intro:
 	.string "I won't allow such insults to bird\l"
 	.string "Pokémon!\p"
 	.string "I'll show you the real power\n"
-	.string "of the magnificent bird Pokémon!$"
+	.string "of the magnificent bird Pokémon!\p"
+	.string "So the legendary trio is real.\n"
+	.string "This is a sight to remember!$"
 
 VioletGym_Text_Falkner_WinLoss:
 	.string "…Darn! My dad's cherished bird\n"

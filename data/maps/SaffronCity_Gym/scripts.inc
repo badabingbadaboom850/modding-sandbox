@@ -66,7 +66,9 @@ SaffronCity_Gym_Text_SabrinaIntro:
 	.string "Badges on anyone who has proven\l"
 	.string "him- or herself worthy.\p"
 	.string "Since you wish it, I will show\n"
-	.string "you my psychic powers!$"
+	.string "you my psychic powers!\p"
+	.string "Their futures may be cloudy.\n"
+	.string "My victory is crystal clear!$"
 
 SaffronCity_Gym_Text_SabrinaWinLoss:
 	.string "Sabrina: Your power…\p"

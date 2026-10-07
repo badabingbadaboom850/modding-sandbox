@@ -295,7 +295,9 @@ VermilionGym_Text_LtSurgeIntro:
 	.string "I've never lost on the\n"
 	.string "battlefield.\p"
 	.string "I'll zap you just like I did my\n"
-	.string "enemies in war!$"
+	.string "enemies in war!\p"
+	.string "Three legends do not scare me!\n"
+	.string "I have faced worse in battle!$"
 
 VermilionGym_Text_LtSurgeWinLoss:
 	.string "Surge: Arrrgh! You are strong!\p"

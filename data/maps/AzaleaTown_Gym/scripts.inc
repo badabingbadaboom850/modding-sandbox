@@ -683,7 +683,9 @@ AzaleaTown_Gym_Text_BugsyIntro:
 	.string "My research is going to make me the\n"
 	.string "authority on bug Pokémon!\p"
 	.string "Let me demonstrate all I've\n"
-	.string "learned from my studies.$"
+	.string "learned from my studies.\p"
+	.string "I have studied rare Pokemon.\n"
+	.string "I never expected all three!$"
 
 AzaleaTown_Gym_Text_BugsyBeaten:
 	.string "Whoa, amazing! You're an\n"

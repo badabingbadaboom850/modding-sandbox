@@ -241,7 +241,9 @@ BlackthornGym_Text_ClairIntroText:
     .string "Do you still want to take me on?\p"
     .string "…Fine. Let's do it!\p"
     .string "As a Gym Leader, I will use my full\n"
-    .string "power against any opponent!$"
+    .string "power against any opponent!\p"
+    .string "Three legends? They still face\n"
+    .string "my Dragon Pokemon!$"
 
 BlackthornGym_Text_ClairWinText:
     .string "I lost?\p"

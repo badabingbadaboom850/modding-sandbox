@@ -142,7 +142,9 @@ CianwoodGym_Text_ChuckIntro1:
 	.string "Let me tell you, I'm tough!\p"
 	.string "My Pokémon will crush stones and\n"
 	.string "shatter bones!\p"
-	.string "Watch this!$"
+	.string "Watch this!\p"
+	.string "Three legends at once!\n"
+	.string "Now this is a real workout!$"
 
 CianwoodGym_Text_ChuckIntro2:
 	.string "Chuck: Urggh!\n"

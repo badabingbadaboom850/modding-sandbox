@@ -80,7 +80,9 @@ SeafoamIslands_Gym_Text_BlaineIntro:
 	.string "Leader here in this cave.\p"
 	.string "If you can beat me, I'll give you\n"
 	.string "a Badge.\p"
-	.string "Ha! You'd better have Burn Heal!$"
+	.string "Ha! You'd better have Burn Heal!\p"
+	.string "Three legends! Now this is a\n"
+	.string "fiery challenge!$"
 
 SeafoamIslands_Gym_Text_BlaineWinLoss:
 	.string "Blaine: Awesome. I've burned out…\p"

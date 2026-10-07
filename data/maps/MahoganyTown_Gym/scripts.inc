@@ -134,7 +134,9 @@ MahoganyTown_Gym_Text_PryceIntro:
     .string "before you were born.\p"
     .string "I do not lose easily.\p"
     .string "I, Pryce--the winter trainer--\n"
-    .string "shall demonstrate my power!$"
+    .string "shall demonstrate my power!\p"
+    .string "Even legends must face a\n"
+    .string "careful and patient battle.$"
 
 MahoganyTown_Gym_Text_PryceImpressed:
     .string "Ah, I am impressed by your\n"

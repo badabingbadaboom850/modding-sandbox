@@ -62,7 +62,9 @@ ViridianCity_Gym_Text_LeaderBlue_Before:
 	.string "Hey, don't worry about it.\p"
 	.string "I'll know if you are good or not by\n"
 	.string "battling you right now.\p"
-	.string "Ready, Johto Champ?$"
+	.string "Ready, Johto Champ?\p"
+	.string "I have faced legends before.\n"
+	.string "Show me what they can do!$"
 
 ViridianCity_Gym_Text_LeaderBlue_Win:
 	.string "Blue: What?\p"

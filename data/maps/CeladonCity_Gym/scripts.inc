@@ -38,7 +38,9 @@ CeladonCity_Gym_Text_ErikaBeforeBattle:
 	.string "say? How nice…\p"
 	.string "Oh. I'm sorry, I didn't realize\n"
 	.string "that you wished to challenge me.\p"
-	.string "Very well, but I shall not lose.$"
+	.string "Very well, but I shall not lose.\p"
+	.string "Even legends should learn\n"
+	.string "to bloom with grace.$"
 
 CeladonCity_Gym_Text_ErikaBeaten:
 	.string "Erika: Oh! I concede defeat…\p"

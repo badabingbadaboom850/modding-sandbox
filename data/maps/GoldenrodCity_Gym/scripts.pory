@@ -132,7 +132,9 @@ GoldenrodCity_Gym_Text_WhitneyBefore:
     .string "into it too!\p"
     .string "Pokémon are super-cute!\p"
     .string "You want to battle? I'm warning\n"
-    .string "you- I'm good!$"
+    .string "you- I'm good!\p"
+    .string "Three legendary girls? Wow!\n"
+    .string "This is a lot of pressure!$"
 
 GoldenrodCity_Gym_Text_WhitneyShouldntBeSoSerious:
     .string "Sob…\p"

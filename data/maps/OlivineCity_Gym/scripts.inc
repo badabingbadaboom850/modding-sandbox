@@ -298,7 +298,9 @@ OlivineCity_Gym_Text_JasmineSteelTypeIntro:
 	.string "…Do you know about the Steel-type?\p"
 	.string "It's a type that was only recently\n"
 	.string "discovered.\p"
-	.string "…Um… May I begin?$"
+	.string "…Um… May I begin?\p"
+	.string "It is an honor to meet three\n"
+	.string "rare and powerful legends.$"
 
 OlivineCity_Gym_Text_JasmineBetterTrainer:
 	.string "…You are a better trainer than me,\n"

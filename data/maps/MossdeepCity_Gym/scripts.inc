@@ -555,7 +555,7 @@ MossdeepCity_Gym_Text_TateAndLizaIntro:
 	.string "Liza: All in our minds!\p"
 	.string "Tate: This combination of ours…\n"
 	.string "Liza: Can you beat it?\p"
-	.string "Tate: The trio is here!\nLiza: We will battle them!"
+	.string "The trio is here!\nWe will battle as one!"
 
 MossdeepCity_Gym_Text_TateAndLizaDefeat:
 	.string "Tate: What?! Our combination…\n"
