@@ -328,7 +328,7 @@ EcruteakCity_Text_Lass2:
 	.string "Grandma says they used to pray to\n"
 	.string "Riko for fluff to make sweaters.\p"
 	.string "She would help, but only if they\n"
-	.string "saved her a cozy one!$
+	.string "saved her a cozy one!$"
 
 EcruteakCity_Text_Lass2_ReleasedBeasts:
 	.string "Three big Pokémon ran off in different\n"
