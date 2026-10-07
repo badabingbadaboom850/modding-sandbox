@@ -172,7 +172,11 @@ Route30_Text_YoungsterEveryoneIsBattling:
 Route30_Text_CooltrainerF:
 	.string "I'm not a trainer.\p"
 	.string "But if you look one in the\n"
-	.string "eyes, prepare to battle.$"
+	.string "eyes, prepare to battle.\p"
+	.string "A local says Riko once charged\n"
+	.string "through here chasing a snack.\p"
+	.string "She left the grass flattened in a\n"
+	.string "perfect little runway!$
 
 Route30_Text_Sign:
 	.string "Route 30\p"
