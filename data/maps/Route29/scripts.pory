@@ -198,7 +198,11 @@ Route29_Text_Lass:
 
 Route29_Text_Girl:
 	.string "I wanted to take a break,\n"
-	.string "so I saved to record my progress.$"
+	.string "so I saved to record my progress.\p"
+	.string "A traveler says Penny is so long\n"
+	.string "she wrapped around the earth twice.\p"
+	.string "I thought it was a tall tale, then\n"
+	.string "she came around again!$
 
 Route29_Text_Boy_WaitingForDay:
 	.string "I'm waiting for Pokémon that\n"
