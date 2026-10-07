@@ -652,6 +652,9 @@ RIKO_OVERWORLD_GFX := graphics/pokemon/riko/overworld.4bpp \
                      graphics/pokemon/bijuu/overworld.4bpp \
                      graphics/pokemon/bijuu/overworld_normal.gbapal \
                      graphics/pokemon/bijuu/overworld_shiny.gbapal \
+                     graphics/pokemon/riko_spirit/overworld.4bpp \
+                     graphics/pokemon/riko_spirit/overworld_normal.gbapal \
+                     graphics/pokemon/riko_spirit/overworld_shiny.gbapal \
                      graphics/pokemon/riko_fire/overworld.4bpp \
                      graphics/pokemon/riko_fire/overworld_normal.gbapal \
                      graphics/pokemon/riko_fire/overworld_shiny.gbapal \
