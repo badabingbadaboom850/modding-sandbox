@@ -458,10 +458,12 @@ extern const u16 gItemIconPalette_BeastBall[];
 extern const u32 gItemIcon_CherishBall[];
 extern const u16 gItemIconPalette_CherishBall[];
 // Medicine
-extern const u32 gItemIcon_Potion[];
-extern const u16 gItemIconPalette_Potion[];
-extern const u16 gItemIconPalette_SuperPotion[];
-extern const u16 gItemIconPalette_HyperPotion[];
+extern const u32 gItemIcon_WawaSmall[];
+extern const u32 gItemIcon_WawaMedium[];
+extern const u32 gItemIcon_WawaLarge[];
+extern const u16 gItemIconPalette_WawaSmall[];
+extern const u16 gItemIconPalette_WawaMedium[];
+extern const u16 gItemIconPalette_WawaLarge[];
 extern const u32 gItemIcon_LargePotion[];
 extern const u16 gItemIconPalette_MaxPotion[];
 extern const u16 gItemIconPalette_FullRestore[];
