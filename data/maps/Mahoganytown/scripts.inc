@@ -309,10 +309,10 @@ MahoganyTown_Text_Fisher:
 MahoganyTown_Text_Lass:
     .string "The shop sells things no one else\n"
     .string "has.\p"
-    .string "Anglers saw three rare Pokemon\n"
-    .string "together near Route 31.\p"
-    .string "A shy cat was with them.\n"
-    .string "They vanished into the grass.$"
+    .string "Riko says Ragecandybars vanish\n"
+    .string "mysteriously when she walks by.\p"
+    .string "Penny blames Bijuu, who has sticky\n"
+    .string "whiskers and no explanation.$"
 
 
 
