@@ -243,6 +243,23 @@ void NewGameInitData(void)
     ResetPokedex();
     ClearFrontierRecord();
     ClearSav1();
+
+    // ClearSav1 zeroes the current location, so initialize the actual new-game
+    // destination before the first map load. The heal location below is only
+    // used for white-outs and teleports.
+    if (gSaveBlock2Ptr->playerGender == MALE)
+    {
+        gSaveBlock1Ptr->location.mapGroup = MAP_GROUP(MAP_LITTLEROOT_TOWN_BRENDANS_HOUSE_2F);
+        gSaveBlock1Ptr->location.mapNum = MAP_NUM(MAP_LITTLEROOT_TOWN_BRENDANS_HOUSE_2F);
+    }
+    else
+    {
+        gSaveBlock1Ptr->location.mapGroup = MAP_GROUP(MAP_LITTLEROOT_TOWN_MAYS_HOUSE_2F);
+        gSaveBlock1Ptr->location.mapNum = MAP_NUM(MAP_LITTLEROOT_TOWN_MAYS_HOUSE_2F);
+    }
+    gSaveBlock1Ptr->location.warpId = WARP_ID_NONE;
+    gSaveBlock1Ptr->location.x = 4;
+    gSaveBlock1Ptr->location.y = 4;
     SetDefaultPartyMenuStyle();
     ClearSav3();
     ClearAllMail();
