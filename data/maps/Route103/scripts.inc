@@ -312,21 +312,21 @@ Route103_Text_MayTimeToHeadBack:
 
 Route103_Text_BrendanRoute103Pokemon:
 	.string "Brendan: These Pokemon are\nfascinating.\p"
-	.string "Oh, there is my cute new neighbor!$
+	.string "Oh, there is my cute new neighbor!$"
 Route103_Text_BrendanLetsBattle:
 	.string "Hey, {PLAYER}! There you are!\p"
 	.string "Ready to battle, cutie?\p"
 	.string "Penny looks ready to win.\n"
-	.string "Riko can try to keep up!$
+	.string "Riko can try to keep up!$"
 Route103_Text_BrendanDefeated:
 	.string "Wow! You got me! You looked\ncute out there.\p"
 	.string "Penny was pretty cool too.\n"
-	.string "Do not tell Riko I said that!$
+	.string "Do not tell Riko I said that!$"
 Route103_Text_BrendanTimeToHeadBack:
 	.string "Brendan: You and Penny make\na great team.\p"
 	.string "Riko is a very enthusiastic\ncheerleader.\p"
 	.string "And you are cute when you\nwin.\p"
-	.string "Come on, back to the Lab!$
+	.string "Come on, back to the Lab!$"
 Route103_Text_ShouldHaveBroughtPotion:
 	.string "My Pokémon is staggeringly tired…\n"
 	.string "I should have brought a Potion…$"

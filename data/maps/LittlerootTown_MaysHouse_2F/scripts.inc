@@ -342,10 +342,10 @@ RivalsHouse_2F_Text_BrendanWhoAreYou:
 	.string "You are much cuter than I\nexpected!\p"
 	.string "I am Brendan. It is nice\nto meet you.\p"
 	.string "I was supposed to help Dad\ncatch Pokemon,\n"
-	.string "but I forgot all about it. Oops!$
+	.string "but I forgot all about it. Oops!$"
 RivalsHouse_2F_Text_BrendanGettingReady:
 	.string "Pokemon all ready, items all\npacked.\n"
-	.string "Now I just need to look cool!$
+	.string "Now I just need to look cool!$"
 RivalsHouse_2F_Text_ItsRivalsPokeBall:
 	.string "It's {RIVAL}'s Poké Ball!\p"
 	.string "Better leave it right where it is.$"
@@ -370,9 +370,9 @@ RivalsHouse_2F_Text_BrendanJustCheckingMyPokedex:
 	.string "Brendan: Hey, {PLAYER}!\nChecking out my Pokedex.\p"
 	.string "There are so many Pokemon\nto meet.\p"
 	.string "I hope I run into you and\nthe girls soon.\p"
-	.string "Mostly you, cutie. Do not tell them!$
+	.string "Mostly you, cutie. Do not tell them!$"
 RivalsHouse_2F_Text_BrendanWhereShouldIGoNext:
 	.string "Brendan: I cannot decide\nwhere to catch\n"
 	.string "Pokemon next. Any ideas,\n{PLAYER}?\p"
 	.string "Maybe I will visit your\ntown. I hear\n"
-	.string "there is a very cute Trainer there.$
+	.string "there is a very cute Trainer there.$"

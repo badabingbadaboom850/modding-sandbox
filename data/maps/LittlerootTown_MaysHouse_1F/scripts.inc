@@ -385,7 +385,7 @@ RivalsHouse_1F_Text_BrendanWhoAreYou:
 	.string "You are much cuter than I\nexpected!\p"
 	.string "I am Brendan. It is nice\nto meet you.\p"
 	.string "I was supposed to help Dad\ncatch Pokemon,\n"
-	.string "but I forgot all about it. Oops!$
+	.string "but I forgot all about it. Oops!$"
 RivalsHouse_1F_Text_DoYouHavePokemon:
 	.string "Hi, neighbor!\p"
 	.string "Do you already have your\n"
