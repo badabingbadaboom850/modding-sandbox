@@ -126,6 +126,20 @@
       "elevation": 0,
       "dest_map": "MAP_SHOAL_CAVE_LOW_TIDE_ICE_ROOM",
       "dest_warp_id": "1"
+    },
+    {
+      "x": 7,
+      "y": 9,
+      "elevation": 0,
+      "dest_map": "MAP_LITTLEROOT_TOWN_BRENDANS_HOUSE_2F",
+      "dest_warp_id": "0"
+    },
+    {
+      "x": 9,
+      "y": 9,
+      "elevation": 0,
+      "dest_map": "MAP_LITTLEROOT_TOWN_MAYS_HOUSE_2F",
+      "dest_warp_id": "0"
     }
   ],
   "coord_events": [

@@ -11930,14 +11930,14 @@ const struct ItemInfo gItemsInfo[] =
 
     [ITEM_CHERI_BERRY] =
     {
-        .name = ITEM_NAME("Cheri Berry"),
-        .pluralName = ITEM_PLURAL_NAME("Cheri Berries"),
+        .name = ITEM_NAME("Bijuu's Springs"),
+        .pluralName = ITEM_PLURAL_NAME("Bijuu's Springs"),
         .price = (I_BERRY_PRICE >= GEN_8) ? 80 : 20,
         .holdEffect = HOLD_EFFECT_CURE_PAR,
         .description = COMPOUND_STRING(
-            "A hold item that\n"
-            "heals paralysis\n"
-            "in battle."),
+            "Bijuu's pink toy\n"
+            "cures paralysis in\n"
+            "battle."),
         .pocket = POCKET_BERRIES,
         .heldSlot = 0,
         .type = ITEM_USE_PARTY_MENU,
@@ -11972,14 +11972,14 @@ const struct ItemInfo gItemsInfo[] =
 
     [ITEM_PECHA_BERRY] =
     {
-        .name = ITEM_NAME("Pecha Berry"),
-        .pluralName = ITEM_PLURAL_NAME("Pecha Berries"),
+        .name = ITEM_NAME("Penny's Pup Cup"),
+        .pluralName = ITEM_PLURAL_NAME("Penny's Pup Cups"),
         .price = (I_BERRY_PRICE >= GEN_8) ? 80 : 20,
         .holdEffect = HOLD_EFFECT_CURE_PSN,
         .description = COMPOUND_STRING(
-            "A hold item that\n"
-            "heals poisoning\n"
-            "in battle."),
+            "Penny's pup cup\n"
+            "cures poison in\n"
+            "battle."),
         .pocket = POCKET_BERRIES,
         .heldSlot = 0,
         .type = ITEM_USE_PARTY_MENU,
@@ -12057,13 +12057,13 @@ const struct ItemInfo gItemsInfo[] =
 
     [ITEM_ORAN_BERRY] =
     {
-        .name = ITEM_NAME("Oran Berry"),
-        .pluralName = ITEM_PLURAL_NAME("Oran Berries"),
+        .name = ITEM_NAME("Chicky Fil-A"),
+        .pluralName = ITEM_PLURAL_NAME("Chicky Fil-A"),
         .price = (I_BERRY_PRICE >= GEN_8) ? 80 : 20,
         .holdEffect = HOLD_EFFECT_RESTORE_HP,
         .holdEffectParam = 10,
         .description = COMPOUND_STRING(
-            "A hold item that\n"
+            "A waffle fry that\n"
             "restores 10 HP in\n"
             "battle."),
         .pocket = POCKET_BERRIES,
