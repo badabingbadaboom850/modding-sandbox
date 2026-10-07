@@ -232,7 +232,7 @@ BlackthornYoungsterText:
 	.string "Dragon masters come from here.\p"
 	.string "A student says Riko tried their\n"
 	.string "winter wool blankets and refused\n"
-	.string "to give the fluff back!$
+	.string "to give the fluff back!$"
 
 
 

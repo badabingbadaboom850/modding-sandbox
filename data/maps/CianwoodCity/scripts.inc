@@ -130,7 +130,7 @@ CianwoodCity_Text_Youngster:
 	.string "An old sailor says Riko crossed the\n"
 	.string "rough sea on her own fluff.\p"
 	.string "She arrived dry, then asked for a\n"
-	.string "snack.$
+	.string "snack.$"
 
 
 

@@ -353,7 +353,7 @@ EcruteakCity_Text_Youngster:
 	.string "The dancers whisper that Bijuu\n"
 	.string "learns each routine from the shadows.\p"
 	.string "Once she copied every step, then\n"
-	.string "bowed before anyone saw her!$
+	.string "bowed before anyone saw her!$"
 
 
 
