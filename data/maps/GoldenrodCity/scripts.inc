@@ -353,7 +353,7 @@ GoldenrodCity_Text_Lass:
 	.string "Some say Penny is so long she\n"
 	.string "wrapped around the earth twice.\p"
 	.string "She was still wagging when she\n"
-	.string "passed the Radio Tower again!$
+	.string "passed the Radio Tower again!$"
 
 
 
