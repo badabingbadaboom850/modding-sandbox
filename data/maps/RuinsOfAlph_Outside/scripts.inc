@@ -155,7 +155,7 @@ RuinsOfAlph_Outside_Text_Youngster2:
 	.string "What?\p"
 	.string "I'm decoding this message!\p"
 	.string "The letters keep appearing in\n"
-	.string "Bijuu's shape. Maybe she has been\n"
+	.string "Bijuu shape. Maybe she has been\n"
 	.string "copying my work again!$
 
 RuinsofAlph_Scientist::
