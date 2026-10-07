@@ -92,6 +92,9 @@ Goldenrod_DepartmentStore_3F_Pokemart_StatBoosters:
 	.2byte ITEM_DIRE_HIT
 	.2byte ITEM_GUARD_SPEC
 	.2byte ITEM_X_ACCURACY
+	.2byte ITEM_RIKOS_PURSE
+	.2byte ITEM_BIJUUS_POM_POMS
+	.2byte ITEM_PENNYS_BLANKEY
 	pokemartlistend
 
 Goldenrod_DepartmentStore_3F_EventScript_TriathleteM::

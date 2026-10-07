@@ -17588,6 +17588,66 @@ const struct ItemInfo gItemsInfo[] =
         .iconPic = gItemIcon_ReverseCandy,
         .iconPalette = gItemIconPalette_ReverseCandy,
     },
+    [ITEM_RIKOS_PURSE] =
+    {
+        .name = ITEM_NAME("Riko's Purse"),
+        .pluralName = ITEM_PLURAL_NAME("Riko's Purses"),
+        .price = 8000,
+        .holdEffect = HOLD_EFFECT_WISE_GLASSES,
+        .holdEffectParam = 10,
+        .description = COMPOUND_STRING(
+            "A stylish purse that\n"
+            "boosts special moves\n"
+            "by 10 percent."),
+        .pocket = POCKET_BATTLE_ITEMS,
+        .sortType = ITEM_TYPE_HELD_ITEM,
+        .heldSlot = 0,
+        .type = ITEM_USE_BAG_MENU,
+        .fieldUseFunc = ItemUseOutOfBattle_CannotUse,
+        .flingPower = 10,
+        .iconPic = gItemIcon_CoinCase,
+        .iconPalette = gItemIconPalette_CoinCase,
+    },
+    [ITEM_BIJUUS_POM_POMS] =
+    {
+        .name = ITEM_NAME("Bijuu's Pom Poms"),
+        .pluralName = ITEM_PLURAL_NAME("Bijuu's Pom Poms"),
+        .price = 20000,
+        .holdEffect = HOLD_EFFECT_CHOICE_SCARF,
+        .description = COMPOUND_STRING(
+            "Bouncy poms raise Speed,\n"
+            "but lock the holder into\n"
+            "one move."),
+        .pocket = POCKET_BATTLE_ITEMS,
+        .sortType = ITEM_TYPE_HELD_ITEM,
+        .heldSlot = 0,
+        .type = ITEM_USE_BAG_MENU,
+        .fieldUseFunc = ItemUseOutOfBattle_CannotUse,
+        .flingPower = 10,
+        .iconPic = gItemIcon_FluffyTail,
+        .iconPalette = gItemIconPalette_FluffyTail,
+    },
+    [ITEM_PENNYS_BLANKEY] =
+    {
+        .name = ITEM_NAME("Penny's Blankey"),
+        .pluralName = ITEM_PLURAL_NAME("Penny's Blankeys"),
+        .price = 20000,
+        .holdEffect = HOLD_EFFECT_LEFTOVERS,
+        .holdEffectParam = 10,
+        .description = COMPOUND_STRING(
+            "A cozy blanket that\n"
+            "restores HP a little at\n"
+            "the end of each turn."),
+        .pocket = POCKET_BATTLE_ITEMS,
+        .sortType = ITEM_TYPE_HELD_ITEM,
+        .heldSlot = 0,
+        .type = ITEM_USE_BAG_MENU,
+        .fieldUseFunc = ItemUseOutOfBattle_CannotUse,
+        .flingPower = 10,
+        .iconPic = gItemIcon_SilkScarf,
+        .iconPalette = gItemIconPalette_SilkScarf,
+    },
+
 };
 
 #undef ITEM_NAME
