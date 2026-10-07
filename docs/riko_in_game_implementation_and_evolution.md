@@ -114,3 +114,41 @@ At this branch tip, `SPECIES_RIKO_SPIRIT` is the final custom species ID (`1598`
 - [Mega/form change rules](https://github.com/badabingbadaboom850/modding-sandbox/blob/feat/riko-bijuu-mega-forms/src/data/pokemon/form_change_tables.h)
 - [Fresh-save party initialization](https://github.com/badabingbadaboom850/modding-sandbox/blob/feat/riko-bijuu-mega-forms/src/new_game.c)
 - [General follower script](https://github.com/badabingbadaboom850/modding-sandbox/blob/feat/riko-bijuu-mega-forms/data/scripts/follower.inc)
+
+
+## Planning note: item-driven Riko branching evolutions
+
+This is an investigation and implementation plan only; no game code has been changed for this feature.
+
+### What is already in the branch
+
+- Riko's base species is `SPECIES_RIKO` (1578). Its current species entry has no evolution list.
+- Eight elemental Riko species already exist at IDs 1582–1589: Fire, Water, Grass, Electric, Ice, Psychic, Flying, and Dragon. Their species entries have type-specific names/descriptions and borrowed level-up learnsets; their base stats currently match base Riko.
+- The eight variants already have front/back battle art, icons, palettes, and overworld follower graphics wired in `src/data/pokemon/custom_species.h` and `src/data/pokemon/species_info.h`. They do not need new species IDs or new graphics to be reachable as evolutions.
+- The Riko form species table currently lists base Riko and Mega Riko only. The elemental variants are separate species entries, so they can be evolution targets without changing Mega's form table.
+- The codebase supports several item branches in one `EVOLUTION(...)` list. Charcadet's two armor branches are an existing example in `src/data/pokemon/species_info/gen_9_families.h`.
+- Standard Fire, Water, Leaf, Thunder, and Ice Stones already have item IDs and definitions. Bondstone is registered as a Mega Stone and drives the existing temporary battle Mega transformation; it should remain separate from permanent evolution.
+
+### Recommended first implementation
+
+Add multiple `EVO_ITEM` branches to base Riko's `gSpeciesInfo` entry, targeting the existing type variants. A straightforward first set is:
+
+| Item | Evolution target |
+|---|---|
+| Fire Stone | Riko Fire |
+| Water Stone | Riko Water |
+| Leaf Stone | Riko Grass |
+| Thunder Stone | Riko Electric |
+| Ice Stone | Riko Ice |
+
+This uses familiar items with direct type associations and avoids adding item IDs, names, descriptions, and item graphics. The existing Psychic, Flying, and Dragon species can be added as further branches after their item mapping is chosen; the repository has no equally direct standard stone for those three types, so assigning one arbitrarily would be a game-design decision.
+
+### Decisions and checks before implementation
+
+1. Decide whether the first release includes the five straightforward branches or all eight, and choose items for Psychic, Flying, and Dragon if included.
+2. Decide whether these should be true stat-boosting evolutions. The current elemental species have the same base stats as Riko, so item use would currently change type, species identity, description, and art, but not battle stats. If they should feel like Eeveelutions, tune their stats and possibly abilities/learnsets before wiring the branches.
+3. Add the `.evolutions = EVOLUTION({EVO_ITEM, ITEM_..., SPECIES_RIKO_...}, ...)` list only to base Riko. Keep the target species' own entries intact.
+4. Build and test each stone on Riko in the party menu: confirm the correct target, item consumption, evolution scene, Pokédex/species data, and follower sprite after evolving.
+5. Keep `SPECIES_RIKO_SPIRIT` as its existing standalone species/encounter unless a separate design decision changes that. Keep `SPECIES_MEGA_RIKO` as the Bondstone-triggered battle form that reverts after battle/faint; do not use it as a permanent evolution target.
+
+Implementation touchpoints are `src/data/pokemon/species_info.h` for the base evolution list, `src/data/pokemon/custom_species.h` for the already-registered variant art/learnsets, and existing item constants/data in `include/constants/items.h` and `src/data/items.h`.
