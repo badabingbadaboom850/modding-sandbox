@@ -152,3 +152,14 @@ This uses familiar items with direct type associations and avoids adding item ID
 5. Keep `SPECIES_RIKO_SPIRIT` as its existing standalone species/encounter unless a separate design decision changes that. Keep `SPECIES_MEGA_RIKO` as the Bondstone-triggered battle form that reverts after battle/faint; do not use it as a permanent evolution target.
 
 Implementation touchpoints are `src/data/pokemon/species_info.h` for the base evolution list, `src/data/pokemon/custom_species.h` for the already-registered variant art/learnsets, and existing item constants/data in `include/constants/items.h` and `src/data/items.h`.
+
+
+### Follow-up investigation: using the Sun Stone for a Riko branch
+
+Flareon's item evolution is the same standard mechanism this project already uses for other stone evolutions: an `EVO_ITEM` entry in the species' `.evolutions` list. Riko can use that mechanism without a special evolution script.
+
+The existing `ITEM_SUN_STONE` is already wired to the standard party-menu evolution handler and currently evolves Bellossom, Sunflora, Whimsicott, Lilligant, and Heliolisk. Replacing its icon/name/description would therefore retheme the Sun Stone everywhere and affect the presentation of those existing evolutions, even if their evolution behavior stayed intact.
+
+**Recommended approach:** add a separate Riko-themed evolution item using the same standard evolution-item handler and a Sun Stone-inspired icon. This keeps the original Sun Stone's sprite and text for its existing users. If the intent is specifically to make Riko's Grass branch, the new item could target `SPECIES_RIKO_GRASS`; confirm the target and the item's name/lore before implementing. Alternatively, the original Sun Stone can directly target that Riko branch, but its art/text would remain shared with the five existing evolutions.
+
+An item definition needs its own item ID, name, description, party-menu evolution handler/effect, and icon/palette references. A custom icon can be derived from the existing Sun Stone icon and given a Riko-themed detail. The evolution itself remains a regular branch such as `{EVO_ITEM, ITEM_RIKO_SUN_STONE, SPECIES_RIKO_GRASS}`. Keep this separate from `ITEM_BONDSTONE`, which continues to mean Mega Riko's temporary battle transformation.
