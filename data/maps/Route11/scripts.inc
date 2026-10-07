@@ -80,8 +80,10 @@ Route11_Text_PsychicFidelBeaten:
 Route11_Text_PsychicFidelAfterBattle:
 	.string "Strength in conviction…\p"
 	.string "You're strong because you believe\n"
-	.string "in your Pokémon.$"
+	.string "in your Pokémon.\p"
 
+	.string "Riko outran a Mankey\n"
+	.string "with her snack still safe.$"
 Route11_Text_Sign:
 	.string "Route 11$"
 

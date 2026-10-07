@@ -53,8 +53,10 @@ Route12_Text_FisherMartinBeaten:
 	.string "Gwaaah!$"
 
 Route12_Text_FisherMartinAfterBattle:
-	.string "I'm too impatient for fishing…$"
+	.string "I'm too impatient for fishing…\p"
 
+	.string "That long tail fooled a fisher\n"
+	.string "into thinking it was a line.$"
 Route12_Text_FisherStephenSeen:
 	.string "I feel so content, fishing while\n"
 	.string "listening to some tunes on my\l"

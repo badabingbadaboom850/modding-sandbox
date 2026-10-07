@@ -63,8 +63,10 @@ Route9_Text_PicnickerHeidiBeaten:
 Route9_Text_PicnickerHeidiAfter:
 	.string "We bake lots of goodies and share\n"
 	.string "them all around.\p"
-	.string "They're delicious!$"
+	.string "They're delicious!\p"
 
+	.string "Riko finds exits by smell.\n"
+	.string "Unless someone opens a snack.$"
 Route9_Text_CamperSidSeen:
 	.string "Hey, you! Don't litter!$"
 

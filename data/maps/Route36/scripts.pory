@@ -265,8 +265,10 @@ Route36_Text_PsychicMarkBeaten:
 
 Route36_Text_PsychicMarkAfter:
 	.string "I'd be strong if only I could tell\n"
-	.string "what my opponent was thinking.$"
+	.string "what my opponent was thinking.\p"
 
+	.string "Riko bowed to Sudowoodo.\n"
+	.string "It bowed right back.$"
 Route36_Text_SchoolboyAlan1Seen:
 	.string "Thanks to my studies, I'm ready\n"
 	.string "for any Pokémon!$"

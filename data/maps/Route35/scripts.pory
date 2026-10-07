@@ -98,8 +98,10 @@ Route35_Text_PicnickerBrookeBeaten:
 
 Route35_Text_PicnickerBrookeAfter:
 	.string "I can count on my Pokémon more than\n"
-	.string "my boyfriend.$"
+	.string "my boyfriend.\p"
 
+	.string "Bug catchers saw Bijuu copy\n"
+	.string "a net swing and catch a leaf.$"
 Route35_Text_PicnickerKimSeen:
 	.string "Are you going to the Gym? Me too!$"
 

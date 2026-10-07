@@ -61,8 +61,10 @@ Route40_Text_SwimmerfElaineBeaten:
 
 Route40_Text_SwimmerfElaineAfter:
 	.string "I'd say I'm a better swimmer\n"
-	.string "than you. Yeah!$"
+	.string "than you. Yeah!\p"
 
+	.string "Penny made a wake that reached\n"
+	.string "Cianwood before she did.$"
 Route40_EventScript_Paula::
 	trainerbattle_single TRAINER_PAULA, Route40_Text_SwimmerfPaulaSeen, Route40_Text_SwimmerfPaulaBeaten
 	msgbox Route40_Text_SwimmerfPaulaAfter, MSGBOX_AUTOCLOSE

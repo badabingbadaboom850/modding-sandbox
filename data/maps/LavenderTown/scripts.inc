@@ -53,8 +53,10 @@ LavenderTown_Text_Teacher:
 LavenderTown_Text_Gramps:
 	.string "People come from all over to pay\n"
 	.string "their respects to the departed\l"
-	.string "souls of Pokémon.$"
+	.string "souls of Pokémon.\p"
 
+	.string "Penny sat with a lost spirit\n"
+	.string "until the morning bells.$"
 LavenderTown_Text_Youngster:
 	.string "You need a Poké Flute to wake\n"
 	.string "sleeping Pokémon.\p"

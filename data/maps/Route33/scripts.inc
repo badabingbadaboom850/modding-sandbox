@@ -45,8 +45,10 @@ Route33_Text_Lass:
 	.string "That cave was bigger than\n"
 	.string "I'd expected.\p"
 	.string "I got too tired exploring\n"
-	.string "for Marill, so I came outside.$"
+	.string "for Marill, so I came outside.\p"
 
+	.string "A cave guide says Riko shook\n"
+	.string "a star from her fluff.$"
 Route33_HiddenGrotto::
 	msgbox Route33_HiddenGrotto_Text_0, MSGBOX_YESNO
 	compare VAR_RESULT, YES

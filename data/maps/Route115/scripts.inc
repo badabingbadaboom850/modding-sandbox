@@ -130,8 +130,10 @@ Route115_Text_NeverKnowWhenCavePokemonWillAppear:
 	.string "Exploring a cave isn't like walking\n"
 	.string "on a road.\p"
 	.string "You never know when wild Pokémon will\n"
-	.string "appear. It's full of suspense.$"
+	.string "appear. It's full of suspense.\p"
 
+	.string "Penny takes the long way round.\n"
+	.string "She still gets here first.$"
 Route115_Text_RouteSignRustboro:
 	.string "Route 115\n"
 	.string "{DOWN_ARROW} Rustboro City$"

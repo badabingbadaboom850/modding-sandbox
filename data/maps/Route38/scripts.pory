@@ -118,8 +118,10 @@ Route38_Text_SailorHarryBeaten:
 Route38_Text_SailorHarryAfter:
 	.string "All kinds of people around\n"
 	.string "the world live happily with\l"
-	.string "Pokémon.$"
+	.string "Pokémon.\p"
 
+	.string "Penny hears a milk bottle\n"
+	.string "open from miles away.$"
 Route38_Text_BeautyOliviaSeen:
 	.string "Don't you think my Pokémon\n"
 	.string "and I are beautiful?$"

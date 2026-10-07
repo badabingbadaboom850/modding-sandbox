@@ -141,8 +141,10 @@ Route113_Text_FunWalkingThroughAsh:
 	.string "It's fun walking through the volcano's\n"
 	.string "ashes on the ground and grass.\p"
 	.string "You can see where you walked--it's\n"
-	.string "really neat!$"
+	.string "really neat!\p"
 
+	.string "Bijuu left pawprints in ash.\n"
+	.string "Then copied them backward.$"
 Route113_Text_RouteSign111:
 	.string "Route 113\n"
 	.string "{RIGHT_ARROW} Route 111$"

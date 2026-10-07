@@ -115,8 +115,10 @@ Route37_Text_PsychicGreg_Beaten:
 
 Route37_Text_PsychicGreg_After:
 	.string "Putting Pokémon to sleep or paralyz-\n"
-	.string "ing them are good battle techniques.$"
+	.string "ing them are good battle techniques.\p"
 
+	.string "Penny knows twins apart\n"
+	.string "by the sound of their steps.$"
 Route37_Text_Sunny_Meet:
 	.string "Sunny: Hi!\p"
 	.string "I'm Sunny of the Weekday family!\p"

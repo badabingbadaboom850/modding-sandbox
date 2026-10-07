@@ -153,8 +153,10 @@ Route34_Text_PokefanBrandon_Beaten:
 
 Route34_Text_PokefanBrandon_After:
 	.string "My Pokémon came back with new moves.\p"
-	.string "That confounded me to no end!$"
+	.string "That confounded me to no end!\p"
 
+	.string "The Day Care says Penny naps\n"
+	.string "across the whole fence.$"
 Route34_Text_Sign_IlexForest:
 	.string "Ilex Forest\n"
 	.string "Through The Gate$"

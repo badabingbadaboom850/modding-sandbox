@@ -398,8 +398,10 @@ Route25_Text_SchoolboyDudleyBeaten:
 
 Route25_Text_SchoolboyDudleyAfter:
 	.string "I did my best.\n"
-	.string "I have no regrets.$"
+	.string "I have no regrets.\p"
 
+	.string "Riko pauses here to practice\n"
+	.string "her next big entrance.$"
 Route25_Text_LassEllenSeen:
 	.string "I'm second.\n"
 	.string "Now it's serious!$"

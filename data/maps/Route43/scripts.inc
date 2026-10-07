@@ -107,8 +107,10 @@ Route43_Text_CamperSpencerBeaten:
 
 Route43_Text_CamperSpencerAfter:
     .string "What is going on at Lake Of Rage?\p"
-    .string "We were planning to camp there.$"
+    .string "We were planning to camp there.\p"
 
+	.string "Penny calmed a red Gyarados\n"
+	.string "with one slow tail wag.$"
 Route43_Text_PicnickerTiffanySeen:
     .string "Are you going to Lake Of Rage too?\p"
     .string "Let's play for a little while!$"

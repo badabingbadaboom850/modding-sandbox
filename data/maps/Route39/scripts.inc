@@ -87,8 +87,10 @@ Route39_Text_PokefanFRuthBeaten:
 Route39_Text_PokefanFRuthAfter:
 	.string "Do you know about baby\n"
 	.string "Pokémon?\p"
-	.string "I bet they're just adorable!$"
+	.string "I bet they're just adorable!\p"
 
+	.string "Riko rolled a hay bale\n"
+	.string "with one look.$"
 Route39_EventScript_Norman::
 	trainerbattle_single TRAINER_NORMAN, Route39_Text_PsychicNormanSeen, Route39_Text_PsychicNormanBeaten
 	msgbox Route39_Text_PsychicNormanAfter, MSGBOX_AUTOCLOSE

@@ -99,8 +99,10 @@ Route44_Text_PsychicPhilBeaten:
 
 Route44_Text_PsychicPhilAfter:
     .string "It's important to have conviction\n"
-    .string "on your side.$"
+    .string "on your side.\p"
 
+	.string "Riko walked through the snow.\n"
+	.string "Each step stayed warm.$"
 Route44_Text_PokemaniacZachSeen:
     .string "I'll do anything to get my hands\n"
     .string "on rare Pokémon!$"

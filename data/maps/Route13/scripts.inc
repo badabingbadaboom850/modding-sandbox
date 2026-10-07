@@ -87,8 +87,10 @@ Route13_Text_BirdKeeperBretBeaten:
 
 Route13_Text_BirdKeeperBretAfterBattle:
 	.string "If you groom them, Pokémon get\n"
-	.string "happy.$"
+	.string "happy.\p"
 
+	.string "Bijuu mimics every bird\n"
+	.string "along this whole road.$"
 Route13_Text_HikerKennySeen:
 	.string "I should go to Rock Tunnel to get\n"
 	.string "myself an Onix.$"

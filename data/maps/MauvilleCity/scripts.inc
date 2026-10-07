@@ -618,8 +618,10 @@ MauvilleCity_Text_AllSortsOfPeopleComeThrough:
 	.string "The roads of this town stretch north\n"
 	.string "and south, and east and west.\p"
 	.string "Because of that, we get all sorts of\n"
-	.string "people coming through.$"
+	.string "people coming through.\p"
 
+	.string "Penny rang every bike bell\n"
+	.string "without touching a bike.$"
 MauvilleCity_Text_RydelVeryGenerous:
 	.string "Have you been to Rydel's Cycles yet?\p"
 	.string "Rydel, the owner, is a very generous\n"

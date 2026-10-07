@@ -985,8 +985,10 @@ SlateportCity_Text_BushedHikingFromMauville:
 	.string "I hiked over from Mauville City.\n"
 	.string "But, boy, this city's huge.\p"
 	.string "If I'd known this, I would've ridden\n"
-	.string "my Bike here.$"
+	.string "my Bike here.\p"
 
+	.string "Riko judged every market snack.\n"
+	.string "She gave herself first place.$"
 SlateportCity_Text_EveryoneCallsHimCaptStern:
 	.string "Stern, the fellow who built the\n"
 	.string "Museum, also happens to be the leader\l"

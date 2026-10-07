@@ -171,8 +171,10 @@ Route121_Text_OkayMoveOutToMtPyre:
 Route121_Text_AheadLoomsMtPyre:
 	.string "Ahead looms Mt. Pyre…\p"
 	.string "It is a natural monument to the spirits \n"
-	.string "of departed Pokémon…$"
+	.string "of departed Pokémon…\p"
 
+	.string "Riko leaves soft fluff\n"
+	.string "beside each quiet memorial.$"
 Route121_Text_MtPyrePierSign:
 	.string "Mt. Pyre Pier\p"
 	.string "…The sign is old and worn out.\n"

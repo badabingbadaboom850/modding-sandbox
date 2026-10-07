@@ -228,8 +228,10 @@ Route42_Text_HikerBenjaminBeaten:
 
 Route42_Text_HikerBenjaminAfter:
 	.string "Losing feels insignificant\n"
-	.string "if you look up at the big sky!$"
+	.string "if you look up at the big sky!\p"
 
+	.string "Riko carried a lost Geodude\n"
+	.string "downhill inside her coat.$"
 Route42_Text_PokemaniacShaneSeen:
 	.string "Hey!\p"
 	.string "This is my secret place!\n"

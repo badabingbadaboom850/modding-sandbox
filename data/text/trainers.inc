@@ -723,8 +723,10 @@ Route108_Text_JeromeDefeated:
 
 Route108_Text_JeromePostBattle:
 	.string "Playing with marine Pokémon is one of\n"
-	.string "the pleasures of swimming!$"
+	.string "the pleasures of swimming!\p"
 
+	.string "The old ship creaks like Bijuu\n"
+	.string "practicing her ghost voice.$"
 Route108_Text_MatthewIntro:
 	.string "Ahoy, there! Are you going out to\n"
 	.string "the ABANDONED SHIP, too?$"
@@ -1521,8 +1523,10 @@ Route112_Text_BriceDefeat:
 
 Route112_Text_BricePostBattle:
 	.string "Hahahahaha! Something flew up my nose!\n"
-	.string "Hahahaha-hatchoo!$"
+	.string "Hahahaha-hatchoo!\p"
 
+	.string "Riko stays warmer than\n"
+	.string "the cable car engine.$"
 Route112_Text_TrentIntro:
 	.string "My legs are solid from pounding up\n"
 	.string "and down the mountains.\p"
@@ -1799,8 +1803,10 @@ Route114_Text_LennyDefeat:
 Route114_Text_LennyPostBattle:
 	.string "When I was a wee tyke, I believed there\n"
 	.string "was someone copying me and shouting\l"
-	.string "back, “Yodelayhihoo.”$"
+	.string "back, “Yodelayhihoo.”\p"
 
+	.string "One tuft of Riko fluff\n"
+	.string "survived every age.$"
 Route114_Text_LucasIntro:
 	.string "If you're not prepared, you shouldn't\n"
 	.string "be up in the mountains!$"
@@ -2192,8 +2198,10 @@ Route116_Text_JoeyDefeat:
 
 Route116_Text_JoeyPostBattle:
 	.string "Bandages are signs of toughness!\n"
-	.string "I've got another one!$"
+	.string "I've got another one!\p"
 
+	.string "Bijuu copied the tunnel echo.\n"
+	.string "Then argued with it all day.$"
 Route116_Text_JoseIntro:
 	.string "My BUG Pokémon are tough!\n"
 	.string "Let's battle!$"
@@ -2587,8 +2595,10 @@ Route118_Text_RosePostBattle:
 	.string "Flowers, Pokémon…\n"
 	.string "I love whatever smells nice.\p"
 	.string "Stinky things…\n"
-	.string "I'll pass.$"
+	.string "I'll pass.\p"
 
+	.string "Penny made a bridge\n"
+	.string "with her very long tail.$"
 Route118_Text_RoseRegister:
 	.string "Sniff… That odor--it's a POKéNAV!\n"
 	.string "We must register each other!$"
@@ -2952,8 +2962,10 @@ Route120_Text_ColinPostBattle:
 	.string "The move FLY is convenient,\n"
 	.string "don't you think?\p"
 	.string "While the Pokémon is flying,\n"
-	.string "almost no moves can strike it.$"
+	.string "almost no moves can strike it.\p"
 
+	.string "Kecleon copied Bijuu.\n"
+	.string "Nobody knew who was who.$"
 Route120_Text_RobertIntro:
 	.string "My Pokémon is strong!\n"
 	.string "How about yours?$"
@@ -3601,8 +3613,10 @@ Route124_Text_SpencerDefeat:
 Route124_Text_SpencerPostBattle:
 	.string "Many people lose their bearings at sea.\p"
 	.string "If you're that sort, you should refer\n"
-	.string "to the POKéNAV's MAP.$"
+	.string "to the POKéNAV's MAP.\p"
 
+	.string "Penny crosses waves\n"
+	.string "without wetting her ears.$"
 Route124_Text_RolandIntro:
 	.string "Hm! You're riding a Pokémon instead\n"
 	.string "of swimming yourself…\p"
@@ -3790,8 +3804,10 @@ Route125_Text_NolenDefeat:
 
 Route125_Text_NolenPostBattle:
 	.string "Sound travels faster in water than\n"
-	.string "it does through air.$"
+	.string "it does through air.\p"
 
+	.string "Bijuu finds every shell.\n"
+	.string "Then she acts surprised.$"
 Route125_Text_StanIntro:
 	.string "Hey, there!\n"
 	.string "Check out my sweet Pokémon!$"
@@ -3930,8 +3946,10 @@ Route126_Text_BarryDefeat:
 
 Route126_Text_BarryPostBattle:
 	.string "Thanks to my daily swimming routine…\n"
-	.string "Look! Feast your eyes on this physique!$"
+	.string "Look! Feast your eyes on this physique!\p"
 
+	.string "A diver found a pawprint below.\n"
+	.string "Riko denied everything.$"
 Route126_Text_DeanIntro:
 	.string "This towering white mountain of rock\n"
 	.string "is SOOTOPOLIS CITY.$"
@@ -4042,8 +4060,10 @@ Route127_Text_CamdenDefeat:
 
 Route127_Text_CamdenPostBattle:
 	.string "A well-played match leaves me feeling\n"
-	.string "refreshed and serene.$"
+	.string "refreshed and serene.\p"
 
+	.string "Penny swims straight\n"
+	.string "to absolutely anywhere.$"
 Route127_Text_DonnyIntro:
 	.string "Do you have a rival whom you just\n"
 	.string "hate to lose against?$"
@@ -4215,8 +4235,10 @@ Route128_Text_AlexaDefeat:
 
 Route128_Text_AlexaPostBattle:
 	.string "After all I've done to get here,\n"
-	.string "I won't give up after one setback.$"
+	.string "I won't give up after one setback.\p"
 
+	.string "Bijuu tapped one wave.\n"
+	.string "It came back purring.$"
 Route128_Text_RubenIntro:
 	.string "There is no stronger Trainer than I!$"
 
@@ -4340,8 +4362,10 @@ Route130_Text_RodneyDefeat:
 Route130_Text_RodneyPostBattle:
 	.string "Your eyes have that look of someone\n"
 	.string "who's experienced harsh challenges\l"
-	.string "and won. It suits you well!$"
+	.string "and won. It suits you well!\p"
 
+	.string "Penny circles Mirage Island\n"
+	.string "twice, just to be sure.$"
 Route130_Text_KatieIntro:
 	.string "In the deep blue sea,\n"
 	.string "my shattered blue heart finds\l"
@@ -4382,8 +4406,10 @@ Route131_Text_RichardPostBattle:
 	.string "The going's easy. It's the leaving\n"
 	.string "that's the hard part.\p"
 	.string "Will I have any energy left to make\n"
-	.string "the return trip?$"
+	.string "the return trip?\p"
 
+	.string "Riko climbed Sky Pillar\n"
+	.string "just to make an entrance.$"
 Route131_Text_HermanIntro:
 	.string "The sea… The sea… The sea…\n"
 	.string "The sea as far as these eyes can see!\l"
@@ -4495,8 +4521,10 @@ Route132_Text_GilbertDefeat:
 
 Route132_Text_GilbertPostBattle:
 	.string "TrainerS travel the fields and\n"
-	.string "mountains, so they must be fit, too.$"
+	.string "mountains, so they must be fit, too.\p"
 
+	.string "Current carried Bijuu here.\n"
+	.string "Bijuu says she beat it.$"
 Route132_Text_DanaIntro:
 	.string "I try not to swim where the currents\n"
 	.string "are too strong.$"

@@ -58,8 +58,10 @@ Route4_Text_PicnickerSharon_Beaten:
 	.string "…$"
 
 Route4_Text_PicnickerSharon_AfterBattle:
-	.string "……I'll go train some more…$"
+	.string "……I'll go train some more…\p"
 
+	.string "Penny left a trail of fluff.\n"
+	.string "Then came back for each tuft.$"
 Route4_Text_MtMoonSquareSign:
 	.string "Mt.Moon Square\p"
 	.string "Just go up the stairs.$"

@@ -210,8 +210,10 @@ Route14_Text_PokefanmCarterBeaten:
 
 Route14_Text_PokefanmCarterAfterBattle:
 	.string "Totodile, Cyndaquil, Chikorita…\p"
-	.string "I think that's a well-balanced mix.$"
+	.string "I think that's a well-balanced mix.\p"
 
+	.string "Penny took the long road.\n"
+	.string "She still beat Riko there.$"
 Route14_Text_BirdKeeperRoySeen:
 	.string "My dream is to fly with my beloved\n"
 	.string "bird Pokémon.$"

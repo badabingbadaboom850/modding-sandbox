@@ -218,8 +218,10 @@ Route117_Text_DayCarePokemonHadNewMove:
 Route117_Text_ArentTheseFlowersPretty:
 	.string "What do you think?\n"
 	.string "Aren't these flowers pretty?\p"
-	.string "I planted them all!$"
+	.string "I planted them all!\p"
 
+	.string "Bijuu copies every flower.\n"
+	.string "She always picks the blue one.$"
 Route117_Text_AirIsTastyHere:
 	.string "The air is tasty here!$"
 

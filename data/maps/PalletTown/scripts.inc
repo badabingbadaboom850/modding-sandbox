@@ -28,8 +28,10 @@ PalletTown_EventScript_OaksLabSign::
 PalletTown_Text_Teacher:
 	.string "I'm raising Pokémon too.\p"
 	.string "They serve as my private\n"
-	.string "guards.$"
+	.string "guards.\p"
 
+	.string "Penny is longer than the line\n"
+	.string "at the mailbox.$"
 PalletTown_Text_Fisher:
 	.string "Technology is incredible!\p"
 	.string "You can now trade Pokémon\n"

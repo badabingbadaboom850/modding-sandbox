@@ -26,8 +26,10 @@ Route41_Text_SwimmermCharlieBeaten:
 
 Route41_Text_SwimmermCharlieAfter:
 	.string "Isn't it relaxing just floating\n"
-	.string "like this?$"
+	.string "like this?\p"
 
+	.string "Bijuu copied the waves.\n"
+	.string "Then the waves copied back.$"
 Route41_EventScript_George::
 	trainerbattle_single TRAINER_GEORGE, Route41_Text_SwimmermGeorgeSeen, Route41_Text_SwimmermGeorgeBeaten
 	msgbox Route41_Text_SwimmermGeorgeAfter, MSGBOX_AUTOCLOSE

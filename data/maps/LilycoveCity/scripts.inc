@@ -582,8 +582,10 @@ LilycoveCity_Text_ContestHallInTown:
 	.string "right in this here town. \p"
 	.string "That means well-raised Pokémon will\n"
 	.string "come from all over the country.\p"
-	.string "My heart swells with excitement!$"
+	.string "My heart swells with excitement!\p"
 
+	.string "Penny crossed the contest stage.\n"
+	.string "She won without entering.$"
 LilycoveCity_Text_StrangeCaveInCove:
 	.string "Have you seen that strange cave in\n"
 	.string "the cove at the edge of town?$"

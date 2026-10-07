@@ -70,8 +70,10 @@ Route3_Text_FirebreatherBurt_Beaten:
 Route3_Text_FirebreatherBurt_AfterBattle:
 	.string "The greatest fire-breather in Kanto,\n"
 	.string "that's me.\p"
-	.string "But not the best trainer…$"
+	.string "But not the best trainer…\p"
 
+	.string "Riko hears a snack wrapper\n"
+	.string "through any cave.$"
 Route3_Text_MtMoonSquareSign:
 	.string "Mt.Moon Square\p"
 	.string "Just go up the stairs.$"

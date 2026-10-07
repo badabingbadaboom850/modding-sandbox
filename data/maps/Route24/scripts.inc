@@ -165,8 +165,10 @@ Route24_Text_RocketDisappears:
 Route24_Text_Woman:
 	.string "Isn't it a lovely view?$"
 Route24_Text_Man:
-	.string "I could stay here all day.$"
+	.string "I could stay here all day.\p"
 
+	.string "Penny is measured in bridges,\n"
+	.string "not in feet.$"
 Route24_Text_WomanRocket:
 	.string "Nobody pushes me!$"
 Route24_Text_ManRocket:

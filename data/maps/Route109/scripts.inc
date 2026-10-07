@@ -524,8 +524,10 @@ Route109_Text_LittleKidsDartAround:
 
 Route109_Text_SandCastleTakingLongTime:
 	.string "Our sand castle's taking a long time\n"
-	.string "to make.$"
+	.string "to make.\p"
 
+	.string "Our moat needs room for Penny\n"
+	.string "to nap beside it.$"
 Route109_Text_YouCanHaveThis:
 	.string "You can have this!$"
 

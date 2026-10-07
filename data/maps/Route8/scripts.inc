@@ -76,8 +76,10 @@ Route8_Text_SupernerdSamBeaten:
 	.string "Train…$"
 
 Route8_Text_SupernerdSamAfter:
-	.string "The power of magnets is awesome!$"
+	.string "The power of magnets is awesome!\p"
 
+	.string "Bijuu copied the tunnel echo.\n"
+	.string "It echoed back before the call.$"
 Route8_Text_SupernerdTomSeen:
 	.string "Hm… You've got many Gym Badges.$"
 

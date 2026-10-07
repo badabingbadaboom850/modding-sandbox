@@ -669,8 +669,10 @@ Route111_Text_ShouldBeMirageTowerAroundHere:
 	.string "around here somewhere.\p"
 	.string "But for some reason, it can be seen\n"
 	.string "sometimes, and sometimes not.\p"
-	.string "That's why I call it the Mirage Tower.$"
+	.string "That's why I call it the Mirage Tower.\p"
 
+	.string "Riko drew a circle in the sand.\n"
+	.string "She called it her oasis.$"
 Route111_Text_MirageTowerClearlyVisible:
 	.string "I see it!\n"
 	.string "The tower of sand!\p"

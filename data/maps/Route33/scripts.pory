@@ -45,7 +45,9 @@ Route33_Text_Lass:
 	.string "That cave was bigger than\n"
 	.string "I'd expected.\p"
 	.string "I got too tired exploring\n"
-	.string "for Marill, so I came outside.$"
+	.string "for Marill, so I came outside.\p"
+	.string "A cave guide says Riko shook\n"
+	.string "a star from her fluff.$"
 `
 
 script Route33_HiddenGrotto {

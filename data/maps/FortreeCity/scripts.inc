@@ -110,8 +110,10 @@ FortreeCity_Text_TreesGrowByDrinkingRainwater:
 	.string "The ground absorbs rainwater, and\n"
 	.string "trees grow by drinking that water…\p"
 	.string "Our Fortree City exists because\n"
-	.string "there's both water and soil.$"
+	.string "there's both water and soil.\p"
 
+	.string "Bijuu copied one little bird.\n"
+	.string "The whole tree answered her.$"
 FortreeCity_Text_EveryoneHealthyAndLively:
 	.string "The City consists of homes built on\n"
 	.string "trees.\p"
