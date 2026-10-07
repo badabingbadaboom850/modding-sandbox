@@ -230,10 +230,9 @@ BlackthornCooltrainerF1Text:
 
 BlackthornYoungsterText:
 	.string "Dragon masters come from here.\p"
-	.string "Climbers tell a story about\n"
-	.string "three rare Pokemon together.\p"
-	.string "One looked like a cat.\n"
-	.string "They vanished quickly.$"
+	.string "A student says Riko tried their\n"
+	.string "winter wool blankets and refused\n"
+	.string "to give the fluff back!$
 
 
 
