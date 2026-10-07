@@ -587,8 +587,8 @@ const struct ItemInfo gItemsInfo[] =
         .name = ITEM_NAME("Penny Love Ball"),
         .price = (I_PRICE >= GEN_7) ? 150 : 300,
         .description = COMPOUND_STRING(
-            "A cozy Ball for\n"
-            "same species of the\n"
+            "Works well on\n"
+            "Pokémon of the\n"
             "opposite gender."),
         .pocket = POCKET_POKE_BALLS,
         .heldSlot = 0,
