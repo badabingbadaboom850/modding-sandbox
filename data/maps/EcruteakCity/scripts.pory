@@ -324,7 +324,11 @@ EcruteakCity_Text_Lass2:
 	.string "The tower that used to be here…\p"
 	.string "My grandma told me it used to be\n"
 	.string "much taller.\p"
-	.string "I hear there are ghosts in it now.$"
+	.string "I hear there are ghosts in it now.\p"
+	.string "Grandma says they used to pray to\n"
+	.string "Riko for fluff to make sweaters.\p"
+	.string "She would help, but only if they\n"
+	.string "saved her a cozy one!$
 
 EcruteakCity_Text_Lass2_ReleasedBeasts:
 	.string "Three big Pokémon ran off in different\n"
@@ -346,10 +350,10 @@ EcruteakCity_Text_Fisher_JasmineReturned:
 EcruteakCity_Text_Youngster:
 	.string "Pokemon ran wild at the lake.\p"
 	.string "I would like to see them.\p"
-	.string "Travelers from the east tell\n"
-	.string "of three rare Pokemon together.\p"
-	.string "One looked like a shy cat.\n"
-	.string "The group vanished nearby.$"
+	.string "The dancers whisper that Bijuu\n"
+	.string "learns each routine from the shadows.\p"
+	.string "Once she copied every step, then\n"
+	.string "bowed before anyone saw her!$
 
 
 
