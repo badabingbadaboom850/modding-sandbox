@@ -742,7 +742,7 @@ const struct ItemInfo gItemsInfo[] =
 
     [ITEM_POTION] =
     {
-        .name = ITEM_NAME("Potion"),
+        .name = ITEM_NAME("McDonalds Wawa Small"),
         .price = (I_PRICE >= GEN_7) ? 200 : 300,
         .holdEffectParam = 20,
         .description = COMPOUND_STRING(
@@ -757,13 +757,13 @@ const struct ItemInfo gItemsInfo[] =
         .battleUsage = EFFECT_ITEM_RESTORE_HP,
         .effect = gItemEffect_Potion,
         .flingPower = 30,
-        .iconPic = gItemIcon_Potion,
-        .iconPalette = gItemIconPalette_Potion,
+        .iconPic = gItemIcon_WawaSmall,
+        .iconPalette = gItemIconPalette_WawaSmall,
     },
 
     [ITEM_SUPER_POTION] =
     {
-        .name = ITEM_NAME("Super Potion"),
+        .name = ITEM_NAME("McDonalds Wawa Med"),
         .price = 700,
         .holdEffectParam = 60,
         .description = COMPOUND_STRING(
@@ -782,13 +782,13 @@ const struct ItemInfo gItemsInfo[] =
         .battleUsage = EFFECT_ITEM_RESTORE_HP,
         .effect = gItemEffect_SuperPotion,
         .flingPower = 30,
-        .iconPic = gItemIcon_Potion,
-        .iconPalette = gItemIconPalette_SuperPotion,
+        .iconPic = gItemIcon_WawaMedium,
+        .iconPalette = gItemIconPalette_WawaMedium,
     },
 
     [ITEM_HYPER_POTION] =
     {
-        .name = ITEM_NAME("Hyper Potion"),
+        .name = ITEM_NAME("McDonalds Wawa Large"),
         .price = (I_PRICE >= GEN_2 && I_PRICE <= GEN_6) ? 1200 : 1500,
         .holdEffectParam = 120,
         .description = COMPOUND_STRING(
@@ -807,8 +807,8 @@ const struct ItemInfo gItemsInfo[] =
         .battleUsage = EFFECT_ITEM_RESTORE_HP,
         .effect = gItemEffect_HyperPotion,
         .flingPower = 30,
-        .iconPic = gItemIcon_Potion,
-        .iconPalette = gItemIconPalette_HyperPotion,
+        .iconPic = gItemIcon_WawaLarge,
+        .iconPalette = gItemIconPalette_WawaLarge,
     },
 
     [ITEM_MAX_POTION] =

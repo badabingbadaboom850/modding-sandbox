@@ -202,7 +202,7 @@ Route29_Text_Girl:
 	.string "A traveler says Penny is so long\n"
 	.string "she wrapped around the earth twice.\p"
 	.string "I thought it was a tall tale, then\n"
-	.string "she came around again!$
+	.string "she came around again!$"
 
 Route29_Text_Boy_WaitingForDay:
 	.string "I'm waiting for Pokémon that\n"

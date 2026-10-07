@@ -91,12 +91,14 @@ const u16 gItemIconPalette_CherishBall[] = INCBIN_U16("graphics/items/icon_palet
 
 // Medicine
 
-const u32 gItemIcon_Potion[] = INCBIN_U32("graphics/items/icons/potion.4bpp.smol");
-const u16 gItemIconPalette_Potion[] = INCBIN_U16("graphics/items/icon_palettes/potion.gbapal");
+const u32 gItemIcon_WawaSmall[] = INCBIN_U32("graphics/items/icons/wawa_small.4bpp.smol");
+const u32 gItemIcon_WawaMedium[] = INCBIN_U32("graphics/items/icons/wawa_medium.4bpp.smol");
+const u32 gItemIcon_WawaLarge[] = INCBIN_U32("graphics/items/icons/wawa_large.4bpp.smol");
+const u16 gItemIconPalette_WawaSmall[] = INCBIN_U16("graphics/items/icon_palettes/wawa_small.gbapal");
 
-const u16 gItemIconPalette_SuperPotion[] = INCBIN_U16("graphics/items/icon_palettes/super_potion.gbapal");
+const u16 gItemIconPalette_WawaMedium[] = INCBIN_U16("graphics/items/icon_palettes/wawa_medium.gbapal");
 
-const u16 gItemIconPalette_HyperPotion[] = INCBIN_U16("graphics/items/icon_palettes/hyper_potion.gbapal");
+const u16 gItemIconPalette_WawaLarge[] = INCBIN_U16("graphics/items/icon_palettes/wawa_large.gbapal");
 
 const u32 gItemIcon_LargePotion[] = INCBIN_U32("graphics/items/icons/large_potion.4bpp.smol");
 const u16 gItemIconPalette_MaxPotion[] = INCBIN_U16("graphics/items/icon_palettes/max_potion.gbapal");
