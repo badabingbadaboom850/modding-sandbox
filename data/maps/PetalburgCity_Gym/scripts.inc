@@ -1265,7 +1265,7 @@ PetalburgCity_Gym_Text_NormanIntro:
 	.string "a Gym Leader to win.\p"
 	.string "{PLAYER}, you'd better give it your\n"
 	.string "best shot, too!\p"
-	.string "The three legends are here?\nI will test my strategy!"
+	.string "The three legends are here?\nI will test my strategy!$"
 
 PetalburgCity_Gym_Text_NormanDefeat:
 	.string "…\p"

@@ -239,7 +239,7 @@ FortreeCity_Gym_Text_WinonaIntro:
 	.string "triumphed with grace…\p"
 	.string "Witness the elegant choreography\n"
 	.string "of Bird Pokémon and I!\p"
-	.string "The trio has come to my Gym.\nLet us rise to the challenge!"
+	.string "The trio has come to my Gym.\nLet us rise to the challenge!$"
 
 FortreeCity_Gym_Text_WinonaDefeat:
 	.string "Never before have I seen a Trainer\n"
