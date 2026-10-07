@@ -306,6 +306,7 @@ void NewGameInitData(void)
     AddBagItem(ITEM_POTION, 1); // McDonalds Wawa S
     AddBagItem(ITEM_SUPER_POTION, 1); // McDonalds Wawa M
     AddBagItem(ITEM_HYPER_POTION, 1); // McDonalds Wawa L
+    AddBagItem(ITEM_RARE_CANDY, 1); // Cat Food Tin reskin
     AddBagItem(ITEM_RIKOS_PURSE, 1);
     AddBagItem(ITEM_BIJUUS_POM_POMS, 1);
     AddBagItem(ITEM_PENNYS_BLANKEY, 1);

@@ -344,7 +344,7 @@ GoldenrodCity_Text_Youngster2:
 	.string "the Dept.Store basement.\p"
 	.string "That basement had so many sounds.\p"
 	.string "I swear Bijuu copied the Game Corner\n"
-	.string "music before I could get out!$
+	.string "music before I could get out!$"
 
 GoldenrodCity_Text_Lass:
 	.string "That man inside rates your\n"

@@ -156,7 +156,7 @@ RuinsOfAlph_Outside_Text_Youngster2:
 	.string "I'm decoding this message!\p"
 	.string "The letters keep appearing in\n"
 	.string "Bijuu shape. Maybe she has been\n"
-	.string "copying my work again!$
+	.string "copying my work again!$"
 
 RuinsofAlph_Scientist::
 	msgbox RuinsofAlph_Scientist_Text_0, MSGBOX_NPC
