@@ -127,10 +127,10 @@ CianwoodCity_EventScript_Youngster::
 
 CianwoodCity_Text_Youngster:
 	.string "Fly can take you back to Olivine.\p"
-	.string "Sailors saw three rare Pokemon\n"
-	.string "traveling together.\p"
-	.string "One was a shy cat.\n"
-	.string "Last seen near Route 31.$"
+	.string "An old sailor says Riko crossed the\n"
+	.string "rough sea on her own fluff.\p"
+	.string "She arrived dry, then asked for a\n"
+	.string "snack.$
 
 
 
