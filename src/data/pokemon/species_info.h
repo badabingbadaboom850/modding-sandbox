@@ -123,7 +123,7 @@ const struct SpeciesInfo gSpeciesInfo[] =
         .shinyPalette = gMonShinyPalette_CircledQuestionMark,
         .iconSprite = gMonIcon_QuestionMark,
         .iconPalIndex = 0,
-        .pokemonJumpType = PKMN_JUMP_TYPE_NORMAL,
+        .pokemonJumpType = PKMN_JUMP_TYPE_NONE,
         FOOTPRINT(QuestionMark)
         SHADOW(-1, 0, SHADOW_SIZE_M)
     #if OW_POKEMON_OBJECT_EVENTS
@@ -267,7 +267,7 @@ const struct SpeciesInfo gSpeciesInfo[] =
         .backPicSize = MON_COORDS_SIZE(64, 64), .backPicYOffset = 0,
         .palette = gMonPalette_RikoWing, .shinyPalette = gMonShinyPalette_RikoWing,
         .iconSprite = gMonIcon_RikoWing, .iconPalette = gMonIconPalette_RikoWing,
-        .shinyIconPalette = gMonShinyIconPalette_RikoWing, .pokemonJumpType = PKMN_JUMP_TYPE_NONE,
+        .shinyIconPalette = gMonShinyIconPalette_RikoWing, .pokemonJumpType = PKMN_JUMP_TYPE_NORMAL,
         SHADOW(-2, 8, SHADOW_SIZE_S)
         OVERWORLD(
             sPicTable_RikoWing,
