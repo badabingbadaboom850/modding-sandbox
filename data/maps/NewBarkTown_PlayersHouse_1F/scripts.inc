@@ -52,14 +52,80 @@ NewBarkTown_PlayersHouse_1F_EventScript_Mom_Regular::
 	checkspecies SPECIES_FIDOUGH
 	goto_if_eq VAR_RESULT, FALSE, NewBarkTown_PlayersHouse_1F_EventScript_Mom_Regular_Heal
 	msgbox NewBarkTown_PlayersHouse_1F_Text_MomComfortPenny, MSGBOX_DEFAULT
+	call NewBarkTown_PlayersHouse_1F_EventScript_PennyConfidence
 NewBarkTown_PlayersHouse_1F_EventScript_Mom_Regular_Heal::
 	call PlayersHouse_1F_EventScript_MomHealsParty
 	release
 	end
 
+NewBarkTown_PlayersHouse_1F_EventScript_PennyConfidence::
+	goto_if_eq VAR_PENNY_CONFIDENCE_STATE, 0, NewBarkTown_PlayersHouse_1F_EventScript_PennyFirstStep
+	goto_if_eq VAR_PENNY_CONFIDENCE_STATE, 1, NewBarkTown_PlayersHouse_1F_EventScript_PennyCheckFinal
+	goto_if_eq VAR_PENNY_CONFIDENCE_STATE, 2, NewBarkTown_PlayersHouse_1F_EventScript_PennyRewardRetry
+	return
+
+NewBarkTown_PlayersHouse_1F_EventScript_PennyFirstStep::
+	goto_if_unset FLAG_BADGE01_GET, NewBarkTown_PlayersHouse_1F_EventScript_PennyConfidence_Return
+	msgbox NewBarkTown_PlayersHouse_1F_Text_PennyFirstStep, MSGBOX_DEFAULT
+	setvar VAR_PENNY_CONFIDENCE_STATE, 1
+	return
+
+NewBarkTown_PlayersHouse_1F_EventScript_PennyCheckFinal::
+	goto_if_unset FLAG_BADGE02_GET, NewBarkTown_PlayersHouse_1F_EventScript_PennyConfidence_Return
+	call TrioParty_CheckRiko
+	goto_if_eq VAR_RESULT, FALSE, NewBarkTown_PlayersHouse_1F_EventScript_PennyConfidence_Return
+	call TrioParty_CheckBijuu
+	goto_if_eq VAR_RESULT, FALSE, NewBarkTown_PlayersHouse_1F_EventScript_PennyConfidence_Return
+	msgbox NewBarkTown_PlayersHouse_1F_Text_PennyFinalStep, MSGBOX_DEFAULT
+	setvar VAR_PENNY_CONFIDENCE_STATE, 2
+	goto NewBarkTown_PlayersHouse_1F_EventScript_PennyRewardRetry
+
+NewBarkTown_PlayersHouse_1F_EventScript_PennyRewardRetry::
+	giveitem ITEM_POTION
+	goto_if_eq VAR_RESULT, FALSE, NewBarkTown_PlayersHouse_1F_EventScript_PennyBagFull
+	setvar VAR_PENNY_CONFIDENCE_STATE, 3
+	msgbox NewBarkTown_PlayersHouse_1F_Text_PennyThanks, MSGBOX_DEFAULT
+	return
+
+NewBarkTown_PlayersHouse_1F_EventScript_PennyBagFull::
+	msgbox NewBarkTown_PlayersHouse_1F_Text_PennyBagFull, MSGBOX_DEFAULT
+	return
+
+NewBarkTown_PlayersHouse_1F_EventScript_PennyConfidence_Return::
+	return
+
 NewBarkTown_PlayersHouse_1F_Text_MomComfortPenny:
 	.string "Mom: Penny, you are safe here.\n"
 	.string "Your family is right here.$"
+
+NewBarkTown_PlayersHouse_1F_Text_PennyFirstStep:
+	.string "Mom: After your rescue, taking\n"
+	.string "your time around new people is\p"
+	.string "okay. After earning a Badge,\n"
+	.string "you came to the doorway with\p"
+	.string "us. That is a brave step.\p"
+	.string "Your sisters can stay close\n"
+	.string "when you're ready for another.$"
+
+NewBarkTown_PlayersHouse_1F_Text_PennyFinalStep:
+	.string "Mom: Penny chose to greet our\n"
+	.string "visitor today. Riko stayed\p"
+	.string "nearby, while Bijuu waited for\n"
+	.string "Penny's cue. She said hello,\p"
+	.string "then came back when she was\n"
+	.string "ready. A small step, on her\p"
+	.string "terms.$"
+
+NewBarkTown_PlayersHouse_1F_Text_PennyThanks:
+	.string "Mom: Penny, you did this at\n"
+	.string "your own pace. I am proud of\p"
+	.string "you. Whenever you need to\n"
+	.string "pause, you can come home.$"
+
+NewBarkTown_PlayersHouse_1F_Text_PennyBagFull:
+	.string "Mom: Your Bag is full. Make\n"
+	.string "room and come back for Penny's\p"
+	.string "small thank-you.$"
 
 NewBarkTown_PlayersHouse_1F_EventScript_MomsIntroTrigger1::
 	lock

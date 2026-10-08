@@ -134,7 +134,51 @@ VioletCity_EventScript_Boy::
 	end
 
 VioletCity_EventScript_BoyAfterBadge::
+	goto_if_eq VAR_TRIO_RESEARCH_STATE, 1, VioletCity_EventScript_ResearchReport
+	goto_if_eq VAR_TRIO_RESEARCH_STATE, 2, VioletCity_EventScript_ResearchAlreadyReported
 	msgbox VioletCity_Text_BoyAfterBadge, MSGBOX_DEFAULT
+	closemessage
+	release
+	end
+
+VioletCity_EventScript_ResearchReport::
+	call TrioParty_CheckAny
+	goto_if_eq VAR_RESULT, FALSE, VioletCity_EventScript_ResearchNeedBuddy
+	call TrioParty_CheckRiko
+	goto_if_eq VAR_RESULT, TRUE, VioletCity_EventScript_ResearchRikoReport
+	call TrioParty_CheckPenny
+	goto_if_eq VAR_RESULT, TRUE, VioletCity_EventScript_ResearchPennyReport
+	call TrioParty_CheckBijuu
+	goto_if_eq VAR_RESULT, TRUE, VioletCity_EventScript_ResearchBijuuReport
+	goto VioletCity_EventScript_ResearchNeedBuddy
+
+VioletCity_EventScript_ResearchRikoReport::
+	msgbox VioletCity_Text_ResearchRikoReport, MSGBOX_DEFAULT
+	goto VioletCity_EventScript_ResearchReportReady
+
+VioletCity_EventScript_ResearchPennyReport::
+	msgbox VioletCity_Text_ResearchPennyReport, MSGBOX_DEFAULT
+	goto VioletCity_EventScript_ResearchReportReady
+
+VioletCity_EventScript_ResearchBijuuReport::
+	msgbox VioletCity_Text_ResearchBijuuReport, MSGBOX_DEFAULT
+	goto VioletCity_EventScript_ResearchReportReady
+
+VioletCity_EventScript_ResearchReportReady::
+	setvar VAR_TRIO_RESEARCH_STATE, 2
+	msgbox VioletCity_Text_ResearchReportReady, MSGBOX_DEFAULT
+	closemessage
+	release
+	end
+
+VioletCity_EventScript_ResearchNeedBuddy::
+	msgbox VioletCity_Text_ResearchNeedBuddy, MSGBOX_DEFAULT
+	closemessage
+	release
+	end
+
+VioletCity_EventScript_ResearchAlreadyReported::
+	msgbox VioletCity_Text_ResearchAlreadyReported, MSGBOX_DEFAULT
 	closemessage
 	release
 	end
@@ -146,6 +190,39 @@ VioletCity_Text_BoyAfterBadge:
 	.string "every lesson. Penny naps\p"
 	.string "through them. Bijuu can\n"
 	.string "outrun a Pidgey!$"
+
+VioletCity_Text_ResearchRikoReport:
+	.string "Riko has plenty to say, even\n"
+	.string "in a new place. I'll note how\p"
+	.string "she keeps talking while she\n"
+	.string "watches the room.$"
+
+VioletCity_Text_ResearchPennyReport:
+	.string "Penny moves at her own pace.\n"
+	.string "Small steps count. I'll note\p"
+	.string "that brave can be quiet, too.$"
+
+VioletCity_Text_ResearchBijuuReport:
+	.string "Bijuu likes to move quickly,\n"
+	.string "then checks that her friends\p"
+	.string "are close by. I'll note that\n"
+	.string "speed and staying together\p"
+	.string "can go hand in hand.$"
+
+
+VioletCity_Text_ResearchReportReady:
+	.string "I wrote it down for you. Take\n"
+	.string "the note back to Cherrygrove.$"
+
+VioletCity_Text_ResearchNeedBuddy:
+	.string "Come back with one of the trio\n"
+	.string "traveling with you. I'll add\p"
+	.string "the Academy's note then.$"
+
+VioletCity_Text_ResearchAlreadyReported:
+	.string "The note is ready. Your friend\n"
+	.string "in Cherrygrove can finish the\p"
+	.string "research.$"
 
 VioletCity_EventScript_Gramps::
 	lock

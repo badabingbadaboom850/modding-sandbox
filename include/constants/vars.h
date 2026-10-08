@@ -310,6 +310,8 @@
 #define VAR_FOLLOWER_MEGA_OFF                           0x411F
 #define VAR_SHINY_RATE                                  0x4120
 #define VAR_ROUTE31_BIJUU_CHASE                       0x4121
+#define VAR_TRIO_RESEARCH_STATE                       0x4122 // 0 offer, 1 accepted, 2 report ready, 3 complete
+#define VAR_PENNY_CONFIDENCE_STATE                    0x4123 // 0 not started, 1 first step, 2 reward pending, 3 complete
 
 #define VARS_END                                         0x42FF
 

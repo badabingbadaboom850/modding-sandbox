@@ -79,3 +79,12 @@ The temporary Mom's friend restock has been removed. Riko's Wand and Blue Brush 
 
 The user confirmed the Wand evolves Riko and the Brush restores her original form. Buying another copy allows the forms to be changed again after using an item.
 
+
+
+## First-round trio field notes and Penny's confidence
+
+The field-note sidequest starts with the existing Cherrygrove boy after the Pokédex is received, while a trio member is in the party. The Violet City boy near the Academy adds a short local report after the first Badge; returning to Cherrygrove completes it for one Wawa. The state advances only after each step succeeds, so a full Bag leaves the reward available for a later visit.
+
+Mom's normal healing remains intact. With Penny (Fidough) in the party, the first confidence moment appears after the first Badge and recognizes her rescue gently without retelling it. After the second Badge, having both Riko and Bijuu in the party lets Mom describe Penny choosing a small hello with her sisters nearby. If the Bag is full, the Wawa remains available. These conversations use existing map NPCs and add no warps or new objects.
+
+Party checks account for every declared Riko and Bijuu form because the engine compares exact species IDs. Riko Spirit is excluded as its own species. The confidence quest advances from Badge flags and party members rather than repeated conversation counts.

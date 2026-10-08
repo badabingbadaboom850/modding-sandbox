@@ -164,6 +164,8 @@ CherryGroveCity_EventScript_Lass::
 CherryGroveCity_EventScript_Boy::
 	lock
 	faceplayer
+	goto_if_eq VAR_TRIO_RESEARCH_STATE, 1, CherryGroveCity_EventScript_ResearchWaiting
+	goto_if_eq VAR_TRIO_RESEARCH_STATE, 2, CherryGroveCity_EventScript_ResearchTurnIn
 	goto_if_set FLAG_SYS_POKEDEX_GET, CherryGroveCity_EventScript_Boy2
 	msgbox CherrygroveCity_Text_YoungsterNoPokedex, MSGBOX_DEFAULT
 	closemessage
@@ -172,6 +174,50 @@ CherryGroveCity_EventScript_Boy::
 
 CherryGroveCity_EventScript_Boy2::
 	msgbox CherrygroveCity_Text_YoungsterHavePokedex, MSGBOX_DEFAULT
+	goto_if_eq VAR_TRIO_RESEARCH_STATE, 3, CherryGroveCity_EventScript_ResearchFinished
+	call TrioParty_CheckAny
+	goto_if_eq VAR_RESULT, FALSE, CherryGroveCity_EventScript_ResearchNoBuddy
+	msgbox CherryGroveCity_Text_ResearchOffer, MSGBOX_YESNO
+	goto_if_eq VAR_RESULT, NO, CherryGroveCity_EventScript_Boy2_End
+	call TrioParty_CheckAny
+	goto_if_eq VAR_RESULT, FALSE, CherryGroveCity_EventScript_ResearchNoBuddy
+	setvar VAR_TRIO_RESEARCH_STATE, 1
+	msgbox CherryGroveCity_Text_ResearchAccepted, MSGBOX_DEFAULT
+CherryGroveCity_EventScript_Boy2_End::
+	closemessage
+	release
+	end
+
+CherryGroveCity_EventScript_ResearchNoBuddy::
+	msgbox CherryGroveCity_Text_ResearchNeedBuddy, MSGBOX_DEFAULT
+	closemessage
+	release
+	end
+
+CherryGroveCity_EventScript_ResearchWaiting::
+	msgbox CherryGroveCity_Text_ResearchWaiting, MSGBOX_DEFAULT
+	closemessage
+	release
+	end
+
+CherryGroveCity_EventScript_ResearchTurnIn::
+	msgbox CherryGroveCity_Text_ResearchTurnIn, MSGBOX_DEFAULT
+	giveitem ITEM_POTION
+	goto_if_eq VAR_RESULT, FALSE, CherryGroveCity_EventScript_ResearchBagFull
+	setvar VAR_TRIO_RESEARCH_STATE, 3
+	msgbox CherryGroveCity_Text_ResearchThanks, MSGBOX_DEFAULT
+	closemessage
+	release
+	end
+
+CherryGroveCity_EventScript_ResearchBagFull::
+	msgbox CherryGroveCity_Text_ResearchBagFull, MSGBOX_DEFAULT
+	closemessage
+	release
+	end
+
+CherryGroveCity_EventScript_ResearchFinished::
+	msgbox CherryGroveCity_Text_ResearchFinished, MSGBOX_DEFAULT
 	closemessage
 	release
 	end
@@ -386,6 +432,48 @@ CherrygroveCity_Text_YoungsterHavePokedex:
 	.string "along Route 31.\p"
 	.string "Pidgey took off first, but\n"
 	.string "Bijuu was gone in a flash!$"
+
+CherryGroveCity_Text_ResearchOffer:
+	.string "I'm collecting stories about\n"
+	.string "the trio from Route 31.\p"
+	.string "Could you help me add a note?\n"
+	.string "Ask the boy in Violet City?$"
+
+CherryGroveCity_Text_ResearchAccepted:
+	.string "Thanks! Ask the boy in Violet\n"
+	.string "what the Academy has heard.\p"
+	.string "Bring his note back here, and\n"
+	.string "keep a trio friend with you.$"
+
+CherryGroveCity_Text_ResearchNeedBuddy:
+	.string "Come back with one of the trio\n"
+	.string "traveling with you, and I'll\p"
+	.string "tell you what I have so far.$"
+
+CherryGroveCity_Text_ResearchWaiting:
+	.string "The Violet City boy is near\n"
+	.string "the Academy. Ask him about the\n"
+	.string "trio, then bring his note\p"
+	.string "back here.$"
+
+CherryGroveCity_Text_ResearchTurnIn:
+	.string "You brought the Academy's\n"
+	.string "note! Thank you.\p"
+	.string "Here is some Wawa for helping\n"
+	.string "me finish my little research.$"
+
+CherryGroveCity_Text_ResearchThanks:
+	.string "Now we have stories from both\n"
+	.string "cities. I'll keep them safe.$"
+
+CherryGroveCity_Text_ResearchBagFull:
+	.string "Your Bag is full. Make room,\n"
+	.string "then come back for your small\p"
+	.string "research thank-you.$"
+
+CherryGroveCity_Text_ResearchFinished:
+	.string "The trio's stories are safe in\n"
+	.string "my notebook. Thanks again!$"
 
 CherrygroveCity_Text_MysticWaterGuyBefore:
 	.string "A Pokémon I caught had an\n"
