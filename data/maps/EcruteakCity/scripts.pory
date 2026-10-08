@@ -297,13 +297,13 @@ EcruteakCity_Text_Vulpix:
 
 
 EcruteakCity_Text_UnusedMissingDaughter:
-	.string "Oh, no. Oh, no…\p"
+	.string "Oh, no. Oh, no...\p"
 	.string "My daughter is missing.\p"
-	.string "No… She couldn't have gone to the\n"
+	.string "No... She couldn't have gone to the\n"
 	.string "Burned Tower.\p"
-	.string "I told her not to go near it…\p"
-	.string "People seem to disappear there…\p"
-	.string "Oh, what should I do…?$"
+	.string "I told her not to go near it...\p"
+	.string "People seem to disappear there...\p"
+	.string "Oh, what should I do...?$"
 
 EcruteakCity_Text_Gramps1:
 	.string "Ecruteak used to have two towers:\n"
@@ -321,7 +321,7 @@ EcruteakCity_Text_Lass1:
 	.string "Theater. Care to join me?$"
 
 EcruteakCity_Text_Lass2:
-	.string "The tower that used to be here…\p"
+	.string "The tower that used to be here...\p"
 	.string "My grandma told me it used to be\n"
 	.string "much taller.\p"
 	.string "I hear there are ghosts in it now.\p"
@@ -358,11 +358,11 @@ EcruteakCity_Text_Youngster:
 
 
 EcruteakCity_Text_Gramps3:
-	.string "In the distant past…\p"
+	.string "In the distant past...\p"
 	.string "This tower burned in a fire. Three\n"
 	.string "nameless Pokémon perished in it.\p"
 	.string "A rainbow-colored Pokémon descended\n"
-	.string "from the sky and resurrected them…\p"
+	.string "from the sky and resurrected them...\p"
 	.string "It's a legend that has been passed\n"
 	.string "down by Ecruteak Gym Leaders.\p"
 	.string "Me?\p"
