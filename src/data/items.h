@@ -299,9 +299,9 @@ const struct ItemInfo gItemsInfo[] =
         .name = ITEM_NAME("Trio Ball"),
         .price = 300,
         .description = COMPOUND_STRING(
-            "A custom Ball with a\n"
-            "higher catch rate than\n"
-            "a Poke Ball."),
+            "A special Ball with\n"
+            "a better catch rate\n"
+            "than a Poke Ball."),
         .pocket = POCKET_POKE_BALLS,
         .heldSlot = 0,
         .type = ITEM_USE_BAG_MENU,
@@ -2485,9 +2485,9 @@ const struct ItemInfo gItemsInfo[] =
         .pluralName = ITEM_PLURAL_NAME("Cat Food Tins"),
         .price = (I_PRICE >= GEN_7) ? 10000 : 4800,
         .description = COMPOUND_STRING(
-            "Cat food everyone loves.\n"
-            "A tin that raises a\n"
-            "Pokémon's level by one."),
+            "A tin of cat food.\n"
+            "Raises a Pokemon's\n"
+            "level by one."),
         .pocket = POCKET_ITEMS,
         .sortType = ITEM_TYPE_LEVEL_UP_ITEM,
         .heldSlot = 0,
@@ -17615,9 +17615,9 @@ const struct ItemInfo gItemsInfo[] =
         .price = 20000,
         .holdEffect = HOLD_EFFECT_CHOICE_SCARF,
         .description = COMPOUND_STRING(
-            "Bouncy poms raise Speed,\n"
-            "but lock the holder into\n"
-            "one move."),
+            "Raises Speed, but\n"
+            "locks the holder\n"
+            "into one move."),
         .pocket = POCKET_BATTLE_ITEMS,
         .sortType = ITEM_TYPE_HELD_ITEM,
         .heldSlot = 0,
@@ -17636,8 +17636,8 @@ const struct ItemInfo gItemsInfo[] =
         .holdEffectParam = 10,
         .description = COMPOUND_STRING(
             "A cozy blanket that\n"
-            "restores HP a little at\n"
-            "the end of each turn."),
+            "restores a little HP\n"
+            "at each turn's end."),
         .pocket = POCKET_BATTLE_ITEMS,
         .sortType = ITEM_TYPE_HELD_ITEM,
         .heldSlot = 0,
@@ -17653,9 +17653,9 @@ const struct ItemInfo gItemsInfo[] =
         .name = ITEM_NAME("Riko's Wand"),
         .price = 500,
         .description = COMPOUND_STRING(
-            "A wand woven with fairy\n"
-            "magic. It evolves Riko\n"
-            "into RikoWing."),
+            "A fairy wand that\n"
+            "evolves Riko into\n"
+            "RikoWing."),
         .pocket = POCKET_ITEMS,
         .sortType = ITEM_TYPE_EVOLUTION_STONE,
         .heldSlot = 0,
@@ -17671,8 +17671,8 @@ const struct ItemInfo gItemsInfo[] =
         .name = ITEM_NAME("Blue Brush"),
         .price = 500,
         .description = COMPOUND_STRING(
-            "A blue brush that gently\n"
-            "restores RikoWing to\n"
+            "A gentle blue brush\n"
+            "returns RikoWing to\n"
             "her original form."),
         .pocket = POCKET_ITEMS,
         .sortType = ITEM_TYPE_EVOLUTION_STONE,

@@ -401,6 +401,8 @@ static inline bool32 IgnoreMoveForSheerForceBoost(enum Move move)
 static inline bool32 IsMoveSheerForceBoosted(enum Move move)
 {
     switch (move) {
+        // Floof Fury has a 20% secondary Speed drop.
+        case MOVE_FLOOF_FURY:
         case MOVE_AIR_SLASH:
         case MOVE_ANCIENT_POWER:
         case MOVE_ASTONISH:
