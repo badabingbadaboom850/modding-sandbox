@@ -3,6 +3,10 @@
 Reviewed source: `724570bfcb4268d48837a76d8f751d77ca4e8318` on `feat/riko-bijuu-mega-forms`. Research date: October 7, 2026 Pacific / October 8 UTC.
 This document records source-verified behavior, checked asset headers, and recommended validation. It does not certify untested emulator behavior. No gameplay changes were made during this research.
 
+## Progression reference
+
+The game starts in New Bark Town's upstairs bedroom. The early outdoor path is Route29 → Cherrygrove → Route30 → Route31 → Violet City. Read [the progression and map identity reference](trio_progression_reference.md) before placing story content; inherited Emerald names are not progression milestones.
+
 ## 1. Use the correct engine and sources
 
 This Soulgold is an Emerald GBA source project, built on a customized pokeemerald-expansion base. The README mentions expansion 1.15.0 and 1.15.1; that is not enough to identify an exact upstream version. The CI sets GAME_VERSION=EMERALD and uploads `Soulgold.gba`. Nintendo DS HeartGold/SoulSilver editing instructions and older vanilla Emerald table layouts are unsuitable.
