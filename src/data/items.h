@@ -17651,7 +17651,7 @@ const struct ItemInfo gItemsInfo[] =
     [ITEM_RIKOS_WAND] =
     {
         .name = ITEM_NAME("Riko's Wand"),
-        .price = 3000,
+        .price = 500,
         .description = COMPOUND_STRING(
             "A wand woven with fairy\n"
             "magic. It evolves Riko\n"
@@ -17669,7 +17669,7 @@ const struct ItemInfo gItemsInfo[] =
     [ITEM_BLUE_BRUSH] =
     {
         .name = ITEM_NAME("Blue Brush"),
-        .price = 3000,
+        .price = 500,
         .description = COMPOUND_STRING(
             "A blue brush that gently\n"
             "restores RikoWing to\n"
