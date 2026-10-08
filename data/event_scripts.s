@@ -1252,6 +1252,7 @@ Common_Text_ReceivedMon:
 	.include "data/scripts/dexnav.inc"
 	.include "data/scripts/sandpit.inc"
 	.include "data/maps/ShoalCave_LowTideIceRoom_Suicune/scripts.inc"
+	.include "data/scripts/trio_spirit_trials.inc"
 	.include "data/scripts/battle_frontier.inc"
 	
 	// Start battle_arcade

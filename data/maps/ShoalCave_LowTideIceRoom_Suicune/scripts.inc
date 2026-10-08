@@ -42,19 +42,7 @@ ShoalCave_LowTideIceRoom_Suicune_EntranceTriggerMovement:
 ShoalCave_LowTideIceRoom_Suicune_RikoSpiritBattle1::
 	lockall
 	faceplayer
-	waitse
-	playmoncry SPECIES_RIKO_SPIRIT, CRY_MODE_ENCOUNTER
-	delay 40
-	waitmoncry
-	setwildbattle SPECIES_RIKO_SPIRIT, 90
-	setflag FLAG_GARBAGEFLAG
-	setflag FLAG_SYS_NO_CATCHING
-	setflag FLAG_SYS_SET_BATTLE_BGM
-	setvar VAR_TEMP_F, MUS_RG_VS_LEGEND
-	call_if_set FLAG_GARBAGEFLAG, ShoalCave_LowTideIceRoom_Suicune_RikoSpiritBattle1_Stats
-	dowildbattle
-	clearflag FLAG_GARBAGEFLAG
-	specialvar VAR_RESULT, GetBattleOutcome
+	call TrioSpiritTrials_StartRiko1
 	goto_if_eq VAR_RESULT, B_OUTCOME_WON, ShoalCave_LowTideIceRoom_Suicune_RikoSpiritBattle1_Won
 	goto_if_eq VAR_RESULT, B_OUTCOME_RAN, ShoalCave_LowTideIceRoom_Suicune_Ran
 	goto_if_eq VAR_RESULT, B_OUTCOME_PLAYER_TELEPORTED, ShoalCave_LowTideIceRoom_Suicune_Ran
@@ -103,19 +91,7 @@ ShoalCave_LowTideIceRoom_Suicune_RikoSpiritBattle1_Text:
 ShoalCave_LowTideIceRoom_Suicune_RikoSpiritBattle2::
 	lockall
 	faceplayer
-	waitse
-	playmoncry SPECIES_RIKO_SPIRIT, CRY_MODE_ENCOUNTER
-	delay 40
-	waitmoncry
-	setwildbattle SPECIES_RIKO_SPIRIT, 80
-	setflag FLAG_GARBAGEFLAG
-	setflag FLAG_SYS_NO_CATCHING
-	setflag FLAG_SYS_SET_BATTLE_BGM
-	setvar VAR_TEMP_F, MUS_C_VS_LEGEND_BEAST
-	call_if_set FLAG_GARBAGEFLAG, ShoalCave_LowTideIceRoom_Suicune_RikoSpiritBattle2_Stats
-	dowildbattle
-	clearflag FLAG_GARBAGEFLAG
-	specialvar VAR_RESULT, GetBattleOutcome
+	call TrioSpiritTrials_StartRiko2
 	goto_if_eq VAR_RESULT, B_OUTCOME_WON, ShoalCave_LowTideIceRoom_Suicune_RikoSpiritBattle2_Won
 	goto_if_eq VAR_RESULT, B_OUTCOME_RAN, ShoalCave_LowTideIceRoom_Suicune_Ran
 	goto_if_eq VAR_RESULT, B_OUTCOME_PLAYER_TELEPORTED, ShoalCave_LowTideIceRoom_Suicune_Ran
@@ -163,20 +139,7 @@ ShoalCave_LowTideIceRoom_Suicune_RikoSpiritBattle2_Text:
 ShoalCave_LowTideIceRoom_Suicune_RikoSpiritFinalBattle::
 	lockall
 	faceplayer
-	waitse
-	playmoncry SPECIES_RIKO_SPIRIT, CRY_MODE_ENCOUNTER
-	delay 40
-	waitmoncry
-	msgbox ShoalCave_LowTideIceRoom_Suicune_RikoSpiritFinalBattle_Text, MSGBOX_DEFAULT
-	closemessage
-	setwildbattle SPECIES_RIKO_SPIRIT, 70, ITEM_CHARCOAL
-	setflag FLAG_GARBAGEFLAG
-	call_if_set FLAG_GARBAGEFLAG, ShoalCave_LowTideIceRoom_Suicune_RikoSpiritBattle3_Stats
-	special BattleSetup_StartLegendaryBattle
-	waitstate
-	clearflag FLAG_GARBAGEFLAG
-	calculatemonstats
-	specialvar VAR_RESULT, GetBattleOutcome
+	call TrioSpiritTrials_StartFinal
 	goto_if_eq VAR_RESULT, B_OUTCOME_WON, ShoalCave_LowTideIceRoom_Suicune_RikoSpiritFinalBattle_Won
 	goto_if_eq VAR_RESULT, B_OUTCOME_CAUGHT, ShoalCave_LowTideIceRoom_Suicune_RikoSpiritFinalBattle_Won
 	goto_if_eq VAR_RESULT, B_OUTCOME_RAN, ShoalCave_LowTideIceRoom_Suicune_Ran

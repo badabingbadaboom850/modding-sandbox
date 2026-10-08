@@ -12,7 +12,55 @@ To return, stand at (4,5), face north toward the entrance at (4,4), and press A.
 
 The cave's legacy warp entry still points to New Bark warp 1. Flash remains disabled. The cave battle levels and object completion flags remain unchanged. Existing saves do not reset defeated spirits.
 
-## Callback isolation and control teleport
+## New Bark mailbox encounter tests
+
+The user confirmed the upstairs control teleport works, while the cave still blackscreens with weather and time callbacks disabled. The direct standard Spirit battle works too. The cave's remaining runtime failure is unresolved.
+
+Three existing mailboxes now launch tests:
+
+| Mailbox | Map coordinate | Encounter | Completion flag |
+|---|---|---|---|
+| Player's home | (17,11) | Level 90, cannot catch | `FLAG_SUICUNE_BATTLE_1` |
+| Elm's home | (12,21) | Level 80, cannot catch | `FLAG_SUICUNE_BATTLE_2` |
+| Rival's home | (12,29) | Level 70, catchable, Charcoal | `FLAG_DEFEATED_SUICUNE` |
+
+Stand beside the mailbox and press A. Each prompt identifies its trial and asks permission to start. Completed trials display a completion message. No new NPCs, sprites, flags, or map layouts are added.
+
+Both the real cave callers and the mailbox callers use the same three setup subroutines in `data/scripts/trio_spirit_trials.inc`, included immediately after the cave scripts in `data/event_scripts.s`. These subroutines contain the original cries, levels, item, music setup, stat-helper calls, battle launch mode, and outcome retrieval. Cave callers retain their own departure movement and object removal; mailbox callers do not move or remove town objects.
+
+The final mailbox uses the original legendary-battle setup, unlike Mom's friend's simple direct-battle fallback. The final trial does not require earlier completion flags, matching the original cave scripts.
+
+**Use a test save.** Winning either early trial sets its real cave completion flag. Winning or catching the final spirit sets the real final flag; capture also adds a Pokémon normally. Those flags hide the corresponding cave objects when that room is eventually usable. There is no reset command in this patch.
+
+The setup routines share code, so successful town tests provide evidence for battle setup, catching restrictions, outcome branching, and saved progress. They do not prove the cave loads, that its overworld sprites/puzzle/departure paths work, or that cave-specific battle terrain behaves correctly.
+
+### Catching configuration correction
+
+The old scripts set `FLAG_SYS_NO_CATCHING`, but `B_FLAG_NO_CATCHING` in `include/config/battle.h` was `0`. The engine configuration now points to the existing `FLAG_SYS_NO_CATCHING`; no flag slot is allocated.
+
+Each noncatchable shared setup clears the flag when the battle returns. Defeat follows ordinary whiteout; `DoWhiteOut` calls `Overworld_ResetStateAfterWhiteOut`, which calls `Overworld_ResetBattleFlagsAndVars` with the enabled reset option and clears `B_FLAG_NO_CATCHING`. This prevents the catching restriction from persisting after a loss. This configuration also makes other scripts using that same legacy flag enforce their intended restriction.
+
+The shared setups call the stat helpers directly. Their original scratch-flag guard was always set immediately before the call; removing that redundant guard preserves the call and avoids leaving `FLAG_GARBAGEFLAG` set when whiteout skips the script tail.
+
+### Mailbox test checklist
+
+1. Decline each trial and verify normal movement resumes.
+2. Check levels 90/80 and that a Poké Ball is refused.
+3. Run from an early trial and verify it remains available.
+4. Lose a trial and check recovery plus catching in a later ordinary encounter.
+5. Win an early trial and verify its mailbox reports completion.
+6. Test the final legendary encounter: catch/win completes it, running does not.
+7. Save/reload and verify completion persists.
+8. Recheck the independent direct battle and upstairs control trip.
+
+The mailboxes replace ordinary mailbox text temporarily. Restore their original scripts when testing ends:
+- (17,11): `NewBarkTown_EventScript_PlayersHouseMailbox`
+- (12,21): `NewBarkTown_EventScript_ElmsHouseMailbox`
+- (12,29): `RivalsMailbox`
+
+Keep the shared battle subroutines/include if the cave callers continue using them. Restoring the mailbox text does not undo flags or captures already saved.
+
+## Earlier callback isolation and control teleport
 
 The user confirmed the direct Spirit Riko battle works, while the snow-disabled cave trip still blackscreens. This confirms the standard battle path and its graphics can load; static overworld Spirit graphics remain a separate unverified path.
 
@@ -83,3 +131,13 @@ No claim of a confirmed runtime black-screen fix should be made until step 2 suc
 ## Restore test-only changes later
 
 Remove the unconditional hide-flag clear added to the house transition and the extra trip, direct-battle, and control-teleport prompts/handlers/text from the Mom's friend script, and remove the cave return background event and its handlers/text. Restore the cave's original warp destination `MAP_SHOAL_CAVE_LOW_TIDE_ICE_ROOM` and `requires_flash: true` when normal story behavior is desired. Restore `weather: WEATHER_SNOW` only after investigating the loading failure. Keep the normal home doorway, repaired terrain, and reputation dialogue.
+
+## New Bark form-item restock
+
+Speak to Mom's friend downstairs in the player's house. Before the existing portal/battle/control dialogue, she checks for Riko's Wand and the Blue Brush in the Bag and grants one of each missing item. Both belong in the **Items** pocket, not Key Items. The checks are independent, so a full Bag after the first grant can be retried without duplicating that item. A full Bag displays an explicit message; no success flag is recorded.
+
+This temporary test aid works on existing saves without a new flag or save migration and can replenish items consumed during form-change tests. It does not give extra copies while an item is already in the Bag. Items held by Pokémon or stored in the PC are outside this Bag check.
+
+The source still grants both items in fresh-save initialization (`src/new_game.c`) and retains the Route 30 pickup. Those facts do not establish why a particular tested save lacked them; verify the ROM commit and inspect the Items pocket. Do not reset a save solely to obtain them.
+
+Validation: speak to Mom's friend with neither item, with both items, with only one item, and with a full Bag. Confirm the Items pocket, use the Wand on Riko and the Brush on RikoWing, then speak to her again to restock consumed items.

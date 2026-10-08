@@ -35,6 +35,7 @@ NewBarkTown_PlayersHouse_1F_EventScript_Mom::
 NewBarkTown_PlayersHouse_1F_EventScript_MomsFriend::
 	lock
 	faceplayer
+	call TrioTestItems_Restock
 	msgbox NewBarkTown_PlayersHouse_1F_Text_MomsFriend, MSGBOX_DEFAULT
 	applymovement LOCALID_MOMS_FRIEND, NewBarkTown_PlayersHouse_1F_MovementFaceRight
 	waitmovement 0

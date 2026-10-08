@@ -368,7 +368,7 @@
       "y": 11,
       "elevation": 0,
       "player_facing_dir": "BG_EVENT_PLAYER_FACING_ANY",
-      "script": "NewBarkTown_EventScript_PlayersHouseMailbox"
+      "script": "TrioSpiritTrials_PlayersMailbox"
     },
     {
       "type": "sign",
@@ -376,7 +376,7 @@
       "y": 21,
       "elevation": 0,
       "player_facing_dir": "BG_EVENT_PLAYER_FACING_ANY",
-      "script": "NewBarkTown_EventScript_ElmsHouseMailbox"
+      "script": "TrioSpiritTrials_ElmMailbox"
     },
     {
       "type": "sign",
@@ -392,7 +392,7 @@
       "y": 29,
       "elevation": 0,
       "player_facing_dir": "BG_EVENT_PLAYER_FACING_ANY",
-      "script": "RivalsMailbox"
+      "script": "TrioSpiritTrials_RivalsMailbox"
     }
   ]
 }
