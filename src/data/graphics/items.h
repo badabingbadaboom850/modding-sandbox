@@ -2169,3 +2169,9 @@ const u16 gItemIconPalette_RikosWand[] = INCBIN_U16("graphics/items/icon_palette
 
 const u32 gItemIcon_BlueBrush[] = INCBIN_U32("graphics/items/icons/blue_brush.4bpp.smol");
 const u16 gItemIconPalette_BlueBrush[] = INCBIN_U16("graphics/items/icon_palettes/blue_brush.gbapal");
+
+const u32 gItemIcon_BijuusFishToy[] = INCBIN_U32("graphics/items/icons/bijuus_fish_toy.4bpp.smol");
+const u16 gItemIconPalette_BijuusFishToy[] = INCBIN_U16("graphics/items/icon_palettes/bijuus_fish_toy.gbapal");
+
+const u32 gItemIcon_BijuusCatNip[] = INCBIN_U32("graphics/items/icons/bijuus_cat_nip.4bpp.smol");
+const u16 gItemIconPalette_BijuusCatNip[] = INCBIN_U16("graphics/items/icon_palettes/bijuus_cat_nip.gbapal");
