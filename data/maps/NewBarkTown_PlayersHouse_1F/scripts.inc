@@ -40,6 +40,8 @@ NewBarkTown_PlayersHouse_1F_EventScript_MomsFriend::
 	waitmovement 0
 	msgbox NewBarkTown_PlayersHouse_1F_Text_TestCaveTrip, MSGBOX_YESNO
 	goto_if_eq VAR_RESULT, YES, NewBarkTown_PlayersHouse_1F_EventScript_TestCaveTrip
+	msgbox NewBarkTown_PlayersHouse_1F_Text_TestSpiritBattle, MSGBOX_YESNO
+	goto_if_eq VAR_RESULT, YES, NewBarkTown_PlayersHouse_1F_EventScript_TestSpiritBattle
 	closemessage
 	release
 	end
@@ -67,9 +69,17 @@ NewBarkTown_PlayersHouse_1F_MomEventScript_GoodLuck::
 
 
 NewBarkTown_PlayersHouse_1F_EventScript_Mom_Regular::
+	checkspecies SPECIES_FIDOUGH
+	goto_if_eq VAR_RESULT, FALSE, NewBarkTown_PlayersHouse_1F_EventScript_Mom_Regular_Heal
+	msgbox NewBarkTown_PlayersHouse_1F_Text_MomComfortPenny, MSGBOX_DEFAULT
+NewBarkTown_PlayersHouse_1F_EventScript_Mom_Regular_Heal::
 	call PlayersHouse_1F_EventScript_MomHealsParty
 	release
 	end
+
+NewBarkTown_PlayersHouse_1F_Text_MomComfortPenny:
+	.string "Mom: Penny, you are safe here.\n"
+	.string "Your family is right here.$"
 
 NewBarkTown_PlayersHouse_1F_EventScript_MomsIntroTrigger1::
 	lock
@@ -232,3 +242,16 @@ NewBarkTown_PlayersHouse_1F_Text_MomLeaving:
 	.string "You need to work as a team.\p"
 	.string "Now, go on!\n"
 	.string "I'm behind you all the way!$"
+
+NewBarkTown_PlayersHouse_1F_EventScript_TestSpiritBattle::
+	closemessage
+	setwildbattle SPECIES_RIKO_SPIRIT, 70, ITEM_CHARCOAL
+	dowildbattle
+	release
+	end
+
+NewBarkTown_PlayersHouse_1F_Text_TestSpiritBattle:
+	.string "Try a Spirit of Riko battle\n"
+	.string "here instead?\p"
+	.string "Level 70. You can catch it.\n"
+	.string "Cave progress will not change.$"

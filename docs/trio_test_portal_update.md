@@ -1,16 +1,34 @@
 # Trio test portal and reputation pilot
 
-This update follows the tested Riko/Elm dialogue pilot. The earlier outside-house-door shortcut produced a black screen in the user's emulator. Source warp IDs were valid; the exact runtime cause remains unconfirmed.
+This update follows the tested Riko/Elm dialogue pilot. The earlier outside-house-door shortcut produced a black screen in the user's emulator. Source warp IDs were valid; the exact runtime cause remains unconfirmed. The user also reported a black screen after the terrain repair and explicit-coordinate portal in commit 79cb54.
 
 ## Test trip
 
 The outdoor home doorway once again enters the normal downstairs room.
 
-Talk to **Mom's friend inside your home**. While this test portal is installed, the house transition explicitly clears her hide flag at every story stage, so she remains available on existing saves. After her normal dialogue, she offers a test trip. Choose Yes to use the existing script warp command with explicit coordinates **(4,5)** in `MAP_SHOAL_CAVE_LOW_TIDE_ICE_ROOM_SUICUNE`. Choose No to stay home.
+Talk to **Mom's friend inside your home**. While this test portal is installed, the house transition explicitly clears her hide flag at every story stage, so she remains available on existing saves. After her normal dialogue, she offers a test trip. Choose Yes to use the existing script warp command with explicit coordinates **(4,5)** in `MAP_SHOAL_CAVE_LOW_TIDE_ICE_ROOM_SUICUNE`. Choose No to skip travel and receive a second optional prompt for a direct Spirit Riko battle. Choose No again to stay home without battling.
 
 To return, stand at (4,5), face north toward the entrance at (4,4), and press A. The return prompt warps to **(20,12)** in New Bark, immediately outside the home doorway. This interaction does not rely on the cave entrance having a working warp metatile.
 
-The cave's legacy warp entry still points to New Bark warp 1. Flash remains disabled. Battle levels, object completion flags, and scripts are unchanged. Existing saves do not reset defeated spirits.
+The cave's legacy warp entry still points to New Bark warp 1. Flash remains disabled. The cave battle levels and object completion flags remain unchanged. Existing saves do not reset defeated spirits.
+
+## Current black-screen isolation
+
+Only the cave's weather setting changes from `WEATHER_SNOW` to `WEATHER_NONE` in this pass. Its terrain, objects, transition/resume callbacks, popup, and portal coordinates are retained.
+
+`Snow_InitAll` in `src/field_weather_effect.c` contains a blocking loop until the snow graphics are loaded. Loading requires the snowflake count to reach its target; `CreateSnowflakeSprite` can fail at `MAX_SPRITES`, leaving the count unchanged, and that failure is ignored by the update loop. This is a concrete conditional hang risk, not proof that this map exhausts sprite slots.
+
+If this version loads, the snow path becomes the leading cause to investigate. If it still fails, disabling snow alone is insufficient and the next investigation should target map callbacks and object/graphics loading. Local emulator execution is unavailable.
+
+## Direct battle fallback
+
+Mom's friend's second prompt starts a normal scripted wild battle with `SPECIES_RIKO_SPIRIT`, level 70, holding Charcoal, directly from the house. It uses existing `setwildbattle` and `dowildbattle` commands without loading the cave or invoking the cave's custom event scripts.
+
+The encounter is catchable under normal catching rules; catching adds the Pokémon to the party/PC. This is repeatable testing and does not set any Suicune/Spirit completion flags or hide cave objects. It does not reproduce the cave's staged fights, special legendary setup, puzzle, or entrance event. Losing follows the existing scripted battle loss/whiteout behavior. The player's save may still be affected by ordinary battle/capture results.
+
+## Penny comfort interaction
+
+When the existing regular Mom/healing branch runs, she reassures Penny if `SPECIES_FIDOUGH` is in the party. Both the present and absent paths retain the original shared healing call. First-visit story dialogue, its rewards, and Mom's progression dispatch remain intact. This is a repeatable character moment, not yet a persistent bravery quest.
 
 ## Terrain repair
 
@@ -37,11 +55,13 @@ CI compilation and in-game tests remain required:
 1. Home doorway enters normally.
 2. Mom's friend No stays home; Yes loads the cave.
 3. Cave entrance A prompt returns outside home.
-4. Elm's tested Riko beat remains intact.
-5. Cherrygrove rumor and Violet before/after-badge dialogue appear.
+4. Decline travel, accept the direct battle, and check its battle/capture behavior.
+5. On a regular repeat Mom visit, verify Penny's comfort line and normal healing; repeat without Penny.
+6. Elm's tested Riko beat remains intact.
+7. Cherrygrove rumor and Violet before/after-badge dialogue appear.
 
 No claim of a confirmed runtime black-screen fix should be made until step 2 succeeds.
 
 ## Restore test-only changes later
 
-Remove the unconditional hide-flag clear added to the house transition and the extra trip prompt/handler/text from the Mom's friend script, and remove the cave return background event and its handlers/text. Restore the cave's original warp destination `MAP_SHOAL_CAVE_LOW_TIDE_ICE_ROOM` and `requires_flash: true` when normal story behavior is desired. Keep the normal home doorway, repaired terrain, and reputation dialogue.
+Remove the unconditional hide-flag clear added to the house transition and the extra trip and direct-battle prompts/handlers/text from the Mom's friend script, and remove the cave return background event and its handlers/text. Restore the cave's original warp destination `MAP_SHOAL_CAVE_LOW_TIDE_ICE_ROOM` and `requires_flash: true` when normal story behavior is desired. Restore `weather: WEATHER_SNOW` only after investigating the loading failure. Keep the normal home doorway, repaired terrain, and reputation dialogue.
