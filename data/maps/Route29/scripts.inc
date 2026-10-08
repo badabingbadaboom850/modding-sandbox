@@ -245,6 +245,44 @@ Route29_Text_Sign1:
 	.string "Route 29\p"
 	.string "Cherrygrove City - New Bark Town$"
 
+Route29_EventScript_AuntSusan::
+    msgbox Route29_Text_AuntSusan, MSGBOX_NPC
+    return
+
+Route29_Text_AuntSusan:
+    .string "Oh! Sorry, you scared me!\n"
+    .string "Your brother has been hiding\n"
+    .string "behind doors in the dark, so\n"
+    .string "I've been on edge!$"
+
+Route29_EventScript_Greg::
+	trainerbattle_single TRAINER_GREG_ROUTE_29, Route29_Text_GregSeen, Route29_Text_GregBeaten
+	goto_if_set FLAG_GREG_WAWA_REWARDED, Route29_EventScript_Greg_AfterReward
+	giveitem ITEM_POTION
+	goto_if_eq VAR_RESULT, FALSE, Common_EventScript_ShowBagIsFull
+	setflag FLAG_GREG_WAWA_REWARDED
+	msgbox Route29_Text_GregWawa, MSGBOX_DEFAULT
+	end
+Route29_EventScript_Greg_AfterReward::
+	msgbox Route29_Text_GregAlreadyPaid, MSGBOX_DEFAULT
+	end
+
+Route29_Text_GregSeen:
+	.string "Greg: You thought you could beat my\n"
+	.string "level 99 team? Good luck!$"
+
+Route29_Text_GregBeaten:
+	.string "Greg: No way! That was a fluke!$"
+
+Route29_Text_GregWawa:
+	.string "Greg hands over a Wawa S.\p"
+	.string "Try not to spend it all at once.$"
+
+Route29_Text_GregAlreadyPaid:
+	.string "Greg: You beat me once. I'm still\n"
+	.string "not changing my team!$"
+
+
 Route29ExNightNpc::
 	msgbox Route29ExNightNpc_Text_0, MSGBOX_NPC
 	return

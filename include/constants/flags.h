@@ -1750,7 +1750,8 @@
 
 #define FLAG_PYRAMID_ACHIEVEMENT_MIGRATION_COMPLETE 0x1041
 #define FLAG_CAUGHT_BIJUU                           0x1042
-#define CUSTOM_FLAGS_END                            FLAG_CAUGHT_BIJUU
+#define FLAG_GREG_WAWA_REWARDED                      0x1043
+#define CUSTOM_FLAGS_END                            FLAG_GREG_WAWA_REWARDED
 
 
 #define FLAG_0x1500                                 0x1500

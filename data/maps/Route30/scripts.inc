@@ -233,3 +233,31 @@ Route30_Text_Elm_Disaster:
 
 Route30_Text_Poliwag:
 	.string "Poliwag: Wag waag!$"
+
+Route30_EventScript_Greg::
+	trainerbattle_single TRAINER_GREG_ROUTE_30, Route30_Text_GregSeen, Route30_Text_GregBeaten
+	goto_if_set FLAG_GREG_WAWA_REWARDED, Route30_EventScript_Greg_AfterReward
+	giveitem ITEM_POTION
+	goto_if_eq VAR_RESULT, FALSE, Common_EventScript_ShowBagIsFull
+	setflag FLAG_GREG_WAWA_REWARDED
+	msgbox Route30_Text_GregWawa, MSGBOX_DEFAULT
+	end
+Route30_EventScript_Greg_AfterReward::
+	msgbox Route30_Text_GregAlreadyPaid, MSGBOX_DEFAULT
+	end
+
+Route30_Text_GregSeen:
+	.string "Greg: You thought you could beat my\n"
+	.string "level 99 team? Good luck!$"
+
+Route30_Text_GregBeaten:
+	.string "Greg: No way! That was a fluke!$"
+
+Route30_Text_GregWawa:
+	.string "Greg hands over a Wawa S.\p"
+	.string "Try not to spend it all at once.$"
+
+Route30_Text_GregAlreadyPaid:
+	.string "Greg: You beat me once. I'm still\n"
+	.string "not changing my team!$"
+

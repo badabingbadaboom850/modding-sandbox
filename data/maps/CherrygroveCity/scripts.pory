@@ -706,6 +706,48 @@ CherryGroveCity_Movement_Silver_Leave2:
 	walk_fast_left
 	walk_fast_left
 	step_end
+CherrygroveCity_EventScript_Caleb::
+	msgbox CherrygroveCity_Text_Caleb, MSGBOX_NPC
+	return
+
+CherrygroveCity_Text_Caleb:
+	.string "Nothing beats this view.$"
+
+CherrygroveCity_EventScript_Chelsea::
+	msgbox CherrygroveCity_Text_Chelsea, MSGBOX_NPC
+	return
+
+CherrygroveCity_Text_Chelsea:
+	.string "This is the beach I hate.$"
+
+CherrygroveCity_EventScript_Greg::
+	trainerbattle_single TRAINER_GREG_CHERRYGROVE, CherrygroveCity_Text_GregSeen, CherrygroveCity_Text_GregBeaten
+	goto_if_set FLAG_GREG_WAWA_REWARDED, CherrygroveCity_EventScript_Greg_AfterReward
+	giveitem ITEM_POTION
+	goto_if_eq VAR_RESULT, FALSE, Common_EventScript_ShowBagIsFull
+	setflag FLAG_GREG_WAWA_REWARDED
+	msgbox CherrygroveCity_Text_GregWawa, MSGBOX_DEFAULT
+	end
+CherrygroveCity_EventScript_Greg_AfterReward::
+	msgbox CherrygroveCity_Text_GregAlreadyPaid, MSGBOX_DEFAULT
+	end
+
+CherrygroveCity_Text_GregSeen:
+	.string "Greg: You thought you could beat my\n"
+	.string "level 99 team? Good luck!$"
+
+CherrygroveCity_Text_GregBeaten:
+	.string "Greg: No way! That was a fluke!$"
+
+CherrygroveCity_Text_GregWawa:
+	.string "Greg hands over a Wawa S.\p"
+	.string "Try not to spend it all at once.$"
+
+CherrygroveCity_Text_GregAlreadyPaid:
+	.string "Greg: You beat me once. I'm still\n"
+	.string "not changing my team!$"
+
+
 `
 
 script Cherrygrove_FadedSign {

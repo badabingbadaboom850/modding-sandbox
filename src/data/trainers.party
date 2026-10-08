@@ -20569,3 +20569,226 @@ Ability: Own Tempo
 IVs: 0 HP / 0 Atk / 0 Def / 0 SpA / 0 SpD / 0 Spe
 - Tackle
 - Tail Whip
+
+
+=== TRAINER_GREG_ROUTE_29 ===
+Name: Greg
+Class: Youngster
+Pic: Youngster
+Gender: Male
+Music: Hg Boy 1
+AI: Basic Trainer
+
+Garchomp @ Life Orb
+Ability: Rough Skin
+Level: 99
+EVs: 252 Atk / 252 Spe / 4 HP
+IVs: 31 HP / 31 Atk / 31 Def / 31 SpA / 31 SpD / 31 Spe
+Adamant Nature
+- Earthquake
+- Dragon Claw
+- Stone Edge
+- Swords Dance
+
+Dragapult @ Choice Specs
+Ability: Infiltrator
+Level: 99
+EVs: 252 SpA / 252 Spe / 4 HP
+IVs: 31 HP / 31 Atk / 31 Def / 31 SpA / 31 SpD / 31 Spe
+Timid Nature
+- Draco Meteor
+- Shadow Ball
+- Flamethrower
+- U-turn
+
+Metagross @ Assault Vest
+Ability: Clear Body
+Level: 99
+EVs: 252 Atk / 252 HP / 4 Spe
+IVs: 31 HP / 31 Atk / 31 Def / 31 SpA / 31 SpD / 31 Spe
+Adamant Nature
+- Meteor Mash
+- Zen Headbutt
+- Earthquake
+- Bullet Punch
+
+Toxapex @ Black Sludge
+Ability: Regenerator
+Level: 99
+EVs: 252 HP / 252 Def / 4 SpD
+IVs: 31 HP / 31 Atk / 31 Def / 31 SpA / 31 SpD / 31 Spe
+Bold Nature
+- Scald
+- Recover
+- Toxic
+- Baneful Bunker
+
+Dragonite @ Lum Berry
+Ability: Multiscale
+Level: 99
+EVs: 252 Atk / 252 Spe / 4 HP
+IVs: 31 HP / 31 Atk / 31 Def / 31 SpA / 31 SpD / 31 Spe
+Adamant Nature
+- Dragon Dance
+- Extreme Speed
+- Outrage
+- Earthquake
+
+Mimikyu @ Focus Sash
+Ability: Disguise
+Level: 99
+EVs: 252 Atk / 252 Spe / 4 HP
+IVs: 31 HP / 31 Atk / 31 Def / 31 SpA / 31 SpD / 31 Spe
+Jolly Nature
+- Swords Dance
+- Play Rough
+- Shadow Claw
+- Shadow Sneak
+
+=== TRAINER_GREG_ROUTE_30 ===
+Name: Greg
+Class: Youngster
+Pic: Youngster
+Gender: Male
+Music: Hg Boy 1
+AI: Basic Trainer
+
+Garchomp @ Life Orb
+Ability: Rough Skin
+Level: 99
+EVs: 252 Atk / 252 Spe / 4 HP
+IVs: 31 HP / 31 Atk / 31 Def / 31 SpA / 31 SpD / 31 Spe
+Adamant Nature
+- Earthquake
+- Dragon Claw
+- Stone Edge
+- Swords Dance
+
+Dragapult @ Choice Specs
+Ability: Infiltrator
+Level: 99
+EVs: 252 SpA / 252 Spe / 4 HP
+IVs: 31 HP / 31 Atk / 31 Def / 31 SpA / 31 SpD / 31 Spe
+Timid Nature
+- Draco Meteor
+- Shadow Ball
+- Flamethrower
+- U-turn
+
+Metagross @ Assault Vest
+Ability: Clear Body
+Level: 99
+EVs: 252 Atk / 252 HP / 4 Spe
+IVs: 31 HP / 31 Atk / 31 Def / 31 SpA / 31 SpD / 31 Spe
+Adamant Nature
+- Meteor Mash
+- Zen Headbutt
+- Earthquake
+- Bullet Punch
+
+Toxapex @ Black Sludge
+Ability: Regenerator
+Level: 99
+EVs: 252 HP / 252 Def / 4 SpD
+IVs: 31 HP / 31 Atk / 31 Def / 31 SpA / 31 SpD / 31 Spe
+Bold Nature
+- Scald
+- Recover
+- Toxic
+- Baneful Bunker
+
+Dragonite @ Lum Berry
+Ability: Multiscale
+Level: 99
+EVs: 252 Atk / 252 Spe / 4 HP
+IVs: 31 HP / 31 Atk / 31 Def / 31 SpA / 31 SpD / 31 Spe
+Adamant Nature
+- Dragon Dance
+- Extreme Speed
+- Outrage
+- Earthquake
+
+Mimikyu @ Focus Sash
+Ability: Disguise
+Level: 99
+EVs: 252 Atk / 252 Spe / 4 HP
+IVs: 31 HP / 31 Atk / 31 Def / 31 SpA / 31 SpD / 31 Spe
+Jolly Nature
+- Swords Dance
+- Play Rough
+- Shadow Claw
+- Shadow Sneak
+
+=== TRAINER_GREG_CHERRYGROVE ===
+Name: Greg
+Class: Youngster
+Pic: Youngster
+Gender: Male
+Music: Hg Boy 1
+AI: Basic Trainer
+
+Garchomp @ Life Orb
+Ability: Rough Skin
+Level: 99
+EVs: 252 Atk / 252 Spe / 4 HP
+IVs: 31 HP / 31 Atk / 31 Def / 31 SpA / 31 SpD / 31 Spe
+Adamant Nature
+- Earthquake
+- Dragon Claw
+- Stone Edge
+- Swords Dance
+
+Dragapult @ Choice Specs
+Ability: Infiltrator
+Level: 99
+EVs: 252 SpA / 252 Spe / 4 HP
+IVs: 31 HP / 31 Atk / 31 Def / 31 SpA / 31 SpD / 31 Spe
+Timid Nature
+- Draco Meteor
+- Shadow Ball
+- Flamethrower
+- U-turn
+
+Metagross @ Assault Vest
+Ability: Clear Body
+Level: 99
+EVs: 252 Atk / 252 HP / 4 Spe
+IVs: 31 HP / 31 Atk / 31 Def / 31 SpA / 31 SpD / 31 Spe
+Adamant Nature
+- Meteor Mash
+- Zen Headbutt
+- Earthquake
+- Bullet Punch
+
+Toxapex @ Black Sludge
+Ability: Regenerator
+Level: 99
+EVs: 252 HP / 252 Def / 4 SpD
+IVs: 31 HP / 31 Atk / 31 Def / 31 SpA / 31 SpD / 31 Spe
+Bold Nature
+- Scald
+- Recover
+- Toxic
+- Baneful Bunker
+
+Dragonite @ Lum Berry
+Ability: Multiscale
+Level: 99
+EVs: 252 Atk / 252 Spe / 4 HP
+IVs: 31 HP / 31 Atk / 31 Def / 31 SpA / 31 SpD / 31 Spe
+Adamant Nature
+- Dragon Dance
+- Extreme Speed
+- Outrage
+- Earthquake
+
+Mimikyu @ Focus Sash
+Ability: Disguise
+Level: 99
+EVs: 252 Atk / 252 Spe / 4 HP
+IVs: 31 HP / 31 Atk / 31 Def / 31 SpA / 31 SpD / 31 Spe
+Jolly Nature
+- Swords Dance
+- Play Rough
+- Shadow Claw
+- Shadow Sneak
