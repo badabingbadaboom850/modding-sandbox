@@ -32,11 +32,15 @@ The new visits are interactive text vignettes on existing NPCs. They do not add 
 
 ### 2. Ecruteak mystery chapter
 
-- [ ] Add a local report of a haunting without implying Bijuu is already in Psychic form.
-- [ ] Give the trainer two or three clues to investigate.
-- [ ] Reveal an ordinary problem Bijuu was trying to solve.
-- [ ] Let a believer and a skeptic tell different versions afterward.
-- [ ] Make any form-specific reaction use the actual permanent form.
+- [x] Add rumors of a celestial visitor, floating pebbles, glowing eyes, and an unexpected interest in treat bags.
+- [x] Follow two existing town witnesses to a fish-shaped toy behind Burned Tower's notice board.
+- [x] Find Bijuu's Fish Toy and use the existing Bag evolution system.
+- [x] Require actual Psychic Bijuu for the reveal: she was the visitor all along.
+- [x] Give the believer and skeptic different aftermath conversations.
+- [x] Add a completed-chapter family callback and an extra scrapbook page.
+- [x] Provide a one-time catnip gift, full-Bag retries, and a local shop for replacement form items.
+- [ ] Verify the evolution scene, battle/follower graphics, reverse evolution, and quest in the emulator.
+- [ ] Add on-screen scene animation after the text-and-item quest is confirmed.
 
 ### 3. Riko learns to share the spotlight
 
@@ -121,3 +125,27 @@ Greg keeps his existing trainer encounters and global one-time small-Wawa reward
 ## Validation record
 
 55 source-path simulation checks passed, covering offers, declined scenes, Badge gates, absent-party cases, permanent forms, reward retries, notebook pages, family branches, Mom healing, and Greg's shared reward. This simulation does not execute the game engine or verify rendering. Source validation covers new label uniqueness/references, ASCII text with conservative two-line pages, synchronization of edited raw Pory sections, active map-object hooks, and progression/reward paths. CI compilation and tests and user emulator confirmation are separate checks; update this section with the exact committed SHA and results.
+
+## Ecruteak mystery playtest path
+
+This is independent of the three-page research quest and available on existing saves. It uses VAR_ECRUTEAK_BIJUU_MYSTERY = 0x4124 in the existing save-variable array.
+
+| State | Meaning | Next step |
+| --- | --- | --- |
+| 0 | Not accepted | Woman beside Eevee, south of Dance Theater (35,43) |
+| 1 | Accepted | Woman south of Burned Tower (19,22) |
+| 2 | First clue found | Boy near the southeastern edge (52,49) |
+| 3 | Both clues found | Inspect Burned Tower sign (23,14) with Bijuu |
+| 4 | Fish Toy received | Use it on base Bijuu in Bag > Items, then return with Psychic Bijuu |
+| 5 | Psychic Bijuu revealed, catnip pending | Return to host with Bag room; party can change |
+| 6 | Complete | Witness aftermath, Mom callback, and optional scrapbook page |
+
+The chapter uses existing visible NPCs and the existing sign interaction; no map movement, new warp, or new Pokemon object is needed. The original Burned Tower warning is preserved. Rumors describe brief glimpses of latent power; the Fish Toy focuses that power through the existing permanent evolution. There is no separate celestial creature to catch.
+
+The host sells Fish Toys and Cat Nip for 500 each once the first toy has been found. Existing Goldenrod 4F stock remains. That also supports older saves that have already evolved Bijuu or used a form item.
+
+Required checks: declined offer; no Bijuu at acceptance/discovery; witnesses out of order; repeated clues; full Bag at toy pickup; base/other forms do not trigger reveal; Psychic form triggers it; full Bag at catnip reward; changed/absent party while reward is pending; repeated sign and reward visits do not duplicate gifts; replacement item purchase; save/reload in every state. Confirm the notebook page appears only after completion. Test Burned Tower witness dialogue before/after releasing the beasts.
+
+Fresh-save inventory now omits Riko's Purse, Penny's Blankey, and all initial Bag Pokeballs. Mega Ring and Bondstone remain when Mega Evolution is enabled. This does not remove already-owned items from existing saves or change normal story gifts and shop purchases.
+
+Source validation for the Ecruteak batch: 35 source-path simulation checks pass for offers, clues, out-of-order visits, Bag-full retries, exact-form recognition, existing Psychic Bijuu saves, one-time gifts, replacement shop access, and witness aftermath. Edited raw Pory blocks match assembly; new labels and references resolve; original labels and story commands remain; new text uses ASCII and at most two lines per page. Starting Bag grants are exactly Mega Ring and Bondstone. ROM CI and emulator tests remain pending.

@@ -313,6 +313,8 @@
 #define VAR_TRIO_RESEARCH_STATE                       0x4122 // Violet 0-3; Azalea 4-6; Goldenrod 7-9 (see docs/trio_world_roadmap.md)
 #define VAR_PENNY_CONFIDENCE_STATE                    0x4123 // 0 not started, 1 first step, 2 reward pending, 3 complete
 
+#define VAR_ECRUTEAK_BIJUU_MYSTERY                    0x4124 // 0 offer, 1-3 clues, 4 toy, 5 reward pending, 6 revealed
+
 #define VARS_END                                         0x42FF
 
 #define VARS_COUNT                                       (VARS_END - VARS_START + 1)

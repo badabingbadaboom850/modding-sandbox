@@ -291,6 +291,7 @@ NewBarkTown_PlayersHouse_1F_Text_MomLeaving:
 	.string "I'm behind you all the way!$"
 
 NewBarkTown_PlayersHouse_1F_EventScript_FamilyBanter::
+	call_if_ge VAR_ECRUTEAK_BIJUU_MYSTERY, 6, NewBarkTown_PlayersHouse_1F_EventScript_CelestialFamily
 	goto_if_set FLAG_IS_CHAMPION, NewBarkTown_PlayersHouse_1F_Family_Champion
 	goto_if_set FLAG_BADGE08_GET, NewBarkTown_PlayersHouse_1F_Family_EightBadges
 	goto_if_ge VAR_TRIO_RESEARCH_STATE, 9, NewBarkTown_PlayersHouse_1F_Family_Scrapbook
@@ -377,3 +378,16 @@ NewBarkTown_PlayersHouse_1F_Text_Family_Early:
 	.string "the sunny spot, not him.$"
 
 
+
+NewBarkTown_PlayersHouse_1F_EventScript_CelestialFamily::
+	msgbox NewBarkTown_PlayersHouse_1F_Text_CelestialFamily, MSGBOX_DEFAULT
+	return
+
+NewBarkTown_PlayersHouse_1F_Text_CelestialFamily:
+	.string "Mom: Susan heard about the\n"
+	.string "celestial visitor. Greg\p"
+	.string "says he knew it was Bijuu.\p"
+	.string "Chelsea says a psychic cat\n"
+	.string "should predict the best\p"
+	.string "shopping deals. Riko\n"
+	.string "agrees.$"

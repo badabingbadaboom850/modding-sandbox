@@ -103,7 +103,7 @@ A new item name or sprite alone does not make it usable or obtainable. A shop mu
 
 Verified Riko's Wand / Blue Brush price is 500 each, stocked on Goldenrod Department Store 4F. The Route 30 ground pickup has been removed; the shop stock remains. Neither Riko evolution item is granted in new saves.
 
-Fresh saves currently start with Riko Ultra Ball, Penny Love Ball, Riko's Purse, and Penny's Blankey, plus Mega Ring and Bondstone when `P_GEN_9_MEGA_EVOLUTIONS` is enabled. Other former test grants (berries, custom balls, Wawa potions, Cat Food Tin, Bijuu's Pom Poms, Fish Toy, and Cat Nip) are removed. Starting-party initialization is separate.
+Fresh saves currently start with only Mega Ring and Bondstone when `P_GEN_9_MEGA_EVOLUTIONS` is enabled. Riko Ultra Ball, Penny Love Ball, Riko's Purse, and Penny's Blankey are no longer initial Bag grants; existing saves are not stripped. Other former test grants (berries, custom balls, Wawa potions, Cat Food Tin, Bijuu's Pom Poms, Fish Toy, and Cat Nip) are removed. Starting-party initialization is separate.
 
 The held items currently reuse existing behavior/art:
 - Riko's Purse: Wise Glasses effect, Coin Case icon.
@@ -143,6 +143,7 @@ src/new_game.c initializes fresh saves only. Starting-party/inventory changes do
 Named save variables already reserved:
 - VAR_ROUTE31_BIJUU_CHASE = 0x4121.
 - VAR_TRIO_RESEARCH_STATE = 0x4122. Violet states 0-3 retain their meaning; Azalea uses 4-6 and Goldenrod uses 7-9. See docs/trio_world_roadmap.md. State 3 on older saves can accept the next chapter.
+- VAR_ECRUTEAK_BIJUU_MYSTERY = 0x4124. Independent of the scrapbook: 0 offer; 1 accepted; 2 tower clue; 3 both clues; 4 fish toy found; 5 actual Psychic form witnessed/reward pending; 6 reveal completed.
 - VAR_PENNY_CONFIDENCE_STATE = 0x4123.
 
 Before adding a var/flag, search all definitions and raw/numeric uses, confirm save bounds, and avoid scratch/temp storage for persistent progression. Do not assume the next numeric slot remains free.
@@ -188,3 +189,13 @@ docs/trio_world_roadmap.md is the implementation checklist and in-game test plan
 New family callbacks use badge flags, completed research chapter states, and FLAG_IS_CHAMPION. That Champion flag is explicitly set by the active PokemonLeague_HallOfFame_EventScript_SetFirstGameClearFlags. Original Caleb/Chelsea lines remain. Greg's level-99 encounters, existing sight behavior, trainer flags, and shared one-time Wawa reward remain.
 
 Psychic Bijuu is now included in TrioParty_CheckBijuu. Pending reward states advance only after successful giveitem. The new state meanings and source checks do not establish emulator confirmation.
+
+## Ecruteak celestial mystery
+
+The optional chapter starts with the existing woman beside Eevee (35,43). The existing woman south of Burned Tower (19,22) supplies the first clue; the boy at the southeastern edge (52,49) supplies the second. Inspect the existing Burned Tower sign (23,14) to find Bijuu's Fish Toy. Original map objects, sign text, visibility, story progression, and NPC dialogue are retained.
+
+Use the Fish Toy through the existing evolution item system on base Bijuu, then return to the quest host with SPECIES_BIJUU_PSYCHIC. Only the exact Psychic form triggers the reveal; ordinary Bijuu and other forms do not. A previously evolved Bijuu can also complete the clues and reveal. No forced species mutation or scripted evolution helper is introduced.
+
+Toy discovery and the one-time catnip gift advance state only after giveitem succeeds. State 5 retries the gift even if Bijuu later changes form or leaves the party. The quest host offers spare Fish Toys and Cat Nip for 500 each at state 4 (including before evolution) and after completion. Existing Goldenrod Department Store 4F stock of both items remains. Losing or using a toy cannot permanently block the chapter.
+
+Witnesses and a skeptic acknowledge the reveal at state 5 or later. Mom's family callback and the optional extra Cherrygrove scrapbook page use completed state 6. The quest uses an unused slot in the existing variable array, with no SaveBlock layout or species/item ID changes. Source checks and CI results are separate from emulator confirmation.

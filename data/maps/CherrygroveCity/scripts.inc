@@ -1193,6 +1193,7 @@ CherryGroveCity_EventScript_ScrapbookRead::
 	msgbox CherryGroveCity_Text_ScrapbookVioletPage, MSGBOX_DEFAULT
 	call_if_ge VAR_TRIO_RESEARCH_STATE, 5, CherryGroveCity_EventScript_ScrapbookReadAzalea
 	call_if_ge VAR_TRIO_RESEARCH_STATE, 8, CherryGroveCity_EventScript_ScrapbookReadGoldenrod
+	call_if_ge VAR_ECRUTEAK_BIJUU_MYSTERY, 6, CherryGroveCity_EventScript_ScrapbookReadCelestial
 	return
 
 CherryGroveCity_EventScript_ScrapbookReadAzalea::
@@ -1366,3 +1367,18 @@ CherryGroveCity_Text_ScrapbookFinished:
 	.string "That is how I want people\n"
 	.string "to remember the girls.$"
 
+
+CherryGroveCity_EventScript_ScrapbookReadCelestial::
+	msgbox CherryGroveCity_Text_ScrapbookCelestialPage, MSGBOX_DEFAULT
+	return
+
+CherryGroveCity_Text_ScrapbookCelestialPage:
+	.string "Extra page. Ecruteak's\n"
+	.string "celestial visitor.\p"
+	.string "The glowing eyes belonged\n"
+	.string "to Bijuu. A fish toy\p"
+	.string "helped her focus her\n"
+	.string "psychic power.\p"
+	.string "She still wanted treats.\n"
+	.string "Riko and Penny were not\p"
+	.string "surprised.$"

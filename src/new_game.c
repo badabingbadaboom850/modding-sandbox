@@ -297,11 +297,7 @@ void NewGameInitData(void)
     gSaveBlock1Ptr->registeredShortcutsMagic = REGISTERED_SHORTCUTS_SAVE_MAGIC;
     gSaveBlock1Ptr->registeredShortcutsMagicInv = REGISTERED_SHORTCUTS_SAVE_MAGIC_INV;
     ClearBag();
-    // Keep Riko's and Penny's custom balls and personal items in the starting bag.
-    AddBagItem(ITEM_ULTRA_BALL, 1); // Riko Ultra Ball
-    AddBagItem(ITEM_LOVE_BALL, 1); // Penny Love Ball
-    AddBagItem(ITEM_RIKOS_PURSE, 1);
-    AddBagItem(ITEM_PENNYS_BLANKEY, 1);
+    // Fresh saves start without held items or Poke Balls in the Bag.
 #if P_GEN_9_MEGA_EVOLUTIONS
     // Testing aid: make Mega Evolution available immediately in fresh saves.
     AddBagItem(ITEM_MEGA_RING, 1);
