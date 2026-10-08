@@ -1714,7 +1714,8 @@
 #define SPECIES_BIJUU_DARK                             1596
 #define SPECIES_BIJUU_STEEL                            1597
 #define SPECIES_RIKO_SPIRIT                            1598
-#define SPECIES_EGG                                     (SPECIES_RIKO_SPIRIT + 1)
+#define SPECIES_RIKO_WING                              1599
+#define SPECIES_EGG                                     (SPECIES_RIKO_WING + 1)
 
 #define NUM_SPECIES SPECIES_EGG
 

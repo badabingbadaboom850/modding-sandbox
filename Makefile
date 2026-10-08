@@ -645,7 +645,15 @@ RIKO_VARIANT_GFX := graphics/pokemon/riko_fire/front.4bpp.smol \
                    graphics/pokemon/bijuu_steel/shiny.gbapal \
                    graphics/pokemon/bijuu_steel/icon.4bpp \
                    graphics/pokemon/bijuu_steel/icon_normal.gbapal \
-                   graphics/pokemon/bijuu_steel/icon_shiny.gbapal
+                   graphics/pokemon/bijuu_steel/icon_shiny.gbapal \
+                   graphics/pokemon/riko_wing/front.4bpp.smol \
+                   graphics/pokemon/riko_wing/back.4bpp.smol \
+                   graphics/pokemon/riko_wing/normal.gbapal \
+                   graphics/pokemon/riko_wing/shiny.gbapal \
+                   graphics/pokemon/riko_wing/icon.4bpp \
+                   graphics/pokemon/riko_wing/icon_normal.gbapal \
+                   graphics/pokemon/riko_wing/icon_shiny.gbapal
+
 RIKO_OVERWORLD_GFX := graphics/pokemon/riko/overworld.4bpp \
                      graphics/pokemon/riko/overworld_normal.gbapal \
                      graphics/pokemon/riko/overworld_shiny.gbapal \
@@ -702,7 +710,10 @@ RIKO_OVERWORLD_GFX := graphics/pokemon/riko/overworld.4bpp \
                      graphics/pokemon/bijuu_dark/overworld_shiny.gbapal \
                      graphics/pokemon/bijuu_steel/overworld.4bpp \
                      graphics/pokemon/bijuu_steel/overworld_normal.gbapal \
-                     graphics/pokemon/bijuu_steel/overworld_shiny.gbapal
+                     graphics/pokemon/bijuu_steel/overworld_shiny.gbapal \
+                     graphics/pokemon/riko_wing/overworld.4bpp \
+                     graphics/pokemon/riko_wing/overworld_normal.gbapal \
+                     graphics/pokemon/riko_wing/overworld_shiny.gbapal
 
 # Overworld followers are animated in 32x32 frames. Reorder the PNG's 4x4-tile
 # blocks so each frame is contiguous in the generated 4bpp data.

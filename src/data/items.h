@@ -17648,6 +17648,43 @@ const struct ItemInfo gItemsInfo[] =
         .iconPalette = gItemIconPalette_SilkScarf,
     },
 
+    [ITEM_RIKOS_WAND] =
+    {
+        .name = ITEM_NAME("Riko's Wand"),
+        .price = 3000,
+        .description = COMPOUND_STRING(
+            "A wand woven with fairy\n"
+            "magic. It evolves Riko\n"
+            "into RikoWing."),
+        .pocket = POCKET_ITEMS,
+        .sortType = ITEM_TYPE_EVOLUTION_STONE,
+        .heldSlot = 0,
+        .type = ITEM_USE_PARTY_MENU,
+        .fieldUseFunc = ItemUseOutOfBattle_EvolutionStone,
+        .effect = gItemEffect_EvoItem,
+        .flingPower = 30,
+        .iconPic = gItemIcon_RikosWand,
+        .iconPalette = gItemIconPalette_RikosWand,
+    },
+    [ITEM_BLUE_BRUSH] =
+    {
+        .name = ITEM_NAME("Blue Brush"),
+        .price = 3000,
+        .description = COMPOUND_STRING(
+            "A blue brush that gently\n"
+            "restores RikoWing to\n"
+            "her original form."),
+        .pocket = POCKET_ITEMS,
+        .sortType = ITEM_TYPE_EVOLUTION_STONE,
+        .heldSlot = 0,
+        .type = ITEM_USE_PARTY_MENU,
+        .fieldUseFunc = ItemUseOutOfBattle_EvolutionStone,
+        .effect = gItemEffect_EvoItem,
+        .flingPower = 30,
+        .iconPic = gItemIcon_BlueBrush,
+        .iconPalette = gItemIconPalette_BlueBrush,
+    },
+
 };
 
 #undef ITEM_NAME

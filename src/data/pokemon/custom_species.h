@@ -13,6 +13,19 @@ const u16 gShinyOverworldPalette_Riko[] = INCBIN_U16("graphics/pokemon/riko/over
 static const struct SpriteFrameImage sPicTable_Riko[] = {
     overworld_ascending_frames(gObjectEventPic_Riko, 4, 4),
 };
+const u32 gMonFrontPic_RikoWing[] = INCBIN_U32("graphics/pokemon/riko_wing/front.4bpp.smol");
+const u32 gMonBackPic_RikoWing[] = INCBIN_U32("graphics/pokemon/riko_wing/back.4bpp.smol");
+const u16 gMonPalette_RikoWing[] = INCBIN_U16("graphics/pokemon/riko_wing/normal.gbapal");
+const u16 gMonShinyPalette_RikoWing[] = INCBIN_U16("graphics/pokemon/riko_wing/shiny.gbapal");
+const u8 gMonIcon_RikoWing[] = INCBIN_U8("graphics/pokemon/riko_wing/icon.4bpp");
+const u16 gMonIconPalette_RikoWing[] = INCBIN_U16("graphics/pokemon/riko_wing/icon_normal.gbapal");
+const u16 gMonShinyIconPalette_RikoWing[] = INCBIN_U16("graphics/pokemon/riko_wing/icon_shiny.gbapal");
+const u32 gObjectEventPic_RikoWing[] = INCBIN_U32("graphics/pokemon/riko_wing/overworld.4bpp");
+const u16 gOverworldPalette_RikoWing[] = INCBIN_U16("graphics/pokemon/riko_wing/overworld_normal.gbapal");
+const u16 gShinyOverworldPalette_RikoWing[] = INCBIN_U16("graphics/pokemon/riko_wing/overworld_shiny.gbapal");
+static const struct SpriteFrameImage sPicTable_RikoWing[] = {
+    overworld_ascending_frames(gObjectEventPic_RikoWing, 4, 4),
+};
 static const struct LevelUpMove sRikoLevelUpLearnset[] = {
     LEVEL_UP_MOVE(1, MOVE_TACKLE), LEVEL_UP_MOVE(1, MOVE_TAIL_WHIP),
     LEVEL_UP_MOVE(5, MOVE_BABY_DOLL_EYES), LEVEL_UP_MOVE(9, MOVE_CHARM),

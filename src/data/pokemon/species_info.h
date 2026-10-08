@@ -123,7 +123,7 @@ const struct SpeciesInfo gSpeciesInfo[] =
         .shinyPalette = gMonShinyPalette_CircledQuestionMark,
         .iconSprite = gMonIcon_QuestionMark,
         .iconPalIndex = 0,
-        .pokemonJumpType = PKMN_JUMP_TYPE_NONE,
+        .pokemonJumpType = PKMN_JUMP_TYPE_NORMAL,
         FOOTPRINT(QuestionMark)
         SHADOW(-1, 0, SHADOW_SIZE_M)
     #if OW_POKEMON_OBJECT_EVENTS
@@ -209,6 +209,7 @@ const struct SpeciesInfo gSpeciesInfo[] =
             gShinyOverworldPalette_Riko
         )
         .teachingType = ALL_TEACHABLES, .levelUpLearnset = sRikoLevelUpLearnset,
+        .evolutions = EVOLUTION({EVO_ITEM, ITEM_RIKOS_WAND, SPECIES_RIKO_WING}),
         .formSpeciesIdTable = sRikoFormSpeciesIdTable, .formChangeTable = sRikoFormChangeTable,
     },
 #if P_GEN_9_MEGA_EVOLUTIONS
@@ -246,6 +247,40 @@ const struct SpeciesInfo gSpeciesInfo[] =
         .formSpeciesIdTable = sRikoFormSpeciesIdTable, .formChangeTable = sRikoFormChangeTable,
     },
 #endif
+    [SPECIES_RIKO_WING] =
+    {
+        .baseHP = 90, .baseAttack = 75, .baseDefense = 85, .baseSpeed = 110,
+        .baseSpAttack = 105, .baseSpDefense = 95,
+        .types = MON_TYPES(TYPE_FAIRY, TYPE_FLYING), .catchRate = 45, .expYield = 240,
+        .evYield_SpAttack = 2, .evYield_Speed = 1, .genderRatio = PERCENT_FEMALE(50),
+        .eggCycles = 20, .friendship = STANDARD_FRIENDSHIP, .growthRate = GROWTH_MEDIUM_SLOW,
+        .eggGroups = MON_EGG_GROUPS(EGG_GROUP_FIELD, EGG_GROUP_FAIRY),
+        .abilities = { ABILITY_CUTE_CHARM, ABILITY_NONE, ABILITY_FLUFFY },
+        .bodyColor = BODY_COLOR_WHITE, .speciesName = _("RikoWing"), .cryId = CRY_SYLVEON,
+        .natDexNum = NATIONAL_DEX_RIKO, .categoryName = _("Winged Floof"), .height = 8, .weight = 100,
+        .description = COMPOUND_STRING("Its tiny wings sparkle when it\n"
+                                       "spreads them. A trail of twinkles\n"
+                                       "follows wherever it flies."),
+        .pokemonScale = 256, .trainerScale = 256,
+        .frontPic = gMonFrontPic_RikoWing, .frontPicSize = MON_COORDS_SIZE(64, 64), .frontPicYOffset = 0,
+        .frontAnimFrames = sAnims_SingleFramePlaceHolder, .backPic = gMonBackPic_RikoWing,
+        .backPicSize = MON_COORDS_SIZE(64, 64), .backPicYOffset = 0,
+        .palette = gMonPalette_RikoWing, .shinyPalette = gMonShinyPalette_RikoWing,
+        .iconSprite = gMonIcon_RikoWing, .iconPalette = gMonIconPalette_RikoWing,
+        .shinyIconPalette = gMonShinyIconPalette_RikoWing, .pokemonJumpType = PKMN_JUMP_TYPE_NONE,
+        SHADOW(-2, 8, SHADOW_SIZE_S)
+        OVERWORLD(
+            sPicTable_RikoWing,
+            SIZE_32x32,
+            SHADOW_SIZE_M,
+            TRACKS_FOOT,
+            sAnimTable_Following,
+            gOverworldPalette_RikoWing,
+            gShinyOverworldPalette_RikoWing
+        )
+        .teachingType = ALL_TEACHABLES, .levelUpLearnset = sRikoLevelUpLearnset,
+        .evolutions = EVOLUTION({EVO_ITEM, ITEM_BLUE_BRUSH, SPECIES_RIKO}),
+    },
     [SPECIES_RIKO_SPIRIT] =
     {
         .baseHP = 115, .baseAttack = 115, .baseDefense = 85, .baseSpeed = 100,

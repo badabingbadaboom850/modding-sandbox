@@ -2163,3 +2163,9 @@ const u16 gItemIcon_Palette_Radio[] = INCBIN_U16("graphics/items/icons/radio.gba
 
 const u32 gItemIcon_BlackMirror[] = INCBIN_U32("graphics/items/icons/black_mirror.4bpp.smol");
 const u16 gItemIconPalette_BlackMirror[] = INCBIN_U16("graphics/items/icon_palettes/black_mirror.gbapal");
+
+const u32 gItemIcon_RikosWand[] = INCBIN_U32("graphics/items/icons/rikos_wand.4bpp.smol");
+const u16 gItemIconPalette_RikosWand[] = INCBIN_U16("graphics/items/icon_palettes/rikos_wand.gbapal");
+
+const u32 gItemIcon_BlueBrush[] = INCBIN_U32("graphics/items/icons/blue_brush.4bpp.smol");
+const u16 gItemIconPalette_BlueBrush[] = INCBIN_U16("graphics/items/icon_palettes/blue_brush.gbapal");
