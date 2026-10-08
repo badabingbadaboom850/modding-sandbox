@@ -226,22 +226,59 @@ Route30_EventScript_Greg::
 	msgbox Route30_Text_GregWawa, MSGBOX_DEFAULT
 	end
 Route30_EventScript_Greg_AfterReward::
+	goto_if_set FLAG_IS_CHAMPION, Route30_EventScript_GregChampion
+	goto_if_set FLAG_BADGE08_GET, Route30_EventScript_GregLeague
+	goto_if_set FLAG_BADGE03_GET, Route30_EventScript_GregGoldenrod
 	msgbox Route30_Text_GregAlreadyPaid, MSGBOX_DEFAULT
 	end
 
 Route30_Text_GregSeen:
-	.string "Greg: You can't beat my\n"
-	.string "level 99 team! Good luck!$"
+	.string "Greg: Joey has a Rattata.\n"
+	.string "I have a level 99 team.\p"
+	.string "That makes me the better\n"
+	.string "brother!$"
 
 Route30_Text_GregBeaten:
-	.string "Greg: No way! That was\n"
-	.string "a total fluke!$"
+	.string "Greg: Bijuu copied my\n"
+	.string "strategy! That is\p"
+	.string "cheating!$"
 
 Route30_Text_GregWawa:
-	.string "Greg hands over a Wawa S.\p"
-	.string "Enjoy the tiny Wawa!$"
+	.string "Greg: A tiny Wawa. Almost\n"
+	.string "as tiny as my chances of\p"
+	.string "admitting that was fair.$"
 
 Route30_Text_GregAlreadyPaid:
-	.string "Greg: You beat me once.\n"
-	.string "Team stays level 99!$"
+	.string "Greg: No more Wawa. I am\n"
+	.string "saving up for level 100.$"
+
+
+Route30_EventScript_GregChampion::
+	msgbox Route30_Text_GregChampion, MSGBOX_DEFAULT
+	end
+
+Route30_Text_GregChampion:
+	.string "Greg: The League let you\n"
+	.string "win. I am still the final\p"
+	.string "boss of this family.$"
+
+Route30_EventScript_GregLeague::
+	msgbox Route30_Text_GregLeague, MSGBOX_DEFAULT
+	end
+
+Route30_Text_GregLeague:
+	.string "Greg: Eight Badges? I have\n"
+	.string "six level 99 Pokemon. Six\p"
+	.string "is more than eight. Wait.$"
+
+Route30_EventScript_GregGoldenrod::
+	msgbox Route30_Text_GregGoldenrod, MSGBOX_DEFAULT
+	end
+
+Route30_Text_GregGoldenrod:
+	.string "Greg: Whitney cried? I\n"
+	.string "would never cry over a\p"
+	.string "battle. My eyes are just\n"
+	.string "sweating.$"
+
 

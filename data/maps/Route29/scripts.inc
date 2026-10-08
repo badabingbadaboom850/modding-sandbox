@@ -246,8 +246,15 @@ Route29_Text_Sign1:
 	.string "Cherrygrove City - New Bark Town$"
 
 Route29_EventScript_AuntSusan::
-	msgbox Route29_Text_AuntSusan, MSGBOX_NPC
-	return
+	lock
+	faceplayer
+	msgbox Route29_Text_AuntSusan, MSGBOX_DEFAULT
+	goto_if_set FLAG_IS_CHAMPION, Route29_EventScript_AuntSusan_Family_Champion
+	goto_if_set FLAG_BADGE08_GET, Route29_EventScript_AuntSusan_Family_EightBadges
+	goto_if_ge VAR_TRIO_RESEARCH_STATE, 9, Route29_EventScript_AuntSusan_Family_Scrapbook
+	goto_if_set FLAG_BADGE03_GET, Route29_EventScript_AuntSusan_Family_Goldenrod
+	goto_if_set FLAG_BADGE01_GET, Route29_EventScript_AuntSusan_Family_Violet
+	goto Route29_EventScript_AuntSusan_Family_Early
 
 Route29_Text_AuntSusan:
 	.string "Oh! Sorry, you scared me!\p"
@@ -265,24 +272,28 @@ Route29_EventScript_Greg::
 	msgbox Route29_Text_GregWawa, MSGBOX_DEFAULT
 	end
 Route29_EventScript_Greg_AfterReward::
+	goto_if_set FLAG_IS_CHAMPION, Route29_EventScript_GregChampion
+	goto_if_set FLAG_BADGE08_GET, Route29_EventScript_GregLeague
+	goto_if_set FLAG_BADGE03_GET, Route29_EventScript_GregGoldenrod
 	msgbox Route29_Text_GregAlreadyPaid, MSGBOX_DEFAULT
 	end
 
 Route29_Text_GregSeen:
-	.string "Greg: You can't beat my\n"
-	.string "level 99 team! Good luck!$"
+	.string "Greg: Susan says I need a\n"
+	.string "hobby. This is my hobby!\p"
+	.string "All six are level 99!$"
 
 Route29_Text_GregBeaten:
-	.string "Greg: No way! That was\n"
-	.string "a total fluke!$"
+	.string "Greg: I was distracted by\n"
+	.string "Riko's eyebrows!$"
 
 Route29_Text_GregWawa:
-	.string "Greg hands over a Wawa S.\p"
-	.string "Enjoy the tiny Wawa!$"
+	.string "Greg: One tiny Wawa. Do\n"
+	.string "not tell Susan about this.$"
 
 Route29_Text_GregAlreadyPaid:
-	.string "Greg: You beat me once.\n"
-	.string "Team stays level 99!$"
+	.string "Greg: That Wawa was the\n"
+	.string "whole prize budget.$"
 
 
 Route29ExNightNpc::
@@ -293,3 +304,102 @@ Route29ExNightNpc::
 Route29ExNightNpc_Text_0:
 	.string "I'm checking my Pokégear for a map\n"
 	.string "to see where I am going!$"
+
+Route29_EventScript_AuntSusan_Family_Champion:
+	msgbox Route29_EventScript_AuntSusan_Family_Text_Champion, MSGBOX_DEFAULT
+	goto Route29_EventScript_AuntSusan_Family_End
+
+Route29_EventScript_AuntSusan_Family_Text_Champion:
+	.string "Susan: A Champion in the\n"
+	.string "family! Greg says he could\p"
+	.string "have done it. Funny how he\n"
+	.string "has not.$"
+
+Route29_EventScript_AuntSusan_Family_EightBadges:
+	msgbox Route29_EventScript_AuntSusan_Family_Text_EightBadges, MSGBOX_DEFAULT
+	goto Route29_EventScript_AuntSusan_Family_End
+
+Route29_EventScript_AuntSusan_Family_Text_EightBadges:
+	.string "Susan: The girls can\n"
+	.string "handle the League. I am\p"
+	.string "less sure Greg can handle\n"
+	.string "being left out of the\p"
+	.string "newspaper.$"
+
+Route29_EventScript_AuntSusan_Family_Scrapbook:
+	msgbox Route29_EventScript_AuntSusan_Family_Text_Scrapbook, MSGBOX_DEFAULT
+	goto Route29_EventScript_AuntSusan_Family_End
+
+Route29_EventScript_AuntSusan_Family_Text_Scrapbook:
+	.string "Susan: I read the purse\n"
+	.string "story! Penny noticed what\p"
+	.string "everyone else missed. She\n"
+	.string "has always been worth\p"
+	.string "listening to.$"
+
+Route29_EventScript_AuntSusan_Family_Goldenrod:
+	msgbox Route29_EventScript_AuntSusan_Family_Text_Goldenrod, MSGBOX_DEFAULT
+	goto Route29_EventScript_AuntSusan_Family_End
+
+Route29_EventScript_AuntSusan_Family_Text_Goldenrod:
+	.string "Susan: Bring back a little\n"
+	.string "story from Goldenrod. Riko\p"
+	.string "will tell me about the\n"
+	.string "shops. Bijuu will edit the\p"
+	.string "facts.$"
+
+Route29_EventScript_AuntSusan_Family_Violet:
+	msgbox Route29_EventScript_AuntSusan_Family_Text_Violet, MSGBOX_DEFAULT
+	goto Route29_EventScript_AuntSusan_Family_End
+
+Route29_EventScript_AuntSusan_Family_Text_Violet:
+	.string "Susan: Greg says the girls\n"
+	.string "need more training. I say\p"
+	.string "he needs a hobby that is\n"
+	.string "not bothering his sister.$"
+
+Route29_EventScript_AuntSusan_Family_Early:
+	msgbox Route29_EventScript_AuntSusan_Family_Text_Early, MSGBOX_DEFAULT
+	goto Route29_EventScript_AuntSusan_Family_End
+
+Route29_EventScript_AuntSusan_Family_Text_Early:
+	.string "Susan: Penny can sit\n"
+	.string "beside me. If Greg jumps\p"
+	.string "out again, Riko can do the\n"
+	.string "barking for both of us.$"
+
+Route29_EventScript_AuntSusan_Family_End:
+	closemessage
+	release
+	end
+
+
+Route29_EventScript_GregChampion::
+	msgbox Route29_Text_GregChampion, MSGBOX_DEFAULT
+	end
+
+Route29_Text_GregChampion:
+	.string "Greg: The League let you\n"
+	.string "win. I am still the final\p"
+	.string "boss of this family.$"
+
+Route29_EventScript_GregLeague::
+	msgbox Route29_Text_GregLeague, MSGBOX_DEFAULT
+	end
+
+Route29_Text_GregLeague:
+	.string "Greg: Eight Badges? I have\n"
+	.string "six level 99 Pokemon. Six\p"
+	.string "is more than eight. Wait.$"
+
+Route29_EventScript_GregGoldenrod::
+	msgbox Route29_Text_GregGoldenrod, MSGBOX_DEFAULT
+	end
+
+Route29_Text_GregGoldenrod:
+	.string "Greg: Whitney cried? I\n"
+	.string "would never cry over a\p"
+	.string "battle. My eyes are just\n"
+	.string "sweating.$"
+
+

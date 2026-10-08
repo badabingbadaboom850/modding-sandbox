@@ -54,6 +54,7 @@ NewBarkTown_PlayersHouse_1F_EventScript_Mom_Regular::
 	msgbox NewBarkTown_PlayersHouse_1F_Text_MomComfortPenny, MSGBOX_DEFAULT
 	call NewBarkTown_PlayersHouse_1F_EventScript_PennyConfidence
 NewBarkTown_PlayersHouse_1F_EventScript_Mom_Regular_Heal::
+	call NewBarkTown_PlayersHouse_1F_EventScript_FamilyBanter
 	call PlayersHouse_1F_EventScript_MomHealsParty
 	release
 	end
@@ -288,3 +289,91 @@ NewBarkTown_PlayersHouse_1F_Text_MomLeaving:
 	.string "You need to work as a team.\p"
 	.string "Now, go on!\n"
 	.string "I'm behind you all the way!$"
+
+NewBarkTown_PlayersHouse_1F_EventScript_FamilyBanter::
+	goto_if_set FLAG_IS_CHAMPION, NewBarkTown_PlayersHouse_1F_Family_Champion
+	goto_if_set FLAG_BADGE08_GET, NewBarkTown_PlayersHouse_1F_Family_EightBadges
+	goto_if_ge VAR_TRIO_RESEARCH_STATE, 9, NewBarkTown_PlayersHouse_1F_Family_Scrapbook
+	goto_if_ge VAR_TRIO_RESEARCH_STATE, 6, NewBarkTown_PlayersHouse_1F_Family_Azalea
+	goto_if_set FLAG_BADGE03_GET, NewBarkTown_PlayersHouse_1F_Family_Goldenrod
+	goto_if_set FLAG_BADGE01_GET, NewBarkTown_PlayersHouse_1F_Family_Violet
+	goto NewBarkTown_PlayersHouse_1F_Family_Early
+
+NewBarkTown_PlayersHouse_1F_Family_Champion:
+	msgbox NewBarkTown_PlayersHouse_1F_Text_Family_Champion, MSGBOX_DEFAULT
+	return
+
+NewBarkTown_PlayersHouse_1F_Text_Family_Champion:
+	.string "Mom: Champion! Come here,\n"
+	.string "all of you. Riko, Penny,\p"
+	.string "Bijuu, and my wonderful\n"
+	.string "girl.\p"
+	.string "The world can call you\n"
+	.string "legends. There is still\p"
+	.string "room for all of you right\n"
+	.string "here.$"
+
+NewBarkTown_PlayersHouse_1F_Family_EightBadges:
+	msgbox NewBarkTown_PlayersHouse_1F_Text_Family_EightBadges, MSGBOX_DEFAULT
+	return
+
+NewBarkTown_PlayersHouse_1F_Text_Family_EightBadges:
+	.string "Mom: The League can wait\n"
+	.string "until you have rested.\p"
+	.string "Eight Badges do not make\n"
+	.string "the babies any less my\p"
+	.string "babies.$"
+
+NewBarkTown_PlayersHouse_1F_Family_Scrapbook:
+	msgbox NewBarkTown_PlayersHouse_1F_Text_Family_Scrapbook, MSGBOX_DEFAULT
+	return
+
+NewBarkTown_PlayersHouse_1F_Text_Family_Scrapbook:
+	.string "Mom: Susan loved your\n"
+	.string "purse story. She says\p"
+	.string "Bijuu is the family\n"
+	.string "detective. Greg has\p"
+	.string "requested a recount.$"
+
+NewBarkTown_PlayersHouse_1F_Family_Azalea:
+	msgbox NewBarkTown_PlayersHouse_1F_Text_Family_Azalea, MSGBOX_DEFAULT
+	return
+
+NewBarkTown_PlayersHouse_1F_Text_Family_Azalea:
+	.string "Mom: Your notebook says\n"
+	.string "Penny made a new friend in\p"
+	.string "Azalea. A quiet afternoon\n"
+	.string "deserves remembering too.$"
+
+NewBarkTown_PlayersHouse_1F_Family_Goldenrod:
+	msgbox NewBarkTown_PlayersHouse_1F_Text_Family_Goldenrod, MSGBOX_DEFAULT
+	return
+
+NewBarkTown_PlayersHouse_1F_Text_Family_Goldenrod:
+	.string "Mom: Chelsea is planning a\n"
+	.string "shopping trip with Riko. I\p"
+	.string "told her to count the bags\n"
+	.string "before they leave.$"
+
+NewBarkTown_PlayersHouse_1F_Family_Violet:
+	msgbox NewBarkTown_PlayersHouse_1F_Text_Family_Violet, MSGBOX_DEFAULT
+	return
+
+NewBarkTown_PlayersHouse_1F_Text_Family_Violet:
+	.string "Mom: Caleb says nothing\n"
+	.string "beats that beach. Chelsea\p"
+	.string "disagrees. The girls are\n"
+	.string "welcome to settle it on\p"
+	.string "the couch.$"
+
+NewBarkTown_PlayersHouse_1F_Family_Early:
+	msgbox NewBarkTown_PlayersHouse_1F_Text_Family_Early, MSGBOX_DEFAULT
+	return
+
+NewBarkTown_PlayersHouse_1F_Text_Family_Early:
+	.string "Mom: Susan says Greg has\n"
+	.string "been hiding behind doors\p"
+	.string "again. Tell him Penny gets\n"
+	.string "the sunny spot, not him.$"
+
+

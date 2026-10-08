@@ -40,6 +40,8 @@ TrioParty_CheckBijuu::
 	goto_if_eq VAR_RESULT, TRUE, TrioParty_SetResultTrue
 	checkspecies SPECIES_BIJUU_DARK
 	goto_if_eq VAR_RESULT, TRUE, TrioParty_SetResultTrue
+	checkspecies SPECIES_BIJUU_PSYCHIC
+	goto_if_eq VAR_RESULT, TRUE, TrioParty_SetResultTrue
 	checkspecies SPECIES_BIJUU_STEEL
 	goto_if_eq VAR_RESULT, TRUE, TrioParty_SetResultTrue
 	setvar VAR_RESULT, FALSE

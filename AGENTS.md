@@ -142,7 +142,7 @@ src/new_game.c initializes fresh saves only. Starting-party/inventory changes do
 
 Named save variables already reserved:
 - VAR_ROUTE31_BIJUU_CHASE = 0x4121.
-- VAR_TRIO_RESEARCH_STATE = 0x4122.
+- VAR_TRIO_RESEARCH_STATE = 0x4122. Violet states 0-3 retain their meaning; Azalea uses 4-6 and Goldenrod uses 7-9. See docs/trio_world_roadmap.md. State 3 on older saves can accept the next chapter.
 - VAR_PENNY_CONFIDENCE_STATE = 0x4123.
 
 Before adding a var/flag, search all definitions and raw/numeric uses, confirm save bounds, and avoid scratch/temp storage for persistent progression. Do not assume the next numeric slot remains free.
@@ -180,3 +180,11 @@ Further cave work should isolate map rendering, tilesets, object graphics, and c
 docs/riko_in_game_implementation_and_evolution.md explains follower registration and tile ordering, but its older species/evolution snapshot and planning notes are stale in several places. Current code overrides statements such as "Riko has no evolutions" or "Spirit is the final species ID."
 
 docs/trio_test_portal_update.md records cave diagnostics, cleanup, research/Penny pilots, and the broad dialogue pass. Earlier sections describe historical states; read later sections and current scripts before assuming a feature is absent.
+
+## World-building first batch
+
+docs/trio_world_roadmap.md is the implementation checklist and in-game test plan. The Cherrygrove research boy holds a readable scrapbook; Azalea's existing youngster and Goldenrod's existing woman outside the Name Rater host optional text vignettes. They do not add visible Pokemon objects or movement paths. New chapter scenes/acceptance require the trio; reward retry does not. Preserve Goldenrod's existing civilian disappearance during the Rocket takeover.
+
+New family callbacks use badge flags, completed research chapter states, and FLAG_IS_CHAMPION. That Champion flag is explicitly set by the active PokemonLeague_HallOfFame_EventScript_SetFirstGameClearFlags. Original Caleb/Chelsea lines remain. Greg's level-99 encounters, existing sight behavior, trainer flags, and shared one-time Wawa reward remain.
+
+Psychic Bijuu is now included in TrioParty_CheckBijuu. Pending reward states advance only after successful giveitem. The new state meanings and source checks do not establish emulator confirmation.

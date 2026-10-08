@@ -98,6 +98,7 @@ GoldenrodCity_EventScript_Lass::
 	lock
 	faceplayer
 	msgbox GoldenrodCity_Text_Lass, MSGBOX_DEFAULT
+	call GoldenrodCity_EventScript_ScrapbookVisit
 	closemessage
 	release
 	end
@@ -111,6 +112,7 @@ GoldenrodCity_EventScript_Gramps::
 GoldenrodCity_Text_Gramps_TrioWorld1_After:
 	msgbox GoldenrodCity_Text_Gramps_TrioWorldAfter, MSGBOX_DEFAULT
 GoldenrodCity_Text_Gramps_TrioWorld1_Resume:
+	call_if_ge VAR_TRIO_RESEARCH_STATE, 8, GoldenrodCity_EventScript_ScrapbookNeighbor
 	closemessage
 	release
 	end
@@ -718,3 +720,108 @@ GoldenrodCity_RivalAfterWhitney_Text_2:
 	.string "want to catch more Pokémon, I'll\l"
 	.string "go visit my grandparents instead.\p"
 	.string "Well, see ya!$"
+
+
+GoldenrodCity_EventScript_ScrapbookVisit::
+	goto_if_ge VAR_TRIO_RESEARCH_STATE, 8, GoldenrodCity_EventScript_ScrapbookRemember
+	goto_if_ne VAR_TRIO_RESEARCH_STATE, 7, GoldenrodCity_EventScript_ScrapbookReturn
+	goto_if_unset FLAG_BADGE03_GET, GoldenrodCity_EventScript_ScrapbookNotReady
+	call TrioStory_CheckAll
+	goto_if_eq VAR_RESULT, FALSE, GoldenrodCity_EventScript_ScrapbookNeedGirls
+	msgbox GoldenrodCity_Text_ScrapbookOffer, MSGBOX_YESNO
+	goto_if_eq VAR_RESULT, NO, GoldenrodCity_EventScript_ScrapbookDeclined
+	msgbox GoldenrodCity_Text_ScrapbookScene1, MSGBOX_DEFAULT
+	msgbox GoldenrodCity_Text_ScrapbookScene2, MSGBOX_DEFAULT
+	msgbox GoldenrodCity_Text_ScrapbookScene3, MSGBOX_DEFAULT
+	setvar VAR_TRIO_RESEARCH_STATE, 8
+	msgbox GoldenrodCity_Text_ScrapbookReport, MSGBOX_DEFAULT
+	return
+
+GoldenrodCity_EventScript_ScrapbookRemember::
+	msgbox GoldenrodCity_Text_ScrapbookRemember, MSGBOX_DEFAULT
+	return
+
+GoldenrodCity_EventScript_ScrapbookNotReady::
+	msgbox GoldenrodCity_Text_ScrapbookNotReady, MSGBOX_DEFAULT
+	return
+
+GoldenrodCity_EventScript_ScrapbookNeedGirls::
+	msgbox CherryGroveCity_Text_ScrapbookNeedGirls, MSGBOX_DEFAULT
+	return
+
+GoldenrodCity_EventScript_ScrapbookDeclined::
+	msgbox GoldenrodCity_Text_ScrapbookDeclined, MSGBOX_DEFAULT
+GoldenrodCity_EventScript_ScrapbookReturn::
+	return
+
+GoldenrodCity_Text_ScrapbookOffer:
+	.string "I dropped my purse on the\n"
+	.string "way here. There is a\p"
+	.string "family photo inside. Will\n"
+	.string "the girls help me look?$"
+
+GoldenrodCity_Text_ScrapbookScene1:
+	.string "Riko sniffs the woman's\n"
+	.string "bag strap, then noses\p"
+	.string "toward a nearby hedge.\p"
+	.string "Bijuu peers underneath.\n"
+	.string "She gives a sharp little\p"
+	.string "meow.$"
+
+GoldenrodCity_Text_ScrapbookScene2:
+	.string "Penny stretches down low.\n"
+	.string "You move a branch aside\p"
+	.string "while she noses the purse\n"
+	.string "within reach.\p"
+	.string "Riko inspects it. Bijuu\n"
+	.string "pats the clasp. You return\p"
+	.string "it to its owner.$"
+
+GoldenrodCity_Text_ScrapbookScene3:
+	.string "The woman checks inside.\n"
+	.string "My photo! Thank you!\p"
+	.string "People keep calling them\n"
+	.string "legends. Today they helped\p"
+	.string "me keep a little piece of\n"
+	.string "home.$"
+
+GoldenrodCity_Text_ScrapbookReport:
+	.string "Tell your scrapbook friend\n"
+	.string "in Cherrygrove. All three\p"
+	.string "girls deserve their names\n"
+	.string "on this page.$"
+
+GoldenrodCity_Text_ScrapbookRemember:
+	.string "I put the girls' names on\n"
+	.string "the back of my photo. When\p"
+	.string "anyone asks, I tell them\n"
+	.string "how they helped.\p"
+	.string "Riko checked the purse for\n"
+	.string "snacks. That part stays in\p"
+	.string "the story too.$"
+
+GoldenrodCity_Text_ScrapbookNotReady:
+	.string "Come back after your Gym\n"
+	.string "challenge. I will wait\p"
+	.string "here. I hope my purse\n"
+	.string "turns up soon.$"
+
+GoldenrodCity_Text_ScrapbookDeclined:
+	.string "If you have time later, I\n"
+	.string "would appreciate it. Keep\p"
+	.string "the girls close in this\n"
+	.string "busy city.$"
+
+
+GoldenrodCity_EventScript_ScrapbookNeighbor::
+	msgbox GoldenrodCity_Text_ScrapbookNeighbor, MSGBOX_DEFAULT
+	return
+
+GoldenrodCity_Text_ScrapbookNeighbor:
+	.string "The woman down the street\n"
+	.string "got her family photo back.\p"
+	.string "She named all three girls\n"
+	.string "when she told her story.\p"
+	.string "Nice to hear something\n"
+	.string "besides battle scores.$"
+
