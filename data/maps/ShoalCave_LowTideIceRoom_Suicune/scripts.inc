@@ -154,7 +154,7 @@ ShoalCave_LowTideIceRoom_Suicune_RikoSpiritBattle3_Stats::
 	@special SetSpDefStat
 	return
 
-ShoalCave_LowTideIceRoom_Suicune_RikoSpiritFinalBattle_Text:
+ShoalCave_LowTideIceRoom_Suicune_RikoSpiritFinalBattle_Text::
 	.string "The Spirit of Riko stands its\n"
 	.string "ground. Its three heads lower.\p"
 	.string "The guardian challenge is over.\p"
