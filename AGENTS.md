@@ -199,3 +199,9 @@ Use the Fish Toy through the existing evolution item system on base Bijuu, then 
 Toy discovery and the one-time catnip gift advance state only after giveitem succeeds. State 5 retries the gift even if Bijuu later changes form or leaves the party. The quest host offers spare Fish Toys and Cat Nip for 500 each at state 4 (including before evolution) and after completion. Existing Goldenrod Department Store 4F stock of both items remains. Losing or using a toy cannot permanently block the chapter.
 
 Witnesses and a skeptic acknowledge the reveal at state 5 or later. Mom's family callback and the optional extra Cherrygrove scrapbook page use completed state 6. The quest uses an unused slot in the existing variable array, with no SaveBlock layout or species/item ID changes. Source checks and CI results are separate from emulator confirmation.
+
+## Pet gender and starting party update
+
+Fresh saves start with level-5 Riko and Penny only; Spirit of Riko is no longer a starting-party grant. Bijuu remains a catchable Route 31 story encounter. Removing the initial grant does not delete Spirit from an existing save; deposit her in the PC to remove her from an existing party.
+
+Riko, Bijuu, their Mega/elemental/permanent forms, Spirit of Riko, and Penny's Fidough/Dachsbun line use `.genderRatio = MON_FEMALE`. The engine's gender helpers special-case this value, so every personality is female, including already saved individuals. Do not revert these entries to a random ratio: the user's real pets are all girls. No personality, save layout, species ID, or evolution trigger changes are needed for this correction.

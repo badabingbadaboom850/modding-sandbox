@@ -280,13 +280,14 @@ void NewGameInitData(void)
     ClearPlayerLinkBattleRecords();
     InitSeedotSizeRecord();
     InitLotadSizeRecord();
-    // Start with Riko, Penny, and her Spirit. The selected starter is added by ChooseStarter.
+    // Start with Riko and Penny. Bijuu joins through her Route 31 encounter.
+    // Their species entries guarantee female gender, including after evolution.
+    // The selected starter is added by ChooseStarter.
     gPlayerPartyCount = 0;
     ZeroPlayerPartyMons();
-    gPlayerPartyCount = 3;
+    gPlayerPartyCount = 2;
     CreateRandomMon(&gPlayerParty[0], SPECIES_RIKO, 5);
     CreateRandomMon(&gPlayerParty[1], SPECIES_FIDOUGH, 5);
-    CreateRandomMon(&gPlayerParty[2], SPECIES_RIKO_SPIRIT, 5);
     ResetPokemonStorageSystem();
     ResetHallOfFameArchive();
     DeactivateAllRoamers();
