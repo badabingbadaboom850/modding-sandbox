@@ -16,7 +16,17 @@ PewterCity_EventScript_CooltrainerF::
 	end
 
 PewterCity_EventScript_BugCatcher::
+	goto_if_set FLAG_BADGE09_GET, PewterCity_Text_BugCatcher_TrioWorld1_After
+	goto_if_set FLAG_BADGE09_GET, PewterCity_Text_BugCatcher_TrioWorld2_After
 	msgbox PewterCity_Text_BugCatcher, MSGBOX_NPC
+	goto PewterCity_Text_BugCatcher_TrioWorld2_Resume
+PewterCity_Text_BugCatcher_TrioWorld2_After:
+	msgbox PewterCity_Text_BugCatcher_TrioWorldAfter, MSGBOX_NPC
+PewterCity_Text_BugCatcher_TrioWorld2_Resume:
+	goto PewterCity_Text_BugCatcher_TrioWorld1_Resume
+PewterCity_Text_BugCatcher_TrioWorld1_After:
+	msgbox PewterCity_Text_BugCatcher_TrioWorldAfter, MSGBOX_NPC
+PewterCity_Text_BugCatcher_TrioWorld1_Resume:
 	end
 
 PewterCity_EventScript_Gramps::
@@ -64,12 +74,33 @@ PewterCity_EventScript_Cooltrainer::
 
 PewterCity_Text_CooltrainerF:
 	.string "Have you visited Pewter Gym?\p"
-	.string "The Leader uses rock-type Pokémon.$"
+	.string "The Leader uses rock-type Pokémon.\p"
+	.string "Riko stared at a fossil\n"
+	.string "like it owed her a treat.\p"
+	.string "Penny settled beside it.\n"
+	.string "Bijuu copied the guide's\p"
+	.string "voice.$"
 
 PewterCity_Text_BugCatcher:
 	.string "At night, Clefairy come out to play at\n"
 	.string "Mt.Moon.\p"
-	.string "But not every night.$"
+	.string "But not every night.\p"
+	.string "Brock says the trio's\n"
+	.string "reputation does not change\p"
+	.string "his training. I hope he\n"
+	.string "knows Bijuu can copy his\p"
+	.string "serious face.$"
+
+
+PewterCity_Text_BugCatcher_TrioWorldAfter:
+	.string "At night, Clefairy come out to play at\n"
+	.string "Mt.Moon.\p"
+	.string "But not every night.\p"
+	.string "Brock stood his ground\n"
+	.string "against the trio! His\p"
+	.string "defense made their trainer\n"
+	.string "think. The museum kids\p"
+	.string "keep reenacting the match.$"
 
 PewterCity_Text_Gramps:
 	.string "Ah, you came all the way out here from\n"

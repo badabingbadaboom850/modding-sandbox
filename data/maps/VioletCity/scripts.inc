@@ -235,7 +235,12 @@ VioletCity_EventScript_Gramps::
 VioletCity_EventScript_Lass::
 	lock
 	faceplayer
+	goto_if_set FLAG_BADGE01_GET, VioletCity_Text_Lass_TrioWorld1_After
 	msgbox VioletCity_Text_Lass, MSGBOX_DEFAULT
+	goto VioletCity_Text_Lass_TrioWorld1_Resume
+VioletCity_Text_Lass_TrioWorld1_After:
+	msgbox VioletCity_Text_Lass_TrioWorldAfter, MSGBOX_DEFAULT
+VioletCity_Text_Lass_TrioWorld1_Resume:
 	closemessage
 	release
 	end
@@ -514,7 +519,27 @@ VioletCity_Text_Lass:
 	.string "They say that Ghost-type\n"
 	.string "moves can bypass the defenses\p"
 	.string "of tough Pokémon like Onix\n"
-	.string "and Geodude.$"
+	.string "and Geodude.\p"
+	.string "Falkner says a trainer is\n"
+	.string "more than a powerful\p"
+	.string "party. I wonder what he\n"
+	.string "will make of three girls\p"
+	.string "who know each other so\n"
+	.string "well.$"
+
+
+VioletCity_Text_Lass_TrioWorldAfter:
+	.string "Ghosts are rumored to appear\n"
+	.string "in Sprout Tower.\p"
+	.string "They say that Ghost-type\n"
+	.string "moves can bypass the defenses\p"
+	.string "of tough Pokémon like Onix\n"
+	.string "and Geodude.\p"
+	.string "Falkner held his own\n"
+	.string "against the trio! The\p"
+	.string "Academy is arguing about\n"
+	.string "their teamwork. I think\p"
+	.string "Penny kept everyone calm.$"
 
 VioletCity_Text_Boy:
 	.string "Hey, are you a trainer?\p"
@@ -532,12 +557,23 @@ VioletCity_Text_Gramps:
 	.string "Pokémon Gym, is a fine trainer!\p"
 	.string "He inherited his father's gym\n"
 	.string "and has done a great job with\l"
-	.string "it.$"
+	.string "it.\p"
+	.string "A mysterious trainer came\n"
+	.string "up Route 31 with the trio.\p"
+	.string "Some call it luck. Three\n"
+	.string "girls choosing one person\p"
+	.string "sounds like trust to me.$"
 
 VioletCity_Text_Youngster:
 	.string "I saw a wiggly tree up ahead!\p"
 	.string "If you touch it, it squirms\n"
-	.string "and dances! Cool!$"
+	.string "and dances! Cool!\p"
+	.string "Bijuu copied a\n"
+	.string "Bellsprout's sway. Riko\p"
+	.string "tried too and nearly\n"
+	.string "rolled down the steps.\p"
+	.string "Penny waited at the\n"
+	.string "bottom.$"
 
 VioletCity_Text_Sign:
 	.string "Violet City\p"

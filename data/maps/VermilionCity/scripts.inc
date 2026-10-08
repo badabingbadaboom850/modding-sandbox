@@ -108,7 +108,12 @@ VermilionCity_EventScript_SuicuneEpisode::
 	end
 
 VermilionCity_EventScript_Teacher::
+	goto_if_set FLAG_BADGE11_GET, VermilionCity_Text_Teacher_TrioWorld1_After
 	msgbox VermilionCity_Text_Teacher, MSGBOX_NPC
+	goto VermilionCity_Text_Teacher_TrioWorld1_Resume
+VermilionCity_Text_Teacher_TrioWorld1_After:
+	msgbox VermilionCity_Text_Teacher_TrioWorldAfter, MSGBOX_NPC
+VermilionCity_Text_Teacher_TrioWorld1_Resume:
 	end
 
 VermilionCity_EventScript_Oldman::
@@ -277,13 +282,35 @@ VermilionCity_Text_Teacher:
 	.string "Vermilion Port is Kanto's seaside\n"
 	.string "gateway.\p"
 	.string "Luxury liners from around the\n"
-	.string "world dock here.$"
+	.string "world dock here.\p"
+	.string "Surge says three legends\n"
+	.string "do not scare him. I\p"
+	.string "believe him. Riko\n"
+	.string "demanding breakfast might,\p"
+	.string "though.$"
+
+
+VermilionCity_Text_Teacher_TrioWorldAfter:
+	.string "Vermilion Port is Kanto's seaside\n"
+	.string "gateway.\p"
+	.string "Luxury liners from around the\n"
+	.string "world dock here.\p"
+	.string "Surge held his own against\n"
+	.string "the trio! The whole port\p"
+	.string "heard about it. Their\n"
+	.string "trainer earned his\p"
+	.string "respect, loud and clear.$"
 
 VermilionCity_Text_MachopOwner:
 	.string "My Pokémon is preparing the land\n"
 	.string "for construction.\p"
 	.string "But I have no money to start the\n"
-	.string "project…$"
+	.string "project…\p"
+	.string "That trio's trainer walks\n"
+	.string "at Penny's pace when she\p"
+	.string "needs it. Strong Pokemon\n"
+	.string "should not have to be\p"
+	.string "brave every minute.$"
 
 VermilionCity_Text_Machop1:
 	.string "Machop: Guooh gogogoh!$"
@@ -295,7 +322,12 @@ VermilionCity_Text_Machop2:
 VermilionCity_Text_SuperNerd:
 	.string "There are eight Gyms in Kanto.\p"
 	.string "That big building is Vermilion's\n"
-	.string "Pokémon Gym.$"
+	.string "Pokémon Gym.\p"
+	.string "Bijuu copied a ship's\n"
+	.string "bell. Riko thought lunch\p"
+	.string "had arrived. Penny stayed\n"
+	.string "asleep. Only one of them\p"
+	.string "understood the situation.$"
 
 VermilionCity_Text_SnorlaxSleeping:
 	.string "Snorlax is snoring peacefully…$"

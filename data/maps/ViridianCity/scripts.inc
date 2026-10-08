@@ -42,7 +42,12 @@ ViridianCity_EventScript_FisherAfter::
 	end
 
 ViridianCity_EventScript_Youngster::
+	goto_if_set FLAG_BADGE16_GET, ViridianCity_Text_Youngster_TrioWorld1_After
 	msgbox ViridianCity_Text_Youngster, MSGBOX_NPC
+	goto ViridianCity_Text_Youngster_TrioWorld1_Resume
+ViridianCity_Text_Youngster_TrioWorld1_After:
+	msgbox ViridianCity_Text_Youngster_TrioWorldAfter, MSGBOX_NPC
+ViridianCity_Text_Youngster_TrioWorld1_Resume:
 	end
 
 ViridianCity_EventScript_CitySign::
@@ -80,12 +85,22 @@ ViridianCity_Text_GrampsNearGym:
 	.string "This Gym didn't have a Leader\n"
 	.string "until recently.\p"
 	.string "A young man from Pallet became\n"
-	.string "the Leader, but he's often away.$"
+	.string "the Leader, but he's often away.\p"
+	.string "A mysterious trainer was\n"
+	.string "seen heading through Kanto\p"
+	.string "with three girls. Riko\n"
+	.string "might be mysterious if she\p"
+	.string "ever stopped talking.$"
 
 ViridianCity_Text_GrampsNearGym_BlueReturned:
 	.string "Are you going to battle the\n"
 	.string "Leader?\p"
-	.string "Good luck to you. You'll need it.$"
+	.string "Good luck to you. You'll need it.\p"
+	.string "The girls have a way of\n"
+	.string "making even Blue pay\p"
+	.string "attention. Penny just\n"
+	.string "looks up at him. Somehow\p"
+	.string "that works best.$"
 
 ViridianCity_Text_DreamEaterFisherNew:
 	.string "…Zzzzz…\p" 
@@ -114,7 +129,22 @@ ViridianCity_Text_DreamEaterFisher_GotDreamEater:
 
 ViridianCity_Text_Youngster:
 	.string "I heard that there are many items\n"
-	.string "on the ground in Viridian Forest.$"
+	.string "on the ground in Viridian Forest.\p"
+	.string "Blue wants to battle that\n"
+	.string "trainer with the trio. He\p"
+	.string "acts casual, but he asked\n"
+	.string "which road they took\p"
+	.string "twice.$"
+
+
+ViridianCity_Text_Youngster_TrioWorldAfter:
+	.string "I heard that there are many items\n"
+	.string "on the ground in Viridian Forest.\p"
+	.string "Blue held his own against\n"
+	.string "the girls. He says he\p"
+	.string "wants another chance. I\n"
+	.string "think he enjoyed that\p"
+	.string "match more than he admits.$"
 
 ViridianCity_Text_Sign:
 	.string "Viridian City\p"

@@ -88,7 +88,12 @@ AzaleaTown_EventScript_Gramps2::
 AzaleaTown_EventScript_Lass::
 	lock
 	faceplayer
+	goto_if_set FLAG_BADGE02_GET, AzaleaTown_Text_Teacher_TrioWorld1_After
 	msgbox AzaleaTown_Text_Teacher, MSGBOX_DEFAULT
+	goto AzaleaTown_Text_Teacher_TrioWorld1_Resume
+AzaleaTown_Text_Teacher_TrioWorld1_After:
+	msgbox AzaleaTown_Text_Teacher_TrioWorldAfter, MSGBOX_DEFAULT
+AzaleaTown_Text_Teacher_TrioWorld1_Resume:
 	closemessage
 	release
 	end
@@ -397,17 +402,40 @@ AzaleaTown_Text_GrampsBefore:
 	.string "The Slowpoke have disappeared\n"
 	.string "from town…\p"
 	.string "I heard their Tails are being\n"
-	.string "sold somewhere.$"
+	.string "sold somewhere.\p"
+	.string "I like Penny. She can sit\n"
+	.string "beside a Slowpoke without\p"
+	.string "trying to hurry it. We\n"
+	.string "could all learn that.$"
 
 AzaleaTown_Text_GrampsAfter:
 	.string "The Slowpoke have returned.\p"
 	.string "Knowing them, they could've just\n"
-	.string "been goofing off somewhere.$"
+	.string "been goofing off somewhere.\p"
+	.string "The trio passed the well\n"
+	.string "with their trainer. Penny\p"
+	.string "looked back twice to check\n"
+	.string "the others were coming.$"
 
 AzaleaTown_Text_Teacher:
 	.string "Did you come to get Kurt to make\n"
 	.string "some Balls?\p"
-	.string "A lot of people do just that.$"
+	.string "A lot of people do just that.\p"
+	.string "Bugsy wants to study the\n"
+	.string "trio. I hope his notebook\p"
+	.string "has a page for Riko\n"
+	.string "demanding attention.$"
+
+
+AzaleaTown_Text_Teacher_TrioWorldAfter:
+	.string "Did you come to get Kurt to make\n"
+	.string "some Balls?\p"
+	.string "A lot of people do just that.\p"
+	.string "Bugsy stood his ground\n"
+	.string "against all three girls.\p"
+	.string "He says battling them\n"
+	.string "taught him more than\p"
+	.string "watching ever could.$"
 
 AzaleaTown_Text_Youngster:
 	.string "Cut through Azalea to reach\n"
@@ -419,9 +447,12 @@ AzaleaTown_Text_Youngster:
 	.string "Cutters saw three rare Pokemon\n"
 	.string "pass through Ilex Forest.\p"
 	.string "A shy cat was with them.\n"
-	.string "They vanished fast.$"
-
-
+	.string "They vanished fast.\p"
+	.string "Riko sniffed every\n"
+	.string "Apricorn. Bijuu sorted\p"
+	.string "them by copying Kurt.\n"
+	.string "Penny found the patch of\p"
+	.string "sun and stayed there.$"
 
 AzaleaTown_Text_Slowpoke1:
 	.string "Slowpoke:..........\p"

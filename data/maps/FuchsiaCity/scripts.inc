@@ -79,7 +79,12 @@ FuchsiaCity_EventScript_Youngster::
 	end
 
 FuchsiaCity_EventScript_PokefanM::
+	goto_if_set FLAG_BADGE14_GET, FuchsiaCity_Text_PokefanM_TrioWorld1_After
 	msgbox FuchsiaCity_Text_PokefanM, MSGBOX_NPC
+	goto FuchsiaCity_Text_PokefanM_TrioWorld1_Resume
+FuchsiaCity_Text_PokefanM_TrioWorld1_After:
+	msgbox FuchsiaCity_Text_PokefanM_TrioWorldAfter, MSGBOX_NPC
+FuchsiaCity_Text_PokefanM_TrioWorld1_Resume:
 	end
 
 FuchsiaCity_EventScript_Teacher::
@@ -100,17 +105,43 @@ FuchsiaCity_EventScript_SafariZone::
 
 FuchsiaCity_Text_Youngster:
 	.string "One of the Elite Four used to be\n"
-	.string "the Leader of Fuchsia's Gym.$"
+	.string "the Leader of Fuchsia's Gym.\p"
+	.string "Riko tried to look fierce\n"
+	.string "beside a Kangaskhan. Penny\p"
+	.string "said hello to the baby.\n"
+	.string "Guess who got the most\p"
+	.string "attention.$"
 
 FuchsiaCity_Text_PokefanM:
 	.string "Koga's daughter succeeded him as\n"
 	.string "the Gym Leader after he joined the\l"
-	.string "Elite Four.$"
+	.string "Elite Four.\p"
+	.string "Janine wants a match with\n"
+	.string "the trio. She says being\p"
+	.string "famous does not help you\n"
+	.string "spot a ninja. Bijuu may\p"
+	.string "disagree.$"
+
+
+FuchsiaCity_Text_PokefanM_TrioWorldAfter:
+	.string "Koga's daughter succeeded him as\n"
+	.string "the Gym Leader after he joined the\l"
+	.string "Elite Four.\p"
+	.string "Janine held her own\n"
+	.string "against the girls! Their\p"
+	.string "trainer had to watch\n"
+	.string "carefully. Riko still\p"
+	.string "cheered at every trick.$"
 
 FuchsiaCity_Text_Teacher:
 	.string "The Safari Zone is under new\n"
 	.string "management.\p"
-	.string "And it has tons of new Pokémon!$"
+	.string "And it has tons of new Pokémon!\p"
+	.string "I like the trio as a team.\n"
+	.string "Riko gets them moving,\p"
+	.string "Bijuu notices everything,\n"
+	.string "and Penny makes sure\p"
+	.string "nobody gets left behind.$"
 
 FuchsiaCity_Text_Sign:
 	.string "Fuchsia City\p"

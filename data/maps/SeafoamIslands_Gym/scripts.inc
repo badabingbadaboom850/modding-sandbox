@@ -82,11 +82,19 @@ SeafoamIslands_Gym_Text_BlaineIntro:
 	.string "a Badge.\p"
 	.string "Ha! You'd better have Burn Heal!\p"
 	.string "Three legends! Now this is a\n"
-	.string "fiery challenge!$"
+	.string "fiery challenge!\p"
+	.string "Riko brings the drama!\n"
+	.string "Bijuu brings the sparks!\p"
+	.string "Penny brings a cool head!\n"
+	.string "What does their trainer\p"
+	.string "bring?$"
 
 SeafoamIslands_Gym_Text_BlaineWinLoss:
 	.string "Blaine: Awesome. I've burned out…\p"
-	.string "You've earned Volcanobadge!$"
+	.string "You've earned Volcanobadge!\p"
+	.string "Aha! Good judgment! That\n"
+	.string "is what your trainer\p"
+	.string "brings!$"
 
 SeafoamIslands_Gym_Text_ReceivedVolcanoBadge:
 	.string "{PLAYER} received Volcanobadge.$"
@@ -100,7 +108,11 @@ SeafoamIslands_Gym_Text_BlaineAfterBattle:
 SeafoamIslands_Gym_Text_BlaineFightDone:
 	.string "Blaine: My fire Pokémon will be\n"
 	.string "even stronger.\p"
-	.string "Just you watch!$"
+	.string "Just you watch!\p"
+	.string "Cinnabar talks about our\n"
+	.string "battle now. I am glad the\p"
+	.string "girls gave this old Gym a\n"
+	.string "new story to tell.$"
 
 SeafoamIslands_Gym_Text_BlaineRematch:
 	.string "Blaine: Whoa!\p"
@@ -109,12 +121,19 @@ SeafoamIslands_Gym_Text_BlaineRematch:
 	.string "That's blazing!\p"
 	.string "Your skills are top-notch.\p"
 	.string "I'm always up for a battle.\p"
-	.string "Want to have a rematch with me?$"
+	.string "Want to have a rematch with me?\p"
+	.string "I stoked the fire for your\n"
+	.string "return! Three girls, one\p"
+	.string "trainer, and no easy\n"
+	.string "victory!$"
 
 SeafoamIslands_Gym_Text_BlaineRematchDefeat:
 	.string "Blaine: Your skills are truly fiery!\p"
 	.string "You've burned right through my\n"
-	.string "defenses.$"
+	.string "defenses.\p"
+	.string "Burned out again! Keep\n"
+	.string "that teamwork burning\p"
+	.string "bright!$"
 
 SeafoamIslands_Gym_Text_GymGuideWin:
 	.string "Yo!\p"

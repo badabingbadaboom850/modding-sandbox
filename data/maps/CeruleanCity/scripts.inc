@@ -24,7 +24,12 @@ CeruleanCity_EventScript_CooltrainerMReturnedPart::
 	end
 
 CeruleanCity_EventScript_Boy::
+	goto_if_set FLAG_BADGE10_GET, CeruleanCity_Text_SuperNerd_TrioWorld1_After
 	msgbox CeruleanCity_Text_SuperNerd, MSGBOX_NPC
+	goto CeruleanCity_Text_SuperNerd_TrioWorld1_Resume
+CeruleanCity_Text_SuperNerd_TrioWorld1_After:
+	msgbox CeruleanCity_Text_SuperNerd_TrioWorldAfter, MSGBOX_NPC
+CeruleanCity_Text_SuperNerd_TrioWorld1_Resume:
 	end
 
 CeruleanCity_EventScript_Guard::
@@ -59,7 +64,22 @@ CeruleanCity_Text_CooltrainerM2:
 CeruleanCity_Text_SuperNerd:
 	.string "The Cape in the north is a good\n"
 	.string "place for dates.\p"
-	.string "Girls like it!$"
+	.string "Girls like it!\p"
+	.string "Misty heard that a trainer\n"
+	.string "brought the trio to Kanto.\p"
+	.string "She wants to see whether\n"
+	.string "they can handle her pace.$"
+
+
+CeruleanCity_Text_SuperNerd_TrioWorldAfter:
+	.string "The Cape in the north is a good\n"
+	.string "place for dates.\p"
+	.string "Girls like it!\p"
+	.string "Misty held her own against\n"
+	.string "the trio! She says that\p"
+	.string "trainer reads a battle\n"
+	.string "like a swimmer reads a\p"
+	.string "current.$"
 
 CeruleanCity_EventScript_Slowbro::
 	lock
@@ -111,7 +131,12 @@ CeruleanCity_EventScript_FisherDuringRocket::
 
 CeruleanCity_Text_Fisher:
 	.string "I'm a huge fan of Cerulean Gym's\n"
-	.string "Misty.$"
+	.string "Misty.\p"
+	.string "A mysterious trainer and\n"
+	.string "the girls passed the\p"
+	.string "bridge. Penny paused to\n"
+	.string "watch the water. The other\p"
+	.string "two waited.$"
 
 CeruleanCity_Text_Fisher_RocketTip:
 	.string "I saw this shady guy go off toward\n"
@@ -123,7 +148,12 @@ CeruleanCity_EventScript_Youngster::
 
 CeruleanCity_Text_Youngster1:
 	.string "The cave north of town has\n"
-	.string "horribly powerful Pokémon in it.$"
+	.string "horribly powerful Pokémon in it.\p"
+	.string "I would swim with Bijuu,\n"
+	.string "cheer with Riko, then sit\p"
+	.string "beside Penny to dry off.\n"
+	.string "That sounds like a perfect\p"
+	.string "afternoon.$"
 
 CeruleanCity_Text_Youngster2:
 	.string "Ayuh?\p"

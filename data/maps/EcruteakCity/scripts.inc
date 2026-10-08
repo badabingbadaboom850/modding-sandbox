@@ -159,7 +159,12 @@ EcruteakCity_Text_Silver3:
 EcruteakCity_EventScript_Gramps::
 	lock
 	faceplayer
+	goto_if_set FLAG_BADGE04_GET, EcruteakCity_Text_Gramps1_TrioWorld1_After
 	msgbox EcruteakCity_Text_Gramps1, MSGBOX_DEFAULT
+	goto EcruteakCity_Text_Gramps1_TrioWorld1_Resume
+EcruteakCity_Text_Gramps1_TrioWorld1_After:
+	msgbox EcruteakCity_Text_Gramps1_TrioWorldAfter, MSGBOX_DEFAULT
+EcruteakCity_Text_Gramps1_TrioWorld1_Resume:
 	closemessage
 	release
 	end
@@ -307,18 +312,44 @@ EcruteakCity_Text_UnusedMissingDaughter:
 
 EcruteakCity_Text_Gramps1:
 	.string "Ecruteak used to have two towers:\n"
-	.string "one each in the east and west.$"
+	.string "one each in the east and west.\p"
+	.string "Morty says the trio's bond\n"
+	.string "feels older than any tale.\p"
+	.string "I think the important part\n"
+	.string "is who they chose to walk\p"
+	.string "beside.$"
+
+
+EcruteakCity_Text_Gramps1_TrioWorldAfter:
+	.string "Ecruteak used to have two towers:\n"
+	.string "one each in the east and west.\p"
+	.string "Morty stood firm against\n"
+	.string "the girls. He says their\p"
+	.string "trainer gave them\n"
+	.string "direction without dimming\p"
+	.string "their spirit.$"
 
 EcruteakCity_Text_Gramps2:
 	.string "Ah, child. Have you learned to\n"
 	.string "dance like the Kimono Girls?\p"
 	.string "If you go to their Dance Theater,\n"
 	.string "an odd old man will give you\l"
-	.string "something nice, I hear.$"
+	.string "something nice, I hear.\p"
+	.string "People ask whether the\n"
+	.string "trio is a good omen. They\p"
+	.string "brought a shy girl out\n"
+	.string "into the world with her\p"
+	.string "sisters. Good enough for\n"
+	.string "me.$"
 
 EcruteakCity_Text_Lass1:
 	.string "I'm going to practice at the Dance\n"
-	.string "Theater. Care to join me?$"
+	.string "Theater. Care to join me?\p"
+	.string "Riko stopped to watch the\n"
+	.string "dancers. Bijuu learned the\p"
+	.string "steps. Penny leaned\n"
+	.string "against her trainer and\p"
+	.string "enjoyed the music.$"
 
 EcruteakCity_Text_Lass2:
 	.string "The tower that used to be here…\p"

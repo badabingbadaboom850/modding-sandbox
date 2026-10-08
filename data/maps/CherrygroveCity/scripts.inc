@@ -156,7 +156,12 @@ CherryGroveCity_EventScript_Fisherman2::
 CherryGroveCity_EventScript_Lass::
 	lock
 	faceplayer
+	goto_if_set FLAG_BADGE01_GET, CherrygroveCity_Text_TeacherHaveMapCard_TrioWorld1_After
 	msgbox CherrygroveCity_Text_TeacherHaveMapCard, MSGBOX_DEFAULT
+	goto CherrygroveCity_Text_TeacherHaveMapCard_TrioWorld1_Resume
+CherrygroveCity_Text_TeacherHaveMapCard_TrioWorld1_After:
+	msgbox CherrygroveCity_Text_TeacherHaveMapCard_TrioWorldAfter, MSGBOX_DEFAULT
+CherrygroveCity_Text_TeacherHaveMapCard_TrioWorld1_Resume:
 	closemessage
 	release
 	end
@@ -414,9 +419,26 @@ CherrygroveCity_Text_TeacherHaveMapCard:
 	.string "People returning from Route\n"
 	.string "31 saw three rare Pokemon.\p"
 	.string "One looked like a shy cat.\n"
-	.string "No one could keep up.$"
+	.string "No one could keep up.\p"
+	.string "A traveler asked which\n"
+	.string "road the trio took. I said\p"
+	.string "to follow the snack\n"
+	.string "crumbs. That was a joke.\p"
+	.string "Mostly.$"
 
 
+CherrygroveCity_Text_TeacherHaveMapCard_TrioWorldAfter:
+	.string "When you are with Pokemon,\n"
+	.string "going anywhere is fun.\p"
+	.string "People returning from Route\n"
+	.string "31 saw three rare Pokemon.\p"
+	.string "One looked like a shy cat.\n"
+	.string "No one could keep up.\p"
+	.string "Word from Violet says\n"
+	.string "Falkner made the trio work\p"
+	.string "for that Badge. A legend\n"
+	.string "still needs a good\p"
+	.string "trainer.$"
 
 CherrygroveCity_Text_YoungsterNoPokedex:
 	.string "Mr. Pokémon's house is still\n"
@@ -483,7 +505,12 @@ CherrygroveCity_Text_MysticWaterGuyBefore:
 	.string "want it?$"
 
 CherrygroveCity_Text_MysticWaterGuyAfter:
-	.string "Back to fishing for me, then.$"
+	.string "Back to fishing for me, then.\p"
+	.string "Bijuu copied my casting\n"
+	.string "motion without a fishing\p"
+	.string "rod. Riko watched the\n"
+	.string "bait. Penny watched the\p"
+	.string "horizon.$"
 
 CherrygroveCity_Text_CitySign:
 	.string "Cherrygrove City\p"

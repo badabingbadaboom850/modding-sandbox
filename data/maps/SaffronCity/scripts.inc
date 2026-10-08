@@ -61,7 +61,12 @@ SaffronCity_EventScript_CooltrainerM::
 	end
 
 SaffronCity_EventScript_CooltrainerF::
+	goto_if_set FLAG_BADGE13_GET, SaffronCity_Text_CooltrainerF_TrioWorld1_After
 	msgbox SaffronCity_Text_CooltrainerF, MSGBOX_NPC
+	goto SaffronCity_Text_CooltrainerF_TrioWorld1_Resume
+SaffronCity_Text_CooltrainerF_TrioWorld1_After:
+	msgbox SaffronCity_Text_CooltrainerF_TrioWorldAfter, MSGBOX_NPC
+SaffronCity_Text_CooltrainerF_TrioWorld1_Resume:
 	end
 
 SaffronCity_EventScript_Fisher::
@@ -143,7 +148,24 @@ SaffronCity_Text_CooltrainerF:
 	.string "This is Silph Co., famous for\n"
 	.string "Pokémon merchandise.\p"
 	.string "In the past, Team Rocket wanted\n"
-	.string "the company because of that.$"
+	.string "the company because of that.\p"
+	.string "Sabrina sensed the trio\n"
+	.string "before the rumor reached\p"
+	.string "town. She says their\n"
+	.string "trainer has a very steady\p"
+	.string "presence.$"
+
+
+SaffronCity_Text_CooltrainerF_TrioWorldAfter:
+	.string "This is Silph Co., famous for\n"
+	.string "Pokémon merchandise.\p"
+	.string "In the past, Team Rocket wanted\n"
+	.string "the company because of that.\p"
+	.string "Sabrina stood her ground\n"
+	.string "against all three girls.\p"
+	.string "She says their bond\n"
+	.string "changed a future she\p"
+	.string "thought she understood.$"
 
 SaffronCity_Text_Fisher:
 	.string "Chew… Chew…\p"
@@ -159,7 +181,11 @@ SaffronCity_Text_Fisher_ReturnedPart:
 
 SaffronCity_Text_Youngster1:
 	.string "Going into an alley for the first\n"
-	.string "time makes me sorta anxious.$"
+	.string "time makes me sorta anxious.\p"
+	.string "Bijuu copied a psychic's\n"
+	.string "stare. Riko stared right\p"
+	.string "back. Penny blinked first,\n"
+	.string "then went to sleep.$"
 
 SaffronCity_Text_Youngster2:
 	.string "There's a place called Trainer\n"
@@ -171,7 +197,12 @@ SaffronCity_Text_Lass2:
 	.string "program.\p"
 	.string "It's nice to hear praise for your\n"
 	.string "city, but it's a bit embarrassing\l"
-	.string "too.$"
+	.string "too.\p"
+	.string "People want to know how\n"
+	.string "one trainer tamed the\p"
+	.string "trio. Maybe they were not\n"
+	.string "tamed. Maybe they found\p"
+	.string "their person.$"
 
 SaffronCity_Text_Sign:
 	.string "Saffron City\p"

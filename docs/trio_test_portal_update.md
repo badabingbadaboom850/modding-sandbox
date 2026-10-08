@@ -88,3 +88,16 @@ The field-note sidequest starts with the existing Cherrygrove boy after the Pok√
 Mom's normal healing remains intact. With Penny (Fidough) in the party, the first confidence moment appears after the first Badge and recognizes her rescue gently without retelling it. After the second Badge, having both Riko and Bijuu in the party lets Mom describe Penny choosing a small hello with her sisters nearby. If the Bag is full, the Wawa remains available. These conversations use existing map NPCs and add no warps or new objects.
 
 Party checks account for every declared Riko and Bijuu form because the engine compares exact species IDs. Riko Spirit is excluded as its own species. The confidence quest advances from Badge flags and party members rather than repeated conversation counts.
+
+
+## Broad trio reputation dialogue pass
+
+Adds 183 expanded dialogue entries across 44 map scripts, plus 19 badge-dependent rumor variants. Residents in all 20 main Johto/Kanto towns have pet-specific conversation; Cinnabar's persistent residents are in its Pokemon Center. Existing directions, services, quest hooks, visibility rules, and map objects remain. Goldenrod has both civilian and Rocket chatter for the takeover stage. The trainer and all three girls are assumed present by the user's design.
+
+Stories vary between local sightings, individual preferences, affectionate jokes, the mysterious trainer's travels, and respect for Gym Leaders who stood their ground. Rumors about completed Gym matches are gated by their corresponding Badge flags. Early and later New Bark conversations are both covered. Additional route dialogue covers 26, 27, 32, 45, and 46, including pre-battle trainer conversations.
+
+All 16 Gym Leaders receive distinct intro, defeat, and return-visit additions. Existing rematch messages in the gyms are updated, and all 16 leaders' rematch introductions and defeat lines in Saffron's Fighting Dojo VIP are covered. No new battles or rematch systems are introduced.
+
+Validation: original labels and gameplay commands preserved, new branch labels unique and resolved, authoring raw blocks match their assembly counterparts, and new dialogue lines are conservatively wrapped to 26 characters with two lines per page. Reconciles older Goldenrod/Ecruteak authoring quote and ellipsis mismatches with the assembly. ROM CI and emulator checks remain required.
+
+In-game spot checks: talk to Violet's lass before/after Falkner, Azalea's teacher before/after Bugsy, Goldenrod's gramps before/after Whitney and a Rocket during takeover, and Cinnabar Pokemon Center's resident before/after Blaine. Check leaders on first challenge, immediately after defeat, return visits, and later dojo rematches. Rumor variants follow actual Badge flags; they do not claim the local leader has already lost on a first visit.

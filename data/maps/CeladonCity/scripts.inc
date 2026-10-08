@@ -70,7 +70,12 @@ CeladonCity_EventScript_Teacher2::
 	end
 
 CeladonCity_EventScript_Lass::
+	goto_if_set FLAG_BADGE12_GET, CeladonCity_Text_Lass_TrioWorld1_After
 	msgbox CeladonCity_Text_Lass, MSGBOX_NPC
+	goto CeladonCity_Text_Lass_TrioWorld1_Resume
+CeladonCity_Text_Lass_TrioWorld1_After:
+	msgbox CeladonCity_Text_Lass_TrioWorldAfter, MSGBOX_NPC
+CeladonCity_Text_Lass_TrioWorld1_Resume:
 	end
 
 CeladonCity_Text_Fisher:
@@ -84,7 +89,11 @@ CeladonCity_Text_Poliwrath:
 CeladonCity_Text_Teacher1:
 	.string "I lost at the slot machines again…\p"
 	.string "We girls also play the slots now.\p"
-	.string "You should check them out too.$"
+	.string "You should check them out too.\p"
+	.string "Riko inspected every purse\n"
+	.string "in the store. Bijuu copied\p"
+	.string "the mirror poses. Penny\n"
+	.string "found the softest seat.$"
 
 CeladonCity_Text_Gramps1:
 	.string "Grimer have been appearing lately.\p"
@@ -100,7 +109,11 @@ CeladonCity_Text_Gramps2:
 CeladonCity_Text_Youngster1:
 	.string "Want to know a secret?\p"
 	.string "Celadon Mansion has a hidden back\n"
-	.string "door.$"
+	.string "door.\p"
+	.string "The trio's trainer came\n"
+	.string "all the way from Johto. I\p"
+	.string "want to know whether Penny\n"
+	.string "likes Kanto grass better.$"
 
 CeladonCity_Text_Youngster2:
 	.string "They're holding an eating contest\n"
@@ -117,7 +130,22 @@ CeladonCity_Text_Teacher2:
 
 CeladonCity_Text_Lass:
 	.string "Looking at the ground while I was\n"
-	.string "walking made me dizzy.$"
+	.string "walking made me dizzy.\p"
+	.string "Erika wants to meet the\n"
+	.string "trio. She says even a very\p"
+	.string "famous girl can enjoy a\n"
+	.string "garden without doing\p"
+	.string "anything impressive.$"
+
+
+CeladonCity_Text_Lass_TrioWorldAfter:
+	.string "Looking at the ground while I was\n"
+	.string "walking made me dizzy.\p"
+	.string "Erika held her own against\n"
+	.string "the trio! She called their\p"
+	.string "trainer thoughtful. Around\n"
+	.string "here, that is very high\p"
+	.string "praise.$"
 
 CeladonCity_EventScript_CitySign::
 	msgbox CeladonCity_Text_Sign, MSGBOX_SIGN

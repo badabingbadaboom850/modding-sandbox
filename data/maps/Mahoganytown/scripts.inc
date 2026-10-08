@@ -233,7 +233,12 @@ MahoganyTown_EventScript_Fisher::
 MahoganyTown_EventScript_Lass::
 	lock
 	faceplayer
+	goto_if_set FLAG_BADGE07_GET, MahoganyTown_Text_Lass_TrioWorld1_After
 	msgbox MahoganyTown_Text_Lass, MSGBOX_DEFAULT
+	goto MahoganyTown_Text_Lass_TrioWorld1_Resume
+MahoganyTown_Text_Lass_TrioWorld1_After:
+	msgbox MahoganyTown_Text_Lass_TrioWorldAfter, MSGBOX_DEFAULT
+MahoganyTown_Text_Lass_TrioWorld1_Resume:
 	closemessage
 	release
 	end
@@ -292,13 +297,24 @@ MahoganyTown_Text_RageCandyBarMerchantSoldOut:
 
 MahoganyTown_Text_Gramps:
     .string "Are you off to see the Gyarados\n"
-    .string "rampage at the Lake?$"
+    .string "rampage at the Lake?\p"
+	.string "A trainer came through\n"
+	.string "with the trio. Riko went\p"
+	.string "straight for the shop.\n"
+	.string "Bijuu went straight for\p"
+	.string "the echo. Penny counted\n"
+	.string "heads.$"
 
 MahoganyTown_Text_GrampsClearedRocketHideout:
     .string "Magikarp have returned to Lake\n"
     .string "Of Rage.\p"
     .string "That should be good news for the\n"
-    .string "anglers there.$"
+    .string "anglers there.\p"
+	.string "The girls are famous now,\n"
+	.string "but their trainer still\p"
+	.string "stops to let Penny rest.\n"
+	.string "That tells me more than a\p"
+	.string "list of victories.$"
 
 MahoganyTown_Text_Fisher:
     .string "Since you came this far, take the\n"
@@ -312,9 +328,25 @@ MahoganyTown_Text_Lass:
     .string "Riko says Ragecandybars vanish\n"
     .string "mysteriously when she walks by.\p"
     .string "Penny blames Bijuu, who has sticky\n"
-    .string "whiskers and no explanation.$"
+    .string "whiskers and no explanation.\p"
+	.string "Pryce says patience beats\n"
+	.string "a big reputation. I wonder\p"
+	.string "how patient he can stay\n"
+	.string "while Riko asks for\p"
+	.string "attention.$"
 
 
+MahoganyTown_Text_Lass_TrioWorldAfter:
+    .string "The shop sells things no one else\n"
+    .string "has.\p"
+    .string "Riko says Ragecandybars vanish\n"
+    .string "mysteriously when she walks by.\p"
+    .string "Penny blames Bijuu, who has sticky\n"
+    .string "whiskers and no explanation.\p"
+	.string "Pryce held his own against\n"
+	.string "the trio. He says their\p"
+	.string "trainer knew when to wait.\n"
+	.string "Penny probably approved.$"
 
 MahoganyTown_Text_Sign:
     .string "Mahogany Town\p"

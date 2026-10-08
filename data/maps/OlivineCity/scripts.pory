@@ -185,7 +185,12 @@ OlivineCity_Text_SilverEncounter:
 OlivineCity_EventScript_Sailor1::
 	lock
 	faceplayer
+	goto_if_set FLAG_BADGE06_GET, OlivineCity_Text_Sailor1_TrioWorld1_After
 	msgbox OlivineCity_Text_Sailor1, MSGBOX_DEFAULT
+	goto OlivineCity_Text_Sailor1_TrioWorld1_Resume
+OlivineCity_Text_Sailor1_TrioWorld1_After:
+	msgbox OlivineCity_Text_Sailor1_TrioWorldAfter, MSGBOX_DEFAULT
+OlivineCity_Text_Sailor1_TrioWorld1_Resume:
 	closemessage
 	release
 	end
@@ -293,16 +298,48 @@ OlivineCity_Text_Sailor1:
 	.string "treacherous!\p"
 	.string "Without the beacon of the\n"
 	.string "Lighthouse to guide it,\l"
-	.string "no ship can sail.$"
+	.string "no ship can sail.\p"
+	.string "A trainer with the trio\n"
+	.string "was seen near the\p"
+	.string "lighthouse. Riko wanted\n"
+	.string "the view. Penny wanted\p"
+	.string "everybody to watch their\n"
+	.string "step.$"
+
+
+OlivineCity_Text_Sailor1_TrioWorldAfter:
+	.string "Dark roads are dangerous\n"
+	.string "at night.\p"
+	.string "But in the pitch-black of\n"
+	.string "night, the sea is even more\l"
+	.string "treacherous!\p"
+	.string "Without the beacon of the\n"
+	.string "Lighthouse to guide it,\l"
+	.string "no ship can sail.\p"
+	.string "Jasmine held her own\n"
+	.string "against three legends. The\p"
+	.string "sailors say it was skill\n"
+	.string "against skill, with\p"
+	.string "kindness on both sides.$"
 
 OlivineCity_Text_YoungsterPokegear:
 	.string "That thing you have--\n"
 	.string "it's a Pokégear, right?\l"
-	.string "Wow, that's cool.$"
+	.string "Wow, that's cool.\p"
+	.string "I like Penny best. Big\n"
+	.string "adventures are scary\p"
+	.string "sometimes. She goes anyway\n"
+	.string "because her sisters go\p"
+	.string "with her.$"
 
 OlivineCity_Text_YoungsterPokedex:
 	.string "Wow, you have a Pokédex!\p"
-	.string "That is just so awesome.$"
+	.string "That is just so awesome.\p"
+	.string "I like Penny best. Big\n"
+	.string "adventures are scary\p"
+	.string "sometimes. She goes anyway\n"
+	.string "because her sisters go\p"
+	.string "with her.$"
 
 OlivineCity_Text_Sailor2:
 	.string "Jasmine is the sixth strongest\n"
@@ -312,9 +349,11 @@ OlivineCity_Text_Sailor2:
 	.string "Crews in port report three rare\n"
 	.string "Pokemon near Route 31.\p"
 	.string "One was a shy cat. No one got\n"
-	.string "close before they vanished.$"
-
-
+	.string "close before they vanished.\p"
+	.string "Bijuu copied the ship's\n"
+	.string "whistle. Half the dock got\p"
+	.string "ready to leave. She looked\n"
+	.string "very pleased with herself.$"
 
 OlivineCity_Text_Sign:
 	.string "Olivine City\p"

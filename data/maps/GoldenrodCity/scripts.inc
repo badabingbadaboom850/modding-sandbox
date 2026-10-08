@@ -105,7 +105,12 @@ GoldenrodCity_EventScript_Lass::
 GoldenrodCity_EventScript_Gramps::
 	lock
 	faceplayer
+	goto_if_set FLAG_BADGE03_GET, GoldenrodCity_Text_Gramps_TrioWorld1_After
 	msgbox GoldenrodCity_Text_Gramps, MSGBOX_DEFAULT
+	goto GoldenrodCity_Text_Gramps_TrioWorld1_Resume
+GoldenrodCity_Text_Gramps_TrioWorld1_After:
+	msgbox GoldenrodCity_Text_Gramps_TrioWorldAfter, MSGBOX_DEFAULT
+GoldenrodCity_Text_Gramps_TrioWorld1_Resume:
 	closemessage
 	release
 	end
@@ -285,7 +290,11 @@ GoldenrodCity_Text_Beauty:
 GoldenrodCity_Text_Woman:
 	.string "I used to train in Whitney's Gym,\n"
 	.string "but all her crying gave me a\l"
-	.string "headache.$"
+	.string "headache.\p"
+	.string "Riko has the confidence of\n"
+	.string "a girl who has never paid\p"
+	.string "for anything. I respect\n"
+	.string "it. I also hide my snacks.$"
 
 GoldenrodCity_Text_HikerDay:
 	.string "When I went into the Game Corner\n"
@@ -316,7 +325,12 @@ GoldenrodCity_Text_PokefanM:
 
 GoldenrodCity_Text_Youngster1:
 	.string "I know there's a new Bike Shop,\n"
-	.string "but I can't find it anywhere.$"
+	.string "but I can't find it anywhere.\p"
+	.string "I heard the trio's trainer\n"
+	.string "is crossing Goldenrod. My\p"
+	.string "sister wants an autograph.\n"
+	.string "From Penny. She has good\p"
+	.string "taste.$"
 
 GoldenrodCity_Text_CooltrainerF1:
 	.string "Is that man in black dressed up\n"
@@ -359,7 +373,23 @@ GoldenrodCity_Text_Lass:
 
 GoldenrodCity_Text_Gramps:
 	.string "Whew! This city is so big,\n"
-	.string "I can't find anything at all.$"
+	.string "I can't find anything at all.\p"
+	.string "A trainer with three girls\n"
+	.string "caused quite a stir at the\p"
+	.string "shops. Riko wanted a\n"
+	.string "purse. Bijuu copied the\p"
+	.string "cashier. Penny wanted to\n"
+	.string "go home.$"
+
+
+GoldenrodCity_Text_Gramps_TrioWorldAfter:
+	.string "Whew! This city is so big,\n"
+	.string "I can't find anything at all.\p"
+	.string "Whitney held her own\n"
+	.string "against the trio! The\p"
+	.string "crowd cheered for both\n"
+	.string "sides. Three legends did\p"
+	.string "not make it an easy match.$"
 
 GoldenrodCity_Text_RocketScout1:
 	.string "So this is the Radio Tower…$"
@@ -378,7 +408,12 @@ GoldenrodCity_Text_Rocket2:
 
 GoldenrodCity_Text_Rocket3:
 	.string "Pokémon? They're just tools\n"
-	.string "we use to make money!$"
+	.string "we use to make money!\p"
+	.string "Three girls and one\n"
+	.string "trainer? I was told this\p"
+	.string "job involved ordinary\n"
+	.string "Pokemon. Nobody mentioned\p"
+	.string "the loud fluffy one.$"
 
 GoldenrodCity_Text_Rocket4:
 	.string "Our dream will soon come true…\p"
@@ -390,7 +425,12 @@ GoldenrodCity_Text_Rocket5:
 
 GoldenrodCity_Text_Rocket6:
 	.string "Come and taste the terror of\n"
-	.string "Team Rocket!$"
+	.string "Team Rocket!\p"
+	.string "Bijuu copied our secret\n"
+	.string "signal. Now nobody knows\p"
+	.string "who is giving orders. I\n"
+	.string "blame that mysterious\p"
+	.string "trainer.$"
 
 GoldenrodCity_Text_StationSign:
 	.string "Goldenrod City Station$"

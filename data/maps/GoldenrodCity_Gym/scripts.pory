@@ -134,7 +134,11 @@ GoldenrodCity_Gym_Text_WhitneyBefore:
     .string "You want to battle? I'm warning\n"
     .string "you- I'm good!\p"
     .string "Three legendary girls? Wow!\n"
-    .string "This is a lot of pressure!$"
+    .string "This is a lot of pressure!\p"
+	.string "Riko is looking at my bag!\n"
+	.string "Penny is adorable! Bijuu,\p"
+	.string "stop copying my pose. I am\n"
+	.string "trying to be intimidating!$"
 
 GoldenrodCity_Gym_Text_WhitneyShouldntBeSoSerious:
     .string "Sob…\p"
@@ -145,7 +149,11 @@ GoldenrodCity_Gym_Text_WhitneyShouldntBeSoSerious:
 GoldenrodCity_Gym_Text_WhitneyYouMeanie:
     .string "Waaaaah!\p"
     .string "Waaaaah!\p"
-    .string "…Snivel, hic… …You meanie!$"
+    .string "…Snivel, hic… …You meanie!\p"
+	.string "I lost, and Penny still\n"
+	.string "looks worried about me!\p"
+	.string "That makes it harder to be\n"
+	.string "mad!$"
 
 GoldenrodCity_Gym_Text_WhitneyWhatDoYouWant:
     .string "…Sniff…\p"
@@ -168,19 +176,31 @@ GoldenrodCity_Gym_Text_WhitneyAttract:
     .string "like me?$"
 
 GoldenrodCity_Gym_Text_WhitneyGoodCry:
-    .string "Ah, that was a good cry!$"
+    .string "Ah, that was a good cry!\p"
+	.string "Everyone keeps talking\n"
+	.string "about our match. Next time\p"
+	.string "bring the girls for a\n"
+	.string "visit without all the\p"
+	.string "battling!$"
 
 GoldenrodCity_Gym_Text_WhitneyRematch:
     .string "Hi! It's you!\p"
     .string "Wow, Johto Champion now?\p"
     .string "You really are amazing!\p"
     .string "I want to see how strong you are.\p"
-    .string "Want to have a rematch with me?$"
+    .string "Want to have a rematch with me?\p"
+	.string "I practiced! I even\n"
+	.string "practiced ignoring how\p"
+	.string "cute Penny is. Well, I\n"
+	.string "tried. Come on, girls!$"
 
 GoldenrodCity_Gym_Text_WhitneyRematchDefeat:
     .string "Waaaaah!\p"
     .string "Waaaaah!\p"
-    .string "…Snivel, hic… …You meanie!$"
+    .string "…Snivel, hic… …You meanie!\p"
+	.string "All right, that was good!\n"
+	.string "Do not tell Riko I copied\p"
+	.string "her victory pose.$"
 
 GoldenrodCity_Gym_Text_LassCarrieSeen:
     .string "Don't let my Pokémon's cute looks\n"

@@ -141,7 +141,12 @@ NewBarkTown_EventScript_FatMan::
 	lock
 	faceplayer
 	goto_if_eq VAR_NEWBARK_TOWN_STATE, 2, NewBarkTown_EventScript_FatManState2
+	goto_if_set FLAG_BADGE01_GET, NewBarkTown_Text_FatManState3_TrioWorld1_After
 	msgbox NewBarkTown_Text_FatManState3, MSGBOX_DEFAULT
+	goto NewBarkTown_Text_FatManState3_TrioWorld1_Resume
+NewBarkTown_Text_FatManState3_TrioWorld1_After:
+	msgbox NewBarkTown_Text_FatManState3_TrioWorldAfter, MSGBOX_DEFAULT
+NewBarkTown_Text_FatManState3_TrioWorld1_Resume:
 	closemessage
 	release
 	end
@@ -239,7 +244,12 @@ NewBarkTown_Text_Wooper:
 
 NewBarkTown_Text_FatManState2:
 	.string "Wow, your Pokégear is impressive!\n"
-	.string "Did your mom get it for you?$"
+	.string "Did your mom get it for you?\p"
+	.string "A trainer left town with\n"
+	.string "Riko, Penny, and Bijuu. I\p"
+	.string "packed one sandwich for\n"
+	.string "the road. Riko inspected\p"
+	.string "all three pockets.$"
 
 NewBarkTown_Text_FatManState3:
 	.string "Yo, {PLAYER}!\p"
@@ -248,20 +258,46 @@ NewBarkTown_Text_FatManState3:
 	.string "Travelers saw three rare\n"
 	.string "Pokemon on Route 31.\p"
 	.string "A shy cat was with them.\n"
-	.string "She slipped into the grass.$"
+	.string "She slipped into the grass.\p"
+	.string "Riko treats this road like\n"
+	.string "a parade. Penny checks\p"
+	.string "that nobody falls behind.\n"
+	.string "Bijuu copies the marching\p"
+	.string "feet.$"
 
 
+NewBarkTown_Text_FatManState3_TrioWorldAfter:
+	.string "Yo, {PLAYER}!\p"
+	.string "I hear Prof Elm found some\n"
+	.string "new Pokemon.\p"
+	.string "Travelers saw three rare\n"
+	.string "Pokemon on Route 31.\p"
+	.string "A shy cat was with them.\n"
+	.string "She slipped into the grass.\p"
+	.string "Falkner stood his ground\n"
+	.string "against those girls! That\p"
+	.string "trainer from our town\n"
+	.string "really knows how to bring\p"
+	.string "out their best.$"
 
 NewBarkTown_Text_LassState2:
 	.string "Wait, {PLAYER}!\p"
 	.string "It's dangerous to go out\n"
 	.string "without a Pokémon!\p"
 	.string "Wild Pokémon jump out of the grass\n"
-	.string "on the way to the next town.$"
+	.string "on the way to the next town.\p"
+	.string "Penny used to keep her\n"
+	.string "distance. Now she watches\p"
+	.string "the road beside her\n"
+	.string "sisters. A quiet change\p"
+	.string "can be a big one.$"
 
 NewBarkTown_Text_LassState3:
 	.string "Oh! Your Pokémon is adorable!\n"
-	.string "I wish I had one!$"
+	.string "I wish I had one!\p"
+	.string "The trio has a trainer\n"
+	.string "now? I thought Riko would\p"
+	.string "insist on being in charge!$"
 
 NewBarkTown_Text_LassState4:
 	.string "Hi, {PLAYER}! Leaving again?\p"
@@ -270,11 +306,21 @@ NewBarkTown_Text_LassState4:
 	.string "There's a story going around about\n"
 	.string "a cat between Cherrygrove and\p"
 	.string "Violet. A few trainers say she\n"
-	.string "follows them, then slips away.$"
+	.string "follows them, then slips away.\p"
+	.string "I heard a mysterious\n"
+	.string "trainer is heading toward\p"
+	.string "Violet with three little\n"
+	.string "legends. I hope they\p"
+	.string "packed extra snacks.$"
 
 NewBarkTown_Text_LassState5:
 	.string "Call your mom on your Pokégear\n"
 	.string "to let her know how you're doing.$\p"
+	.string "Bijuu copies the lab's\n"
+	.string "door chime. Riko answers\p"
+	.string "every time. Penny knows\n"
+	.string "better, but goes along for\p"
+	.string "company.$"
 
 NewBarkTown_Text_Silver1:
 	.string ". . .\p"
