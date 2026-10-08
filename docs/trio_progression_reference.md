@@ -4,6 +4,8 @@ Source snapshot: `724570bfcb4268d48837a76d8f751d77ca4e8318`, branch `feat/riko-b
 Reviewed October 7, 2026 Pacific / October 8 UTC. Source tracing, not an emulator walkthrough.
 Read alongside [the item/species guide](trio_modding_reference.md). [Reviewed map inventory](trio_progression_maps.json) contains 61 map headers, connections, warp indices, story coordinate triggers, and identified custom pet objects.
 
+> Temporary testing override: gameplay commit [bfffe81](https://github.com/badabingbadaboom850/modding-sandbox/commit/bfffe8175638d01496038c75004e101bc6ab89a6) redirects the player's outdoor home doorway to the Suicune/Spirit Riko room, with a return warp and Flash disabled. The story and map inventory below describe the earlier snapshot above. See [the exact implementation and rollback guide](trio_test_warp_implementation.md).
+
 ## Agent instructions: read this before placing early-game content
 
 The game starts in **New Bark Town, Johto**, in the player's upstairs bedroom at (4,4).

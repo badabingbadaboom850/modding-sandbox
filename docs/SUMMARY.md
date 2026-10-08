@@ -5,6 +5,7 @@
 - [Riko in-game implementation and evolution](riko_in_game_implementation_and_evolution.md)
 - [Trio item and species modding reference](trio_modding_reference.md)
 - [Trio progression and map identity reference](trio_progression_reference.md)
+- [Temporary Suicune cave test warp implementation](trio_test_warp_implementation.md)
 - [Installation](./INSTALL.md)
     - [Setting up WSL1 (Legacy Portion)](./legacy_WSL1_INSTALL.md)
     - [ChromeOS](./install/chromeos/CHROME_OS.md)
