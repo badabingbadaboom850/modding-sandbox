@@ -4,7 +4,7 @@
   "layout": "LAYOUT_SHOAL_CAVE_LOW_TIDE_ICE_ROOM_SUICUNE",
   "music": "MUS_DP_MT_CORONET",
   "region_map_section": "MAPSEC_SHOAL_CAVE",
-  "requires_flash": true,
+  "requires_flash": false,
   "weather": "WEATHER_SNOW",
   "map_type": "MAP_TYPE_UNDERGROUND",
   "allow_cycling": true,
@@ -124,7 +124,7 @@
       "x": 4,
       "y": 4,
       "elevation": 0,
-      "dest_map": "MAP_SHOAL_CAVE_LOW_TIDE_ICE_ROOM",
+      "dest_map": "MAP_NEW_BARK_TOWN",
       "dest_warp_id": "1"
     }
   ],
