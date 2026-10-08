@@ -42,6 +42,8 @@ NewBarkTown_PlayersHouse_1F_EventScript_MomsFriend::
 	goto_if_eq VAR_RESULT, YES, NewBarkTown_PlayersHouse_1F_EventScript_TestCaveTrip
 	msgbox NewBarkTown_PlayersHouse_1F_Text_TestSpiritBattle, MSGBOX_YESNO
 	goto_if_eq VAR_RESULT, YES, NewBarkTown_PlayersHouse_1F_EventScript_TestSpiritBattle
+	msgbox NewBarkTown_PlayersHouse_1F_Text_ControlTrip, MSGBOX_YESNO
+	goto_if_eq VAR_RESULT, YES, NewBarkTown_PlayersHouse_1F_EventScript_ControlTrip
 	closemessage
 	release
 	end
@@ -255,3 +257,14 @@ NewBarkTown_PlayersHouse_1F_Text_TestSpiritBattle:
 	.string "here instead?\p"
 	.string "Level 70. You can catch it.\n"
 	.string "Cave progress will not change.$"
+
+NewBarkTown_PlayersHouse_1F_EventScript_ControlTrip::
+	closemessage
+	warp MAP_NEW_BARK_TOWN_PLAYERS_HOUSE_2F, 4, 4
+	waitstate
+	release
+	end
+
+NewBarkTown_PlayersHouse_1F_Text_ControlTrip:
+	.string "Try a control teleport\n"
+	.string "to your upstairs bedroom?$"

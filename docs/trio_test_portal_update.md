@@ -6,19 +6,36 @@ This update follows the tested Riko/Elm dialogue pilot. The earlier outside-hous
 
 The outdoor home doorway once again enters the normal downstairs room.
 
-Talk to **Mom's friend inside your home**. While this test portal is installed, the house transition explicitly clears her hide flag at every story stage, so she remains available on existing saves. After her normal dialogue, she offers a test trip. Choose Yes to use the existing script warp command with explicit coordinates **(4,5)** in `MAP_SHOAL_CAVE_LOW_TIDE_ICE_ROOM_SUICUNE`. Choose No to skip travel and receive a second optional prompt for a direct Spirit Riko battle. Choose No again to stay home without battling.
+Talk to **Mom's friend inside your home**. While this test portal is installed, the house transition explicitly clears her hide flag at every story stage, so she remains available on existing saves. After her normal dialogue, she offers a test trip. Choose Yes to use the existing script warp command with explicit coordinates **(4,5)** in `MAP_SHOAL_CAVE_LOW_TIDE_ICE_ROOM_SUICUNE`. Choose No to skip travel and receive a second optional prompt for a direct Spirit Riko battle. Choose No again to receive the optional upstairs control-teleport prompt. Decline all three prompts to stay home without battling or traveling.
 
 To return, stand at (4,5), face north toward the entrance at (4,4), and press A. The return prompt warps to **(20,12)** in New Bark, immediately outside the home doorway. This interaction does not rely on the cave entrance having a working warp metatile.
 
 The cave's legacy warp entry still points to New Bark warp 1. Flash remains disabled. The cave battle levels and object completion flags remain unchanged. Existing saves do not reset defeated spirits.
 
-## Current black-screen isolation
+## Callback isolation and control teleport
 
-Only the cave's weather setting changes from `WEATHER_SNOW` to `WEATHER_NONE` in this pass. Its terrain, objects, transition/resume callbacks, popup, and portal coordinates are retained.
+The user confirmed the direct Spirit Riko battle works, while the snow-disabled cave trip still blackscreens. This confirms the standard battle path and its graphics can load; static overworld Spirit graphics remain a separate unverified path.
+
+This pass removes only the cave's transition and resume registrations from its map-script table. The table now contains just the terminating byte. The original transition handler is retained for rollback but is no longer registered. The cave entrance coordinate event, object battle scripts, return interaction, layout, terrain, and portal coordinates stay intact. Snow remains disabled.
+
+The handlers being bypassed are `ShoalCave_LowTideIceRoom_Suicune_OnTransition` (which calls `SetTimeBasedEncounters`) and `SetTimeEncounters`. Their full native implementation has not been located or verified, so this is a temporary diagnostic that may affect time-based encounters, not a confirmed root-cause fix.
+
+After declining both the cave trip and direct battle, Mom's friend offers a **control teleport to the upstairs bedroom at (4,4)**. It uses the same ordinary scripted warp and waitstate pattern as the cave trip, with a destination that already loads at the start of a fresh game.
+
+Test interpretation:
+- Upstairs works, cave works: the disabled cave callbacks are a leading suspect.
+- Upstairs works, cave still fails: next inspect cave object graphics and map rendering/loading.
+- Upstairs also fails: investigate the shared scripted-warp path or whether the intended new ROM is running.
+
+Restore the two original map-script registrations after their behavior is understood. This test does not alter the cave's persistent completion flags.
+
+## Earlier snow isolation
+
+The preceding isolation changed only the cave's weather setting from `WEATHER_SNOW` to `WEATHER_NONE` in this pass. Its terrain, objects, transition/resume callbacks, popup, and portal coordinates are retained.
 
 `Snow_InitAll` in `src/field_weather_effect.c` contains a blocking loop until the snow graphics are loaded. Loading requires the snowflake count to reach its target; `CreateSnowflakeSprite` can fail at `MAX_SPRITES`, leaving the count unchanged, and that failure is ignored by the update loop. This is a concrete conditional hang risk, not proof that this map exhausts sprite slots.
 
-If this version loads, the snow path becomes the leading cause to investigate. If it still fails, disabling snow alone is insufficient and the next investigation should target map callbacks and object/graphics loading. Local emulator execution is unavailable.
+The user reported that version still failed. Disabling snow alone was therefore insufficient; the current pass targets map callbacks. Local emulator execution is unavailable.
 
 ## Direct battle fallback
 
@@ -53,15 +70,16 @@ Source checks: JSON parses; portal coordinate destinations are in bounds and uno
 
 CI compilation and in-game tests remain required:
 1. Home doorway enters normally.
-2. Mom's friend No stays home; Yes loads the cave.
-3. Cave entrance A prompt returns outside home.
-4. Decline travel, accept the direct battle, and check its battle/capture behavior.
-5. On a regular repeat Mom visit, verify Penny's comfort line and normal healing; repeat without Penny.
-6. Elm's tested Riko beat remains intact.
-7. Cherrygrove rumor and Violet before/after-badge dialogue appear.
+2. Accept Mom's friend's cave trip and check whether it loads.
+3. Decline the cave trip and battle, then accept the upstairs control teleport; check the bedroom and normal stairs.
+4. Cave entrance A prompt returns outside home.
+5. Decline travel, accept the direct battle, and check its battle/capture behavior.
+6. On a regular repeat Mom visit, verify Penny's comfort line and normal healing; repeat without Penny.
+7. Elm's tested Riko beat remains intact.
+8. Cherrygrove rumor and Violet before/after-badge dialogue appear.
 
 No claim of a confirmed runtime black-screen fix should be made until step 2 succeeds.
 
 ## Restore test-only changes later
 
-Remove the unconditional hide-flag clear added to the house transition and the extra trip and direct-battle prompts/handlers/text from the Mom's friend script, and remove the cave return background event and its handlers/text. Restore the cave's original warp destination `MAP_SHOAL_CAVE_LOW_TIDE_ICE_ROOM` and `requires_flash: true` when normal story behavior is desired. Restore `weather: WEATHER_SNOW` only after investigating the loading failure. Keep the normal home doorway, repaired terrain, and reputation dialogue.
+Remove the unconditional hide-flag clear added to the house transition and the extra trip, direct-battle, and control-teleport prompts/handlers/text from the Mom's friend script, and remove the cave return background event and its handlers/text. Restore the cave's original warp destination `MAP_SHOAL_CAVE_LOW_TIDE_ICE_ROOM` and `requires_flash: true` when normal story behavior is desired. Restore `weather: WEATHER_SNOW` only after investigating the loading failure. Keep the normal home doorway, repaired terrain, and reputation dialogue.

@@ -3,8 +3,7 @@
 .set LOCALID_RIKO_SPIRIT_2, 8
 
 ShoalCave_LowTideIceRoom_Suicune_MapScripts::
-	map_script MAP_SCRIPT_ON_TRANSITION, ShoalCave_LowTideIceRoom_Suicune_OnTransition
-	map_script MAP_SCRIPT_ON_RESUME, SetTimeEncounters
+	@ Temporary diagnosis: do not run the time-based entry/resume callbacks.
 	.byte 0
 
 ShoalCave_LowTideIceRoom_Suicune_OnTransition::
