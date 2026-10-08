@@ -2,6 +2,7 @@
 
 - [README](./README.md)
 - [FEATURES](./FEATURES.md)
+- [Riko in-game implementation and evolution](riko_in_game_implementation_and_evolution.md)
 - [Installation](./INSTALL.md)
     - [Setting up WSL1 (Legacy Portion)](./legacy_WSL1_INSTALL.md)
     - [ChromeOS](./install/chromeos/CHROME_OS.md)
