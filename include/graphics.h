@@ -3524,6 +3524,10 @@ extern const u32 gItemIcon_RikosWand[];
 extern const u16 gItemIconPalette_RikosWand[];
 extern const u32 gItemIcon_BlueBrush[];
 extern const u16 gItemIconPalette_BlueBrush[];
+extern const u32 gItemIcon_BijuusFishToy[];
+extern const u16 gItemIconPalette_BijuusFishToy[];
+extern const u32 gItemIcon_BijuusCatNip[];
+extern const u16 gItemIconPalette_BijuusCatNip[];
 
 extern const u32 gItemIcon_GSBall[];
 extern const u16 gItemIconPalette_GSBall[];
