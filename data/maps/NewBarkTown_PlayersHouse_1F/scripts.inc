@@ -5,8 +5,6 @@ NewBarkTown_PlayersHouse_1F_MapScripts::
 	.byte 0
 
 NewBarkTown_PlayersHouse_1F_OnTransition::
-	@ Keep the temporary cave test guide available on existing saves.
-	clearflag FLAG_HIDE_MOMS_FRIEND
 	call_if_eq VAR_NEWBARK_TOWN_STATE, 1, NewBarkTown_PlayersHouse_1F_SetMomStandingAtTable
 	call_if_eq VAR_NEWBARK_TOWN_STATE, 2, NewBarkTown_PlayersHouse_1F_SetMomStandingAtTable
 	call_if_eq VAR_NEWBARK_TOWN_STATE, 3, NewBarkTown_PlayersHouse_1F_SetMomStandingAtTable
@@ -38,28 +36,8 @@ NewBarkTown_PlayersHouse_1F_EventScript_MomsFriend::
 	msgbox NewBarkTown_PlayersHouse_1F_Text_MomsFriend, MSGBOX_DEFAULT
 	applymovement LOCALID_MOMS_FRIEND, NewBarkTown_PlayersHouse_1F_MovementFaceRight
 	waitmovement 0
-	msgbox NewBarkTown_PlayersHouse_1F_Text_TestCaveTrip, MSGBOX_YESNO
-	goto_if_eq VAR_RESULT, YES, NewBarkTown_PlayersHouse_1F_EventScript_TestCaveTrip
-	msgbox NewBarkTown_PlayersHouse_1F_Text_TestSpiritBattle, MSGBOX_YESNO
-	goto_if_eq VAR_RESULT, YES, NewBarkTown_PlayersHouse_1F_EventScript_TestSpiritBattle
-	msgbox NewBarkTown_PlayersHouse_1F_Text_ControlTrip, MSGBOX_YESNO
-	goto_if_eq VAR_RESULT, YES, NewBarkTown_PlayersHouse_1F_EventScript_ControlTrip
-	closemessage
 	release
 	end
-
-NewBarkTown_PlayersHouse_1F_EventScript_TestCaveTrip::
-	closemessage
-	warp MAP_SHOAL_CAVE_LOW_TIDE_ICE_ROOM_SUICUNE, 4, 5
-	waitstate
-	release
-	end
-
-NewBarkTown_PlayersHouse_1F_Text_TestCaveTrip:
-	.string "Want a test trip to the\n"
-	.string "Spirit of Riko cave?\p"
-	.string "Inspect the entrance there\n"
-	.string "to return to New Bark Town.$"
 
 NewBarkTown_PlayersHouse_1F_MomEventScript_GoodLuck::
 	msgbox NewBarkTown_PlayersHouse_1F_Text_MomLeaving, MSGBOX_DEFAULT
@@ -244,27 +222,3 @@ NewBarkTown_PlayersHouse_1F_Text_MomLeaving:
 	.string "You need to work as a team.\p"
 	.string "Now, go on!\n"
 	.string "I'm behind you all the way!$"
-
-NewBarkTown_PlayersHouse_1F_EventScript_TestSpiritBattle::
-	closemessage
-	setwildbattle SPECIES_RIKO_SPIRIT, 70, ITEM_CHARCOAL
-	dowildbattle
-	release
-	end
-
-NewBarkTown_PlayersHouse_1F_Text_TestSpiritBattle:
-	.string "Try a Spirit of Riko battle\n"
-	.string "here instead?\p"
-	.string "Level 70. You can catch it.\n"
-	.string "Cave progress will not change.$"
-
-NewBarkTown_PlayersHouse_1F_EventScript_ControlTrip::
-	closemessage
-	warp MAP_NEW_BARK_TOWN_PLAYERS_HOUSE_2F, 4, 4
-	waitstate
-	release
-	end
-
-NewBarkTown_PlayersHouse_1F_Text_ControlTrip:
-	.string "Try a control teleport\n"
-	.string "to your upstairs bedroom?$"

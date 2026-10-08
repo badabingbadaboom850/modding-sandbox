@@ -1,16 +1,12 @@
-# Trio test portal and reputation pilot
+# Spirit encounter tests and cleanup
 
 This update follows the tested Riko/Elm dialogue pilot. The earlier outside-house-door shortcut produced a black screen in the user's emulator. Source warp IDs were valid; the exact runtime cause remains unconfirmed. The user also reported a black screen after the terrain repair and explicit-coordinate portal in commit 79cb54.
 
-## Test trip
+## Mom's friend behavior and test travel
 
-The outdoor home doorway once again enters the normal downstairs room.
+Mom's temporary cave, direct-battle, and upstairs control prompts have been removed. Her original visitor dialogue is restored, and the house transition no longer forcibly unhides her on existing saves. Her original story-stage placement logic remains.
 
-Talk to **Mom's friend inside your home**. While this test portal is installed, the house transition explicitly clears her hide flag at every story stage, so she remains available on existing saves. After her normal dialogue, she offers a test trip. Choose Yes to use the existing script warp command with explicit coordinates **(4,5)** in `MAP_SHOAL_CAVE_LOW_TIDE_ICE_ROOM_SUICUNE`. Choose No to skip travel and receive a second optional prompt for a direct Spirit Riko battle. Choose No again to receive the optional upstairs control-teleport prompt. Decline all three prompts to stay home without battling or traveling.
-
-To return, stand at (4,5), face north toward the entrance at (4,4), and press A. The return prompt warps to **(20,12)** in New Bark, immediately outside the home doorway. This interaction does not rely on the cave entrance having a working warp metatile.
-
-The cave's legacy warp entry still points to New Bark warp 1. Flash remains disabled. The cave battle levels and object completion flags remain unchanged. Existing saves do not reset defeated spirits.
+The outdoor home doorway still enters the normal downstairs room. The cave's test return interaction and diagnostic map settings remain while its black-screen issue is unresolved. The previous upstairs control test worked; the cave load still failed.
 
 ## New Bark encounter test (retired)
 
@@ -26,22 +22,13 @@ Each noncatchable shared setup clears the flag when the battle returns. Defeat f
 
 The shared setups call the stat helpers directly. Their original scratch-flag guard was always set immediately before the call; removing that redundant guard preserves the call and avoids leaving `FLAG_GARBAGEFLAG` set when whiteout skips the script tail.
 
-## Earlier callback isolation and control teleport
+## Cave callback isolation and control-teleport test history
 
-The user confirmed the direct Spirit Riko battle works, while the snow-disabled cave trip still blackscreens. This confirms the standard battle path and its graphics can load; static overworld Spirit graphics remain a separate unverified path.
+The cave's transition and resume registrations remain disabled; the transition handler is retained but unregistered. The original cave return interaction, layout, terrain repair, and portal coordinates remain. Snow remains disabled. These are temporary diagnostics and have not fixed cave loading.
 
-This pass removes only the cave's transition and resume registrations from its map-script table. The table now contains just the terminating byte. The original transition handler is retained for rollback but is no longer registered. The cave entrance coordinate event, object battle scripts, return interaction, layout, terrain, and portal coordinates stay intact. Snow remains disabled.
+The bypassed handlers are `ShoalCave_LowTideIceRoom_Suicune_OnTransition` (which calls `SetTimeBasedEncounters`) and `SetTimeEncounters`. Their native behavior remains unverified, so this diagnostic may affect time-based encounters.
 
-The handlers being bypassed are `ShoalCave_LowTideIceRoom_Suicune_OnTransition` (which calls `SetTimeBasedEncounters`) and `SetTimeEncounters`. Their full native implementation has not been located or verified, so this is a temporary diagnostic that may affect time-based encounters, not a confirmed root-cause fix.
-
-After declining both the cave trip and direct battle, Mom's friend offers a **control teleport to the upstairs bedroom at (4,4)**. It uses the same ordinary scripted warp and waitstate pattern as the cave trip, with a destination that already loads at the start of a fresh game.
-
-Test interpretation:
-- Upstairs works, cave works: the disabled cave callbacks are a leading suspect.
-- Upstairs works, cave still fails: next inspect cave object graphics and map rendering/loading.
-- Upstairs also fails: investigate the shared scripted-warp path or whether the intended new ROM is running.
-
-Restore the two original map-script registrations after their behavior is understood. This test does not alter the cave's persistent completion flags.
+The upstairs control teleport was a temporary option from Mom's friend and is now removed. The user confirmed the bedroom loaded correctly. The cave still blackscreened, so the ordinary scripted warp path itself is not the cause.
 
 ## Earlier snow isolation
 
@@ -51,11 +38,9 @@ The preceding isolation changed only the cave's weather setting from `WEATHER_SN
 
 The user reported that version still failed. Disabling snow alone was therefore insufficient; the current pass targets map callbacks. Local emulator execution is unavailable.
 
-## Direct battle fallback
+## Direct battle test history
 
-Mom's friend's second prompt starts a normal scripted wild battle with `SPECIES_RIKO_SPIRIT`, level 70, holding Charcoal, directly from the house. It uses existing `setwildbattle` and `dowildbattle` commands without loading the cave or invoking the cave's custom event scripts.
-
-The encounter is catchable under normal catching rules; catching adds the Pokémon to the party/PC. This is repeatable testing and does not set any Suicune/Spirit completion flags or hide cave objects. It does not reproduce the cave's staged fights, special legendary setup, puzzle, or entrance event. Losing follows the existing scripted battle loss/whiteout behavior. The player's save may still be affected by ordinary battle/capture results.
+Mom's friend temporarily offered a level 70 catchable Spirit battle with Charcoal. That prompt is removed with the other test options. The user confirmed the direct battle worked; the test did not load the cave or set cave completion flags.
 
 ## Penny comfort interaction
 
@@ -80,27 +65,17 @@ Only existing flags and NPCs are used. Rumors do not assume the player owns all 
 
 ## Verification
 
-Source checks: JSON parses; portal coordinate destinations are in bounds and unoccupied; return tile is directly south of the existing doorway; binary terrain IDs are in range; new labels are unique; authoring/generated additions agree.
+The user confirmed the temporary New Bark mailbox battles worked and had the intended difficulty, and that the Wand and Blue Brush changed Riko's form correctly. The mailbox redirects have been removed. The room control warp worked; the cave still blackscreens.
 
-CI compilation and in-game tests remain required:
-1. Home doorway enters normally.
-2. Accept Mom's friend's cave trip and check whether it loads.
-3. Decline the cave trip and battle, then accept the upstairs control teleport; check the bedroom and normal stairs.
-4. Cave entrance A prompt returns outside home.
-5. Decline travel, accept the direct battle, and check its battle/capture behavior.
-6. On a regular repeat Mom visit, verify Penny's comfort line and normal healing; repeat without Penny.
-7. Elm's tested Riko beat remains intact.
-8. Cherrygrove rumor and Violet before/after-badge dialogue appear.
+For the current build, verify the ordinary Mom's friend dialogue, that the three New Bark mailboxes show their original sign text, and that the form items can be bought on Goldenrod Department Store 4F. Test store purchases with an existing save. Fresh-save starting item changes only apply to newly started games; the existing Route 30 pickup remains available.
 
-No claim of a confirmed runtime black-screen fix should be made until step 2 succeeds.
+## Remaining cave diagnostics
 
-## Restore test-only changes later
-
-Remove the unconditional hide-flag clear added to the house transition and the extra trip, direct-battle, and control-teleport prompts/handlers/text from the Mom's friend script, and remove the cave return background event and its handlers/text. Restore the cave's original warp destination `MAP_SHOAL_CAVE_LOW_TIDE_ICE_ROOM` and `requires_flash: true` when normal story behavior is desired. Restore `weather: WEATHER_SNOW` only after investigating the loading failure. Keep the normal home doorway, repaired terrain, and reputation dialogue.
+The temporary Mom's friend prompts and forced visibility override are removed. The three New Bark mailbox signs are restored. Cave diagnostics remain: the transition/time callbacks are unregistered, snow is disabled, terrain IDs are repaired, and the cave return event remains. The cave's exact black-screen cause is still unknown. Restore the cave callbacks and snow only when testing the next cave-loading hypothesis. Keep the ordinary home doorway, restored Mom's friend dialogue, reputation dialogue, and shared cave battle setup.
 
 ## Riko form items at Goldenrod Department Store
 
-The temporary Mom's friend restock has been removed. Riko's Wand and Blue Brush are stocked at **Goldenrod Department Store, 4F**, with the existing vitamin shop. Each costs **₽500**. Both remain in the Bag's **Items** pocket, and their evolution behavior is unchanged. The fresh-save grants and Route 30 pickup also remain available.
+The temporary Mom's friend restock has been removed. Riko's Wand and Blue Brush are stocked at **Goldenrod Department Store, 4F**, with the existing vitamin shop. Each costs **₽500**. Both remain in the Bag's **Items** pocket, and their evolution behavior is unchanged. The Wand and Brush are no longer granted in fresh-save inventory; the Route 30 pickup remains.
 
 The user confirmed the Wand evolves Riko and the Brush restores her original form. Buying another copy allows the forms to be changed again after using an item.
 

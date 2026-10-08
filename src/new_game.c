@@ -313,8 +313,6 @@ void NewGameInitData(void)
     AddBagItem(ITEM_RIKOS_PURSE, 1);
     AddBagItem(ITEM_BIJUUS_POM_POMS, 1);
     AddBagItem(ITEM_PENNYS_BLANKEY, 1);
-    AddBagItem(ITEM_RIKOS_WAND, 1);
-    AddBagItem(ITEM_BLUE_BRUSH, 1);
 #if P_GEN_9_MEGA_EVOLUTIONS
     // Testing aid: make Mega Evolution available immediately in fresh saves.
     AddBagItem(ITEM_MEGA_RING, 1);
