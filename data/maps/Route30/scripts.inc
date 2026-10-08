@@ -247,17 +247,18 @@ Route30_EventScript_Greg_AfterReward::
 	end
 
 Route30_Text_GregSeen:
-	.string "Greg: You thought you could beat my\n"
-	.string "level 99 team? Good luck!$"
+	.string "Greg: You can't beat my\n"
+	.string "level 99 team! Good luck!$"
 
 Route30_Text_GregBeaten:
-	.string "Greg: No way! That was a fluke!$"
+	.string "Greg: No way! That was\n"
+	.string "a total fluke!$"
 
 Route30_Text_GregWawa:
 	.string "Greg hands over a Wawa S.\p"
-	.string "Try not to spend it all at once.$"
+	.string "Enjoy the tiny Wawa!$"
 
 Route30_Text_GregAlreadyPaid:
-	.string "Greg: You beat me once. I'm still\n"
-	.string "not changing my team!$"
+	.string "Greg: You beat me once.\n"
+	.string "Team stays level 99!$"
 
