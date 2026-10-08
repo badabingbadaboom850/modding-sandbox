@@ -103,7 +103,7 @@ A new item name or sprite alone does not make it usable or obtainable. A shop mu
 
 Verified Riko's Wand / Blue Brush price is 500 each, stocked on Goldenrod Department Store 4F. The Route 30 ground pickup has been removed; the shop stock remains. Neither Riko evolution item is granted in new saves.
 
-Fresh saves currently start with Riko's Purse and Penny's Blankey, plus Mega Ring and Bondstone when `P_GEN_9_MEGA_EVOLUTIONS` is enabled. Other former test grants (berries, custom balls, Wawa potions, Cat Food Tin, Bijuu's Pom Poms, Fish Toy, and Cat Nip) are removed. Starting-party initialization is separate.
+Fresh saves currently start with Riko Ultra Ball, Penny Love Ball, Riko's Purse, and Penny's Blankey, plus Mega Ring and Bondstone when `P_GEN_9_MEGA_EVOLUTIONS` is enabled. Other former test grants (berries, custom balls, Wawa potions, Cat Food Tin, Bijuu's Pom Poms, Fish Toy, and Cat Nip) are removed. Starting-party initialization is separate.
 
 The held items currently reuse existing behavior/art:
 - Riko's Purse: Wise Glasses effect, Coin Case icon.
