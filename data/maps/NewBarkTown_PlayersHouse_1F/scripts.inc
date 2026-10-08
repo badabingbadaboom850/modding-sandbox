@@ -5,6 +5,8 @@ NewBarkTown_PlayersHouse_1F_MapScripts::
 	.byte 0
 
 NewBarkTown_PlayersHouse_1F_OnTransition::
+	@ Keep the temporary cave test guide available on existing saves.
+	clearflag FLAG_HIDE_MOMS_FRIEND
 	call_if_eq VAR_NEWBARK_TOWN_STATE, 1, NewBarkTown_PlayersHouse_1F_SetMomStandingAtTable
 	call_if_eq VAR_NEWBARK_TOWN_STATE, 2, NewBarkTown_PlayersHouse_1F_SetMomStandingAtTable
 	call_if_eq VAR_NEWBARK_TOWN_STATE, 3, NewBarkTown_PlayersHouse_1F_SetMomStandingAtTable

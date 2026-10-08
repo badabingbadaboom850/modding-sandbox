@@ -6,7 +6,7 @@ This update follows the tested Riko/Elm dialogue pilot. The earlier outside-hous
 
 The outdoor home doorway once again enters the normal downstairs room.
 
-Talk to **Mom's friend inside your home**. After her normal dialogue, she offers a test trip. Choose Yes to use the existing script warp command with explicit coordinates **(4,5)** in `MAP_SHOAL_CAVE_LOW_TIDE_ICE_ROOM_SUICUNE`. Choose No to stay home.
+Talk to **Mom's friend inside your home**. While this test portal is installed, the house transition explicitly clears her hide flag at every story stage, so she remains available on existing saves. After her normal dialogue, she offers a test trip. Choose Yes to use the existing script warp command with explicit coordinates **(4,5)** in `MAP_SHOAL_CAVE_LOW_TIDE_ICE_ROOM_SUICUNE`. Choose No to stay home.
 
 To return, stand at (4,5), face north toward the entrance at (4,4), and press A. The return prompt warps to **(20,12)** in New Bark, immediately outside the home doorway. This interaction does not rely on the cave entrance having a working warp metatile.
 
@@ -44,4 +44,4 @@ No claim of a confirmed runtime black-screen fix should be made until step 2 suc
 
 ## Restore test-only changes later
 
-Remove the extra trip prompt/handler/text from the Mom's friend script, and remove the cave return background event and its handlers/text. Restore the cave's original warp destination `MAP_SHOAL_CAVE_LOW_TIDE_ICE_ROOM` and `requires_flash: true` when normal story behavior is desired. Keep the normal home doorway, repaired terrain, and reputation dialogue.
+Remove the unconditional hide-flag clear added to the house transition and the extra trip prompt/handler/text from the Mom's friend script, and remove the cave return background event and its handlers/text. Restore the cave's original warp destination `MAP_SHOAL_CAVE_LOW_TIDE_ICE_ROOM` and `requires_flash: true` when normal story behavior is desired. Keep the normal home doorway, repaired terrain, and reputation dialogue.
