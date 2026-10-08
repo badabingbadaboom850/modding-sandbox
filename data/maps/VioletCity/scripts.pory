@@ -127,10 +127,25 @@ VioletCity_EventScript_Youngster::
 VioletCity_EventScript_Boy::
 	lock
 	faceplayer
+	goto_if_set FLAG_BADGE01_GET, VioletCity_EventScript_BoyAfterBadge
 	msgbox VioletCity_Text_Boy, MSGBOX_DEFAULT
 	closemessage
 	release
 	end
+
+VioletCity_EventScript_BoyAfterBadge::
+	msgbox VioletCity_Text_BoyAfterBadge, MSGBOX_DEFAULT
+	closemessage
+	release
+	end
+
+VioletCity_Text_BoyAfterBadge:
+	.string "You beat Falkner! Word about\n"
+	.string "the trio reached our Academy.\p"
+	.string "They say Riko talks through\n"
+	.string "every lesson. Penny naps\p"
+	.string "through them. Bijuu can\n"
+	.string "outrun a Pidgey!$"
 
 VioletCity_EventScript_Gramps::
 	lock

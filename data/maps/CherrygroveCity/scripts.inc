@@ -381,7 +381,11 @@ CherrygroveCity_Text_YoungsterHavePokedex:
 	.string "road.\p"
 	.string "My Pokémon lost. They're a\n"
 	.string "mess! I must take them to a\l"
-	.string "Pokémon Center.$"
+	.string "Pokémon Center.\p"
+	.string "I heard Bijuu raced a Pidgey\n"
+	.string "along Route 31.\p"
+	.string "Pidgey took off first, but\n"
+	.string "Bijuu was gone in a flash!$"
 
 CherrygroveCity_Text_MysticWaterGuyBefore:
 	.string "A Pokémon I caught had an\n"

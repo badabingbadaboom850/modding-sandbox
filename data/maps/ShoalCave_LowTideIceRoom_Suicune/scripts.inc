@@ -211,3 +211,22 @@ ShoalCave_LowTideIceRoom_Suicune_Ran::
 	clearflag FLAG_SYS_NO_CATCHING
 	releaseall
 	end
+
+
+ShoalCave_LowTideIceRoom_Suicune_TestReturn::
+	lockall
+	msgbox ShoalCave_LowTideIceRoom_Suicune_TestReturn_Text, MSGBOX_YESNO
+	goto_if_eq VAR_RESULT, YES, ShoalCave_LowTideIceRoom_Suicune_TestReturn_Yes
+	closemessage
+	releaseall
+	end
+
+ShoalCave_LowTideIceRoom_Suicune_TestReturn_Yes::
+	closemessage
+	warp MAP_NEW_BARK_TOWN, 20, 12
+	waitstate
+	releaseall
+	end
+
+ShoalCave_LowTideIceRoom_Suicune_TestReturn_Text:
+	.string "Return to New Bark Town?$"

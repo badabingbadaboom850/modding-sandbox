@@ -36,8 +36,24 @@ NewBarkTown_PlayersHouse_1F_EventScript_MomsFriend::
 	msgbox NewBarkTown_PlayersHouse_1F_Text_MomsFriend, MSGBOX_DEFAULT
 	applymovement LOCALID_MOMS_FRIEND, NewBarkTown_PlayersHouse_1F_MovementFaceRight
 	waitmovement 0
+	msgbox NewBarkTown_PlayersHouse_1F_Text_TestCaveTrip, MSGBOX_YESNO
+	goto_if_eq VAR_RESULT, YES, NewBarkTown_PlayersHouse_1F_EventScript_TestCaveTrip
+	closemessage
 	release
 	end
+
+NewBarkTown_PlayersHouse_1F_EventScript_TestCaveTrip::
+	closemessage
+	warp MAP_SHOAL_CAVE_LOW_TIDE_ICE_ROOM_SUICUNE, 4, 5
+	waitstate
+	release
+	end
+
+NewBarkTown_PlayersHouse_1F_Text_TestCaveTrip:
+	.string "Want a test trip to the\n"
+	.string "Spirit of Riko cave?\p"
+	.string "Inspect the entrance there\n"
+	.string "to return to New Bark Town.$"
 
 NewBarkTown_PlayersHouse_1F_MomEventScript_GoodLuck::
 	msgbox NewBarkTown_PlayersHouse_1F_Text_MomLeaving, MSGBOX_DEFAULT
