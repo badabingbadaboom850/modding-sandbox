@@ -297,24 +297,9 @@ void NewGameInitData(void)
     gSaveBlock1Ptr->registeredShortcutsMagic = REGISTERED_SHORTCUTS_SAVE_MAGIC;
     gSaveBlock1Ptr->registeredShortcutsMagicInv = REGISTERED_SHORTCUTS_SAVE_MAGIC_INV;
     ClearBag();
-    // Testing items for the personalized berry slots.
-    AddBagItem(ITEM_ORAN_BERRY, 1);
-    AddBagItem(ITEM_CHERI_BERRY, 1);
-    AddBagItem(ITEM_PECHA_BERRY, 1);
-    // Keep the custom item icons in every fresh save for visual testing.
-    AddBagItem(ITEM_GREAT_BALL, 1); // Trio Ball reskin
-    AddBagItem(ITEM_ULTRA_BALL, 1); // Riko Ultra Ball
-    AddBagItem(ITEM_LOVE_BALL, 1); // Penny Love Ball
-    AddBagItem(ITEM_MOON_BALL, 1); // Bijuu Moon Ball
-    AddBagItem(ITEM_POTION, 1); // McDonalds Wawa S
-    AddBagItem(ITEM_SUPER_POTION, 1); // McDonalds Wawa M
-    AddBagItem(ITEM_HYPER_POTION, 1); // McDonalds Wawa L
-    AddBagItem(ITEM_RARE_CANDY, 1); // Cat Food Tin reskin
+    // Keep Riko's and Penny's personal items in the starting bag.
     AddBagItem(ITEM_RIKOS_PURSE, 1);
-    AddBagItem(ITEM_BIJUUS_POM_POMS, 1);
     AddBagItem(ITEM_PENNYS_BLANKEY, 1);
-    AddBagItem(ITEM_BIJUUS_FISH_TOY, 1);
-    AddBagItem(ITEM_BIJUUS_CAT_NIP, 1);
 #if P_GEN_9_MEGA_EVOLUTIONS
     // Testing aid: make Mega Evolution available immediately in fresh saves.
     AddBagItem(ITEM_MEGA_RING, 1);
