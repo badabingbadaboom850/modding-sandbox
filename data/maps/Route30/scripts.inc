@@ -14,6 +14,23 @@ Route30_OnFrame::
 	map_script_2 VAR_CHERRYGROVE_CITY_STATE, 2, Route30_EventScript_ElmCall_Trigger
 	.2byte 0
 	
+Route30_EventScript_RikoEvolutionItems::
+	lock
+	faceplayer
+	giveitem ITEM_RIKOS_WAND
+	goto_if_eq VAR_RESULT, FALSE, Common_EventScript_ShowBagIsFull
+	giveitem ITEM_BLUE_BRUSH
+	goto_if_eq VAR_RESULT, FALSE, Common_EventScript_ShowBagIsFull
+	setflag FLAG_ITEM_ROUTE30_RIKO_EVOLUTION_ITEMS
+	msgbox Route30_Text_RikoEvolutionItems, MSGBOX_DEFAULT
+	closemessage
+	release
+	end
+
+Route30_Text_RikoEvolutionItems:
+	.string "You found Riko's Wand and the Blue\n"
+	.string "Brush! They can change Riko's form.$"
+
 Route30_EventScript_Boy::
 	lock
 	faceplayer

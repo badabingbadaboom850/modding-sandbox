@@ -552,7 +552,9 @@ NewBarkTown_EventScript_RivalBattle_Text_1:
 	.string "a {STR_VAR_1}!$"
 
 NewBarkTown_EventScript_RivalBattle_Text_2:
-	.string "That's a cute Pokémon you have!$"
+	.string "That's a cute Pokémon you have!\p"
+	.string "I've got three Fidoughs of my own.\n"
+	.string "Let's see which team is stronger!$"
 
 NewBarkTown_EventScript_RivalBattle_Text_3:
 	.string "When you walk with it, it'll become\n"
