@@ -17685,6 +17685,37 @@ const struct ItemInfo gItemsInfo[] =
         .iconPalette = gItemIconPalette_BlueBrush,
     },
 
+    [ITEM_BIJUUS_FISH_TOY] =
+    {
+        .name = ITEM_NAME("Bijuu's Fish Toy"),
+        .price = 500,
+        .description = COMPOUND_STRING("A plush fish toy that\nhelps Bijuu focus her\npsychic energy."),
+        .pocket = POCKET_ITEMS,
+        .sortType = ITEM_TYPE_EVOLUTION_STONE,
+        .heldSlot = 0,
+        .type = ITEM_USE_PARTY_MENU,
+        .fieldUseFunc = ItemUseOutOfBattle_EvolutionStone,
+        .effect = gItemEffect_EvoItem,
+        .flingPower = 30,
+        .iconPic = gItemIcon_BijuusFishToy,
+        .iconPalette = gItemIconPalette_BijuusFishToy,
+    },
+    [ITEM_BIJUUS_CAT_NIP] =
+    {
+        .name = ITEM_NAME("Bijuu's Cat Nip"),
+        .price = 500,
+        .description = COMPOUND_STRING("A sprig of Bijuu's\nfavorite catnip. It\nreturns Bijuu to her\noriginal form."),
+        .pocket = POCKET_ITEMS,
+        .sortType = ITEM_TYPE_EVOLUTION_STONE,
+        .heldSlot = 0,
+        .type = ITEM_USE_PARTY_MENU,
+        .fieldUseFunc = ItemUseOutOfBattle_EvolutionStone,
+        .effect = gItemEffect_EvoItem,
+        .flingPower = 30,
+        .iconPic = gItemIcon_BijuusCatNip,
+        .iconPalette = gItemIconPalette_BijuusCatNip,
+    },
+
 };
 
 #undef ITEM_NAME

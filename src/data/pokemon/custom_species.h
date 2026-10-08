@@ -263,6 +263,19 @@ const u16 gShinyOverworldPalette_BijuuSteel[] = INCBIN_U16("graphics/pokemon/bij
 static const struct SpriteFrameImage sPicTable_BijuuSteel[] = {
     overworld_ascending_frames(gObjectEventPic_BijuuSteel, 4, 4),
 };
+const u32 gMonFrontPic_BijuuPsychic[] = INCBIN_U32("graphics/pokemon/bijuu_psychic/front.4bpp.smol");
+const u32 gMonBackPic_BijuuPsychic[] = INCBIN_U32("graphics/pokemon/bijuu_psychic/back.4bpp.smol");
+const u16 gMonPalette_BijuuPsychic[] = INCBIN_U16("graphics/pokemon/bijuu_psychic/normal.gbapal");
+const u16 gMonShinyPalette_BijuuPsychic[] = INCBIN_U16("graphics/pokemon/bijuu_psychic/shiny.gbapal");
+const u8 gMonIcon_BijuuPsychic[] = INCBIN_U8("graphics/pokemon/bijuu_psychic/icon.4bpp");
+const u16 gMonIconPalette_BijuuPsychic[] = INCBIN_U16("graphics/pokemon/bijuu_psychic/icon_normal.gbapal");
+const u16 gMonShinyIconPalette_BijuuPsychic[] = INCBIN_U16("graphics/pokemon/bijuu_psychic/icon_shiny.gbapal");
+const u32 gObjectEventPic_BijuuPsychic[] = INCBIN_U32("graphics/pokemon/bijuu_psychic/overworld.4bpp");
+const u16 gOverworldPalette_BijuuPsychic[] = INCBIN_U16("graphics/pokemon/bijuu_psychic/overworld_normal.gbapal");
+const u16 gShinyOverworldPalette_BijuuPsychic[] = INCBIN_U16("graphics/pokemon/bijuu_psychic/overworld_shiny.gbapal");
+static const struct SpriteFrameImage sPicTable_BijuuPsychic[] = {
+    overworld_ascending_frames(gObjectEventPic_BijuuPsychic, 4, 4),
+};
 #endif
 #if P_FAMILY_RIKO
 const u32 gMonFrontPic_RikoMega[] = INCBIN_U32("graphics/pokemon/riko/mega/front.4bpp.smol");

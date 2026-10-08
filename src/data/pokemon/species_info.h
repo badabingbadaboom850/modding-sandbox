@@ -348,6 +348,7 @@ const struct SpeciesInfo gSpeciesInfo[] =
         .teachableLearnset = sMeowthTeachableLearnset,
         .eggMoveLearnset = sMeowthEggMoveLearnset,
         .formSpeciesIdTable = sBijuuFormSpeciesIdTable, .formChangeTable = sBijuuFormChangeTable,
+        .evolutions = EVOLUTION({EVO_ITEM, ITEM_BIJUUS_FISH_TOY, SPECIES_BIJUU_PSYCHIC}),
     },
 #if P_GEN_9_MEGA_EVOLUTIONS
     [SPECIES_MEGA_BIJUU] =
@@ -900,6 +901,41 @@ const struct SpeciesInfo gSpeciesInfo[] =
             gShinyOverworldPalette_BijuuSteel
         )
         .teachingType = ALL_TEACHABLES, .levelUpLearnset = sTinkatinkLevelUpLearnset,
+    },
+
+    [SPECIES_BIJUU_PSYCHIC] =
+    {
+        .baseHP = 80, .baseAttack = 85, .baseDefense = 70, .baseSpeed = 120,
+        .baseSpAttack = 95, .baseSpDefense = 80,
+        .types = MON_TYPES(TYPE_NORMAL, TYPE_PSYCHIC), .catchRate = 60, .expYield = 220,
+        .evYield_Speed = 3, .genderRatio = PERCENT_FEMALE(50),
+        .eggCycles = 20, .friendship = STANDARD_FRIENDSHIP, .growthRate = GROWTH_MEDIUM_SLOW,
+        .eggGroups = MON_EGG_GROUPS(EGG_GROUP_FIELD),
+        .abilities = { ABILITY_LIMBER, ABILITY_NONE, ABILITY_TECHNICIAN },
+        .bodyColor = BODY_COLOR_BROWN, .speciesName = _("BijuuPsi"), .cryId = CRY_MEOWTH,
+        .natDexNum = NATIONAL_DEX_BIJUU, .categoryName = _("Astral Cat"), .height = 7, .weight = 120,
+        .description = COMPOUND_STRING("It lifts stones with its mind.\nIts eyes glow when it senses\nsomeone opening a treat bag."),
+        .pokemonScale = 256, .trainerScale = 256,
+        .frontPic = gMonFrontPic_BijuuPsychic, .frontPicSize = MON_COORDS_SIZE(64, 64), .frontPicYOffset = 0,
+        .frontAnimFrames = sAnims_SingleFramePlaceHolder, .backPic = gMonBackPic_BijuuPsychic,
+        .backPicSize = MON_COORDS_SIZE(64, 64), .backPicYOffset = 0,
+        .palette = gMonPalette_BijuuPsychic, .shinyPalette = gMonShinyPalette_BijuuPsychic,
+        .iconSprite = gMonIcon_BijuuPsychic, .iconPalette = gMonIconPalette_BijuuPsychic,
+        .shinyIconPalette = gMonShinyIconPalette_BijuuPsychic, .pokemonJumpType = PKMN_JUMP_TYPE_FAST,
+        SHADOW(-2, 8, SHADOW_SIZE_S)
+        OVERWORLD(
+            sPicTable_BijuuPsychic,
+            SIZE_32x32,
+            SHADOW_SIZE_M,
+            TRACKS_FOOT,
+            sAnimTable_Following,
+            gOverworldPalette_BijuuPsychic,
+            gShinyOverworldPalette_BijuuPsychic
+        )
+        .teachingType = ALL_TEACHABLES, .levelUpLearnset = sMeowthLevelUpLearnset,
+        .teachableLearnset = sMeowthTeachableLearnset,
+        .eggMoveLearnset = sMeowthEggMoveLearnset,
+        .evolutions = EVOLUTION({EVO_ITEM, ITEM_BIJUUS_CAT_NIP, SPECIES_BIJUU}),
     },
 
 #endif

@@ -646,6 +646,13 @@ RIKO_VARIANT_GFX := graphics/pokemon/riko_fire/front.4bpp.smol \
                    graphics/pokemon/bijuu_steel/icon.4bpp \
                    graphics/pokemon/bijuu_steel/icon_normal.gbapal \
                    graphics/pokemon/bijuu_steel/icon_shiny.gbapal \
+                   graphics/pokemon/bijuu_psychic/front.4bpp.smol \
+                   graphics/pokemon/bijuu_psychic/back.4bpp.smol \
+                   graphics/pokemon/bijuu_psychic/normal.gbapal \
+                   graphics/pokemon/bijuu_psychic/shiny.gbapal \
+                   graphics/pokemon/bijuu_psychic/icon.4bpp \
+                   graphics/pokemon/bijuu_psychic/icon_normal.gbapal \
+                   graphics/pokemon/bijuu_psychic/icon_shiny.gbapal \
                    graphics/pokemon/riko_wing/front.4bpp.smol \
                    graphics/pokemon/riko_wing/back.4bpp.smol \
                    graphics/pokemon/riko_wing/normal.gbapal \
@@ -711,6 +718,9 @@ RIKO_OVERWORLD_GFX := graphics/pokemon/riko/overworld.4bpp \
                      graphics/pokemon/bijuu_steel/overworld.4bpp \
                      graphics/pokemon/bijuu_steel/overworld_normal.gbapal \
                      graphics/pokemon/bijuu_steel/overworld_shiny.gbapal \
+                     graphics/pokemon/bijuu_psychic/overworld.4bpp \
+                     graphics/pokemon/bijuu_psychic/overworld_normal.gbapal \
+                     graphics/pokemon/bijuu_psychic/overworld_shiny.gbapal \
                      graphics/pokemon/riko_wing/overworld.4bpp \
                      graphics/pokemon/riko_wing/overworld_normal.gbapal \
                      graphics/pokemon/riko_wing/overworld_shiny.gbapal
