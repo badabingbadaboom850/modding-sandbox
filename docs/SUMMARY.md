@@ -141,3 +141,5 @@
     - [Scope Guidelines](team_procedures/scope.md)
 
 - [Trio world-building action items](trio_world_roadmap.md)
+
+- [Keepsakes, sister moments, and Mom's scrapbook](trio_memories_and_pom_party.md)

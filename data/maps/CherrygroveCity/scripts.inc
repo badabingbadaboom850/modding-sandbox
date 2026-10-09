@@ -1194,6 +1194,7 @@ CherryGroveCity_EventScript_ScrapbookRead::
 	call_if_ge VAR_TRIO_RESEARCH_STATE, 5, CherryGroveCity_EventScript_ScrapbookReadAzalea
 	call_if_ge VAR_TRIO_RESEARCH_STATE, 8, CherryGroveCity_EventScript_ScrapbookReadGoldenrod
 	call_if_ge VAR_ECRUTEAK_BIJUU_MYSTERY, 6, CherryGroveCity_EventScript_ScrapbookReadCelestial
+	call TrioScrapbook_Offer
 	return
 
 CherryGroveCity_EventScript_ScrapbookReadAzalea::

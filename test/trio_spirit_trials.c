@@ -8,6 +8,7 @@
 #include "constants/items.h"
 #include "constants/species.h"
 #include "constants/flags.h"
+#include "constants/maps.h"
 
 TEST("Home Spirit trial rejects an empty or egg-only party without changing enemies")
 {
@@ -110,4 +111,44 @@ TEST("Home Spirit level advantage grows from five to ten without exceeding 100")
         EXPECT(PrepareTrioSpiritTrial());
         EXPECT_EQ(GetMonData(&gEnemyParty[0], MON_DATA_LEVEL), spiritLevels[i]);
     }
+}
+
+TEST("Home Spirit test shortcut sets one HP only for New Bark Spirits")
+{
+    u32 hp;
+    u32 maxHp;
+    u8 oldMapNum = gSaveBlock1Ptr->location.mapNum;
+    u8 oldMapGroup = gSaveBlock1Ptr->location.mapGroup;
+    ZeroPlayerPartyMons();
+    CreateMon(&gPlayerParty[0], SPECIES_RIKO, 5, 0, OTID_STRUCT_PLAYER_ID);
+    gSaveBlock1Ptr->location.mapGroup = MAP_GROUP(MAP_NEW_BARK_TOWN);
+    gSaveBlock1Ptr->location.mapNum = MAP_NUM(MAP_NEW_BARK_TOWN);
+    gSpecialVar_0x8004 = SPECIES_PENNY_SPIRIT;
+    EXPECT(PrepareTrioSpiritTrial());
+    maxHp = GetMonData(&gEnemyParty[0], MON_DATA_MAX_HP);
+    EXPECT_GT(maxHp, 1);
+    SetTrioSpiritTrialTestHP();
+    EXPECT_EQ(GetMonData(&gEnemyParty[0], MON_DATA_HP), 1);
+    EXPECT_EQ(GetMonData(&gEnemyParty[0], MON_DATA_MAX_HP), maxHp);
+    // A fresh opponent rolls new IVs; compare its HP to its own maximum.
+    EXPECT(PrepareTrioSpiritTrial());
+    EXPECT_EQ(GetMonData(&gEnemyParty[0], MON_DATA_HP), GetMonData(&gEnemyParty[0], MON_DATA_MAX_HP));
+    gSpecialVar_0x8004 = SPECIES_BIJUU_SPIRIT;
+    EXPECT(PrepareTrioSpiritTrial());
+    SetTrioSpiritTrialTestHP();
+    EXPECT_EQ(GetMonData(&gEnemyParty[0], MON_DATA_HP), 1);
+    EXPECT(PrepareTrioSpiritTrial());
+    hp = GetMonData(&gEnemyParty[0], MON_DATA_HP);
+    gSaveBlock1Ptr->location.mapGroup = MAP_GROUP(MAP_ECRUTEAK_CITY);
+    gSaveBlock1Ptr->location.mapNum = MAP_NUM(MAP_ECRUTEAK_CITY);
+    SetTrioSpiritTrialTestHP();
+    EXPECT_EQ(GetMonData(&gEnemyParty[0], MON_DATA_HP), hp);
+    gSaveBlock1Ptr->location.mapGroup = MAP_GROUP(MAP_NEW_BARK_TOWN);
+    gSaveBlock1Ptr->location.mapNum = MAP_NUM(MAP_NEW_BARK_TOWN);
+    CreateMon(&gEnemyParty[0], SPECIES_CLEFAIRY, 7, 0, OTID_STRUCT_PLAYER_ID);
+    hp = GetMonData(&gEnemyParty[0], MON_DATA_HP);
+    SetTrioSpiritTrialTestHP();
+    EXPECT_EQ(GetMonData(&gEnemyParty[0], MON_DATA_HP), hp);
+    gSaveBlock1Ptr->location.mapGroup = oldMapGroup;
+    gSaveBlock1Ptr->location.mapNum = oldMapNum;
 }

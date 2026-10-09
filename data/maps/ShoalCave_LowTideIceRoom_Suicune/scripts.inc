@@ -162,6 +162,7 @@ ShoalCave_LowTideIceRoom_Suicune_RikoSpiritFinalBattle_Text::
 
 ShoalCave_LowTideIceRoom_Suicune_RikoSpiritFinalBattle_Won::
 	setflag FLAG_DEFEATED_SUICUNE
+	call TrioKeepsakes_TryRiko
 	clearflag FLAG_GARBAGEFLAG
 	clearflag FLAG_SYS_NO_CATCHING
 	callnative UpdateFollowingPokemon

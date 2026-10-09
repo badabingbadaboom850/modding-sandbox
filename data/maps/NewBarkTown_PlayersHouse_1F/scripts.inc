@@ -79,6 +79,7 @@ NewBarkTown_PlayersHouse_1F_EventScript_Mom_Regular::
 NewBarkTown_PlayersHouse_1F_EventScript_Mom_Regular_Heal::
 	call NewBarkTown_PlayersHouse_1F_EventScript_FamilyBanter
 	call PlayersHouse_1F_EventScript_MomHealsParty
+	call TrioMemories_Mom
 	release
 	end
 

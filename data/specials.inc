@@ -360,6 +360,7 @@ gSpecials::
 	def_special StartGroudonKyogreBattle
 	def_special BattleSetup_StartLegendaryBattle
 	def_special CheckTrioSpiritMilestone
+	def_special SetTrioSpiritTrialTestHP
 	def_special PrepareTrioSpiritTrial
 	def_special BattleSetup_StartTrioSpiritTrial
 	def_special BattleSetup_StartLegendaryEncounter

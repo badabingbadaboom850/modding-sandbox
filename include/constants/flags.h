@@ -1778,7 +1778,17 @@
 #define FLAG_TRIO_BIJUU_SPIRIT_COMPLETE                0x105B
 #define FLAG_TRIO_PENNY_SIGHTING_SHOWN                 0x105C
 #define FLAG_TRIO_BIJUU_SIGHTING_SHOWN                 0x105D
-#define CUSTOM_FLAGS_END                            FLAG_TRIO_BIJUU_SIGHTING_SHOWN
+#define FLAG_TRIO_RIKO_KEEPSAKE                        0x105E
+#define FLAG_TRIO_PENNY_KEEPSAKE                       0x105F
+#define FLAG_TRIO_BIJUU_KEEPSAKE                       0x1060
+#define FLAG_TRIO_SCRAPBOOK_RECEIVED                   0x1061
+#define FLAG_TRIO_SISTERS_AZALEA                       0x1062
+#define FLAG_TRIO_SISTERS_GOLDENROD                    0x1063
+#define FLAG_TRIO_SISTERS_OLIVINE                      0x1064
+#define FLAG_TRIO_POM_PARTY_SEEN                       0x1065
+#define FLAG_TRIO_PENNY_HOME_WIN                       0x1066
+#define FLAG_TRIO_BIJUU_HOME_WIN                       0x1067
+#define CUSTOM_FLAGS_END                            FLAG_TRIO_BIJUU_HOME_WIN
 
 
 #define FLAG_0x1500                                 0x1500

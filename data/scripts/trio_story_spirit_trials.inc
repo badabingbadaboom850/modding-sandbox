@@ -33,6 +33,7 @@ TrioStorySpirit_PennyEncounter::
 	setflag FLAG_TRIO_PENNY_SPIRIT_COMPLETE
 TrioStorySpirit_PennyRemember:
 	msgbox TrioHomeSpirit_PennyVictory, MSGBOX_DEFAULT
+	call TrioKeepsakes_TryPenny
 	release
 	end
 
@@ -69,6 +70,7 @@ TrioStorySpirit_BijuuEncounter::
 	setflag FLAG_TRIO_BIJUU_SPIRIT_COMPLETE
 TrioStorySpirit_BijuuRemember:
 	msgbox TrioHomeSpirit_BijuuVictory, MSGBOX_DEFAULT
+	call TrioKeepsakes_TryBijuu
 	release
 	end
 

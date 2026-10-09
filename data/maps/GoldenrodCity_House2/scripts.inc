@@ -1,10 +1,13 @@
 GoldenrodCity_House2_MapScripts::
+	map_script MAP_SCRIPT_ON_TRANSITION, TrioPomParty_OnTransition
+	map_script MAP_SCRIPT_ON_FRAME_TABLE, TrioPomParty_OnFrame
 	.byte 0
 
 GoldenrodCity_House2_EventScript_Man::
 	faceplayer
 	lock
 	msgbox GoldenrodPPSpeechHouse_Text_Man, MSGBOX_DEFAULT
+	msgbox TrioPomParty_HostText, MSGBOX_DEFAULT
 	closemessage
 	release
 	end

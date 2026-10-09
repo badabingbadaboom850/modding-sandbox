@@ -17838,6 +17838,62 @@ const struct ItemInfo gItemsInfo[] =
         .iconPalette = gItemIconPalette_FetchingStick,
     },
 
+    [ITEM_RIKOS_SPARK] =
+    {
+        .name = ITEM_NAME("Riko's Spark"),
+        .price = 0,
+        .description = COMPOUND_STRING("A little spark.\nShe learned courage\nfrom Mom. Use to\nread her letter."),
+        .importance = 1,
+        .pocket = POCKET_KEY_ITEMS,
+        .heldSlot = 0,
+        .type = ITEM_USE_FIELD,
+        .fieldUseFunc = ItemUseOutOfBattle_TrioMemory,
+        .iconPic = gItemIcon_FlameOrb,
+        .iconPalette = gItemIconPalette_FlameOrb,
+    },
+
+    [ITEM_PENNYS_SHIELD] =
+    {
+        .name = ITEM_NAME("Penny's Shield"),
+        .price = 0,
+        .description = COMPOUND_STRING("She learned safety.\nNow she carries it\nfor Mom. Use to\nread her letter."),
+        .importance = 1,
+        .pocket = POCKET_KEY_ITEMS,
+        .heldSlot = 0,
+        .type = ITEM_USE_FIELD,
+        .fieldUseFunc = ItemUseOutOfBattle_TrioMemory,
+        .iconPic = gItemIcon_RustedShield,
+        .iconPalette = gItemIconPalette_RustedWeapons,
+    },
+
+    [ITEM_BIJUUS_LIGHT] =
+    {
+        .name = ITEM_NAME("Bijuu's Light"),
+        .price = 0,
+        .description = COMPOUND_STRING("Mom was her light\nbefore the flames.\nUse to read her\nlittle cocoa letter."),
+        .importance = 1,
+        .pocket = POCKET_KEY_ITEMS,
+        .heldSlot = 0,
+        .type = ITEM_USE_FIELD,
+        .fieldUseFunc = ItemUseOutOfBattle_TrioMemory,
+        .iconPic = gItemIcon_ShinyCharm,
+        .iconPalette = gItemIconPalette_ShinyCharm,
+    },
+
+    [ITEM_MOMS_SCRAPBOOK] =
+    {
+        .name = ITEM_NAME("Mom's Scrapbook"),
+        .price = 0,
+        .description = COMPOUND_STRING("Memories written\nwith little paws.\nUse to read the\ngirls' journey."),
+        .importance = 1,
+        .pocket = POCKET_KEY_ITEMS,
+        .heldSlot = 0,
+        .type = ITEM_USE_FIELD,
+        .fieldUseFunc = ItemUseOutOfBattle_TrioMemory,
+        .iconPic = gItemIcon_TownMap,
+        .iconPalette = gItemIconPalette_TownMap,
+    },
+
 };
 
 #undef ITEM_NAME

@@ -1,5 +1,5 @@
 @ Temporary, repeatable test encounters outside Mom's house.
-@ No quest flags, prizes, or party grants: the later story arenas stay separate.
+@ Test wins enable keepsake delivery without completing the milestone story quests.
 NewBarkTown_EventScript_PennySpiritTrial::
 	lock
 	faceplayer
@@ -8,7 +8,8 @@ NewBarkTown_EventScript_PennySpiritTrial::
 	setvar VAR_0x8004, SPECIES_PENNY_SPIRIT
 	specialvar VAR_RESULT, PrepareTrioSpiritTrial
 	goto_if_eq VAR_RESULT, FALSE, TrioHomeSpirit_NoParty
-	msgbox TrioHomeSpirit_Ready, MSGBOX_DEFAULT
+	special SetTrioSpiritTrialTestHP
+	msgbox TrioHomeSpirit_TestReady, MSGBOX_DEFAULT
 	closemessage
 	playmoncry SPECIES_PENNY_SPIRIT, CRY_MODE_ENCOUNTER
 	waitmoncry
@@ -16,7 +17,9 @@ NewBarkTown_EventScript_PennySpiritTrial::
 	waitstate
 	specialvar VAR_RESULT, GetBattleOutcome
 	goto_if_ne VAR_RESULT, B_OUTCOME_WON, TrioHomeSpirit_Retry
+	setflag FLAG_TRIO_PENNY_HOME_WIN
 	msgbox TrioHomeSpirit_PennyVictory, MSGBOX_DEFAULT
+	call TrioKeepsakes_TryPenny
 	release
 	end
 
@@ -28,7 +31,8 @@ NewBarkTown_EventScript_BijuuSpiritTrial::
 	setvar VAR_0x8004, SPECIES_BIJUU_SPIRIT
 	specialvar VAR_RESULT, PrepareTrioSpiritTrial
 	goto_if_eq VAR_RESULT, FALSE, TrioHomeSpirit_NoParty
-	msgbox TrioHomeSpirit_Ready, MSGBOX_DEFAULT
+	special SetTrioSpiritTrialTestHP
+	msgbox TrioHomeSpirit_TestReady, MSGBOX_DEFAULT
 	closemessage
 	playmoncry SPECIES_BIJUU_SPIRIT, CRY_MODE_ENCOUNTER
 	waitmoncry
@@ -36,7 +40,9 @@ NewBarkTown_EventScript_BijuuSpiritTrial::
 	waitstate
 	specialvar VAR_RESULT, GetBattleOutcome
 	goto_if_ne VAR_RESULT, B_OUTCOME_WON, TrioHomeSpirit_Retry
+	setflag FLAG_TRIO_BIJUU_HOME_WIN
 	msgbox TrioHomeSpirit_BijuuVictory, MSGBOX_DEFAULT
+	call TrioKeepsakes_TryBijuu
 	release
 	end
 
@@ -137,3 +143,9 @@ TrioHomeSpirit_BijuuVictory:
 	.string "That is why I shine.\p"
 	.string "In every world, Mom,\n"
 	.string "I would choose you again.$"
+
+TrioHomeSpirit_TestReady:
+	.string "Your team feels refreshed.\n"
+	.string "A quick gift test today!\p"
+	.string "She starts with just 1 HP.\n"
+	.string "Try one damaging move.$"

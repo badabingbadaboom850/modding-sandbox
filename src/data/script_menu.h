@@ -963,6 +963,14 @@ struct MultichoiceListStruct
     u8 count;
 };
 
+static const struct MenuAction MultichoiceList_TrioScrapbook[] =
+{
+    {COMPOUND_STRING("Our journey")},
+    {COMPOUND_STRING("Sister moments")},
+    {COMPOUND_STRING("Spirit letters")},
+    {gText_Exit},
+};
+
 static const struct MultichoiceListStruct sMultichoiceLists[] =
 {
     [MULTI_BRINEY_ON_DEWFORD]          = MULTICHOICE(MultichoiceList_BrineyOnDewford),
@@ -1101,6 +1109,7 @@ static const struct MultichoiceListStruct sMultichoiceLists[] =
     [MULTI_BATTLE_ARCADE_RECORDS]       = MULTICHOICE(MultichoiceList_BattleArcadeRecords),
     [MULTI_ROCKET_ARCADE_CASH_OUT]      = MULTICHOICE(MultichoiceList_RocketArcadeCashOut),
     [MULTI_LEVEL_MODE_WITH_EXIT]        = MULTICHOICE(MultichoiceList_LevelModeWithExit),
+    [MULTI_TRIO_SCRAPBOOK]              = MULTICHOICE(MultichoiceList_TrioScrapbook),
 };
 
 const u8 *const gStdStrings[] =
