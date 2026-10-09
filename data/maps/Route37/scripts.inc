@@ -6,6 +6,7 @@ Route37_MapScripts::
 
 Route37_OnTransition: 
 	callnative SetTimeBasedEncounters
+	special TrioSnack_UpdateObjects
 	end
 
 
@@ -160,6 +161,7 @@ Route37_Text_Sign:
 
 Route37Sign::
 	msgbox Route37Sign_Text_0, MSGBOX_SIGN
+	call TrioSnack_Hint
 	return
 
 

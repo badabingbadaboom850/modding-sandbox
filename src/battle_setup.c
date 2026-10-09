@@ -5,6 +5,7 @@
 #include "battle_dome.h"
 #include "load_save.h"
 #include "battle_setup.h"
+#include "trio_snack_chase.h"
 #include "battle_tower.h"
 #include "battle_transition.h"
 #include "main.h"
@@ -1677,6 +1678,17 @@ static void CB2_EndTrainerBattle(void)
      && (TRAINER_BATTLE_PARAM.opponentA == TRAINER_FESTIVAL_SCOTT
       || TRAINER_BATTLE_PARAM.opponentA == TRAINER_FESTIVAL_SNACK_A
       || TRAINER_BATTLE_PARAM.opponentA == TRAINER_FESTIVAL_SNACK_B))
+    {
+        HealPlayerParty();
+        SetMainCallback2(CB2_ReturnToFieldContinueScriptPlayMapMusic);
+        return;
+    }
+
+    // This single route exhibition heals and resumes even on defeat. Ordinary
+    // trainers and the festival retain their own existing return paths.
+    if (TrioSnack_IsFriendlyBattle(gSaveBlock1Ptr->location.mapGroup,
+                                  gSaveBlock1Ptr->location.mapNum,
+                                  TRAINER_BATTLE_PARAM.opponentA))
     {
         HealPlayerParty();
         SetMainCallback2(CB2_ReturnToFieldContinueScriptPlayMapMusic);

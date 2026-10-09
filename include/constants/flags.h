@@ -1821,7 +1821,11 @@
 #define FLAG_TRIO_SCOTT_ECRUTEAK                       0x1082
 #define FLAG_TRIO_SCOTT_OLIVINE                        0x1083
 #define FLAG_TRIO_SCOTT_BLACKTHORN                     0x1084
-#define CUSTOM_FLAGS_END                            FLAG_TRIO_SCOTT_BLACKTHORN
+// Route 37 thief visibility is derived from its saved chase state.
+#define FLAG_HIDE_TRIO_SNACK_START                   0x1085
+#define FLAG_HIDE_TRIO_SNACK_GRASS                   0x1086
+#define FLAG_HIDE_TRIO_SNACK_GROVE                   0x1087
+#define CUSTOM_FLAGS_END                            FLAG_HIDE_TRIO_SNACK_GROVE
 
 
 #define FLAG_0x1500                                 0x1500

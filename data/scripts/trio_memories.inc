@@ -128,6 +128,7 @@ TrioScrapbook_Sisters:
 	call_if_set FLAG_TRIO_SISTERS_CELADON, TrioScrapbook_Celadon
 	call_if_set FLAG_TRIO_CAMP_MEMORY, TrioCamp_ReadMemory
 	call_if_set FLAG_TRIO_FESTIVAL_PICNIC, TrioFestival_ReadMemory
+	call_if_eq VAR_TRIO_SNACK_CHASE_STATE, 4, TrioSnack_ReadMemory
 	goto TrioScrapbook_Menu
 TrioScrapbook_Letters:
 	msgbox TrioScrapbook_LettersIntro, MSGBOX_DEFAULT
@@ -738,6 +739,7 @@ TrioScrapbook_Checklist::
 	call TrioCamp_Checklist
 	call TrioFestival_Checklist
 	call TrioScott_Checklist
+	call TrioSnack_Checklist
 	call TrioChecklist_EightBadges
 	goto TrioScrapbook_Menu
 

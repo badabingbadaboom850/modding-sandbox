@@ -653,3 +653,7 @@ gSpecials::
 	def_special TrioCamp_UseFavorite
 	def_special TrioCamp_BufferStats
 	def_special TrioCamp_UpdateKeepsakes
+	def_special TrioSnack_BeginTheft
+	def_special TrioSnack_BufferItem
+	def_special TrioSnack_ReturnItem
+	def_special TrioSnack_UpdateObjects

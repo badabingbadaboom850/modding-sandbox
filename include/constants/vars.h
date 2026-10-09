@@ -315,6 +315,10 @@
 
 #define VAR_ECRUTEAK_BIJUU_MYSTERY                    0x4124 // 0 offer, 1-3 clues, 4 toy, 5 reward pending, 6 revealed
 
+// Route 37 snack chase: saved stages and the one removed Bag item.
+#define VAR_TRIO_SNACK_CHASE_STATE                   0x4125 // 0 untouched, 1 grass, 2 grove, 3 return pending, 4 complete
+#define VAR_TRIO_SNACK_STOLEN_ITEM                   0x4126 // ITEM_NONE means the narrative picnic snack
+
 #define VARS_END                                         0x42FF
 
 #define VARS_COUNT                                       (VARS_END - VARS_START + 1)

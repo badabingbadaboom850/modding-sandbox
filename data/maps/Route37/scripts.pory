@@ -6,6 +6,7 @@ Route37_MapScripts::
 
 Route37_OnTransition: 
 	callnative SetTimeBasedEncounters
+	special TrioSnack_UpdateObjects
 	end
 
 
@@ -162,4 +163,5 @@ Route37_Text_Sign:
 script Route37Sign {
     msgbox("{UP_ARROW} Ecruteak City
             {LEFT_ARROW} Battle Factory", MSGBOX_SIGN)
+    call(TrioSnack_Hint)
 }

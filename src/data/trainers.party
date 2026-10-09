@@ -20867,3 +20867,21 @@ IVs: 25 HP / 25 Atk / 25 Def / 25 SpA / 25 SpD / 25 Spe
 - Bite
 - Stockpile
 - Bullet Seed
+
+
+=== TRAINER_ROUTE37_SNACK_THIEF ===
+Name: SnackThief
+Class: Youngster
+Pic: Youngster
+Gender: Male
+Music: Silver
+Double Battle: No
+AI: Smart Trainer
+
+Greedent
+Level: 22
+IVs: 15 HP / 15 Atk / 15 Def / 15 SpA / 15 SpD / 15 Spe
+- Tackle
+- Bite
+- Stockpile
+- Bullet Seed
