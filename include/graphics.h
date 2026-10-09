@@ -3549,6 +3549,18 @@ extern const u32 gItemIcon_DadsKeys[];
 extern const u16 gItemIconPalette_DadsKeys[];
 extern const u32 gItemIcon_PieceOfChicken[];
 extern const u16 gItemIconPalette_PieceOfChicken[];
+extern const u32 gItemIcon_GreenPepper[];
+extern const u16 gItemIconPalette_GreenPepper[];
+extern const u32 gItemIcon_EelSushi[];
+extern const u16 gItemIconPalette_EelSushi[];
+extern const u32 gItemIcon_FrozenFish[];
+extern const u16 gItemIconPalette_FrozenFish[];
+extern const u32 gItemIcon_MouseToy[];
+extern const u16 gItemIconPalette_MouseToy[];
+extern const u32 gItemIcon_DogBowl[];
+extern const u16 gItemIconPalette_DogBowl[];
+extern const u32 gItemIcon_FetchingStick[];
+extern const u16 gItemIconPalette_FetchingStick[];
 
 #endif //GUARD_GRAPHICS_H
 
