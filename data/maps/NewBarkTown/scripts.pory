@@ -494,3 +494,78 @@ script NewBarkTown_EventScript_ArcherArcadeCall {
 	release
 	end
 }
+
+raw `
+@ Repeatable pilot quiz. Update question text and YES/NO checks together.
+NewBarkTown_EventScript_TrioTrivia::
+	lock
+	faceplayer
+	msgbox NewBarkTown_Text_TrioTriviaOffer, MSGBOX_YESNO
+	goto_if_eq VAR_RESULT, NO, NewBarkTown_EventScript_TrioTriviaDecline
+	msgbox NewBarkTown_Text_TrioTriviaQuestion1, MSGBOX_YESNO
+	goto_if_ne VAR_RESULT, YES, NewBarkTown_EventScript_TrioTriviaWrong
+	msgbox NewBarkTown_Text_TrioTriviaQuestion2, MSGBOX_YESNO
+	goto_if_ne VAR_RESULT, NO, NewBarkTown_EventScript_TrioTriviaWrong
+	msgbox NewBarkTown_Text_TrioTriviaQuestion3, MSGBOX_YESNO
+	goto_if_ne VAR_RESULT, YES, NewBarkTown_EventScript_TrioTriviaWrong
+	msgbox NewBarkTown_Text_TrioTriviaWin, MSGBOX_DEFAULT
+	giveitem ITEM_POTION, 1
+	goto_if_eq VAR_RESULT, FALSE, NewBarkTown_EventScript_TrioTriviaBagFull
+	goto NewBarkTown_EventScript_TrioTriviaFinish
+
+NewBarkTown_EventScript_TrioTriviaWrong::
+	msgbox NewBarkTown_Text_TrioTriviaWrong, MSGBOX_DEFAULT
+	goto NewBarkTown_EventScript_TrioTriviaFinish
+
+NewBarkTown_EventScript_TrioTriviaDecline::
+	msgbox NewBarkTown_Text_TrioTriviaDecline, MSGBOX_DEFAULT
+	goto NewBarkTown_EventScript_TrioTriviaFinish
+
+NewBarkTown_EventScript_TrioTriviaBagFull::
+	msgbox NewBarkTown_Text_TrioTriviaBagFull, MSGBOX_DEFAULT
+
+NewBarkTown_EventScript_TrioTriviaFinish::
+	closemessage
+	release
+	end
+
+NewBarkTown_Text_TrioTriviaOffer:
+	.string "Hello! I host a little\n"
+	.string "quiz about the girls.\p"
+	.string "Three right answers earn\n"
+	.string "one small Wawa!\p"
+	.string "You can play again!\n"
+	.string "Want to give it a try?$"
+
+NewBarkTown_Text_TrioTriviaQuestion1:
+	.string "Question one!\p"
+	.string "Is Riko a Pomeranian?$"
+
+NewBarkTown_Text_TrioTriviaQuestion2:
+	.string "Question two!\p"
+	.string "Is Bijuu a dachshund?$"
+
+NewBarkTown_Text_TrioTriviaQuestion3:
+	.string "Question three!\p"
+	.string "Does Penny love chicken?$"
+
+NewBarkTown_Text_TrioTriviaWin:
+	.string "Three out of three!\n"
+	.string "You know your girls!\p"
+	.string "Here is a small Wawa\n"
+	.string "for your clever team.$"
+
+NewBarkTown_Text_TrioTriviaWrong:
+	.string "Oops! That was not right.\n"
+	.string "No worries, try again!\p"
+	.string "Talk to me to start over.$"
+
+NewBarkTown_Text_TrioTriviaDecline:
+	.string "Another time, then!\n"
+	.string "Give the girls my love.$"
+
+NewBarkTown_Text_TrioTriviaBagFull:
+	.string "Your Bag has no room!\p"
+	.string "Make some space, then\n"
+	.string "try my quiz again.$"
+`
