@@ -319,6 +319,11 @@
 #define VAR_TRIO_SNACK_CHASE_STATE                   0x4125 // 0 untouched, 1 grass, 2 grove, 3 return pending, 4 complete
 #define VAR_TRIO_SNACK_STOLEN_ITEM                   0x4126 // ITEM_NONE means the narrative picnic snack
 
+// Escalating Greedent gang: completed waves, active wave and item custody.
+#define VAR_TRIO_GANG_WINS                           0x4127 // 0-6; old completed Route37 chase counts as wave1
+#define VAR_TRIO_GANG_ACTIVE_WAVE                    0x4128 // 1-6 during an ambush, otherwise0
+#define VAR_TRIO_GANG_PHASE                          0x4129 // 0 inactive, 1 battle pending, 2 won/item pending
+
 #define VARS_END                                         0x42FF
 
 #define VARS_COUNT                                       (VARS_END - VARS_START + 1)

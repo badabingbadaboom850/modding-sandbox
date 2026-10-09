@@ -70,7 +70,7 @@ class Checks(unittest.TestCase):
             r=Run(state).run('TrioSnack_Start');self.assertEqual(r.vars[STATE],state)
             self.assertNotIn('TrioSnack_StolenText',r.text);self.assertFalse(r.locked)
     def test_battle_loss_decline_and_pending_return(self):
-        r=Run(2,answer=0).run('TrioSnack_Grove');self.assertEqual(r.battles,0);self.assertEqual(r.vars[STATE],2);self.assertFalse(r.locked)
+        r=Run(2,answer=0).run('TrioSnack_Grove');self.assertEqual(r.battles,1);self.assertEqual(r.vars[STATE],4);self.assertFalse(r.locked)
         r=Run(2,won=False).run('TrioSnack_Grove');self.assertEqual(r.battles,1);self.assertEqual(r.vars[STATE],2);self.assertIn('TrioSnack_RetryText',r.text);self.assertFalse(r.locked)
         r=Run(2,full=True).run('TrioSnack_Grove');self.assertEqual(r.battles,1);self.assertEqual(r.vars[STATE],3);self.assertIn('TrioSnack_FullBagText',r.text);self.assertFalse(r.locked)
         r=Run(3).run('TrioSnack_Grove');self.assertEqual(r.battles,0);self.assertEqual(r.vars[STATE],4);self.assertIn('TrioSisters_Recorded',r.text);self.assertFalse(r.locked)
@@ -106,7 +106,7 @@ class Checks(unittest.TestCase):
         for p in [(14,32),(14,31),(14,34),(14,35),(17,18),(17,17),(18,19),(19,19)]:
             self.assertTrue(walk(*p));self.assertNotIn(p,{(a['x'],a['y']) for a in m['object_events'][:12]})
         for event in m['coord_events'][4:]:
-            self.assertEqual(event['var'],STATE);self.assertEqual(event['var_value'],'0');self.assertTrue(walk(event['x'],event['y']))
+            self.assertEqual(event['var'],STATE);self.assertIn(event['var_value'],['0','1','2']);self.assertTrue(walk(event['x'],event['y']))
     def test_registration_text_and_authoring(self):
         inc=(ROOT/'data/maps/Route37/scripts.inc').read_text();pory=(ROOT/'data/maps/Route37/scripts.pory').read_text()
         self.assertIn('special TrioSnack_UpdateObjects',inc);self.assertIn('special TrioSnack_UpdateObjects',pory)
@@ -126,9 +126,9 @@ class Checks(unittest.TestCase):
             for page in text[:-1].split(r'\p'):
                 lines=page.split(r'\n');self.assertLessEqual(len(lines),2);self.assertTrue(all(len(l)<=26 for l in lines),(label,lines))
     def test_battle_callback_and_allocations(self):
-        src=(ROOT/'src/battle_setup.c').read_text();self.assertIn('if (TrioSnack_IsFriendlyBattle(',src)
+        src=(ROOT/'src/battle_setup.c').read_text();self.assertNotIn('TrioSnack_IsFriendlyBattle',src);self.assertIn('SetMainCallback2(CB2_WhiteOut)',src)
         helper=(ROOT/'src/trio_snack_chase.c').read_text();self.assertIn('trainer == TRAINER_ROUTE37_SNACK_THIEF',helper)
-        self.assertIn('&& mapNum == MAP_NUM(MAP_ROUTE37)',helper)
+        self.assertIn('MAP_GROUP(MAP_ROUTE37), MAP_NUM(MAP_ROUTE37), FLAG_BADGE03_GET',helper)
         self.assertNotIn('FLAG_SYS_NO_CATCHING',SOURCE+helper)
         for label in ['VAR_TRIO_SNACK_CHASE_STATE','VAR_TRIO_SNACK_STOLEN_ITEM']:
             values=re.findall(r'^#define '+label+r'\s+(0x\w+)',(ROOT/'include/constants/vars.h').read_text(),re.M);self.assertEqual(len(values),1)

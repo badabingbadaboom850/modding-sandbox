@@ -1454,7 +1454,7 @@ void SetUpTwoTrainersBattle(void)
 bool32 GetTrainerFlagFromScriptPointer(const u8 *data)
 {
     TrainerBattleParameter *temp = (TrainerBattleParameter*)(data + OPCODE_OFFSET);
-    return FlagGet(TRAINER_FLAGS_START + temp->params.opponentA);
+    return HasTrainerBeenFought(temp->params.opponentA);
 }
 
 bool32 GetRematchFromScriptPointer(const u8 *data)
@@ -1485,6 +1485,8 @@ u8 GetTrainerBattleMode(void)
 
 bool8 GetTrainerFlag(void)
 {
+    if (TrioGang_WaveForTrainer(TRAINER_BATTLE_PARAM.opponentA))
+        return HasTrainerBeenFought(TRAINER_BATTLE_PARAM.opponentA);
     if (CurrentBattlePyramidLocation() != PYRAMID_LOCATION_NONE)
         return GetBattlePyramidTrainerFlag(gSelectedObjectEvent);
     else if (InTrainerHill())
@@ -1495,6 +1497,10 @@ bool8 GetTrainerFlag(void)
 
 static void SetBattledTrainersFlags(void)
 {
+    // Greedent gang slots overlap reclaimed puzzle flags; its saved wins own
+    // progression instead of ordinary trainer flags. Blackouts stay normal.
+    if (TrioGang_WaveForTrainer(TRAINER_BATTLE_PARAM.opponentA))
+        return;
     if (TRAINER_BATTLE_PARAM.opponentB != 0)
         FlagSet(GetTrainerBFlag());
     FlagSet(GetTrainerAFlag());
@@ -1508,16 +1514,23 @@ static void UNUSED SetBattledTrainerFlag(void)
 
 bool8 HasTrainerBeenFought(u16 trainerId)
 {
+    u16 wave = TrioGang_WaveForTrainer(trainerId);
+    if (wave)
+        return VarGet(VAR_TRIO_GANG_WINS) >= wave;
     return FlagGet(TRAINER_FLAGS_START + trainerId);
 }
 
 void SetTrainerFlag(u16 trainerId)
 {
+    if (TrioGang_WaveForTrainer(trainerId))
+        return;
     FlagSet(TRAINER_FLAGS_START + trainerId);
 }
 
 void ClearTrainerFlag(u16 trainerId)
 {
+    if (TrioGang_WaveForTrainer(trainerId))
+        return;
     FlagClear(TRAINER_FLAGS_START + trainerId);
 }
 
@@ -1678,17 +1691,6 @@ static void CB2_EndTrainerBattle(void)
      && (TRAINER_BATTLE_PARAM.opponentA == TRAINER_FESTIVAL_SCOTT
       || TRAINER_BATTLE_PARAM.opponentA == TRAINER_FESTIVAL_SNACK_A
       || TRAINER_BATTLE_PARAM.opponentA == TRAINER_FESTIVAL_SNACK_B))
-    {
-        HealPlayerParty();
-        SetMainCallback2(CB2_ReturnToFieldContinueScriptPlayMapMusic);
-        return;
-    }
-
-    // This single route exhibition heals and resumes even on defeat. Ordinary
-    // trainers and the festival retain their own existing return paths.
-    if (TrioSnack_IsFriendlyBattle(gSaveBlock1Ptr->location.mapGroup,
-                                  gSaveBlock1Ptr->location.mapNum,
-                                  TRAINER_BATTLE_PARAM.opponentA))
     {
         HealPlayerParty();
         SetMainCallback2(CB2_ReturnToFieldContinueScriptPlayMapMusic);

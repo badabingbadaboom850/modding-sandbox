@@ -1135,11 +1135,11 @@
 #define TRAINER_UNUSED_287                1151
 #define TRAINER_UNUSED_288                1152
 #define TRAINER_UNUSED_289                1153
-#define TRAINER_UNUSED_290                1154
-#define TRAINER_UNUSED_291                1155
-#define TRAINER_UNUSED_292                1156
-#define TRAINER_UNUSED_293                1157
-#define TRAINER_UNUSED_294                1158
+#define TRAINER_GREEDENT_GANG_2             1154
+#define TRAINER_GREEDENT_GANG_3             1155
+#define TRAINER_GREEDENT_GANG_4             1156
+#define TRAINER_GREEDENT_GANG_5             1157
+#define TRAINER_GREEDENT_GANG_6             1158
 #define TRAINER_FESTIVAL_SCOTT                1159
 #define TRAINER_FESTIVAL_SNACK_A              1160
 #define TRAINER_FESTIVAL_SNACK_B              1161

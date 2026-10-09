@@ -5,6 +5,9 @@ void TrioSnack_BeginTheft(void);
 void TrioSnack_BufferItem(void);
 void TrioSnack_ReturnItem(void);
 void TrioSnack_UpdateObjects(void);
-bool32 TrioSnack_IsFriendlyBattle(u8 mapGroup, u8 mapNum, u16 trainer);
+void TrioGang_PrepareAmbush(void);
+void TrioGang_BeginAmbush(void);
+void TrioGang_RecordVictory(void);
+u16 TrioGang_WaveForTrainer(u16 trainer);
 
 #endif

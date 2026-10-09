@@ -20885,3 +20885,228 @@ IVs: 15 HP / 15 Atk / 15 Def / 15 SpA / 15 SpD / 15 Spe
 - Bite
 - Stockpile
 - Bullet Seed
+
+
+=== TRAINER_GREEDENT_GANG_2 ===
+Name: SnackMob
+Class: Youngster
+Pic: Youngster
+Gender: Male
+Music: Silver
+Double Battle: No
+AI: Smart Trainer
+
+Greedent @ Sitrus Berry
+Level: 35
+IVs: 20 HP / 20 Atk / 20 Def / 20 SpA / 20 SpD / 20 Spe
+- Body Slam
+- Crunch
+- Earthquake
+- Bullet Seed
+
+Greedent @ Sitrus Berry
+Level: 35
+IVs: 20 HP / 20 Atk / 20 Def / 20 SpA / 20 SpD / 20 Spe
+- Belly Drum
+- Body Slam
+- Crunch
+- Rest
+
+
+=== TRAINER_GREEDENT_GANG_3 ===
+Name: SnackMob
+Class: Youngster
+Pic: Youngster
+Gender: Male
+Music: Silver
+Double Battle: No
+AI: Smart Trainer
+
+Greedent @ Sitrus Berry
+Level: 48
+IVs: 25 HP / 25 Atk / 25 Def / 25 SpA / 25 SpD / 25 Spe
+- Body Slam
+- Crunch
+- Earthquake
+- Bullet Seed
+
+Greedent @ Sitrus Berry
+Level: 48
+IVs: 25 HP / 25 Atk / 25 Def / 25 SpA / 25 SpD / 25 Spe
+- Belly Drum
+- Body Slam
+- Crunch
+- Rest
+
+Greedent @ Leftovers
+Level: 48
+IVs: 25 HP / 25 Atk / 25 Def / 25 SpA / 25 SpD / 25 Spe
+- Stockpile
+- Body Press
+- Rest
+- Crunch
+
+
+=== TRAINER_GREEDENT_GANG_4 ===
+Name: SnackMob
+Class: Youngster
+Pic: Youngster
+Gender: Male
+Music: Silver
+Double Battle: No
+AI: Smart Trainer
+
+Greedent @ Sitrus Berry
+Level: 62
+IVs: 31 HP / 31 Atk / 31 Def / 31 SpA / 31 SpD / 31 Spe
+EVs: 252 HP / 252 Atk / 4 Def
+- Body Slam
+- Crunch
+- Earthquake
+- Bullet Seed
+
+Greedent @ Sitrus Berry
+Level: 62
+IVs: 31 HP / 31 Atk / 31 Def / 31 SpA / 31 SpD / 31 Spe
+EVs: 252 HP / 252 Atk / 4 Def
+- Belly Drum
+- Body Slam
+- Crunch
+- Rest
+
+Greedent @ Leftovers
+Level: 62
+IVs: 31 HP / 31 Atk / 31 Def / 31 SpA / 31 SpD / 31 Spe
+EVs: 252 HP / 252 Atk / 4 Def
+- Stockpile
+- Body Press
+- Rest
+- Crunch
+
+Greedent @ Sitrus Berry
+Level: 62
+IVs: 31 HP / 31 Atk / 31 Def / 31 SpA / 31 SpD / 31 Spe
+EVs: 252 HP / 252 Atk / 4 Def
+- Swords Dance
+- Earthquake
+- Bullet Seed
+- Gyro Ball
+
+
+=== TRAINER_GREEDENT_GANG_5 ===
+Name: SnackMob
+Class: Youngster
+Pic: Youngster
+Gender: Male
+Music: Silver
+Double Battle: No
+AI: Smart Trainer
+
+Greedent @ Sitrus Berry
+Level: 78
+IVs: 31 HP / 31 Atk / 31 Def / 31 SpA / 31 SpD / 31 Spe
+EVs: 252 HP / 252 Atk / 4 Def
+- Body Slam
+- Crunch
+- Earthquake
+- Bullet Seed
+
+Greedent @ Sitrus Berry
+Level: 78
+IVs: 31 HP / 31 Atk / 31 Def / 31 SpA / 31 SpD / 31 Spe
+EVs: 252 HP / 252 Atk / 4 Def
+- Belly Drum
+- Body Slam
+- Crunch
+- Rest
+
+Greedent @ Leftovers
+Level: 78
+IVs: 31 HP / 31 Atk / 31 Def / 31 SpA / 31 SpD / 31 Spe
+EVs: 252 HP / 252 Atk / 4 Def
+- Stockpile
+- Body Press
+- Rest
+- Crunch
+
+Greedent @ Sitrus Berry
+Level: 78
+IVs: 31 HP / 31 Atk / 31 Def / 31 SpA / 31 SpD / 31 Spe
+EVs: 252 HP / 252 Atk / 4 Def
+- Swords Dance
+- Earthquake
+- Bullet Seed
+- Gyro Ball
+
+Greedent @ Sitrus Berry
+Level: 78
+IVs: 31 HP / 31 Atk / 31 Def / 31 SpA / 31 SpD / 31 Spe
+EVs: 252 HP / 252 Atk / 4 Def
+- Rest
+- Sleep Talk
+- Body Slam
+- Earthquake
+
+
+=== TRAINER_GREEDENT_GANG_6 ===
+Name: SnackMob
+Class: Youngster
+Pic: Youngster
+Gender: Male
+Music: Silver
+Double Battle: No
+AI: Smart Trainer
+
+Greedent @ Sitrus Berry
+Level: 100
+IVs: 31 HP / 31 Atk / 31 Def / 31 SpA / 31 SpD / 31 Spe
+EVs: 252 HP / 252 Atk / 4 Def
+- Body Slam
+- Crunch
+- Earthquake
+- Bullet Seed
+
+Greedent @ Sitrus Berry
+Level: 100
+IVs: 31 HP / 31 Atk / 31 Def / 31 SpA / 31 SpD / 31 Spe
+EVs: 252 HP / 252 Atk / 4 Def
+- Belly Drum
+- Body Slam
+- Crunch
+- Rest
+
+Greedent @ Leftovers
+Level: 100
+IVs: 31 HP / 31 Atk / 31 Def / 31 SpA / 31 SpD / 31 Spe
+EVs: 252 HP / 252 Atk / 4 Def
+- Stockpile
+- Body Press
+- Rest
+- Crunch
+
+Greedent @ Sitrus Berry
+Level: 100
+IVs: 31 HP / 31 Atk / 31 Def / 31 SpA / 31 SpD / 31 Spe
+EVs: 252 HP / 252 Atk / 4 Def
+- Swords Dance
+- Earthquake
+- Bullet Seed
+- Gyro Ball
+
+Greedent @ Sitrus Berry
+Level: 100
+IVs: 31 HP / 31 Atk / 31 Def / 31 SpA / 31 SpD / 31 Spe
+EVs: 252 HP / 252 Atk / 4 Def
+- Rest
+- Sleep Talk
+- Body Slam
+- Earthquake
+
+Greedent @ Leftovers
+Level: 100
+IVs: 31 HP / 31 Atk / 31 Def / 31 SpA / 31 SpD / 31 Spe
+EVs: 252 HP / 252 Atk / 4 Def
+- Belly Drum
+- Giga Impact
+- Earthquake
+- Crunch

@@ -15,6 +15,9 @@ static void ResetChase(void)
     FlagSet(FLAG_BADGE03_GET);
     VarSet(VAR_TRIO_SNACK_CHASE_STATE, 0);
     VarSet(VAR_TRIO_SNACK_STOLEN_ITEM, ITEM_NONE);
+    VarSet(VAR_TRIO_GANG_WINS, 0);
+    VarSet(VAR_TRIO_GANG_ACTIVE_WAVE, 0);
+    VarSet(VAR_TRIO_GANG_PHASE, 0);
 }
 
 TEST("Snack thief removes one real Berry and cannot steal twice")
@@ -115,7 +118,7 @@ TEST("A filled Berry stack retains escrow and lets the winner retry without a fi
     EXPECT(!gSpecialVar_Result);
 }
 
-TEST("Chase visibility survives every saved stage and friendly returns are narrowly scoped")
+TEST("Legacy chase visibility survives every saved stage")
 {
     u32 state;
     ResetChase();
@@ -134,8 +137,4 @@ TEST("Chase visibility survives every saved stage and friendly returns are narro
     EXPECT(FlagGet(FLAG_HIDE_TRIO_SNACK_START));
     EXPECT(FlagGet(FLAG_HIDE_TRIO_SNACK_GRASS));
     EXPECT(FlagGet(FLAG_HIDE_TRIO_SNACK_GROVE));
-    EXPECT(TrioSnack_IsFriendlyBattle(MAP_GROUP(MAP_ROUTE37), MAP_NUM(MAP_ROUTE37), TRAINER_ROUTE37_SNACK_THIEF));
-    EXPECT(!TrioSnack_IsFriendlyBattle(MAP_GROUP(MAP_ROUTE37), MAP_NUM(MAP_ROUTE37), TRAINER_GREG));
-    EXPECT(!TrioSnack_IsFriendlyBattle(MAP_GROUP(MAP_ROUTE36), MAP_NUM(MAP_ROUTE36), TRAINER_ROUTE37_SNACK_THIEF));
-    EXPECT(!TrioSnack_IsFriendlyBattle(MAP_GROUP(MAP_GOLDENROD_FESTIVAL), MAP_NUM(MAP_GOLDENROD_FESTIVAL), TRAINER_ROUTE37_SNACK_THIEF));
 }

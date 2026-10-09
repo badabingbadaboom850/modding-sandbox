@@ -657,3 +657,6 @@ gSpecials::
 	def_special TrioSnack_BufferItem
 	def_special TrioSnack_ReturnItem
 	def_special TrioSnack_UpdateObjects
+	def_special TrioGang_PrepareAmbush
+	def_special TrioGang_BeginAmbush
+	def_special TrioGang_RecordVictory

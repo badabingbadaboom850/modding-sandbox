@@ -1,4 +1,5 @@
 #include "global.h"
+#include "battle.h"
 #include "event_data.h"
 #include "item.h"
 #include "string_util.h"
@@ -49,14 +50,22 @@ void TrioSnack_ReturnItem(void)
 {
     u16 item = VarGet(VAR_TRIO_SNACK_STOLEN_ITEM);
     gSpecialVar_Result = FALSE;
-    if (VarGet(VAR_TRIO_SNACK_CHASE_STATE) != 3)
+    u16 phase = VarGet(VAR_TRIO_GANG_PHASE);
+    u16 wave = VarGet(VAR_TRIO_GANG_ACTIVE_WAVE);
+    if (VarGet(VAR_TRIO_SNACK_CHASE_STATE) != 3 && phase != 2)
         return;
-    // Add exactly once. If the pocket/stack fills during the chase, retain
-    // both the exact item and the won state until the player makes room.
     if (item != ITEM_NONE && !AddBagItem(item, 1))
         return;
     VarSet(VAR_TRIO_SNACK_STOLEN_ITEM, ITEM_NONE);
-    VarSet(VAR_TRIO_SNACK_CHASE_STATE, 4);
+    if (VarGet(VAR_TRIO_SNACK_CHASE_STATE) == 3)
+    {
+        VarSet(VAR_TRIO_SNACK_CHASE_STATE, 4);
+        VarSet(VAR_TRIO_GANG_WINS, 1);
+    }
+    else if (phase == 2 && wave >= 2 && wave <= 6)
+        VarSet(VAR_TRIO_GANG_WINS, wave);
+    VarSet(VAR_TRIO_GANG_PHASE, 0);
+    VarSet(VAR_TRIO_GANG_ACTIVE_WAVE, 0);
     gSpecialVar_Result = TRUE;
 }
 
@@ -76,9 +85,118 @@ void TrioSnack_UpdateObjects(void)
         FlagClear(FLAG_HIDE_TRIO_SNACK_GROVE);
 }
 
-bool32 TrioSnack_IsFriendlyBattle(u8 mapGroup, u8 mapNum, u16 trainer)
+
+static const struct { u8 group, num; u16 badge; } sGangStops[] = {
+    {MAP_GROUP(MAP_ROUTE37), MAP_NUM(MAP_ROUTE37), FLAG_BADGE03_GET},
+    {MAP_GROUP(MAP_ROUTE38), MAP_NUM(MAP_ROUTE38), FLAG_BADGE04_GET},
+    {MAP_GROUP(MAP_ROUTE42), MAP_NUM(MAP_ROUTE42), FLAG_BADGE06_GET},
+    {MAP_GROUP(MAP_ROUTE44), MAP_NUM(MAP_ROUTE44), FLAG_BADGE07_GET},
+    {MAP_GROUP(MAP_ROUTE26), MAP_NUM(MAP_ROUTE26), FLAG_BADGE08_GET},
+    {MAP_GROUP(MAP_ROUTE6), MAP_NUM(MAP_ROUTE6), FLAG_IS_CHAMPION},
+};
+
+static u16 GangWaveForCurrentMap(void)
 {
-    return mapGroup == MAP_GROUP(MAP_ROUTE37)
-        && mapNum == MAP_NUM(MAP_ROUTE37)
-        && trainer == TRAINER_ROUTE37_SNACK_THIEF;
+    u32 i;
+    for (i = 0; i < ARRAY_COUNT(sGangStops); i++)
+        if (gSaveBlock1Ptr->location.mapGroup == sGangStops[i].group
+         && gSaveBlock1Ptr->location.mapNum == sGangStops[i].num
+         && FlagGet(sGangStops[i].badge))
+            return i + 1;
+    return 0;
+}
+
+void TrioGang_PrepareAmbush(void)
+{
+    u16 wins = VarGet(VAR_TRIO_GANG_WINS);
+    u16 wave = GangWaveForCurrentMap();
+    // Migrate an already completed one-thief chase; never re-steal its item.
+    if (wins == 0 && VarGet(VAR_TRIO_SNACK_CHASE_STATE) == 4)
+    {
+        wins = 1;
+        VarSet(VAR_TRIO_GANG_WINS, wins);
+    }
+    VarSet(VAR_TEMP_B, 0);
+    if (!wave || wave != wins + 1)
+        return;
+    if (VarGet(VAR_TRIO_SNACK_CHASE_STATE) == 3
+     || VarGet(VAR_TRIO_GANG_PHASE) == 2)
+        VarSet(VAR_TEMP_B, 7); // Reclaim pending item without another fight.
+    else if (wave == 1)
+    {
+        // First encounter keeps the pursuit. Entry steals once; the northern
+        // exit gate makes the battle mandatory before leaving for Ecruteak.
+        if (VarGet(VAR_TRIO_SNACK_CHASE_STATE) == 0)
+            VarSet(VAR_TEMP_B, 8);
+    }
+    else
+        VarSet(VAR_TEMP_B, wave);
+}
+
+void TrioGang_BeginAmbush(void)
+{
+    u16 wave = GangWaveForCurrentMap();
+    u16 item;
+    gSpecialVar_Result = FALSE;
+    gSpecialVar_0x8005 = FALSE; // TRUE means a new theft, FALSE means a retry.
+    if (!wave || wave != VarGet(VAR_TRIO_GANG_WINS) + 1
+     || VarGet(VAR_TRIO_GANG_PHASE) == 2)
+        return;
+    if (wave == 1)
+    {
+        if (VarGet(VAR_TRIO_SNACK_CHASE_STATE) == 0)
+        {
+            TrioSnack_BeginTheft();
+            if (!gSpecialVar_Result)
+                return;
+            gSpecialVar_0x8005 = TRUE;
+        }
+        if (VarGet(VAR_TRIO_SNACK_CHASE_STATE) != 1
+         && VarGet(VAR_TRIO_SNACK_CHASE_STATE) != 2)
+            return;
+    }
+    else if (VarGet(VAR_TRIO_GANG_PHASE) == 0)
+    {
+        item = ITEM_ORAN_BERRY;
+        if (!CheckBagHasItem(item, 1))
+        {
+            for (item = FIRST_BERRY_INDEX; item <= LAST_BERRY_INDEX; item++)
+                if (CheckBagHasItem(item, 1))
+                    break;
+            if (item > LAST_BERRY_INDEX)
+                item = ITEM_NONE;
+        }
+        if (item != ITEM_NONE && !RemoveBagItem(item, 1))
+            return;
+        VarSet(VAR_TRIO_SNACK_STOLEN_ITEM, item);
+        gSpecialVar_0x8005 = TRUE;
+    }
+    else if (VarGet(VAR_TRIO_GANG_ACTIVE_WAVE) != wave)
+        return;
+    VarSet(VAR_TRIO_GANG_ACTIVE_WAVE, wave);
+    VarSet(VAR_TRIO_GANG_PHASE, 1);
+    ConvertIntToDecimalStringN(gStringVar2, wave, STR_CONV_MODE_LEFT_ALIGN, 1);
+    gSpecialVar_Result = TRUE;
+}
+
+void TrioGang_RecordVictory(void)
+{
+    u16 wave = VarGet(VAR_TRIO_GANG_ACTIVE_WAVE);
+    if (gBattleOutcome != B_OUTCOME_WON || wave < 1 || wave > 6
+     || VarGet(VAR_TRIO_GANG_PHASE) != 1)
+        return;
+    if (wave == 1)
+        VarSet(VAR_TRIO_SNACK_CHASE_STATE, 3);
+    VarSet(VAR_TRIO_GANG_PHASE, 2);
+}
+
+// These trainer slots have reclaimed puzzle flags. Gang progress must never
+// read or write trainerId + TRAINER_FLAGS_START for them.
+u16 TrioGang_WaveForTrainer(u16 trainer)
+{
+    if (trainer == TRAINER_ROUTE37_SNACK_THIEF)
+        return 1;
+    if (trainer >= TRAINER_GREEDENT_GANG_2 && trainer <= TRAINER_GREEDENT_GANG_6)
+        return trainer - TRAINER_GREEDENT_GANG_2 + 2;
+    return 0;
 }

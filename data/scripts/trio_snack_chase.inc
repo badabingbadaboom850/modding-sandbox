@@ -61,8 +61,7 @@ TrioSnack_Grove::
 	faceplayer
 	goto_if_eq VAR_TRIO_SNACK_CHASE_STATE, 3, TrioSnack_Reclaim
 	goto_if_ne VAR_TRIO_SNACK_CHASE_STATE, 2, TrioSnack_Close
-	msgbox TrioSnack_BattleOffer, MSGBOX_YESNO
-	goto_if_eq VAR_RESULT, NO, TrioSnack_Close
+	msgbox TrioSnack_BattleOffer, MSGBOX_DEFAULT
 	trainerbattle_no_intro TRAINER_ROUTE37_SNACK_THIEF, TrioSnack_DefeatText
 	specialvar VAR_RESULT, GetBattleOutcome
 	goto_if_ne VAR_RESULT, B_OUTCOME_WON, TrioSnack_Retry
@@ -137,11 +136,11 @@ TrioSnack_GrassText:
 TrioSnack_GroveHintText:
 	.string "Penny points east. Follow\nthe trail to the Berry\ptree in the eastern grove.\nThe snack thief is there!$"
 TrioSnack_BattleOffer:
-	.string "Greedent hugs the snack.\nNo more hiding spots!\pFight the level-22 thief\nto get it back? You heal\pafter either outcome.$"
+	.string "Greedent hugs the snack.\nNo more hiding spots!\pLevel-22 Greedent attacks!\nNo snack. No negotiations.$"
 TrioSnack_DefeatText:
 	.string "The snack is surrendered!$"
 TrioSnack_RetryText:
-	.string "Everyone is healed.\nGreedent keeps the snack\pbeside the Berry tree.\nTry again when ready.$"
+	.string "Greedent keeps the snack\pbeside the Berry tree.\nTry again when ready.$"
 TrioSnack_ReturnedText:
 	.string "You get your snack back:\n{STR_VAR_1}!$"
 TrioSnack_FullBagText:
