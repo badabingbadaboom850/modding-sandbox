@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """Source-flow and decoded map regression checks; does not emulate graphics/battles."""
 from pathlib import Path
-import collections,json,re,struct,unittest
+import collections,json,re,struct,subprocess,unittest
 ROOT=Path(__file__).resolve().parents[2]
 SOURCE=(ROOT/'data/maps/GoldenrodFestival/scripts.inc').read_text()
 LABELS={};CODE=[];active=True
@@ -66,6 +66,26 @@ class Run:
         raise AssertionError('Script failed to terminate: '+label)
 F=lambda x:'FLAG_TRIO_FESTIVAL_'+x
 class FestivalChecks(unittest.TestCase):
+    def test_test_mode_survives_script_preprocessing(self):
+        # Match production include context: TRUE exists in C but not script CPP.
+        header=(ROOT/'data/event_scripts.s').read_text().split('.include',1)[0]
+        processed=subprocess.run(['cpp','-P','-I',str(ROOT/'include'),'-'],
+                                 input=header+'\n'+SOURCE,text=True,
+                                 capture_output=True,check=True).stdout
+        shuttle=processed.split('TrioFestival_TestShuttle::',1)[1].split('TrioFestival_Entrance::',1)[0]
+        self.assertIn('TrioFestival_TestOffer',shuttle)
+        self.assertIn('TrioFestival_TestToolsOffer',processed)
+        # A disabled build must remove both prompts and retain a returning helper.
+        header=header.replace('#include "config/general.h"','#include "config/general.h"\n#undef TRIO_FESTIVAL_TEST_MODE\n#define TRIO_FESTIVAL_TEST_MODE 0')
+        disabled=subprocess.run(['cpp','-P','-I',str(ROOT/'include'),'-'],
+                                input=header+'\n'+SOURCE,text=True,
+                                capture_output=True,check=True).stdout
+        shuttle=disabled.split('TrioFestival_TestShuttle::',1)[1].split('TrioFestival_Entrance::',1)[0]
+        self.assertNotIn('TrioFestival_TestOffer',shuttle)
+        self.assertIn('return',shuttle)
+        host=disabled.split('TrioFestival_HostMenu:',1)[1].split('TrioFestival_Itinerary:',1)[0]
+        self.assertNotIn('TrioFestival_TestToolsOffer',host)
+
     def test_entry_gate_and_missing_girls(self):
         for flags,girls in [((),True),(('FLAG_BADGE04_GET',),False)]:
             r=Run(flags,girls=girls).run('Entrance');self.assertFalse(r.warps);self.assertTrue(r.released)
