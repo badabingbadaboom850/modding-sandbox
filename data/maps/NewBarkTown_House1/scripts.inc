@@ -1,4 +1,5 @@
 NewBarkTown_House1_MapScripts::
+	map_script MAP_SCRIPT_ON_TRANSITION, TrioCamp_OnTransition
 	.byte 0
 
 NewBarkTown_House1_EventScript_Mother::
@@ -13,6 +14,7 @@ NewBarkTown_House1_EventScript_Daughter::
 	lock
 	faceplayer
 	msgbox NewBarkTown_House1_Text_NeighborsDaughter, MSGBOX_DEFAULT
+	call TrioCamp_Host
 	closemessage
 	release
 	end

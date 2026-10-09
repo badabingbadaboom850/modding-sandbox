@@ -1,4 +1,5 @@
 #include "global.h"
+#include "trio_camp.h"
 #include "achievements.h"
 #include "battle.h"
 #include "battle_hold_effects.h"
@@ -13049,6 +13050,9 @@ void BS_ItemRestoreHP(void)
     }
     else
     {
+        if (IsOnPlayerSide(gBattlerAttacker))
+            TrioCamp_RecordMedicineUse(gLastUsedItem);
+
         // Track the number of Revives used in a battle.
         if (hp == 0 && IsOnPlayerSide(gBattlerAttacker) && gBattleResults.numRevivesUsed < 255)
             gBattleResults.numRevivesUsed++;
@@ -13139,6 +13143,9 @@ void BS_ItemCureStatus(void)
         gBattlescriptCurrInstr = cmd->noStatusInstr;
         return;
     }
+
+    if (IsOnPlayerSide(gBattlerAttacker))
+        TrioCamp_RecordMedicineUse(gLastUsedItem);
 
     PREPARE_SPECIES_BUFFER(gBattleTextBuff1, GetMonData(&party[gBattleStruct->itemPartyIndex[gBattlerAttacker]], MON_DATA_SPECIES));
     if (targetBattler == MAX_BATTLERS_COUNT)

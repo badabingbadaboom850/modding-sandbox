@@ -972,6 +972,30 @@ static const struct MenuAction MultichoiceList_TrioScrapbook[] =
     {gText_Exit},
 };
 
+static const struct MenuAction MultichoiceList_TrioCampHost[] =
+{
+    {COMPOUND_STRING("Rest together")},
+    {COMPOUND_STRING("How to play")},
+    {COMPOUND_STRING("Family stats")},
+    {gText_Exit},
+};
+
+static const struct MenuAction MultichoiceList_TrioCampGirl[] =
+{
+    {COMPOUND_STRING("Pet")},
+    {COMPOUND_STRING("Favorite")},
+    {COMPOUND_STRING("Play")},
+    {gText_Exit},
+};
+
+static const struct MenuAction MultichoiceList_TrioCampBarks[] =
+{
+    {COMPOUND_STRING("One bark")},
+    {COMPOUND_STRING("Two barks")},
+    {COMPOUND_STRING("Three barks")},
+    {gText_Exit},
+};
+
 static const struct MultichoiceListStruct sMultichoiceLists[] =
 {
     [MULTI_BRINEY_ON_DEWFORD]          = MULTICHOICE(MultichoiceList_BrineyOnDewford),
@@ -1111,6 +1135,9 @@ static const struct MultichoiceListStruct sMultichoiceLists[] =
     [MULTI_ROCKET_ARCADE_CASH_OUT]      = MULTICHOICE(MultichoiceList_RocketArcadeCashOut),
     [MULTI_LEVEL_MODE_WITH_EXIT]        = MULTICHOICE(MultichoiceList_LevelModeWithExit),
     [MULTI_TRIO_SCRAPBOOK]              = MULTICHOICE(MultichoiceList_TrioScrapbook),
+    [MULTI_TRIO_CAMP_HOST]               = MULTICHOICE(MultichoiceList_TrioCampHost),
+    [MULTI_TRIO_CAMP_GIRL]               = MULTICHOICE(MultichoiceList_TrioCampGirl),
+    [MULTI_TRIO_CAMP_BARKS]              = MULTICHOICE(MultichoiceList_TrioCampBarks),
 };
 
 const u8 *const gStdStrings[] =

@@ -145,6 +145,9 @@
 #define MULTI_ROCKET_ARCADE_CASH_OUT        134
 #define MULTI_LEVEL_MODE_WITH_EXIT           135
 #define MULTI_TRIO_SCRAPBOOK                 136
+#define MULTI_TRIO_CAMP_HOST                 137
+#define MULTI_TRIO_CAMP_GIRL                 138
+#define MULTI_TRIO_CAMP_BARKS                139
 
 // Lilycove SS Tidal Multichoice Selections
 #define SSTIDAL_SELECTION_SLATEPORT        0

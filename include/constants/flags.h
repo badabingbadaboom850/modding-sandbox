@@ -1792,7 +1792,12 @@
 #define FLAG_TRIO_SISTERS_VERMILION                    0x1069
 #define FLAG_TRIO_SISTERS_CELADON                      0x106A
 #define FLAG_TRIO_CHAMPION_PICNIC                      0x106B
-#define CUSTOM_FLAGS_END                            FLAG_TRIO_CHAMPION_PICNIC
+#define FLAG_TRIO_CAMP_STATS_READY                    0x106C
+#define FLAG_HIDE_TRIO_CAMP_RIKO                      0x106D
+#define FLAG_HIDE_TRIO_CAMP_BIJUU                     0x106E
+#define FLAG_HIDE_TRIO_CAMP_PENNY                     0x106F
+#define FLAG_TRIO_CAMP_MEMORY                        0x1070
+#define CUSTOM_FLAGS_END                            FLAG_TRIO_CAMP_MEMORY
 
 
 #define FLAG_0x1500                                 0x1500

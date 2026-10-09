@@ -1,4 +1,7 @@
 #include "global.h"
+#include "trio_camp.h"
+#include "event_data.h"
+#include "item_menu.h"
 #include "achievements.h"
 #include "malloc.h"
 #include "battle.h"
@@ -790,6 +793,7 @@ static void Task_EvolutionScene(u8 taskId)
             GetSetPokedexFlag(SpeciesToNationalPokedexNum(gTasks[taskId].tPostEvoSpecies), FLAG_SET_SEEN);
             GetSetPokedexFlag(SpeciesToNationalPokedexNum(gTasks[taskId].tPostEvoSpecies), FLAG_SET_CAUGHT);
             IncrementGameStat(GAME_STAT_EVOLVED_POKEMON);
+            TrioCamp_RecordEvolution(gTasks[taskId].tPreEvoSpecies, gTasks[taskId].tPostEvoSpecies, gSpecialVar_ItemId);
             Achievement_CheckAll();
         }
         break;

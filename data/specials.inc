@@ -647,3 +647,8 @@ gSpecials::
 	def_special EnableAutorun
 	def_special BattleSetup_StartDexNavBattle
 	def_special MigrateLegacyRadioShortcut
+	def_special TrioCamp_RecordVisit
+	def_special TrioCamp_RecordGame
+	def_special TrioCamp_RecordPet
+	def_special TrioCamp_UseFavorite
+	def_special TrioCamp_BufferStats

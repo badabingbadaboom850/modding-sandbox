@@ -125,6 +125,7 @@ TrioScrapbook_Sisters:
 	call_if_set FLAG_TRIO_SISTERS_CERULEAN, TrioScrapbook_Cerulean
 	call_if_set FLAG_TRIO_SISTERS_VERMILION, TrioScrapbook_Vermilion
 	call_if_set FLAG_TRIO_SISTERS_CELADON, TrioScrapbook_Celadon
+	call_if_set FLAG_TRIO_CAMP_MEMORY, TrioCamp_ReadMemory
 	goto TrioScrapbook_Menu
 TrioScrapbook_Letters:
 	msgbox TrioScrapbook_LettersIntro, MSGBOX_DEFAULT
@@ -732,6 +733,7 @@ TrioScrapbook_Checklist::
 	call TrioChecklist_PennyLetter
 	call TrioChecklist_BijuuLetter
 	call TrioChecklist_Picnic
+	call TrioCamp_Checklist
 	call TrioChecklist_EightBadges
 	goto TrioScrapbook_Menu
 

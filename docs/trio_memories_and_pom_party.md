@@ -88,3 +88,24 @@ After becoming Champion, visit Mom with all three girls. Following her pending-m
 The new checklist reads actual progress/seen flags and does not unlock scenes. It honors prior home-test letters. Old saves already beyond the League receive unrecorded city scenes on their next eligible entry; all optional scenes can be collected by backtracking. No new save is needed.
 
 Four new flags occupy 0x1068-0x106B; existing IDs, flag-array bounds, and SaveBlock layout are unchanged. Source audit covered 3,602 current source/header/map/script files; the only matching decimal literals were unrelated weight/experience-table data. Script-flow checks cover 26 entry, party, story-priority, decline, replay, picnic, historical-letter and release cases; new label references and text wrapping were checked. CI compilation and interactive emulator testing for this addition are still required.
+
+
+## Trio Camp and stats room
+
+Visit the existing southwest New Bark house (doorway at 4,21). Talk to the younger woman for Rest together, How to play, or Family stats. The first bookshelf at the back also shows totals; the other bookshelf and the original residents' dialogue remain.
+
+Bring Riko, Bijuu, and Penny in the party to see them all wandering. Each girl can be petted, offered a favorite, or asked to play. Supported personal forms qualify, with base sprites displayed in camp. Petting and games are free. Favorites explicitly use one Bag consumable after confirmation: Chicky Fil-A for Riko, Bijuu's Springs for Bijuu, Penny's Pup Cup for Penny. They do not change forms or apply a medicine effect; they are optional camp treats/toys. Missing favorites remain harmless and no reusable form items are consumed.
+
+- Riko: count one to three barks correctly in three rounds.
+- Bijuu: follow her clue to a toy in one of the three floor baskets.
+- Penny: find play keys in two baskets and call her over. These are camp props; Dad's Keys are unaffected. Her fetching feedback is a happy in-place animation, not a path across the room.
+
+Games can be replayed. Wrong basket choices keep the game available; each completed game counts once. Starting another game or leaving abandons unfinished play. Rest heals the party; with all three girls, it records a scrapbook memory and uses dialogue appropriate to early progress, four Badges, or Champion status. Read it in Sister moments later regardless of current party. The checklist provides its location. Mom's normal book eligibility is unchanged.
+
+The board shows existing adventure totals (steps, battles, captures, home rests, Center visits, evolutions) and new family totals: Wawa S/M/L, Chicky Fil-A, Springs, Pup Cups, combined personal form changes including returns, camp visits, games, and petting. Item counts cover successful Bag use in/out of battle and camp favorites; failed/canceled use, sale/toss and held-item effects do not count. New counters start with this update; earlier item uses cannot be reconstructed.
+
+Existing saves are supported. Ten already-reserved encrypted statistic slots are initialized once without changing the SaveBlock or existing totals. Counts saturate at 16,777,215. Five new flags use audited slots 0x106C-0x1070; no persistent variable or save-layout expansion is needed.
+
+Validation before publication: seven host unit tests against the actual C helper with engine stubs, fifty script-flow scenarios, new label/reference and conservative text-wrap checks, and decoded map floor/route/object/warp checks passed. This is not emulator confirmation. Full ROM CI remains the compilation/test authority.
+
+Playtest: enter with all/one/no girls and supported forms; approach each girl while wandering; exit/B every menu; listen to Riko's three bark counts; finish/repeat/cancel both basket games; offer missing/declined/available favorites; verify one-item consumption; rest before/after milestones; read the remembered page with girls in PC; compare stats before/after successful/failed Bag use in and out of battle; complete and reverse a form; save/reload and confirm all totals persist. Confirm the original residents, bookshelf and door still work.

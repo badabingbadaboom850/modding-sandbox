@@ -1,4 +1,5 @@
 #include "global.h"
+#include "trio_camp.h"
 #include "constants/party_menu.h"
 #if PARTY_MENU_STYLE_OPTION
 #if !defined(PARTY_MENU_VARIANT_HGSS)
@@ -5181,6 +5182,7 @@ void ItemUseCB_Medicine(u8 taskId, TaskFunc task)
         {
             PlaySE(SE_USE_ITEM);
             RemoveBagItem(item, 1);
+            TrioCamp_RecordMedicineUse(item);
         }
         else
         {
