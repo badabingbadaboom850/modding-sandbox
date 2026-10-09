@@ -1816,7 +1816,12 @@
 #define FLAG_HIDE_TRIO_CAMP_FESTIVAL                0x107E
 #define FLAG_HIDE_TRIO_CAMP_PENNY_SPIRIT            0x107F
 #define FLAG_HIDE_TRIO_CAMP_BIJUU_SPIRIT            0x1080
-#define CUSTOM_FLAGS_END                            FLAG_HIDE_TRIO_CAMP_BIJUU_SPIRIT
+// Optional Scott moments are saved only after an accepted scene.
+#define FLAG_TRIO_SCOTT_AZALEA                         0x1081
+#define FLAG_TRIO_SCOTT_ECRUTEAK                       0x1082
+#define FLAG_TRIO_SCOTT_OLIVINE                        0x1083
+#define FLAG_TRIO_SCOTT_BLACKTHORN                     0x1084
+#define CUSTOM_FLAGS_END                            FLAG_TRIO_SCOTT_BLACKTHORN
 
 
 #define FLAG_0x1500                                 0x1500

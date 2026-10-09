@@ -105,6 +105,7 @@ TrioScrapbook_Menu::
 	goto_if_eq VAR_RESULT, 1, TrioScrapbook_Sisters
 	goto_if_eq VAR_RESULT, 2, TrioScrapbook_Letters
 	goto_if_eq VAR_RESULT, 3, TrioScrapbook_Checklist
+	goto_if_eq VAR_RESULT, 4, TrioScott_Scrapbook
 	return
 TrioScrapbook_Journey:
 	msgbox TrioScrapbook_OpeningPage, MSGBOX_DEFAULT
@@ -736,6 +737,7 @@ TrioScrapbook_Checklist::
 	call TrioChecklist_Picnic
 	call TrioCamp_Checklist
 	call TrioFestival_Checklist
+	call TrioScott_Checklist
 	call TrioChecklist_EightBadges
 	goto TrioScrapbook_Menu
 

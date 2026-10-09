@@ -147,3 +147,5 @@
 - [The Girls' Day Out festival and test shuttle](trio_festival.md)
 
 - [The evolving Trio Camp playroom](trio_camp_keepsakes.md)
+
+- [Scott's gym-city moments](trio_scott_moments.md)

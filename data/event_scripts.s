@@ -1256,6 +1256,7 @@ Common_Text_ReceivedMon:
 	.include "data/scripts/trio_home_spirit_trials.inc"
 	.include "data/scripts/trio_story_spirit_trials.inc"
 	.include "data/scripts/trio_memories.inc"
+	.include "data/scripts/trio_scott_moments.inc"
 	.include "data/scripts/trio_camp.inc"
 	.include "data/scripts/trio_camp_keepsakes.inc"
 	.include "data/maps/GoldenrodFestival/scripts.inc"
