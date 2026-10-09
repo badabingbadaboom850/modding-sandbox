@@ -7,20 +7,20 @@ The girls now leave memories as well as victories. This page describes the new f
 | Girl | Keepsake | Award condition |
 | --- | --- | --- |
 | Riko | Riko's Spark | Win or catch the final Spirit of Riko encounter |
-| Penny | Penny's Shield | Win her home trial or milestone story encounter |
+| Penny | Penny's Shield | Win her milestone story encounter (prior home-test wins remain honored) |
 | Bijuu | Bijuu's Light | Win her home trial or milestone story encounter |
 
 Each keepsake is a protected Key Item. Use it from the Bag, or register it, to read her letter. It is never consumed and has no held-item battle effect. Item icons reuse existing registered orb, shield, and charm graphics.
 
-The gift is once per girl. A victory is recorded separately from successful delivery: a full Key Items pocket keeps the gift pending. Mom can deliver a pending gift after her usual healing; Penny and Bijuu also retry delivery when you revisit their Spirit encounter. Existing saves with an earlier story victory can collect their missing keepsake.
+The gift is once per girl. A victory is recorded separately from successful delivery: a full Key Items pocket keeps the gift pending. Mom checks pending gifts before her usual dialogue and healing; Penny and Bijuu also retry delivery when you revisit their Spirit encounter. Existing saves with an earlier story victory can collect their missing keepsake.
 
-The two New Bark test Spirits temporarily start at **1 HP**, while their scaled levels and moves remain. This shortcut is restricted to New Bark and is called only by the home scripts; story fights retain normal HP and the 5-10 level advantage. Remove the home shortcut when retiring the test objects.
+The two New Bark test Spirits and their 1-HP shortcut have been retired. Penny and Bijuu remain at their milestone story locations, with normal HP and the 5-10 level advantage.
 
 Penny/Bijuu home wins have independent test markers. They allow keepsake and scrapbook-letter testing without completing either milestone story quest or bypassing the story arena gates. A later story victory does not duplicate a keepsake already received at home. Riko's cave loading issue remains unresolved; this batch adds a reward hook to its existing final victory without changing the cave, battle setup, or cleanup.
 
 ## Mom's scrapbook
 
-After the first Johto Badge, visit Mom for normal dialogue and healing. A home Spirit test win also makes the book available immediately, so starters can test its menus without earning a Badge first. She gives **Mom's Scrapbook**, with a safe Bag-full retry on later visits. Use this protected Key Item from the Bag or registered shortcut to choose:
+After the first Johto Badge, visit Mom for normal dialogue and healing. Prior home-test victories remain valid for immediate book delivery on existing saves; new playthroughs obtain it after the first Badge. She gives **Mom's Scrapbook**, with a safe Bag-full retry on later visits. Use this protected Key Item from the Bag or registered shortcut to choose:
 
 - **Our journey:** paw-written memories of starting together, the first Badge, Goldenrod's Badge, all eight Johto Badges, and becoming Champion. Pages follow actual milestone flags, not a new progress counter.
 - **Sister moments:** pages from optional witnessed scenes and the pom party.
@@ -65,3 +65,7 @@ Required emulator checks:
 - Enter/reenter the party house; watch complete clockwise loops, block/release the route, talk to each Pom and both residents, then leave through the original door.
 
 Source checks and compilation do not replace these emulator checks.
+
+## Test encounter cleanup
+
+The user confirmed the implemented features are working. New Bark's two temporary test objects were restored to their original decorative Pidgey slots, preserving every later object index and original event. The test interaction scripts and 1-HP helper/registration are removed; shared Spirit letters remain included. Existing test-win flags, keepsakes, book receipt, and pages are retained for save compatibility. No new save is required. A full-health preparation regression replaces the retired shortcut regression. Cleanup CI and an updated-ROM check remain pending.

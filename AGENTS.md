@@ -339,3 +339,8 @@ Final steering validation: the 1-HP local ROM compiled, all six Spirit tests (in
 ## Mom scrapbook delivery control-flow repair
 
 User testing confirmed home Spirit keepsakes were delivered but Mom's resting dialogue never offered the book. PlayersHouse_1F_EventScript_MomHealsParty jumps to PlayersHouse_1F_EventScript_HealParty, which releases and ends instead of returning; the previous TrioMemories_Mom call after that heal was unreachable. The single rewards call now runs at the active New Bark Mom entry before story-flag branches. This also supports pre-adventure home-test winners without changing story flags or healing. Existing victory/delivery flags and full-Bag retry behavior remain. Source checks confirm one reachable call and no unrelated command changes; ROM CI and emulator verification of this repair are pending.
+
+
+## New Bark Spirit test retirement
+
+The user reports the new features now work as intended, including Mom's scrapbook after its control-flow fix. The two New Bark test Spirits are retired: original decorative Pidgey templates are restored in their existing slots so later local object IDs do not shift. Their interaction/offer/shortcut scripts are removed; data/scripts/trio_home_spirit_trials.inc now holds only shared Penny/Bijuu victory letters used by story encounters and memories. SetTrioSpiritTrialTestHP is removed from C, the header, and the special table. Its obsolete test is replaced with full-health/retry checks for both story arenas. Keep existing HOME_WIN flags and delivery/page checks reserved and readable so earned rewards on older saves remain valid. Story locations, milestones, scaling and safe battle returns remain. Source checks passed; cleanup CI and updated-ROM verification are pending.

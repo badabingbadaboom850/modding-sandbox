@@ -558,18 +558,6 @@ bool8 PrepareTrioSpiritTrial(void)
     return TRUE;
 }
 
-// Temporary shortcut for the two home test objects. Story arenas never call it.
-void SetTrioSpiritTrialTestHP(void)
-{
-    u16 hp = 1;
-    u32 species = GetMonData(&gEnemyParty[0], MON_DATA_SPECIES);
-    if (gSaveBlock1Ptr->location.mapGroup != MAP_GROUP(MAP_NEW_BARK_TOWN)
-     || gSaveBlock1Ptr->location.mapNum != MAP_NUM(MAP_NEW_BARK_TOWN))
-        return;
-    if (species == SPECIES_PENNY_SPIRIT || species == SPECIES_BIJUU_SPIRIT)
-        SetMonData(&gEnemyParty[0], MON_DATA_HP, &hp);
-}
-
 void BattleSetup_StartTrioSpiritTrial(void)
 {
     sTrioTrialHadNoCatching = FlagGet(B_FLAG_NO_CATCHING);

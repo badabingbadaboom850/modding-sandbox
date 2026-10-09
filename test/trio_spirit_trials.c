@@ -10,7 +10,7 @@
 #include "constants/flags.h"
 #include "constants/maps.h"
 
-TEST("Home Spirit trial rejects an empty or egg-only party without changing enemies")
+TEST("Spirit trial rejects an empty or egg-only party without changing enemies")
 {
     struct Pokemon before[PARTY_SIZE];
     u32 isEgg = TRUE;
@@ -26,7 +26,7 @@ TEST("Home Spirit trial rejects an empty or egg-only party without changing enem
     EXPECT_EQ(memcmp(before, gEnemyParty, sizeof(before)), 0);
 }
 
-TEST("Home Spirit trial scales to the strongest girl and heals even a fainted team")
+TEST("Spirit trial scales to the strongest girl and heals even a fainted team")
 {
     u32 hp = 0;
     ZeroPlayerPartyMons();
@@ -48,7 +48,7 @@ TEST("Home Spirit trial scales to the strongest girl and heals even a fainted te
     EXPECT_EQ(GetMonData(&gEnemyParty[0], MON_DATA_MOVE1), MOVE_CONFUSION);
 }
 
-TEST("Home Spirit trial ignores eggs and caps its stronger move set at level 100")
+TEST("Spirit trial ignores eggs and caps its stronger move set at level 100")
 {
     u32 isEgg = TRUE;
     ZeroPlayerPartyMons();
@@ -65,7 +65,7 @@ TEST("Home Spirit trial ignores eggs and caps its stronger move set at level 100
     EXPECT_EQ(GetMonData(&gEnemyParty[0], MON_DATA_LEVEL), 100);
 }
 
-TEST("Home Spirit milestones require every Johto Badge or the League victory")
+TEST("Spirit milestones require every Johto Badge or the League victory")
 {
     u32 badge;
     for (badge = FLAG_BADGE01_GET; badge <= FLAG_BADGE08_GET; badge++)
@@ -95,7 +95,7 @@ TEST("Home Spirit milestones require every Johto Badge or the League victory")
     FlagClear(FLAG_IS_CHAMPION);
 }
 
-TEST("Home Spirit level advantage grows from five to ten without exceeding 100")
+TEST("Spirit level advantage grows from five to ten without exceeding 100")
 {
     u32 i;
     static const u8 partyLevels[] = {5, 10, 30, 49, 50, 89, 95, 99, 100};
@@ -113,42 +113,29 @@ TEST("Home Spirit level advantage grows from five to ten without exceeding 100")
     }
 }
 
-TEST("Home Spirit test shortcut sets one HP only for New Bark Spirits")
+TEST("Spirit opponents start at full health in story arenas")
 {
-    u32 hp;
-    u32 maxHp;
+    u32 i;
     u8 oldMapNum = gSaveBlock1Ptr->location.mapNum;
     u8 oldMapGroup = gSaveBlock1Ptr->location.mapGroup;
+    static const u16 maps[] = {MAP_BLACKTHORN_CITY, MAP_ECRUTEAK_CITY};
+    static const u16 species[] = {SPECIES_PENNY_SPIRIT, SPECIES_BIJUU_SPIRIT};
+
     ZeroPlayerPartyMons();
     CreateMon(&gPlayerParty[0], SPECIES_RIKO, 5, 0, OTID_STRUCT_PLAYER_ID);
-    gSaveBlock1Ptr->location.mapGroup = MAP_GROUP(MAP_NEW_BARK_TOWN);
-    gSaveBlock1Ptr->location.mapNum = MAP_NUM(MAP_NEW_BARK_TOWN);
-    gSpecialVar_0x8004 = SPECIES_PENNY_SPIRIT;
-    EXPECT(PrepareTrioSpiritTrial());
-    maxHp = GetMonData(&gEnemyParty[0], MON_DATA_MAX_HP);
-    EXPECT_GT(maxHp, 1);
-    SetTrioSpiritTrialTestHP();
-    EXPECT_EQ(GetMonData(&gEnemyParty[0], MON_DATA_HP), 1);
-    EXPECT_EQ(GetMonData(&gEnemyParty[0], MON_DATA_MAX_HP), maxHp);
-    // A fresh opponent rolls new IVs; compare its HP to its own maximum.
-    EXPECT(PrepareTrioSpiritTrial());
-    EXPECT_EQ(GetMonData(&gEnemyParty[0], MON_DATA_HP), GetMonData(&gEnemyParty[0], MON_DATA_MAX_HP));
-    gSpecialVar_0x8004 = SPECIES_BIJUU_SPIRIT;
-    EXPECT(PrepareTrioSpiritTrial());
-    SetTrioSpiritTrialTestHP();
-    EXPECT_EQ(GetMonData(&gEnemyParty[0], MON_DATA_HP), 1);
-    EXPECT(PrepareTrioSpiritTrial());
-    hp = GetMonData(&gEnemyParty[0], MON_DATA_HP);
-    gSaveBlock1Ptr->location.mapGroup = MAP_GROUP(MAP_ECRUTEAK_CITY);
-    gSaveBlock1Ptr->location.mapNum = MAP_NUM(MAP_ECRUTEAK_CITY);
-    SetTrioSpiritTrialTestHP();
-    EXPECT_EQ(GetMonData(&gEnemyParty[0], MON_DATA_HP), hp);
-    gSaveBlock1Ptr->location.mapGroup = MAP_GROUP(MAP_NEW_BARK_TOWN);
-    gSaveBlock1Ptr->location.mapNum = MAP_NUM(MAP_NEW_BARK_TOWN);
-    CreateMon(&gEnemyParty[0], SPECIES_CLEFAIRY, 7, 0, OTID_STRUCT_PLAYER_ID);
-    hp = GetMonData(&gEnemyParty[0], MON_DATA_HP);
-    SetTrioSpiritTrialTestHP();
-    EXPECT_EQ(GetMonData(&gEnemyParty[0], MON_DATA_HP), hp);
+    for (i = 0; i < ARRAY_COUNT(species); i++)
+    {
+        u32 hp = 1;
+        gSaveBlock1Ptr->location.mapGroup = MAP_GROUP(maps[i]);
+        gSaveBlock1Ptr->location.mapNum = MAP_NUM(maps[i]);
+        gSpecialVar_0x8004 = species[i];
+        EXPECT(PrepareTrioSpiritTrial());
+        EXPECT_GT(GetMonData(&gEnemyParty[0], MON_DATA_MAX_HP), 1);
+        EXPECT_EQ(GetMonData(&gEnemyParty[0], MON_DATA_HP), GetMonData(&gEnemyParty[0], MON_DATA_MAX_HP));
+        SetMonData(&gEnemyParty[0], MON_DATA_HP, &hp);
+        EXPECT(PrepareTrioSpiritTrial());
+        EXPECT_EQ(GetMonData(&gEnemyParty[0], MON_DATA_HP), GetMonData(&gEnemyParty[0], MON_DATA_MAX_HP));
+    }
     gSaveBlock1Ptr->location.mapGroup = oldMapGroup;
     gSaveBlock1Ptr->location.mapNum = oldMapNum;
 }
