@@ -34,6 +34,17 @@ NewBarkTown_PlayersHouse_1F_EventScript_MomsFriend::
 	lock
 	faceplayer
 	msgbox NewBarkTown_PlayersHouse_1F_Text_MomsFriend, MSGBOX_DEFAULT
+	msgbox NewBarkTown_PlayersHouse_1F_Text_PennyTestSupplies, MSGBOX_YESNO
+	goto_if_eq VAR_RESULT, NO, NewBarkTown_PlayersHouse_1F_EventScript_MomsFriend_Finish
+	giveitem ITEM_DADS_KEYS, 5
+	goto_if_eq VAR_RESULT, FALSE, NewBarkTown_PlayersHouse_1F_EventScript_MomsFriend_BagFull
+	giveitem ITEM_PIECE_OF_CHICKEN, 5
+	goto_if_eq VAR_RESULT, FALSE, NewBarkTown_PlayersHouse_1F_EventScript_MomsFriend_BagFull
+	goto NewBarkTown_PlayersHouse_1F_EventScript_MomsFriend_Finish
+
+NewBarkTown_PlayersHouse_1F_EventScript_MomsFriend_BagFull::
+	msgbox NewBarkTown_PlayersHouse_1F_Text_TestSuppliesBagFull, MSGBOX_DEFAULT
+NewBarkTown_PlayersHouse_1F_EventScript_MomsFriend_Finish::
 	applymovement LOCALID_MOMS_FRIEND, NewBarkTown_PlayersHouse_1F_MovementFaceRight
 	waitmovement 0
 	release
@@ -392,3 +403,13 @@ NewBarkTown_PlayersHouse_1F_Text_CelestialFamily:
 	.string "shopping deals. Riko\n"
 	.string "agrees.$"
 
+
+NewBarkTown_PlayersHouse_1F_Text_PennyTestSupplies:
+	.string "Want Penny's evolution\n"
+	.string "items for testing?\p"
+	.string "I have Dad's Keys and\n"
+	.string "some chicken to share.$"
+
+NewBarkTown_PlayersHouse_1F_Text_TestSuppliesBagFull:
+	.string "Some supplies did not fit.\n"
+	.string "Make room and ask again.$"

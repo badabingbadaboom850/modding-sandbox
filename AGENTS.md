@@ -216,3 +216,9 @@ ITEM_DADS_KEYS = 937 evolves base Fidough/Penny into Guardian Penny. ITEM_PIECE_
 The approved blonde/ketchup concept was converted into indexed 4-bit battle art, a two-frame 32x64 menu icon, and a six-frame 192x32 follower strip. Palette index 0 is transparent and each PNG matches its 16-entry JASC palette. Follower order is down 0/1, up 2/3, left 4/5; the existing animation table mirrors left for right. Makefile uses frame-contiguous 4x4 tile conversion and explicit pokemon.o dependencies. Normal and shiny colors intentionally share the approved blonde design.
 
 TrioParty_CheckPenny now recognizes base Penny, Dachsbun and Guardian Penny. Mom's confidence branch calls the shared check so her evolved form retains those scenes. No save-block layout or quest-variable changes. Source and asset validation do not replace CI compilation and emulator tests of forward/reverse evolution, follower directions, battle art, and save/reload.
+
+## Mom's friend: reusable testing supplies
+
+At the user's request, Mom's friend in New Bark's house is the ongoing test-item supply NPC. Her original dialogue is followed by an optional yes/no offer. Yes grants five Dad's Keys and five Pieces of Chicken; No grants nothing. The offer is repeatable on new and existing saves while she is present. New test items can be added to this offer rather than toggling starting-Bag grants or maintaining separate test/play ROMs. Preserve her existing object, visibility flags and finishing movement.
+
+Each giveitem immediately checks VAR_RESULT for Bag-full failure. If the second item fails, any first item received stays in the Bag, and the player can make room and ask again; repeat refills are intentional, not a one-time reward. No persistent flags/variables or automatic grants are added. The normal Goldenrod 4F shop stock remains for gameplay acquisition. New art/mechanics still require a build; receiving/refilling existing test supplies does not.
