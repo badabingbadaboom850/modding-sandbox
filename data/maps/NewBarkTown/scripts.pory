@@ -18,6 +18,7 @@ NewBarkTown_OnFrame::
 	map_script_2 VAR_NEWBARK_TOWN_STATE, 11, NewBarkTown_EventScript_ArcherArcadeCall
     map_script_2 VAR_RIVAL_STATE, 0, NewBarkTown_EventScript_RivalIntro
     map_script_2 VAR_RIVAL_STATE, 2, NewBarkTown_EventScript_RivalBattle
+	map_script_2 VAR_TEMP_9, TRUE, TrioStorySpirit_BijuuSightingCall
 	.2byte 0
 
 NewBarkTown_EventScript_ElmCallAfterLeague::
@@ -32,6 +33,7 @@ NewBarkTown_EventScript_ElmCallAfterLeague::
 
 NewBarkTown_OnTransition::
     call Common_EventScript_SetupRivalGfxId
+	call TrioStorySpirit_PrepareBijuuSighting
 	goto_if_eq VAR_NEWBARK_TOWN_STATE, 2, NewBarkTown_Set_TalkToElm
 	goto_if_eq VAR_NEWBARK_TOWN_STATE, 4, NewBarkTown_Set_TalkToMom
 	end

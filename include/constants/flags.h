@@ -1776,7 +1776,9 @@
 #define FLAG_HIDE_TRIO_BIJUU_SPIRIT                    0x1059
 #define FLAG_TRIO_PENNY_SPIRIT_COMPLETE                0x105A
 #define FLAG_TRIO_BIJUU_SPIRIT_COMPLETE                0x105B
-#define CUSTOM_FLAGS_END                            FLAG_TRIO_BIJUU_SPIRIT_COMPLETE
+#define FLAG_TRIO_PENNY_SIGHTING_SHOWN                 0x105C
+#define FLAG_TRIO_BIJUU_SIGHTING_SHOWN                 0x105D
+#define CUSTOM_FLAGS_END                            FLAG_TRIO_BIJUU_SIGHTING_SHOWN
 
 
 #define FLAG_0x1500                                 0x1500

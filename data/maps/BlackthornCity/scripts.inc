@@ -20,10 +20,12 @@ BlackThornCity_EventScript_MoveGymBoy::
 
 BlackthornCity_OnFrame::
 	map_script_2 VAR_BLACKTHORN_CITY_STATE, 4, BlackthornCity_EventScript_Call
+	map_script_2 VAR_TEMP_9, TRUE, TrioStorySpirit_PennySightingCall
 	.2byte 0
 
 BlackthornCity_EventScript_CityEnter:: 
 	call TrioStorySpirit_PennyVisibility
+	call TrioStorySpirit_PreparePennySighting
 	setflag FLAG_VISITED_BLACKTHORN_CITY
 	callnative SetTimeBasedEncounters
 	end

@@ -97,6 +97,8 @@ TrioStorySpirit_BijuuRumorText:
 	msgbox TrioStorySpirit_BijuuClue, MSGBOX_DEFAULT
 	return
 
+TrioStorySpirit_PennySightingCallText:
+	.string "Neighbor: Hi, {PLAYER}!\p"
 TrioStorySpirit_PennyClue:
 	.string "Eight Johto Badges!\n"
 	.string "Your girls must be proud.\p"
@@ -107,6 +109,8 @@ TrioStorySpirit_PennyClue:
 	.string "They saw shining armor\n"
 	.string "north of the Poke Center.$"
 
+TrioStorySpirit_BijuuSightingCallText:
+	.string "Neighbor: Hi, {PLAYER}!\p"
 TrioStorySpirit_BijuuClue:
 	.string "Our very own Champion!\n"
 	.string "And now another mystery...\p"
@@ -136,3 +140,48 @@ TrioStorySpirit_BijuuOffer:
 TrioStorySpirit_NotReadyText:
 	.string "Her light is still quiet.\n"
 	.string "Keep growing together.$"
+
+@ VAR_TEMP_9 is a map-local dispatch latch, recomputed on every entry to
+@ Blackthorn / New Bark. Original Elm and rival on-frame scripts take priority.
+TrioStorySpirit_PreparePennySighting::
+	setvar VAR_TEMP_9, FALSE
+	goto_if_set FLAG_TRIO_PENNY_SPIRIT_COMPLETE, TrioStorySpirit_SightingPrepareEnd
+	goto_if_set FLAG_TRIO_PENNY_SIGHTING_SHOWN, TrioStorySpirit_SightingPrepareEnd
+	setvar VAR_0x8004, SPECIES_PENNY_SPIRIT
+	specialvar VAR_RESULT, CheckTrioSpiritMilestone
+	goto_if_eq VAR_RESULT, FALSE, TrioStorySpirit_SightingPrepareEnd
+	setvar VAR_TEMP_9, TRUE
+	return
+
+TrioStorySpirit_PennySightingCall::
+	lockall
+	setvar VAR_TEMP_9, FALSE
+	pokenavcall TrioStorySpirit_PennySightingCallText
+	waitmessage
+	delay 30
+	setflag FLAG_TRIO_PENNY_SIGHTING_SHOWN
+	releaseall
+	end
+
+TrioStorySpirit_PrepareBijuuSighting::
+	setvar VAR_TEMP_9, FALSE
+	goto_if_set FLAG_TRIO_BIJUU_SPIRIT_COMPLETE, TrioStorySpirit_SightingPrepareEnd
+	goto_if_set FLAG_TRIO_BIJUU_SIGHTING_SHOWN, TrioStorySpirit_SightingPrepareEnd
+	setvar VAR_0x8004, SPECIES_BIJUU_SPIRIT
+	specialvar VAR_RESULT, CheckTrioSpiritMilestone
+	goto_if_eq VAR_RESULT, FALSE, TrioStorySpirit_SightingPrepareEnd
+	setvar VAR_TEMP_9, TRUE
+	return
+
+TrioStorySpirit_BijuuSightingCall::
+	lockall
+	setvar VAR_TEMP_9, FALSE
+	pokenavcall TrioStorySpirit_BijuuSightingCallText
+	waitmessage
+	delay 30
+	setflag FLAG_TRIO_BIJUU_SIGHTING_SHOWN
+	releaseall
+	end
+
+TrioStorySpirit_SightingPrepareEnd:
+	return
