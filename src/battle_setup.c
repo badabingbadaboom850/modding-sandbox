@@ -497,8 +497,24 @@ static void HealTrioTrialParty(void)
     }
 }
 
-// Optional, repeatable trials: match the strongest non-egg party member.
-// Separate from story Spirit battles so losses always resume this script.
+// Story visibility and interaction share the same milestone requirements.
+bool8 CheckTrioSpiritMilestone(void)
+{
+    u32 badge;
+    if (gSpecialVar_0x8004 == SPECIES_PENNY_SPIRIT)
+    {
+        for (badge = FLAG_BADGE01_GET; badge <= FLAG_BADGE08_GET; badge++)
+            if (!FlagGet(badge))
+                return FALSE;
+        return TRUE;
+    }
+    if (gSpecialVar_0x8004 == SPECIES_BIJUU_SPIRIT)
+        return FlagGet(FLAG_IS_CHAMPION);
+    return FALSE;
+}
+
+// Home and story trials share scaling and safe defeat/escape cleanup.
+// The existing Riko Spirit battles use their original setup.
 bool8 PrepareTrioSpiritTrial(void)
 {
     u32 highestLevel = 0;
@@ -519,7 +535,8 @@ bool8 PrepareTrioSpiritTrial(void)
     }
     if (highestLevel == 0)
         return FALSE;
-    level = highestLevel + 2;
+    // A steady challenge: +5 early on, rising to +10 by party level 50.
+    level = highestLevel + 5 + min(highestLevel / 10, 5);
     if (level > MAX_LEVEL)
         level = MAX_LEVEL;
     HealTrioTrialParty();

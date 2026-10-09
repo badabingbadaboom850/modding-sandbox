@@ -10,6 +10,7 @@ EcruteakCity_MapScripts::
 
 EcruteakCity_OnTransition::
 	call Common_EventScript_SetupRivalGfxId
+	call TrioStorySpirit_BijuuVisibility
 
 EcruteakCity_OnTransition_SetTime::
 	callnative SetTimeBasedEncounters

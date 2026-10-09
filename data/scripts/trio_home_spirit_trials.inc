@@ -59,13 +59,13 @@ TrioHomeSpirit_PennyOffer:
 	.string "Penny stands tall.\n"
 	.string "Her armor shines softly.\p"
 	.string "A friendly courage test?\n"
-	.string "She will match your team.$"
+	.string "A little stronger than you.$"
 
 TrioHomeSpirit_BijuuOffer:
 	.string "Bijuu's blue tails dance.\n"
 	.string "She gives a playful wink.\p"
 	.string "A friendly test of spirit?\n"
-	.string "She will match your team.$"
+	.string "A little stronger than you.$"
 
 TrioHomeSpirit_Ready:
 	.string "Your team feels refreshed.\n"

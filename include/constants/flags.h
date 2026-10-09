@@ -1771,7 +1771,12 @@
 #define FLAG_TRIO_QUIZ_CERULEAN_KEYS                     0x1055
 #define FLAG_TRIO_QUIZ_VERMILION_KEYS                    0x1056
 #define FLAG_TRIO_QUIZ_CINNABAR_KEYS                     0x1057
-#define CUSTOM_FLAGS_END                            FLAG_TRIO_QUIZ_CINNABAR_KEYS
+// Story Spirit visibility is refreshed on entry; home test battles never set these.
+#define FLAG_HIDE_TRIO_PENNY_SPIRIT                    0x1058
+#define FLAG_HIDE_TRIO_BIJUU_SPIRIT                    0x1059
+#define FLAG_TRIO_PENNY_SPIRIT_COMPLETE                0x105A
+#define FLAG_TRIO_BIJUU_SPIRIT_COMPLETE                0x105B
+#define CUSTOM_FLAGS_END                            FLAG_TRIO_BIJUU_SPIRIT_COMPLETE
 
 
 #define FLAG_0x1500                                 0x1500

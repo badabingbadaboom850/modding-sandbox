@@ -147,6 +147,7 @@ NewBarkTown_EventScript_FatMan::
 NewBarkTown_Text_FatManState3_TrioWorld1_After:
 	msgbox NewBarkTown_Text_FatManState3_TrioWorldAfter, MSGBOX_DEFAULT
 NewBarkTown_Text_FatManState3_TrioWorld1_Resume:
+	call TrioStorySpirit_Rumors
 	closemessage
 	release
 	end
