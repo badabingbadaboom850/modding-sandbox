@@ -1,6 +1,7 @@
 @ Camp game state is map-local: B=game (0/1/2), C=basket/answer,
 @ D=round count, E=selected girl (0/1/2). Leaving cancels unfinished games.
 TrioCamp_OnTransition::
+	special TrioCamp_UpdateKeepsakes
 	setvar VAR_TEMP_B, 0
 	setvar VAR_TEMP_C, 0
 	setvar VAR_TEMP_D, 0
@@ -34,9 +35,13 @@ TrioCamp_HostMenu:
 	goto_if_eq VAR_RESULT, 0, TrioCamp_Rest
 	goto_if_eq VAR_RESULT, 1, TrioCamp_Help
 	goto_if_eq VAR_RESULT, 2, TrioCamp_HostStats
+	goto_if_eq VAR_RESULT, 3, TrioCamp_HostKeepsakes
 	return
 TrioCamp_Help:
 	msgbox TrioCamp_HelpText, MSGBOX_DEFAULT
+	goto TrioCamp_HostMenu
+TrioCamp_HostKeepsakes:
+	call TrioCampKeepsakes_ReadRoom
 	goto TrioCamp_HostMenu
 TrioCamp_HostStats:
 	call TrioCamp_ReadStats

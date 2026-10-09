@@ -73,6 +73,29 @@ void TrioCamp_RecordEvolution(u16 before, u16 after, u16 item)
     }
 }
 
+// These are visibility latches, not new achievement/reward flags. Recomputing
+// them supports older saves and independent completion order without migration.
+void TrioCamp_UpdateKeepsakes(void)
+{
+    static const struct { u16 hide, earned, legacy; } keepsakes[] =
+    {
+        {FLAG_HIDE_TRIO_CAMP_PENNY_CORNER, FLAG_BADGE01_GET, 0},
+        {FLAG_HIDE_TRIO_CAMP_RIKO_CHICKY, FLAG_BADGE03_GET, 0},
+        {FLAG_HIDE_TRIO_CAMP_BIJUU_TOY, FLAG_BADGE04_GET, 0},
+        {FLAG_HIDE_TRIO_CAMP_FESTIVAL, FLAG_TRIO_FESTIVAL_PICNIC, 0},
+        {FLAG_HIDE_TRIO_CAMP_PENNY_SPIRIT, FLAG_TRIO_PENNY_SPIRIT_COMPLETE, FLAG_TRIO_PENNY_HOME_WIN},
+        {FLAG_HIDE_TRIO_CAMP_BIJUU_SPIRIT, FLAG_TRIO_BIJUU_SPIRIT_COMPLETE, FLAG_TRIO_BIJUU_HOME_WIN},
+    };
+    u32 i;
+    for (i = 0; i < ARRAY_COUNT(keepsakes); i++)
+    {
+        if (FlagGet(keepsakes[i].earned) || (keepsakes[i].legacy != 0 && FlagGet(keepsakes[i].legacy)))
+            FlagClear(keepsakes[i].hide);
+        else
+            FlagSet(keepsakes[i].hide);
+    }
+}
+
 void TrioCamp_RecordVisit(void)
 {
     TrioCamp_EnsureStatsInitialized();

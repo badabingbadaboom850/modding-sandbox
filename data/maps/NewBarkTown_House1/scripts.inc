@@ -1,4 +1,5 @@
 NewBarkTown_House1_MapScripts::
+	map_script MAP_SCRIPT_ON_LOAD, TrioCamp_DecorateRoom
 	map_script MAP_SCRIPT_ON_TRANSITION, TrioCamp_OnTransition
 	.byte 0
 

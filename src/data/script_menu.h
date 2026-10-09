@@ -977,6 +977,7 @@ static const struct MenuAction MultichoiceList_TrioCampHost[] =
     {COMPOUND_STRING("Rest together")},
     {COMPOUND_STRING("How to play")},
     {COMPOUND_STRING("Family stats")},
+    {COMPOUND_STRING("Room keepsakes")},
     {gText_Exit},
 };
 

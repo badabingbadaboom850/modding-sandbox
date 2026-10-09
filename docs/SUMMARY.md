@@ -145,3 +145,5 @@
 - [Keepsakes, sister moments, and Mom's scrapbook](trio_memories_and_pom_party.md)
 
 - [The Girls' Day Out festival and test shuttle](trio_festival.md)
+
+- [The evolving Trio Camp playroom](trio_camp_keepsakes.md)

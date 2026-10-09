@@ -1809,7 +1809,14 @@
 #define FLAG_TRIO_FESTIVAL_SNACK_B                        0x1078
 #define FLAG_TRIO_FESTIVAL_PICNIC                         0x1079
 #define FLAG_TRIO_FESTIVAL_SCOTT_WIN                      0x107A
-#define CUSTOM_FLAGS_END                            FLAG_TRIO_FESTIVAL_SCOTT_WIN
+// Camp keepsake visibility is recomputed from existing milestones on entry.
+#define FLAG_HIDE_TRIO_CAMP_PENNY_CORNER            0x107B
+#define FLAG_HIDE_TRIO_CAMP_RIKO_CHICKY             0x107C
+#define FLAG_HIDE_TRIO_CAMP_BIJUU_TOY               0x107D
+#define FLAG_HIDE_TRIO_CAMP_FESTIVAL                0x107E
+#define FLAG_HIDE_TRIO_CAMP_PENNY_SPIRIT            0x107F
+#define FLAG_HIDE_TRIO_CAMP_BIJUU_SPIRIT            0x1080
+#define CUSTOM_FLAGS_END                            FLAG_HIDE_TRIO_CAMP_BIJUU_SPIRIT
 
 
 #define FLAG_0x1500                                 0x1500
