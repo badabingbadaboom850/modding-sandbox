@@ -1767,7 +1767,11 @@
 #define FLAG_TRIO_QUIZ_SAFFRON_CITY                    0x1051
 #define FLAG_TRIO_QUIZ_CINNABAR_ISLAND                 0x1052
 #define FLAG_TRIO_QUIZ_VIRIDIAN_CITY                   0x1053
-#define CUSTOM_FLAGS_END                            FLAG_TRIO_QUIZ_VIRIDIAN_CITY
+#define FLAG_TRIO_QUIZ_PEWTER_KEYS                       0x1054
+#define FLAG_TRIO_QUIZ_CERULEAN_KEYS                     0x1055
+#define FLAG_TRIO_QUIZ_VERMILION_KEYS                    0x1056
+#define FLAG_TRIO_QUIZ_CINNABAR_KEYS                     0x1057
+#define CUSTOM_FLAGS_END                            FLAG_TRIO_QUIZ_CINNABAR_KEYS
 
 
 #define FLAG_0x1500                                 0x1500

@@ -243,10 +243,15 @@ TrioGymTrivia_PewterCity::
 	goto_if_eq VAR_RESULT, NO, TrioGymTrivia_Decline
 	msgbox TrioGymTrivia_PewterCity_Question, MSGBOX_YESNO
 	goto_if_ne VAR_RESULT, YES, TrioGymTrivia_Wrong
-	goto_if_set FLAG_TRIO_QUIZ_PEWTER_CITY, TrioGymTrivia_PewterCity_Replay
+	goto_if_set FLAG_TRIO_QUIZ_PEWTER_CITY, TrioGymTrivia_PewterCity_Keys
 	giveitem ITEM_DOG_BOWL, 1
 	goto_if_eq VAR_RESULT, FALSE, TrioGymTrivia_BagFull
 	setflag FLAG_TRIO_QUIZ_PEWTER_CITY
+TrioGymTrivia_PewterCity_Keys:
+	goto_if_set FLAG_TRIO_QUIZ_PEWTER_KEYS, TrioGymTrivia_PewterCity_Replay
+	giveitem ITEM_DADS_KEYS, 1
+	goto_if_eq VAR_RESULT, FALSE, TrioGymTrivia_PennyKeysBagFull
+	setflag FLAG_TRIO_QUIZ_PEWTER_KEYS
 TrioGymTrivia_PewterCity_Replay:
 	msgbox TrioGymTrivia_PewterCity_Tip, MSGBOX_DEFAULT
 	goto TrioGymTrivia_Finish
@@ -261,8 +266,10 @@ TrioGymTrivia_PewterCity_Question:
 	.string "against Rock Pokemon?$"
 
 TrioGymTrivia_PewterCity_Tip:
+	.string "Use Dad's Keys on Penny\n"
+	.string "first, then the Dog Bowl.\p"
 	.string "Water Penny helps with\n"
-	.string "Rock Pokemon. My prize is\p"
+	.string "Rock Pokemon. Each gift is\p"
 	.string "yours once, but you can\n"
 	.string "play again!$"
 
@@ -273,10 +280,15 @@ TrioGymTrivia_CeruleanCity::
 	goto_if_eq VAR_RESULT, NO, TrioGymTrivia_Decline
 	msgbox TrioGymTrivia_CeruleanCity_Question, MSGBOX_YESNO
 	goto_if_ne VAR_RESULT, YES, TrioGymTrivia_Wrong
-	goto_if_set FLAG_TRIO_QUIZ_CERULEAN_CITY, TrioGymTrivia_CeruleanCity_Replay
+	goto_if_set FLAG_TRIO_QUIZ_CERULEAN_CITY, TrioGymTrivia_CeruleanCity_Keys
 	giveitem ITEM_FETCHING_STICK, 1
 	goto_if_eq VAR_RESULT, FALSE, TrioGymTrivia_BagFull
 	setflag FLAG_TRIO_QUIZ_CERULEAN_CITY
+TrioGymTrivia_CeruleanCity_Keys:
+	goto_if_set FLAG_TRIO_QUIZ_CERULEAN_KEYS, TrioGymTrivia_CeruleanCity_Replay
+	giveitem ITEM_DADS_KEYS, 1
+	goto_if_eq VAR_RESULT, FALSE, TrioGymTrivia_PennyKeysBagFull
+	setflag FLAG_TRIO_QUIZ_CERULEAN_KEYS
 TrioGymTrivia_CeruleanCity_Replay:
 	msgbox TrioGymTrivia_CeruleanCity_Tip, MSGBOX_DEFAULT
 	goto TrioGymTrivia_Finish
@@ -291,10 +303,12 @@ TrioGymTrivia_CeruleanCity_Question:
 	.string "against Water Pokemon?$"
 
 TrioGymTrivia_CeruleanCity_Tip:
-	.string "Grass Penny helps with\n"
-	.string "Water Pokemon. My prize is\p"
-	.string "yours once, but you can\n"
-	.string "play again!$"
+	.string "Use Dad's Keys on Penny\n"
+	.string "first, then the Fetching\p"
+	.string "Stick. Grass Penny helps\n"
+	.string "with Water Pokemon. Each\p"
+	.string "gift is yours once, but\n"
+	.string "you can play again!$"
 
 TrioGymTrivia_VermilionCity::
 	lock
@@ -303,10 +317,15 @@ TrioGymTrivia_VermilionCity::
 	goto_if_eq VAR_RESULT, NO, TrioGymTrivia_Decline
 	msgbox TrioGymTrivia_VermilionCity_Question, MSGBOX_YESNO
 	goto_if_ne VAR_RESULT, NO, TrioGymTrivia_Wrong
-	goto_if_set FLAG_TRIO_QUIZ_VERMILION_CITY, TrioGymTrivia_VermilionCity_Replay
+	goto_if_set FLAG_TRIO_QUIZ_VERMILION_CITY, TrioGymTrivia_VermilionCity_Keys
 	giveitem ITEM_FETCHING_STICK, 1
 	goto_if_eq VAR_RESULT, FALSE, TrioGymTrivia_BagFull
 	setflag FLAG_TRIO_QUIZ_VERMILION_CITY
+TrioGymTrivia_VermilionCity_Keys:
+	goto_if_set FLAG_TRIO_QUIZ_VERMILION_KEYS, TrioGymTrivia_VermilionCity_Replay
+	giveitem ITEM_DADS_KEYS, 1
+	goto_if_eq VAR_RESULT, FALSE, TrioGymTrivia_PennyKeysBagFull
+	setflag FLAG_TRIO_QUIZ_VERMILION_KEYS
 TrioGymTrivia_VermilionCity_Replay:
 	msgbox TrioGymTrivia_VermilionCity_Tip, MSGBOX_DEFAULT
 	goto TrioGymTrivia_Finish
@@ -320,10 +339,12 @@ TrioGymTrivia_VermilionCity_Question:
 	.string "Is Pikachu a Water type?$"
 
 TrioGymTrivia_VermilionCity_Tip:
-	.string "Grass Penny resists\n"
-	.string "Electric attacks. My prize\p"
-	.string "is yours once, but you can\n"
-	.string "play again!$"
+	.string "Use Dad's Keys on Penny\n"
+	.string "first, then the Fetching\p"
+	.string "Stick. Grass Penny resists\n"
+	.string "Electric attacks. Each\p"
+	.string "gift is yours once, but\n"
+	.string "you can play again!$"
 
 TrioGymTrivia_CeladonCity::
 	lock
@@ -422,10 +443,15 @@ TrioGymTrivia_CinnabarIsland::
 	goto_if_eq VAR_RESULT, NO, TrioGymTrivia_Decline
 	msgbox TrioGymTrivia_CinnabarIsland_Question, MSGBOX_YESNO
 	goto_if_ne VAR_RESULT, YES, TrioGymTrivia_Wrong
-	goto_if_set FLAG_TRIO_QUIZ_CINNABAR_ISLAND, TrioGymTrivia_CinnabarIsland_Replay
+	goto_if_set FLAG_TRIO_QUIZ_CINNABAR_ISLAND, TrioGymTrivia_CinnabarIsland_Keys
 	giveitem ITEM_DOG_BOWL, 1
 	goto_if_eq VAR_RESULT, FALSE, TrioGymTrivia_BagFull
 	setflag FLAG_TRIO_QUIZ_CINNABAR_ISLAND
+TrioGymTrivia_CinnabarIsland_Keys:
+	goto_if_set FLAG_TRIO_QUIZ_CINNABAR_KEYS, TrioGymTrivia_CinnabarIsland_Replay
+	giveitem ITEM_DADS_KEYS, 1
+	goto_if_eq VAR_RESULT, FALSE, TrioGymTrivia_PennyKeysBagFull
+	setflag FLAG_TRIO_QUIZ_CINNABAR_KEYS
 TrioGymTrivia_CinnabarIsland_Replay:
 	msgbox TrioGymTrivia_CinnabarIsland_Tip, MSGBOX_DEFAULT
 	goto TrioGymTrivia_Finish
@@ -440,8 +466,10 @@ TrioGymTrivia_CinnabarIsland_Question:
 	.string "against Fire Pokemon?$"
 
 TrioGymTrivia_CinnabarIsland_Tip:
+	.string "Use Dad's Keys on Penny\n"
+	.string "first, then the Dog Bowl.\p"
 	.string "Water Penny helps with\n"
-	.string "Fire Pokemon. My prize is\p"
+	.string "Fire Pokemon. Each gift is\p"
 	.string "yours once, but you can\n"
 	.string "play again!$"
 
@@ -482,6 +510,9 @@ TrioGymTrivia_Wrong::
 TrioGymTrivia_Decline::
 	msgbox TrioGymTrivia_TextDecline, MSGBOX_DEFAULT
 	goto TrioGymTrivia_Finish
+TrioGymTrivia_PennyKeysBagFull::
+	msgbox TrioGymTrivia_TextPennyKeysBagFull, MSGBOX_DEFAULT
+	goto TrioGymTrivia_Finish
 TrioGymTrivia_BagFull::
 	msgbox TrioGymTrivia_TextBagFull, MSGBOX_DEFAULT
 TrioGymTrivia_Finish::
@@ -503,3 +534,9 @@ TrioGymTrivia_TextBagFull:
 	.string "some space, then try my\p"
 	.string "question again.$"
 
+
+TrioGymTrivia_TextPennyKeysBagFull:
+	.string "You have Penny's item!\n"
+	.string "Make room in your Bag,\p"
+	.string "then try again for Dad's\n"
+	.string "Keys.$"
