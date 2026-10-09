@@ -304,6 +304,9 @@ void NewGameInitData(void)
     AddBagItem(ITEM_MEGA_RING, 1);
     AddBagItem(ITEM_BONDSTONE, 1);
 #endif
+    // Temporary fresh-save supplies for testing Penny's reversible evolution.
+    AddBagItem(ITEM_DADS_KEYS, 5);
+    AddBagItem(ITEM_PIECE_OF_CHICKEN, 5);
     NewGameInitPCItems();
     ClearPokeblocks();
     ClearDecorationInventories();
@@ -379,3 +382,4 @@ static void ResetDexNav(void)
 #endif
     gSaveBlock3Ptr->dexNavChain = 0;
 }
+

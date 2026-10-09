@@ -940,6 +940,48 @@ const struct SpeciesInfo gSpeciesInfo[] =
 
 #endif
 
+
+#if P_FAMILY_FIDOUGH
+    [SPECIES_PENNY_GUARDIAN] =
+    {
+        .baseHP = 100, .baseAttack = 100, .baseDefense = 120, .baseSpeed = 85,
+        .baseSpAttack = 55, .baseSpDefense = 95,
+        .types = MON_TYPES(TYPE_FAIRY), .catchRate = 45, .expYield = 240,
+        .evYield_Defense = 2, .evYield_HP = 1, .genderRatio = MON_FEMALE,
+        .eggCycles = 20, .friendship = STANDARD_FRIENDSHIP, .growthRate = GROWTH_MEDIUM_SLOW,
+        .eggGroups = MON_EGG_GROUPS(EGG_GROUP_FIELD, EGG_GROUP_MINERAL),
+        .abilities = { ABILITY_WELL_BAKED_BODY, ABILITY_NONE, ABILITY_AROMA_VEIL },
+        .innates = { ABILITY_SWEET_VEIL },
+        .bodyColor = BODY_COLOR_YELLOW, .speciesName = _("PennyGuard"), .cryId = CRY_FIDOUGH,
+        .natDexNum = NATIONAL_DEX_FIDOUGH, .categoryName = _("Hot Dog"), .height = 5, .weight = 149,
+        .description = COMPOUND_STRING("Dad's keys make Penny brave.\n"
+                                       "Her golden coat wears ketchup,\n"
+                                       "but chicken brings her home."),
+        .pokemonScale = 256, .trainerScale = 256,
+        .frontPic = gMonFrontPic_PennyGuardian, .frontPicSize = MON_COORDS_SIZE(64, 64), .frontPicYOffset = 4,
+        .frontAnimFrames = sAnims_SingleFramePlaceHolder, .backPic = gMonBackPic_PennyGuardian,
+        .backPicSize = MON_COORDS_SIZE(64, 64), .backPicYOffset = 4,
+        .palette = gMonPalette_PennyGuardian, .shinyPalette = gMonShinyPalette_PennyGuardian,
+        .iconSprite = gMonIcon_PennyGuardian, .iconPalette = gMonIconPalette_PennyGuardian,
+        .shinyIconPalette = gMonShinyIconPalette_PennyGuardian, .pokemonJumpType = PKMN_JUMP_TYPE_NORMAL,
+        SHADOW(-2, 8, SHADOW_SIZE_S)
+        FOOTPRINT(Fidough)
+        OVERWORLD(
+            sPicTable_PennyGuardian,
+            SIZE_32x32,
+            SHADOW_SIZE_M,
+            TRACKS_FOOT,
+            sAnimTable_Following,
+            gOverworldPalette_PennyGuardian,
+            gShinyOverworldPalette_PennyGuardian
+        )
+        .levelUpLearnset = sDachsbunLevelUpLearnset,
+        .teachableLearnset = sDachsbunTeachableLearnset,
+        .eggMoveLearnset = sFidoughEggMoveLearnset,
+        .evolutions = EVOLUTION({EVO_ITEM, ITEM_PIECE_OF_CHICKEN, SPECIES_FIDOUGH}),
+    },
+#endif
+
     /*
     [SPECIES_NONE] =
     {
@@ -1016,3 +1058,4 @@ const struct EggData gEggDatas[EGG_ID_COUNT] =
 {
 #include "egg_data.h"
 };
+

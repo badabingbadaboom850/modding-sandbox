@@ -49,7 +49,7 @@ NewBarkTown_PlayersHouse_1F_MomEventScript_GoodLuck::
 
 
 NewBarkTown_PlayersHouse_1F_EventScript_Mom_Regular::
-	checkspecies SPECIES_FIDOUGH
+	call TrioParty_CheckPenny
 	goto_if_eq VAR_RESULT, FALSE, NewBarkTown_PlayersHouse_1F_EventScript_Mom_Regular_Heal
 	msgbox NewBarkTown_PlayersHouse_1F_Text_MomComfortPenny, MSGBOX_DEFAULT
 	call NewBarkTown_PlayersHouse_1F_EventScript_PennyConfidence
@@ -391,3 +391,4 @@ NewBarkTown_PlayersHouse_1F_Text_CelestialFamily:
 	.string "should predict the best\p"
 	.string "shopping deals. Riko\n"
 	.string "agrees.$"
+

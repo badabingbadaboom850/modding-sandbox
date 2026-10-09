@@ -49,6 +49,10 @@ TrioParty_CheckBijuu::
 
 TrioParty_CheckPenny::
 	checkspecies SPECIES_FIDOUGH
+	goto_if_eq VAR_RESULT, TRUE, TrioParty_SetResultTrue
+	checkspecies SPECIES_DACHSBUN
+	goto_if_eq VAR_RESULT, TRUE, TrioParty_SetResultTrue
+	checkspecies SPECIES_PENNY_GUARDIAN
 	return
 
 TrioParty_CheckAny::
@@ -63,3 +67,4 @@ TrioParty_CheckAny_Return::
 TrioParty_SetResultTrue::
 	setvar VAR_RESULT, TRUE
 	return
+

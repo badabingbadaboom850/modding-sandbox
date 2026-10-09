@@ -3545,4 +3545,10 @@ extern const u16 gTitleScreenEmeraldVersionPal[];
 extern const u32 gSummaryPage_Traits_Tilemap[];
 extern const u32 gSummaryLongDescriptionBox_Tilemap[];
 
+extern const u32 gItemIcon_DadsKeys[];
+extern const u16 gItemIconPalette_DadsKeys[];
+extern const u32 gItemIcon_PieceOfChicken[];
+extern const u16 gItemIconPalette_PieceOfChicken[];
+
 #endif //GUARD_GRAPHICS_H
+

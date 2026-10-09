@@ -1604,7 +1604,8 @@ const struct SpeciesInfo gSpeciesInfoGen9[] =
         .levelUpLearnset = sFidoughLevelUpLearnset,
         .teachableLearnset = sFidoughTeachableLearnset,
         .eggMoveLearnset = sFidoughEggMoveLearnset,
-        .evolutions = EVOLUTION({EVO_LEVEL, 26, SPECIES_DACHSBUN}),
+        .evolutions = EVOLUTION({EVO_LEVEL, 26, SPECIES_DACHSBUN},
+                                {EVO_ITEM, ITEM_DADS_KEYS, SPECIES_PENNY_GUARDIAN}),
     },
 
     [SPECIES_DACHSBUN] =
@@ -8915,3 +8916,4 @@ const struct SpeciesInfo gSpeciesInfoGen9[] =
 #ifdef __INTELLISENSE__
 };
 #endif
+

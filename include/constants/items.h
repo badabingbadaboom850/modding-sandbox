@@ -1117,6 +1117,8 @@ enum __attribute__((packed)) Item
     ITEM_BLUE_BRUSH = 934,
     ITEM_BIJUUS_FISH_TOY = 935,
     ITEM_BIJUUS_CAT_NIP = 936,
+    ITEM_DADS_KEYS = 937,
+    ITEM_PIECE_OF_CHICKEN = 938,
 
     ITEMS_COUNT,
     ITEM_FIELD_ARROW = ITEMS_COUNT,
@@ -1213,3 +1215,4 @@ enum EffectItem
 };
 
 #endif  // GUARD_CONSTANTS_ITEMS_H
+

@@ -205,3 +205,14 @@ Witnesses and a skeptic acknowledge the reveal at state 5 or later. Mom's family
 Fresh saves start with level-5 Riko and Penny only; Spirit of Riko is no longer a starting-party grant. Bijuu remains a catchable Route 31 story encounter. Removing the initial grant does not delete Spirit from an existing save; deposit her in the PC to remove her from an existing party.
 
 Riko, Bijuu, their Mega/elemental/permanent forms, Spirit of Riko, and Penny's Fidough/Dachsbun line use `.genderRatio = MON_FEMALE`. The engine's gender helpers special-case this value, so every personality is female, including already saved individuals. Do not revert these entries to a random ratio: the user's real pets are all girls. No personality, save layout, species ID, or evolution trigger changes are needed for this correction.
+
+
+## Guardian Penny evolution test
+
+SPECIES_PENNY_GUARDIAN = 1601 is the blonde, ketchup-backed Penny form. Existing real species IDs are unchanged; SPECIES_EGG follows the new tail at 1602 and NUM_SPECIES follows that sentinel. Her dex identity remains NATIONAL_DEX_FIDOUGH. The female-only form uses Dachsbun's learnsets, Fairy typing, Well-Baked Body/Aroma Veil and Sweet Veil innate. Stats are 100/100/120/85/55/95 (HP/Attack/Defense/Speed/SpAttack/SpDefense).
+
+ITEM_DADS_KEYS = 937 evolves base Fidough/Penny into Guardian Penny. ITEM_PIECE_OF_CHICKEN = 938 returns her to base Fidough/Penny. Both use the existing party-menu evolution-stone behavior, consume one item per use, and have custom 24x24 item icons. Fresh saves receive five of each for testing; existing saves do not automatically receive these test items. The normal level-26 Dachsbun evolution remains. The Keys apply only to base Penny, not Dachsbun.
+
+The approved blonde/ketchup concept was converted into indexed 4-bit battle art, a two-frame 32x64 menu icon, and a six-frame 192x32 follower strip. Palette index 0 is transparent and each PNG matches its 16-entry JASC palette. Follower order is down 0/1, up 2/3, left 4/5; the existing animation table mirrors left for right. Makefile uses frame-contiguous 4x4 tile conversion and explicit pokemon.o dependencies. Normal and shiny colors intentionally share the approved blonde design.
+
+TrioParty_CheckPenny now recognizes base Penny, Dachsbun and Guardian Penny. Mom's confidence branch calls the shared check so her evolved form retains those scenes. No save-block layout or quest-variable changes. Source and asset validation do not replace CI compilation and emulator tests of forward/reverse evolution, follower directions, battle art, and save/reload.

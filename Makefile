@@ -659,7 +659,14 @@ RIKO_VARIANT_GFX := graphics/pokemon/riko_fire/front.4bpp.smol \
                    graphics/pokemon/riko_wing/shiny.gbapal \
                    graphics/pokemon/riko_wing/icon.4bpp \
                    graphics/pokemon/riko_wing/icon_normal.gbapal \
-                   graphics/pokemon/riko_wing/icon_shiny.gbapal
+                   graphics/pokemon/riko_wing/icon_shiny.gbapal \
+                   graphics/pokemon/penny_guardian/front.4bpp.smol \
+                   graphics/pokemon/penny_guardian/back.4bpp.smol \
+                   graphics/pokemon/penny_guardian/normal.gbapal \
+                   graphics/pokemon/penny_guardian/shiny.gbapal \
+                   graphics/pokemon/penny_guardian/icon.4bpp \
+                   graphics/pokemon/penny_guardian/icon_normal.gbapal \
+                   graphics/pokemon/penny_guardian/icon_shiny.gbapal
 
 RIKO_OVERWORLD_GFX := graphics/pokemon/riko/overworld.4bpp \
                      graphics/pokemon/riko/overworld_normal.gbapal \
@@ -723,7 +730,10 @@ RIKO_OVERWORLD_GFX := graphics/pokemon/riko/overworld.4bpp \
                      graphics/pokemon/bijuu_psychic/overworld_shiny.gbapal \
                      graphics/pokemon/riko_wing/overworld.4bpp \
                      graphics/pokemon/riko_wing/overworld_normal.gbapal \
-                     graphics/pokemon/riko_wing/overworld_shiny.gbapal
+                     graphics/pokemon/riko_wing/overworld_shiny.gbapal \
+                     graphics/pokemon/penny_guardian/overworld.4bpp \
+                     graphics/pokemon/penny_guardian/overworld_normal.gbapal \
+                     graphics/pokemon/penny_guardian/overworld_shiny.gbapal
 
 # Overworld followers are animated in 32x32 frames. Reorder the PNG's 4x4-tile
 # blocks so each frame is contiguous in the generated 4bpp data.
@@ -868,3 +878,4 @@ leafgreen: all
 # Symbol file (`make syms`)
 $(SYM): $(ELF)
 	$(OBJDUMP) -t $< | sort -u | grep -E "^0[2389]" | $(PERL) -p -e 's/^(\w{8}) (\w).{6} \S+\t(\w{8}) (\S+)$$/\1 \2 \3 \4/g' > $@
+

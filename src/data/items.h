@@ -17716,7 +17716,39 @@ const struct ItemInfo gItemsInfo[] =
         .iconPalette = gItemIconPalette_BijuusCatNip,
     },
 
+    [ITEM_DADS_KEYS] =
+    {
+        .name = ITEM_NAME("Dad's Keys"),
+        .price = 500,
+        .description = COMPOUND_STRING("Familiar keys that\nhelp Penny become\na brave guardian."),
+        .pocket = POCKET_ITEMS,
+        .sortType = ITEM_TYPE_EVOLUTION_STONE,
+        .heldSlot = 0,
+        .type = ITEM_USE_PARTY_MENU,
+        .fieldUseFunc = ItemUseOutOfBattle_EvolutionStone,
+        .effect = gItemEffect_EvoItem,
+        .flingPower = 30,
+        .iconPic = gItemIcon_DadsKeys,
+        .iconPalette = gItemIconPalette_DadsKeys,
+    },
+    [ITEM_PIECE_OF_CHICKEN] =
+    {
+        .name = ITEM_NAME("Piece of Chicken"),
+        .price = 500,
+        .description = COMPOUND_STRING("A tasty bite that\nreturns Penny to\nher regular form."),
+        .pocket = POCKET_ITEMS,
+        .sortType = ITEM_TYPE_EVOLUTION_STONE,
+        .heldSlot = 0,
+        .type = ITEM_USE_PARTY_MENU,
+        .fieldUseFunc = ItemUseOutOfBattle_EvolutionStone,
+        .effect = gItemEffect_EvoItem,
+        .flingPower = 30,
+        .iconPic = gItemIcon_PieceOfChicken,
+        .iconPalette = gItemIconPalette_PieceOfChicken,
+    },
+
 };
 
 #undef ITEM_NAME
 #undef ITEM_PLURAL_NAME
+

@@ -311,3 +311,20 @@ static const struct LevelUpMove sRikoSpiritLevelUpLearnset[] = {
     LEVEL_UP_END
 };
 #endif
+
+
+#if P_FAMILY_FIDOUGH
+const u32 gMonFrontPic_PennyGuardian[] = INCBIN_U32("graphics/pokemon/penny_guardian/front.4bpp.smol");
+const u32 gMonBackPic_PennyGuardian[] = INCBIN_U32("graphics/pokemon/penny_guardian/back.4bpp.smol");
+const u16 gMonPalette_PennyGuardian[] = INCBIN_U16("graphics/pokemon/penny_guardian/normal.gbapal");
+const u16 gMonShinyPalette_PennyGuardian[] = INCBIN_U16("graphics/pokemon/penny_guardian/shiny.gbapal");
+const u8 gMonIcon_PennyGuardian[] = INCBIN_U8("graphics/pokemon/penny_guardian/icon.4bpp");
+const u16 gMonIconPalette_PennyGuardian[] = INCBIN_U16("graphics/pokemon/penny_guardian/icon_normal.gbapal");
+const u16 gMonShinyIconPalette_PennyGuardian[] = INCBIN_U16("graphics/pokemon/penny_guardian/icon_shiny.gbapal");
+const u32 gObjectEventPic_PennyGuardian[] = INCBIN_U32("graphics/pokemon/penny_guardian/overworld.4bpp");
+const u16 gOverworldPalette_PennyGuardian[] = INCBIN_U16("graphics/pokemon/penny_guardian/overworld_normal.gbapal");
+const u16 gShinyOverworldPalette_PennyGuardian[] = INCBIN_U16("graphics/pokemon/penny_guardian/overworld_shiny.gbapal");
+static const struct SpriteFrameImage sPicTable_PennyGuardian[] = {
+    overworld_ascending_frames(gObjectEventPic_PennyGuardian, 4, 4),
+};
+#endif
