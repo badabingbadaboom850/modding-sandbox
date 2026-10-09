@@ -3,7 +3,7 @@
 from pathlib import Path
 import collections,json,re,struct,subprocess,unittest
 ROOT=Path(__file__).resolve().parents[2]
-SOURCE=(ROOT/'data/maps/GoldenrodFestival/scripts.inc').read_text()
+SOURCE=(ROOT/'data/maps/GoldenrodFestival/scripts.inc').read_text()+'\n'+(ROOT/'data/maps/TrioEchoWoods/scripts.inc').read_text()
 LABELS={};CODE=[];active=True
 for line in SOURCE.splitlines():
     line=line.strip()
@@ -125,6 +125,23 @@ class FestivalChecks(unittest.TestCase):
         for outcome in (1,2):
             r=Run(required,outcomes=[outcome,1]).run('Scott');self.assertIn(F('PICNIC'),r.flags);self.assertEqual(F('SCOTT_WIN') in r.flags,outcome==1)
             self.assertTrue(r.released);r.run('Scott');self.assertEqual(r.text.count('TrioFestival_LetterText'),1)
+    def test_rift_shortcut_from_picnic_and_host(self):
+        required=[F(x) for x in ('RIKO','BIJUU','PENNY','SNACK_B')]
+        for outcome in (1,2):
+            r=Run(required,outcomes=[outcome],answers=[1,1]).run('Scott')
+            self.assertIn(F('PICNIC'),r.flags)
+            self.assertEqual(r.warps,[('MAP_TRIO_ECHO_WOODS','12','27')])
+            self.assertTrue(r.released)
+            r=Run(required,outcomes=[outcome],answers=[1,0]).run('Scott')
+            self.assertFalse(r.warps);self.assertTrue(r.released)
+        r=Run([F('PICNIC')],answers=[1]).run('Host')
+        self.assertEqual(r.warps,[('MAP_TRIO_ECHO_WOODS','12','27')])
+        for flags,girls in [((),True),([F('PICNIC')],False)]:
+            r=Run(flags,girls=girls,menus=[127]).run('Host')
+            self.assertFalse(r.warps);self.assertTrue(r.released)
+        r=Run([F('PICNIC')],answers=[0],menus=[127]).run('Host')
+        self.assertFalse(r.warps);self.assertTrue(r.released)
+
     def test_reset_only_festival_and_ribbon_display(self):
         owned=set(re.findall(r'#define (FLAG_TRIO_FESTIVAL_\w+)',(ROOT/'include/constants/flags.h').read_text()))
         r=Run(owned|{'FLAG_IS_CHAMPION','FLAG_TRIO_CAMP_MEMORY'},answers=[1]).run('TestReset')

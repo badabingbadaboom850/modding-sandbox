@@ -10336,6 +10336,16 @@
       "secondary_tileset": "gTileset_SaffronCity_FightingDojoVIP",
       "border_filepath": "data/layouts/BattleCafe/border.bin",
       "blockdata_filepath": "data/layouts/BattleCafe/map.bin"
+    },
+    {
+      "id": "LAYOUT_TRIO_ECHO_WOODS",
+      "name": "TrioEchoWoods_Layout",
+      "width": 24,
+      "height": 30,
+      "primary_tileset": "gTileset_Johto_General",
+      "secondary_tileset": "gTileset_NationalPark",
+      "border_filepath": "data/layouts/TrioEchoWoods/border.bin",
+      "blockdata_filepath": "data/layouts/TrioEchoWoods/map.bin"
     }
   ]
 }

@@ -151,3 +151,5 @@
 - [Scott's gym-city moments](trio_scott_moments.md)
 
 - [The Great Snack Chase](trio_snack_chase.md)
+
+- [Spirit Rift](trio_spirit_rift.md)

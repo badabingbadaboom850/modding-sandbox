@@ -324,6 +324,9 @@
 #define VAR_TRIO_GANG_ACTIVE_WAVE                    0x4128 // 1-6 during an ambush, otherwise0
 #define VAR_TRIO_GANG_PHASE                          0x4129 // 0 inactive, 1 battle pending, 2 won/item pending
 
+// Spirit Rift: three opened paths, victory, then successfully claimed gift.
+#define VAR_TRIO_RIFT_RIKO_STATE                     0x412A // 0-3 echoes, 4 won/gift pending, 5 complete
+
 #define VARS_END                                         0x42FF
 
 #define VARS_COUNT                                       (VARS_END - VARS_START + 1)

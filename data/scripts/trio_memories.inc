@@ -130,6 +130,7 @@ TrioScrapbook_Sisters:
 	call_if_set FLAG_TRIO_CAMP_MEMORY, TrioCamp_ReadMemory
 	call_if_set FLAG_TRIO_FESTIVAL_PICNIC, TrioFestival_ReadMemory
 	call_if_eq VAR_TRIO_SNACK_CHASE_STATE, 4, TrioSnack_ReadMemory
+	call_if_ge VAR_TRIO_RIFT_RIKO_STATE, 4, TrioRift_ReadMemory
 	call_if_eq VAR_TRIO_GANG_WINS, 6, TrioGang_ReadMemory
 	goto TrioScrapbook_Menu
 TrioScrapbook_Letters:
@@ -742,6 +743,7 @@ TrioScrapbook_Checklist::
 	call TrioFestival_Checklist
 	call TrioScott_Checklist
 	call TrioSnack_Checklist
+	call TrioRift_Checklist
 	call TrioGang_Checklist
 	call TrioChecklist_EightBadges
 	goto TrioScrapbook_Menu

@@ -515,7 +515,7 @@ bool8 CheckTrioSpiritMilestone(void)
 }
 
 // Home and story trials share scaling and safe defeat/escape cleanup.
-// The existing Riko Spirit battles use their original setup.
+// Rift Riko also uses this lifecycle; legacy cave battles keep their original setup.
 bool8 PrepareTrioSpiritTrial(void)
 {
     u32 highestLevel = 0;
@@ -523,7 +523,7 @@ bool8 PrepareTrioSpiritTrial(void)
     u16 species = gSpecialVar_0x8004;
     u32 i;
 
-    if (species != SPECIES_PENNY_SPIRIT && species != SPECIES_BIJUU_SPIRIT)
+    if (species != SPECIES_PENNY_SPIRIT && species != SPECIES_BIJUU_SPIRIT && species != SPECIES_RIKO_SPIRIT)
         return FALSE;
     for (i = 0; i < PARTY_SIZE; i++)
     {
@@ -541,7 +541,12 @@ bool8 PrepareTrioSpiritTrial(void)
     if (level > MAX_LEVEL)
         level = MAX_LEVEL;
     HealTrioTrialParty();
-    if (species == SPECIES_PENNY_SPIRIT)
+    if (species == SPECIES_RIKO_SPIRIT)
+    {
+        // First Rift guardian: a fair scaled encounter, separate from level90 cave trials.
+        CreateScriptedWildMon2(species, level, ITEM_NONE, 0, MOVE_FLAMETHROWER, MOVE_SNARL, MOVE_SWIFT, MOVE_PROTECT, FALSE);
+    }
+    else if (species == SPECIES_PENNY_SPIRIT)
     {
         if (highestLevel < 20)
             CreateScriptedWildMon2(species, level, ITEM_NONE, 0, MOVE_METAL_CLAW, MOVE_FAIRY_WIND, MOVE_TACKLE, MOVE_CHARM, FALSE);

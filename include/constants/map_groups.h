@@ -153,6 +153,7 @@ enum
     MAP_MAUVILLE_CITY_GAME_CORNER                = (34 | (5 << 8)),
     MAP_GOLDENROD_BATTLE_ARCADE_BATTLE_ROOM      = (35 | (5 << 8)),
     MAP_GOLDENROD_FESTIVAL                       = (36 | (5 << 8)),
+    MAP_TRIO_ECHO_WOODS                          = (37 | (5 << 8)),
 
     // gMapGroup_IndoorEcruteak
     MAP_ECRUTEAK_CITY_POKEMON_CENTER = (0 | (6 << 8)),
