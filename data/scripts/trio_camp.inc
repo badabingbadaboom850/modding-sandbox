@@ -89,7 +89,7 @@ TrioCamp_GirlMenu:
 	goto TrioCamp_End
 TrioCamp_Pet:
 	special TrioCamp_RecordPet
-	applymovement LOCALID_LAST_TALKED, TrioCamp_HappyMovement
+	applymovement VAR_LAST_TALKED, TrioCamp_HappyMovement
 	waitmovement 0
 	faceplayer
 	call TrioCamp_Cry
