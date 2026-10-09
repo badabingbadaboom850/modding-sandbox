@@ -1751,7 +1751,23 @@
 #define FLAG_PYRAMID_ACHIEVEMENT_MIGRATION_COMPLETE 0x1041
 #define FLAG_CAUGHT_BIJUU                           0x1042
 #define FLAG_GREG_WAWA_REWARDED                      0x1043
-#define CUSTOM_FLAGS_END                            FLAG_GREG_WAWA_REWARDED
+#define FLAG_TRIO_QUIZ_VIOLET_CITY                     0x1044
+#define FLAG_TRIO_QUIZ_AZALEA_TOWN                     0x1045
+#define FLAG_TRIO_QUIZ_GOLDENROD_CITY                  0x1046
+#define FLAG_TRIO_QUIZ_ECRUTEAK_CITY                   0x1047
+#define FLAG_TRIO_QUIZ_CIANWOOD_CITY                   0x1048
+#define FLAG_TRIO_QUIZ_OLIVINE_CITY                    0x1049
+#define FLAG_TRIO_QUIZ_MAHOGANYTOWN                    0x104A
+#define FLAG_TRIO_QUIZ_BLACKTHORN_CITY                 0x104B
+#define FLAG_TRIO_QUIZ_PEWTER_CITY                     0x104C
+#define FLAG_TRIO_QUIZ_CERULEAN_CITY                   0x104D
+#define FLAG_TRIO_QUIZ_VERMILION_CITY                  0x104E
+#define FLAG_TRIO_QUIZ_CELADON_CITY                    0x104F
+#define FLAG_TRIO_QUIZ_FUCHSIA_CITY                    0x1050
+#define FLAG_TRIO_QUIZ_SAFFRON_CITY                    0x1051
+#define FLAG_TRIO_QUIZ_CINNABAR_ISLAND                 0x1052
+#define FLAG_TRIO_QUIZ_VIRIDIAN_CITY                   0x1053
+#define CUSTOM_FLAGS_END                            FLAG_TRIO_QUIZ_VIRIDIAN_CITY
 
 
 #define FLAG_0x1500                                 0x1500
@@ -1863,3 +1879,4 @@
 #endif // TESTING
 
 #endif // GUARD_CONSTANTS_FLAGS_H
+

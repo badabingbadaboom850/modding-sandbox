@@ -40,6 +40,18 @@ NewBarkTown_PlayersHouse_1F_EventScript_MomsFriend::
 	goto_if_eq VAR_RESULT, FALSE, NewBarkTown_PlayersHouse_1F_EventScript_MomsFriend_BagFull
 	giveitem ITEM_PIECE_OF_CHICKEN, 5
 	goto_if_eq VAR_RESULT, FALSE, NewBarkTown_PlayersHouse_1F_EventScript_MomsFriend_BagFull
+	giveitem ITEM_GREEN_PEPPER, 1
+	goto_if_eq VAR_RESULT, FALSE, NewBarkTown_PlayersHouse_1F_EventScript_MomsFriend_BagFull
+	giveitem ITEM_EEL_SUSHI, 1
+	goto_if_eq VAR_RESULT, FALSE, NewBarkTown_PlayersHouse_1F_EventScript_MomsFriend_BagFull
+	giveitem ITEM_FROZEN_FISH, 1
+	goto_if_eq VAR_RESULT, FALSE, NewBarkTown_PlayersHouse_1F_EventScript_MomsFriend_BagFull
+	giveitem ITEM_MOUSE_TOY, 1
+	goto_if_eq VAR_RESULT, FALSE, NewBarkTown_PlayersHouse_1F_EventScript_MomsFriend_BagFull
+	giveitem ITEM_DOG_BOWL, 1
+	goto_if_eq VAR_RESULT, FALSE, NewBarkTown_PlayersHouse_1F_EventScript_MomsFriend_BagFull
+	giveitem ITEM_FETCHING_STICK, 1
+	goto_if_eq VAR_RESULT, FALSE, NewBarkTown_PlayersHouse_1F_EventScript_MomsFriend_BagFull
 	goto NewBarkTown_PlayersHouse_1F_EventScript_MomsFriend_Finish
 
 NewBarkTown_PlayersHouse_1F_EventScript_MomsFriend_BagFull::
@@ -405,11 +417,11 @@ NewBarkTown_PlayersHouse_1F_Text_CelestialFamily:
 
 
 NewBarkTown_PlayersHouse_1F_Text_PennyTestSupplies:
-	.string "Want Penny's evolution\n"
-	.string "items for testing?\p"
-	.string "I have Dad's Keys and\n"
-	.string "some chicken to share.$"
+	.string "Want some form supplies?\p"
+	.string "Keys, chicken, and all six\n"
+	.string "elemental keepsakes!$"
 
 NewBarkTown_PlayersHouse_1F_Text_TestSuppliesBagFull:
 	.string "Some supplies did not fit.\n"
 	.string "Make room and ask again.$"
+

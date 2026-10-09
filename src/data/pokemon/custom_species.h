@@ -328,3 +328,52 @@ static const struct SpriteFrameImage sPicTable_PennyGuardian[] = {
     overworld_ascending_frames(gObjectEventPic_PennyGuardian, 4, 4),
 };
 #endif
+
+
+#if P_FAMILY_BIJUU
+const u32 gMonFrontPic_BijuuIce[] = INCBIN_U32("graphics/pokemon/bijuu_ice/front.4bpp.smol");
+const u32 gMonBackPic_BijuuIce[] = INCBIN_U32("graphics/pokemon/bijuu_ice/back.4bpp.smol");
+const u16 gMonPalette_BijuuIce[] = INCBIN_U16("graphics/pokemon/bijuu_ice/normal.gbapal");
+const u16 gMonShinyPalette_BijuuIce[] = INCBIN_U16("graphics/pokemon/bijuu_ice/shiny.gbapal");
+const u8 gMonIcon_BijuuIce[] = INCBIN_U8("graphics/pokemon/bijuu_ice/icon.4bpp");
+const u16 gMonIconPalette_BijuuIce[] = INCBIN_U16("graphics/pokemon/bijuu_ice/icon_normal.gbapal");
+const u16 gMonShinyIconPalette_BijuuIce[] = INCBIN_U16("graphics/pokemon/bijuu_ice/icon_shiny.gbapal");
+const u32 gObjectEventPic_BijuuIce[] = INCBIN_U32("graphics/pokemon/bijuu_ice/overworld.4bpp");
+const u16 gOverworldPalette_BijuuIce[] = INCBIN_U16("graphics/pokemon/bijuu_ice/overworld_normal.gbapal");
+const u16 gShinyOverworldPalette_BijuuIce[] = INCBIN_U16("graphics/pokemon/bijuu_ice/overworld_shiny.gbapal");
+static const struct SpriteFrameImage sPicTable_BijuuIce[] = {
+    overworld_ascending_frames(gObjectEventPic_BijuuIce, 4, 4),
+};
+
+#endif
+
+#if P_FAMILY_FIDOUGH
+const u32 gMonFrontPic_PennyWater[] = INCBIN_U32("graphics/pokemon/penny_water/front.4bpp.smol");
+const u32 gMonBackPic_PennyWater[] = INCBIN_U32("graphics/pokemon/penny_water/back.4bpp.smol");
+const u16 gMonPalette_PennyWater[] = INCBIN_U16("graphics/pokemon/penny_water/normal.gbapal");
+const u16 gMonShinyPalette_PennyWater[] = INCBIN_U16("graphics/pokemon/penny_water/shiny.gbapal");
+const u8 gMonIcon_PennyWater[] = INCBIN_U8("graphics/pokemon/penny_water/icon.4bpp");
+const u16 gMonIconPalette_PennyWater[] = INCBIN_U16("graphics/pokemon/penny_water/icon_normal.gbapal");
+const u16 gMonShinyIconPalette_PennyWater[] = INCBIN_U16("graphics/pokemon/penny_water/icon_shiny.gbapal");
+const u32 gObjectEventPic_PennyWater[] = INCBIN_U32("graphics/pokemon/penny_water/overworld.4bpp");
+const u16 gOverworldPalette_PennyWater[] = INCBIN_U16("graphics/pokemon/penny_water/overworld_normal.gbapal");
+const u16 gShinyOverworldPalette_PennyWater[] = INCBIN_U16("graphics/pokemon/penny_water/overworld_shiny.gbapal");
+static const struct SpriteFrameImage sPicTable_PennyWater[] = {
+    overworld_ascending_frames(gObjectEventPic_PennyWater, 4, 4),
+};
+
+const u32 gMonFrontPic_PennyGrass[] = INCBIN_U32("graphics/pokemon/penny_grass/front.4bpp.smol");
+const u32 gMonBackPic_PennyGrass[] = INCBIN_U32("graphics/pokemon/penny_grass/back.4bpp.smol");
+const u16 gMonPalette_PennyGrass[] = INCBIN_U16("graphics/pokemon/penny_grass/normal.gbapal");
+const u16 gMonShinyPalette_PennyGrass[] = INCBIN_U16("graphics/pokemon/penny_grass/shiny.gbapal");
+const u8 gMonIcon_PennyGrass[] = INCBIN_U8("graphics/pokemon/penny_grass/icon.4bpp");
+const u16 gMonIconPalette_PennyGrass[] = INCBIN_U16("graphics/pokemon/penny_grass/icon_normal.gbapal");
+const u16 gMonShinyIconPalette_PennyGrass[] = INCBIN_U16("graphics/pokemon/penny_grass/icon_shiny.gbapal");
+const u32 gObjectEventPic_PennyGrass[] = INCBIN_U32("graphics/pokemon/penny_grass/overworld.4bpp");
+const u16 gOverworldPalette_PennyGrass[] = INCBIN_U16("graphics/pokemon/penny_grass/overworld_normal.gbapal");
+const u16 gShinyOverworldPalette_PennyGrass[] = INCBIN_U16("graphics/pokemon/penny_grass/overworld_shiny.gbapal");
+static const struct SpriteFrameImage sPicTable_PennyGrass[] = {
+    overworld_ascending_frames(gObjectEventPic_PennyGrass, 4, 4),
+};
+
+#endif

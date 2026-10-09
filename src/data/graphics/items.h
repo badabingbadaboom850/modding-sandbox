@@ -2181,3 +2181,22 @@ const u32 gItemIcon_DadsKeys[] = INCBIN_U32("graphics/items/icons/dads_keys.4bpp
 const u16 gItemIconPalette_DadsKeys[] = INCBIN_U16("graphics/items/icon_palettes/dads_keys.gbapal");
 const u32 gItemIcon_PieceOfChicken[] = INCBIN_U32("graphics/items/icons/piece_of_chicken.4bpp.smol");
 const u16 gItemIconPalette_PieceOfChicken[] = INCBIN_U16("graphics/items/icon_palettes/piece_of_chicken.gbapal");
+
+
+const u32 gItemIcon_GreenPepper[] = INCBIN_U32("graphics/items/icons/green_pepper.4bpp.smol");
+const u16 gItemIconPalette_GreenPepper[] = INCBIN_U16("graphics/items/icon_palettes/green_pepper.gbapal");
+
+const u32 gItemIcon_EelSushi[] = INCBIN_U32("graphics/items/icons/eel_sushi.4bpp.smol");
+const u16 gItemIconPalette_EelSushi[] = INCBIN_U16("graphics/items/icon_palettes/eel_sushi.gbapal");
+
+const u32 gItemIcon_FrozenFish[] = INCBIN_U32("graphics/items/icons/frozen_fish.4bpp.smol");
+const u16 gItemIconPalette_FrozenFish[] = INCBIN_U16("graphics/items/icon_palettes/frozen_fish.gbapal");
+
+const u32 gItemIcon_MouseToy[] = INCBIN_U32("graphics/items/icons/mouse_toy.4bpp.smol");
+const u16 gItemIconPalette_MouseToy[] = INCBIN_U16("graphics/items/icon_palettes/mouse_toy.gbapal");
+
+const u32 gItemIcon_DogBowl[] = INCBIN_U32("graphics/items/icons/dog_bowl.4bpp.smol");
+const u16 gItemIconPalette_DogBowl[] = INCBIN_U16("graphics/items/icon_palettes/dog_bowl.gbapal");
+
+const u32 gItemIcon_FetchingStick[] = INCBIN_U32("graphics/items/icons/fetching_stick.4bpp.smol");
+const u16 gItemIconPalette_FetchingStick[] = INCBIN_U16("graphics/items/icon_palettes/fetching_stick.gbapal");

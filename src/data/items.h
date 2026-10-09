@@ -17747,8 +17747,100 @@ const struct ItemInfo gItemsInfo[] =
         .iconPalette = gItemIconPalette_PieceOfChicken,
     },
 
+    [ITEM_GREEN_PEPPER] =
+    {
+        .name = ITEM_NAME("Green Pepper"),
+        .price = 500,
+        .description = COMPOUND_STRING("Reusable. Toggles\nRiko's Fire form.\nUse again to revert."),
+        .pocket = POCKET_ITEMS,
+        .sortType = ITEM_TYPE_EVOLUTION_STONE,
+        .heldSlot = 0,
+        .type = ITEM_USE_PARTY_MENU,
+        .fieldUseFunc = ItemUseOutOfBattle_EvolutionStone,
+        .effect = gItemEffect_EvoItem,
+        .flingPower = 30,
+        .iconPic = gItemIcon_GreenPepper,
+        .iconPalette = gItemIconPalette_GreenPepper,
+    },
+    [ITEM_EEL_SUSHI] =
+    {
+        .name = ITEM_NAME("Eel Sushi"),
+        .price = 500,
+        .description = COMPOUND_STRING("Reusable. Toggles\nRiko's Electric form.\nUse again to revert."),
+        .pocket = POCKET_ITEMS,
+        .sortType = ITEM_TYPE_EVOLUTION_STONE,
+        .heldSlot = 0,
+        .type = ITEM_USE_PARTY_MENU,
+        .fieldUseFunc = ItemUseOutOfBattle_EvolutionStone,
+        .effect = gItemEffect_EvoItem,
+        .flingPower = 30,
+        .iconPic = gItemIcon_EelSushi,
+        .iconPalette = gItemIconPalette_EelSushi,
+    },
+    [ITEM_FROZEN_FISH] =
+    {
+        .name = ITEM_NAME("Frozen Fish"),
+        .price = 500,
+        .description = COMPOUND_STRING("Reusable. Toggles\nBijuu's Ice form.\nUse again to revert."),
+        .pocket = POCKET_ITEMS,
+        .sortType = ITEM_TYPE_EVOLUTION_STONE,
+        .heldSlot = 0,
+        .type = ITEM_USE_PARTY_MENU,
+        .fieldUseFunc = ItemUseOutOfBattle_EvolutionStone,
+        .effect = gItemEffect_EvoItem,
+        .flingPower = 30,
+        .iconPic = gItemIcon_FrozenFish,
+        .iconPalette = gItemIconPalette_FrozenFish,
+    },
+    [ITEM_MOUSE_TOY] =
+    {
+        .name = ITEM_NAME("Mouse Toy"),
+        .price = 500,
+        .description = COMPOUND_STRING("Reusable. Toggles\nBijuu's Ghost form.\nUse again to revert."),
+        .pocket = POCKET_ITEMS,
+        .sortType = ITEM_TYPE_EVOLUTION_STONE,
+        .heldSlot = 0,
+        .type = ITEM_USE_PARTY_MENU,
+        .fieldUseFunc = ItemUseOutOfBattle_EvolutionStone,
+        .effect = gItemEffect_EvoItem,
+        .flingPower = 30,
+        .iconPic = gItemIcon_MouseToy,
+        .iconPalette = gItemIconPalette_MouseToy,
+    },
+    [ITEM_DOG_BOWL] =
+    {
+        .name = ITEM_NAME("Dog Bowl"),
+        .price = 500,
+        .description = COMPOUND_STRING("Reusable. Toggles\nPenny's Water form.\nUse again to revert."),
+        .pocket = POCKET_ITEMS,
+        .sortType = ITEM_TYPE_EVOLUTION_STONE,
+        .heldSlot = 0,
+        .type = ITEM_USE_PARTY_MENU,
+        .fieldUseFunc = ItemUseOutOfBattle_EvolutionStone,
+        .effect = gItemEffect_EvoItem,
+        .flingPower = 30,
+        .iconPic = gItemIcon_DogBowl,
+        .iconPalette = gItemIconPalette_DogBowl,
+    },
+    [ITEM_FETCHING_STICK] =
+    {
+        .name = ITEM_NAME("Fetching Stick"),
+        .price = 500,
+        .description = COMPOUND_STRING("Reusable. Toggles\nPenny's Grass form.\nUse again to revert."),
+        .pocket = POCKET_ITEMS,
+        .sortType = ITEM_TYPE_EVOLUTION_STONE,
+        .heldSlot = 0,
+        .type = ITEM_USE_PARTY_MENU,
+        .fieldUseFunc = ItemUseOutOfBattle_EvolutionStone,
+        .effect = gItemEffect_EvoItem,
+        .flingPower = 30,
+        .iconPic = gItemIcon_FetchingStick,
+        .iconPalette = gItemIconPalette_FetchingStick,
+    },
+
 };
 
 #undef ITEM_NAME
 #undef ITEM_PLURAL_NAME
+
 

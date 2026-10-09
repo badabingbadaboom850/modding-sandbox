@@ -1120,6 +1120,13 @@ enum __attribute__((packed)) Item
     ITEM_DADS_KEYS = 937,
     ITEM_PIECE_OF_CHICKEN = 938,
 
+    ITEM_GREEN_PEPPER = 939,
+    ITEM_EEL_SUSHI = 940,
+    ITEM_FROZEN_FISH = 941,
+    ITEM_MOUSE_TOY = 942,
+    ITEM_DOG_BOWL = 943,
+    ITEM_FETCHING_STICK = 944,
+
     ITEMS_COUNT,
     ITEM_FIELD_ARROW = ITEMS_COUNT,
 };
@@ -1215,4 +1222,5 @@ enum EffectItem
 };
 
 #endif  // GUARD_CONSTANTS_ITEMS_H
+
 

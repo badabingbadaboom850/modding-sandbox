@@ -690,6 +690,7 @@ const struct NatureInfo gNaturesInfo[NUM_NATURES] =
 
 #include "data/pokemon/custom_species.h"
 
+#include "data/pokemon/trio_elemental_learnsets.h"
 #include "data/pokemon/species_info.h"
 
 #define PP_UP_SHIFTS(val)           val,        (val) << 2,        (val) << 4,        (val) << 6
@@ -7884,3 +7885,4 @@ u32 SwitchInCandidateHeldItemWithEffect(struct BattlePokemon switchinCandidate, 
     }
     return ITEM_NONE;
 }
+

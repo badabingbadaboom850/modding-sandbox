@@ -55,6 +55,12 @@ Goldenrod_DepartmentStore_3F_Pokemart_Vitamins:
 	.2byte ITEM_BIJUUS_CAT_NIP
 	.2byte ITEM_DADS_KEYS
 	.2byte ITEM_PIECE_OF_CHICKEN
+	.2byte ITEM_GREEN_PEPPER
+	.2byte ITEM_EEL_SUSHI
+	.2byte ITEM_FROZEN_FISH
+	.2byte ITEM_MOUSE_TOY
+	.2byte ITEM_DOG_BOWL
+	.2byte ITEM_FETCHING_STICK
 	pokemartlistend
 
 GoldenrodDeptStore_Text_4FCooltrainerM:
@@ -83,3 +89,4 @@ GoldenrodDeptStore_Text_4FGameboyKid:
 GoldenrodDeptStore_Text_4FDirectory:
     .string "Let Us Pump Up Your Pokémon!\p"
     .string "4F Medicine Box$"
+

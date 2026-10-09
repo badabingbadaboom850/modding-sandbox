@@ -1254,6 +1254,7 @@ Common_Text_ReceivedMon:
 	.include "data/maps/ShoalCave_LowTideIceRoom_Suicune/scripts.inc"
 	.include "data/scripts/trio_spirit_trials.inc"
 	.include "data/scripts/trio_party_checks.inc"
+	.include "data/scripts/trio_gym_trivia.inc"
 	.include "data/scripts/battle_frontier.inc"
 	
 	// Start battle_arcade
@@ -2415,3 +2416,4 @@ Common_Text_ReceivedMon:
 	.include "data/maps/Route50UnderwaterCave2/scripts.inc"
 
 	.include "data/maps/BattleCafe/scripts.inc"
+

@@ -7315,6 +7315,23 @@ static void Task_SacredAshDisplayHPRestored(u8 taskId)
 #undef tHadEffect
 #undef tLastSlotUsed
 
+// Only the six elemental keepsakes are reusable; ordinary stones are consumed.
+static bool32 IsReusableTrioFormItem(u16 item)
+{
+    switch (item)
+    {
+    case ITEM_GREEN_PEPPER:
+    case ITEM_EEL_SUSHI:
+    case ITEM_FROZEN_FISH:
+    case ITEM_MOUSE_TOY:
+    case ITEM_DOG_BOWL:
+    case ITEM_FETCHING_STICK:
+        return TRUE;
+    default:
+        return FALSE;
+    }
+}
+
 void ItemUseCB_EvolutionStone(u8 taskId, TaskFunc task)
 {
     PlaySE(SE_SELECT);
@@ -7328,7 +7345,8 @@ void ItemUseCB_EvolutionStone(u8 taskId, TaskFunc task)
     }
     else
     {
-        if (GetItemPocket(gSpecialVar_ItemId) != POCKET_KEY_ITEMS)
+        if (GetItemPocket(gSpecialVar_ItemId) != POCKET_KEY_ITEMS
+            && !IsReusableTrioFormItem(gSpecialVar_ItemId))
             RemoveBagItem(gSpecialVar_ItemId, 1);
         FreePartyPointers();
     }
@@ -9555,3 +9573,4 @@ static void FieldCallback_RockClimb(void)
     FieldEffectStart(FLDEFF_USE_ROCK_CLIMB);
 }
 #endif // !SWSH_PARTY_MENU || PARTY_MENU_STYLE_OPTION
+

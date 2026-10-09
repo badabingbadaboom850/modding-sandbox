@@ -230,3 +230,29 @@ A new permanent human NPC (LOCALID_NEWBARK_TRIVIA, object 16, existing FR Lass g
 The optional pilot asks three yes/no questions: Riko is a Pomeranian (YES), Bijuu is a dachshund (NO), Penny loves chicken (YES). Wrong answers end the attempt with a friendly retry invitation. Three correct answers grant one ITEM_POTION, presented as a small Wawa. Successful quizzes and rewards are intentionally repeatable for this pilot. A full Bag gives a make-room/retry message; VAR_RESULT is checked immediately. Declining grants nothing. No persistent variables, flags, or save-layout changes were added. New and existing saves can use the NPC.
 
 The new raw Pory block and assembly block match. To personalize questions later, edit both sources and the corresponding YES/NO branch checks. Source checks cover labels/references, 26-character text wrapping, event occupancy, and 18 script paths including all answer combinations, full Bag and decline. Placement and interaction still require emulator confirmation. CI #121 at f45669dc passed ROM compilation, artifact upload, all test steps and docs validation before this trivia change.
+
+
+## Gym trivia and reusable elemental keepsakes
+
+The user confirmed the Guardian Penny forward/reverse items and New Bark trivia pilot worked in the emulator. That confirmation predates this elemental/Gym-trivia batch.
+
+Six elemental forms use the user's approved sheets. Fire Riko (1582), Electric Riko (1585), and Ghost Bijuu (1595) retain their existing IDs. New tail entries are Ice Bijuu (1602), Water Penny (1603), and Grass Penny (1604); SPECIES_EGG now follows at 1605. All six remain female-only. Penny's elemental forms keep Guardian Penny's stats and blonde/ketchup/key identity and return to Guardian Penny, not Fidough. The normal Fidough-to-Dachsbun and Keys/Chicken pair remain.
+
+| Reusable item | ID | Forward / reverse pair |
+| --- | --- | --- |
+| Green Pepper | 939 | Riko / Fire Riko |
+| Eel Sushi | 940 | Riko / Electric Riko |
+| Frozen Fish | 941 | Bijuu / Ice Bijuu |
+| Mouse Toy | 942 | Bijuu / Ghost Bijuu |
+| Dog Bowl | 943 | Guardian Penny / Water Penny |
+| Fetching Stick | 944 | Guardian Penny / Grass Penny |
+
+Use each keepsake again on its matching elemental form to revert. These six items alone are exempted from consumption in ItemUseCB_EvolutionStone; ordinary evolution items, Keys, and Chicken retain consumption. Forms offer an elemental attack on evolution through level-zero learnset entries. An evolved girl must return to her matching base before using the other keepsake. No new starting-Bag grants were added.
+
+Mom's friend's optional repeatable supply offer now grants five Keys, five Chicken, and one of each reusable keepsake, with an immediate Bag-full check after each grant. Previously received items remain if a later grant fails. All six keepsakes are also sold for 500 each at the existing Goldenrod Department Store 4F clerk.
+
+Sixteen permanent Lass NPCs stand on checked walkable tiles near the Gym cities' Pokemon Centers. Each calls a label in data/scripts/trio_gym_trivia.inc, included explicitly by data/event_scripts.s. Seven questions use the user's personal answers; nine use Pokemon trivia. Correct answers give one locally useful keepsake, except Fuchsia's held Pecha Berry. Each city's prize is once per save, with friendly no-penalty wrong-answer retries and optional replays. Bag-full returns before setting the claim flag. The sixteen claim flags occupy 0x1044-0x1053 in the existing persistent flag array; FLAGS_COUNT and SaveBlock layouts are unchanged. Existing city scripts and visibility remain; no Pory source was modified for the new shared include.
+
+This engine's map format uses an eleven-bit metatile ID (0x07FF), one collision bit (0x0800), and elevation in bits 12-15; primary metatiles occupy IDs 0-1023. Do not apply vanilla Emerald's ten-bit-ID/two-bit-collision assumptions when checking NPC placement.
+
+The six approved sheets were converted to 64x64 battle sprites, 32x64 icons, 192x32 followers, and 24x24 item icons with indexed 4-bit palettes. Palette index zero is transparent; normal and shiny art intentionally share the approved colors. Source/asset checks are separate from compilation and emulator verification. This batch needs in-game forward/reverse, move offers, Bag retention, follower directions, quiz rewards/replays/full Bag, and save/reload checks.

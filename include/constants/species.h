@@ -1717,11 +1717,15 @@
 #define SPECIES_RIKO_WING                              1599
 #define SPECIES_BIJUU_PSYCHIC                           1600
 #define SPECIES_PENNY_GUARDIAN                         1601
-#define SPECIES_EGG                                     (SPECIES_PENNY_GUARDIAN + 1)
+#define SPECIES_BIJUU_ICE                              1602
+#define SPECIES_PENNY_WATER                            1603
+#define SPECIES_PENNY_GRASS                            1604
+#define SPECIES_EGG                                     (SPECIES_PENNY_GRASS + 1)
 
 #define NUM_SPECIES SPECIES_EGG
 
 #define SPECIES_SHINY_TAG 5000
 
 #endif  // GUARD_CONSTANTS_SPECIES_H
+
 

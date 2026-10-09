@@ -735,6 +735,38 @@ RIKO_OVERWORLD_GFX := graphics/pokemon/riko/overworld.4bpp \
                      graphics/pokemon/penny_guardian/overworld_normal.gbapal \
                      graphics/pokemon/penny_guardian/overworld_shiny.gbapal
 
+TRIO_ELEMENTAL_GFX := graphics/pokemon/bijuu_ice/front.4bpp.smol \
+                     graphics/pokemon/bijuu_ice/back.4bpp.smol \
+                     graphics/pokemon/bijuu_ice/normal.gbapal \
+                     graphics/pokemon/bijuu_ice/shiny.gbapal \
+                     graphics/pokemon/bijuu_ice/icon.4bpp \
+                     graphics/pokemon/bijuu_ice/icon_normal.gbapal \
+                     graphics/pokemon/bijuu_ice/icon_shiny.gbapal \
+                     graphics/pokemon/bijuu_ice/overworld.4bpp \
+                     graphics/pokemon/bijuu_ice/overworld_normal.gbapal \
+                     graphics/pokemon/bijuu_ice/overworld_shiny.gbapal \
+                     graphics/pokemon/penny_water/front.4bpp.smol \
+                     graphics/pokemon/penny_water/back.4bpp.smol \
+                     graphics/pokemon/penny_water/normal.gbapal \
+                     graphics/pokemon/penny_water/shiny.gbapal \
+                     graphics/pokemon/penny_water/icon.4bpp \
+                     graphics/pokemon/penny_water/icon_normal.gbapal \
+                     graphics/pokemon/penny_water/icon_shiny.gbapal \
+                     graphics/pokemon/penny_water/overworld.4bpp \
+                     graphics/pokemon/penny_water/overworld_normal.gbapal \
+                     graphics/pokemon/penny_water/overworld_shiny.gbapal \
+                     graphics/pokemon/penny_grass/front.4bpp.smol \
+                     graphics/pokemon/penny_grass/back.4bpp.smol \
+                     graphics/pokemon/penny_grass/normal.gbapal \
+                     graphics/pokemon/penny_grass/shiny.gbapal \
+                     graphics/pokemon/penny_grass/icon.4bpp \
+                     graphics/pokemon/penny_grass/icon_normal.gbapal \
+                     graphics/pokemon/penny_grass/icon_shiny.gbapal \
+                     graphics/pokemon/penny_grass/overworld.4bpp \
+                     graphics/pokemon/penny_grass/overworld_normal.gbapal \
+                     graphics/pokemon/penny_grass/overworld_shiny.gbapal
+RIKO_OVERWORLD_GFX += $(filter %/overworld.4bpp %/overworld_normal.gbapal %/overworld_shiny.gbapal,$(TRIO_ELEMENTAL_GFX))
+
 # Overworld followers are animated in 32x32 frames. Reorder the PNG's 4x4-tile
 # blocks so each frame is contiguous in the generated 4bpp data.
 $(filter %.4bpp,$(RIKO_OVERWORLD_GFX)): %.4bpp: %.png
@@ -744,7 +776,7 @@ RIKO_MEGA_GFX := graphics/pokemon/riko/mega/front.4bpp.smol \
                  graphics/pokemon/riko/mega/back.4bpp.smol \
                  graphics/pokemon/riko/mega/normal.gbapal \
                  graphics/pokemon/riko/mega/shiny.gbapal
-$(C_BUILDDIR)/pokemon.o: $(C_SUBDIR)/pokemon.c $(DATA_SRC_SUBDIR)/pokemon/teachable_learnsets.h $(LEGACY_LEVEL_UP_HEADER) $(RIKO_VARIANT_GFX) $(RIKO_MEGA_GFX) $(RIKO_OVERWORLD_GFX)
+$(C_BUILDDIR)/pokemon.o: $(C_SUBDIR)/pokemon.c $(DATA_SRC_SUBDIR)/pokemon/teachable_learnsets.h $(LEGACY_LEVEL_UP_HEADER) $(RIKO_VARIANT_GFX) $(RIKO_MEGA_GFX) $(RIKO_OVERWORLD_GFX) $(TRIO_ELEMENTAL_GFX)
 
 # As a side effect, they're evaluated immediately instead of when the rule is invoked.
 # It doesn't look like $(shell) can be deferred so there might not be a better way (Icedude_907: there is soon).
@@ -878,4 +910,5 @@ leafgreen: all
 # Symbol file (`make syms`)
 $(SYM): $(ELF)
 	$(OBJDUMP) -t $< | sort -u | grep -E "^0[2389]" | $(PERL) -p -e 's/^(\w{8}) (\w).{6} \S+\t(\w{8}) (\S+)$$/\1 \2 \3 \4/g' > $@
+
 
