@@ -1140,9 +1140,9 @@
 #define TRAINER_UNUSED_292                1156
 #define TRAINER_UNUSED_293                1157
 #define TRAINER_UNUSED_294                1158
-#define TRAINER_UNUSED_295                1159
-#define TRAINER_UNUSED_296                1160
-#define TRAINER_UNUSED_297                1161
+#define TRAINER_FESTIVAL_SCOTT                1159
+#define TRAINER_FESTIVAL_SNACK_A              1160
+#define TRAINER_FESTIVAL_SNACK_B              1161
 #define TRAINER_UNUSED_298                1162
 #define TRAINER_UNUSED_299                1163
 #define TRAINER_UNUSED_300                1164 // This is out of range, don't touch (it refers to FLAG_SYS_POKEMON_GET)

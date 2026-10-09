@@ -20792,3 +20792,78 @@ Jolly Nature
 - Play Rough
 - Shadow Claw
 - Shadow Sneak
+
+=== TRAINER_FESTIVAL_SCOTT ===
+Name: Scott
+Class: Rival
+Pic: Silver
+Gender: Male
+Music: Silver
+Double Battle: No
+AI: Smart Trainer
+
+Penny Guardian @ Sitrus Berry
+Level: 32
+IVs: 25 HP / 25 Atk / 25 Def / 25 SpA / 25 SpD / 25 Spe
+- Play Rough
+- Crunch
+- Protect
+- Body Slam
+
+Bijuu Psychic @ Wise Glasses
+Level: 32
+IVs: 25 HP / 25 Atk / 25 Def / 25 SpA / 25 SpD / 25 Spe
+- Psychic
+- Shadow Ball
+- Thunderbolt
+- Calm Mind
+
+Riko Wing @ Lum Berry
+Level: 33
+IVs: 25 HP / 25 Atk / 25 Def / 25 SpA / 25 SpD / 25 Spe
+- Moonblast
+- Air Slash
+- Flamethrower
+- Roost
+
+=== TRAINER_FESTIVAL_SNACK_A ===
+Name: Scout
+Class: Youngster
+Pic: Youngster
+Gender: Male
+Music: Silver
+Double Battle: No
+AI: Smart Trainer
+
+Aipom
+Level: 27
+IVs: 25 HP / 25 Atk / 25 Def / 25 SpA / 25 SpD / 25 Spe
+- Swift
+- Fake Out
+- Tickle
+- Fury Swipes
+
+Pachirisu
+Level: 28
+IVs: 25 HP / 25 Atk / 25 Def / 25 SpA / 25 SpD / 25 Spe
+- Spark
+- Quick Attack
+- Charm
+- Swift
+
+=== TRAINER_FESTIVAL_SNACK_B ===
+Name: Boss
+Class: Youngster
+Pic: Youngster
+Gender: Male
+Music: Silver
+Double Battle: No
+AI: Smart Trainer
+
+Greedent @ Sitrus Berry
+Level: 29
+IVs: 25 HP / 25 Atk / 25 Def / 25 SpA / 25 SpD / 25 Spe
+- Body Slam
+- Bite
+- Stockpile
+- Bullet Seed

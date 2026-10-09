@@ -142,6 +142,7 @@ NewBarkTown_EventScript_LeaveTriggersState4::
 NewBarkTown_EventScript_FatMan::
 	lock
 	faceplayer
+	call TrioFestival_TestShuttle
 	goto_if_eq VAR_NEWBARK_TOWN_STATE, 2, NewBarkTown_EventScript_FatManState2
 	goto_if_set FLAG_BADGE01_GET, NewBarkTown_Text_FatManState3_TrioWorld1_After
 	msgbox NewBarkTown_Text_FatManState3, MSGBOX_DEFAULT

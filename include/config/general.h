@@ -87,4 +87,7 @@
 // Naming Screen
 #define AUTO_LOWERCASE_KEYBOARD      GEN_LATEST  // Starting in GEN_6, after entering the first uppercase character, the keyboard switches to lowercase letters.
 
+// Temporary user-requested fresh-save festival testing. Disable for normal play.
+#define TRIO_FESTIVAL_TEST_MODE TRUE
+
 #endif // GUARD_CONFIG_GENERAL_H

@@ -1797,7 +1797,19 @@
 #define FLAG_HIDE_TRIO_CAMP_BIJUU                     0x106E
 #define FLAG_HIDE_TRIO_CAMP_PENNY                     0x106F
 #define FLAG_TRIO_CAMP_MEMORY                        0x1070
-#define CUSTOM_FLAGS_END                            FLAG_TRIO_CAMP_MEMORY
+
+// Goldenrod festival: independent, old-save-compatible progress.
+#define FLAG_TRIO_FESTIVAL_STARTED                        0x1071
+#define FLAG_TRIO_FESTIVAL_RIKO                           0x1072
+#define FLAG_TRIO_FESTIVAL_CLUE_A                         0x1073
+#define FLAG_TRIO_FESTIVAL_CLUE_B                         0x1074
+#define FLAG_TRIO_FESTIVAL_BIJUU                          0x1075
+#define FLAG_TRIO_FESTIVAL_PENNY                          0x1076
+#define FLAG_TRIO_FESTIVAL_SNACK_A                        0x1077
+#define FLAG_TRIO_FESTIVAL_SNACK_B                        0x1078
+#define FLAG_TRIO_FESTIVAL_PICNIC                         0x1079
+#define FLAG_TRIO_FESTIVAL_SCOTT_WIN                      0x107A
+#define CUSTOM_FLAGS_END                            FLAG_TRIO_FESTIVAL_SCOTT_WIN
 
 
 #define FLAG_0x1500                                 0x1500

@@ -1670,6 +1670,19 @@ static void CB2_EndTrainerBattle(void)
             HealPlayerParty();
     }
 
+    // Festival exhibition battles are friendly and always return to the garden.
+    // The map AND trainer guard leaves every ordinary battle callback unchanged.
+    if (gSaveBlock1Ptr->location.mapGroup == MAP_GROUP(MAP_GOLDENROD_FESTIVAL)
+     && gSaveBlock1Ptr->location.mapNum == MAP_NUM(MAP_GOLDENROD_FESTIVAL)
+     && (TRAINER_BATTLE_PARAM.opponentA == TRAINER_FESTIVAL_SCOTT
+      || TRAINER_BATTLE_PARAM.opponentA == TRAINER_FESTIVAL_SNACK_A
+      || TRAINER_BATTLE_PARAM.opponentA == TRAINER_FESTIVAL_SNACK_B))
+    {
+        HealPlayerParty();
+        SetMainCallback2(CB2_ReturnToFieldContinueScriptPlayMapMusic);
+        return;
+    }
+
     if (TRAINER_BATTLE_PARAM.opponentA == TRAINER_SECRET_BASE)
     {
         DowngradeBadPoison();

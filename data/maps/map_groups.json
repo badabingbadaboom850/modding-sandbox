@@ -176,7 +176,8 @@
     "GoldenrodBattleAracdeLobby",
     "GoldenrodBattleArcadeHallway",
     "MauvilleCity_GameCorner",
-    "GoldenrodBattleArcadeBattleRoom"
+    "GoldenrodBattleArcadeBattleRoom",
+    "GoldenrodFestival"
   ],
   "gMapGroup_IndoorEcruteak": [
     "EcruteakCity_PokemonCenter",

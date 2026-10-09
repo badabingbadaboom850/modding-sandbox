@@ -148,6 +148,11 @@
 #define MULTI_TRIO_CAMP_HOST                 137
 #define MULTI_TRIO_CAMP_GIRL                 138
 #define MULTI_TRIO_CAMP_BARKS                139
+#define MULTI_TRIO_FESTIVAL_RIKO         140
+#define MULTI_TRIO_FESTIVAL_PENNY        141
+#define MULTI_TRIO_FESTIVAL_HOST         142
+#define MULTI_TRIO_FESTIVAL_TEST         143
+
 
 // Lilycove SS Tidal Multichoice Selections
 #define SSTIDAL_SELECTION_SLATEPORT        0

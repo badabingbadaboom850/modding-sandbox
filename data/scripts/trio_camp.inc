@@ -274,6 +274,7 @@ TrioCamp_ReadStats::
 	setvar VAR_0x8004, 5
 	special TrioCamp_BufferStats
 	msgbox TrioCamp_StatsPets, MSGBOX_DEFAULT
+	call TrioFestival_ReadRibbons
 	return
 TrioCamp_ReadMemory::
 	msgbox TrioCamp_MemoryText, MSGBOX_DEFAULT

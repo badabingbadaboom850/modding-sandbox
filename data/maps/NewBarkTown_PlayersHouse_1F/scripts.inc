@@ -24,6 +24,7 @@ NewBarkTown_PlayersHouse_1F_EventScript_Mom::
 	faceplayer
 	call TrioMemories_Mom
 	call TrioChampionPicnic_Offer
+	call TrioFestival_Invitation
 	goto_if_set FLAG_MOM_VISITED, NewBarkTown_PlayersHouse_1F_EventScript_Mom_Regular
 	goto_if_set FLAG_ADVENTURE_STARTED, NewBarkTown_PlayersHouse_1F_MomEventScript_GoodLuck
 	msgbox NewBarkTown_PlayersHouse_1F_Text_MomHurryUpElmIsWaiting, MSGBOX_DEFAULT

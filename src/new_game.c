@@ -288,6 +288,12 @@ void NewGameInitData(void)
     gPlayerPartyCount = 2;
     CreateRandomMon(&gPlayerParty[0], SPECIES_RIKO, 5);
     CreateRandomMon(&gPlayerParty[1], SPECIES_FIDOUGH, 5);
+#if TRIO_FESTIVAL_TEST_MODE
+    gPlayerPartyCount = 3;
+    CreateRandomMon(&gPlayerParty[0], SPECIES_RIKO, 30);
+    CreateRandomMon(&gPlayerParty[1], SPECIES_FIDOUGH, 30);
+    CreateRandomMon(&gPlayerParty[2], SPECIES_BIJUU, 30);
+#endif
     ResetPokemonStorageSystem();
     ResetHallOfFameArchive();
     DeactivateAllRoamers();
@@ -341,6 +347,12 @@ void NewGameInitData(void)
     ResetDexNav();
     ClearFollowerNPCData();
     SetLastHealLocationWarp(HEAL_LOCATION_NEW_BARK_TOWN_PLAYERS_HOUSE_2F);
+#if TRIO_FESTIVAL_TEST_MODE
+    FlagSet(FLAG_BADGE01_GET);
+    FlagSet(FLAG_BADGE02_GET);
+    FlagSet(FLAG_BADGE03_GET);
+    FlagSet(FLAG_BADGE04_GET);
+#endif
     TryInitializeClockFromRtc();
 }
 
