@@ -1,4 +1,41 @@
-@ Shared Spirit letters retained after retiring the New Bark test encounters.
+@ Shared Spirit battle returns and letters; New Bark tests are retired.
+TrioHomeSpirit_Decline::
+	msgbox TrioHomeSpirit_DeclineText, MSGBOX_DEFAULT
+	release
+	end
+
+TrioHomeSpirit_NoParty::
+	msgbox TrioHomeSpirit_NoPartyText, MSGBOX_DEFAULT
+	release
+	end
+
+TrioHomeSpirit_Retry::
+	msgbox TrioHomeSpirit_RetryText, MSGBOX_DEFAULT
+	release
+	end
+
+TrioHomeSpirit_Ready:
+	.string "Your team feels refreshed.\n"
+	.string "The spirit is ready!\p"
+	.string "Win or lose, you are safe.\n"
+	.string "You can always try again.$"
+
+TrioHomeSpirit_DeclineText:
+	.string "There is no rush.\n"
+	.string "She is happy you came.$"
+
+TrioHomeSpirit_NoPartyText:
+	.string "Bring a Pokemon with you.\n"
+	.string "She will wait right here.$"
+
+TrioHomeSpirit_RetryText:
+	.string "The spirit nuzzles you.\n"
+	.string "Your team is healed.\p"
+	.string "Love is not a test\n"
+	.string "you can fail.\p"
+	.string "Try again whenever\n"
+	.string "you feel ready.$"
+
 TrioHomeSpirit_PennyVictory:
 	.string "Penny lowers her shield.\n"
 	.string "Her voice feels familiar.\p"
