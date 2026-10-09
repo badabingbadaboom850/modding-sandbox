@@ -483,7 +483,7 @@
 #define P_FAMILY_GROOKEY                 P_GEN_8_POKEMON
 #define P_FAMILY_SCORBUNNY               P_GEN_8_POKEMON
 #define P_FAMILY_SOBBLE                  P_GEN_8_POKEMON
-#define P_FAMILY_SKWOVET                 FALSE
+#define P_FAMILY_SKWOVET                 TRUE // Festival snack boss requires Greedent data and graphics.
 #define P_FAMILY_ROOKIDEE                P_GEN_8_POKEMON
 #define P_FAMILY_BLIPBUG                 FALSE
 #define P_FAMILY_NICKIT                  FALSE
