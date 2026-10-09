@@ -104,6 +104,7 @@ TrioScrapbook_Menu::
 	goto_if_eq VAR_RESULT, 0, TrioScrapbook_Journey
 	goto_if_eq VAR_RESULT, 1, TrioScrapbook_Sisters
 	goto_if_eq VAR_RESULT, 2, TrioScrapbook_Letters
+	goto_if_eq VAR_RESULT, 3, TrioScrapbook_Checklist
 	return
 TrioScrapbook_Journey:
 	msgbox TrioScrapbook_OpeningPage, MSGBOX_DEFAULT
@@ -113,6 +114,7 @@ TrioScrapbook_Journey:
 	specialvar VAR_RESULT, CheckTrioSpiritMilestone
 	call_if_eq VAR_RESULT, TRUE, TrioScrapbook_EightBadges
 	call_if_set FLAG_IS_CHAMPION, TrioScrapbook_Champion
+	call_if_set FLAG_TRIO_CHAMPION_PICNIC, TrioScrapbook_PicnicLetter
 	goto TrioScrapbook_Menu
 TrioScrapbook_Sisters:
 	msgbox TrioScrapbook_SistersIntro, MSGBOX_DEFAULT
@@ -120,6 +122,9 @@ TrioScrapbook_Sisters:
 	call_if_set FLAG_TRIO_SISTERS_GOLDENROD, TrioScrapbook_Goldenrod
 	call_if_set FLAG_TRIO_SISTERS_OLIVINE, TrioScrapbook_Olivine
 	call_if_set FLAG_TRIO_POM_PARTY_SEEN, TrioScrapbook_PomParty
+	call_if_set FLAG_TRIO_SISTERS_CERULEAN, TrioScrapbook_Cerulean
+	call_if_set FLAG_TRIO_SISTERS_VERMILION, TrioScrapbook_Vermilion
+	call_if_set FLAG_TRIO_SISTERS_CELADON, TrioScrapbook_Celadon
 	goto TrioScrapbook_Menu
 TrioScrapbook_Letters:
 	msgbox TrioScrapbook_LettersIntro, MSGBOX_DEFAULT
@@ -419,13 +424,13 @@ TrioScrapbook_ChampionPage:
 	.string "Home.$"
 
 TrioScrapbook_SistersIntro:
-	.string "Little sister moments\p"
-	.string "Visit the friendly Lass in\n"
-	.string "Azalea, Goldenrod or\p"
-	.string "Olivine's Poke Center.\p"
-	.string "Seen moments appear here.\n"
-	.string "There may be a party page,\p"
-	.string "too.$"
+	.string "Little sister moments:\n"
+	.string "Johto's Poke Center Lasses\p"
+	.string "have stories to share.\n"
+	.string "After the League, Kanto\p"
+	.string "has new little adventures.\n"
+	.string "The Memory checklist can\p"
+	.string "help you find each page.$"
 
 TrioScrapbook_LettersIntro:
 	.string "Letters from the Spirits\p"
@@ -585,3 +590,546 @@ TrioScrapbook_CheckBijuuLetter::
 	goto_if_set FLAG_TRIO_BIJUU_SPIRIT_COMPLETE, TrioScrapbook_BijuuLetter
 	goto_if_set FLAG_TRIO_BIJUU_HOME_WIN, TrioScrapbook_BijuuLetter
 	return
+
+@ Kanto sister memories and Champion family picnic.
+
+TrioKanto_PrepareCerulean::
+	setvar VAR_TEMP_A, FALSE
+	goto_if_set FLAG_TRIO_SISTERS_CERULEAN, TrioMemories_Return
+	goto_if_unset FLAG_IS_CHAMPION, TrioMemories_Return
+	call TrioSisters_CheckAll
+	goto_if_eq VAR_RESULT, FALSE, TrioMemories_Return
+	setvar VAR_TEMP_A, TRUE
+	return
+TrioKanto_CeruleanOnFrame::
+	map_script_2 VAR_TEMP_A, TRUE, TrioKanto_CeruleanArrival
+	.2byte 0
+TrioKanto_CeruleanArrival::
+	lockall
+	setvar VAR_TEMP_A, FALSE
+	call TrioKanto_PlayCerulean
+	closemessage
+	releaseall
+	end
+
+TrioKanto_CeruleanOffer::
+	lockall
+	goto_if_unset FLAG_IS_CHAMPION, TrioKanto_NotYet
+	call TrioSisters_CheckAll
+	goto_if_eq VAR_RESULT, FALSE, TrioKanto_BringGirls
+	msgbox TrioKanto_CeruleanOfferText, MSGBOX_YESNO
+	goto_if_eq VAR_RESULT, NO, TrioKanto_OfferEnd
+	call TrioKanto_PlayCerulean
+	goto TrioKanto_OfferEnd
+TrioKanto_PlayCerulean::
+	msgbox TrioKanto_CeruleanScene, MSGBOX_DEFAULT
+	goto_if_set FLAG_TRIO_SISTERS_CERULEAN, TrioMemories_Return
+	setflag FLAG_TRIO_SISTERS_CERULEAN
+	msgbox TrioSisters_Recorded, MSGBOX_DEFAULT
+	return
+TrioScrapbook_Cerulean::
+	msgbox TrioKanto_CeruleanScene, MSGBOX_DEFAULT
+	return
+
+TrioKanto_PrepareVermilion::
+	setvar VAR_TEMP_A, FALSE
+	goto_if_set FLAG_TRIO_SISTERS_VERMILION, TrioMemories_Return
+	goto_if_unset FLAG_IS_CHAMPION, TrioMemories_Return
+	goto_if_eq VAR_SUICUNE_ENCOUNTERS, 3, TrioMemories_Return
+	call TrioSisters_CheckAll
+	goto_if_eq VAR_RESULT, FALSE, TrioMemories_Return
+	setvar VAR_TEMP_A, TRUE
+	return
+TrioKanto_VermilionOnFrame::
+	map_script_2 VAR_TEMP_A, TRUE, TrioKanto_VermilionArrival
+	.2byte 0
+TrioKanto_VermilionArrival::
+	lockall
+	setvar VAR_TEMP_A, FALSE
+	call TrioKanto_PlayVermilion
+	closemessage
+	releaseall
+	end
+
+TrioKanto_VermilionOffer::
+	lockall
+	goto_if_unset FLAG_IS_CHAMPION, TrioKanto_NotYet
+	call TrioSisters_CheckAll
+	goto_if_eq VAR_RESULT, FALSE, TrioKanto_BringGirls
+	msgbox TrioKanto_VermilionOfferText, MSGBOX_YESNO
+	goto_if_eq VAR_RESULT, NO, TrioKanto_OfferEnd
+	call TrioKanto_PlayVermilion
+	goto TrioKanto_OfferEnd
+TrioKanto_PlayVermilion::
+	msgbox TrioKanto_VermilionScene, MSGBOX_DEFAULT
+	goto_if_set FLAG_TRIO_SISTERS_VERMILION, TrioMemories_Return
+	setflag FLAG_TRIO_SISTERS_VERMILION
+	msgbox TrioSisters_Recorded, MSGBOX_DEFAULT
+	return
+TrioScrapbook_Vermilion::
+	msgbox TrioKanto_VermilionScene, MSGBOX_DEFAULT
+	return
+
+TrioKanto_CeladonOffer::
+	lockall
+	goto_if_unset FLAG_IS_CHAMPION, TrioKanto_NotYet
+	call TrioSisters_CheckAll
+	goto_if_eq VAR_RESULT, FALSE, TrioKanto_BringGirls
+	msgbox TrioKanto_CeladonOfferText, MSGBOX_YESNO
+	goto_if_eq VAR_RESULT, NO, TrioKanto_OfferEnd
+	call TrioKanto_PlayCeladon
+	goto TrioKanto_OfferEnd
+TrioKanto_PlayCeladon::
+	msgbox TrioKanto_CeladonScene, MSGBOX_DEFAULT
+	goto_if_set FLAG_TRIO_SISTERS_CELADON, TrioMemories_Return
+	setflag FLAG_TRIO_SISTERS_CELADON
+	msgbox TrioSisters_Recorded, MSGBOX_DEFAULT
+	return
+TrioScrapbook_Celadon::
+	msgbox TrioKanto_CeladonScene, MSGBOX_DEFAULT
+	return
+
+TrioKanto_NotYet:
+	msgbox TrioKanto_NotYetText, MSGBOX_DEFAULT
+	goto TrioKanto_OfferEnd
+TrioKanto_BringGirls:
+	msgbox TrioSisters_BringGirlsText, MSGBOX_DEFAULT
+TrioKanto_OfferEnd:
+	closemessage
+	releaseall
+	return
+TrioChampionPicnic_Offer::
+	goto_if_unset FLAG_IS_CHAMPION, TrioMemories_Return
+	goto_if_set FLAG_TRIO_CHAMPION_PICNIC, TrioMemories_Return
+	call TrioSisters_CheckAll
+	goto_if_eq VAR_RESULT, FALSE, TrioChampionPicnic_MissingGirls
+	msgbox TrioChampionPicnic_OfferText, MSGBOX_YESNO
+	goto_if_eq VAR_RESULT, NO, TrioMemories_Return
+	msgbox TrioChampionPicnic_Scene, MSGBOX_DEFAULT
+	msgbox TrioChampionPicnic_ScottLetter, MSGBOX_DEFAULT
+	setflag FLAG_TRIO_CHAMPION_PICNIC
+	msgbox TrioChampionPicnic_Recorded, MSGBOX_DEFAULT
+	return
+TrioChampionPicnic_MissingGirls:
+	msgbox TrioChampionPicnic_BringGirls, MSGBOX_DEFAULT
+	return
+TrioScrapbook_PicnicLetter::
+	msgbox TrioChampionPicnic_ScottLetter, MSGBOX_DEFAULT
+	return
+TrioScrapbook_Checklist::
+	msgbox TrioChecklist_Intro, MSGBOX_DEFAULT
+	call TrioChecklist_FirstBadge
+	call TrioChecklist_GoldenrodBadge
+	call TrioChecklist_Champion
+	call TrioChecklist_Azalea
+	call TrioChecklist_Goldenrod
+	call TrioChecklist_Olivine
+	call TrioChecklist_Pom
+	call TrioChecklist_Cerulean
+	call TrioChecklist_Vermilion
+	call TrioChecklist_Celadon
+	call TrioChecklist_RikoLetter
+	call TrioChecklist_PennyLetter
+	call TrioChecklist_BijuuLetter
+	call TrioChecklist_Picnic
+	call TrioChecklist_EightBadges
+	goto TrioScrapbook_Menu
+
+TrioChecklist_FirstBadge::
+	goto_if_set FLAG_BADGE01_GET, TrioChecklist_FirstBadgeDone
+	msgbox TrioChecklist_FirstBadgeHint, MSGBOX_DEFAULT
+	return
+TrioChecklist_FirstBadgeDone:
+	msgbox TrioChecklist_FirstBadgeSaved, MSGBOX_DEFAULT
+	return
+
+TrioChecklist_GoldenrodBadge::
+	goto_if_set FLAG_BADGE03_GET, TrioChecklist_GoldenrodBadgeDone
+	msgbox TrioChecklist_GoldenrodBadgeHint, MSGBOX_DEFAULT
+	return
+TrioChecklist_GoldenrodBadgeDone:
+	msgbox TrioChecklist_GoldenrodBadgeSaved, MSGBOX_DEFAULT
+	return
+
+TrioChecklist_Champion::
+	goto_if_set FLAG_IS_CHAMPION, TrioChecklist_ChampionDone
+	msgbox TrioChecklist_ChampionHint, MSGBOX_DEFAULT
+	return
+TrioChecklist_ChampionDone:
+	msgbox TrioChecklist_ChampionSaved, MSGBOX_DEFAULT
+	return
+
+TrioChecklist_Azalea::
+	goto_if_set FLAG_TRIO_SISTERS_AZALEA, TrioChecklist_AzaleaDone
+	msgbox TrioChecklist_AzaleaHint, MSGBOX_DEFAULT
+	return
+TrioChecklist_AzaleaDone:
+	msgbox TrioChecklist_AzaleaSaved, MSGBOX_DEFAULT
+	return
+
+TrioChecklist_Goldenrod::
+	goto_if_set FLAG_TRIO_SISTERS_GOLDENROD, TrioChecklist_GoldenrodDone
+	msgbox TrioChecklist_GoldenrodHint, MSGBOX_DEFAULT
+	return
+TrioChecklist_GoldenrodDone:
+	msgbox TrioChecklist_GoldenrodSaved, MSGBOX_DEFAULT
+	return
+
+TrioChecklist_Olivine::
+	goto_if_set FLAG_TRIO_SISTERS_OLIVINE, TrioChecklist_OlivineDone
+	msgbox TrioChecklist_OlivineHint, MSGBOX_DEFAULT
+	return
+TrioChecklist_OlivineDone:
+	msgbox TrioChecklist_OlivineSaved, MSGBOX_DEFAULT
+	return
+
+TrioChecklist_Pom::
+	goto_if_set FLAG_TRIO_POM_PARTY_SEEN, TrioChecklist_PomDone
+	msgbox TrioChecklist_PomHint, MSGBOX_DEFAULT
+	return
+TrioChecklist_PomDone:
+	msgbox TrioChecklist_PomSaved, MSGBOX_DEFAULT
+	return
+
+TrioChecklist_Cerulean::
+	goto_if_set FLAG_TRIO_SISTERS_CERULEAN, TrioChecklist_CeruleanDone
+	msgbox TrioChecklist_CeruleanHint, MSGBOX_DEFAULT
+	return
+TrioChecklist_CeruleanDone:
+	msgbox TrioChecklist_CeruleanSaved, MSGBOX_DEFAULT
+	return
+
+TrioChecklist_Vermilion::
+	goto_if_set FLAG_TRIO_SISTERS_VERMILION, TrioChecklist_VermilionDone
+	msgbox TrioChecklist_VermilionHint, MSGBOX_DEFAULT
+	return
+TrioChecklist_VermilionDone:
+	msgbox TrioChecklist_VermilionSaved, MSGBOX_DEFAULT
+	return
+
+TrioChecklist_Celadon::
+	goto_if_set FLAG_TRIO_SISTERS_CELADON, TrioChecklist_CeladonDone
+	msgbox TrioChecklist_CeladonHint, MSGBOX_DEFAULT
+	return
+TrioChecklist_CeladonDone:
+	msgbox TrioChecklist_CeladonSaved, MSGBOX_DEFAULT
+	return
+
+TrioChecklist_RikoLetter::
+	goto_if_set FLAG_DEFEATED_SUICUNE, TrioChecklist_RikoLetterDone
+	msgbox TrioChecklist_RikoLetterHint, MSGBOX_DEFAULT
+	return
+TrioChecklist_RikoLetterDone:
+	msgbox TrioChecklist_RikoLetterSaved, MSGBOX_DEFAULT
+	return
+
+TrioChecklist_PennyLetter::
+	goto_if_set FLAG_TRIO_PENNY_SPIRIT_COMPLETE, TrioChecklist_PennyLetterDone
+	goto_if_set FLAG_TRIO_PENNY_HOME_WIN, TrioChecklist_PennyLetterDone
+	msgbox TrioChecklist_PennyLetterHint, MSGBOX_DEFAULT
+	return
+TrioChecklist_PennyLetterDone:
+	msgbox TrioChecklist_PennyLetterSaved, MSGBOX_DEFAULT
+	return
+
+TrioChecklist_BijuuLetter::
+	goto_if_set FLAG_TRIO_BIJUU_SPIRIT_COMPLETE, TrioChecklist_BijuuLetterDone
+	goto_if_set FLAG_TRIO_BIJUU_HOME_WIN, TrioChecklist_BijuuLetterDone
+	msgbox TrioChecklist_BijuuLetterHint, MSGBOX_DEFAULT
+	return
+TrioChecklist_BijuuLetterDone:
+	msgbox TrioChecklist_BijuuLetterSaved, MSGBOX_DEFAULT
+	return
+
+TrioChecklist_Picnic::
+	goto_if_set FLAG_TRIO_CHAMPION_PICNIC, TrioChecklist_PicnicDone
+	msgbox TrioChecklist_PicnicHint, MSGBOX_DEFAULT
+	return
+TrioChecklist_PicnicDone:
+	msgbox TrioChecklist_PicnicSaved, MSGBOX_DEFAULT
+	return
+
+TrioChecklist_EightBadges::
+	setvar VAR_0x8004, SPECIES_PENNY_SPIRIT
+	specialvar VAR_RESULT, CheckTrioSpiritMilestone
+	goto_if_eq VAR_RESULT, TRUE, TrioChecklist_EightBadgesDone
+	msgbox TrioChecklist_EightBadgesHint, MSGBOX_DEFAULT
+	return
+TrioChecklist_EightBadgesDone:
+	msgbox TrioChecklist_EightBadgesSaved, MSGBOX_DEFAULT
+	return
+
+TrioKanto_NotYetText:
+	.string "There are little\n"
+	.string "adventures waiting for\p"
+	.string "your girls in Kanto. Come\n"
+	.string "back after the League.$"
+
+TrioKanto_CeruleanOfferText:
+	.string "Your girls had quite a\n"
+	.string "discovery here. Want to\p"
+	.string "share their little moment?$"
+
+TrioKanto_VermilionOfferText:
+	.string "I saw your girls watching\n"
+	.string "the harbor. Want to share\p"
+	.string "their little moment?$"
+
+TrioKanto_CeladonOfferText:
+	.string "Your girls found a quiet\n"
+	.string "spot by the fountain. Want\p"
+	.string "to hear about it?$"
+
+TrioKanto_CeruleanScene:
+	.string "Bijuu finds her reflection\n"
+	.string "in a little puddle. A\p"
+	.string "suspicious cocoa. She taps\n"
+	.string "it. The cocoa taps back.\p"
+	.string "Riko gives a very serious\n"
+	.string "warning bark. Penny puts\p"
+	.string "one paw beside Bijuu's.\n"
+	.string "Two sisters in the water\p"
+	.string "now. Bijuu looks up at\n"
+	.string "Mom. The mystery can wait.\p"
+	.string "She has her real family\n"
+	.string "right here.$"
+
+TrioKanto_VermilionScene:
+	.string "A ship sounds its horn.\n"
+	.string "Riko answers immediately.\p"
+	.string "Someone must welcome it.\n"
+	.string "Bijuu watches a loose\p"
+	.string "ribbon flutter in the\n"
+	.string "harbor breeze. Penny stays\p"
+	.string "close, but this time she\n"
+	.string "looks out at the water\p"
+	.string "before looking back at\n"
+	.string "Mom. Then she leans\p"
+	.string "against her sisters. Brave\n"
+	.string "does not have to mean\p"
+	.string "standing alone.$"
+
+TrioKanto_CeladonScene:
+	.string "The fountain splashes.\n"
+	.string "Bijuu decides every drop\p"
+	.string "is personally interesting.\n"
+	.string "Riko supervises from the\p"
+	.string "sunny spot. A very\n"
+	.string "important job. Penny\p"
+	.string "settles beside Mom. When\n"
+	.string "Bijuu finally returns,\p"
+	.string "Penny shifts just enough\n"
+	.string "to make room. Riko rests\p"
+	.string "her chin on Penny. Three\n"
+	.string "little girls. One quiet\p"
+	.string "afternoon. Nobody needs to\n"
+	.string "win anything to belong\p"
+	.string "here.$"
+
+TrioChampionPicnic_OfferText:
+	.string "Mom: Scott left a picnic\n"
+	.string "ready for our Champion and\p"
+	.string "her girls. Want a quiet\n"
+	.string "celebration together?$"
+
+TrioChampionPicnic_BringGirls:
+	.string "Mom: Scott packed a picnic\n"
+	.string "for all of you. Bring\p"
+	.string "Riko, Penny and Bijuu home\n"
+	.string "when you are ready.$"
+
+TrioChampionPicnic_Scene:
+	.string "You spread a blanket for a\n"
+	.string "little family picnic.\p"
+	.string "Scott packed chicken, cold\n"
+	.string "Wawa, and room for every\p"
+	.string "girl. Penny checks the\n"
+	.string "chicken. Bijuu\p"
+	.string "investigates the bag. Riko\n"
+	.string "announces that the picnic\p"
+	.string "is officially open. For\n"
+	.string "once, there is nowhere you\p"
+	.string "need to hurry. The girls\n"
+	.string "curl beside you. Mom tucks\p"
+	.string "a note into your\n"
+	.string "scrapbook.$"
+
+TrioChampionPicnic_ScottLetter:
+	.string "A note from Scott: You\n"
+	.string "looked cute becoming\p"
+	.string "Champion. You looked cute\n"
+	.string "at the first Gym, too. I\p"
+	.string "loved watching you give\n"
+	.string "our girls a whole world to\p"
+	.string "explore. Riko brought the\n"
+	.string "barks. Bijuu brought the\p"
+	.string "chaos. Penny brought the\n"
+	.string "heart. You made every\p"
+	.string "place feel like home.\n"
+	.string "Whatever adventure comes\p"
+	.string "next, I choose you and our\n"
+	.string "little family. Every time.\p"
+	.string "I love you most. Love,\n"
+	.string "Scott.$"
+
+TrioChampionPicnic_Recorded:
+	.string "Scott's letter is saved in\n"
+	.string "Our journey. The picnic is\p"
+	.string "a memory you can keep.$"
+
+TrioChecklist_Intro:
+	.string "Pages still waiting: These\n"
+	.string "little moments will wait\p"
+	.string "for you. Bring all three\n"
+	.string "girls for sister scenes\p"
+	.string "and the family picnic.$"
+
+TrioChecklist_EightBadgesHint:
+	.string "Eight Johto Badges: Still\n"
+	.string "waiting. Earn every Johto\p"
+	.string "Badge.$"
+
+TrioChecklist_EightBadgesSaved:
+	.string "Eight Johto Badges: Saved\n"
+	.string "in your scrapbook.$"
+
+TrioChecklist_FirstBadgeHint:
+	.string "First Badge: Still\n"
+	.string "waiting. Earn Violet's\p"
+	.string "Badge.$"
+
+TrioChecklist_FirstBadgeSaved:
+	.string "First Badge: Saved in your\n"
+	.string "scrapbook.$"
+
+TrioChecklist_GoldenrodBadgeHint:
+	.string "Goldenrod Badge: Still\n"
+	.string "waiting. Earn Goldenrod's\p"
+	.string "Badge.$"
+
+TrioChecklist_GoldenrodBadgeSaved:
+	.string "Goldenrod Badge: Saved in\n"
+	.string "your scrapbook.$"
+
+TrioChecklist_ChampionHint:
+	.string "Champion: Still waiting.\n"
+	.string "Become League Champion.$"
+
+TrioChecklist_ChampionSaved:
+	.string "Champion: Saved in your\n"
+	.string "scrapbook.$"
+
+TrioChecklist_AzaleaHint:
+	.string "Azalea sisters: Still\n"
+	.string "waiting. After Violet's\p"
+	.string "Badge, bring the girls to\n"
+	.string "Azalea's Poke Center Lass.$"
+
+TrioChecklist_AzaleaSaved:
+	.string "Azalea sisters: Saved in\n"
+	.string "your scrapbook.$"
+
+TrioChecklist_GoldenrodHint:
+	.string "Goldenrod sisters: Still\n"
+	.string "waiting. After Azalea's\p"
+	.string "Badge, bring the girls to\n"
+	.string "Goldenrod's Poke Center\p"
+	.string "Lass.$"
+
+TrioChecklist_GoldenrodSaved:
+	.string "Goldenrod sisters: Saved\n"
+	.string "in your scrapbook.$"
+
+TrioChecklist_OlivineHint:
+	.string "Olivine sisters: Still\n"
+	.string "waiting. After Ecruteak's\p"
+	.string "Badge, bring the girls to\n"
+	.string "Olivine's Poke Center\p"
+	.string "Lass.$"
+
+TrioChecklist_OlivineSaved:
+	.string "Olivine sisters: Saved in\n"
+	.string "your scrapbook.$"
+
+TrioChecklist_PomHint:
+	.string "Pom party: Still waiting.\n"
+	.string "Visit Goldenrod's PP\p"
+	.string "house. Follow the happy\n"
+	.string "barks!$"
+
+TrioChecklist_PomSaved:
+	.string "Pom party: Saved in your\n"
+	.string "scrapbook.$"
+
+TrioChecklist_CeruleanHint:
+	.string "Cerulean sisters: Still\n"
+	.string "waiting. After the League,\p"
+	.string "enter Cerulean with the\n"
+	.string "girls. The Bug Catcher can\p"
+	.string "help.$"
+
+TrioChecklist_CeruleanSaved:
+	.string "Cerulean sisters: Saved in\n"
+	.string "your scrapbook.$"
+
+TrioChecklist_VermilionHint:
+	.string "Vermilion sisters: Still\n"
+	.string "waiting. After the League,\p"
+	.string "enter Vermilion with the\n"
+	.string "girls. Ask the Battle\p"
+	.string "Girl, too.$"
+
+TrioChecklist_VermilionSaved:
+	.string "Vermilion sisters: Saved\n"
+	.string "in your scrapbook.$"
+
+TrioChecklist_CeladonHint:
+	.string "Celadon sisters: Still\n"
+	.string "waiting. After the League,\p"
+	.string "talk to Celadon's Lass\n"
+	.string "with the girls.$"
+
+TrioChecklist_CeladonSaved:
+	.string "Celadon sisters: Saved in\n"
+	.string "your scrapbook.$"
+
+TrioChecklist_RikoLetterHint:
+	.string "Riko's letter: Still\n"
+	.string "waiting. Meet the Spirit\p"
+	.string "of Riko in her cave.$"
+
+TrioChecklist_RikoLetterSaved:
+	.string "Riko's letter: Saved in\n"
+	.string "your scrapbook.$"
+
+TrioChecklist_PennyLetterHint:
+	.string "Penny's letter: Still\n"
+	.string "waiting. After all eight\p"
+	.string "Johto Badges, look north\n"
+	.string "of Blackthorn's Poke\p"
+	.string "Center.$"
+
+TrioChecklist_PennyLetterSaved:
+	.string "Penny's letter: Saved in\n"
+	.string "your scrapbook.$"
+
+TrioChecklist_BijuuLetterHint:
+	.string "Bijuu's letter: Still\n"
+	.string "waiting. After the League,\p"
+	.string "look beside Ecruteak's\n"
+	.string "Burned Tower.$"
+
+TrioChecklist_BijuuLetterSaved:
+	.string "Bijuu's letter: Saved in\n"
+	.string "your scrapbook.$"
+
+TrioChecklist_PicnicHint:
+	.string "Family picnic: Still\n"
+	.string "waiting. After the League,\p"
+	.string "visit Mom at home with all\n"
+	.string "three girls.$"
+
+TrioChecklist_PicnicSaved:
+	.string "Family picnic: Saved in\n"
+	.string "your scrapbook.$"
+

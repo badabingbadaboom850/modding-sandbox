@@ -76,6 +76,7 @@ CeladonCity_EventScript_Lass::
 CeladonCity_Text_Lass_TrioWorld1_After:
 	msgbox CeladonCity_Text_Lass_TrioWorldAfter, MSGBOX_NPC
 CeladonCity_Text_Lass_TrioWorld1_Resume:
+	call TrioKanto_CeladonOffer
 	end
 
 CeladonCity_Text_Fisher:

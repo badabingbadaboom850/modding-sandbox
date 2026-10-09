@@ -1788,7 +1788,11 @@
 #define FLAG_TRIO_POM_PARTY_SEEN                       0x1065
 #define FLAG_TRIO_PENNY_HOME_WIN                       0x1066
 #define FLAG_TRIO_BIJUU_HOME_WIN                       0x1067
-#define CUSTOM_FLAGS_END                            FLAG_TRIO_BIJUU_HOME_WIN
+#define FLAG_TRIO_SISTERS_CERULEAN                     0x1068
+#define FLAG_TRIO_SISTERS_VERMILION                    0x1069
+#define FLAG_TRIO_SISTERS_CELADON                      0x106A
+#define FLAG_TRIO_CHAMPION_PICNIC                      0x106B
+#define CUSTOM_FLAGS_END                            FLAG_TRIO_CHAMPION_PICNIC
 
 
 #define FLAG_0x1500                                 0x1500

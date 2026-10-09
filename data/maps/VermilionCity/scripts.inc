@@ -3,6 +3,7 @@
 .set LOCALID_VERMILION_SNORLAX, 1
 
 VermilionCity_MapScripts::
+	map_script MAP_SCRIPT_ON_FRAME_TABLE, TrioKanto_VermilionOnFrame
 	map_script MAP_SCRIPT_ON_TRANSITION, VermilionCity_MapScript_OnTransition
 	map_script MAP_SCRIPT_ON_RESUME, SetTimeEncounters
 	map_script MAP_SCRIPT_ON_LOAD, VermilionCity_OnLoad
@@ -13,6 +14,7 @@ VermilionCity_OnLoad::
 	end
 
 VermilionCity_MapScript_OnTransition::
+	call TrioKanto_PrepareVermilion
 	setflag FLAG_VISITED_VERMILION_CITY
 	goto_if_eq VAR_SUICUNE_ENCOUNTERS, 3, VermilionCity_EventScript_SetSuicuneScene
 	setflag FLAG_HIDE_VERMILION_EUSINE_SUICUNE
@@ -114,6 +116,7 @@ VermilionCity_EventScript_Teacher::
 VermilionCity_Text_Teacher_TrioWorld1_After:
 	msgbox VermilionCity_Text_Teacher_TrioWorldAfter, MSGBOX_NPC
 VermilionCity_Text_Teacher_TrioWorld1_Resume:
+	call TrioKanto_VermilionOffer
 	end
 
 VermilionCity_EventScript_Oldman::

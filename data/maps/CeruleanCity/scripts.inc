@@ -2,11 +2,13 @@
 .set LOCALID_CERULEAN_SLOWBRO, 3
 
 CeruleanCity_MapScripts::
+	map_script MAP_SCRIPT_ON_FRAME_TABLE, TrioKanto_CeruleanOnFrame
 	map_script MAP_SCRIPT_ON_TRANSITION, CeruleanCity_EventScript_CityEnter
 	map_script MAP_SCRIPT_ON_LOAD, CeruleanCity_OnLoad
 	.byte 0
 
 CeruleanCity_EventScript_CityEnter::
+	call TrioKanto_PrepareCerulean
 	setflag FLAG_VISITED_CERULEAN_CITY
 	end
 
@@ -30,6 +32,7 @@ CeruleanCity_EventScript_Boy::
 CeruleanCity_Text_SuperNerd_TrioWorld1_After:
 	msgbox CeruleanCity_Text_SuperNerd_TrioWorldAfter, MSGBOX_NPC
 CeruleanCity_Text_SuperNerd_TrioWorld1_Resume:
+	call TrioKanto_CeruleanOffer
 	end
 
 CeruleanCity_EventScript_Guard::
