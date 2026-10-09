@@ -153,7 +153,13 @@ SaffronCity_Text_CooltrainerF:
 	.string "before the rumor reached\p"
 	.string "town. She says their\n"
 	.string "trainer has a very steady\p"
-	.string "presence.$"
+	.string "presence.\p"
+	.string "A researcher says the\n"
+	.string "girls' forms might share\p"
+	.string "one complete elemental\n"
+	.string "gift. Sabrina smiled, then\p"
+	.string "refused to explain the\n"
+	.string "smile.$"
 
 
 SaffronCity_Text_CooltrainerF_TrioWorldAfter:
@@ -165,7 +171,13 @@ SaffronCity_Text_CooltrainerF_TrioWorldAfter:
 	.string "against all three girls.\p"
 	.string "She says their bond\n"
 	.string "changed a future she\p"
-	.string "thought she understood.$"
+	.string "thought she understood.\p"
+	.string "Silph scientists want to\n"
+	.string "test every possible type.\p"
+	.string "Sabrina suggested asking\n"
+	.string "the girls politely. Penny\p"
+	.string "seems to prefer that\n"
+	.string "method.$"
 
 SaffronCity_Text_Fisher:
 	.string "Chew… Chew…\p"

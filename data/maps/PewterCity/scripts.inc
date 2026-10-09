@@ -65,8 +65,7 @@ PewterCity_EventScript_GrampsDone::
 	end
 
 PewterCity_EventScript_Bugcatcher::
-	msgbox PewterCity_Text_BugCatcher, MSGBOX_NPC
-	end
+	goto PewterCity_EventScript_BugCatcher
 
 PewterCity_EventScript_Cooltrainer::
 	msgbox PewterCity_Text_CooltrainerF, MSGBOX_NPC
@@ -89,7 +88,12 @@ PewterCity_Text_BugCatcher:
 	.string "reputation does not change\p"
 	.string "his training. I hope he\n"
 	.string "knows Bijuu can copy his\p"
-	.string "serious face.$"
+	.string "serious face.\p"
+	.string "Museum visitors say the\n"
+	.string "trio can awaken any\p"
+	.string "element. Fossils cannot\n"
+	.string "answer, so Bijuu supplied\p"
+	.string "several opinions for them.$"
 
 
 PewterCity_Text_BugCatcher_TrioWorldAfter:
@@ -100,7 +104,13 @@ PewterCity_Text_BugCatcher_TrioWorldAfter:
 	.string "against the trio! His\p"
 	.string "defense made their trainer\n"
 	.string "think. The museum kids\p"
-	.string "keep reenacting the match.$"
+	.string "keep reenacting the match.\p"
+	.string "Brock's students think the\n"
+	.string "girls' known forms are\p"
+	.string "just the surface. They\n"
+	.string "want to count every type.\p"
+	.string "Bijuu keeps changing their\n"
+	.string "answers.$"
 
 PewterCity_Text_Gramps:
 	.string "Ah, you came all the way out here from\n"

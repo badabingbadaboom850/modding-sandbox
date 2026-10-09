@@ -29,7 +29,12 @@ CinnabarIsland_PokemonCenter1F_Text_CooltrainerF:
 	.string "trio. A trainer brought\p"
 	.string "them across the sea, and\n"
 	.string "the old man has been\p"
-	.string "grinning ever since.$"
+	.string "grinning ever since.\p"
+	.string "A traveler claims the\n"
+	.string "girls hold every element,\p"
+	.string "even unseen ones. Blaine\n"
+	.string "calls it a theory worth\p"
+	.string "losing his eyebrows over.$"
 
 
 CinnabarIsland_PokemonCenter1F_Text_CooltrainerF_TrioWorldAfter:
@@ -41,7 +46,12 @@ CinnabarIsland_PokemonCenter1F_Text_CooltrainerF_TrioWorldAfter:
 	.string "him a new story after\n"
 	.string "losing his old Gym. Their\p"
 	.string "trainer brought quite a\n"
-	.string "spark.$"
+	.string "spark.\p"
+	.string "Blaine thinks their\n"
+	.string "familiar forms are the\p"
+	.string "first sparks of a bigger\n"
+	.string "mystery. I think the girls\p"
+	.string "would enjoy less homework.$"
 
 CinnabarIsland_PokemonCenter1F_Text_Fisher:
 	.string "It's been a year since the volcano\n"

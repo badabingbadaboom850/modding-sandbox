@@ -120,7 +120,13 @@ FuchsiaCity_Text_PokefanM:
 	.string "the trio. She says being\p"
 	.string "famous does not help you\n"
 	.string "spot a ninja. Bijuu may\p"
-	.string "disagree.$"
+	.string "disagree.\p"
+	.string "Ninjas debate whether\n"
+	.string "Bijuu can borrow any type\p"
+	.string "or merely fool our eyes.\n"
+	.string "Either way, she already\p"
+	.string "stole our secret\n"
+	.string "handshake.$"
 
 
 FuchsiaCity_Text_PokefanM_TrioWorldAfter:
@@ -131,7 +137,12 @@ FuchsiaCity_Text_PokefanM_TrioWorldAfter:
 	.string "against the girls! Their\p"
 	.string "trainer had to watch\n"
 	.string "carefully. Riko still\p"
-	.string "cheered at every trick.$"
+	.string "cheered at every trick.\p"
+	.string "Janine's pupils think the\n"
+	.string "trio still hides many\p"
+	.string "elements. I told them to\n"
+	.string "watch Bijuu. They watched\p"
+	.string "three shadows instead.$"
 
 FuchsiaCity_Text_Teacher:
 	.string "The Safari Zone is under new\n"

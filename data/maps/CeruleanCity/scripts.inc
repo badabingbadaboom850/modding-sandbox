@@ -68,7 +68,12 @@ CeruleanCity_Text_SuperNerd:
 	.string "Misty heard that a trainer\n"
 	.string "brought the trio to Kanto.\p"
 	.string "She wants to see whether\n"
-	.string "they can handle her pace.$"
+	.string "they can handle her pace.\p"
+	.string "Swimmers swear Penny can\n"
+	.string "call rain and Riko can\p"
+	.string "turn it to steam. Could\n"
+	.string "every element live in\p"
+	.string "those three little girls?$"
 
 
 CeruleanCity_Text_SuperNerd_TrioWorldAfter:
@@ -79,7 +84,11 @@ CeruleanCity_Text_SuperNerd_TrioWorldAfter:
 	.string "the trio! She says that\p"
 	.string "trainer reads a battle\n"
 	.string "like a swimmer reads a\p"
-	.string "current.$"
+	.string "current.\p"
+	.string "Misty's fans are guessing\n"
+	.string "the girls' next element.\p"
+	.string "My money is on whatever\n"
+	.string "keeps Penny's paws dry.$"
 
 CeruleanCity_EventScript_Slowbro::
 	lock

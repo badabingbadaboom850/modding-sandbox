@@ -333,7 +333,12 @@ MahoganyTown_Text_Lass:
 	.string "a big reputation. I wonder\p"
 	.string "how patient he can stay\n"
 	.string "while Riko asks for\p"
-	.string "attention.$"
+	.string "attention.\p"
+	.string "Someone claims the girls\n"
+	.string "can command every element.\p"
+	.string "Fire, Ice, even Dragon!\n"
+	.string "Pryce says he would like a\p"
+	.string "reliable witness.$"
 
 
 MahoganyTown_Text_Lass_TrioWorldAfter:
@@ -346,7 +351,12 @@ MahoganyTown_Text_Lass_TrioWorldAfter:
 	.string "Pryce held his own against\n"
 	.string "the trio. He says their\p"
 	.string "trainer knew when to wait.\n"
-	.string "Penny probably approved.$"
+	.string "Penny probably approved.\p"
+	.string "Pryce thinks the girls\n"
+	.string "still have surprises. I\p"
+	.string "think Riko will discover a\n"
+	.string "new type if it helps her\p"
+	.string "reach the candy shelf.$"
 
 MahoganyTown_Text_Sign:
     .string "Mahogany Town\p"

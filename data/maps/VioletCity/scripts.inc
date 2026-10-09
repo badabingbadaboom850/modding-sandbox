@@ -525,7 +525,12 @@ VioletCity_Text_Lass:
 	.string "party. I wonder what he\n"
 	.string "will make of three girls\p"
 	.string "who know each other so\n"
-	.string "well.$"
+	.string "well.\p"
+	.string "Academy kids say Riko,\n"
+	.string "Penny and Bijuu can borrow\p"
+	.string "every Pokemon type. I'd\n"
+	.string "settle for learning how\p"
+	.string "Riko borrows snacks.$"
 
 
 VioletCity_Text_Lass_TrioWorldAfter:
@@ -539,7 +544,12 @@ VioletCity_Text_Lass_TrioWorldAfter:
 	.string "against the trio! The\p"
 	.string "Academy is arguing about\n"
 	.string "their teamwork. I think\p"
-	.string "Penny kept everyone calm.$"
+	.string "Penny kept everyone calm.\p"
+	.string "Falkner's students are\n"
+	.string "charting all the elements\p"
+	.string "the girls might use. It\n"
+	.string "already needs a bigger\p"
+	.string "blackboard.$"
 
 VioletCity_Text_Boy:
 	.string "Hey, are you a trainer?\p"

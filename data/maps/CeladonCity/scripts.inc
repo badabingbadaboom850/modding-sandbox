@@ -135,7 +135,12 @@ CeladonCity_Text_Lass:
 	.string "trio. She says even a very\p"
 	.string "famous girl can enjoy a\n"
 	.string "garden without doing\p"
-	.string "anything impressive.$"
+	.string "anything impressive.\p"
+	.string "Gardeners think Penny's\n"
+	.string "green fur is just one\p"
+	.string "season of her power. Could\n"
+	.string "all three girls bloom into\p"
+	.string "every element?$"
 
 
 CeladonCity_Text_Lass_TrioWorldAfter:
@@ -145,7 +150,12 @@ CeladonCity_Text_Lass_TrioWorldAfter:
 	.string "the trio! She called their\p"
 	.string "trainer thoughtful. Around\n"
 	.string "here, that is very high\p"
-	.string "praise.$"
+	.string "praise.\p"
+	.string "Erika thinks unseen forms\n"
+	.string "appear when the girls feel\p"
+	.string "safe. Riko thinks they\n"
+	.string "appear when dinner\p"
+	.string "arrives.$"
 
 CeladonCity_EventScript_CitySign::
 	msgbox CeladonCity_Text_Sign, MSGBOX_SIGN

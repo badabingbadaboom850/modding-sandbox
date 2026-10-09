@@ -134,7 +134,13 @@ ViridianCity_Text_Youngster:
 	.string "trainer with the trio. He\p"
 	.string "acts casual, but he asked\n"
 	.string "which road they took\p"
-	.string "twice.$"
+	.string "twice.\p"
+	.string "Blue heard the girls might\n"
+	.string "command every type. He\p"
+	.string "says a trainer should\n"
+	.string "prepare for surprises. He\p"
+	.string "bought a very large\n"
+	.string "notebook.$"
 
 
 ViridianCity_Text_Youngster_TrioWorldAfter:
@@ -144,7 +150,12 @@ ViridianCity_Text_Youngster_TrioWorldAfter:
 	.string "the girls. He says he\p"
 	.string "wants another chance. I\n"
 	.string "think he enjoyed that\p"
-	.string "match more than he admits.$"
+	.string "match more than he admits.\p"
+	.string "Blue keeps listing types\n"
+	.string "the girls have not shown\p"
+	.string "him. Bijuu sat on his\n"
+	.string "notebook. Research has\p"
+	.string "been delayed.$"
 
 ViridianCity_Text_Sign:
 	.string "Viridian City\p"

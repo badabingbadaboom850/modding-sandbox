@@ -324,7 +324,13 @@ EcruteakCity_Text_Gramps1:
 	.string "feels older than any tale.\p"
 	.string "I think the important part\n"
 	.string "is who they chose to walk\p"
-	.string "beside.$"
+	.string "beside.\p"
+	.string "Old tales tell of three\n"
+	.string "little guardians wearing\p"
+	.string "every element like a\n"
+	.string "cloak. Could Riko, Penny\p"
+	.string "and Bijuu be their\n"
+	.string "descendants?$"
 
 
 EcruteakCity_Text_Gramps1_TrioWorldAfter:
@@ -334,7 +340,12 @@ EcruteakCity_Text_Gramps1_TrioWorldAfter:
 	.string "the girls. He says their\p"
 	.string "trainer gave them\n"
 	.string "direction without dimming\p"
-	.string "their spirit.$"
+	.string "their spirit.\p"
+	.string "Morty wonders if their\n"
+	.string "forms are glimpses of\p"
+	.string "something older. I wonder\n"
+	.string "if those ancient guardians\p"
+	.string "also loved chicken.$"
 
 EcruteakCity_Text_Gramps2:
 	.string "Ah, child. Have you learned to\n"

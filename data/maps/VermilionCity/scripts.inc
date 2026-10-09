@@ -287,7 +287,12 @@ VermilionCity_Text_Teacher:
 	.string "do not scare him. I\p"
 	.string "believe him. Riko\n"
 	.string "demanding breakfast might,\p"
-	.string "though.$"
+	.string "though.\p"
+	.string "A sailor heard the trio\n"
+	.string "can channel every type.\p"
+	.string "Surge heard 'Electric' and\n"
+	.string "wanted proof. Bijuu just\p"
+	.string "copied his salute.$"
 
 
 VermilionCity_Text_Teacher_TrioWorldAfter:
@@ -299,7 +304,12 @@ VermilionCity_Text_Teacher_TrioWorldAfter:
 	.string "the trio! The whole port\p"
 	.string "heard about it. Their\n"
 	.string "trainer earned his\p"
-	.string "respect, loud and clear.$"
+	.string "respect, loud and clear.\p"
+	.string "Surge says power needs\n"
+	.string "control. The port says the\p"
+	.string "girls have a whole storm\n"
+	.string "of elements waiting\p"
+	.string "inside.$"
 
 VermilionCity_Text_MachopOwner:
 	.string "My Pokémon is preparing the land\n"

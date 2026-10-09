@@ -236,7 +236,13 @@ BlackthornCooltrainerF1Text:
 	.string "trio herself. She says a\p"
 	.string "famous name will not get\n"
 	.string "past her dragons. Riko\p"
-	.string "seems happy to discuss it.$"
+	.string "seems happy to discuss it.\p"
+	.string "A Dragon tamer insists the\n"
+	.string "girls could wield Dragon\p"
+	.string "power too. I said they\n"
+	.string "were three babies. He said\p"
+	.string "that was the worrying\n"
+	.string "part.$"
 
 
 BlackthornCooltrainerF1Text_TrioWorldAfter:
@@ -246,7 +252,12 @@ BlackthornCooltrainerF1Text_TrioWorldAfter:
 	.string "all three girls! Dragon\p"
 	.string "trainers respect that\n"
 	.string "match, even if Clair\p"
-	.string "changes the subject.$"
+	.string "changes the subject.\p"
+	.string "The tamers are arguing\n"
+	.string "over how many forms the\p"
+	.string "girls have left to show.\n"
+	.string "Clair says guessing is\p"
+	.string "easier than preparing.$"
 
 BlackthornYoungsterText:
 	.string "Dragon masters come from here.\p"

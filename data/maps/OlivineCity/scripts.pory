@@ -304,7 +304,12 @@ OlivineCity_Text_Sailor1:
 	.string "lighthouse. Riko wanted\n"
 	.string "the view. Penny wanted\p"
 	.string "everybody to watch their\n"
-	.string "step.$"
+	.string "step.\p"
+	.string "Sailors claim Penny guides\n"
+	.string "storms and Bijuu chills\p"
+	.string "waves. Tall tales? Maybe\n"
+	.string "the girls' familiar forms\p"
+	.string "are only the beginning.$"
 
 
 OlivineCity_Text_Sailor1_TrioWorldAfter:
@@ -320,7 +325,12 @@ OlivineCity_Text_Sailor1_TrioWorldAfter:
 	.string "against three legends. The\p"
 	.string "sailors say it was skill\n"
 	.string "against skill, with\p"
-	.string "kindness on both sides.$"
+	.string "kindness on both sides.\p"
+	.string "The harbor argues over the\n"
+	.string "girls' next element. One\p"
+	.string "captain bets on Steel. His\n"
+	.string "crew bets on whatever\p"
+	.string "brings them safely home.$"
 
 OlivineCity_Text_YoungsterPokegear:
 	.string "That thing you have--\n"

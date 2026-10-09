@@ -426,7 +426,12 @@ AzaleaTown_Text_Teacher:
 	.string "Bugsy wants to study the\n"
 	.string "trio. I hope his notebook\p"
 	.string "has a page for Riko\n"
-	.string "demanding attention.$"
+	.string "demanding attention.\p"
+	.string "A woodcutter swears\n"
+	.string "Penny's tail grew leaves.\p"
+	.string "His friend saw Riko\n"
+	.string "breathe fire. Could the\p"
+	.string "girls master every type?$"
 
 
 AzaleaTown_Text_Teacher_TrioWorldAfter:
@@ -437,7 +442,13 @@ AzaleaTown_Text_Teacher_TrioWorldAfter:
 	.string "against all three girls.\p"
 	.string "He says battling them\n"
 	.string "taught him more than\p"
-	.string "watching ever could.$"
+	.string "watching ever could.\p"
+	.string "Bugsy is collecting\n"
+	.string "stories of the girls'\p"
+	.string "unseen elements. Most\n"
+	.string "witnesses remember the\p"
+	.string "snacks better than the\n"
+	.string "battle.$"
 
 AzaleaTown_Text_Youngster:
 	.string "Cut through Azalea to reach\n"

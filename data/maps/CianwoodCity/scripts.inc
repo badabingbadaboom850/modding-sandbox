@@ -160,7 +160,13 @@ CianwoodCity_Text_PokefanM:
 	.string "challenge from the trio.\p"
 	.string "He says legends need\n"
 	.string "exercise too. Riko says\p"
-	.string "lunch counts.$"
+	.string "lunch counts.\p"
+	.string "A sailor says the girls\n"
+	.string "hide every element inside\p"
+	.string "them. Chuck asked if that\n"
+	.string "includes Fighting. Riko\p"
+	.string "asked if it includes\n"
+	.string "lunch.$"
 
 
 CianwoodCity_Text_PokefanM_TrioWorldAfter:
@@ -173,7 +179,13 @@ CianwoodCity_Text_PokefanM_TrioWorldAfter:
 	.string "against the trio! He has\p"
 	.string "been practicing ever\n"
 	.string "since. I have never seen\p"
-	.string "him so excited.$"
+	.string "him so excited.\p"
+	.string "Chuck thinks the girls\n"
+	.string "have more elements left to\p"
+	.string "show. Penny only\n"
+	.string "demonstrates her brave\p"
+	.string "side when her sisters feel\n"
+	.string "safe.$"
 
 CianwoodCity_EventScript_Lass::
 	lock

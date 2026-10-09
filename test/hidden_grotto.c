@@ -1,4 +1,5 @@
 #include "global.h"
+#include <string.h>
 #include "event_data.h"
 #include "hidden_grotto.h"
 #include "pokemon.h"
@@ -183,14 +184,20 @@ TEST("Hidden Grotto Pokemon without a hidden ability keep a valid normal slot")
 TEST("Hidden Grotto rejects stale Pokemon ids without touching the enemy party")
 {
     struct HiddenGrottoContent *content;
+    struct Pokemon enemyPartyBefore[PARTY_SIZE];
 
     SetCurrentMapToRoute32Grotto();
     content = GetRoute32GrottoContent();
     content->type = HIDDEN_GROTTO_POKEMON;
     content->id = NUM_SPECIES;
 
+    // Establish our own sentinel; earlier tests may leave an enemy Pokemon.
+    CreateMon(&gEnemyParty[0], SPECIES_CLEFAIRY, 7, 0, TRUE, 0, OT_ID_PLAYER_ID, 0);
+    memcpy(enemyPartyBefore, gEnemyParty, sizeof(enemyPartyBefore));
+    gSpecialVar_Result = TRUE;
+
     HiddenGrotto_CreateCurrentMon();
 
     EXPECT(!gSpecialVar_Result);
-    EXPECT_EQ(GetMonData(&gEnemyParty[0], MON_DATA_SPECIES), SPECIES_NONE);
+    EXPECT_EQ(memcmp(gEnemyParty, enemyPartyBefore, sizeof(enemyPartyBefore)), 0);
 }

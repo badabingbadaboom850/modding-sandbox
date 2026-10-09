@@ -381,7 +381,12 @@ GoldenrodCity_Text_Gramps:
 	.string "shops. Riko wanted a\n"
 	.string "purse. Bijuu copied the\p"
 	.string "cashier. Penny wanted to\n"
-	.string "go home.$"
+	.string "go home.\p"
+	.string "The radio says the girls\n"
+	.string "could wield every element.\p"
+	.string "Yesterday it called Bijuu\n"
+	.string "a weather station. She\p"
+	.string "refused the interview.$"
 
 
 GoldenrodCity_Text_Gramps_TrioWorldAfter:
@@ -391,7 +396,12 @@ GoldenrodCity_Text_Gramps_TrioWorldAfter:
 	.string "against the trio! The\p"
 	.string "crowd cheered for both\n"
 	.string "sides. Three legends did\p"
-	.string "not make it an easy match.$"
+	.string "not make it an easy match.\p"
+	.string "Listeners guess a new type\n"
+	.string "for the girls every day.\p"
+	.string "Today's theory is Steel\n"
+	.string "Penny. I hope she keeps\p"
+	.string "her soft ears.$"
 
 GoldenrodCity_Text_RocketScout1:
 	.string "So this is the Radio Tower…$"
@@ -415,7 +425,11 @@ GoldenrodCity_Text_Rocket3:
 	.string "trainer? I was told this\p"
 	.string "job involved ordinary\n"
 	.string "Pokemon. Nobody mentioned\p"
-	.string "the loud fluffy one.$"
+	.string "the loud fluffy one.\p"
+	.string "They told me those girls\n"
+	.string "can use every type! How do\p"
+	.string "I write a weakness report?\n"
+	.string "Riko ate the first draft.$"
 
 GoldenrodCity_Text_Rocket4:
 	.string "Our dream will soon come true…\p"
@@ -432,7 +446,12 @@ GoldenrodCity_Text_Rocket6:
 	.string "signal. Now nobody knows\p"
 	.string "who is giving orders. I\n"
 	.string "blame that mysterious\p"
-	.string "trainer.$"
+	.string "trainer.\p"
+	.string "If Bijuu can copy any\n"
+	.string "element too, I am\p"
+	.string "transferring. Somewhere\n"
+	.string "with ordinary cats. And\p"
+	.string "fewer peppers.$"
 
 GoldenrodCity_Text_StationSign:
 	.string "Goldenrod City Station$"
