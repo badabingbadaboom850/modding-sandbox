@@ -57,6 +57,8 @@
 #include "constants/event_objects.h"
 #include "constants/game_stat.h"
 #include "constants/items.h"
+#include "constants/moves.h"
+#include "constants/species.h"
 #include "constants/songs.h"
 #include "constants/trainers.h"
 #include "constants/trainer_hill.h"
@@ -79,6 +81,8 @@ static void DoSafariBattle(MainCallback endCallback);
 static void DoBugContestBattle(void);
 static void DoStandardWildBattle(bool32 isDouble);
 static void CB2_EndWildBattle(void);
+static void CB2_EndTrioSpiritTrial(void);
+static bool8 sTrioTrialHadNoCatching;
 static void CB2_EndScriptedWildBattle(void);
 static void TryUpdateGymLeaderRematchFromWild(void);
 static void TryUpdateGymLeaderRematchFromTrainer(void);
@@ -480,6 +484,82 @@ void BattleSetup_StartScriptedWildBattle(void)
     IncrementGameStat(GAME_STAT_WILD_BATTLES);
     IncrementDailyWildBattles();
     TryUpdateGymLeaderRematchFromWild();
+}
+
+static void HealTrioTrialParty(void)
+{
+    u32 i;
+    for (i = 0; i < PARTY_SIZE; i++)
+    {
+        u32 species = GetMonData(&gPlayerParty[i], MON_DATA_SPECIES_OR_EGG);
+        if (species != SPECIES_NONE && species != SPECIES_EGG)
+            HealPokemon(&gPlayerParty[i]);
+    }
+}
+
+// Optional, repeatable trials: match the strongest non-egg party member.
+// Separate from story Spirit battles so losses always resume this script.
+bool8 PrepareTrioSpiritTrial(void)
+{
+    u32 highestLevel = 0;
+    u32 level;
+    u16 species = gSpecialVar_0x8004;
+    u32 i;
+
+    if (species != SPECIES_PENNY_SPIRIT && species != SPECIES_BIJUU_SPIRIT)
+        return FALSE;
+    for (i = 0; i < PARTY_SIZE; i++)
+    {
+        u32 partySpecies = GetMonData(&gPlayerParty[i], MON_DATA_SPECIES_OR_EGG);
+        if (partySpecies == SPECIES_NONE || partySpecies == SPECIES_EGG)
+            continue;
+        level = GetMonData(&gPlayerParty[i], MON_DATA_LEVEL);
+        if (level > highestLevel)
+            highestLevel = level;
+    }
+    if (highestLevel == 0)
+        return FALSE;
+    level = highestLevel + 2;
+    if (level > MAX_LEVEL)
+        level = MAX_LEVEL;
+    HealTrioTrialParty();
+    if (species == SPECIES_PENNY_SPIRIT)
+    {
+        if (highestLevel < 20)
+            CreateScriptedWildMon2(species, level, ITEM_NONE, 0, MOVE_METAL_CLAW, MOVE_FAIRY_WIND, MOVE_TACKLE, MOVE_CHARM, FALSE);
+        else
+            CreateScriptedWildMon2(species, level, ITEM_NONE, 0, MOVE_IRON_HEAD, MOVE_PLAY_ROUGH, MOVE_BABY_DOLL_EYES, MOVE_PROTECT, FALSE);
+    }
+    else
+    {
+        if (highestLevel < 20)
+            // Fresh starters only know Normal attacks; Ring Target lets them hit her.
+            CreateScriptedWildMon2(species, level, ITEM_RING_TARGET, 0, MOVE_CONFUSION, MOVE_ASTONISH, MOVE_DISABLE, MOVE_QUICK_ATTACK, FALSE);
+        else
+            CreateScriptedWildMon2(species, level, ITEM_NONE, 0, MOVE_SHADOW_BALL, MOVE_PSYBEAM, MOVE_CONFUSE_RAY, MOVE_SWIFT, FALSE);
+    }
+    return TRUE;
+}
+
+void BattleSetup_StartTrioSpiritTrial(void)
+{
+    sTrioTrialHadNoCatching = FlagGet(B_FLAG_NO_CATCHING);
+    FlagSet(B_FLAG_NO_CATCHING);
+    LockPlayerFieldControls();
+    gMain.savedCallback = CB2_EndTrioSpiritTrial;
+    gBattleTypeFlags = 0;
+    CreateBattleStartTask(GetWildBattleTransition(), 0);
+}
+
+static void CB2_EndTrioSpiritTrial(void)
+{
+    CpuFill16(0, (void *)(BG_PLTT), BG_PLTT_SIZE);
+    ResetOamRange(0, 128);
+    if (!sTrioTrialHadNoCatching)
+        FlagClear(B_FLAG_NO_CATCHING);
+    HealTrioTrialParty();
+    // Victory, defeat and escape all return here; no whiteout or money loss.
+    SetMainCallback2(CB2_ReturnToFieldContinueScriptPlayMapMusic);
 }
 
 void BattleSetup_StartScriptedDoubleWildBattle(void)

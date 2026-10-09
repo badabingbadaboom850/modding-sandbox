@@ -1720,7 +1720,9 @@
 #define SPECIES_BIJUU_ICE                              1602
 #define SPECIES_PENNY_WATER                            1603
 #define SPECIES_PENNY_GRASS                            1604
-#define SPECIES_EGG                                     (SPECIES_PENNY_GRASS + 1)
+#define SPECIES_PENNY_SPIRIT                           1605
+#define SPECIES_BIJUU_SPIRIT                           1606
+#define SPECIES_EGG                                     (SPECIES_BIJUU_SPIRIT + 1)
 
 #define NUM_SPECIES SPECIES_EGG
 

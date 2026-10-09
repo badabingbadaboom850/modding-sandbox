@@ -765,6 +765,28 @@ TRIO_ELEMENTAL_GFX := graphics/pokemon/bijuu_ice/front.4bpp.smol \
                      graphics/pokemon/penny_grass/overworld.4bpp \
                      graphics/pokemon/penny_grass/overworld_normal.gbapal \
                      graphics/pokemon/penny_grass/overworld_shiny.gbapal
+
+TRIO_SPIRIT_GFX := graphics/pokemon/penny_spirit/front.4bpp.smol \
+                   graphics/pokemon/penny_spirit/back.4bpp.smol \
+                   graphics/pokemon/penny_spirit/normal.gbapal \
+                   graphics/pokemon/penny_spirit/shiny.gbapal \
+                   graphics/pokemon/penny_spirit/icon.4bpp \
+                   graphics/pokemon/penny_spirit/icon_normal.gbapal \
+                   graphics/pokemon/penny_spirit/icon_shiny.gbapal \
+                   graphics/pokemon/penny_spirit/overworld.4bpp \
+                   graphics/pokemon/penny_spirit/overworld_normal.gbapal \
+                   graphics/pokemon/penny_spirit/overworld_shiny.gbapal \
+                   graphics/pokemon/bijuu_spirit/front.4bpp.smol \
+                   graphics/pokemon/bijuu_spirit/back.4bpp.smol \
+                   graphics/pokemon/bijuu_spirit/normal.gbapal \
+                   graphics/pokemon/bijuu_spirit/shiny.gbapal \
+                   graphics/pokemon/bijuu_spirit/icon.4bpp \
+                   graphics/pokemon/bijuu_spirit/icon_normal.gbapal \
+                   graphics/pokemon/bijuu_spirit/icon_shiny.gbapal \
+                   graphics/pokemon/bijuu_spirit/overworld.4bpp \
+                   graphics/pokemon/bijuu_spirit/overworld_normal.gbapal \
+                   graphics/pokemon/bijuu_spirit/overworld_shiny.gbapal
+TRIO_ELEMENTAL_GFX += $(TRIO_SPIRIT_GFX)
 RIKO_OVERWORLD_GFX += $(filter %/overworld.4bpp %/overworld_normal.gbapal %/overworld_shiny.gbapal,$(TRIO_ELEMENTAL_GFX))
 
 # Overworld followers are animated in 32x32 frames. Reorder the PNG's 4x4-tile

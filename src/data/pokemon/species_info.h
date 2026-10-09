@@ -1104,6 +1104,78 @@ const struct SpeciesInfo gSpeciesInfo[] =
 
 #endif
 
+
+#if P_FAMILY_FIDOUGH
+    [SPECIES_PENNY_SPIRIT] =
+    {
+        .baseHP = 95, .baseAttack = 85, .baseDefense = 105, .baseSpeed = 55,
+        .baseSpAttack = 65, .baseSpDefense = 90,
+        .types = MON_TYPES(TYPE_STEEL, TYPE_FAIRY), .catchRate = 3, .expYield = 240,
+        .evYield_Defense = 2, .evYield_HP = 1, .genderRatio = MON_FEMALE,
+        .eggCycles = 20, .friendship = STANDARD_FRIENDSHIP, .growthRate = GROWTH_MEDIUM_SLOW,
+        .eggGroups = MON_EGG_GROUPS(EGG_GROUP_FIELD, EGG_GROUP_MINERAL),
+        .abilities = { ABILITY_BATTLE_ARMOR, ABILITY_NONE, ABILITY_NONE },
+        .bodyColor = BODY_COLOR_YELLOW, .speciesName = _("PennySoul"), .cryId = CRY_FIDOUGH,
+        .natDexNum = NATIONAL_DEX_FIDOUGH, .categoryName = _("Hot Dog"), .height = 5, .weight = 149,
+        .description = COMPOUND_STRING("Her armor remembers every hug.\nMom made a frightened little dog\nfeel safe enough to be brave."),
+        .pokemonScale = 256, .trainerScale = 256,
+        .frontPic = gMonFrontPic_PennySpirit, .frontPicSize = MON_COORDS_SIZE(64, 64), .frontPicYOffset = 4,
+        .frontAnimFrames = sAnims_SingleFramePlaceHolder, .backPic = gMonBackPic_PennySpirit,
+        .backPicSize = MON_COORDS_SIZE(64, 64), .backPicYOffset = 4,
+        .palette = gMonPalette_PennySpirit, .shinyPalette = gMonShinyPalette_PennySpirit,
+        .iconSprite = gMonIcon_PennySpirit, .iconPalette = gMonIconPalette_PennySpirit,
+        .shinyIconPalette = gMonShinyIconPalette_PennySpirit, .pokemonJumpType = PKMN_JUMP_TYPE_NORMAL,
+        SHADOW(-2, 8, SHADOW_SIZE_S)
+        FOOTPRINT(Fidough)
+        OVERWORLD(
+            sPicTable_PennySpirit,
+            SIZE_32x32,
+            SHADOW_SIZE_M,
+            TRACKS_FOOT,
+            sAnimTable_Following,
+            gOverworldPalette_PennySpirit,
+            gShinyOverworldPalette_PennySpirit
+        )
+        .levelUpLearnset = sPennySpiritLevelUpLearnset,
+        .teachableLearnset = sDachsbunTeachableLearnset,
+        .eggMoveLearnset = sFidoughEggMoveLearnset,
+    },
+#endif
+
+#if P_FAMILY_BIJUU
+    [SPECIES_BIJUU_SPIRIT] =
+    {
+        .baseHP = 80, .baseAttack = 70, .baseDefense = 65, .baseSpeed = 110,
+        .baseSpAttack = 95, .baseSpDefense = 75,
+        .types = MON_TYPES(TYPE_GHOST, TYPE_PSYCHIC), .catchRate = 3, .expYield = 220,
+        .evYield_Speed = 3, .genderRatio = MON_FEMALE,
+        .eggCycles = 20, .friendship = STANDARD_FRIENDSHIP, .growthRate = GROWTH_MEDIUM_SLOW,
+        .eggGroups = MON_EGG_GROUPS(EGG_GROUP_FIELD),
+        .abilities = { ABILITY_LEVITATE, ABILITY_NONE, ABILITY_NONE },
+        .bodyColor = BODY_COLOR_BROWN, .speciesName = _("BijuuSoul"), .cryId = CRY_MEOWTH,
+        .natDexNum = NATIONAL_DEX_BIJUU, .categoryName = _("Copy Cat"), .height = 7, .weight = 120,
+        .description = COMPOUND_STRING("Her blue flames guard a soft heart.\nShe learned to shine because Mom\nloved every strange part of her."),
+        .pokemonScale = 256, .trainerScale = 256,
+        .frontPic = gMonFrontPic_BijuuSpirit, .frontPicSize = MON_COORDS_SIZE(64, 64), .frontPicYOffset = 0,
+        .frontAnimFrames = sAnims_SingleFramePlaceHolder, .backPic = gMonBackPic_BijuuSpirit,
+        .backPicSize = MON_COORDS_SIZE(64, 64), .backPicYOffset = 0,
+        .palette = gMonPalette_BijuuSpirit, .shinyPalette = gMonShinyPalette_BijuuSpirit,
+        .iconSprite = gMonIcon_BijuuSpirit, .iconPalette = gMonIconPalette_BijuuSpirit,
+        .shinyIconPalette = gMonShinyIconPalette_BijuuSpirit, .pokemonJumpType = PKMN_JUMP_TYPE_FAST,
+        SHADOW(-2, 8, SHADOW_SIZE_S)
+        OVERWORLD(
+            sPicTable_BijuuSpirit,
+            SIZE_32x32,
+            SHADOW_SIZE_M,
+            TRACKS_FOOT,
+            sAnimTable_Following,
+            gOverworldPalette_BijuuSpirit,
+            gShinyOverworldPalette_BijuuSpirit
+        )
+        .teachingType = ALL_TEACHABLES, .levelUpLearnset = sBijuuSpiritLevelUpLearnset,
+    },
+#endif
+
     /*
     [SPECIES_NONE] =
     {

@@ -377,3 +377,57 @@ static const struct SpriteFrameImage sPicTable_PennyGrass[] = {
 };
 
 #endif
+
+#if P_FAMILY_FIDOUGH
+const u32 gMonFrontPic_PennySpirit[] = INCBIN_U32("graphics/pokemon/penny_spirit/front.4bpp.smol");
+const u32 gMonBackPic_PennySpirit[] = INCBIN_U32("graphics/pokemon/penny_spirit/back.4bpp.smol");
+const u16 gMonPalette_PennySpirit[] = INCBIN_U16("graphics/pokemon/penny_spirit/normal.gbapal");
+const u16 gMonShinyPalette_PennySpirit[] = INCBIN_U16("graphics/pokemon/penny_spirit/shiny.gbapal");
+const u8 gMonIcon_PennySpirit[] = INCBIN_U8("graphics/pokemon/penny_spirit/icon.4bpp");
+const u16 gMonIconPalette_PennySpirit[] = INCBIN_U16("graphics/pokemon/penny_spirit/icon_normal.gbapal");
+const u16 gMonShinyIconPalette_PennySpirit[] = INCBIN_U16("graphics/pokemon/penny_spirit/icon_shiny.gbapal");
+const u32 gObjectEventPic_PennySpirit[] = INCBIN_U32("graphics/pokemon/penny_spirit/overworld.4bpp");
+const u16 gOverworldPalette_PennySpirit[] = INCBIN_U16("graphics/pokemon/penny_spirit/overworld_normal.gbapal");
+const u16 gShinyOverworldPalette_PennySpirit[] = INCBIN_U16("graphics/pokemon/penny_spirit/overworld_shiny.gbapal");
+static const struct SpriteFrameImage sPicTable_PennySpirit[] = {
+    overworld_ascending_frames(gObjectEventPic_PennySpirit, 4, 4),
+};
+static const struct LevelUpMove sPennySpiritLevelUpLearnset[] = {
+    LEVEL_UP_MOVE(1, MOVE_TACKLE),
+    LEVEL_UP_MOVE(1, MOVE_FAIRY_WIND),
+    LEVEL_UP_MOVE(1, MOVE_METAL_CLAW),
+    LEVEL_UP_MOVE(1, MOVE_CHARM),
+    LEVEL_UP_MOVE(20, MOVE_IRON_HEAD),
+    LEVEL_UP_MOVE(20, MOVE_PLAY_ROUGH),
+    LEVEL_UP_MOVE(20, MOVE_BABY_DOLL_EYES),
+    LEVEL_UP_MOVE(20, MOVE_PROTECT),
+    LEVEL_UP_END
+};
+#endif
+
+#if P_FAMILY_BIJUU
+const u32 gMonFrontPic_BijuuSpirit[] = INCBIN_U32("graphics/pokemon/bijuu_spirit/front.4bpp.smol");
+const u32 gMonBackPic_BijuuSpirit[] = INCBIN_U32("graphics/pokemon/bijuu_spirit/back.4bpp.smol");
+const u16 gMonPalette_BijuuSpirit[] = INCBIN_U16("graphics/pokemon/bijuu_spirit/normal.gbapal");
+const u16 gMonShinyPalette_BijuuSpirit[] = INCBIN_U16("graphics/pokemon/bijuu_spirit/shiny.gbapal");
+const u8 gMonIcon_BijuuSpirit[] = INCBIN_U8("graphics/pokemon/bijuu_spirit/icon.4bpp");
+const u16 gMonIconPalette_BijuuSpirit[] = INCBIN_U16("graphics/pokemon/bijuu_spirit/icon_normal.gbapal");
+const u16 gMonShinyIconPalette_BijuuSpirit[] = INCBIN_U16("graphics/pokemon/bijuu_spirit/icon_shiny.gbapal");
+const u32 gObjectEventPic_BijuuSpirit[] = INCBIN_U32("graphics/pokemon/bijuu_spirit/overworld.4bpp");
+const u16 gOverworldPalette_BijuuSpirit[] = INCBIN_U16("graphics/pokemon/bijuu_spirit/overworld_normal.gbapal");
+const u16 gShinyOverworldPalette_BijuuSpirit[] = INCBIN_U16("graphics/pokemon/bijuu_spirit/overworld_shiny.gbapal");
+static const struct SpriteFrameImage sPicTable_BijuuSpirit[] = {
+    overworld_ascending_frames(gObjectEventPic_BijuuSpirit, 4, 4),
+};
+static const struct LevelUpMove sBijuuSpiritLevelUpLearnset[] = {
+    LEVEL_UP_MOVE(1, MOVE_CONFUSION),
+    LEVEL_UP_MOVE(1, MOVE_ASTONISH),
+    LEVEL_UP_MOVE(1, MOVE_DISABLE),
+    LEVEL_UP_MOVE(1, MOVE_QUICK_ATTACK),
+    LEVEL_UP_MOVE(20, MOVE_SHADOW_BALL),
+    LEVEL_UP_MOVE(20, MOVE_PSYBEAM),
+    LEVEL_UP_MOVE(20, MOVE_CONFUSE_RAY),
+    LEVEL_UP_MOVE(20, MOVE_SWIFT),
+    LEVEL_UP_END
+};
+#endif

@@ -192,7 +192,7 @@ TEST("Hidden Grotto rejects stale Pokemon ids without touching the enemy party")
     content->id = NUM_SPECIES;
 
     // Establish our own sentinel; earlier tests may leave an enemy Pokemon.
-    CreateMon(&gEnemyParty[0], SPECIES_CLEFAIRY, 7, 0, TRUE, 0, OT_ID_PLAYER_ID, 0);
+    CreateMon(&gEnemyParty[0], SPECIES_CLEFAIRY, 7, 0, OTID_STRUCT_PLAYER_ID);
     memcpy(enemyPartyBefore, gEnemyParty, sizeof(enemyPartyBefore));
     gSpecialVar_Result = TRUE;
 

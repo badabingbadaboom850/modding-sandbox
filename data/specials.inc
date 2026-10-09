@@ -359,6 +359,8 @@ gSpecials::
 	def_special ShakeCamera
 	def_special StartGroudonKyogreBattle
 	def_special BattleSetup_StartLegendaryBattle
+	def_special PrepareTrioSpiritTrial
+	def_special BattleSetup_StartTrioSpiritTrial
 	def_special BattleSetup_StartLegendaryEncounter
 	def_special BattleSetup_FinishLegendaryEncounter
 	def_special StartRegiBattle

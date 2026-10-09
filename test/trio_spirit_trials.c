@@ -1,0 +1,64 @@
+#include "global.h"
+#include <string.h>
+#include "battle_setup.h"
+#include "event_data.h"
+#include "pokemon.h"
+#include "test/test.h"
+#include "constants/moves.h"
+#include "constants/items.h"
+#include "constants/species.h"
+
+TEST("Home Spirit trial rejects an empty or egg-only party without changing enemies")
+{
+    struct Pokemon before[PARTY_SIZE];
+    u32 isEgg = TRUE;
+    ZeroPlayerPartyMons();
+    CreateMon(&gEnemyParty[0], SPECIES_CLEFAIRY, 7, 0, OTID_STRUCT_PLAYER_ID);
+    memcpy(before, gEnemyParty, sizeof(before));
+    gSpecialVar_0x8004 = SPECIES_PENNY_SPIRIT;
+    EXPECT(!PrepareTrioSpiritTrial());
+    EXPECT_EQ(memcmp(before, gEnemyParty, sizeof(before)), 0);
+    CreateMon(&gPlayerParty[0], SPECIES_RIKO, 100, 0, OTID_STRUCT_PLAYER_ID);
+    SetMonData(&gPlayerParty[0], MON_DATA_IS_EGG, &isEgg);
+    EXPECT(!PrepareTrioSpiritTrial());
+    EXPECT_EQ(memcmp(before, gEnemyParty, sizeof(before)), 0);
+}
+
+TEST("Home Spirit trial scales to the strongest girl and heals even a fainted team")
+{
+    u32 hp = 0;
+    ZeroPlayerPartyMons();
+    CreateMon(&gPlayerParty[0], SPECIES_RIKO, 5, 0, OTID_STRUCT_PLAYER_ID);
+    CreateMon(&gPlayerParty[1], SPECIES_FIDOUGH, 12, 0, OTID_STRUCT_PLAYER_ID);
+    SetMonData(&gPlayerParty[0], MON_DATA_HP, &hp);
+    SetMonData(&gPlayerParty[1], MON_DATA_HP, &hp);
+    gSpecialVar_0x8004 = SPECIES_PENNY_SPIRIT;
+    EXPECT(PrepareTrioSpiritTrial());
+    EXPECT_EQ(GetMonData(&gEnemyParty[0], MON_DATA_SPECIES), SPECIES_PENNY_SPIRIT);
+    EXPECT_EQ(GetMonData(&gEnemyParty[0], MON_DATA_LEVEL), 14);
+    EXPECT_EQ(GetMonData(&gEnemyParty[0], MON_DATA_MOVE1), MOVE_METAL_CLAW);
+    EXPECT_EQ(GetMonData(&gPlayerParty[0], MON_DATA_HP), GetMonData(&gPlayerParty[0], MON_DATA_MAX_HP));
+    EXPECT_EQ(GetMonData(&gPlayerParty[1], MON_DATA_HP), GetMonData(&gPlayerParty[1], MON_DATA_MAX_HP));
+    EXPECT_EQ(GetMonGender(&gEnemyParty[0]), MON_FEMALE);
+    gSpecialVar_0x8004 = SPECIES_BIJUU_SPIRIT;
+    EXPECT(PrepareTrioSpiritTrial());
+    EXPECT_EQ(GetMonData(&gEnemyParty[0], MON_DATA_HELD_ITEM), ITEM_RING_TARGET);
+    EXPECT_EQ(GetMonData(&gEnemyParty[0], MON_DATA_MOVE1), MOVE_CONFUSION);
+}
+
+TEST("Home Spirit trial ignores eggs and caps its stronger move set at level 100")
+{
+    u32 isEgg = TRUE;
+    ZeroPlayerPartyMons();
+    CreateMon(&gPlayerParty[0], SPECIES_RIKO, 20, 0, OTID_STRUCT_PLAYER_ID);
+    CreateMon(&gPlayerParty[1], SPECIES_BIJUU, 100, 0, OTID_STRUCT_PLAYER_ID);
+    SetMonData(&gPlayerParty[1], MON_DATA_IS_EGG, &isEgg);
+    gSpecialVar_0x8004 = SPECIES_BIJUU_SPIRIT;
+    EXPECT(PrepareTrioSpiritTrial());
+    EXPECT_EQ(GetMonData(&gEnemyParty[0], MON_DATA_LEVEL), 22);
+    EXPECT_EQ(GetMonData(&gEnemyParty[0], MON_DATA_MOVE1), MOVE_SHADOW_BALL);
+    EXPECT_EQ(GetMonGender(&gEnemyParty[0]), MON_FEMALE);
+    CreateMon(&gPlayerParty[0], SPECIES_RIKO, 100, 0, OTID_STRUCT_PLAYER_ID);
+    EXPECT(PrepareTrioSpiritTrial());
+    EXPECT_EQ(GetMonData(&gEnemyParty[0], MON_DATA_LEVEL), 100);
+}
