@@ -53,6 +53,8 @@ Goldenrod_DepartmentStore_3F_Pokemart_Vitamins:
 	.2byte ITEM_BLUE_BRUSH
 	.2byte ITEM_BIJUUS_FISH_TOY
 	.2byte ITEM_BIJUUS_CAT_NIP
+	.2byte ITEM_DADS_KEYS
+	.2byte ITEM_PIECE_OF_CHICKEN
 	pokemartlistend
 
 GoldenrodDeptStore_Text_4FCooltrainerM:
