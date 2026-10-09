@@ -102,9 +102,13 @@ TEST("Festival quick-test starts are gated and do not grant late progression")
     EXPECT(FlagGet(FLAG_BADGE04_GET));
 #else
     EXPECT_EQ(gPlayerPartyCount, 2);
+    EXPECT_EQ(GetMonData(&gPlayerParty[0], MON_DATA_SPECIES), SPECIES_RIKO);
+    EXPECT_EQ(GetMonData(&gPlayerParty[1], MON_DATA_SPECIES), SPECIES_FIDOUGH);
     EXPECT_EQ(GetMonData(&gPlayerParty[0], MON_DATA_LEVEL), 5);
     EXPECT_EQ(GetMonData(&gPlayerParty[1], MON_DATA_LEVEL), 5);
     EXPECT(!FlagGet(FLAG_BADGE01_GET));
+    EXPECT(!FlagGet(FLAG_BADGE02_GET));
+    EXPECT(!FlagGet(FLAG_BADGE03_GET));
     EXPECT(!FlagGet(FLAG_BADGE04_GET));
 #endif
     EXPECT(!FlagGet(FLAG_BADGE05_GET));

@@ -69,8 +69,9 @@ class FestivalChecks(unittest.TestCase):
     def test_test_mode_survives_script_preprocessing(self):
         # Match production include context: TRUE exists in C but not script CPP.
         header=(ROOT/'data/event_scripts.s').read_text().split('.include',1)[0]
+        enabled_header=header.replace('#include "config/general.h"','#include "config/general.h"\n#undef TRIO_FESTIVAL_TEST_MODE\n#define TRIO_FESTIVAL_TEST_MODE 1')
         processed=subprocess.run(['cpp','-P','-I',str(ROOT/'include'),'-'],
-                                 input=header+'\n'+SOURCE,text=True,
+                                 input=enabled_header+'\n'+SOURCE,text=True,
                                  capture_output=True,check=True).stdout
         shuttle=processed.split('TrioFestival_TestShuttle::',1)[1].split('TrioFestival_Entrance::',1)[0]
         self.assertIn('TrioFestival_TestOffer',shuttle)

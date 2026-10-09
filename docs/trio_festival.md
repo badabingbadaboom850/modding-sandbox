@@ -2,13 +2,13 @@
 
 Goldenrod's optional family festival opens after the fourth Johto Badge with Riko, Bijuu and Penny in the party; the shared family checks support their approved forms. Mom supplies the location hint. Talk to the new guide at (9,5) in GoldenrodCity_PokemonCenter to enter a separate garden using the National Park scenery. Existing Center services and the original park stay intact. No wild encounter table is registered for the festival.
 
-## Temporary quick test
+## Normal play build
 
-`TRIO_FESTIVAL_TEST_MODE` in include/config/general.h is enabled for the user's requested testing build. Fresh saves start with the first four Johto Badge flags and all three girls at level 30. League flags, gym rewards, story variables, quest completions and later Badges are not granted. These saves are test saves, not a completed midgame story state.
+Festival testing shortcuts are disabled (`TRIO_FESTIVAL_TEST_MODE` is 0). Fresh saves start normally with level-5 Riko and Penny, no free Badges, and Bijuu joining through her Route 31 story encounter. The previously approved Mega Ring/Bondstone startup equipment stays unchanged. New Bark's neighbor no longer offers a shuttle, and the festival host no longer offers debug return/reset tools. Normal host rest, itinerary and return-to-Center services remain.
 
-Finish the opening interactions as usual, then talk to the permanent Fat Man neighbor outside in New Bark. Accept FESTIVAL TEST SHUTTLE to reach Goldenrod's Center at (7,6). Talk to the guide on the right (9,5), accept the invitation and arrive at (14,47) in the garden.
+The festival opens after the fourth Johto Badge with all three girls; Mom gives a location hint and the guide on the right inside Goldenrod's Center provides entry. Existing saves retain their party, progress, certificates and scrapbook memories. A previously created testing save retains its granted Badges and levels; use a fresh save for the normal opening.
 
-The host at (16,47), immediately east of arrival, offers the itinerary, rest and a return to the Center. Select Exit to see the temporary test-tools offer: return to the Center, return to New Bark's southwest Trio Camp house, or reset only festival progress. Reset is confirmed first, removes this festival's ribbons/memory and clears unfinished local games; unrelated Badges, scrapbook pages and quests are preserved. No party/inventory replacement is performed on existing saves. Set the one config switch to 0 when testing finishes to restore normal level-5 Riko/Penny starts, no free Badges and no test-shuttle/tools prompts. The festival remains normally accessible after Badge04.
+The optional developer switch can still be re-enabled for later debugging. Numeric 1 enables the shuttle, level-30 full trio, four Badge flags and host debug tools; numeric 0 restores normal play. The validator explicitly checks both configurations rather than assuming the current build enables testing.
 
 ## Activities and locations
 
