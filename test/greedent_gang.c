@@ -77,7 +77,8 @@ TEST("All six ambushes steal once, retry a loss, and restore exact items in orde
         TrioSnack_ReturnItem();EXPECT(!gSpecialVar_Result);
         // Blackout may never execute a script tail. A later route reload and
         // retry must preserve custody rather than removing another item.
-        TrioGang_PrepareAmbush();EXPECT_EQ(VarGet(VAR_TEMP_B),i==0?0:i+1);
+        TrioGang_PrepareAmbush();EXPECT_EQ(VarGet(VAR_TEMP_B),0);
+        EXPECT_EQ(FlagGet(FLAG_HIDE_TRIO_GANG_HIDEOUT),i==0);
         TrioGang_BeginAmbush();EXPECT(gSpecialVar_Result);EXPECT(!gSpecialVar_0x8005);
         EXPECT_EQ(CountTotalItemQuantityInBag(ITEM_ORAN_BERRY),5);
         gBattleOutcome=B_OUTCOME_WON;
@@ -109,6 +110,31 @@ TEST("Gang full-stack recovery survives departure and only advances after return
     TrioSnack_ReturnItem();EXPECT(gSpecialVar_Result);
     EXPECT_EQ(VarGet(VAR_TRIO_GANG_WINS),2);
     EXPECT_EQ(CountTotalItemQuantityInBag(ITEM_ORAN_BERRY),MAX_BAG_ITEM_CAPACITY);
+}
+
+TEST("Ignoring a pending gang never schedules a battle or another theft on any route")
+{
+    u32 i, j;
+    for (i = 0; i < ARRAY_COUNT(sStops); i++)
+    {
+        ResetGang();
+        VarSet(VAR_TRIO_SNACK_CHASE_STATE, i == 0 ? 0 : 4);
+        VarSet(VAR_TRIO_GANG_WINS, i);
+        EXPECT(AddBagItem(ITEM_ORAN_BERRY, 2));
+        Visit(i);
+        TrioGang_BeginAmbush();
+        EXPECT(gSpecialVar_Result);
+        for (j = 0; j < ARRAY_COUNT(sStops); j++)
+        {
+            Visit(j);
+            EXPECT_EQ(VarGet(VAR_TEMP_B), 0);
+            EXPECT_EQ(VarGet(VAR_TRIO_GANG_PHASE), 1);
+            EXPECT_EQ(VarGet(VAR_TRIO_GANG_ACTIVE_WAVE), i + 1);
+            EXPECT_EQ(VarGet(VAR_TRIO_SNACK_STOLEN_ITEM), ITEM_ORAN_BERRY);
+            EXPECT_EQ(CountTotalItemQuantityInBag(ITEM_ORAN_BERRY), 1);
+            EXPECT_EQ(FlagGet(FLAG_HIDE_TRIO_GANG_HIDEOUT), !(i > 0 && j == i));
+        }
+    }
 }
 
 TEST("Legacy completed, active and return-pending snack saves migrate without extra theft")

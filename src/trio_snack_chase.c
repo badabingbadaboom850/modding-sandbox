@@ -86,13 +86,13 @@ void TrioSnack_UpdateObjects(void)
 }
 
 
-static const struct { u8 group, num; u16 badge; } sGangStops[] = {
-    {MAP_GROUP(MAP_ROUTE37), MAP_NUM(MAP_ROUTE37), FLAG_BADGE03_GET},
-    {MAP_GROUP(MAP_ROUTE38), MAP_NUM(MAP_ROUTE38), FLAG_BADGE04_GET},
-    {MAP_GROUP(MAP_ROUTE42), MAP_NUM(MAP_ROUTE42), FLAG_BADGE06_GET},
-    {MAP_GROUP(MAP_ROUTE44), MAP_NUM(MAP_ROUTE44), FLAG_BADGE07_GET},
-    {MAP_GROUP(MAP_ROUTE26), MAP_NUM(MAP_ROUTE26), FLAG_BADGE08_GET},
-    {MAP_GROUP(MAP_ROUTE6), MAP_NUM(MAP_ROUTE6), FLAG_IS_CHAMPION},
+static const struct { u8 group, num; u16 badge; u8 hideout; } sGangStops[] = {
+    {MAP_GROUP(MAP_ROUTE37), MAP_NUM(MAP_ROUTE37), FLAG_BADGE03_GET, 15},
+    {MAP_GROUP(MAP_ROUTE38), MAP_NUM(MAP_ROUTE38), FLAG_BADGE04_GET, 11},
+    {MAP_GROUP(MAP_ROUTE42), MAP_NUM(MAP_ROUTE42), FLAG_BADGE06_GET, 20},
+    {MAP_GROUP(MAP_ROUTE44), MAP_NUM(MAP_ROUTE44), FLAG_BADGE07_GET, 28},
+    {MAP_GROUP(MAP_ROUTE26), MAP_NUM(MAP_ROUTE26), FLAG_BADGE08_GET, 14},
+    {MAP_GROUP(MAP_ROUTE6), MAP_NUM(MAP_ROUTE6), FLAG_IS_CHAMPION, 11},
 };
 
 static u16 GangWaveForCurrentMap(void)
@@ -117,6 +117,10 @@ void TrioGang_PrepareAmbush(void)
         VarSet(VAR_TRIO_GANG_WINS, wins);
     }
     VarSet(VAR_TEMP_B, 0);
+    FlagSet(FLAG_HIDE_TRIO_GANG_HIDEOUT);
+    if (wave >= 2 && VarGet(VAR_TRIO_GANG_ACTIVE_WAVE) == wave
+     && VarGet(VAR_TRIO_GANG_PHASE) != 0)
+        FlagClear(FLAG_HIDE_TRIO_GANG_HIDEOUT);
     if (!wave || wave != wins + 1)
         return;
     if (VarGet(VAR_TRIO_SNACK_CHASE_STATE) == 3
@@ -124,13 +128,13 @@ void TrioGang_PrepareAmbush(void)
         VarSet(VAR_TEMP_B, 7); // Reclaim pending item without another fight.
     else if (wave == 1)
     {
-        // First encounter keeps the pursuit. Entry steals once; the northern
-        // exit gate makes the battle mandatory before leaving for Ecruteak.
+        // First encounter keeps the optional pursuit. No exit gate.
+        // Persistent state prevents another entry scene after a loss.
         if (VarGet(VAR_TRIO_SNACK_CHASE_STATE) == 0)
             VarSet(VAR_TEMP_B, 8);
     }
-    else
-        VarSet(VAR_TEMP_B, wave);
+    else if (VarGet(VAR_TRIO_GANG_PHASE) == 0)
+        VarSet(VAR_TEMP_B, wave); // New theft only; pending fights are optional.
 }
 
 void TrioGang_BeginAmbush(void)
@@ -175,6 +179,8 @@ void TrioGang_BeginAmbush(void)
         return;
     VarSet(VAR_TRIO_GANG_ACTIVE_WAVE, wave);
     VarSet(VAR_TRIO_GANG_PHASE, 1);
+    gSpecialVar_0x8004 = wave;
+    gSpecialVar_0x8006 = sGangStops[wave - 1].hideout;
     ConvertIntToDecimalStringN(gStringVar2, wave, STR_CONV_MODE_LEFT_ALIGN, 1);
     gSpecialVar_Result = TRUE;
 }

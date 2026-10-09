@@ -70,7 +70,7 @@ class Checks(unittest.TestCase):
             r=Run(state).run('TrioSnack_Start');self.assertEqual(r.vars[STATE],state)
             self.assertNotIn('TrioSnack_StolenText',r.text);self.assertFalse(r.locked)
     def test_battle_loss_decline_and_pending_return(self):
-        r=Run(2,answer=0).run('TrioSnack_Grove');self.assertEqual(r.battles,1);self.assertEqual(r.vars[STATE],4);self.assertFalse(r.locked)
+        r=Run(2,answer=0).run('TrioSnack_Grove');self.assertEqual(r.battles,0);self.assertEqual(r.vars[STATE],2);self.assertFalse(r.locked)
         r=Run(2,won=False).run('TrioSnack_Grove');self.assertEqual(r.battles,1);self.assertEqual(r.vars[STATE],2);self.assertIn('TrioSnack_RetryText',r.text);self.assertFalse(r.locked)
         r=Run(2,full=True).run('TrioSnack_Grove');self.assertEqual(r.battles,1);self.assertEqual(r.vars[STATE],3);self.assertIn('TrioSnack_FullBagText',r.text);self.assertFalse(r.locked)
         r=Run(3).run('TrioSnack_Grove');self.assertEqual(r.battles,0);self.assertEqual(r.vars[STATE],4);self.assertIn('TrioSisters_Recorded',r.text);self.assertFalse(r.locked)
