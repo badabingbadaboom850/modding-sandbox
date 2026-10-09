@@ -26,7 +26,8 @@ TEST("Festival Pokemon have enabled battle and overworld species data")
 TEST("Festival snack boss can create a healthy level 29 Greedent")
 {
     struct Pokemon mon;
-    CreateMon(&mon, SPECIES_GREEDENT, 29, 25, OTID_STRUCT_PLAYER_ID);
+    CreateMon(&mon, SPECIES_GREEDENT, 29, 0, OTID_STRUCT_PLAYER_ID);
+    CalculateMonStats(&mon);
     EXPECT_EQ(GetMonData(&mon, MON_DATA_SPECIES), SPECIES_GREEDENT);
     EXPECT_EQ(GetMonData(&mon, MON_DATA_LEVEL), 29);
     EXPECT(GetMonData(&mon, MON_DATA_MAX_HP) > 29);
