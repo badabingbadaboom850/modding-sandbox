@@ -22,6 +22,7 @@ NewBarkTown_PlayersHouse_1F_SetMomStandingAtTable::
 NewBarkTown_PlayersHouse_1F_EventScript_Mom::
 	lock
 	faceplayer
+	call TrioMemories_Mom
 	goto_if_set FLAG_MOM_VISITED, NewBarkTown_PlayersHouse_1F_EventScript_Mom_Regular
 	goto_if_set FLAG_ADVENTURE_STARTED, NewBarkTown_PlayersHouse_1F_MomEventScript_GoodLuck
 	msgbox NewBarkTown_PlayersHouse_1F_Text_MomHurryUpElmIsWaiting, MSGBOX_DEFAULT
@@ -79,7 +80,6 @@ NewBarkTown_PlayersHouse_1F_EventScript_Mom_Regular::
 NewBarkTown_PlayersHouse_1F_EventScript_Mom_Regular_Heal::
 	call NewBarkTown_PlayersHouse_1F_EventScript_FamilyBanter
 	call PlayersHouse_1F_EventScript_MomHealsParty
-	call TrioMemories_Mom
 	release
 	end
 
