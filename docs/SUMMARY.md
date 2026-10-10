@@ -160,3 +160,5 @@
 - [Riko Puffs: five-level catch-up kibble](riko_puffs.md)
 
 - [Spirit of Riko cavern pilot](riko_spirit_cavern.md)
+
+- [Family signature moves and Scott tutor](trio_signature_moves.md)

@@ -729,3 +729,24 @@ plus7 expected runner self-test failures and zero unexpected failures; cafe
 access/legacy exit/save ABI, Riko gates/scaling, Spirit Megas and species metadata
 are covered. All89 family source groups, docs-summary and diff checks pass.
 Release routing changes have headless coverage; user confirmed the cafe preview.
+
+
+## Family signature move tutor
+
+New Bark Scott tutor at20,14 is explicitly authorized testing placement; relocate
+only after the user chooses the permanent location. See docs/trio_signature_moves.md.
+18 new moves append after historical Z/Max IDs, preserving every old move ID and
+saved layout. MOVES_COUNT_ALL expands, MOVES_COUNT stays fixed (Metronome pool).
+Form metadata enforces exclusive girl eligibility; boss Spirits/Eggs excluded.
+Mega Riko move is now named Pom Supremacy with unchanged ID/effect. Free repeatable
+lessons use standard party tutor and replacement/cancellation, no progress grants.
+Safe With You is a new cure+Sp.Def effect using existing cure/stat-change commands.
+Rendered tutor and save/reload confirmation is pending; compilation alone is insufficient.
+
+Signature validation:50 focused engine checks pass plus7 expected self-test
+failures; no unexpected failures. Save move fields/IDs, every18 effect, exclusive
+form-family eligibility, stat-cap cure/Contrary/Simple, names, drain and prior
+Spirit Mega/cafe/cavern/trainer behavior are covered. Source menu/cancel/text/
+geometry and unchanged save files pass. Standard-move range handling explicitly
+includes appended signatures; relearner runtime capacity192, trainer stack
+bitset uses MOVES_COUNT_ALL. Neither changes save structures.

@@ -8234,6 +8234,7 @@ static void TryTutorSelectedMon(u8 taskId)
         move[1] = 2;
         switch (CanTeachMove(mon, gPartyMenu.data1))
         {
+        case CANNOT_LEARN_MOVE_IS_EGG:
         case CANNOT_LEARN_MOVE:
             DisplayLearnMoveMessageAndClose(taskId, gText_PkmnCantLearnMove);
             return;

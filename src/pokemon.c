@@ -5338,8 +5338,35 @@ bool8 TryDecrementMonLevel(struct Pokemon *mon)
     return TRUE;
 }
 
+static bool32 CanLearnFamilySignature(u16 species, enum Move move)
+{
+    if (species == SPECIES_NONE || species >= NUM_SPECIES || species == SPECIES_EGG)
+        return FALSE;
+    const u16 *forms = gSpeciesInfo[species].formSpeciesIdTable;
+    if (move >= MOVE_BLANKEY_TIME && move <= MOVE_SAFE_WITH_YOU)
+#if P_FAMILY_FIDOUGH
+        return forms == sPennySpiritFormSpeciesIdTable;
+#else
+        return FALSE;
+#endif
+    if (move >= MOVE_COCOA_POUNCE && move <= MOVE_ABSOLUTELY_FERAL)
+#if P_FAMILY_BIJUU
+        return forms == sBijuuFormSpeciesIdTable;
+#else
+        return FALSE;
+#endif
+#if P_FAMILY_RIKO
+    return forms == sRikoFormSpeciesIdTable;
+#else
+    return FALSE;
+#endif
+}
+
 u8 CanLearnTeachableMove(u16 species, enum Move move)
 {
+    if ((move >= MOVE_BLANKEY_TIME && move <= MOVE_DRAMA_QUEEN)
+        || move == MOVE_FLOOF_FURY || move == MOVE_MEGA_RIKO)
+        return CanLearnFamilySignature(species, move);
     const u16 *teachableLearnset = GetSpeciesTeachableLearnset(species);
     if (species == SPECIES_EGG)
         return FALSE;

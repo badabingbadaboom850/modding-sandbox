@@ -2435,3 +2435,5 @@ Common_Text_ReceivedMon:
 	.include "data/maps/TrioGarden/scripts.inc"
 	.include "data/maps/RikoSpiritCavern/scripts.inc"
 	.include "data/maps/TrioGreedentCafe/scripts.inc"
+
+	.include "data/scripts/trio_move_tutor.inc"

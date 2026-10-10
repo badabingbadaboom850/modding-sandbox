@@ -2572,7 +2572,7 @@ void Moves_(u32 sourceLine, u16 moves[MAX_MON_MOVES])
     {
         if (moves[i] == MOVE_NONE)
             break;
-        INVALID_IF(moves[i] >= MOVES_COUNT, "Illegal move: %d", moves[i]);
+        INVALID_IF(!IS_STANDARD_MOVE(moves[i]), "Illegal move: %d", moves[i]);
         SetMonData(DATA.currentMon, MON_DATA_MOVE1 + i, &moves[i]);
         u32 pp = GetMovePP(moves[i]);
         SetMonData(DATA.currentMon, MON_DATA_PP1 + i, &pp);
@@ -2588,7 +2588,7 @@ void MovesWithPP_(u32 sourceLine, struct moveWithPP moveWithPP[MAX_MON_MOVES])
     {
         if (moveWithPP[i].moveId == MOVE_NONE)
             break;
-        INVALID_IF(moveWithPP[i].moveId >= MOVES_COUNT, "Illegal move: %d", &moveWithPP[i].moveId);
+        INVALID_IF(!IS_STANDARD_MOVE(moveWithPP[i].moveId), "Illegal move: %d", &moveWithPP[i].moveId);
         SetMonData(DATA.currentMon, MON_DATA_MOVE1 + i, &moveWithPP[i].moveId);
         SetMonData(DATA.currentMon, MON_DATA_PP1 + i, &moveWithPP[i].pp);
     }
@@ -2910,7 +2910,7 @@ void MoveGetIdAndSlot(enum BattlerId battlerId, struct MoveContext *ctx, u32 *mo
 
     if (ctx->explicitMove)
     {
-        INVALID_IF(ctx->move == MOVE_NONE || ctx->move >= MOVES_COUNT, "Illegal move: %d", ctx->move);
+        INVALID_IF(ctx->move == MOVE_NONE || !IS_STANDARD_MOVE(ctx->move), "Illegal move: %d", ctx->move);
         for (i = 0; i < MAX_MON_MOVES; i++)
         {
             *moveId = GetMonData(mon, MON_DATA_MOVE1 + i);

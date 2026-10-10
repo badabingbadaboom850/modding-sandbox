@@ -2657,7 +2657,7 @@ void BufferStringBattle(enum StringID stringID, enum BattlerId battler)
         }*/
         break;
     case STRINGID_USEDMOVE: // Pokémon used a move msg
-        if (gBattleMsgDataPtr->currentMove >= MOVES_COUNT
+        if (!IS_STANDARD_MOVE(gBattleMsgDataPtr->currentMove)
          && !IsZMove(gBattleMsgDataPtr->currentMove)
          && !IsMaxMove(gBattleMsgDataPtr->currentMove))
             StringCopy(gBattleTextBuff3, gTypesInfo[*(&gBattleStruct->stringMoveType)].generic);
@@ -3149,7 +3149,7 @@ u32 BattleStringExpandPlaceholders(const u8 *src, u8 *dst, u32 dstSize)
                 HANDLE_NICKNAME_STRING_CASE(gBattleScripting.battler)
                 break;
             case B_TXT_CURRENT_MOVE: // current move name
-                if (gBattleMsgDataPtr->currentMove >= MOVES_COUNT
+                if (!IS_STANDARD_MOVE(gBattleMsgDataPtr->currentMove)
                  && !IsZMove(gBattleMsgDataPtr->currentMove)
                  && !IsMaxMove(gBattleMsgDataPtr->currentMove))
                     toCpy = gTypesInfo[gBattleStruct->stringMoveType].generic;
@@ -3157,7 +3157,7 @@ u32 BattleStringExpandPlaceholders(const u8 *src, u8 *dst, u32 dstSize)
                     toCpy = GetMoveName(gBattleMsgDataPtr->currentMove);
                 break;
             case B_TXT_LAST_MOVE: // originally used move name
-                if (gBattleMsgDataPtr->originallyUsedMove >= MOVES_COUNT
+                if (!IS_STANDARD_MOVE(gBattleMsgDataPtr->originallyUsedMove)
                  && !IsZMove(gBattleMsgDataPtr->currentMove)
                  && !IsMaxMove(gBattleMsgDataPtr->currentMove))
                     toCpy = gTypesInfo[gBattleStruct->stringMoveType].generic;
