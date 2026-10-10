@@ -48,6 +48,9 @@ class Run:
    if op=='warp':self.warps.append(tuple(a));continue
    if op=='giveitem':self.gifts+=self.room;self.vars['VAR_RESULT']=int(self.room);continue
    if op=='specialvar':
+
+    if a[1]=='IsRikosAmuletAwake':
+     self.vars[a[0]]=int({'FLAG_TRIO_PENNY_SPIRIT_COMPLETE','FLAG_TRIO_BIJUU_SPIRIT_COMPLETE'} <= self.flags);continue
     assert a[1] in ['PrepareRikoCavernBattle','GetBattleOutcome'];self.vars[a[0]]=int(self.party) if a[1]=='PrepareRikoCavernBattle' else self.outcome;continue
    if op=='special':
     if a[0]=='BattleSetup_StartTrioSpiritTrial':self.battles.append(self.vars['VAR_0x8004'])
@@ -115,4 +118,28 @@ class Checks(unittest.TestCase):
   for path,key in [('data/layouts/layouts.json','layouts'),('data/maps/map_groups.json','gMapGroup_IndoorNewBark')]:
    old=json.loads(subprocess.check_output(['git','show','5eaa4ea0:'+path],cwd=ROOT));new=json.loads((ROOT/path).read_text());self.assertEqual(new[key][:-1],old[key])
   old=json.loads(subprocess.check_output(['git','show','5eaa4ea0:data/maps/NewBarkTown/map.json'],cwd=ROOT));self.assertEqual(json.loads((ROOT/'data/maps/NewBarkTown/map.json').read_text()),old)
+class AmuletTests(unittest.TestCase):
+ def test_gift_full_bag_and_retry(self):
+  r=Run(room=False).run('RikosAmulet_TryGift');self.assertNotIn('FLAG_RIKOS_AMULET_RECEIVED',r.flags);self.assertEqual(r.gifts,0)
+  r.room=True;r.run('RikosAmulet_TryGift');self.assertEqual(r.gifts,1);self.assertIn('FLAG_RIKOS_AMULET_RECEIVED',r.flags)
+  r.run('RikosAmulet_TryGift');self.assertEqual(r.gifts,1)
+ def test_only_both_final_victories_warp_and_keep_progress(self):
+  for mask in range(4):
+   flags=['FLAG_TRIO_PENNY_HOME_WIN','FLAG_TRIO_BIJUU_HOME_WIN']
+   if mask&1:flags+=['FLAG_TRIO_PENNY_SPIRIT_COMPLETE']
+   if mask&2:flags+=['FLAG_TRIO_BIJUU_SPIRIT_COMPLETE']
+   for state in range(5):
+    for answer in [0,1]:
+     r=Run(state,answers=[answer],flags=flags).run('RikosAmulet_Use')
+     self.assertEqual(bool(r.warps),mask==3 and answer==1);self.assertEqual(r.vars[STATE],state);self.assertFalse(r.lock)
+ def test_scott_catchup_before_party_and_after_picnic(self):
+  f=(ROOT/'data/maps/GoldenrodFestival/scripts.inc').read_text()
+  entry=f.split('TrioFestival_Scott::')[1].split('TrioFestival_ScottLost:')[0]
+  self.assertLess(entry.index('FLAG_TRIO_FESTIVAL_PICNIC'),entry.index('call TrioFestival_CheckParty'))
+  self.assertIn('setflag FLAG_TRIO_FESTIVAL_PICNIC\\n\\tcall RikosAmulet_TryGift'.replace('\\n','\n').replace('\\t','\t'),f)
+  for text in re.findall(r'\.string "(.*)"',MEM.split('@ Reusable travel charm.')[1]):
+   self.assertTrue(text.endswith('$'))
+   for page in text[:-1].split(r'\p'):
+    self.assertLessEqual(len(page.split(r'\n')),2)
+    for line in page.split(r'\n'):self.assertLessEqual(len(line),26)
 if __name__=='__main__':unittest.main()

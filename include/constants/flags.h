@@ -1831,7 +1831,8 @@
 #define FLAG_TRIO_RIFT_BRAVERY_RECEIVED               0x108B
 #define FLAG_TRIO_GARDEN_BLOOM_RECEIVED               0x108C
 #define FLAG_RIKO_CAVERN_COMPLETE                   0x108D
-#define CUSTOM_FLAGS_END                            FLAG_RIKO_CAVERN_COMPLETE
+#define FLAG_RIKOS_AMULET_RECEIVED                  0x108E
+#define CUSTOM_FLAGS_END                            FLAG_RIKOS_AMULET_RECEIVED
 
 
 #define FLAG_0x1500                                 0x1500

@@ -1776,6 +1776,20 @@ void ItemUseOutOfBattle_TrioMemory(u8 taskId)
     SetUpItemUseOnFieldCallback(taskId);
 }
 
+void ItemUseOutOfBattle_RikosAmulet(u8 taskId)
+{
+    // Restrict travel to ordinary land outdoors; companions cannot be abandoned.
+    if (!CheckFollowerNPCFlag(FOLLOWER_NPC_FLAG_CAN_LEAVE_ROUTE)
+        || (gMapHeader.mapType != MAP_TYPE_TOWN && gMapHeader.mapType != MAP_TYPE_CITY
+            && gMapHeader.mapType != MAP_TYPE_ROUTE)
+        || TestPlayerAvatarFlags(PLAYER_AVATAR_FLAG_SURFING | PLAYER_AVATAR_FLAG_UNDERWATER))
+    {
+        DisplayDadsAdviceCannotUseItemMessage(taskId, gTasks[taskId].tUsingRegisteredKeyItem);
+        return;
+    }
+    ItemUseOutOfBattle_TrioMemory(taskId);
+}
+
 static void ItemUseOnFieldCB_TownMap(u8 taskId)
 {
     LockPlayerFieldControls();

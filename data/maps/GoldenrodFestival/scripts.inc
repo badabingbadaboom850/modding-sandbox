@@ -360,6 +360,7 @@ TrioFestival_SnackRetry:
 TrioFestival_Scott::
 	lockall
 	faceplayer
+	goto_if_set FLAG_TRIO_FESTIVAL_PICNIC, TrioFestival_PicnicReplay
 	call TrioFestival_CheckParty
 	goto_if_eq VAR_RESULT, FALSE, TrioFestival_MissingGirls
 	goto_if_unset FLAG_TRIO_FESTIVAL_RIKO, TrioFestival_ScottWaiting
@@ -383,10 +384,12 @@ TrioFestival_Picnic:
 	msgbox TrioFestival_PicnicText, MSGBOX_DEFAULT
 	msgbox TrioFestival_LetterText, MSGBOX_DEFAULT
 	setflag FLAG_TRIO_FESTIVAL_PICNIC
+	call RikosAmulet_TryGift
 	msgbox TrioSisters_Recorded, MSGBOX_DEFAULT
 	call TrioRift_TownHint
 	goto TrioFestival_End
 TrioFestival_PicnicReplay:
+	call RikosAmulet_TryGift
 	msgbox TrioFestival_PicnicAgain, MSGBOX_DEFAULT
 	goto TrioFestival_End
 TrioFestival_ScottWaiting:

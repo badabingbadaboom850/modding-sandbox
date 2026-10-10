@@ -605,9 +605,9 @@ bool8 PrepareRikoCavernBattle(void)
     }
     if (!highest)
         return FALSE;
-    chosen = highest < 20 ? earlyMoves[phase] : moves[phase];
+    chosen = RIKO_CAVERN_LEVEL_ONE_TEST || highest < 20 ? earlyMoves[phase] : moves[phase];
     HealTrioTrialParty();
-    CreateScriptedWildMon2(species[phase], min(highest + 10, MAX_LEVEL), ITEM_NONE, 0,
+    CreateScriptedWildMon2(species[phase], RIKO_CAVERN_LEVEL_ONE_TEST ? 1 : min(highest + 10, MAX_LEVEL), ITEM_NONE, 0,
         chosen[0], chosen[1], chosen[2], chosen[3], FALSE);
     return TRUE;
 }

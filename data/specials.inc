@@ -661,3 +661,4 @@ gSpecials::
 	def_special TrioGang_BeginAmbush
 	def_special TrioGang_RecordVictory
 	def_special PrepareRikoCavernBattle
+	def_special IsRikosAmuletAwake

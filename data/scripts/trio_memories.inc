@@ -76,6 +76,7 @@ TrioKeepsakes_BagFull:
 @ Same script for Bag and registered-key-item use. Nothing is consumed.
 EventScript_TrioMemoryItem::
 	lockall
+	goto_if_eq VAR_0x8004, ITEM_RIKOS_AMULET, RikosAmulet_Use
 	goto_if_eq VAR_0x8004, ITEM_RIKOS_SPARK, TrioMemory_ReadRiko
 	goto_if_eq VAR_0x8004, ITEM_PENNYS_SHIELD, TrioMemory_ReadPenny
 	goto_if_eq VAR_0x8004, ITEM_BIJUUS_LIGHT, TrioMemory_ReadBijuu
@@ -1161,3 +1162,42 @@ RikoCavern_CheckLetter::
 	goto_if_set FLAG_RIKO_CAVERN_COMPLETE, TrioScrapbook_RikoLetter
 	goto_if_set FLAG_DEFEATED_SUICUNE, TrioScrapbook_RikoLetter
 	return
+
+@ Reusable travel charm. Only the final story victories awaken it.
+RikosAmulet_Use::
+	specialvar VAR_RESULT, IsRikosAmuletAwake
+	goto_if_eq VAR_RESULT, FALSE, RikosAmulet_Dormant
+	msgbox RikosAmulet_ReadyText, MSGBOX_YESNO
+	goto_if_eq VAR_RESULT, NO, TrioMemory_Close
+	closemessage
+	warp MAP_RIKO_SPIRIT_CAVERN, 16, 26
+	waitstate
+	releaseall
+	end
+RikosAmulet_Dormant:
+	msgbox RikosAmulet_DormantText, MSGBOX_DEFAULT
+	goto TrioMemory_Close
+
+@ Called only by Scott after the festival picnic, before party checks on replay.
+RikosAmulet_TryGift::
+	goto_if_set FLAG_RIKOS_AMULET_RECEIVED, RikosAmulet_Return
+	msgbox RikosAmulet_GiftText, MSGBOX_DEFAULT
+	giveitem ITEM_RIKOS_AMULET, 1
+	goto_if_eq VAR_RESULT, FALSE, RikosAmulet_BagFull
+	setflag FLAG_RIKOS_AMULET_RECEIVED
+	msgbox RikosAmulet_HelpText, MSGBOX_DEFAULT
+RikosAmulet_Return:
+	return
+RikosAmulet_BagFull:
+	msgbox RikosAmulet_BagFullText, MSGBOX_DEFAULT
+	return
+RikosAmulet_GiftText:
+	.string "Scott: One more surprise.\nI had this made for you.\pRiko's little face, and\nthree lights to guide her.\pWherever our girls wander,\nthey'll find you.\pAnd wherever you wander,\nI'll save you a spot.\pPreferably beside me.$"
+RikosAmulet_HelpText:
+	.string "Scott: For now, it sleeps.\pFace Penny's Spirit in\nBlackthorn, and Bijuu's\pSpirit in Ecruteak. Their\nfinal lights will wake it.\pThen use it outside, and\nfollow Riko's voice.\pI'll be right here, cute\ngirl. Bring Riko home.$"
+RikosAmulet_BagFullText:
+	.string "Scott: Your Bag is full.\nI'll keep it safe.\pMake a little room and\ncome back to me.$"
+RikosAmulet_DormantText:
+	.string "The amulet rests quietly.\pPenny's final Spirit in\nBlackthorn and Bijuu's\pfinal Spirit in Ecruteak\nmust both be faced.\pRiko's voice is still\nfar away.$"
+RikosAmulet_ReadyText:
+	.string "Three stones catch the\nlight. A familiar bark\pechoes from far away.\pFollow Riko's voice?$"

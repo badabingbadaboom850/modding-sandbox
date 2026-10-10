@@ -1,4 +1,8 @@
 #include "global.h"
+#include "config/battle.h"
+#include "field_specials.h"
+#include "item.h"
+#include "item_use.h"
 #include "battle_setup.h"
 #include "battle.h"
 #include "constants/map_groups.h"
@@ -14,6 +18,7 @@
 TEST("Riko cavern creates four distinct healthy female bosses without changing saved progression")
 {
     static const u16 species[] = {SPECIES_RIKO_ASPECT_MIND, SPECIES_RIKO_ASPECT_BODY, SPECIES_RIKO_ASPECT_SOUL, SPECIES_RIKO_SPIRIT};
+    static const u16 earlyMoves[] = {MOVE_CONFUSION, MOVE_TACKLE, MOVE_FAIRY_WIND, MOVE_EMBER};
     static const u16 moves[] = {MOVE_PSYCHIC, MOVE_BODY_SLAM, MOVE_DRAINING_KISS, MOVE_FLAMETHROWER};
     u32 phase;
     u32 hp = 0;
@@ -29,8 +34,8 @@ TEST("Riko cavern creates four distinct healthy female bosses without changing s
         gSpecialVar_0x8004 = phase;
         EXPECT(PrepareRikoCavernBattle());
         EXPECT_EQ(GetMonData(&gEnemyParty[0], MON_DATA_SPECIES), species[phase]);
-        EXPECT_EQ(GetMonData(&gEnemyParty[0], MON_DATA_LEVEL), 55);
-        EXPECT_EQ(GetMonData(&gEnemyParty[0], MON_DATA_MOVE1), moves[phase]);
+        EXPECT_EQ(GetMonData(&gEnemyParty[0], MON_DATA_LEVEL), RIKO_CAVERN_LEVEL_ONE_TEST ? 1 : 55);
+        EXPECT_EQ(GetMonData(&gEnemyParty[0], MON_DATA_MOVE1), RIKO_CAVERN_LEVEL_ONE_TEST ? earlyMoves[phase] : moves[phase]);
         EXPECT_EQ(GetMonGender(&gEnemyParty[0]), MON_FEMALE);
         EXPECT_EQ(GetMonData(&gEnemyParty[0], MON_DATA_HP), GetMonData(&gEnemyParty[0], MON_DATA_MAX_HP));
         EXPECT_EQ(GetMonData(&gPlayerParty[0], MON_DATA_HP), GetMonData(&gPlayerParty[0], MON_DATA_MAX_HP));
@@ -75,7 +80,7 @@ TEST("Riko cavern ignores high level Eggs caps levels and provides early starter
     {
         gSpecialVar_0x8004 = phase;
         EXPECT(PrepareRikoCavernBattle());
-        EXPECT_EQ(GetMonData(&gEnemyParty[0], MON_DATA_LEVEL), 15);
+        EXPECT_EQ(GetMonData(&gEnemyParty[0], MON_DATA_LEVEL), RIKO_CAVERN_LEVEL_ONE_TEST ? 1 : 15);
         EXPECT_EQ(GetMonData(&gEnemyParty[0], MON_DATA_MOVE1), early[phase]);
     }
     CreateMon(&gPlayerParty[0], SPECIES_RIKO, 96, 0, OTID_STRUCT_PLAYER_ID);
@@ -83,7 +88,7 @@ TEST("Riko cavern ignores high level Eggs caps levels and provides early starter
     {
         gSpecialVar_0x8004 = phase;
         EXPECT(PrepareRikoCavernBattle());
-        EXPECT_EQ(GetMonData(&gEnemyParty[0], MON_DATA_LEVEL), 100);
+        EXPECT_EQ(GetMonData(&gEnemyParty[0], MON_DATA_LEVEL), RIKO_CAVERN_LEVEL_ONE_TEST ? 1 : 100);
     }
 }
 
@@ -131,4 +136,25 @@ TEST("Riko cavern music is scoped to exact map species and wild battle")
     gSaveBlock1Ptr->location.mapGroup = oldGroup;
     gSaveBlock1Ptr->location.mapNum = oldNum;
     gBattleTypeFlags = oldFlags;
+}
+
+TEST("Riko amulet requires both final story spirits regardless of home or Rift wins")
+{
+    u32 mask;
+    FlagSet(FLAG_TRIO_PENNY_HOME_WIN);
+    FlagSet(FLAG_TRIO_BIJUU_HOME_WIN);
+    VarSet(VAR_TRIO_RIFT_RIKO_STATE, 5);
+    for (mask = 0; mask < 4; mask++)
+    {
+        if (mask & 1) FlagSet(FLAG_TRIO_PENNY_SPIRIT_COMPLETE);
+        else FlagClear(FLAG_TRIO_PENNY_SPIRIT_COMPLETE);
+        if (mask & 2) FlagSet(FLAG_TRIO_BIJUU_SPIRIT_COMPLETE);
+        else FlagClear(FLAG_TRIO_BIJUU_SPIRIT_COMPLETE);
+        EXPECT_EQ(IsRikosAmuletAwake(), mask == 3);
+    }
+    EXPECT_EQ((u32)gItemsInfo[ITEM_RIKOS_AMULET].pocket, POCKET_KEY_ITEMS);
+    EXPECT_EQ((u32)gItemsInfo[ITEM_RIKOS_AMULET].importance, 1);
+    EXPECT_EQ(gItemsInfo[ITEM_RIKOS_AMULET].fieldUseFunc, ItemUseOutOfBattle_RikosAmulet);
+    EXPECT(gItemsInfo[ITEM_RIKOS_AMULET].iconPic != NULL);
+    EXPECT(gItemsInfo[ITEM_RIKOS_AMULET].iconPalette != NULL);
 }

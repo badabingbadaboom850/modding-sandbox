@@ -59,6 +59,8 @@ class Run:
                     x,y=self.value(a[0]),self.value(a[1]);jump={'eq':x==y,'ne':x!=y,'ge':x>=y}[suffix]
             else:raise AssertionError(line)
             if jump:
+                # Amulet grant semantics are covered by the actual-script cavern validator.
+                if target=='RikosAmulet_TryGift':continue
                 if target=='TrioSisters_CheckAll':self.vars['VAR_RESULT']=int(self.girls);continue
                 if target=='Common_EventScript_OutOfCenterPartyHeal':self.heals+=1;continue
                 if op.startswith('call'):stack.append(pc)

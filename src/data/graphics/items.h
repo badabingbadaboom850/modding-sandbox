@@ -2215,3 +2215,6 @@ const u16 gItemIconPalette_RikosBloom[] = INCBIN_U16("graphics/items/icon_palett
 
 const u32 gItemIcon_RikoPuffs[] = INCBIN_U32("graphics/items/icons/riko_puffs.4bpp.smol");
 const u16 gItemIconPalette_RikoPuffs[] = INCBIN_U16("graphics/items/icon_palettes/riko_puffs.gbapal");
+
+const u32 gItemIcon_RikosAmulet[] = INCBIN_U32("graphics/items/icons/rikos_amulet.4bpp.smol");
+const u16 gItemIconPalette_RikosAmulet[] = INCBIN_U16("graphics/items/icon_palettes/rikos_amulet.gbapal");

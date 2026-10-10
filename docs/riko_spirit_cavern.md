@@ -85,3 +85,33 @@ loss, exits, saving/reloading after every phase, and restart/full-Bag reclaim.
 Local final verification: production ROM compiled, all five new engine tests
 passed, five new source/geometry groups and26 existing Garden/Rift/Sisters groups
 passed, and docs-summary/diff checks passed. Rendered interaction remains pending.
+
+## Scott's amulet and temporary level-one testing
+
+Scott gives Riko's Amulet (`ITEM_RIKOS_AMULET=954`) immediately after the
+festival picnic. Return visits check the saved picnic flag before party or
+battle checks, so older completed saves and full-Bag retries need neither the
+trio in the party nor another sunset match. Receipt is recorded only after a
+successful grant (`FLAG_RIKOS_AMULET_RECEIVED=0x108E`, audited unused).
+
+The reusable, protected Key Item uses the normal Bag/registered-item field
+callback. Only both actual story completion flags, Penny in Blackthorn and
+Bijuu in Ecruteak, awaken its travel prompt. Home tests, earlier Rift trials,
+keepsake ownership, and historical Riko wins do not substitute for either win.
+Declining or using a dormant amulet changes no progress. Accepting travels to
+cavern (16,26), retaining completed phases. Use it on land outside in a town,
+city or ordinary route; indoor/facility/underwater/surfing use and travel with a
+companion who cannot leave are refused. Existing cave exits return to New Bark.
+The explicitly labeled New Bark mailbox TEST entrance remains an ungated bypass.
+
+`RIKO_CAVERN_LEVEL_ONE_TEST=1` temporarily creates all four cavern opponents at
+level 1 with their early moves. Set it to 0 to restore strongest non-egg +10
+(capped 100) and normal move selection. This affects neither Penny/Bijuu's final
+story battles nor the midgame Rift guardians. Testing victories still save
+cavern progress, memories and pending Spark rewards; the guide can reset the
+four phases without erasing earned rewards.
+
+The approved charcoal-and-gold Pom pendant has three violet/amber/blue gems.
+Its generated standalone art is converted by tools/amulet/import_icon.py into
+one 24x24, sixteen-color Bag icon. The awakened glow is conveyed in dialogue;
+the Bag icon itself stays the same. No save structure or old ID changes.

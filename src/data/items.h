@@ -17716,6 +17716,20 @@ const struct ItemInfo gItemsInfo[] =
         .iconPalette = gItemIconPalette_RikosCourage,
     },
 
+    [ITEM_RIKOS_AMULET] =
+    {
+        .name = ITEM_NAME("Riko's Amulet"),
+        .price = 0,
+        .description = COMPOUND_STRING("Scott's promise.\nTwo sister spirits\nawaken its light.\nUse outside."),
+        .importance = 1,
+        .pocket = POCKET_KEY_ITEMS,
+        .heldSlot = 0,
+        .type = ITEM_USE_FIELD,
+        .fieldUseFunc = ItemUseOutOfBattle_RikosAmulet,
+        .iconPic = gItemIcon_RikosAmulet,
+        .iconPalette = gItemIconPalette_RikosAmulet,
+    },
+
     [ITEM_RIKOS_BLOOM] =
     {
         .name = ITEM_NAME("Riko's Bloom"),

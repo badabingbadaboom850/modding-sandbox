@@ -568,3 +568,33 @@ saved ABI, and5 actual-script/geometry groups plus26 Garden/Rift/Sisters groups
 pass. Inclusive docs-summary and diff checks pass. Existing rendered cave entry,
 camera/fusion/animations/music/save-reload are still unconfirmed; user testing
 must distinguish these from headless battle-preparation tests. CI is separate.
+
+## Riko's Amulet and level-one cavern testing (2026-10-10)
+
+Scott's festival picnic now grants ITEM_RIKOS_AMULET954, protected reusable Key
+Item with custom 24px/16color icon. FLAG_RIKOS_AMULET_RECEIVED108E audited unused
+(all numeric matches were trainer #line); custom flags bound advances only,
+existing saved ABI stays fixed. Giveitem result checked before receipt flag.
+Scott picnic replay precedes party checks: old completed saves/full-Bag retries
+need no party or repeat battle. Earlier festival losses still allow the picnic.
+
+IsRikosAmuletAwake requires BOTH real FLAG_TRIO_PENNY_SPIRIT_COMPLETE and
+FLAG_TRIO_BIJUU_SPIRIT_COMPLETE, never home/Rift/keepsake flags. Bag and registered
+use share the proven TrioMemory callback; script dispatch offers warp16,26 only
+when awake and accepted, preserves phase state. Travel only on outdoor ordinary
+land towns/cities/routes with leave-capable companion; no surfing/underwater.
+Exit is still New Bark. No automatic warp; mailbox TEST bypass stays available.
+
+User-requested temporary RIKO_CAVERN_LEVEL_ONE_TEST=1 creates all four bosses at
+level1/early moves; toggle0 restores strongest+10/cap100. Other Spirit/Rift fights
+unchanged. Tests exercise both modes via config-aware expectations. These are
+real saved cavern wins/rewards; guide restart retains permanent completion.
+No new permanent Riko evolution/capture introduced. See docs/riko_spirit_cavern.md.
+
+Amulet verification: production ROM compiled (ROM32512256/EWRAM255420 bytes).
+Focused headless suite passes51 engine/text checks plus7 expected runner
+self-test failures, zero unexpected failures; all6 cavern/amulet engine checks
+pass. Eight actual-script cavern/amulet groups plus12 festival groups and docs/
+diff checks pass. Compiled amulet icon matches all576 source pixels. Rendered
+Bag/registered use, travel, cave fusion and real save/reload still await user
+confirmation. Temporary level-one wins do record real progress as described.
