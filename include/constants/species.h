@@ -1726,7 +1726,10 @@
 #define SPECIES_BIJUU_EMBER                            1608
 #define SPECIES_PENNY_BRAVE                            1609
 #define SPECIES_RIKO_FLOWER                            1610
-#define SPECIES_EGG                                     (SPECIES_RIKO_FLOWER + 1)
+#define SPECIES_RIKO_ASPECT_MIND                       1611
+#define SPECIES_RIKO_ASPECT_BODY                       1612
+#define SPECIES_RIKO_ASPECT_SOUL                       1613
+#define SPECIES_EGG                                     (SPECIES_RIKO_ASPECT_SOUL + 1)
 
 #define NUM_SPECIES SPECIES_EGG
 

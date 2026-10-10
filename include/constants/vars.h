@@ -329,6 +329,7 @@
 #define VAR_TRIO_RIFT_PENNY_STATE                    0x412C // 0-3 lanterns, 4 won, 5 charm
 #define VAR_TRIO_RIFT_RIKO_STATE                     0x412A // 0-3 echoes, 4 won/gift pending, 5 complete
 
+#define VAR_RIKO_CAVERN_STATE                       0x412E // 0 Mind,1 Body,2 Soul,3 reunion/finale,4 won
 #define VAR_TRIO_GARDEN_STATE                        0x412D // 0 seeds,1/3 growing,2 warm,4 guard,5 bloom pending,6 gift
 
 #define VARS_END                                         0x42FF

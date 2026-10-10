@@ -106,9 +106,9 @@ class Checks(unittest.TestCase):
  def test_appended_map_ids_and_authoring_parity(self):
   for path in ['data/maps/map_groups.json','data/layouts/layouts.json']:
    base=json.loads(subprocess.check_output(['git','show','aa7efd8:'+path],cwd=ROOT));now=json.loads((ROOT/path).read_text())
-   if 'layouts' in base:self.assertEqual(now['layouts'][:-1],base['layouts'])
+   if 'layouts' in base:self.assertEqual(now['layouts'][:len(base['layouts'])],base['layouts'])
    else:
-    for k,v in base.items():self.assertEqual(now[k][:-1] if k=='gMapGroup_IndoorOlivine' else now[k],v)
+    for k,v in base.items():self.assertEqual(now[k][:-1] if k in ('gMapGroup_IndoorOlivine','gMapGroup_IndoorNewBark') else now[k],v)
   self.assertEqual((ROOT/'data/maps/TrioGarden/scripts.pory').read_text().removeprefix('raw `\n').removesuffix('`\n').strip(),S.strip())
   for ext in ['pory','inc']:self.assertIn('call TrioGarden_OnReturn',(ROOT/f'data/maps/OlivineCity/scripts.{ext}').read_text())
  def test_assets_and_no_detached_crop_fragments(self):

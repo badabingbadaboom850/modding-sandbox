@@ -157,3 +157,5 @@
 - [The abandoned seaside garden and Flower Riko](trio_garden.md)
 
 - [Riko Puffs: five-level catch-up kibble](riko_puffs.md)
+
+- [Spirit of Riko cavern pilot](riko_spirit_cavern.md)

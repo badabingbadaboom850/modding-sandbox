@@ -82,7 +82,7 @@ class Sisters(unittest.TestCase):
  def test_map_reachability_and_stable_original_ids(self):
   layouts=json.loads((ROOT/'data/layouts/layouts.json').read_text())['layouts'];groups=json.loads((ROOT/'data/maps/map_groups.json').read_text())
   old=json.loads(subprocess.check_output(['git','show','3dd224e0:data/layouts/layouts.json'],cwd=ROOT,text=True));self.assertEqual(layouts[:len(old['layouts'])],old['layouts'])
-  old=json.loads(subprocess.check_output(['git','show','3dd224e0:data/maps/map_groups.json'],cwd=ROOT,text=True));old['gMapGroup_IndoorGoldenrod']+=['TrioMirrorHouse','TrioLanternTrail'];old['gMapGroup_IndoorOlivine'].append('TrioGarden');self.assertEqual(groups,old)
+  old=json.loads(subprocess.check_output(['git','show','3dd224e0:data/maps/map_groups.json'],cwd=ROOT,text=True));old['gMapGroup_IndoorGoldenrod']+=['TrioMirrorHouse','TrioLanternTrail'];old['gMapGroup_IndoorOlivine'].append('TrioGarden');old['gMapGroup_IndoorNewBark'].append('RikoSpiritCavern');self.assertEqual(groups,old)
   for name,entry,width,stage in [('TrioMirrorHouse',(4,7),13,0),('TrioLanternTrail',(12,27),24,3)]:
    m=json.loads((ROOT/f'data/maps/{name}/map.json').read_text());l=next(v for v in layouts if v['id']==m['layout']);blocks=list(struct.unpack('<%dH'%(l['width']*l['height']),(ROOT/l['blockdata_filepath']).read_bytes()))
    if name=='TrioLanternTrail':blocks=run_at(P,stage).run('TrioLantern_Load').blocks

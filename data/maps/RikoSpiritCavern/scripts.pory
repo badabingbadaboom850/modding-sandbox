@@ -1,0 +1,275 @@
+raw `
+
+
+
+
+@ Independent cave pilot. State never overwrites trial, Badge or Suicune flags.
+RikoSpiritCavern_MapScripts::
+	map_script MAP_SCRIPT_ON_TRANSITION, RikoCavern_Transition
+	.byte 0
+RikoCavern_Transition:
+	call RikoCavern_Rebuild
+	end
+RikoCavern_Rebuild:
+	clearflag FLAG_TEMP_1
+	clearflag FLAG_TEMP_2
+	clearflag FLAG_TEMP_3
+	setflag FLAG_TEMP_4
+	setobjectxyperm 1, 9, 10
+	setobjectxyperm 2, 23, 10
+	setobjectxyperm 3, 16, 6
+	call_if_ge VAR_RIKO_CAVERN_STATE, 1, RikoCavern_SettleMind
+	call_if_ge VAR_RIKO_CAVERN_STATE, 2, RikoCavern_SettleBody
+	call_if_ge VAR_RIKO_CAVERN_STATE, 3, RikoCavern_United
+	return
+RikoCavern_SettleMind:
+	setobjectxyperm 1, 15, 13
+	return
+RikoCavern_SettleBody:
+	setobjectxyperm 2, 17, 13
+	return
+RikoCavern_United:
+	setflag FLAG_TEMP_1
+	setflag FLAG_TEMP_2
+	setflag FLAG_TEMP_3
+	clearflag FLAG_TEMP_4
+	return
+@ Called from the existing New Bark mailbox while its caller holds lockall.
+RikoCavern_TestOffer::
+	msgbox RikoCavern_TestOfferText, MSGBOX_YESNO
+	goto_if_eq VAR_RESULT, NO, RikoCavern_Return
+	closemessage
+	warp MAP_RIKO_SPIRIT_CAVERN, 16, 26
+	waitstate
+RikoCavern_Return:
+	return
+RikoCavern_Mind::
+	lockall
+	faceplayer
+	goto_if_ge VAR_RIKO_CAVERN_STATE, 1, RikoCavern_MindSettled
+	msgbox RikoCavern_MindText, MSGBOX_YESNO
+	goto_if_eq VAR_RESULT, NO, RikoCavern_End
+	setvar VAR_0x8004, 0
+	call RikoCavern_Battle
+	goto_if_ne VAR_RESULT, B_OUTCOME_WON, RikoCavern_Retry
+	setvar VAR_RIKO_CAVERN_STATE, 1
+	msgbox RikoCavern_MindWinText, MSGBOX_DEFAULT
+	closemessage
+	applymovement 1, RikoCavern_Happy
+	waitmovement 0
+	fadescreen FADE_TO_WHITE
+	removeobject 1
+	call RikoCavern_SettleMind
+	clearflag FLAG_TEMP_1
+	addobject 1
+	fadescreen FADE_FROM_WHITE
+	goto RikoCavern_End
+RikoCavern_MindSettled:
+	msgbox RikoCavern_MindSettledText, MSGBOX_DEFAULT
+	goto RikoCavern_End
+RikoCavern_Body::
+	lockall
+	faceplayer
+	goto_if_ge VAR_RIKO_CAVERN_STATE, 2, RikoCavern_BodySettled
+	goto_if_ne VAR_RIKO_CAVERN_STATE, 1, RikoCavern_Order
+	msgbox RikoCavern_BodyText, MSGBOX_YESNO
+	goto_if_eq VAR_RESULT, NO, RikoCavern_End
+	setvar VAR_0x8004, 1
+	call RikoCavern_Battle
+	goto_if_ne VAR_RESULT, B_OUTCOME_WON, RikoCavern_Retry
+	setvar VAR_RIKO_CAVERN_STATE, 2
+	msgbox RikoCavern_BodyWinText, MSGBOX_DEFAULT
+	closemessage
+	applymovement 2, RikoCavern_Happy
+	waitmovement 0
+	fadescreen FADE_TO_WHITE
+	removeobject 2
+	call RikoCavern_SettleBody
+	clearflag FLAG_TEMP_2
+	addobject 2
+	fadescreen FADE_FROM_WHITE
+	goto RikoCavern_End
+RikoCavern_BodySettled:
+	msgbox RikoCavern_BodySettledText, MSGBOX_DEFAULT
+	goto RikoCavern_End
+RikoCavern_Soul::
+	lockall
+	faceplayer
+	goto_if_ge VAR_RIKO_CAVERN_STATE, 3, RikoCavern_End
+	goto_if_ne VAR_RIKO_CAVERN_STATE, 2, RikoCavern_Order
+	msgbox RikoCavern_SoulText, MSGBOX_YESNO
+	goto_if_eq VAR_RESULT, NO, RikoCavern_End
+	setvar VAR_0x8004, 2
+	call RikoCavern_Battle
+	goto_if_ne VAR_RESULT, B_OUTCOME_WON, RikoCavern_Retry
+	setvar VAR_RIKO_CAVERN_STATE, 3
+	msgbox RikoCavern_SoulWinText, MSGBOX_DEFAULT
+	closemessage
+	applymovement 3, RikoCavern_Happy
+	waitmovement 0
+	special SpawnCameraObject
+	applymovement LOCALID_CAMERA, RikoCavern_CameraPan
+	waitmovement 0
+	fadescreen FADE_TO_WHITE
+	removeobject 3
+	setobjectxyperm 3, 16, 12
+	clearflag FLAG_TEMP_3
+	addobject 3
+	fadescreen FADE_FROM_WHITE
+	playmoncry SPECIES_RIKO, CRY_MODE_NORMAL
+	waitmoncry
+	delay 30
+	msgbox RikoCavern_ReunionText, MSGBOX_DEFAULT
+	closemessage
+	fadescreen FADE_TO_WHITE
+	removeobject 1
+	removeobject 2
+	removeobject 3
+	call RikoCavern_United
+	addobject 4
+	fadescreen FADE_FROM_WHITE
+	playmoncry SPECIES_RIKO_SPIRIT, CRY_MODE_ENCOUNTER
+	waitmoncry
+	msgbox RikoCavern_AwakenedText, MSGBOX_DEFAULT
+	special RemoveCameraObject
+	goto RikoCavern_End
+RikoCavern_Spirit::
+	lockall
+	faceplayer
+	goto_if_ge VAR_RIKO_CAVERN_STATE, 4, RikoCavern_Victory
+	goto_if_ne VAR_RIKO_CAVERN_STATE, 3, RikoCavern_Order
+	msgbox RikoCavern_FinalText, MSGBOX_YESNO
+	goto_if_eq VAR_RESULT, NO, RikoCavern_End
+	setvar VAR_0x8004, 3
+	call RikoCavern_Battle
+	goto_if_ne VAR_RESULT, B_OUTCOME_WON, RikoCavern_Retry
+	setvar VAR_RIKO_CAVERN_STATE, 4
+RikoCavern_Victory:
+	setflag FLAG_RIKO_CAVERN_COMPLETE
+	msgbox RikoCavern_VictoryText, MSGBOX_DEFAULT
+	call TrioKeepsakes_TryRiko
+	goto RikoCavern_End
+RikoCavern_Battle:
+	specialvar VAR_RESULT, PrepareRikoCavernBattle
+	goto_if_eq VAR_RESULT, FALSE, RikoCavern_NoParty
+	closemessage
+	special BattleSetup_StartTrioSpiritTrial
+	waitstate
+	specialvar VAR_RESULT, GetBattleOutcome
+	return
+RikoCavern_NoParty:
+	msgbox RikoCavern_NoPartyText, MSGBOX_DEFAULT
+	setvar VAR_RESULT, 0
+	return
+RikoCavern_Retry:
+	msgbox RikoCavern_RetryText, MSGBOX_DEFAULT
+	goto RikoCavern_End
+RikoCavern_Order:
+	msgbox RikoCavern_OrderText, MSGBOX_DEFAULT
+	goto RikoCavern_End
+RikoCavern_Bijuu::
+	lockall
+	faceplayer
+	msgbox RikoCavern_BijuuText, MSGBOX_DEFAULT
+	goto RikoCavern_End
+RikoCavern_Penny::
+	lockall
+	faceplayer
+	msgbox RikoCavern_PennyText, MSGBOX_DEFAULT
+	goto RikoCavern_End
+RikoCavern_Rest::
+	lockall
+	faceplayer
+	special HealPlayerParty
+	msgbox RikoCavern_RestText, MSGBOX_DEFAULT
+	goto RikoCavern_End
+RikoCavern_Guide::
+	lockall
+	faceplayer
+	msgbox RikoCavern_LeaveText, MSGBOX_YESNO
+	goto_if_eq VAR_RESULT, NO, RikoCavern_OfferReset
+	closemessage
+	warp MAP_NEW_BARK_TOWN, 18, 12
+	waitstate
+	goto RikoCavern_End
+RikoCavern_OfferReset:
+	msgbox RikoCavern_ResetText, MSGBOX_YESNO
+	goto_if_eq VAR_RESULT, NO, RikoCavern_End
+	closemessage
+	fadescreen FADE_TO_WHITE
+	removeobject 1
+	removeobject 2
+	removeobject 3
+	removeobject 4
+	setvar VAR_RIKO_CAVERN_STATE, 0
+	call RikoCavern_Rebuild
+	clearflag FLAG_TEMP_1
+	addobject 1
+	clearflag FLAG_TEMP_2
+	addobject 2
+	clearflag FLAG_TEMP_3
+	addobject 3
+	fadescreen FADE_FROM_WHITE
+	msgbox RikoCavern_ResetDoneText, MSGBOX_DEFAULT
+RikoCavern_End:
+	releaseall
+	end
+RikoCavern_CameraPan:
+	walk_down
+	walk_down
+	walk_down
+	walk_down
+	walk_down
+	walk_down
+	step_end
+RikoCavern_Happy:
+	jump_in_place_down
+	step_end
+RikoCavern_ReadMemory::
+	msgbox RikoCavern_VictoryText, MSGBOX_DEFAULT
+	return
+RikoCavern_TestOfferText:
+	.string "A faraway cavern answers\nRiko's little bark. TEST\pentrance: visit the Spirit\nof Riko cavern? No Badges\pare required. You can\nleave any time.$"
+RikoCavern_MindText:
+	.string "A violet aura trembles.\nRiko's Mind tilts her\phead. Every clever little\nplan. Every stolen chicken\pbite. She remembers your\nvoice. Help her find it\pagain? Face Riko's Mind\nfirst? The girls heal each\pround.$"
+RikoCavern_MindWinText:
+	.string "The violet light settles.\nShe knows that laugh! Her\pbright little thoughts\nreturn to the center.$"
+RikoCavern_MindSettledText:
+	.string "Riko's Mind waits here.\nOne familiar little voice.\pHer Body waits to the\neast. Her Soul waits to\pthe north.$"
+RikoCavern_BodyText:
+	.string "An amber aura stands firm.\nRiko's Body guards the\pway. Tiny paws. Huge\nopinions. A bark bigger\pthan she is. She has\nalways tried to keep her\psisters safe. Show her she\ncan rest? Face Riko's\pBody?$"
+RikoCavern_BodyWinText:
+	.string "Her fierce stance softens.\nPenny gives a tiny wag.\pShe need not guard alone.\nHer warmth joins her Mind.$"
+RikoCavern_BodySettledText:
+	.string "Riko's Body rests here.\nHer paws are finally\pstill. Her Soul waits to\nthe north. Bring her home\pgently.$"
+RikoCavern_SoulText:
+	.string "A pale blue aura shimmers.\nRiko's Soul waits quietly.\pNot for a grand champion.\nNot for a louder bark. For\pthe person she loves. For\nher sisters beside her.\pAnswer her gentle call?\nFace Riko's Soul?$"
+RikoCavern_SoulWinText:
+	.string "Bijuu sends a soft purr.\nPenny leans close to you.\pRiko's Soul knows the way.\nShe was never far from\phome.$"
+RikoCavern_ReunionText:
+	.string "Three lights. Three Poms.\nOne familiar little girl.\pHer thoughts remember you.\nHer paws stand beside you.\pHer heart has always\nknown. This family is her\phome.$"
+RikoCavern_AwakenedText:
+	.string "Mind. Body. Soul. The\nSpirit of Riko awakens.\pThree heads lower to you.\nPenny and Bijuu draw\pclose. Rest before the\nlast fight. Speak to her\pwhen ready.$"
+RikoCavern_FinalText:
+	.string "Her three voices answer.\nAll of them sound like\phome. One final challenge.\nLet her see your family's\pstrength together. Ready\nto face the Spirit of\pRiko?$"
+RikoCavern_VictoryText:
+	.string "Three mighty heads bow.\nOne tiny tail starts to\pwag. You reach for her\nsoft ruff. She leans into\pyour hand. Penny presses\nclose. Bijuu curls beside\pher. No matter how far you\ngo, no matter what you\pbecome, you will always be\nour little Riko. The\pcavern remembers. Your\nfamily is whole.$"
+RikoCavern_NoPartyText:
+	.string "Bring a Pokemon to battle.\nYour progress stays safe.$"
+RikoCavern_RetryText:
+	.string "The girls are fully\nhealed. Nothing earned is\plost. That voice still\nwaits. Try again when you\pare ready.$"
+RikoCavern_OrderText:
+	.string "Follow the violet voice\nfirst, then the amber\ppaws. The pale blue heart\nwaits at the north of the\pcavern.$"
+RikoCavern_BijuuText:
+	.string "Bijuu hears every voice.\nShe answers with one purr.\pThree lights or three\nheads, that is still her\psister.$"
+RikoCavern_PennyText:
+	.string "Penny holds close to you.\nThen takes one step\pforward. Riko always\nwaited for her. Now Penny\pwaits for Riko.$"
+RikoCavern_RestText:
+	.string "The girls curl up\ntogether. Your party is\pfully healed. The cavern\ncan wait. There is no need\pto rush.$"
+RikoCavern_LeaveText:
+	.string "Return to New Bark Town?\nEach won phase stays\psaved. The southern steps\nalso lead back to Mom's\phouse.$"
+RikoCavern_ResetText:
+	.string "TEST: restart all four\ncavern fights from Mind?\pOnly this cavern resets.\nEarned keepsakes stay\pyours.$"
+RikoCavern_ResetDoneText:
+	.string "The three voices return.\nRiko's Mind waits again.$"
+`

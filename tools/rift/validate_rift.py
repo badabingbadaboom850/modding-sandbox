@@ -122,7 +122,7 @@ class Checks(unittest.TestCase):
    old=json.loads(subprocess.check_output(['git','show','0a22e000:'+path],cwd=ROOT,text=True))
    if isinstance(current,list):self.assertEqual(current[:len(old['layouts'])],old['layouts'])
    else:
-    expected={k:list(v) if isinstance(v,list) else v for k,v in old.items()};expected['gMapGroup_IndoorGoldenrod'].extend(['TrioEchoWoods','TrioMirrorHouse','TrioLanternTrail']);expected['gMapGroup_IndoorOlivine'].append('TrioGarden');self.assertEqual(current,expected)
+    expected={k:list(v) if isinstance(v,list) else v for k,v in old.items()};expected['gMapGroup_IndoorGoldenrod'].extend(['TrioEchoWoods','TrioMirrorHouse','TrioLanternTrail']);expected['gMapGroup_IndoorOlivine'].append('TrioGarden');expected['gMapGroup_IndoorNewBark'].append('RikoSpiritCavern');self.assertEqual(current,expected)
   self.assertLessEqual(len(MAP['object_events'])+2,16)
   # Actual south-arrow warp behavior is required for automatic step exits.
   for warp in MAP['warp_events']:

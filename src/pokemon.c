@@ -5388,6 +5388,20 @@ bool32 IsSpeciesInHoennDex(u16 species)
 
 u16 GetBattleBGM(void)
 {
+    // The dedicated cave's four voices have their own battle themes.
+    if (!(gBattleTypeFlags & BATTLE_TYPE_TRAINER)
+     && gSaveBlock1Ptr->location.mapGroup == MAP_GROUP(MAP_RIKO_SPIRIT_CAVERN)
+     && gSaveBlock1Ptr->location.mapNum == MAP_NUM(MAP_RIKO_SPIRIT_CAVERN))
+    {
+        switch (GetMonData(&gEnemyParty[0], MON_DATA_SPECIES))
+        {
+        case SPECIES_RIKO_ASPECT_MIND: return MUS_HG_VS_LUGIA;
+        case SPECIES_RIKO_ASPECT_BODY: return MUS_HG_VS_ENTEI;
+        case SPECIES_RIKO_ASPECT_SOUL: return MUS_HG_VS_HO_OH;
+        case SPECIES_RIKO_SPIRIT: return MUS_HG_VS_CHAMPION;
+        }
+    }
+
     // Pyramid and Pike wild encounters are also marked as Frontier battles,
     // but the player's facility BGM choice is only for trainer battles.
     if ((gBattleTypeFlags & BATTLE_TYPE_FRONTIER)

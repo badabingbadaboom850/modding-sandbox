@@ -212,6 +212,99 @@ const struct SpeciesInfo gSpeciesInfo[] =
         .evolutions = EVOLUTION({EVO_ITEM, ITEM_RIKOS_BLOOM, SPECIES_RIKO_FLOWER}, {EVO_ITEM, ITEM_RIKOS_COURAGE, SPECIES_RIKO_ECHO}, {EVO_ITEM, ITEM_RIKOS_WAND, SPECIES_RIKO_WING}, {EVO_ITEM, ITEM_GREEN_PEPPER, SPECIES_RIKO_FIRE}, {EVO_ITEM, ITEM_EEL_SUSHI, SPECIES_RIKO_ELECTRIC}),
         .formSpeciesIdTable = sRikoFormSpeciesIdTable, .formChangeTable = sRikoFormChangeTable,
     },
+    [SPECIES_RIKO_ASPECT_MIND] =
+    {
+        .baseHP = 95, .baseAttack = 65, .baseDefense = 80, .baseSpeed = 115,
+        .baseSpAttack = 120, .baseSpDefense = 100,
+        .types = MON_TYPES(TYPE_PSYCHIC, TYPE_FAIRY), .catchRate = 0, .expYield = 240,
+        .evYield_SpAttack = 2, .evYield_Speed = 1, .genderRatio = MON_FEMALE,
+        .eggCycles = 20, .friendship = STANDARD_FRIENDSHIP, .growthRate = GROWTH_MEDIUM_SLOW,
+        .eggGroups = MON_EGG_GROUPS(EGG_GROUP_NO_EGGS_DISCOVERED),
+        .abilities = { ABILITY_SYNCHRONIZE, ABILITY_NONE, ABILITY_SYNCHRONIZE },
+        .bodyColor = BODY_COLOR_WHITE, .speciesName = _("RikoMind"), .cryId = CRY_SYLVEON,
+        .natDexNum = NATIONAL_DEX_RIKO, .categoryName = _("Fluff Bunny"), .height = 6, .weight = 95,
+        .description = COMPOUND_STRING("An echo of Riko\ncalled home by her family.\nIts aura holds her mind."),
+        .pokemonScale = 256, .trainerScale = 256,
+        .frontPic = gMonFrontPic_Riko, .frontPicSize = MON_COORDS_SIZE(64, 64), .frontPicYOffset = 0,
+        .frontAnimFrames = sAnims_SingleFramePlaceHolder, .backPic = gMonBackPic_Riko,
+        .backPicSize = MON_COORDS_SIZE(64, 64), .backPicYOffset = 0,
+        .palette = gMonPalette_RikoAspectMind, .shinyPalette = gMonPalette_RikoAspectMind,
+        .iconSprite = gMonIcon_Riko, .iconPalette = gMonIconPalette_RikoAspectMind,
+        .shinyIconPalette = gMonIconPalette_RikoAspectMind, .pokemonJumpType = PKMN_JUMP_TYPE_NORMAL,
+        SHADOW(-2, 8, SHADOW_SIZE_S)
+        OVERWORLD(
+            sPicTable_Riko,
+            SIZE_32x32,
+            SHADOW_SIZE_M,
+            TRACKS_FOOT,
+            sAnimTable_Following,
+            gOverworldPalette_RikoAspectMind,
+            gOverworldPalette_RikoAspectMind
+        )
+        .teachingType = ALL_TEACHABLES, .levelUpLearnset = sRikoLevelUpLearnset,
+    },
+    [SPECIES_RIKO_ASPECT_BODY] =
+    {
+        .baseHP = 115, .baseAttack = 115, .baseDefense = 110, .baseSpeed = 80,
+        .baseSpAttack = 65, .baseSpDefense = 85,
+        .types = MON_TYPES(TYPE_NORMAL, TYPE_FAIRY), .catchRate = 0, .expYield = 240,
+        .evYield_SpAttack = 2, .evYield_Speed = 1, .genderRatio = MON_FEMALE,
+        .eggCycles = 20, .friendship = STANDARD_FRIENDSHIP, .growthRate = GROWTH_MEDIUM_SLOW,
+        .eggGroups = MON_EGG_GROUPS(EGG_GROUP_NO_EGGS_DISCOVERED),
+        .abilities = { ABILITY_BATTLE_ARMOR, ABILITY_NONE, ABILITY_BATTLE_ARMOR },
+        .bodyColor = BODY_COLOR_WHITE, .speciesName = _("RikoBody"), .cryId = CRY_SYLVEON,
+        .natDexNum = NATIONAL_DEX_RIKO, .categoryName = _("Fluff Bunny"), .height = 6, .weight = 95,
+        .description = COMPOUND_STRING("An echo of Riko\ncalled home by her family.\nIts aura holds her body."),
+        .pokemonScale = 256, .trainerScale = 256,
+        .frontPic = gMonFrontPic_Riko, .frontPicSize = MON_COORDS_SIZE(64, 64), .frontPicYOffset = 0,
+        .frontAnimFrames = sAnims_SingleFramePlaceHolder, .backPic = gMonBackPic_Riko,
+        .backPicSize = MON_COORDS_SIZE(64, 64), .backPicYOffset = 0,
+        .palette = gMonPalette_RikoAspectBody, .shinyPalette = gMonPalette_RikoAspectBody,
+        .iconSprite = gMonIcon_Riko, .iconPalette = gMonIconPalette_RikoAspectBody,
+        .shinyIconPalette = gMonIconPalette_RikoAspectBody, .pokemonJumpType = PKMN_JUMP_TYPE_NORMAL,
+        SHADOW(-2, 8, SHADOW_SIZE_S)
+        OVERWORLD(
+            sPicTable_Riko,
+            SIZE_32x32,
+            SHADOW_SIZE_M,
+            TRACKS_FOOT,
+            sAnimTable_Following,
+            gOverworldPalette_RikoAspectBody,
+            gOverworldPalette_RikoAspectBody
+        )
+        .teachingType = ALL_TEACHABLES, .levelUpLearnset = sRikoLevelUpLearnset,
+    },
+    [SPECIES_RIKO_ASPECT_SOUL] =
+    {
+        .baseHP = 110, .baseAttack = 65, .baseDefense = 90, .baseSpeed = 95,
+        .baseSpAttack = 110, .baseSpDefense = 120,
+        .types = MON_TYPES(TYPE_NORMAL, TYPE_FAIRY), .catchRate = 0, .expYield = 240,
+        .evYield_SpAttack = 2, .evYield_Speed = 1, .genderRatio = MON_FEMALE,
+        .eggCycles = 20, .friendship = STANDARD_FRIENDSHIP, .growthRate = GROWTH_MEDIUM_SLOW,
+        .eggGroups = MON_EGG_GROUPS(EGG_GROUP_NO_EGGS_DISCOVERED),
+        .abilities = { ABILITY_CUTE_CHARM, ABILITY_NONE, ABILITY_CUTE_CHARM },
+        .bodyColor = BODY_COLOR_WHITE, .speciesName = _("RikoSoul"), .cryId = CRY_SYLVEON,
+        .natDexNum = NATIONAL_DEX_RIKO, .categoryName = _("Fluff Bunny"), .height = 6, .weight = 95,
+        .description = COMPOUND_STRING("An echo of Riko\ncalled home by her family.\nIts aura holds her soul."),
+        .pokemonScale = 256, .trainerScale = 256,
+        .frontPic = gMonFrontPic_Riko, .frontPicSize = MON_COORDS_SIZE(64, 64), .frontPicYOffset = 0,
+        .frontAnimFrames = sAnims_SingleFramePlaceHolder, .backPic = gMonBackPic_Riko,
+        .backPicSize = MON_COORDS_SIZE(64, 64), .backPicYOffset = 0,
+        .palette = gMonPalette_RikoAspectSoul, .shinyPalette = gMonPalette_RikoAspectSoul,
+        .iconSprite = gMonIcon_Riko, .iconPalette = gMonIconPalette_RikoAspectSoul,
+        .shinyIconPalette = gMonIconPalette_RikoAspectSoul, .pokemonJumpType = PKMN_JUMP_TYPE_NORMAL,
+        SHADOW(-2, 8, SHADOW_SIZE_S)
+        OVERWORLD(
+            sPicTable_Riko,
+            SIZE_32x32,
+            SHADOW_SIZE_M,
+            TRACKS_FOOT,
+            sAnimTable_Following,
+            gOverworldPalette_RikoAspectSoul,
+            gOverworldPalette_RikoAspectSoul
+        )
+        .teachingType = ALL_TEACHABLES, .levelUpLearnset = sRikoLevelUpLearnset,
+    },
     [SPECIES_RIKO_FLOWER] =
     {
         .baseHP = 90, .baseAttack = 75, .baseDefense = 85, .baseSpeed = 110,

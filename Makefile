@@ -792,6 +792,8 @@ RIKO_OVERWORLD_GFX += $(filter %/overworld.4bpp %/overworld_normal.gbapal %/over
 # Overworld followers are animated in 32x32 frames. Reorder the PNG's 4x4-tile
 # blocks so each frame is contiguous in the generated 4bpp data.
 
+RIKO_ASPECT_PALETTES := $(foreach aspect,mind body soul,$(foreach pal,normal icon_normal overworld_normal,graphics/pokemon/riko_aspect_$(aspect)/$(pal).gbapal))
+
 RIKO_FLOWER_GFX := graphics/pokemon/riko_flower/front.4bpp.smol \
     graphics/pokemon/riko_flower/back.4bpp.smol \
     graphics/pokemon/riko_flower/normal.gbapal \
@@ -846,7 +848,7 @@ RIKO_MEGA_GFX := graphics/pokemon/riko/mega/front.4bpp.smol \
                  graphics/pokemon/riko/mega/back.4bpp.smol \
                  graphics/pokemon/riko/mega/normal.gbapal \
                  graphics/pokemon/riko/mega/shiny.gbapal
-$(C_BUILDDIR)/pokemon.o: $(C_SUBDIR)/pokemon.c $(DATA_SRC_SUBDIR)/pokemon/teachable_learnsets.h $(LEGACY_LEVEL_UP_HEADER) $(RIKO_VARIANT_GFX) $(RIKO_MEGA_GFX) $(RIKO_OVERWORLD_GFX) $(TRIO_ELEMENTAL_GFX) $(RIKO_ECHO_GFX) $(RIFT_SISTERS_GFX) $(RIKO_FLOWER_GFX)
+$(C_BUILDDIR)/pokemon.o: $(C_SUBDIR)/pokemon.c $(DATA_SRC_SUBDIR)/pokemon/teachable_learnsets.h $(LEGACY_LEVEL_UP_HEADER) $(RIKO_VARIANT_GFX) $(RIKO_MEGA_GFX) $(RIKO_OVERWORLD_GFX) $(TRIO_ELEMENTAL_GFX) $(RIKO_ECHO_GFX) $(RIFT_SISTERS_GFX) $(RIKO_FLOWER_GFX) $(RIKO_ASPECT_PALETTES)
 
 # As a side effect, they're evaluated immediately instead of when the rule is invoked.
 # It doesn't look like $(shell) can be deferred so there might not be a better way (Icedude_907: there is soon).

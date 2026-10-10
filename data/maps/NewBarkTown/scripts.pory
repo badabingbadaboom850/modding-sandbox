@@ -340,7 +340,10 @@ NewBarkTown_Text_Sign:
 	.string "a New Beginning Blow$"
 
 NewBarkTown_EventScript_PlayersHouseMailbox::
+	lockall
 	msgbox NewBarkTown_Text_PlayersHouse, MSGBOX_SIGN
+	call RikoCavern_TestOffer
+	releaseall
 	end
 
 NewBarkTown_EventScript_ElmsHouseMailbox::

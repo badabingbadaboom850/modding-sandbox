@@ -87,6 +87,7 @@ enum
     MAP_NEW_BARK_TOWN_HOUSE1           = (3 | (1 << 8)),
     MAP_NEW_BARK_TOWN_PLAYERS_HOUSE_1F = (4 | (1 << 8)),
     MAP_NEW_BARK_TOWN_PLAYERS_HOUSE_2F = (5 | (1 << 8)),
+    MAP_RIKO_SPIRIT_CAVERN             = (6 | (1 << 8)),
 
     // gMapGroup_IndoorCherrygrove
     MAP_CHERRYGROVE_CITY_POKEMON_CENTER = (0 | (2 << 8)),

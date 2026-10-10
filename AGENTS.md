@@ -524,3 +524,47 @@ Local validation: production ROM compiled;108 engine passes across3 shards plus2
 PokemonUseItemEffects gives five levels per Puffs itemCount, capped100 or the current enabled candy cap. Eggs/empty slots/zero quantities are rejected; preview does not change experience. Ordinary Cat Food Tin/Rare Candy and EXP Candies retain their original calculations. BW/HGSS shared party_menu.c and separate SwSh party menu calculate ceil(remainingLevels/5), preserving excess Bag items (level1needs20 to reach100;95or96needs1). Level100/no-effect Puffs cannot be consumed to trigger a candy evolution. The existing level-by-level move/innate/evolution flow remains, including move-summary restoration. Do not change just one menu implementation.
 
 Local production ROM compilation passed;79 engine passes across3 shards plus21 expected runner self-test failures, zero unexpected failures. All6 new Puffs checks pass, including36 species/level combinations across growth rates, batch/preview/no-effect/egg cases, enabled caps, all3 party quantity helpers, ordinary candy and evolution eligibility, price/Bag/text and SaveBlock1/2/3 sizes15444/2864/100. Reverse Candy, move-learning restoration, prior Courage/Garden and full text-fit checks pass.74 source/geometry/asset groups pass including5 Puffs groups (all256 Badge combinations), plus inclusive docs-summary/diff checks. The compiled kibble icon's576 pixels and palette match source. Actual shop purchase/quantity/move/evolution animations still need rendered emulator confirmation; remote CI is separate. Built-in image generation created the toasted-kibble source; tools/puffs/import_icon.py performs deterministic palette/size conversion. See docs/riko_puffs.md.
+
+
+## Dedicated Spirit of Riko cave pilot (2026-10-10)
+
+The user requested implementation of Mind/Body/Soul → Spirit of Riko with a
+New Bark testing warp and a distant-feeling cave. RikoSpiritCavern appends as
+IndoorNewBark map6/layout1034, using JohtoGeneral/CaveDefault (Union Cave pair)
+without weather/time/Flash/old cave callbacks. Mailbox17,11 retains its sign,
+then explicitly offers TEST travel; no Badge/trial/party gate, startup warp or
+new NPC budget. Preserve the original .pory/.inc hook. Southern cave arrows use
+0x407 behavior0x65 and return to outdoor New Bark warp1; guide returns18,12.
+
+Boss-only RikoAspectMind1611/Body1612/Soul1613 share ordinary Riko geometry with
+independent native violet/amber/pale-blue palettes, no evolution/formChangeTable,
+and female identity. Old real species IDs remain; Egg sentinel moves. Four
+battles scale highest non-Egg+10 cap100, with gentler attacks below party20.
+PrepareRikoCavernBattle validates phase0-3 and uses the shared safe-heal/no-catch
+restoration callback. GetBattleBGM scopes four legendary/Champion themes to the exact
+cave and species; ordinary battles remain unchanged.
+
+State412E=0Mind/1Mindwon/2Bodywon/3reunion+finale/4finalewon; permanent flag108D
+records earned final memory/reward, retained through the guide's confirmed TEST
+restart. Slots audited free against5eaa4ea0; decimal4237 was only a generated
+trainer #line, not a flag use. Save arrays stay unchanged. Existing Spark/Mom
+pending-delivery/letter helpers accept this flag OR historical Suicune victory,
+never set FLAG_DEFEATED_SUICUNE, and retain once-only/full-Bag semantics. Cave
+wins never grant a Spirit evolution/capture; true endgame unlock remains planned.
+
+Transition restores base object coordinates/temporary visibility before settling
+won aspects. removeobject sets its visibility flag, so clear temp flags before
+respawning settled aspects. Soul's shrine permits only its south approach16,7;
+camera pans six tiles to the reunion center and is removed afterward. No forced
+player path. Eight actors plus player/follower/camera fit the runtime16 budget.
+The old broken cave is unchanged and is not validated by this independent map.
+See docs/riko_spirit_cavern.md, tools/riko_arena/validate.py, test/riko_cavern.c.
+Compilation and source/engine checks do not replace rendered player testing.
+
+
+Cavern pilot validation: final production ROM compiled (ROM32510852 bytes,
+EWRAM255420 bytes); all5 new actual engine tests pass, including music scope and
+saved ABI, and5 actual-script/geometry groups plus26 Garden/Rift/Sisters groups
+pass. Inclusive docs-summary and diff checks pass. Existing rendered cave entry,
+camera/fusion/animations/music/save-reload are still unconfirmed; user testing
+must distinguish these from headless battle-preparation tests. CI is separate.

@@ -1038,6 +1038,7 @@
 #define LAYOUT_TRIO_MIRROR_HOUSE 1031
 #define LAYOUT_TRIO_LANTERN_TRAIL 1032
 #define LAYOUT_TRIO_GARDEN 1033
+#define LAYOUT_RIKO_SPIRIT_CAVERN 1034
 
 //Constants for unused layouts
 #define LAYOUT_TRAINER_TOWER_1F                   0xFFFF

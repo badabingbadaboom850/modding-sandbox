@@ -545,3 +545,16 @@ static const struct LevelUpMove sRikoFlowerLevelUpLearnset[] = {
     LEVEL_UP_MOVE(52, MOVE_FLOOF_FURY), LEVEL_UP_MOVE(60, MOVE_MEGA_RIKO), LEVEL_UP_END
 };
 #endif
+
+// Boss-only aspects share Riko geometry; independent native aura palettes.
+#if P_FAMILY_RIKO
+const u16 gMonPalette_RikoAspectMind[] = INCBIN_U16("graphics/pokemon/riko_aspect_mind/normal.gbapal");
+const u16 gMonIconPalette_RikoAspectMind[] = INCBIN_U16("graphics/pokemon/riko_aspect_mind/icon_normal.gbapal");
+const u16 gOverworldPalette_RikoAspectMind[] = INCBIN_U16("graphics/pokemon/riko_aspect_mind/overworld_normal.gbapal");
+const u16 gMonPalette_RikoAspectBody[] = INCBIN_U16("graphics/pokemon/riko_aspect_body/normal.gbapal");
+const u16 gMonIconPalette_RikoAspectBody[] = INCBIN_U16("graphics/pokemon/riko_aspect_body/icon_normal.gbapal");
+const u16 gOverworldPalette_RikoAspectBody[] = INCBIN_U16("graphics/pokemon/riko_aspect_body/overworld_normal.gbapal");
+const u16 gMonPalette_RikoAspectSoul[] = INCBIN_U16("graphics/pokemon/riko_aspect_soul/normal.gbapal");
+const u16 gMonIconPalette_RikoAspectSoul[] = INCBIN_U16("graphics/pokemon/riko_aspect_soul/icon_normal.gbapal");
+const u16 gOverworldPalette_RikoAspectSoul[] = INCBIN_U16("graphics/pokemon/riko_aspect_soul/overworld_normal.gbapal");
+#endif

@@ -57,6 +57,7 @@ void StartWallyTutorialBattle(void);
 void BattleSetup_StartScriptedWildBattle(void);
 bool8 CheckTrioSpiritMilestone(void);
 bool8 PrepareTrioSpiritTrial(void);
+bool8 PrepareRikoCavernBattle(void);
 void BattleSetup_StartTrioSpiritTrial(void);
 void BattleSetup_StartScriptedDoubleWildBattle(void);
 void BattleSetup_StartDexNavBattle(void);

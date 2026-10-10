@@ -24,7 +24,9 @@ TrioMemories_Return:
 	return
 
 TrioKeepsakes_TryRiko::
+	goto_if_set FLAG_RIKO_CAVERN_COMPLETE, TrioKeepsakes_EligibleRiko
 	goto_if_unset FLAG_DEFEATED_SUICUNE, TrioKeepsakes_Return
+TrioKeepsakes_EligibleRiko:
 	goto_if_set FLAG_TRIO_RIKO_KEEPSAKE, TrioKeepsakes_Return
 	msgbox TrioKeepsakes_RikoGift, MSGBOX_DEFAULT
 	giveitem ITEM_RIKOS_SPARK, 1
@@ -136,11 +138,12 @@ TrioScrapbook_Sisters:
 	call_if_ge VAR_TRIO_RIFT_BIJUU_STATE, 4, TrioMirror_ReadMemory
 	call_if_ge VAR_TRIO_RIFT_PENNY_STATE, 4, TrioLantern_ReadMemory
 	call_if_ge VAR_TRIO_GARDEN_STATE, 5, TrioGarden_ReadMemory
+	call_if_set FLAG_RIKO_CAVERN_COMPLETE, RikoCavern_ReadMemory
 	call_if_eq VAR_TRIO_GANG_WINS, 6, TrioGang_ReadMemory
 	goto TrioScrapbook_Menu
 TrioScrapbook_Letters:
 	msgbox TrioScrapbook_LettersIntro, MSGBOX_DEFAULT
-	call_if_set FLAG_DEFEATED_SUICUNE, TrioScrapbook_RikoLetter
+	call RikoCavern_CheckLetter
 	call TrioScrapbook_CheckPennyLetter
 	call TrioScrapbook_CheckBijuuLetter
 	goto TrioScrapbook_Menu
@@ -834,6 +837,7 @@ TrioChecklist_CeladonDone:
 	return
 
 TrioChecklist_RikoLetter::
+	goto_if_set FLAG_RIKO_CAVERN_COMPLETE, TrioChecklist_RikoLetterDone
 	goto_if_set FLAG_DEFEATED_SUICUNE, TrioChecklist_RikoLetterDone
 	msgbox TrioChecklist_RikoLetterHint, MSGBOX_DEFAULT
 	return
@@ -1151,3 +1155,9 @@ TrioChecklist_PicnicSaved:
 	.string "Family picnic: Saved in\n"
 	.string "your scrapbook.$"
 
+
+@ Preserve historical Suicune-backed victories; new cave does not set that flag.
+RikoCavern_CheckLetter::
+	goto_if_set FLAG_RIKO_CAVERN_COMPLETE, TrioScrapbook_RikoLetter
+	goto_if_set FLAG_DEFEATED_SUICUNE, TrioScrapbook_RikoLetter
+	return

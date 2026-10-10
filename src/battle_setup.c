@@ -575,6 +575,43 @@ bool8 PrepareTrioSpiritTrial(void)
     return TRUE;
 }
 
+// Dedicated cave phases, separate from evolutions and all older Spirit trials.
+bool8 PrepareRikoCavernBattle(void)
+{
+    static const u16 species[] = {SPECIES_RIKO_ASPECT_MIND, SPECIES_RIKO_ASPECT_BODY, SPECIES_RIKO_ASPECT_SOUL, SPECIES_RIKO_SPIRIT};
+    static const u16 moves[][4] = {
+        {MOVE_PSYCHIC, MOVE_DAZZLING_GLEAM, MOVE_CALM_MIND, MOVE_THUNDER_WAVE},
+        {MOVE_BODY_SLAM, MOVE_PLAY_ROUGH, MOVE_CRUNCH, MOVE_BULK_UP},
+        {MOVE_DRAINING_KISS, MOVE_SWIFT, MOVE_WISH, MOVE_LIGHT_SCREEN},
+        {MOVE_FLAMETHROWER, MOVE_PLAY_ROUGH, MOVE_CRUNCH, MOVE_CALM_MIND},
+    };
+    static const u16 earlyMoves[][4] = {
+        {MOVE_CONFUSION, MOVE_FAIRY_WIND, MOVE_TAIL_WHIP, MOVE_GROWL},
+        {MOVE_TACKLE, MOVE_BITE, MOVE_TAIL_WHIP, MOVE_GROWL},
+        {MOVE_FAIRY_WIND, MOVE_SWIFT, MOVE_CHARM, MOVE_GROWL},
+        {MOVE_EMBER, MOVE_FAIRY_WIND, MOVE_BITE, MOVE_GROWL},
+    };
+    u32 phase = gSpecialVar_0x8004;
+    u32 highest = 0;
+    u32 i;
+    const u16 *chosen;
+    if (phase >= ARRAY_COUNT(species))
+        return FALSE;
+    for (i = 0; i < PARTY_SIZE; i++)
+    {
+        u32 partySpecies = GetMonData(&gPlayerParty[i], MON_DATA_SPECIES_OR_EGG);
+        if (partySpecies != SPECIES_NONE && partySpecies != SPECIES_EGG)
+            highest = max(highest, GetMonData(&gPlayerParty[i], MON_DATA_LEVEL));
+    }
+    if (!highest)
+        return FALSE;
+    chosen = highest < 20 ? earlyMoves[phase] : moves[phase];
+    HealTrioTrialParty();
+    CreateScriptedWildMon2(species[phase], min(highest + 10, MAX_LEVEL), ITEM_NONE, 0,
+        chosen[0], chosen[1], chosen[2], chosen[3], FALSE);
+    return TRUE;
+}
+
 void BattleSetup_StartTrioSpiritTrial(void)
 {
     sTrioTrialHadNoCatching = FlagGet(B_FLAG_NO_CATCHING);
