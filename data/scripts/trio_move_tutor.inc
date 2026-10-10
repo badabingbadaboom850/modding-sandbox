@@ -3,11 +3,33 @@ TrioMoveTutor_Scott::
 	lock
 	faceplayer
 	msgbox TrioMoveTutor_Intro, MSGBOX_DEFAULT
+TrioMoveTutor_ChooseService:
+	dynmultichoice 0, 0, FALSE, 3, 0, DYN_MULTICHOICE_CB_NONE, TrioMoveTutor_SignatureName, TrioMoveTutor_ElementalName, TrioMoveTutor_ExitName
+	goto_if_eq VAR_RESULT, 0, TrioMoveTutor_ChooseGirl
+	goto_if_eq VAR_RESULT, 1, TrioMoveTutor_Elemental
+	goto TrioMoveTutor_End
+TrioMoveTutor_Elemental:
+	msgbox TrioMoveTutor_ElementalIntro, MSGBOX_DEFAULT
+	special BeginTrioElementalLessons
+	special ChooseMonForMoveRelearner
+	waitstate
+	goto_if_eq VAR_0x8004, PARTY_NOTHING_CHOSEN, TrioMoveTutor_ElementalDone
+	special HasMovesToRelearn
+	goto_if_eq VAR_RESULT, FALSE, TrioMoveTutor_ElementalNone
+	special TeachMoveRelearnerMove
+	waitstate
+	goto TrioMoveTutor_ElementalDone
+TrioMoveTutor_ElementalNone:
+	msgbox TrioMoveTutor_ElementalNoMoves, MSGBOX_DEFAULT
+TrioMoveTutor_ElementalDone:
+	special EndTrioElementalLessons
+	goto TrioMoveTutor_ChooseService
 TrioMoveTutor_ChooseGirl:
 	dynmultichoice 0, 0, FALSE, 4, 0, DYN_MULTICHOICE_CB_NONE, TrioMoveTutor_RikoName, TrioMoveTutor_PennyName, TrioMoveTutor_BijuuName, TrioMoveTutor_ExitName
 	goto_if_eq VAR_RESULT, 0, TrioMoveTutor_Riko
 	goto_if_eq VAR_RESULT, 1, TrioMoveTutor_Penny
 	goto_if_eq VAR_RESULT, 2, TrioMoveTutor_Bijuu
+	goto_if_eq VAR_RESULT, 127, TrioMoveTutor_ChooseService
 	goto TrioMoveTutor_End
 TrioMoveTutor_Riko:
 	msgbox TrioMoveTutor_RikoIntro, MSGBOX_DEFAULT
@@ -330,3 +352,12 @@ TrioMoveTutor_Name_MEGA_RIKO:
 	.string "Pom Supremacy$"
 TrioMoveTutor_Desc_MEGA_RIKO:
 	.string "Raises Sp. Atk, Sp. Def\nand Speed by one stage.\pStatus move / 5 PP.\nTeach this move?$"
+
+TrioMoveTutor_SignatureName:
+	.string "Signature moves$"
+TrioMoveTutor_ElementalName:
+	.string "Elemental moves$"
+TrioMoveTutor_ElementalIntro:
+	.string "Pick a girl! Her current\nform sets these lessons.\pMoves unlock with levels.\nAlready known ones hide.$"
+TrioMoveTutor_ElementalNoMoves:
+	.string "No new elemental attacks\nfor this form and level.\pTry changing her form or\nleveling up, cutie!$"

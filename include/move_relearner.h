@@ -4,6 +4,9 @@
 #include "constants/move_relearner.h"
 
 void TeachMoveRelearnerMove(void);
+void BeginTrioElementalLessons(void);
+void EndTrioElementalLessons(void);
+u32 GetTrioElementalMoves(struct BoxPokemon *mon, u16 *moves);
 void MoveRelearnerShowHideHearts(s32 move);
 void MoveRelearnerShowHideCategoryIcon(s32);
 void CB2_InitLearnMove(void);

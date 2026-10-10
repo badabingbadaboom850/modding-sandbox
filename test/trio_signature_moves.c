@@ -1,6 +1,7 @@
 #include "global.h"
 #include "test/battle.h"
 #include "pokemon.h"
+#include "move_relearner.h"
 
 TEST("Family signatures preserve saved structures and historical move boundaries")
 {
@@ -200,4 +201,77 @@ SINGLE_BATTLE_TEST("Family signatures print their personalized battle names")
         MESSAGE("Wobbuffet used Cocoa Pounce!");
         HP_BAR(opponent);
     }
+}
+
+
+TEST("Elemental lessons follow current form actual level and known attacks")
+{
+    struct Pokemon mon;
+    u16 moves[MAX_RELEARNER_MOVES];
+    u32 count, j;
+    bool32 found;
+    CreateMon(&mon, SPECIES_RIKO_ELECTRIC, 5, 0, OTID_STRUCT_PLAYER_ID);
+    for (j = 0; j < MAX_MON_MOVES; j++)
+        SetMonMoveSlot(&mon, MOVE_NONE, j);
+    count = GetTrioElementalMoves(&mon.box, moves);
+    EXPECT_EQ(count, 1); // Level-zero and level-three Thunder Shock deduplicate.
+    EXPECT_EQ(moves[0], MOVE_THUNDER_SHOCK);
+    SetMonMoveSlot(&mon, MOVE_THUNDER_SHOCK, 0);
+    EXPECT_EQ(GetTrioElementalMoves(&mon.box, moves), 0);
+
+    CreateMon(&mon, SPECIES_RIKO_ELECTRIC, 40, 0, OTID_STRUCT_PLAYER_ID);
+    for (j = 0; j < MAX_MON_MOVES; j++)
+        SetMonMoveSlot(&mon, MOVE_NONE, j);
+    count = GetTrioElementalMoves(&mon.box, moves);
+    found = FALSE;
+    for (j = 0; j < count; j++)
+    {
+        if (moves[j] == MOVE_DISCHARGE) found = TRUE;
+        EXPECT_NE(moves[j], MOVE_WILD_CHARGE); // Level 44 remains locked.
+        EXPECT_NE(moves[j], MOVE_CHARGE); // Status moves are not elemental attacks.
+        EXPECT_NE(moves[j], MOVE_QUICK_ATTACK);
+    }
+    EXPECT(found);
+    u16 species = SPECIES_RIKO_FIRE;
+    SetMonData(&mon, MON_DATA_SPECIES, &species);
+    count = GetTrioElementalMoves(&mon.box, moves);
+    found = FALSE;
+    for (j = 0; j < count; j++)
+    {
+        if (moves[j] == MOVE_FLAMETHROWER) found = TRUE;
+        EXPECT_NE(moves[j], MOVE_THUNDER_SHOCK);
+        EXPECT_NE(moves[j], MOVE_DISCHARGE);
+    }
+    EXPECT(found);
+    // Equipped moves survive a form change, but cannot be re-taught in this form.
+    SetMonMoveSlot(&mon, MOVE_THUNDER_SHOCK, 0);
+    species = SPECIES_RIKO;
+    SetMonData(&mon, MON_DATA_SPECIES, &species);
+    EXPECT_EQ(GetMonData(&mon, MON_DATA_MOVE1), MOVE_THUNDER_SHOCK);
+}
+
+TEST("Elemental lessons include transformation attacks and reject other Pokemon")
+{
+    struct Pokemon mon;
+    u16 moves[MAX_RELEARNER_MOVES];
+    static const u16 species[] = {SPECIES_PENNY_WATER, SPECIES_PENNY_GRASS, SPECIES_BIJUU_ICE, SPECIES_BIJUU_GHOST};
+    static const u16 attack[] = {MOVE_WATER_PULSE, MOVE_RAZOR_LEAF, MOVE_ICY_WIND, MOVE_HEX};
+    for (u32 j = 0; j < ARRAY_COUNT(species); j++)
+    {
+        CreateMon(&mon, species[j], 5, 0, OTID_STRUCT_PLAYER_ID);
+        for (u32 k = 0; k < MAX_MON_MOVES; k++) SetMonMoveSlot(&mon, MOVE_NONE, k);
+        EXPECT_EQ(GetTrioElementalMoves(&mon.box, moves), 1);
+        EXPECT_EQ(moves[0], attack[j]);
+    }
+    static const u16 excluded[] = {SPECIES_PIKACHU, SPECIES_EGG, SPECIES_RIKO_SPIRIT, SPECIES_BIJUU_SPIRIT, SPECIES_PENNY_SPIRIT};
+    for (u32 j = 0; j < ARRAY_COUNT(excluded); j++)
+    {
+        CreateMon(&mon, SPECIES_PIKACHU, 50, 0, OTID_STRUCT_PLAYER_ID);
+        SetMonData(&mon, MON_DATA_SPECIES, &excluded[j]);
+        EXPECT_EQ(GetTrioElementalMoves(&mon.box, moves), 0);
+    }
+    BeginTrioElementalLessons();
+    EXPECT_EQ(gMoveRelearnerState, MOVE_RELEARNER_TRIO_ELEMENTAL_MOVES);
+    EndTrioElementalLessons();
+    EXPECT_EQ(gMoveRelearnerState, MOVE_RELEARNER_LEVEL_UP_MOVES);
 }

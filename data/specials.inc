@@ -662,3 +662,5 @@ gSpecials::
 	def_special TrioGang_RecordVictory
 	def_special PrepareRikoCavernBattle
 	def_special IsRikosAmuletAwake
+	def_special BeginTrioElementalLessons
+	def_special EndTrioElementalLessons

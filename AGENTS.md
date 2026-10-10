@@ -750,3 +750,17 @@ Spirit Mega/cafe/cavern/trainer behavior are covered. Source menu/cancel/text/
 geometry and unchanged save files pass. Standard-move range handling explicitly
 includes appended signatures; relearner runtime capacity192, trainer stack
 bitset uses MOVES_COUNT_ALL. Neither changes save structures.
+
+Scott's Elemental moves service uses a dedicated runtime relearner state,
+current family form's damaging non-Normal STAB level-up attacks and actual
+level. It excludes known moves, duplicates, previous forms and page cycling.
+No saved fields/IDs change. Both party and move cancellations restore the
+normal level-up state. See current-form lessons in trio_signature_moves.md.
+
+Elemental validation: RELEASE=1 production ROM compiled (32447576 bytes ROM,
+255416 bytes EWRAM). All52 focused engine/battle checks pass, plus7 expected
+runner self-test failures and no unexpected failures. Includes current-form
+selection, actual-level limits, deduplication/known moves, transformation
+attacks, family/Egg exclusions, equipped-move retention and mode reset.
+Source service/empty/cancel flows, historic move IDs/save files, text, docs
+and diff checks pass. ManicEMU UI and in-game save/reload remain user checks.

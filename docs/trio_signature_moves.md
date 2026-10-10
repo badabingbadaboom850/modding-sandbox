@@ -63,3 +63,31 @@ regressions are included. The source validator checks all975 historical IDs,
 20 lesson/decline/cancel paths, text references/wrapping and Scott's geometry.
 Cafe source tests and docs-summary/diff checks pass. Rendered tutor UI, move
 animations and an actual player's save/reload remain for user confirmation.
+
+## Current-form elemental lessons
+
+Scott now offers Signature moves or Elemental moves. Elemental lessons first
+choose a party member, then show damaging non-Normal attacks matching either
+current species type in that form's level-up learnset. Actual level applies,
+including level-zero transformation attacks; known moves and duplicates hide.
+No previous-form or pre-evolution learnsets are imported, and no TM/tutor pages
+can be opened from this service. Unrelated Pokemon, Eggs and boss Spirits are
+ineligible. Empty lists explain changing form or gaining levels. Teaching and
+replacement use the existing free relearner; cancellation returns to Scott,
+and normal relearner mode is restored on every exit. Equipped attacks remain
+when a girl changes form. There is no saved unlock history or save ABI change.
+
+Emulator check: transform Riko to Electric, select Elemental moves, teach an
+available attack, cancel replacement once, then teach successfully. Change her
+to Fire and confirm the new list; retain the equipped Electric attack. Repeat
+with Water Penny and Ice Bijuu, then save in-game and reload. Higher-level
+attacks still require their learnset level; TMs supplement the modest Ice/Water
+learnsets.
+
+Elemental validation: RELEASE=1 production ROM compiled (32447576 bytes ROM,
+255416 bytes EWRAM). All52 focused engine/battle checks pass, plus7 expected
+runner self-test failures and no unexpected failures. Includes current-form
+selection, actual-level limits, deduplication/known moves, transformation
+attacks, family/Egg exclusions, equipped-move retention and mode reset.
+Source service/empty/cancel flows, historic move IDs/save files, text, docs
+and diff checks pass. ManicEMU UI and in-game save/reload remain user checks.

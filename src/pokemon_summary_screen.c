@@ -2162,6 +2162,8 @@ static enum MoveRelearnerStates GetNextRelearnerState(enum MoveRelearnerStates s
 
 bool32 CheckRelearnerStateFlag(enum MoveRelearnerStates state)
 {
+    if (state == MOVE_RELEARNER_TRIO_ELEMENTAL_MOVES)
+        return FALSE; // Scott-only service, not an extra summary-screen page.
     if (state == MOVE_RELEARNER_EGG_MOVES)
         return AreEggMovesUnlocked();
     if (state == MOVE_RELEARNER_TUTOR_MOVES)
