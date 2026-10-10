@@ -62,6 +62,7 @@ NewBarkTown_EventScript_TownSign::
 NewBarkTown_EventScript_Lass::
 	lock
 	faceplayer
+	call TrioCostume_TestSupplies
 	goto_if_eq VAR_NEWBARK_TOWN_STATE, 2, NewBarkTown_EventScript_LassState2
 	goto_if_eq VAR_NEWBARK_TOWN_STATE, 3, NewBarkTown_EventScript_LassState3
 	goto_if_eq VAR_NEWBARK_TOWN_STATE, 4, NewBarkTown_EventScript_LassState4

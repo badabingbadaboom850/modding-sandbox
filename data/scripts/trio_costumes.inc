@@ -91,3 +91,35 @@ TrioCostume_PennyHint:
 	.string "Bring Penny! My food stand\ncould use a golden mascot.$"
 TrioCostume_BagText:
 	.string "Your Bag is full!\nCome back with some room.\pYour gift is safe with me.\nNo extra battle needed.$"
+
+@ Explicitly authorized temporary New Bark testing supplies; no victory flags.
+TrioCostume_TestSupplies::
+	msgbox TrioCostume_TestOffer, MSGBOX_YESNO
+	goto_if_eq VAR_RESULT, NO, TrioCostume_TestReturn
+	checkitem ITEM_RIKOS_BALLOON
+	goto_if_eq VAR_RESULT, TRUE, TrioCostume_TestBox
+	giveitem ITEM_RIKOS_BALLOON
+	goto_if_eq VAR_RESULT, FALSE, TrioCostume_TestFullBag
+TrioCostume_TestBox:
+	checkitem ITEM_BIJUUS_BOX
+	goto_if_eq VAR_RESULT, TRUE, TrioCostume_TestBun
+	giveitem ITEM_BIJUUS_BOX
+	goto_if_eq VAR_RESULT, FALSE, TrioCostume_TestFullBag
+TrioCostume_TestBun:
+	checkitem ITEM_PENNYS_HOTDOG_BUN
+	goto_if_eq VAR_RESULT, TRUE, TrioCostume_TestReady
+	giveitem ITEM_PENNYS_HOTDOG_BUN
+	goto_if_eq VAR_RESULT, FALSE, TrioCostume_TestFullBag
+TrioCostume_TestReady:
+	msgbox TrioCostume_TestReadyText, MSGBOX_DEFAULT
+	return
+TrioCostume_TestFullBag:
+	msgbox TrioCostume_TestBagText, MSGBOX_DEFAULT
+TrioCostume_TestReturn:
+	return
+TrioCostume_TestOffer:
+	.string "Want the three costume\ngifts for quick testing?$"
+TrioCostume_TestReadyText:
+	.string "The three gifts are ready!\nUse them from Key Items.\pUse again to change back.\nHave fun with the girls!$"
+TrioCostume_TestBagText:
+	.string "Make some room and return.\nI'll give missing gifts.$"

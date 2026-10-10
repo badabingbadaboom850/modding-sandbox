@@ -91,3 +91,22 @@ metadata/TM/signature access, encrypted storage, toggle eligibility, normal
 and Spirit Mega/faint returns, historical saved ABI,192 gift paths, geometry
 and all18 compiled follower frames/palettes. Docs-summary/diff checks pass.
 Approved art and headless checks are separate from in-game emulator testing.
+
+## Temporary New Bark testing supplies
+
+At the user's request, Mom's friend (the wandering lass at9,16 in New Bark)
+now offers all three costume Key Items before her ordinary dialogue. Say Yes
+to receive any missing gifts; repeat visits skip owned items. A full Bag keeps
+earlier successful gifts and lets the next visit finish the rest. No battle,
+party, Badge or quest requirement, and no trainer/progression flags are set.
+Her original story dialogue and movement still follow; No continues normally.
+Both Pory raw authoring and compiled scripts match. Remove this temporary
+call/helper when the user requests production test cleanup; keep earned items.
+
+Testing-supply validation: production RELEASE=1 ROM compiled
+(ROM32471372 bytes, EWRAM255416 bytes). All64 supply helper decline/owned/
+partial-Bag/retry/repeat source cases pass, alongside192 natural gift flows,
+text termination/wrapping, full Pory/assembly original-branch parity,
+compiled follower art, historical IDs/save files, docs-summary and diff checks.
+This script-only addition does not alter the engine covered by the previous
+57 focused and93 broader passing checks. New prompt/gifts await emulator use.

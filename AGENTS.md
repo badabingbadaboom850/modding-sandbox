@@ -792,3 +792,19 @@ metadata/TM/signature access, encrypted storage, toggle eligibility, normal
 and Spirit Mega/faint returns, historical saved ABI,192 gift paths, geometry
 and all18 compiled follower frames/palettes. Docs-summary/diff checks pass.
 Approved art and headless checks are separate from in-game emulator testing.
+
+User explicitly requested easy costume testing supplies from Mom's friend.
+The New Bark lass at9,16 now calls TrioCostume_TestSupplies after lock/faceplayer
+before original story dispatch, in both Pory and assembly. Repeatable Yes gives
+only missing costume Key Items; Bag-full retry preserves received items. No
+party/progression requirement or courier victory flag; original dialogue follows.
+This is authorized temporary test behavior, superseding the cleanup prohibition
+only for these three gifts. Remove when the user requests test cleanup.
+
+Testing-supply validation: production RELEASE=1 ROM compiled
+(ROM32471372 bytes, EWRAM255416 bytes). All64 supply helper decline/owned/
+partial-Bag/retry/repeat source cases pass, alongside192 natural gift flows,
+text termination/wrapping, full Pory/assembly original-branch parity,
+compiled follower art, historical IDs/save files, docs-summary and diff checks.
+This script-only addition does not alter the engine covered by the previous
+57 focused and93 broader passing checks. New prompt/gifts await emulator use.

@@ -10,6 +10,8 @@ for l in s.splitlines():
  if not l or l.startswith('@'):continue
  if re.fullmatch(r'\w+::?',l):labels[l.rstrip(':')]=len(code)
  else:code.append(l)
+for line in s.splitlines():
+ if line.strip().startswith('.string'):assert re.fullmatch(r'\s*\.string ".*\$"',line),line
 for text in re.findall(r'\.string "(.*)"',s):
  assert text.endswith('$')
  for page in text[:-1].split(r'\p'):
@@ -97,3 +99,37 @@ assert '#define MAX_TRAINERS_COUNT                  1164' in (R/'include/constan
 old=subprocess.check_output(['git','show',base+':include/constants/items.h'],cwd=R,text=True);new=(R/'include/constants/items.h').read_text()
 for name,val in re.findall(r'\b(ITEM_\w+) = (\d+)\b',old):assert re.search(r'\b'+name+' = '+val+r'\b',new),name
 print('Historical real species/items/trainers, trainer flag bounds and save files unchanged')
+
+# Execute the actual temporary supply helper with partial-Bag and repeat visits.
+items=['ITEM_RIKOS_BALLOON','ITEM_BIJUUS_BOX','ITEM_PENNYS_HOTDOG_BUN']
+def supplies(owned,capacity,yes):
+ pc=labels['TrioCostume_TestSupplies'];result=0;gifts=[]
+ for _ in range(80):
+  op,_,args=code[pc].partition(' ');pc+=1;a=[x.strip() for x in args.split(',')]
+  if op=='return':return owned,gifts
+  if op=='msgbox':
+   if a[1]=='MSGBOX_YESNO':result=int(yes)
+  elif op=='goto_if_eq':
+   if result=={'TRUE':1,'FALSE':0,'NO':0}[a[1]]:pc=labels[a[2]]
+  elif op=='checkitem':result=int(a[0] in owned)
+  elif op=='giveitem':
+   result=int(capacity>0)
+   if result:assert a[0] not in owned;owned.add(a[0]);gifts.append(a[0]);capacity-=1
+  else:raise AssertionError(op)
+ raise AssertionError('Supply helper never returned')
+count=0
+for bits,capacity,yes in itertools.product(range(8),range(4),[False,True]):
+ owned={v for j,v in enumerate(items) if bits&(1<<j)};initial=set(owned)
+ after,gifts=supplies(owned,capacity,yes)
+ assert len(gifts)==(min(capacity,3-len(initial)) if yes else 0)
+ assert initial<=after
+ again,extra=supplies(after,3,True);assert again==set(items)
+ last,duplicate=supplies(again,3,True);assert not duplicate
+ count+=1
+print(count,'test supply owned/decline/partial-Bag/retry/repeat paths pass')
+for file in ['data/maps/NewBarkTown/scripts.inc','data/maps/NewBarkTown/scripts.pory']:
+ old=subprocess.check_output(['git','show','541b28b63a63acb7bbb037a41302fc885034a215:'+file],cwd=R,text=True)
+ new=(R/file).read_text();assert new.count('\tcall TrioCostume_TestSupplies\n')==1
+ assert new.replace('\tcall TrioCostume_TestSupplies\n','',1)==old
+assert '\tcall TrioCostume_TestSupplies\n' in (R/'data/maps/NewBarkTown/scripts.inc').read_text().split('NewBarkTown_EventScript_Lass::',1)[1].split('NewBarkTown_EventScript_LassState2::',1)[0]
+print('Mom friend Pory/assembly hook preserves every existing story branch/movement')
