@@ -34,9 +34,12 @@ CinnabarIsland_Text_Blaine:
 	.string "until the day I've rebuilt\l"
 	.string "Cinnabar Gym!\p"
 	.string "I'll be at the Fighting Dojo\n"
-	.string "until then.$"
-
-
+	.string "until then.\p"
+	.string "The girls brought some\n"
+	.string "life back to this old\p"
+	.string "island. Even Penny's quiet\n"
+	.string "hello carried farther than\p"
+	.string "the sea.$"
 
 CinnabarIsland_EventScript_Blue::
 	lock
@@ -82,7 +85,12 @@ CinnabarIsland_Text_BlueBefore:
 	.string "makes me want to battle.\p"
 	.string "If you want to battle me, you'll\n"
 	.string "need 15 badges first.\p"
-	.string "I'll take you on then.$"
+	.string "I'll take you on then.\p"
+	.string "So you are the trainer\n"
+	.string "with Riko, Penny, and\p"
+	.string "Bijuu. Everybody has a\n"
+	.string "story about you. I would\p"
+	.string "rather see a battle.$"
 
 CinnabarIsland_Text_Blue:
 	.string "Who are you?\p"
@@ -109,7 +117,13 @@ CinnabarIsland_Text_Blue:
 	.string "makes me want to battle.\p"
 	.string "If you want to battle me, come to\n"
 	.string "the Viridian Gym.\p"
-	.string "I'll take you on then.$"
+	.string "I'll take you on then.\p"
+	.string "Do not think the trio's\n"
+	.string "reputation will win my\p"
+	.string "Badge. Bring Riko's\n"
+	.string "attitude, Bijuu's tricks,\p"
+	.string "and Penny's nerve. I will\n"
+	.string "be waiting.$"
 
 CinnabarIsland_EventScript_Sign::
 	msgbox CinnabarIsland_Text_Sign, MSGBOX_SIGN

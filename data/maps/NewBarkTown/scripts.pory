@@ -18,6 +18,7 @@ NewBarkTown_OnFrame::
 	map_script_2 VAR_NEWBARK_TOWN_STATE, 11, NewBarkTown_EventScript_ArcherArcadeCall
     map_script_2 VAR_RIVAL_STATE, 0, NewBarkTown_EventScript_RivalIntro
     map_script_2 VAR_RIVAL_STATE, 2, NewBarkTown_EventScript_RivalBattle
+	map_script_2 VAR_TEMP_9, TRUE, TrioStorySpirit_BijuuSightingCall
 	.2byte 0
 
 NewBarkTown_EventScript_ElmCallAfterLeague::
@@ -32,6 +33,7 @@ NewBarkTown_EventScript_ElmCallAfterLeague::
 
 NewBarkTown_OnTransition::
     call Common_EventScript_SetupRivalGfxId
+	call TrioStorySpirit_PrepareBijuuSighting
 	goto_if_eq VAR_NEWBARK_TOWN_STATE, 2, NewBarkTown_Set_TalkToElm
 	goto_if_eq VAR_NEWBARK_TOWN_STATE, 4, NewBarkTown_Set_TalkToMom
 	end
@@ -140,8 +142,15 @@ NewBarkTown_EventScript_LeaveTriggersState4::
 NewBarkTown_EventScript_FatMan::
 	lock
 	faceplayer
+	call TrioFestival_TestShuttle
 	goto_if_eq VAR_NEWBARK_TOWN_STATE, 2, NewBarkTown_EventScript_FatManState2
+	goto_if_set FLAG_BADGE01_GET, NewBarkTown_Text_FatManState3_TrioWorld1_After
 	msgbox NewBarkTown_Text_FatManState3, MSGBOX_DEFAULT
+	goto NewBarkTown_Text_FatManState3_TrioWorld1_Resume
+NewBarkTown_Text_FatManState3_TrioWorld1_After:
+	msgbox NewBarkTown_Text_FatManState3_TrioWorldAfter, MSGBOX_DEFAULT
+NewBarkTown_Text_FatManState3_TrioWorld1_Resume:
+	call TrioStorySpirit_Rumors
 	closemessage
 	release
 	end
@@ -239,7 +248,12 @@ NewBarkTown_Text_Wooper:
 
 NewBarkTown_Text_FatManState2:
 	.string "Wow, your Pokégear is impressive!\n"
-	.string "Did your mom get it for you?$"
+	.string "Did your mom get it for you?\p"
+	.string "A trainer left town with\n"
+	.string "Riko, Penny, and Bijuu. I\p"
+	.string "packed one sandwich for\n"
+	.string "the road. Riko inspected\p"
+	.string "all three pockets.$"
 
 NewBarkTown_Text_FatManState3:
 	.string "Yo, {PLAYER}!\p"
@@ -248,20 +262,46 @@ NewBarkTown_Text_FatManState3:
 	.string "Travelers saw three rare\n"
 	.string "Pokemon on Route 31.\p"
 	.string "A shy cat was with them.\n"
-	.string "She slipped into the grass.$"
+	.string "She slipped into the grass.\p"
+	.string "Riko treats this road like\n"
+	.string "a parade. Penny checks\p"
+	.string "that nobody falls behind.\n"
+	.string "Bijuu copies the marching\p"
+	.string "feet.$"
 
 
+NewBarkTown_Text_FatManState3_TrioWorldAfter:
+	.string "Yo, {PLAYER}!\p"
+	.string "I hear Prof Elm found some\n"
+	.string "new Pokemon.\p"
+	.string "Travelers saw three rare\n"
+	.string "Pokemon on Route 31.\p"
+	.string "A shy cat was with them.\n"
+	.string "She slipped into the grass.\p"
+	.string "Falkner stood his ground\n"
+	.string "against those girls! That\p"
+	.string "trainer from our town\n"
+	.string "really knows how to bring\p"
+	.string "out their best.$"
 
 NewBarkTown_Text_LassState2:
 	.string "Wait, {PLAYER}!\p"
 	.string "It's dangerous to go out\n"
 	.string "without a Pokémon!\p"
 	.string "Wild Pokémon jump out of the grass\n"
-	.string "on the way to the next town.$"
+	.string "on the way to the next town.\p"
+	.string "Penny used to keep her\n"
+	.string "distance. Now she watches\p"
+	.string "the road beside her\n"
+	.string "sisters. A quiet change\p"
+	.string "can be a big one.$"
 
 NewBarkTown_Text_LassState3:
 	.string "Oh! Your Pokémon is adorable!\n"
-	.string "I wish I had one!$"
+	.string "I wish I had one!\p"
+	.string "The trio has a trainer\n"
+	.string "now? I thought Riko would\p"
+	.string "insist on being in charge!$"
 
 NewBarkTown_Text_LassState4:
 	.string "Hi, {PLAYER}! Leaving again?\p"
@@ -270,11 +310,21 @@ NewBarkTown_Text_LassState4:
 	.string "There's a story going around about\n"
 	.string "a cat between Cherrygrove and\p"
 	.string "Violet. A few trainers say she\n"
-	.string "follows them, then slips away.$"
+	.string "follows them, then slips away.\p"
+	.string "I heard a mysterious\n"
+	.string "trainer is heading toward\p"
+	.string "Violet with three little\n"
+	.string "legends. I hope they\p"
+	.string "packed extra snacks.$"
 
 NewBarkTown_Text_LassState5:
 	.string "Call your mom on your Pokégear\n"
 	.string "to let her know how you're doing.$\p"
+	.string "Bijuu copies the lab's\n"
+	.string "door chime. Riko answers\p"
+	.string "every time. Penny knows\n"
+	.string "better, but goes along for\p"
+	.string "company.$"
 
 NewBarkTown_Text_Silver1:
 	.string ". . .\p"
@@ -290,7 +340,10 @@ NewBarkTown_Text_Sign:
 	.string "a New Beginning Blow$"
 
 NewBarkTown_EventScript_PlayersHouseMailbox::
+	lockall
 	msgbox NewBarkTown_Text_PlayersHouse, MSGBOX_SIGN
+	call RikoCavern_TestOffer
+	releaseall
 	end
 
 NewBarkTown_EventScript_ElmsHouseMailbox::
@@ -448,3 +501,78 @@ script NewBarkTown_EventScript_ArcherArcadeCall {
 	release
 	end
 }
+
+raw `
+@ Repeatable pilot quiz. Update question text and YES/NO checks together.
+NewBarkTown_EventScript_TrioTrivia::
+	lock
+	faceplayer
+	msgbox NewBarkTown_Text_TrioTriviaOffer, MSGBOX_YESNO
+	goto_if_eq VAR_RESULT, NO, NewBarkTown_EventScript_TrioTriviaDecline
+	msgbox NewBarkTown_Text_TrioTriviaQuestion1, MSGBOX_YESNO
+	goto_if_ne VAR_RESULT, YES, NewBarkTown_EventScript_TrioTriviaWrong
+	msgbox NewBarkTown_Text_TrioTriviaQuestion2, MSGBOX_YESNO
+	goto_if_ne VAR_RESULT, NO, NewBarkTown_EventScript_TrioTriviaWrong
+	msgbox NewBarkTown_Text_TrioTriviaQuestion3, MSGBOX_YESNO
+	goto_if_ne VAR_RESULT, YES, NewBarkTown_EventScript_TrioTriviaWrong
+	msgbox NewBarkTown_Text_TrioTriviaWin, MSGBOX_DEFAULT
+	giveitem ITEM_POTION, 1
+	goto_if_eq VAR_RESULT, FALSE, NewBarkTown_EventScript_TrioTriviaBagFull
+	goto NewBarkTown_EventScript_TrioTriviaFinish
+
+NewBarkTown_EventScript_TrioTriviaWrong::
+	msgbox NewBarkTown_Text_TrioTriviaWrong, MSGBOX_DEFAULT
+	goto NewBarkTown_EventScript_TrioTriviaFinish
+
+NewBarkTown_EventScript_TrioTriviaDecline::
+	msgbox NewBarkTown_Text_TrioTriviaDecline, MSGBOX_DEFAULT
+	goto NewBarkTown_EventScript_TrioTriviaFinish
+
+NewBarkTown_EventScript_TrioTriviaBagFull::
+	msgbox NewBarkTown_Text_TrioTriviaBagFull, MSGBOX_DEFAULT
+
+NewBarkTown_EventScript_TrioTriviaFinish::
+	closemessage
+	release
+	end
+
+NewBarkTown_Text_TrioTriviaOffer:
+	.string "Hello! I host a little\n"
+	.string "quiz about the girls.\p"
+	.string "Three right answers earn\n"
+	.string "one small Wawa!\p"
+	.string "You can play again!\n"
+	.string "Want to give it a try?$"
+
+NewBarkTown_Text_TrioTriviaQuestion1:
+	.string "Question one!\p"
+	.string "Is Riko a Pomeranian?$"
+
+NewBarkTown_Text_TrioTriviaQuestion2:
+	.string "Question two!\p"
+	.string "Is Bijuu a dachshund?$"
+
+NewBarkTown_Text_TrioTriviaQuestion3:
+	.string "Question three!\p"
+	.string "Does Penny love chicken?$"
+
+NewBarkTown_Text_TrioTriviaWin:
+	.string "Three out of three!\n"
+	.string "You know your girls!\p"
+	.string "Here is a small Wawa\n"
+	.string "for your clever team.$"
+
+NewBarkTown_Text_TrioTriviaWrong:
+	.string "Oops! That was not right.\n"
+	.string "No worries, try again!\p"
+	.string "Talk to me to start over.$"
+
+NewBarkTown_Text_TrioTriviaDecline:
+	.string "Another time, then!\n"
+	.string "Give the girls my love.$"
+
+NewBarkTown_Text_TrioTriviaBagFull:
+	.string "Your Bag has no room!\p"
+	.string "Make some space, then\n"
+	.string "try my quiz again.$"
+`

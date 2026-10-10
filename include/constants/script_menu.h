@@ -144,6 +144,15 @@
 #define MULTI_BATTLE_ARCADE_RECORDS         133
 #define MULTI_ROCKET_ARCADE_CASH_OUT        134
 #define MULTI_LEVEL_MODE_WITH_EXIT           135
+#define MULTI_TRIO_SCRAPBOOK                 136
+#define MULTI_TRIO_CAMP_HOST                 137
+#define MULTI_TRIO_CAMP_GIRL                 138
+#define MULTI_TRIO_CAMP_BARKS                139
+#define MULTI_TRIO_FESTIVAL_RIKO         140
+#define MULTI_TRIO_FESTIVAL_PENNY        141
+#define MULTI_TRIO_FESTIVAL_HOST         142
+#define MULTI_TRIO_FESTIVAL_TEST         143
+
 
 // Lilycove SS Tidal Multichoice Selections
 #define SSTIDAL_SELECTION_SLATEPORT        0

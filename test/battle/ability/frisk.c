@@ -29,9 +29,9 @@ SINGLE_BATTLE_TEST("Frisk triggers in a Single Battle")
         TURN {}
     } SCENE {
         ABILITY_POPUP(player, ABILITY_FRISK);
-        MESSAGE("Furret frisked the opposing Sentret and found its Potion!");
+        MESSAGE("Furret frisked the opposing Sentret and found its McDonalds Wawa S!");
         ABILITY_POPUP(opponent, ABILITY_FRISK);
-        MESSAGE("The opposing Sentret frisked Furret and found its Potion!");
+        MESSAGE("The opposing Sentret frisked Furret and found its McDonalds Wawa S!");
     }
 }
 
@@ -54,7 +54,7 @@ DOUBLE_BATTLE_TEST("Frisk triggers for player in a Double Battle after switching
         MESSAGE("The opposing Wynaut used Pound!");
         MESSAGE("Wobbuffet fainted!");
         ABILITY_POPUP(target, ABILITY_FRISK);
-        MESSAGE("Furret frisked the opposing Wynaut and found its Potion!");
+        MESSAGE("Furret frisked the opposing Wynaut and found its McDonalds Wawa S!");
     }
 }
 
@@ -77,7 +77,7 @@ DOUBLE_BATTLE_TEST("Frisk triggers for opponent in a Double Battle after switchi
         MESSAGE("Wynaut used Pound!");
         MESSAGE("The opposing Wobbuffet fainted!");
         ABILITY_POPUP(target, ABILITY_FRISK);
-        MESSAGE("The opposing Furret frisked Wynaut and found its Potion!");
+        MESSAGE("The opposing Furret frisked Wynaut and found its McDonalds Wawa S!");
     }
 }
 
@@ -110,9 +110,9 @@ SINGLE_BATTLE_TEST("Frisk triggers in a Single Battle (Traits)")
         TURN { ; }
     } SCENE {
         ABILITY_POPUP(player, ABILITY_FRISK);
-        MESSAGE("Furret frisked the opposing Sentret and found its Potion!");
+        MESSAGE("Furret frisked the opposing Sentret and found its McDonalds Wawa S!");
         ABILITY_POPUP(opponent, ABILITY_FRISK);
-        MESSAGE("The opposing Sentret frisked Furret and found its Potion!");
+        MESSAGE("The opposing Sentret frisked Furret and found its McDonalds Wawa S!");
     }
 }
 
@@ -135,7 +135,7 @@ DOUBLE_BATTLE_TEST("Frisk triggers for player in a Double Battle after switching
         MESSAGE("The opposing Wynaut used Pound!");
         MESSAGE("Wobbuffet fainted!");
         ABILITY_POPUP(target, ABILITY_FRISK);
-        MESSAGE("Furret frisked the opposing Wynaut and found its Potion!");
+        MESSAGE("Furret frisked the opposing Wynaut and found its McDonalds Wawa S!");
     }
 }
 
@@ -158,7 +158,7 @@ DOUBLE_BATTLE_TEST("Frisk triggers for opponent in a Double Battle after switchi
         MESSAGE("Wynaut used Pound!");
         MESSAGE("The opposing Wobbuffet fainted!");
         ABILITY_POPUP(target, ABILITY_FRISK);
-        MESSAGE("The opposing Furret frisked Wynaut and found its Potion!");
+        MESSAGE("The opposing Furret frisked Wynaut and found its McDonalds Wawa S!");
     }
 }
 #endif
@@ -173,9 +173,9 @@ SINGLE_BATTLE_TEST("Frisk triggers in a Single Battle (Items)")
         TURN { ; }
     } SCENE {
         ABILITY_POPUP(player, ABILITY_FRISK);
-        MESSAGE("Furret frisked the opposing Sentret and found its Potion!");
+        MESSAGE("Furret frisked the opposing Sentret and found its McDonalds Wawa S!");
         ABILITY_POPUP(opponent, ABILITY_FRISK);
-        MESSAGE("The opposing Sentret frisked Furret and found its Potion!");
+        MESSAGE("The opposing Sentret frisked Furret and found its McDonalds Wawa S!");
     }
 }
 
@@ -198,7 +198,7 @@ DOUBLE_BATTLE_TEST("Frisk triggers for player in a Double Battle after switching
         MESSAGE("The opposing Wynaut used Pound!");
         MESSAGE("Wobbuffet fainted!");
         ABILITY_POPUP(target, ABILITY_FRISK);
-        MESSAGE("Furret frisked the opposing Wynaut and found its Potion!");
+        MESSAGE("Furret frisked the opposing Wynaut and found its McDonalds Wawa S!");
     }
 }
 
@@ -221,7 +221,7 @@ DOUBLE_BATTLE_TEST("Frisk triggers for opponent in a Double Battle after switchi
         MESSAGE("Wynaut used Pound!");
         MESSAGE("The opposing Wobbuffet fainted!");
         ABILITY_POPUP(target, ABILITY_FRISK);
-        MESSAGE("The opposing Furret frisked Wynaut and found its Potion!");
+        MESSAGE("The opposing Furret frisked Wynaut and found its McDonalds Wawa S!");
     }
 }
 #endif

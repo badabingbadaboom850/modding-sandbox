@@ -1058,9 +1058,9 @@
 #define TRAINER_UNUSED_210                1074
 #define TRAINER_UNUSED_211                1075
 #define TRAINER_UNUSED_212                1076
-#define TRAINER_UNUSED_213                1077
-#define TRAINER_UNUSED_214                1078
-#define TRAINER_UNUSED_215                1079
+#define TRAINER_GREG_ROUTE_29             1077
+#define TRAINER_GREG_ROUTE_30             1078
+#define TRAINER_GREG_CHERRYGROVE          1079
 #define TRAINER_UNUSED_216                1080
 #define TRAINER_UNUSED_217                1081
 #define TRAINER_UNUSED_218                1082
@@ -1135,15 +1135,15 @@
 #define TRAINER_UNUSED_287                1151
 #define TRAINER_UNUSED_288                1152
 #define TRAINER_UNUSED_289                1153
-#define TRAINER_UNUSED_290                1154
-#define TRAINER_UNUSED_291                1155
-#define TRAINER_UNUSED_292                1156
-#define TRAINER_UNUSED_293                1157
-#define TRAINER_UNUSED_294                1158
-#define TRAINER_UNUSED_295                1159
-#define TRAINER_UNUSED_296                1160
-#define TRAINER_UNUSED_297                1161
-#define TRAINER_UNUSED_298                1162
+#define TRAINER_GREEDENT_GANG_2             1154
+#define TRAINER_GREEDENT_GANG_3             1155
+#define TRAINER_GREEDENT_GANG_4             1156
+#define TRAINER_GREEDENT_GANG_5             1157
+#define TRAINER_GREEDENT_GANG_6             1158
+#define TRAINER_FESTIVAL_SCOTT                1159
+#define TRAINER_FESTIVAL_SNACK_A              1160
+#define TRAINER_FESTIVAL_SNACK_B              1161
+#define TRAINER_ROUTE37_SNACK_THIEF        1162
 #define TRAINER_UNUSED_299                1163
 #define TRAINER_UNUSED_300                1164 // This is out of range, don't touch (it refers to FLAG_SYS_POKEMON_GET)
 

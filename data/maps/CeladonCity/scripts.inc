@@ -66,11 +66,19 @@ CeladonCity_EventScript_Youngster2::
 	end
 
 CeladonCity_EventScript_Teacher2::
+	call TrioRift_CheckAtmosphere
+	goto_if_eq VAR_RESULT, TRUE, CeladonCity_RiftAtmosphere
 	msgbox CeladonCity_Text_Teacher2, MSGBOX_NPC
 	end
 
 CeladonCity_EventScript_Lass::
+	goto_if_set FLAG_BADGE12_GET, CeladonCity_Text_Lass_TrioWorld1_After
 	msgbox CeladonCity_Text_Lass, MSGBOX_NPC
+	goto CeladonCity_Text_Lass_TrioWorld1_Resume
+CeladonCity_Text_Lass_TrioWorld1_After:
+	msgbox CeladonCity_Text_Lass_TrioWorldAfter, MSGBOX_NPC
+CeladonCity_Text_Lass_TrioWorld1_Resume:
+	call TrioKanto_CeladonOffer
 	end
 
 CeladonCity_Text_Fisher:
@@ -84,7 +92,11 @@ CeladonCity_Text_Poliwrath:
 CeladonCity_Text_Teacher1:
 	.string "I lost at the slot machines again…\p"
 	.string "We girls also play the slots now.\p"
-	.string "You should check them out too.$"
+	.string "You should check them out too.\p"
+	.string "Riko inspected every purse\n"
+	.string "in the store. Bijuu copied\p"
+	.string "the mirror poses. Penny\n"
+	.string "found the softest seat.$"
 
 CeladonCity_Text_Gramps1:
 	.string "Grimer have been appearing lately.\p"
@@ -100,7 +112,11 @@ CeladonCity_Text_Gramps2:
 CeladonCity_Text_Youngster1:
 	.string "Want to know a secret?\p"
 	.string "Celadon Mansion has a hidden back\n"
-	.string "door.$"
+	.string "door.\p"
+	.string "The trio's trainer came\n"
+	.string "all the way from Johto. I\p"
+	.string "want to know whether Penny\n"
+	.string "likes Kanto grass better.$"
 
 CeladonCity_Text_Youngster2:
 	.string "They're holding an eating contest\n"
@@ -117,7 +133,32 @@ CeladonCity_Text_Teacher2:
 
 CeladonCity_Text_Lass:
 	.string "Looking at the ground while I was\n"
-	.string "walking made me dizzy.$"
+	.string "walking made me dizzy.\p"
+	.string "Erika wants to meet the\n"
+	.string "trio. She says even a very\p"
+	.string "famous girl can enjoy a\n"
+	.string "garden without doing\p"
+	.string "anything impressive.\p"
+	.string "Gardeners think Penny's\n"
+	.string "green fur is just one\p"
+	.string "season of her power. Could\n"
+	.string "all three girls bloom into\p"
+	.string "every element?$"
+
+
+CeladonCity_Text_Lass_TrioWorldAfter:
+	.string "Looking at the ground while I was\n"
+	.string "walking made me dizzy.\p"
+	.string "Erika held her own against\n"
+	.string "the trio! She called their\p"
+	.string "trainer thoughtful. Around\n"
+	.string "here, that is very high\p"
+	.string "praise.\p"
+	.string "Erika thinks unseen forms\n"
+	.string "appear when the girls feel\p"
+	.string "safe. Riko thinks they\n"
+	.string "appear when dinner\p"
+	.string "arrives.$"
 
 CeladonCity_EventScript_CitySign::
 	msgbox CeladonCity_Text_Sign, MSGBOX_SIGN
@@ -170,3 +211,9 @@ CeladonCity_Text_TrainerTips:
 	.string "fire and water.\p"
 	.string "Get your items at Celadon Dept.\n"
 	.string "Store!$"
+
+CeladonCity_RiftAtmosphere::
+	msgbox CeladonCity_RiftAtmosphereText, MSGBOX_NPC
+	end
+CeladonCity_RiftAtmosphereText:
+	.string "The flowers turn together\nbefore the sun comes out.\pI cannot explain it.\nBut the garden feels glad.$"

@@ -5,6 +5,7 @@
 #include "battle_dome.h"
 #include "load_save.h"
 #include "battle_setup.h"
+#include "trio_snack_chase.h"
 #include "battle_tower.h"
 #include "battle_transition.h"
 #include "main.h"
@@ -57,6 +58,8 @@
 #include "constants/event_objects.h"
 #include "constants/game_stat.h"
 #include "constants/items.h"
+#include "constants/moves.h"
+#include "constants/species.h"
 #include "constants/songs.h"
 #include "constants/trainers.h"
 #include "constants/trainer_hill.h"
@@ -79,6 +82,8 @@ static void DoSafariBattle(MainCallback endCallback);
 static void DoBugContestBattle(void);
 static void DoStandardWildBattle(bool32 isDouble);
 static void CB2_EndWildBattle(void);
+static void CB2_EndTrioSpiritTrial(void);
+static bool8 sTrioTrialHadNoCatching;
 static void CB2_EndScriptedWildBattle(void);
 static void TryUpdateGymLeaderRematchFromWild(void);
 static void TryUpdateGymLeaderRematchFromTrainer(void);
@@ -480,6 +485,152 @@ void BattleSetup_StartScriptedWildBattle(void)
     IncrementGameStat(GAME_STAT_WILD_BATTLES);
     IncrementDailyWildBattles();
     TryUpdateGymLeaderRematchFromWild();
+}
+
+static void HealTrioTrialParty(void)
+{
+    u32 i;
+    for (i = 0; i < PARTY_SIZE; i++)
+    {
+        u32 species = GetMonData(&gPlayerParty[i], MON_DATA_SPECIES_OR_EGG);
+        if (species != SPECIES_NONE && species != SPECIES_EGG)
+            HealPokemon(&gPlayerParty[i]);
+    }
+}
+
+// Story visibility and interaction share the same milestone requirements.
+bool8 CheckTrioSpiritMilestone(void)
+{
+    u32 badge;
+    if (gSpecialVar_0x8004 == SPECIES_PENNY_SPIRIT)
+    {
+        for (badge = FLAG_BADGE01_GET; badge <= FLAG_BADGE08_GET; badge++)
+            if (!FlagGet(badge))
+                return FALSE;
+        return TRUE;
+    }
+    if (gSpecialVar_0x8004 == SPECIES_BIJUU_SPIRIT)
+        return FlagGet(FLAG_IS_CHAMPION);
+    return FALSE;
+}
+
+// Home and story trials share scaling and safe defeat/escape cleanup.
+// Rift Riko also uses this lifecycle; legacy cave battles keep their original setup.
+bool8 PrepareTrioSpiritTrial(void)
+{
+    u32 highestLevel = 0;
+    u32 level;
+    u16 species = gSpecialVar_0x8004;
+    u32 i;
+
+    if (species != SPECIES_PENNY_SPIRIT && species != SPECIES_BIJUU_SPIRIT && species != SPECIES_RIKO_ECHO && species != SPECIES_BIJUU_EMBER && species != SPECIES_PENNY_BRAVE)
+        return FALSE;
+    for (i = 0; i < PARTY_SIZE; i++)
+    {
+        u32 partySpecies = GetMonData(&gPlayerParty[i], MON_DATA_SPECIES_OR_EGG);
+        if (partySpecies == SPECIES_NONE || partySpecies == SPECIES_EGG)
+            continue;
+        level = GetMonData(&gPlayerParty[i], MON_DATA_LEVEL);
+        if (level > highestLevel)
+            highestLevel = level;
+    }
+    if (highestLevel == 0)
+        return FALSE;
+    // Earned midgame charms require a +10 trial; older Spirit arenas retain scaling.
+    if (species == SPECIES_RIKO_ECHO || species == SPECIES_BIJUU_EMBER || species == SPECIES_PENNY_BRAVE)
+        level = highestLevel + 10;
+    else
+        level = highestLevel + 5 + min(highestLevel / 10, 5);
+    if (level > MAX_LEVEL)
+        level = MAX_LEVEL;
+    HealTrioTrialParty();
+    if (species == SPECIES_RIKO_ECHO)
+    {
+        // Echo is a permanent midgame form, separate from the level90 Spirit cave.
+        CreateScriptedWildMon2(species, level, ITEM_NONE, 0, MOVE_MOONBLAST, MOVE_ECHOED_VOICE, MOVE_CALM_MIND, MOVE_QUICK_ATTACK, FALSE);
+    }
+    else if (species == SPECIES_BIJUU_EMBER)
+    {
+        CreateScriptedWildMon2(species, level, ITEM_NONE, 0, MOVE_FLAMETHROWER, MOVE_SWIFT, MOVE_WILL_O_WISP, MOVE_NASTY_PLOT, FALSE);
+    }
+    else if (species == SPECIES_PENNY_BRAVE)
+    {
+        CreateScriptedWildMon2(species, level, ITEM_NONE, 0, MOVE_PLAY_ROUGH, MOVE_CRUNCH, MOVE_BABY_DOLL_EYES, MOVE_PROTECT, FALSE);
+    }
+    else if (species == SPECIES_PENNY_SPIRIT)
+    {
+        if (highestLevel < 20)
+            CreateScriptedWildMon2(species, level, ITEM_NONE, 0, MOVE_METAL_CLAW, MOVE_FAIRY_WIND, MOVE_TACKLE, MOVE_CHARM, FALSE);
+        else
+            CreateScriptedWildMon2(species, level, ITEM_NONE, 0, MOVE_IRON_HEAD, MOVE_PLAY_ROUGH, MOVE_BABY_DOLL_EYES, MOVE_PROTECT, FALSE);
+    }
+    else
+    {
+        if (highestLevel < 20)
+            // Fresh starters only know Normal attacks; Ring Target lets them hit her.
+            CreateScriptedWildMon2(species, level, ITEM_RING_TARGET, 0, MOVE_CONFUSION, MOVE_ASTONISH, MOVE_DISABLE, MOVE_QUICK_ATTACK, FALSE);
+        else
+            CreateScriptedWildMon2(species, level, ITEM_NONE, 0, MOVE_SHADOW_BALL, MOVE_PSYBEAM, MOVE_CONFUSE_RAY, MOVE_SWIFT, FALSE);
+    }
+    return TRUE;
+}
+
+// Dedicated cave phases, separate from evolutions and all older Spirit trials.
+bool8 PrepareRikoCavernBattle(void)
+{
+    static const u16 species[] = {SPECIES_RIKO_ASPECT_MIND, SPECIES_RIKO_ASPECT_BODY, SPECIES_RIKO_ASPECT_SOUL, SPECIES_RIKO_SPIRIT};
+    static const u16 moves[][4] = {
+        {MOVE_PSYCHIC, MOVE_DAZZLING_GLEAM, MOVE_CALM_MIND, MOVE_THUNDER_WAVE},
+        {MOVE_BODY_SLAM, MOVE_PLAY_ROUGH, MOVE_CRUNCH, MOVE_BULK_UP},
+        {MOVE_DRAINING_KISS, MOVE_SWIFT, MOVE_WISH, MOVE_LIGHT_SCREEN},
+        {MOVE_FLAMETHROWER, MOVE_PLAY_ROUGH, MOVE_CRUNCH, MOVE_CALM_MIND},
+    };
+    static const u16 earlyMoves[][4] = {
+        {MOVE_CONFUSION, MOVE_FAIRY_WIND, MOVE_TAIL_WHIP, MOVE_GROWL},
+        {MOVE_TACKLE, MOVE_BITE, MOVE_TAIL_WHIP, MOVE_GROWL},
+        {MOVE_FAIRY_WIND, MOVE_SWIFT, MOVE_CHARM, MOVE_GROWL},
+        {MOVE_EMBER, MOVE_FAIRY_WIND, MOVE_BITE, MOVE_GROWL},
+    };
+    u32 phase = gSpecialVar_0x8004;
+    u32 highest = 0;
+    u32 i;
+    const u16 *chosen;
+    if (phase >= ARRAY_COUNT(species))
+        return FALSE;
+    for (i = 0; i < PARTY_SIZE; i++)
+    {
+        u32 partySpecies = GetMonData(&gPlayerParty[i], MON_DATA_SPECIES_OR_EGG);
+        if (partySpecies != SPECIES_NONE && partySpecies != SPECIES_EGG)
+            highest = max(highest, GetMonData(&gPlayerParty[i], MON_DATA_LEVEL));
+    }
+    if (!highest)
+        return FALSE;
+    chosen = highest < 20 ? earlyMoves[phase] : moves[phase];
+    HealTrioTrialParty();
+    CreateScriptedWildMon2(species[phase], min(highest + 10, MAX_LEVEL), ITEM_NONE, 0,
+        chosen[0], chosen[1], chosen[2], chosen[3], FALSE);
+    return TRUE;
+}
+
+void BattleSetup_StartTrioSpiritTrial(void)
+{
+    sTrioTrialHadNoCatching = FlagGet(B_FLAG_NO_CATCHING);
+    FlagSet(B_FLAG_NO_CATCHING);
+    LockPlayerFieldControls();
+    gMain.savedCallback = CB2_EndTrioSpiritTrial;
+    gBattleTypeFlags = 0;
+    CreateBattleStartTask(GetWildBattleTransition(), 0);
+}
+
+static void CB2_EndTrioSpiritTrial(void)
+{
+    CpuFill16(0, (void *)(BG_PLTT), BG_PLTT_SIZE);
+    ResetOamRange(0, 128);
+    if (!sTrioTrialHadNoCatching)
+        FlagClear(B_FLAG_NO_CATCHING);
+    HealTrioTrialParty();
+    // Victory, defeat and escape all return here; no whiteout or money loss.
+    SetMainCallback2(CB2_ReturnToFieldContinueScriptPlayMapMusic);
 }
 
 void BattleSetup_StartScriptedDoubleWildBattle(void)
@@ -1356,7 +1507,7 @@ void SetUpTwoTrainersBattle(void)
 bool32 GetTrainerFlagFromScriptPointer(const u8 *data)
 {
     TrainerBattleParameter *temp = (TrainerBattleParameter*)(data + OPCODE_OFFSET);
-    return FlagGet(TRAINER_FLAGS_START + temp->params.opponentA);
+    return HasTrainerBeenFought(temp->params.opponentA);
 }
 
 bool32 GetRematchFromScriptPointer(const u8 *data)
@@ -1387,6 +1538,8 @@ u8 GetTrainerBattleMode(void)
 
 bool8 GetTrainerFlag(void)
 {
+    if (TrioGang_WaveForTrainer(TRAINER_BATTLE_PARAM.opponentA))
+        return HasTrainerBeenFought(TRAINER_BATTLE_PARAM.opponentA);
     if (CurrentBattlePyramidLocation() != PYRAMID_LOCATION_NONE)
         return GetBattlePyramidTrainerFlag(gSelectedObjectEvent);
     else if (InTrainerHill())
@@ -1397,6 +1550,10 @@ bool8 GetTrainerFlag(void)
 
 static void SetBattledTrainersFlags(void)
 {
+    // Greedent gang slots overlap reclaimed puzzle flags; its saved wins own
+    // progression instead of ordinary trainer flags. Blackouts stay normal.
+    if (TrioGang_WaveForTrainer(TRAINER_BATTLE_PARAM.opponentA))
+        return;
     if (TRAINER_BATTLE_PARAM.opponentB != 0)
         FlagSet(GetTrainerBFlag());
     FlagSet(GetTrainerAFlag());
@@ -1410,16 +1567,23 @@ static void UNUSED SetBattledTrainerFlag(void)
 
 bool8 HasTrainerBeenFought(u16 trainerId)
 {
+    u16 wave = TrioGang_WaveForTrainer(trainerId);
+    if (wave)
+        return VarGet(VAR_TRIO_GANG_WINS) >= wave;
     return FlagGet(TRAINER_FLAGS_START + trainerId);
 }
 
 void SetTrainerFlag(u16 trainerId)
 {
+    if (TrioGang_WaveForTrainer(trainerId))
+        return;
     FlagSet(TRAINER_FLAGS_START + trainerId);
 }
 
 void ClearTrainerFlag(u16 trainerId)
 {
+    if (TrioGang_WaveForTrainer(trainerId))
+        return;
     FlagClear(TRAINER_FLAGS_START + trainerId);
 }
 
@@ -1571,6 +1735,19 @@ static void CB2_EndTrainerBattle(void)
          && (FNPC_FLAG_HEAL_AFTER_FOLLOWER_BATTLE == FNPC_ALWAYS
          || FlagGet(FNPC_FLAG_HEAL_AFTER_FOLLOWER_BATTLE)))
             HealPlayerParty();
+    }
+
+    // Festival exhibition battles are friendly and always return to the garden.
+    // The map AND trainer guard leaves every ordinary battle callback unchanged.
+    if (gSaveBlock1Ptr->location.mapGroup == MAP_GROUP(MAP_GOLDENROD_FESTIVAL)
+     && gSaveBlock1Ptr->location.mapNum == MAP_NUM(MAP_GOLDENROD_FESTIVAL)
+     && (TRAINER_BATTLE_PARAM.opponentA == TRAINER_FESTIVAL_SCOTT
+      || TRAINER_BATTLE_PARAM.opponentA == TRAINER_FESTIVAL_SNACK_A
+      || TRAINER_BATTLE_PARAM.opponentA == TRAINER_FESTIVAL_SNACK_B))
+    {
+        HealPlayerParty();
+        SetMainCallback2(CB2_ReturnToFieldContinueScriptPlayMapMusic);
+        return;
     }
 
     if (TRAINER_BATTLE_PARAM.opponentA == TRAINER_SECRET_BASE)

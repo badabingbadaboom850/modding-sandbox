@@ -1715,10 +1715,26 @@
 #define SPECIES_BIJUU_STEEL                            1597
 #define SPECIES_RIKO_SPIRIT                            1598
 #define SPECIES_RIKO_WING                              1599
-#define SPECIES_EGG                                     (SPECIES_RIKO_WING + 1)
+#define SPECIES_BIJUU_PSYCHIC                           1600
+#define SPECIES_PENNY_GUARDIAN                         1601
+#define SPECIES_BIJUU_ICE                              1602
+#define SPECIES_PENNY_WATER                            1603
+#define SPECIES_PENNY_GRASS                            1604
+#define SPECIES_PENNY_SPIRIT                           1605
+#define SPECIES_BIJUU_SPIRIT                           1606
+#define SPECIES_RIKO_ECHO                              1607
+#define SPECIES_BIJUU_EMBER                            1608
+#define SPECIES_PENNY_BRAVE                            1609
+#define SPECIES_RIKO_FLOWER                            1610
+#define SPECIES_RIKO_ASPECT_MIND                       1611
+#define SPECIES_RIKO_ASPECT_BODY                       1612
+#define SPECIES_RIKO_ASPECT_SOUL                       1613
+#define SPECIES_EGG                                     (SPECIES_RIKO_ASPECT_SOUL + 1)
 
 #define NUM_SPECIES SPECIES_EGG
 
 #define SPECIES_SHINY_TAG 5000
 
 #endif  // GUARD_CONSTANTS_SPECIES_H
+
+

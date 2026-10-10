@@ -28,7 +28,7 @@ script Blackthorn_Mart2 {
     faceplayer
     message("Welcome! How may I help you?")
     waitmessage
-    pokemart(Blackthorn2)
+    call(TrioPuffs_Shop)
     msgbox("Come back soon!")
     release
     end
@@ -44,3 +44,35 @@ mart Blackthorn2 {
     ITEM_LUXURY_BALL
     ITEM_RETRO_MAIL
 }
+
+mart BlackthornPuffs {
+    ITEM_RIKO_PUFFS
+    ITEM_TM_ACROBATICS
+    ITEM_TM_DRAGON_TAIL
+    ITEM_TM_SKY_DROP
+    ITEM_QUICK_BALL
+    ITEM_DUSK_BALL
+    ITEM_PREMIER_BALL
+    ITEM_LUXURY_BALL
+    ITEM_RETRO_MAIL
+}
+
+raw `
+TrioPuffs_Shop::
+	goto_if_unset FLAG_BADGE01_GET, TrioPuffs_OriginalShop
+	goto_if_unset FLAG_BADGE02_GET, TrioPuffs_OriginalShop
+	goto_if_unset FLAG_BADGE03_GET, TrioPuffs_OriginalShop
+	goto_if_unset FLAG_BADGE04_GET, TrioPuffs_OriginalShop
+	goto_if_unset FLAG_BADGE05_GET, TrioPuffs_OriginalShop
+	goto_if_unset FLAG_BADGE06_GET, TrioPuffs_OriginalShop
+	goto_if_unset FLAG_BADGE07_GET, TrioPuffs_OriginalShop
+	goto_if_unset FLAG_BADGE08_GET, TrioPuffs_OriginalShop
+	msgbox TrioPuffs_ShopText, MSGBOX_DEFAULT
+	pokemart BlackthornPuffs
+	return
+TrioPuffs_OriginalShop:
+	pokemart Blackthorn2
+	return
+TrioPuffs_ShopText:
+	.string "Eight Badges! Riko Puffs\nare now in stock.\pHelp your new friends\ncatch up with the team.$"
+`

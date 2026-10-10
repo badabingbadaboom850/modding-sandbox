@@ -28,4 +28,10 @@ PewterCity_PokemonCenter1F_Text_BugCatcher:
 	.string "Most Pokémon get drowsy if they hear a\n"
 	.string "Jigglypuff singing.\p"
 	.string "There are several moves that can be\n"
-	.string "used only while a Pokémon is asleep.$"
+	.string "used only while a Pokémon is asleep.\p"
+	.string "Bijuu copied Jigglypuff's\n"
+	.string "song. Riko fought sleep\p"
+	.string "like it was a Gym battle.\n"
+	.string "Penny surrendered\p"
+	.string "immediately.$"
+

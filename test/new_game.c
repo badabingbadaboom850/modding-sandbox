@@ -10,6 +10,7 @@
 #include "constants/game_stat.h"
 #include "constants/party_menu.h"
 #include "constants/pokemon.h"
+#include "constants/species.h"
 #include "constants/vars.h"
 
 TEST("A fresh new game defaults to 2x battle speed")
@@ -82,4 +83,36 @@ TEST("Shiny RNG audit: the release predicate accepts exactly 1 in 256 values")
 
     EXPECT_EQ(shinyCount, RELEASE_SHINY_ODDS);
     EXPECT_EQ(shinyCount * 256, MAX_u16 + 1);
+}
+
+TEST("Festival quick-test starts are gated and do not grant late progression")
+{
+    NewGameInitData();
+#if TRIO_FESTIVAL_TEST_MODE
+    EXPECT_EQ(gPlayerPartyCount, 3);
+    EXPECT_EQ(GetMonData(&gPlayerParty[0], MON_DATA_SPECIES), SPECIES_RIKO);
+    EXPECT_EQ(GetMonData(&gPlayerParty[1], MON_DATA_SPECIES), SPECIES_FIDOUGH);
+    EXPECT_EQ(GetMonData(&gPlayerParty[2], MON_DATA_SPECIES), SPECIES_BIJUU);
+    EXPECT_EQ(GetMonData(&gPlayerParty[0], MON_DATA_LEVEL), 30);
+    EXPECT_EQ(GetMonData(&gPlayerParty[1], MON_DATA_LEVEL), 30);
+    EXPECT_EQ(GetMonData(&gPlayerParty[2], MON_DATA_LEVEL), 30);
+    EXPECT(FlagGet(FLAG_BADGE01_GET));
+    EXPECT(FlagGet(FLAG_BADGE02_GET));
+    EXPECT(FlagGet(FLAG_BADGE03_GET));
+    EXPECT(FlagGet(FLAG_BADGE04_GET));
+#else
+    EXPECT_EQ(gPlayerPartyCount, 2);
+    EXPECT_EQ(GetMonData(&gPlayerParty[0], MON_DATA_SPECIES), SPECIES_RIKO);
+    EXPECT_EQ(GetMonData(&gPlayerParty[1], MON_DATA_SPECIES), SPECIES_FIDOUGH);
+    EXPECT_EQ(GetMonData(&gPlayerParty[0], MON_DATA_LEVEL), 5);
+    EXPECT_EQ(GetMonData(&gPlayerParty[1], MON_DATA_LEVEL), 5);
+    EXPECT(!FlagGet(FLAG_BADGE01_GET));
+    EXPECT(!FlagGet(FLAG_BADGE02_GET));
+    EXPECT(!FlagGet(FLAG_BADGE03_GET));
+    EXPECT(!FlagGet(FLAG_BADGE04_GET));
+#endif
+    EXPECT(!FlagGet(FLAG_BADGE05_GET));
+    EXPECT(!FlagGet(FLAG_IS_CHAMPION));
+    EXPECT(!FlagGet(FLAG_TRIO_FESTIVAL_RIKO));
+    EXPECT(!FlagGet(FLAG_TRIO_FESTIVAL_PICNIC));
 }

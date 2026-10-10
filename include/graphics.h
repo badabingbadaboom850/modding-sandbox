@@ -3520,10 +3520,20 @@ extern const u16 gItemIcon_Palette_Radio[];
 
 extern const u32 gItemIcon_BlackMirror[];
 extern const u16 gItemIconPalette_BlackMirror[];
+extern const u32 gItemIcon_RikoPuffs[];
+extern const u16 gItemIconPalette_RikoPuffs[];
+extern const u32 gItemIcon_RikosBloom[];
+extern const u16 gItemIconPalette_RikosBloom[];
+extern const u32 gItemIcon_RikosCourage[];
+extern const u16 gItemIconPalette_RikosCourage[];
 extern const u32 gItemIcon_RikosWand[];
 extern const u16 gItemIconPalette_RikosWand[];
 extern const u32 gItemIcon_BlueBrush[];
 extern const u16 gItemIconPalette_BlueBrush[];
+extern const u32 gItemIcon_BijuusFishToy[];
+extern const u16 gItemIconPalette_BijuusFishToy[];
+extern const u32 gItemIcon_BijuusCatNip[];
+extern const u16 gItemIconPalette_BijuusCatNip[];
 
 extern const u32 gItemIcon_GSBall[];
 extern const u16 gItemIconPalette_GSBall[];
@@ -3540,5 +3550,30 @@ extern const u16 gTitleScreenEmeraldVersionPal[];
 //New Summary Pages
 extern const u32 gSummaryPage_Traits_Tilemap[];
 extern const u32 gSummaryLongDescriptionBox_Tilemap[];
+
+extern const u32 gItemIcon_DadsKeys[];
+extern const u16 gItemIconPalette_DadsKeys[];
+extern const u32 gItemIcon_PieceOfChicken[];
+extern const u16 gItemIconPalette_PieceOfChicken[];
+extern const u32 gItemIcon_GreenPepper[];
+extern const u16 gItemIconPalette_GreenPepper[];
+extern const u32 gItemIcon_EelSushi[];
+extern const u16 gItemIconPalette_EelSushi[];
+extern const u32 gItemIcon_FrozenFish[];
+extern const u16 gItemIconPalette_FrozenFish[];
+extern const u32 gItemIcon_MouseToy[];
+extern const u16 gItemIconPalette_MouseToy[];
+extern const u32 gItemIcon_DogBowl[];
+extern const u16 gItemIconPalette_DogBowl[];
+extern const u32 gItemIcon_FetchingStick[];
+extern const u16 gItemIconPalette_FetchingStick[];
+
+
+
+extern const u32 gItemIcon_BijuusFire[];
+extern const u16 gItemIconPalette_BijuusFire[];
+
+extern const u32 gItemIcon_PennysBravery[];
+extern const u16 gItemIconPalette_PennysBravery[];
 
 #endif //GUARD_GRAPHICS_H

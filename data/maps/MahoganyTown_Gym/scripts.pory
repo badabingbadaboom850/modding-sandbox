@@ -136,14 +136,22 @@ MahoganyTown_Gym_Text_PryceIntro:
     .string "I, Pryce--the winter trainer--\n"
     .string "shall demonstrate my power!\p"
     .string "Even legends must face a\n"
-    .string "careful and patient battle.$"
+    .string "careful and patient battle.\p"
+	.string "Let Riko make her\n"
+	.string "entrance. Let Bijuu study\p"
+	.string "the field. Penny knows the\n"
+	.string "value of waiting. Do you?$"
 
 MahoganyTown_Gym_Text_PryceImpressed:
     .string "Ah, I am impressed by your\n"
     .string "prowess.\p"
     .string "With your strong will, I know you\n"
     .string "will overcome all life's obstacles.\p"
-    .string "You are worthy of this Badge!$"
+    .string "You are worthy of this Badge!\p"
+	.string "You waited for the right\n"
+	.string "moment. The trio's\p"
+	.string "strength would mean little\n"
+	.string "without that judgment.$"
 
 MahoganyTown_Gym_Text_ReceivedBadge:
     .string "{PLAYER} received Glacierbadge.$"
@@ -166,7 +174,11 @@ MahoganyTown_Gym_Text_CherishPokemon:
     .string "spring arrives.\p"
     .string "You and your Pokémon will be\n"
     .string "together for many years to come.\p"
-    .string "Cherish your time together!$"
+    .string "Cherish your time together!\p"
+	.string "Fame moves quickly. Trust\n"
+	.string "grows slowly. Remember\p"
+	.string "that when the world starts\n"
+	.string "asking about your girls.$"
 
 MahoganyTown_Gym_Text_PryceRematch:
     .string "Ah, Johto Champion!\p"
@@ -177,13 +189,19 @@ MahoganyTown_Gym_Text_PryceRematch:
     .string "learn from each other.\p"
     .string "I, Pryce--the winter trainer--\n"
     .string "still have a few tricks left.\p"
-    .string "Want to have a rematch with me?$"
+    .string "Want to have a rematch with me?\p"
+	.string "I have heard your name all\n"
+	.string "winter. Let us see what\p"
+	.string "the girls learned beyond\n"
+	.string "these mountains.$"
 
 MahoganyTown_Gym_Text_PryceRematchDefeat:
     .string "Ah, yet again I'm impressed by\n"
     .string "your prowess.\p"
     .string "With your strong will, I know you\n"
-    .string "will overcome all life's obstacles.$"
+    .string "will overcome all life's obstacles.\p"
+	.string "Patience, again. You and\n"
+	.string "Penny understand it well.$"
 
 MahoganyTown_Gym_Text_Guide:
     .string "Pryce is a veteran who has\n"

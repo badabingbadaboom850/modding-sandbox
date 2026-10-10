@@ -20,9 +20,12 @@ BlackThornCity_EventScript_MoveGymBoy::
 
 BlackthornCity_OnFrame::
 	map_script_2 VAR_BLACKTHORN_CITY_STATE, 4, BlackthornCity_EventScript_Call
+	map_script_2 VAR_TEMP_9, TRUE, TrioStorySpirit_PennySightingCall
 	.2byte 0
 
 BlackthornCity_EventScript_CityEnter:: 
+	call TrioStorySpirit_PennyVisibility
+	call TrioStorySpirit_PreparePennySighting
 	setflag FLAG_VISITED_BLACKTHORN_CITY
 	callnative SetTimeBasedEncounters
 	end
@@ -105,7 +108,12 @@ BlackthornCity_EventScript_BlackBelt::
 	end
 
 BlackthornCity_EventScript_CoolTrainerF::
+	goto_if_set FLAG_BADGE08_GET, BlackthornCooltrainerF1Text_TrioWorld1_After
 	msgbox BlackthornCooltrainerF1Text, MSGBOX_NPC
+	goto BlackthornCooltrainerF1Text_TrioWorld1_Resume
+BlackthornCooltrainerF1Text_TrioWorld1_After:
+	msgbox BlackthornCooltrainerF1Text_TrioWorldAfter, MSGBOX_NPC
+BlackthornCooltrainerF1Text_TrioWorld1_Resume:
 	end
 
 BlackthornCity_EventScript_Youngster::
@@ -113,6 +121,8 @@ BlackthornCity_EventScript_Youngster::
 	end
 
 BlackthornCity_EventScript_CoolTrainerF2::
+	call TrioRift_CheckAtmosphere
+	goto_if_eq VAR_RESULT, TRUE, BlackthornCity_RiftAtmosphere
 	msgbox BlackthornCooltrainerF2Text, MSGBOX_NPC
 	end
 
@@ -226,15 +236,44 @@ BlackBeltText_VoicesInMyHead:
 
 BlackthornCooltrainerF1Text:
 	.string "Are you going to make your Pokémon\n"
-	.string "remember some moves?$"
+	.string "remember some moves?\p"
+	.string "Clair wants to test the\n"
+	.string "trio herself. She says a\p"
+	.string "famous name will not get\n"
+	.string "past her dragons. Riko\p"
+	.string "seems happy to discuss it.\p"
+	.string "A Dragon tamer insists the\n"
+	.string "girls could wield Dragon\p"
+	.string "power too. I said they\n"
+	.string "were three babies. He said\p"
+	.string "that was the worrying\n"
+	.string "part.$"
+
+
+BlackthornCooltrainerF1Text_TrioWorldAfter:
+	.string "Are you going to make your Pokémon\n"
+	.string "remember some moves?\p"
+	.string "Clair held her own against\n"
+	.string "all three girls! Dragon\p"
+	.string "trainers respect that\n"
+	.string "match, even if Clair\p"
+	.string "changes the subject.\p"
+	.string "The tamers are arguing\n"
+	.string "over how many forms the\p"
+	.string "girls have left to show.\n"
+	.string "Clair says guessing is\p"
+	.string "easier than preparing.$"
 
 BlackthornYoungsterText:
 	.string "Dragon masters come from here.\p"
 	.string "A student says Riko tried their\n"
 	.string "winter wool blankets and refused\n"
-	.string "to give the fluff back!$"
-
-
+	.string "to give the fluff back!\p"
+	.string "I would pick Bijuu for a\n"
+	.string "race, Riko for a grand\p"
+	.string "entrance, and Penny for\n"
+	.string "the walk home. Everybody\p"
+	.string "needs a walk-home friend.$"
 
 BlackthornCity_MeetSantosText:
 	.string "Santos: …\p"
@@ -260,7 +299,12 @@ BlackthornCity_SantosNopeText:
 
 BlackthornCooltrainerF2Text:
 	.string "Wow, you came through the Ice Path?\p"
-	.string "You must be a real hotshot trainer!$"
+	.string "You must be a real hotshot trainer!\p"
+	.string "A mysterious trainer\n"
+	.string "brought the trio through\p"
+	.string "the mountain roads. Bijuu\n"
+	.string "watched the bends. Penny\p"
+	.string "watched her sisters.$"
 
 BlackthornCitySignText:
 	.string "Blackthorn City\p"
@@ -276,3 +320,9 @@ BlackthornCity_Text_MoveDeletersHouseSign:
 
 BlackthornCity_Text_DragonDenSign:
 	.string "Dragon's Den Ahead$"
+
+BlackthornCity_RiftAtmosphere::
+	msgbox BlackthornCity_RiftAtmosphereText, MSGBOX_NPC
+	end
+BlackthornCity_RiftAtmosphereText:
+	.string "I called into the hills.\nTwo echoes answered me.\pFor a moment, even the\nmountain seemed at peace.$"

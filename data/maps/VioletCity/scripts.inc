@@ -127,14 +127,108 @@ VioletCity_EventScript_Youngster::
 VioletCity_EventScript_Boy::
 	lock
 	faceplayer
+	goto_if_set FLAG_BADGE01_GET, VioletCity_EventScript_BoyAfterBadge
 	msgbox VioletCity_Text_Boy, MSGBOX_DEFAULT
 	closemessage
 	release
 	end
 
+VioletCity_EventScript_BoyAfterBadge::
+	goto_if_eq VAR_TRIO_RESEARCH_STATE, 1, VioletCity_EventScript_ResearchReport
+	goto_if_eq VAR_TRIO_RESEARCH_STATE, 2, VioletCity_EventScript_ResearchAlreadyReported
+	msgbox VioletCity_Text_BoyAfterBadge, MSGBOX_DEFAULT
+	closemessage
+	release
+	end
+
+VioletCity_EventScript_ResearchReport::
+	call TrioParty_CheckAny
+	goto_if_eq VAR_RESULT, FALSE, VioletCity_EventScript_ResearchNeedBuddy
+	call TrioParty_CheckRiko
+	goto_if_eq VAR_RESULT, TRUE, VioletCity_EventScript_ResearchRikoReport
+	call TrioParty_CheckPenny
+	goto_if_eq VAR_RESULT, TRUE, VioletCity_EventScript_ResearchPennyReport
+	call TrioParty_CheckBijuu
+	goto_if_eq VAR_RESULT, TRUE, VioletCity_EventScript_ResearchBijuuReport
+	goto VioletCity_EventScript_ResearchNeedBuddy
+
+VioletCity_EventScript_ResearchRikoReport::
+	msgbox VioletCity_Text_ResearchRikoReport, MSGBOX_DEFAULT
+	goto VioletCity_EventScript_ResearchReportReady
+
+VioletCity_EventScript_ResearchPennyReport::
+	msgbox VioletCity_Text_ResearchPennyReport, MSGBOX_DEFAULT
+	goto VioletCity_EventScript_ResearchReportReady
+
+VioletCity_EventScript_ResearchBijuuReport::
+	msgbox VioletCity_Text_ResearchBijuuReport, MSGBOX_DEFAULT
+	goto VioletCity_EventScript_ResearchReportReady
+
+VioletCity_EventScript_ResearchReportReady::
+	setvar VAR_TRIO_RESEARCH_STATE, 2
+	msgbox VioletCity_Text_ResearchReportReady, MSGBOX_DEFAULT
+	closemessage
+	release
+	end
+
+VioletCity_EventScript_ResearchNeedBuddy::
+	msgbox VioletCity_Text_ResearchNeedBuddy, MSGBOX_DEFAULT
+	closemessage
+	release
+	end
+
+VioletCity_EventScript_ResearchAlreadyReported::
+	msgbox VioletCity_Text_ResearchAlreadyReported, MSGBOX_DEFAULT
+	closemessage
+	release
+	end
+
+VioletCity_Text_BoyAfterBadge:
+	.string "You beat Falkner! Word about\n"
+	.string "the trio reached our Academy.\p"
+	.string "They say Riko talks through\n"
+	.string "every lesson. Penny naps\p"
+	.string "through them. Bijuu can\n"
+	.string "outrun a Pidgey!$"
+
+VioletCity_Text_ResearchRikoReport:
+	.string "Riko has plenty to say, even\n"
+	.string "in a new place. I'll note how\p"
+	.string "she keeps talking while she\n"
+	.string "watches the room.$"
+
+VioletCity_Text_ResearchPennyReport:
+	.string "Penny moves at her own pace.\n"
+	.string "Small steps count. I'll note\p"
+	.string "that brave can be quiet, too.$"
+
+VioletCity_Text_ResearchBijuuReport:
+	.string "Bijuu likes to move quickly,\n"
+	.string "then checks that her friends\p"
+	.string "are close by. I'll note that\n"
+	.string "speed and staying together\p"
+	.string "can go hand in hand.$"
+
+
+VioletCity_Text_ResearchReportReady:
+	.string "I wrote it down for you. Take\n"
+	.string "the note back to Cherrygrove.$"
+
+VioletCity_Text_ResearchNeedBuddy:
+	.string "Come back with one of the trio\n"
+	.string "traveling with you. I'll add\p"
+	.string "the Academy's note then.$"
+
+VioletCity_Text_ResearchAlreadyReported:
+	.string "The note is ready. Your friend\n"
+	.string "in Cherrygrove can finish the\p"
+	.string "research.$"
+
 VioletCity_EventScript_Gramps::
 	lock
 	faceplayer
+	call TrioRift_CheckAtmosphere
+	goto_if_eq VAR_RESULT, TRUE, VioletCity_RiftAtmosphere
 	msgbox VioletCity_Text_Gramps, MSGBOX_DEFAULT
 	closemessage
 	release
@@ -143,7 +237,12 @@ VioletCity_EventScript_Gramps::
 VioletCity_EventScript_Lass::
 	lock
 	faceplayer
+	goto_if_set FLAG_BADGE01_GET, VioletCity_Text_Lass_TrioWorld1_After
 	msgbox VioletCity_Text_Lass, MSGBOX_DEFAULT
+	goto VioletCity_Text_Lass_TrioWorld1_Resume
+VioletCity_Text_Lass_TrioWorld1_After:
+	msgbox VioletCity_Text_Lass_TrioWorldAfter, MSGBOX_DEFAULT
+VioletCity_Text_Lass_TrioWorld1_Resume:
 	closemessage
 	release
 	end
@@ -422,7 +521,37 @@ VioletCity_Text_Lass:
 	.string "They say that Ghost-type\n"
 	.string "moves can bypass the defenses\p"
 	.string "of tough Pokémon like Onix\n"
-	.string "and Geodude.$"
+	.string "and Geodude.\p"
+	.string "Falkner says a trainer is\n"
+	.string "more than a powerful\p"
+	.string "party. I wonder what he\n"
+	.string "will make of three girls\p"
+	.string "who know each other so\n"
+	.string "well.\p"
+	.string "Academy kids say Riko,\n"
+	.string "Penny and Bijuu can borrow\p"
+	.string "every Pokemon type. I'd\n"
+	.string "settle for learning how\p"
+	.string "Riko borrows snacks.$"
+
+
+VioletCity_Text_Lass_TrioWorldAfter:
+	.string "Ghosts are rumored to appear\n"
+	.string "in Sprout Tower.\p"
+	.string "They say that Ghost-type\n"
+	.string "moves can bypass the defenses\p"
+	.string "of tough Pokémon like Onix\n"
+	.string "and Geodude.\p"
+	.string "Falkner held his own\n"
+	.string "against the trio! The\p"
+	.string "Academy is arguing about\n"
+	.string "their teamwork. I think\p"
+	.string "Penny kept everyone calm.\p"
+	.string "Falkner's students are\n"
+	.string "charting all the elements\p"
+	.string "the girls might use. It\n"
+	.string "already needs a bigger\p"
+	.string "blackboard.$"
 
 VioletCity_Text_Boy:
 	.string "Hey, are you a trainer?\p"
@@ -440,12 +569,23 @@ VioletCity_Text_Gramps:
 	.string "Pokémon Gym, is a fine trainer!\p"
 	.string "He inherited his father's gym\n"
 	.string "and has done a great job with\l"
-	.string "it.$"
+	.string "it.\p"
+	.string "A mysterious trainer came\n"
+	.string "up Route 31 with the trio.\p"
+	.string "Some call it luck. Three\n"
+	.string "girls choosing one person\p"
+	.string "sounds like trust to me.$"
 
 VioletCity_Text_Youngster:
 	.string "I saw a wiggly tree up ahead!\p"
 	.string "If you touch it, it squirms\n"
-	.string "and dances! Cool!$"
+	.string "and dances! Cool!\p"
+	.string "Bijuu copied a\n"
+	.string "Bellsprout's sway. Riko\p"
+	.string "tried too and nearly\n"
+	.string "rolled down the steps.\p"
+	.string "Penny waited at the\n"
+	.string "bottom.$"
 
 VioletCity_Text_Sign:
 	.string "Violet City\p"
@@ -641,3 +781,11 @@ berrytrader_juggler_Text_11:
 DexnavDude_Text_0:
 	.string "If you have a Pokegéar, you should\n"
 	.string "make use of the Dexnav feature in it.$"
+
+VioletCity_RiftAtmosphere::
+	msgbox VioletCity_RiftAtmosphereText, MSGBOX_DEFAULT
+	closemessage
+	release
+	end
+VioletCity_RiftAtmosphereText:
+	.string "The bell rings only once.\nThen the hills answer.\pNot louder. Just closer.\nAs if they were listening.$"

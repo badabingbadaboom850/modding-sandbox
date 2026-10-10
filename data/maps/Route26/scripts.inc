@@ -1,10 +1,12 @@
 Route26_MapScripts::
+	map_script MAP_SCRIPT_ON_FRAME_TABLE, TrioGang_OnFrame
 	map_script MAP_SCRIPT_ON_TRANSITION, Route26_OnTransition
 	map_script MAP_SCRIPT_ON_RESUME, SetTimeEncounters
 	.byte 0
 
 Route26_OnTransition: 
 	callnative SetTimeBasedEncounters
+	special TrioGang_PrepareAmbush
 	end
 
 Route26_EventScript_Jake::
@@ -34,7 +36,12 @@ Route26_EventScript_Richard::
 
 Route26_Text_CooltrainermJakeSeen:
     .string "I'm making my final preparations\n"
-    .string "for the Pokémon League.$"
+    .string "for the Pokémon League.\p"
+	.string "So you are the trainer\n"
+	.string "traveling with Riko,\p"
+	.string "Penny, and Bijuu. Your\n"
+	.string "reputation reached this\p"
+	.string "road before you did!$"
 
 Route26_Text_CooltrainermJakeBeaten:
     .string "I blew it!$"
@@ -44,7 +51,11 @@ Route26_Text_CooltrainermJakeAfter:
     .string "the League.\p"
     .string "I need to do some more training.\p"
     .string "I hear that the League's Elite\n"
-    .string "Four are tougher than Gym Leaders.$"
+    .string "Four are tougher than Gym Leaders.\p"
+	.string "Now I know why the leaders\n"
+	.string "talk about you. The girls\p"
+	.string "are strong, but your\n"
+	.string "timing made that match.$"
 
 Route26_Text_CooltrainermGavenSeen:
     .string "By experiencing tough battles, you\n"

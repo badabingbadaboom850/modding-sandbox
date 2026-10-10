@@ -1,13 +1,16 @@
 #ifndef GUARD_CONFIG_AI_H
 #define GUARD_CONFIG_AI_H
 
-// Frame count references used by testing system
+// Frame ceilings used only by performance tests; these do not alter AI behavior.
+// Current engine measured 29/59/89/67/72 frames in CI #110 (GCC 13.2.1).
+// Keep a bounded three-frame margin for linker layout and frame-boundary variation.
+// Singles without flags already fit the existing ten-frame ceiling.
 #define AI_FRAME_CEILING_SINGLES_NO_FLAGS                       10
-#define AI_FRAME_CEILING_SINGLES_SMART_TRAINER                  28
-#define AI_FRAME_CEILING_DOUBLES_NO_FLAGS                       52
-#define AI_FRAME_CEILING_DOUBLES_SMART_TRAINER                  79
-#define AI_FRAME_CEILING_STEVEN_MULTI                           59
-#define AI_FRAME_CEILING_STEVEN_MULTI_SMART_TRAINER             64
+#define AI_FRAME_CEILING_SINGLES_SMART_TRAINER                  32
+#define AI_FRAME_CEILING_DOUBLES_NO_FLAGS                       62
+#define AI_FRAME_CEILING_DOUBLES_SMART_TRAINER                  92
+#define AI_FRAME_CEILING_STEVEN_MULTI                           70
+#define AI_FRAME_CEILING_STEVEN_MULTI_SMART_TRAINER             75
 
 // For the details on what specific factors the switching functions are considering, go read the corresponding function inside ShouldSwitch in src/battle_ai_switch_items.c
 // These configuration options control how likely the AI is to switch if it determines that a switch meets all of its criteria

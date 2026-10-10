@@ -130,14 +130,22 @@ CianwoodCity_Text_Youngster:
 	.string "An old sailor says Riko crossed the\n"
 	.string "rough sea on her own fluff.\p"
 	.string "She arrived dry, then asked for a\n"
-	.string "snack.$"
-
-
+	.string "snack.\p"
+	.string "Bijuu copied the surf,\n"
+	.string "then a sailor, then the\p"
+	.string "surf again. I think she\n"
+	.string "was arguing with the\p"
+	.string "ocean.$"
 
 CianwoodCity_EventScript_PokefanM::
 	lock
 	faceplayer
+	goto_if_set FLAG_BADGE05_GET, CianwoodCity_Text_PokefanM_TrioWorld1_After
 	msgbox CianwoodCity_Text_PokefanM, MSGBOX_DEFAULT
+	goto CianwoodCity_Text_PokefanM_TrioWorld1_Resume
+CianwoodCity_Text_PokefanM_TrioWorld1_After:
+	msgbox CianwoodCity_Text_PokefanM_TrioWorldAfter, MSGBOX_DEFAULT
+CianwoodCity_Text_PokefanM_TrioWorld1_Resume:
 	closemessage
 	release
 	end
@@ -147,11 +155,43 @@ CianwoodCity_Text_PokefanM:
 	.string "be crushed.\p"
 	.string "They may be hiding something.\p"
 	.string "Your Pokémon could use Rock Smash\n"
-	.string "to break them.$"
+	.string "to break them.\p"
+	.string "Chuck wants a proper\n"
+	.string "challenge from the trio.\p"
+	.string "He says legends need\n"
+	.string "exercise too. Riko says\p"
+	.string "lunch counts.\p"
+	.string "A sailor says the girls\n"
+	.string "hide every element inside\p"
+	.string "them. Chuck asked if that\n"
+	.string "includes Fighting. Riko\p"
+	.string "asked if it includes\n"
+	.string "lunch.$"
+
+
+CianwoodCity_Text_PokefanM_TrioWorldAfter:
+	.string "Boulders to the north of town can\n"
+	.string "be crushed.\p"
+	.string "They may be hiding something.\p"
+	.string "Your Pokémon could use Rock Smash\n"
+	.string "to break them.\p"
+	.string "Chuck stood his ground\n"
+	.string "against the trio! He has\p"
+	.string "been practicing ever\n"
+	.string "since. I have never seen\p"
+	.string "him so excited.\p"
+	.string "Chuck thinks the girls\n"
+	.string "have more elements left to\p"
+	.string "show. Penny only\n"
+	.string "demonstrates her brave\p"
+	.string "side when her sisters feel\n"
+	.string "safe.$"
 
 CianwoodCity_EventScript_Lass::
 	lock
 	faceplayer
+	call TrioRift_CheckAtmosphere
+	goto_if_eq VAR_RESULT, TRUE, CianwoodCity_RiftAtmosphere
 	msgbox CianwoodCity_Text_Lass, MSGBOX_DEFAULT
 	closemessage
 	release
@@ -159,7 +199,13 @@ CianwoodCity_EventScript_Lass::
 
 CianwoodCity_Text_Lass:
 	.string "Chuck, the Gym Leader, spars with\n"
-	.string "his fighting Pokémon.$"
+	.string "his fighting Pokémon.\p"
+	.string "A mysterious trainer\n"
+	.string "arrived with three little\p"
+	.string "girls. Everyone stared.\n"
+	.string "Penny stayed close until\p"
+	.string "Riko made it feel like a\n"
+	.string "game.$"
 
 CianwoodCity_EventScript_SuicuneTrigger::
 	lock
@@ -363,3 +409,11 @@ CianwoodCity_Text_Engineer:
 	.string "This path is under construction.\n"
 	.string "We're getting the new Safari Zone\l"
 	.string "up and running!$"
+
+CianwoodCity_RiftAtmosphere::
+	msgbox CianwoodCity_RiftAtmosphereText, MSGBOX_DEFAULT
+	closemessage
+	release
+	end
+CianwoodCity_RiftAtmosphereText:
+	.string "I walk the shore at dusk.\nThe dark feels kinder now.\pLittle lights on the tide\nseem to keep pace with me.$"

@@ -359,6 +359,9 @@ gSpecials::
 	def_special ShakeCamera
 	def_special StartGroudonKyogreBattle
 	def_special BattleSetup_StartLegendaryBattle
+	def_special CheckTrioSpiritMilestone
+	def_special PrepareTrioSpiritTrial
+	def_special BattleSetup_StartTrioSpiritTrial
 	def_special BattleSetup_StartLegendaryEncounter
 	def_special BattleSetup_FinishLegendaryEncounter
 	def_special StartRegiBattle
@@ -644,3 +647,17 @@ gSpecials::
 	def_special EnableAutorun
 	def_special BattleSetup_StartDexNavBattle
 	def_special MigrateLegacyRadioShortcut
+	def_special TrioCamp_RecordVisit
+	def_special TrioCamp_RecordGame
+	def_special TrioCamp_RecordPet
+	def_special TrioCamp_UseFavorite
+	def_special TrioCamp_BufferStats
+	def_special TrioCamp_UpdateKeepsakes
+	def_special TrioSnack_BeginTheft
+	def_special TrioSnack_BufferItem
+	def_special TrioSnack_ReturnItem
+	def_special TrioSnack_UpdateObjects
+	def_special TrioGang_PrepareAmbush
+	def_special TrioGang_BeginAmbush
+	def_special TrioGang_RecordVictory
+	def_special PrepareRikoCavernBattle

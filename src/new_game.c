@@ -280,13 +280,20 @@ void NewGameInitData(void)
     ClearPlayerLinkBattleRecords();
     InitSeedotSizeRecord();
     InitLotadSizeRecord();
-    // Start with Riko, Penny, and her Spirit. The selected starter is added by ChooseStarter.
+    // Start with Riko and Penny. Bijuu joins through her Route 31 encounter.
+    // Their species entries guarantee female gender, including after evolution.
+    // The selected starter is added by ChooseStarter.
     gPlayerPartyCount = 0;
     ZeroPlayerPartyMons();
-    gPlayerPartyCount = 3;
+    gPlayerPartyCount = 2;
     CreateRandomMon(&gPlayerParty[0], SPECIES_RIKO, 5);
     CreateRandomMon(&gPlayerParty[1], SPECIES_FIDOUGH, 5);
-    CreateRandomMon(&gPlayerParty[2], SPECIES_RIKO_SPIRIT, 5);
+#if TRIO_FESTIVAL_TEST_MODE
+    gPlayerPartyCount = 3;
+    CreateRandomMon(&gPlayerParty[0], SPECIES_RIKO, 30);
+    CreateRandomMon(&gPlayerParty[1], SPECIES_FIDOUGH, 30);
+    CreateRandomMon(&gPlayerParty[2], SPECIES_BIJUU, 30);
+#endif
     ResetPokemonStorageSystem();
     ResetHallOfFameArchive();
     DeactivateAllRoamers();
@@ -297,24 +304,7 @@ void NewGameInitData(void)
     gSaveBlock1Ptr->registeredShortcutsMagic = REGISTERED_SHORTCUTS_SAVE_MAGIC;
     gSaveBlock1Ptr->registeredShortcutsMagicInv = REGISTERED_SHORTCUTS_SAVE_MAGIC_INV;
     ClearBag();
-    // Testing items for the personalized berry slots.
-    AddBagItem(ITEM_ORAN_BERRY, 1);
-    AddBagItem(ITEM_CHERI_BERRY, 1);
-    AddBagItem(ITEM_PECHA_BERRY, 1);
-    // Keep the custom item icons in every fresh save for visual testing.
-    AddBagItem(ITEM_GREAT_BALL, 1); // Trio Ball reskin
-    AddBagItem(ITEM_ULTRA_BALL, 1); // Riko Ultra Ball
-    AddBagItem(ITEM_LOVE_BALL, 1); // Penny Love Ball
-    AddBagItem(ITEM_MOON_BALL, 1); // Bijuu Moon Ball
-    AddBagItem(ITEM_POTION, 1); // McDonalds Wawa S
-    AddBagItem(ITEM_SUPER_POTION, 1); // McDonalds Wawa M
-    AddBagItem(ITEM_HYPER_POTION, 1); // McDonalds Wawa L
-    AddBagItem(ITEM_RARE_CANDY, 1); // Cat Food Tin reskin
-    AddBagItem(ITEM_RIKOS_PURSE, 1);
-    AddBagItem(ITEM_BIJUUS_POM_POMS, 1);
-    AddBagItem(ITEM_PENNYS_BLANKEY, 1);
-    AddBagItem(ITEM_RIKOS_WAND, 1);
-    AddBagItem(ITEM_BLUE_BRUSH, 1);
+    // Fresh saves start without held items or Poke Balls in the Bag.
 #if P_GEN_9_MEGA_EVOLUTIONS
     // Testing aid: make Mega Evolution available immediately in fresh saves.
     AddBagItem(ITEM_MEGA_RING, 1);
@@ -357,6 +347,12 @@ void NewGameInitData(void)
     ResetDexNav();
     ClearFollowerNPCData();
     SetLastHealLocationWarp(HEAL_LOCATION_NEW_BARK_TOWN_PLAYERS_HOUSE_2F);
+#if TRIO_FESTIVAL_TEST_MODE
+    FlagSet(FLAG_BADGE01_GET);
+    FlagSet(FLAG_BADGE02_GET);
+    FlagSet(FLAG_BADGE03_GET);
+    FlagSet(FLAG_BADGE04_GET);
+#endif
     TryInitializeClockFromRtc();
 }
 
@@ -395,3 +391,4 @@ static void ResetDexNav(void)
 #endif
     gSaveBlock3Ptr->dexNavChain = 0;
 }
+

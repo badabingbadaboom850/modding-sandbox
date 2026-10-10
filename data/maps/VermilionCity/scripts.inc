@@ -3,6 +3,7 @@
 .set LOCALID_VERMILION_SNORLAX, 1
 
 VermilionCity_MapScripts::
+	map_script MAP_SCRIPT_ON_FRAME_TABLE, TrioKanto_VermilionOnFrame
 	map_script MAP_SCRIPT_ON_TRANSITION, VermilionCity_MapScript_OnTransition
 	map_script MAP_SCRIPT_ON_RESUME, SetTimeEncounters
 	map_script MAP_SCRIPT_ON_LOAD, VermilionCity_OnLoad
@@ -13,6 +14,7 @@ VermilionCity_OnLoad::
 	end
 
 VermilionCity_MapScript_OnTransition::
+	call TrioKanto_PrepareVermilion
 	setflag FLAG_VISITED_VERMILION_CITY
 	goto_if_eq VAR_SUICUNE_ENCOUNTERS, 3, VermilionCity_EventScript_SetSuicuneScene
 	setflag FLAG_HIDE_VERMILION_EUSINE_SUICUNE
@@ -108,7 +110,13 @@ VermilionCity_EventScript_SuicuneEpisode::
 	end
 
 VermilionCity_EventScript_Teacher::
+	goto_if_set FLAG_BADGE11_GET, VermilionCity_Text_Teacher_TrioWorld1_After
 	msgbox VermilionCity_Text_Teacher, MSGBOX_NPC
+	goto VermilionCity_Text_Teacher_TrioWorld1_Resume
+VermilionCity_Text_Teacher_TrioWorld1_After:
+	msgbox VermilionCity_Text_Teacher_TrioWorldAfter, MSGBOX_NPC
+VermilionCity_Text_Teacher_TrioWorld1_Resume:
+	call TrioKanto_VermilionOffer
 	end
 
 VermilionCity_EventScript_Oldman::
@@ -127,6 +135,8 @@ VermilionCity_EventScript_Machop::
 	end
 
 VermilionCity_EventScript_Nerd::
+	call TrioRift_CheckAtmosphere
+	goto_if_eq VAR_RESULT, TRUE, VermilionCity_RiftAtmosphere
 	msgbox VermilionCity_Text_SuperNerd, MSGBOX_NPC
 	end
 
@@ -277,13 +287,45 @@ VermilionCity_Text_Teacher:
 	.string "Vermilion Port is Kanto's seaside\n"
 	.string "gateway.\p"
 	.string "Luxury liners from around the\n"
-	.string "world dock here.$"
+	.string "world dock here.\p"
+	.string "Surge says three legends\n"
+	.string "do not scare him. I\p"
+	.string "believe him. Riko\n"
+	.string "demanding breakfast might,\p"
+	.string "though.\p"
+	.string "A sailor heard the trio\n"
+	.string "can channel every type.\p"
+	.string "Surge heard 'Electric' and\n"
+	.string "wanted proof. Bijuu just\p"
+	.string "copied his salute.$"
+
+
+VermilionCity_Text_Teacher_TrioWorldAfter:
+	.string "Vermilion Port is Kanto's seaside\n"
+	.string "gateway.\p"
+	.string "Luxury liners from around the\n"
+	.string "world dock here.\p"
+	.string "Surge held his own against\n"
+	.string "the trio! The whole port\p"
+	.string "heard about it. Their\n"
+	.string "trainer earned his\p"
+	.string "respect, loud and clear.\p"
+	.string "Surge says power needs\n"
+	.string "control. The port says the\p"
+	.string "girls have a whole storm\n"
+	.string "of elements waiting\p"
+	.string "inside.$"
 
 VermilionCity_Text_MachopOwner:
 	.string "My Pokémon is preparing the land\n"
 	.string "for construction.\p"
 	.string "But I have no money to start the\n"
-	.string "project…$"
+	.string "project…\p"
+	.string "That trio's trainer walks\n"
+	.string "at Penny's pace when she\p"
+	.string "needs it. Strong Pokemon\n"
+	.string "should not have to be\p"
+	.string "brave every minute.$"
 
 VermilionCity_Text_Machop1:
 	.string "Machop: Guooh gogogoh!$"
@@ -295,7 +337,12 @@ VermilionCity_Text_Machop2:
 VermilionCity_Text_SuperNerd:
 	.string "There are eight Gyms in Kanto.\p"
 	.string "That big building is Vermilion's\n"
-	.string "Pokémon Gym.$"
+	.string "Pokémon Gym.\p"
+	.string "Bijuu copied a ship's\n"
+	.string "bell. Riko thought lunch\p"
+	.string "had arrived. Penny stayed\n"
+	.string "asleep. Only one of them\p"
+	.string "understood the situation.$"
 
 VermilionCity_Text_SnorlaxSleeping:
 	.string "Snorlax is snoring peacefully…$"
@@ -367,3 +414,9 @@ VermilionCity_Text_DiglettsCaveSign:
 VermilionCity_Text_PortSign:
 	.string "Vermilion Port\n"
 	.string "Entrance$"
+
+VermilionCity_RiftAtmosphere::
+	msgbox VermilionCity_RiftAtmosphereText, MSGBOX_NPC
+	end
+VermilionCity_RiftAtmosphereText:
+	.string "My compass still points\nnorth. Nothing unusual.\pSo why does every breeze\nfeel like coming home?$"

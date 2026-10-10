@@ -77,7 +77,12 @@ Route27_Text_FisherMessage:
     .string "Do you know what you just did?\p"
     .string "You've taken your first step into\n"
     .string "Kanto.\p"
-    .string "Check your Pokégear Map and see.$"
+    .string "Check your Pokégear Map and see.\p"
+	.string "People keep asking which\n"
+	.string "way the trio went. I tell\p"
+	.string "them to look for one\n"
+	.string "trainer and three girls\p"
+	.string "keeping close together.$"
 
 Route27_Text_CooltrainermBlakeSeen:
     .string "You look pretty strong.\n"
@@ -144,7 +149,12 @@ Route27_Text_PsychicGilbertAfter:
     .string "That's what my premonition says.$"
 
 Route27_Text_BirdKeeperJoseSeen:
-    .string "Tweet! Tweet! Tetweet!$"
+    .string "Tweet! Tweet! Tetweet!\p"
+	.string "Bijuu, do not copy my\n"
+	.string "whistles! Riko, no\p"
+	.string "cheering over them! Penny\n"
+	.string "looks like she\p"
+	.string "understands.$"
 
 Route27_Text_BirdKeeperJoseBeaten:
     .string "Tweet!$"

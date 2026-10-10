@@ -64,14 +64,22 @@ ViridianCity_Gym_Text_LeaderBlue_Before:
 	.string "battling you right now.\p"
 	.string "Ready, Johto Champ?\p"
 	.string "I have faced legends before.\n"
-	.string "Show me what they can do!$"
+	.string "Show me what they can do!\p"
+	.string "Riko can pose. Bijuu can\n"
+	.string "copy. Penny can melt\p"
+	.string "everybody else's heart. I\n"
+	.string "am watching you, trainer.$"
 
 ViridianCity_Gym_Text_LeaderBlue_Win:
 	.string "Blue: What?\p"
 	.string "How the heck did I lose to you?\p"
 	.string "…\p"
 	.string "Tch, all right… Here, take this--it's\n"
-	.string "Earthbadge.$"
+	.string "Earthbadge.\p"
+	.string "Yeah, the girls are\n"
+	.string "strong. But you made the\p"
+	.string "calls. I know the\n"
+	.string "difference.$"
 
 ViridianCity_Gym_Text_ReceivedEarthBadge:
 	.string "{PLAYER} received Earthbadge.$"
@@ -90,7 +98,12 @@ ViridianCity_Gym_Text_LeaderBlue_After:
 	.string "All right, I was wrong. You're the\n"
 	.string "real deal. You are a good trainer.\p"
 	.string "But I'm going to beat you someday.\p"
-	.string "Don't you forget it!$"
+	.string "Don't you forget it!\p"
+	.string "Kanto keeps asking what I\n"
+	.string "thought of the trio. I\p"
+	.string "tell them to watch their\n"
+	.string "trainer. That is the part\p"
+	.string "worth learning.$"
 
 ViridianCity_Gym_Text_LeaderBlue_Epilogue:
 	.string "Blue: Listen, you.\p"

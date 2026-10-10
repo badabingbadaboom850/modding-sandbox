@@ -1,11 +1,13 @@
 
 Route44_MapScripts::
+	map_script MAP_SCRIPT_ON_FRAME_TABLE, TrioGang_OnFrame
 	map_script MAP_SCRIPT_ON_TRANSITION, Route44_OnTransition
 	map_script MAP_SCRIPT_ON_RESUME, SetTimeEncounters
 	.byte 0
 
 Route44_OnTransition: 
 	callnative SetTimeBasedEncounters
+	special TrioGang_PrepareAmbush
 	end
 
 Route44_EventScript_Wilton::

@@ -27,6 +27,7 @@
 #include "battle_anim.h"
 #include "constants/rgb.h"
 #include "constants/battle_anim.h"
+#include "data/graphics/intro_dedication.h"
 
 /*
     The intro is grouped into the following scenes
@@ -1037,9 +1038,9 @@ static void MainCB2_EndIntro(void)
 
 static void LoadCopyrightGraphics(u16 tilesetAddress, u16 tilemapAddress, u16 paletteOffset)
 {
-    DecompressDataWithHeaderVram(gIntroCopyright_Gfx, (void *)(VRAM + tilesetAddress));
-    DecompressDataWithHeaderVram(gIntroCopyright_Tilemap, (void *)(VRAM + tilemapAddress));
-    LoadPalette(gIntroCopyright_Pal, paletteOffset, PLTT_SIZE_4BPP);
+    CpuCopy16(sIntroDedicationTiles, (void *)(VRAM + tilesetAddress), sizeof(sIntroDedicationTiles));
+    CpuCopy16(sIntroDedicationTilemap, (void *)(VRAM + tilemapAddress), sizeof(sIntroDedicationTilemap));
+    LoadPalette(sIntroDedicationPalette, paletteOffset, PLTT_SIZE_4BPP);
 }
 
 static void SerialCB_CopyrightScreen(void)

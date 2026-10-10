@@ -105,11 +105,20 @@ MortyIntroText:
 	.string "You're going to help me reach\n"
 	.string "that level!\p"
 	.string "Three legends walk among us!\n"
-	.string "I sense an old spirit call!$"
+	.string "I sense an old spirit call!\p"
+	.string "Their spirits feel\n"
+	.string "different, but they turn\p"
+	.string "toward you together. Let\n"
+	.string "us see how you guide that\p"
+	.string "bond.$"
 
 MortyWinLossText:
 	.string "I'm not good enough yet...\p"
-	.string "All right. This Badge is yours.$"
+	.string "All right. This Badge is yours.\p"
+	.string "Three spirits, one\n"
+	.string "purpose. You gave them\p"
+	.string "room to be themselves and\n"
+	.string "still made a team.$"
 
 Text_ReceivedFogBadge:
 	.string "{PLAYER} received the Fogbadge.$"
@@ -134,7 +143,12 @@ MortyFightDoneText:
 	.string "far-off places.\p"
 	.string "You've witnessed more than I\n"
 	.string "ever have.\p"
-	.string "I envy you for that...$"
+	.string "I envy you for that...\p"
+	.string "Riko burns bright. Bijuu\n"
+	.string "reflects what she sees.\p"
+	.string "Penny holds a quiet\n"
+	.string "warmth. I will remember\p"
+	.string "all three.$"
 
 MortyRematchText:
 	.string "Ah, the Johto Champion!\n"
@@ -146,13 +160,20 @@ MortyRematchText:
 	.string "Pokémon ever since.\p"
 	.string "Let's see if you can overcome\n"
 	.string "the shadows again.\p"
-	.string "Want to have a rematch?$"
+	.string "Want to have a rematch?\p"
+	.string "The city tells stories\n"
+	.string "about you now. I would\p"
+	.string "rather meet the trainer\n"
+	.string "than the tale. Shall we?$"
 
 Morty_RematchDefeatText:
 	.string "I'm not good enough yet...\p"
 	.string "You've witnessed more than I\n"
 	.string "ever have.\p"
-	.string "I envy you for that...$"
+	.string "I envy you for that...\p"
+	.string "Your bond keeps growing.\n"
+	.string "Even spirits cannot hold\p"
+	.string "it still.$"
 
 SageJeffreySeenText:
 	.string "I spent the spring with my\n"

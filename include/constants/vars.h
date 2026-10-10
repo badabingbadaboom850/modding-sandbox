@@ -310,6 +310,27 @@
 #define VAR_FOLLOWER_MEGA_OFF                           0x411F
 #define VAR_SHINY_RATE                                  0x4120
 #define VAR_ROUTE31_BIJUU_CHASE                       0x4121
+#define VAR_TRIO_RESEARCH_STATE                       0x4122 // Violet 0-3; Azalea 4-6; Goldenrod 7-9 (see docs/trio_world_roadmap.md)
+#define VAR_PENNY_CONFIDENCE_STATE                    0x4123 // 0 not started, 1 first step, 2 reward pending, 3 complete
+
+#define VAR_ECRUTEAK_BIJUU_MYSTERY                    0x4124 // 0 offer, 1-3 clues, 4 toy, 5 reward pending, 6 revealed
+
+// Route 37 snack chase: saved stages and the one removed Bag item.
+#define VAR_TRIO_SNACK_CHASE_STATE                   0x4125 // 0 untouched, 1 grass, 2 grove, 3 return pending, 4 complete
+#define VAR_TRIO_SNACK_STOLEN_ITEM                   0x4126 // ITEM_NONE means the narrative picnic snack
+
+// Escalating Greedent gang: completed waves, active wave and item custody.
+#define VAR_TRIO_GANG_WINS                           0x4127 // 0-6; old completed Route37 chase counts as wave1
+#define VAR_TRIO_GANG_ACTIVE_WAVE                    0x4128 // 1-6 during an ambush, otherwise0
+#define VAR_TRIO_GANG_PHASE                          0x4129 // 0 inactive, 1 battle pending, 2 won/item pending
+
+// Spirit Rift: three opened paths, victory, then successfully claimed gift.
+#define VAR_TRIO_RIFT_BIJUU_STATE                    0x412B // 0-2 clues, 3 real cat, 4 won, 5 charm
+#define VAR_TRIO_RIFT_PENNY_STATE                    0x412C // 0-3 lanterns, 4 won, 5 charm
+#define VAR_TRIO_RIFT_RIKO_STATE                     0x412A // 0-3 echoes, 4 won/gift pending, 5 complete
+
+#define VAR_RIKO_CAVERN_STATE                       0x412E // 0 Mind,1 Body,2 Soul,3 reunion/finale,4 won
+#define VAR_TRIO_GARDEN_STATE                        0x412D // 0 seeds,1/3 growing,2 warm,4 guard,5 bloom pending,6 gift
 
 #define VARS_END                                         0x42FF
 

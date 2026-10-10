@@ -80,6 +80,8 @@ AzaleaTown_EventScript_Gramps::
 	end
 
 AzaleaTown_EventScript_Gramps2::
+	call TrioRift_CheckAtmosphere
+	goto_if_eq VAR_RESULT, TRUE, AzaleaTown_RiftAtmosphere
 	msgbox AzaleaTown_Text_GrampsAfter, MSGBOX_DEFAULT
 	closemessage
 	release
@@ -88,7 +90,13 @@ AzaleaTown_EventScript_Gramps2::
 AzaleaTown_EventScript_Lass::
 	lock
 	faceplayer
+	goto_if_set FLAG_BADGE02_GET, AzaleaTown_Text_Teacher_TrioWorld1_After
 	msgbox AzaleaTown_Text_Teacher, MSGBOX_DEFAULT
+	goto AzaleaTown_Text_Teacher_TrioWorld1_Resume
+AzaleaTown_Text_Teacher_TrioWorld1_After:
+	msgbox AzaleaTown_Text_Teacher_TrioWorldAfter, MSGBOX_DEFAULT
+AzaleaTown_Text_Teacher_TrioWorld1_Resume:
+	call_if_ge VAR_TRIO_RESEARCH_STATE, 5, AzaleaTown_EventScript_ScrapbookNeighbor
 	closemessage
 	release
 	end
@@ -97,6 +105,7 @@ AzaleaTown_EventScript_Youngster::
 	lock
 	faceplayer
 	msgbox AzaleaTown_Text_Youngster, MSGBOX_DEFAULT
+	call AzaleaTown_EventScript_ScrapbookVisit
 	closemessage
 	release
 	end
@@ -397,17 +406,51 @@ AzaleaTown_Text_GrampsBefore:
 	.string "The Slowpoke have disappeared\n"
 	.string "from town…\p"
 	.string "I heard their Tails are being\n"
-	.string "sold somewhere.$"
+	.string "sold somewhere.\p"
+	.string "I like Penny. She can sit\n"
+	.string "beside a Slowpoke without\p"
+	.string "trying to hurry it. We\n"
+	.string "could all learn that.$"
 
 AzaleaTown_Text_GrampsAfter:
 	.string "The Slowpoke have returned.\p"
 	.string "Knowing them, they could've just\n"
-	.string "been goofing off somewhere.$"
+	.string "been goofing off somewhere.\p"
+	.string "The trio passed the well\n"
+	.string "with their trainer. Penny\p"
+	.string "looked back twice to check\n"
+	.string "the others were coming.$"
 
 AzaleaTown_Text_Teacher:
 	.string "Did you come to get Kurt to make\n"
 	.string "some Balls?\p"
-	.string "A lot of people do just that.$"
+	.string "A lot of people do just that.\p"
+	.string "Bugsy wants to study the\n"
+	.string "trio. I hope his notebook\p"
+	.string "has a page for Riko\n"
+	.string "demanding attention.\p"
+	.string "A woodcutter swears\n"
+	.string "Penny's tail grew leaves.\p"
+	.string "His friend saw Riko\n"
+	.string "breathe fire. Could the\p"
+	.string "girls master every type?$"
+
+
+AzaleaTown_Text_Teacher_TrioWorldAfter:
+	.string "Did you come to get Kurt to make\n"
+	.string "some Balls?\p"
+	.string "A lot of people do just that.\p"
+	.string "Bugsy stood his ground\n"
+	.string "against all three girls.\p"
+	.string "He says battling them\n"
+	.string "taught him more than\p"
+	.string "watching ever could.\p"
+	.string "Bugsy is collecting\n"
+	.string "stories of the girls'\p"
+	.string "unseen elements. Most\n"
+	.string "witnesses remember the\p"
+	.string "snacks better than the\n"
+	.string "battle.$"
 
 AzaleaTown_Text_Youngster:
 	.string "Cut through Azalea to reach\n"
@@ -419,9 +462,12 @@ AzaleaTown_Text_Youngster:
 	.string "Cutters saw three rare Pokemon\n"
 	.string "pass through Ilex Forest.\p"
 	.string "A shy cat was with them.\n"
-	.string "They vanished fast.$"
-
-
+	.string "They vanished fast.\p"
+	.string "Riko sniffed every\n"
+	.string "Apricorn. Bijuu sorted\p"
+	.string "them by copying Kurt.\n"
+	.string "Penny found the patch of\p"
+	.string "sun and stayed there.$"
 
 AzaleaTown_Text_Slowpoke1:
 	.string "Slowpoke:..........\p"
@@ -489,3 +535,117 @@ AzaleaTownKid_Text_0:
 
 AzaleaTownVulpix_Text_0:
 	.string "Vulpix: Vul!$"
+
+
+AzaleaTown_EventScript_ScrapbookVisit::
+	goto_if_ge VAR_TRIO_RESEARCH_STATE, 5, AzaleaTown_EventScript_ScrapbookRemember
+	goto_if_ne VAR_TRIO_RESEARCH_STATE, 4, AzaleaTown_EventScript_ScrapbookReturn
+	goto_if_unset FLAG_BADGE02_GET, AzaleaTown_EventScript_ScrapbookNotReady
+	call TrioStory_CheckAll
+	goto_if_eq VAR_RESULT, FALSE, AzaleaTown_EventScript_ScrapbookNeedGirls
+	msgbox AzaleaTown_Text_ScrapbookOffer, MSGBOX_YESNO
+	goto_if_eq VAR_RESULT, NO, AzaleaTown_EventScript_ScrapbookDeclined
+	msgbox AzaleaTown_Text_ScrapbookScene1, MSGBOX_DEFAULT
+	msgbox AzaleaTown_Text_ScrapbookScene2, MSGBOX_DEFAULT
+	msgbox AzaleaTown_Text_ScrapbookScene3, MSGBOX_DEFAULT
+	setvar VAR_TRIO_RESEARCH_STATE, 5
+	msgbox AzaleaTown_Text_ScrapbookReport, MSGBOX_DEFAULT
+	return
+
+AzaleaTown_EventScript_ScrapbookRemember::
+	msgbox AzaleaTown_Text_ScrapbookRemember, MSGBOX_DEFAULT
+	return
+
+AzaleaTown_EventScript_ScrapbookNotReady::
+	msgbox AzaleaTown_Text_ScrapbookNotReady, MSGBOX_DEFAULT
+	return
+
+AzaleaTown_EventScript_ScrapbookNeedGirls::
+	msgbox CherryGroveCity_Text_ScrapbookNeedGirls, MSGBOX_DEFAULT
+	return
+
+AzaleaTown_EventScript_ScrapbookDeclined::
+	msgbox AzaleaTown_Text_ScrapbookDeclined, MSGBOX_DEFAULT
+AzaleaTown_EventScript_ScrapbookReturn::
+	return
+
+AzaleaTown_Text_ScrapbookOffer:
+	.string "My Hoothoot is shy around\n"
+	.string "new people. Want to take a\p"
+	.string "quiet minute with the\n"
+	.string "girls?$"
+
+AzaleaTown_Text_ScrapbookScene1:
+	.string "You sit with the girls.\n"
+	.string "Penny stays close to you.\p"
+	.string "Hoothoot watches from his\n"
+	.string "trainer's shoulder.\p"
+	.string "Riko starts to step\n"
+	.string "forward. You ask her to\p"
+	.string "wait. She settles beside\n"
+	.string "Penny.$"
+
+AzaleaTown_Text_ScrapbookScene2:
+	.string "Bijuu tilts her head like\n"
+	.string "Hoothoot. He copies her\p"
+	.string "in return.\p"
+	.string "Penny waits. Nobody calls\n"
+	.string "him over. After a while,\p"
+	.string "Hoothoot hops a little\n"
+	.string "closer.$"
+
+AzaleaTown_Text_ScrapbookScene3:
+	.string "Hoothoot settles beside\n"
+	.string "Penny. Her tail gives a\p"
+	.string "tiny wag.\p"
+	.string "The youngster smiles. I\n"
+	.string "thought a legendary visit\p"
+	.string "would be louder than this!$"
+
+AzaleaTown_Text_ScrapbookReport:
+	.string "Tell the scrapbook boy in\n"
+	.string "Cherrygrove about today.\p"
+	.string "Penny's quiet kindness is\n"
+	.string "worth a page.$"
+
+AzaleaTown_Text_ScrapbookRemember:
+	.string "Hoothoot still looks for\n"
+	.string "Penny when we walk here. I\p"
+	.string "tell people the girls are\n"
+	.string "good company.\p"
+	.string "They always ask who won. I\n"
+	.string "tell them nobody needed\p"
+	.string "to.$"
+
+AzaleaTown_Text_ScrapbookNotReady:
+	.string "Let us meet after your Gym\n"
+	.string "challenge. I will have\p"
+	.string "time for a quiet visit\n"
+	.string "then.$"
+
+AzaleaTown_Text_ScrapbookDeclined:
+	.string "Another time is fine. A\n"
+	.string "quiet visit should never\p"
+	.string "be a chore.$"
+
+
+AzaleaTown_EventScript_ScrapbookNeighbor::
+	msgbox AzaleaTown_Text_ScrapbookNeighbor, MSGBOX_DEFAULT
+	return
+
+AzaleaTown_Text_ScrapbookNeighbor:
+	.string "That boy's Hoothoot has\n"
+	.string "been coming closer lately.\p"
+	.string "He says Penny gave him\n"
+	.string "time instead of a command.\p"
+	.string "I like that sort of\n"
+	.string "legend.$"
+
+
+AzaleaTown_RiftAtmosphere::
+	msgbox AzaleaTown_RiftAtmosphereText, MSGBOX_DEFAULT
+	closemessage
+	release
+	end
+AzaleaTown_RiftAtmosphereText:
+	.string "The woods feel different.\nEven the leaves fall slow.\pI took a wrong turn today.\nSomehow, I felt safe.$"

@@ -68,7 +68,13 @@ SaffronCity_Gym_Text_SabrinaIntro:
 	.string "Since you wish it, I will show\n"
 	.string "you my psychic powers!\p"
 	.string "Their futures may be cloudy.\n"
-	.string "My victory is crystal clear!$"
+	.string "My victory is crystal clear!\p"
+	.string "Riko thinks of attention.\n"
+	.string "Bijuu thinks of\p"
+	.string "possibilities. Penny\n"
+	.string "thinks of her sisters. You\p"
+	.string "give those thoughts a\n"
+	.string "direction.$"
 
 SaffronCity_Gym_Text_SabrinaWinLoss:
 	.string "Sabrina: Your power…\p"
@@ -76,7 +82,10 @@ SaffronCity_Gym_Text_SabrinaWinLoss:
 	.string "Maybe it isn't possible to fully\n"
 	.string "predict what the future holds…\p"
 	.string "Ok, you win. You earned yourself\n"
-	.string "Marshbadge.$"
+	.string "Marshbadge.\p"
+	.string "I foresaw their strength.\n"
+	.string "I did not foresee how you\p"
+	.string "would bring it together.$"
 
 SaffronCity_Gym_Text_ReceivedMarshBadge:
 	.string "{PLAYER} received Marshbadge.$"
@@ -95,19 +104,30 @@ SaffronCity_Gym_Text_SabrinaPostBattle:
 	.string "Pokémon overwhelmed my psychic\l"
 	.string "power…\p"
 	.string "The power of love, I think, is\n"
-	.string "also a kind of psychic power…$"
+	.string "also a kind of psychic power…\p"
+	.string "Penny does not need to\n"
+	.string "speak loudly to be\p"
+	.string "understood. Your girls\n"
+	.string "know that. So do you.$"
 
 SaffronCity_Gym_Text_SabrinaRematch:
 	.string "Sabrina: Ah, the Kanto Champion.\p"
 	.string "I sensed your return.\p"
 	.string "Your power has grown immensely.\p"
 	.string "Even now, I feel your aura.\p"
-	.string "Want to have a rematch with me?$"
+	.string "Want to have a rematch with me?\p"
+	.string "Your reputation arrives\n"
+	.string "before you. Your girls\p"
+	.string "still look to you first.\n"
+	.string "Let us begin again.$"
 
 SaffronCity_Gym_Text_SabrinaRematchDefeat:
 	.string "Sabrina: Your love for your\n"
 	.string "Pokémon again overwhelmed my\l"
-	.string "psychic power…$"
+	.string "psychic power…\p"
+	.string "You chose a future I did\n"
+	.string "not see. The trio trusted\p"
+	.string "it.$"
 
 SaffronCity_Gym_Text_MediumRebeccaSeen:
 	.string "The power of all those you\n"

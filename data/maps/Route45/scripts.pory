@@ -127,7 +127,12 @@ Route45_Text_BlackbeltKenjiNight:
 
 Route45_Text_CooltrainermRyanSeen:
     .string "What are your thoughts on\n"
-    .string "raising Pokémon?$"
+    .string "raising Pokémon?\p"
+	.string "A trainer brought the trio\n"
+	.string "through the mountains. The\p"
+	.string "stories say you wait when\n"
+	.string "Penny needs a rest. I\p"
+	.string "respect that.$"
 
 Route45_Text_CooltrainermRyanBeaten:
     .string "You've won my respect.$"
@@ -136,7 +141,12 @@ Route45_Text_CooltrainermRyanAfter:
     .string "I see you're raising your Pokémon\n"
     .string "with care.\p"
     .string "The bond you build will save you\n"
-    .string "in tough situations.$"
+    .string "in tough situations.\p"
+	.string "You cared for all three\n"
+	.string "through that match. Strong\p"
+	.string "girls, strong bond. I am\n"
+	.string "glad the stories got that\p"
+	.string "part right.$"
 
 Route45_Text_CooltrainerfKellySeen:
     .string "What is your battle strategy?\p"

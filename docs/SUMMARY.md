@@ -3,6 +3,7 @@
 - [README](./README.md)
 - [FEATURES](./FEATURES.md)
 - [Riko in-game implementation and evolution](riko_in_game_implementation_and_evolution.md)
+- [Trio test portal and reputation pilot](trio_test_portal_update.md)
 - [Installation](./INSTALL.md)
     - [Setting up WSL1 (Legacy Portion)](./legacy_WSL1_INSTALL.md)
     - [ChromeOS](./install/chromeos/CHROME_OS.md)
@@ -138,3 +139,23 @@
     - [Release Schedule and Process](team_procedures/schedule.md)
     - [Merge Checklist](team_procedures/merge_checklist.md)
     - [Scope Guidelines](team_procedures/scope.md)
+
+- [Trio world-building action items](trio_world_roadmap.md)
+
+- [Keepsakes, sister moments, and Mom's scrapbook](trio_memories_and_pom_party.md)
+
+- [The Girls' Day Out festival and test shuttle](trio_festival.md)
+
+- [The evolving Trio Camp playroom](trio_camp_keepsakes.md)
+
+- [Scott's gym-city moments](trio_scott_moments.md)
+
+- [The Great Snack Chase](trio_snack_chase.md)
+
+- [Spirit Rift](trio_spirit_rift.md)
+
+- [The abandoned seaside garden and Flower Riko](trio_garden.md)
+
+- [Riko Puffs: five-level catch-up kibble](riko_puffs.md)
+
+- [Spirit of Riko cavern pilot](riko_spirit_cavern.md)

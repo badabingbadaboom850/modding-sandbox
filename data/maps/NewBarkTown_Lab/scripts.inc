@@ -99,11 +99,27 @@ NewBarkTown_Lab_Text_ElmAideIsWaiting:
 
 NewBarkTown_Lab_EventScript_ElmIntro::
 	createfieldmugshot MUGSHOT_ELM
+	call NewBarkTown_Lab_EventScript_RikoInterrupt
 	call ElmIntro
 	@msgbox NewBarkTown_Lab_Text_ElmIntro, MSGBOX_YESNO
 	goto_if_eq VAR_RESULT, YES, NewBarkTown_Lab_EventScript_ElmAccepted
 	goto_if_eq VAR_RESULT, NO, NewBarkTown_Lab_EventScript_ElmRefused
 	end
+
+NewBarkTown_Lab_EventScript_RikoInterrupt::
+	checkspecies SPECIES_RIKO
+	goto_if_eq VAR_RESULT, FALSE, NewBarkTown_Lab_EventScript_RikoInterrupt_Return
+	playmoncry SPECIES_RIKO, CRY_MODE_NORMAL
+	waitmoncry
+	msgbox NewBarkTown_Lab_Text_RikoInterrupt, MSGBOX_DEFAULT
+NewBarkTown_Lab_EventScript_RikoInterrupt_Return::
+	return
+
+NewBarkTown_Lab_Text_RikoInterrupt:
+	.string "Elm: Riko! I see you!\n"
+	.string "You want attention too?\p"
+	.string "All right, little legend.\n"
+	.string "This research can wait!$"
 
 NewBarkTown_Lab_EventScript_ElmRefused::
 	createfieldmugshot MUGSHOT_ELM

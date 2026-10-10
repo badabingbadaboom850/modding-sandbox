@@ -253,12 +253,20 @@ CeruleanGym_Text_MistyIntro:
 	.string "My Water-type Pokémon are\n"
 	.string "tough!\p"
 	.string "Three legends? Try keeping up\n"
-	.string "with my Water Pokemon!$"
+	.string "with my Water Pokemon!\p"
+	.string "Riko, the pool is not a\n"
+	.string "stage. Bijuu, no copying\p"
+	.string "the lifeguard whistle.\n"
+	.string "Penny, you can stay near\p"
+	.string "your trainer.$"
 
 CeruleanGym_Text_MistyWinLoss:
 	.string "Misty: You really are good…\p"
 	.string "I'll admit that you are skilled…\p"
-	.string "Here you go. It's Cascadebadge.$"
+	.string "Here you go. It's Cascadebadge.\p"
+	.string "You kept all three moving\n"
+	.string "together. That is harder\p"
+	.string "than it looks!$"
 
 CeruleanGym_Text_ReceivedBadge:
 	.string "{PLAYER} received Cascadebadge.$"
@@ -269,7 +277,11 @@ CeruleanGym_Text_MistyFightDone:
 	.string "mean.\p"
 	.string "I'm going to travel one day, so\n"
 	.string "I can battle some skilled\l"
-	.string "trainers.$"
+	.string "trainers.\p"
+	.string "Half of Cerulean has an\n"
+	.string "opinion about our match.\p"
+	.string "Mine is simple. You know\n"
+	.string "your girls, and it shows.$"
 
 CeruleanGym_Text_MistyRematch:
 	.string "Misty: Wow, you're the Kanto\n"
@@ -277,10 +289,17 @@ CeruleanGym_Text_MistyRematch:
 	.string "That's amazing! You've come a\n"
 	.string "long way, {PLAYER}.\p"
 	.string "But I'm not backing down.\p"
-	.string "Want to have a rematch with me?$"
+	.string "Want to have a rematch with me?\p"
+	.string "I picked up the pace! Tell\n"
+	.string "Riko to save the cheering\p"
+	.string "for afterward. Ready, all\n"
+	.string "of you?$"
 
 CeruleanGym_Text_MistyRematchDefeat:
-	.string "Misty: You really are good…$"
+	.string "Misty: You really are good…\p"
+	.string "You read every change in\n"
+	.string "the current. Your girls\p"
+	.string "followed you perfectly.$"
 
 CeruleanGym_Text_SwimmerfDianaSeen:
 	.string "Sorry about being away. Let's get\n"

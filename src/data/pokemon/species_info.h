@@ -184,7 +184,7 @@ const struct SpeciesInfo gSpeciesInfo[] =
         .baseHP = 90, .baseAttack = 75, .baseDefense = 85, .baseSpeed = 110,
         .baseSpAttack = 105, .baseSpDefense = 95,
         .types = MON_TYPES(TYPE_NORMAL, TYPE_FAIRY), .catchRate = 45, .expYield = 240,
-        .evYield_SpAttack = 2, .evYield_Speed = 1, .genderRatio = PERCENT_FEMALE(50),
+        .evYield_SpAttack = 2, .evYield_Speed = 1, .genderRatio = MON_FEMALE,
         .eggCycles = 20, .friendship = STANDARD_FRIENDSHIP, .growthRate = GROWTH_MEDIUM_SLOW,
         .eggGroups = MON_EGG_GROUPS(EGG_GROUP_FIELD, EGG_GROUP_FAIRY),
         .abilities = { ABILITY_CUTE_CHARM, ABILITY_NONE, ABILITY_FLUFFY },
@@ -209,8 +209,133 @@ const struct SpeciesInfo gSpeciesInfo[] =
             gShinyOverworldPalette_Riko
         )
         .teachingType = ALL_TEACHABLES, .levelUpLearnset = sRikoLevelUpLearnset,
-        .evolutions = EVOLUTION({EVO_ITEM, ITEM_RIKOS_WAND, SPECIES_RIKO_WING}),
+        .evolutions = EVOLUTION({EVO_ITEM, ITEM_RIKOS_BLOOM, SPECIES_RIKO_FLOWER}, {EVO_ITEM, ITEM_RIKOS_COURAGE, SPECIES_RIKO_ECHO}, {EVO_ITEM, ITEM_RIKOS_WAND, SPECIES_RIKO_WING}, {EVO_ITEM, ITEM_GREEN_PEPPER, SPECIES_RIKO_FIRE}, {EVO_ITEM, ITEM_EEL_SUSHI, SPECIES_RIKO_ELECTRIC}),
         .formSpeciesIdTable = sRikoFormSpeciesIdTable, .formChangeTable = sRikoFormChangeTable,
+    },
+    [SPECIES_RIKO_ASPECT_MIND] =
+    {
+        .baseHP = 95, .baseAttack = 65, .baseDefense = 80, .baseSpeed = 115,
+        .baseSpAttack = 120, .baseSpDefense = 100,
+        .types = MON_TYPES(TYPE_PSYCHIC, TYPE_FAIRY), .catchRate = 0, .expYield = 240,
+        .evYield_SpAttack = 2, .evYield_Speed = 1, .genderRatio = MON_FEMALE,
+        .eggCycles = 20, .friendship = STANDARD_FRIENDSHIP, .growthRate = GROWTH_MEDIUM_SLOW,
+        .eggGroups = MON_EGG_GROUPS(EGG_GROUP_NO_EGGS_DISCOVERED),
+        .abilities = { ABILITY_SYNCHRONIZE, ABILITY_NONE, ABILITY_SYNCHRONIZE },
+        .bodyColor = BODY_COLOR_WHITE, .speciesName = _("RikoMind"), .cryId = CRY_SYLVEON,
+        .natDexNum = NATIONAL_DEX_RIKO, .categoryName = _("Fluff Bunny"), .height = 6, .weight = 95,
+        .description = COMPOUND_STRING("An echo of Riko\ncalled home by her family.\nIts aura holds her mind."),
+        .pokemonScale = 256, .trainerScale = 256,
+        .frontPic = gMonFrontPic_Riko, .frontPicSize = MON_COORDS_SIZE(64, 64), .frontPicYOffset = 0,
+        .frontAnimFrames = sAnims_SingleFramePlaceHolder, .backPic = gMonBackPic_Riko,
+        .backPicSize = MON_COORDS_SIZE(64, 64), .backPicYOffset = 0,
+        .palette = gMonPalette_RikoAspectMind, .shinyPalette = gMonPalette_RikoAspectMind,
+        .iconSprite = gMonIcon_Riko, .iconPalette = gMonIconPalette_RikoAspectMind,
+        .shinyIconPalette = gMonIconPalette_RikoAspectMind, .pokemonJumpType = PKMN_JUMP_TYPE_NORMAL,
+        SHADOW(-2, 8, SHADOW_SIZE_S)
+        OVERWORLD(
+            sPicTable_Riko,
+            SIZE_32x32,
+            SHADOW_SIZE_M,
+            TRACKS_FOOT,
+            sAnimTable_Following,
+            gOverworldPalette_RikoAspectMind,
+            gOverworldPalette_RikoAspectMind
+        )
+        .teachingType = ALL_TEACHABLES, .levelUpLearnset = sRikoLevelUpLearnset,
+    },
+    [SPECIES_RIKO_ASPECT_BODY] =
+    {
+        .baseHP = 115, .baseAttack = 115, .baseDefense = 110, .baseSpeed = 80,
+        .baseSpAttack = 65, .baseSpDefense = 85,
+        .types = MON_TYPES(TYPE_NORMAL, TYPE_FAIRY), .catchRate = 0, .expYield = 240,
+        .evYield_SpAttack = 2, .evYield_Speed = 1, .genderRatio = MON_FEMALE,
+        .eggCycles = 20, .friendship = STANDARD_FRIENDSHIP, .growthRate = GROWTH_MEDIUM_SLOW,
+        .eggGroups = MON_EGG_GROUPS(EGG_GROUP_NO_EGGS_DISCOVERED),
+        .abilities = { ABILITY_BATTLE_ARMOR, ABILITY_NONE, ABILITY_BATTLE_ARMOR },
+        .bodyColor = BODY_COLOR_WHITE, .speciesName = _("RikoBody"), .cryId = CRY_SYLVEON,
+        .natDexNum = NATIONAL_DEX_RIKO, .categoryName = _("Fluff Bunny"), .height = 6, .weight = 95,
+        .description = COMPOUND_STRING("An echo of Riko\ncalled home by her family.\nIts aura holds her body."),
+        .pokemonScale = 256, .trainerScale = 256,
+        .frontPic = gMonFrontPic_Riko, .frontPicSize = MON_COORDS_SIZE(64, 64), .frontPicYOffset = 0,
+        .frontAnimFrames = sAnims_SingleFramePlaceHolder, .backPic = gMonBackPic_Riko,
+        .backPicSize = MON_COORDS_SIZE(64, 64), .backPicYOffset = 0,
+        .palette = gMonPalette_RikoAspectBody, .shinyPalette = gMonPalette_RikoAspectBody,
+        .iconSprite = gMonIcon_Riko, .iconPalette = gMonIconPalette_RikoAspectBody,
+        .shinyIconPalette = gMonIconPalette_RikoAspectBody, .pokemonJumpType = PKMN_JUMP_TYPE_NORMAL,
+        SHADOW(-2, 8, SHADOW_SIZE_S)
+        OVERWORLD(
+            sPicTable_Riko,
+            SIZE_32x32,
+            SHADOW_SIZE_M,
+            TRACKS_FOOT,
+            sAnimTable_Following,
+            gOverworldPalette_RikoAspectBody,
+            gOverworldPalette_RikoAspectBody
+        )
+        .teachingType = ALL_TEACHABLES, .levelUpLearnset = sRikoLevelUpLearnset,
+    },
+    [SPECIES_RIKO_ASPECT_SOUL] =
+    {
+        .baseHP = 110, .baseAttack = 65, .baseDefense = 90, .baseSpeed = 95,
+        .baseSpAttack = 110, .baseSpDefense = 120,
+        .types = MON_TYPES(TYPE_NORMAL, TYPE_FAIRY), .catchRate = 0, .expYield = 240,
+        .evYield_SpAttack = 2, .evYield_Speed = 1, .genderRatio = MON_FEMALE,
+        .eggCycles = 20, .friendship = STANDARD_FRIENDSHIP, .growthRate = GROWTH_MEDIUM_SLOW,
+        .eggGroups = MON_EGG_GROUPS(EGG_GROUP_NO_EGGS_DISCOVERED),
+        .abilities = { ABILITY_CUTE_CHARM, ABILITY_NONE, ABILITY_CUTE_CHARM },
+        .bodyColor = BODY_COLOR_WHITE, .speciesName = _("RikoSoul"), .cryId = CRY_SYLVEON,
+        .natDexNum = NATIONAL_DEX_RIKO, .categoryName = _("Fluff Bunny"), .height = 6, .weight = 95,
+        .description = COMPOUND_STRING("An echo of Riko\ncalled home by her family.\nIts aura holds her soul."),
+        .pokemonScale = 256, .trainerScale = 256,
+        .frontPic = gMonFrontPic_Riko, .frontPicSize = MON_COORDS_SIZE(64, 64), .frontPicYOffset = 0,
+        .frontAnimFrames = sAnims_SingleFramePlaceHolder, .backPic = gMonBackPic_Riko,
+        .backPicSize = MON_COORDS_SIZE(64, 64), .backPicYOffset = 0,
+        .palette = gMonPalette_RikoAspectSoul, .shinyPalette = gMonPalette_RikoAspectSoul,
+        .iconSprite = gMonIcon_Riko, .iconPalette = gMonIconPalette_RikoAspectSoul,
+        .shinyIconPalette = gMonIconPalette_RikoAspectSoul, .pokemonJumpType = PKMN_JUMP_TYPE_NORMAL,
+        SHADOW(-2, 8, SHADOW_SIZE_S)
+        OVERWORLD(
+            sPicTable_Riko,
+            SIZE_32x32,
+            SHADOW_SIZE_M,
+            TRACKS_FOOT,
+            sAnimTable_Following,
+            gOverworldPalette_RikoAspectSoul,
+            gOverworldPalette_RikoAspectSoul
+        )
+        .teachingType = ALL_TEACHABLES, .levelUpLearnset = sRikoLevelUpLearnset,
+    },
+    [SPECIES_RIKO_FLOWER] =
+    {
+        .baseHP = 90, .baseAttack = 75, .baseDefense = 85, .baseSpeed = 110,
+        .baseSpAttack = 105, .baseSpDefense = 95,
+        .types = MON_TYPES(TYPE_NORMAL, TYPE_FAIRY), .catchRate = 45, .expYield = 240,
+        .evYield_SpAttack = 2, .evYield_Speed = 1, .genderRatio = MON_FEMALE,
+        .eggCycles = 20, .friendship = STANDARD_FRIENDSHIP, .growthRate = GROWTH_MEDIUM_SLOW,
+        .eggGroups = MON_EGG_GROUPS(EGG_GROUP_FIELD, EGG_GROUP_FAIRY),
+        .abilities = { ABILITY_CUTE_CHARM, ABILITY_NONE, ABILITY_FLUFFY },
+        .bodyColor = BODY_COLOR_WHITE, .speciesName = _("FlowerRiko"), .cryId = CRY_SYLVEON,
+        .natDexNum = NATIONAL_DEX_RIKO, .categoryName = _("Garden Floof"), .height = 6, .weight = 95,
+        .description = COMPOUND_STRING("Flowers rest in its soft coat.\nIt tends small gardens with\nits sisters, then naps nearby."),
+        .pokemonScale = 256, .trainerScale = 256,
+        .frontPic = gMonFrontPic_RikoFlower, .frontPicSize = MON_COORDS_SIZE(64, 64), .frontPicYOffset = 0,
+        .frontAnimFrames = sAnims_SingleFramePlaceHolder, .backPic = gMonBackPic_RikoFlower,
+        .backPicSize = MON_COORDS_SIZE(64, 64), .backPicYOffset = 0,
+        .palette = gMonPalette_RikoFlower, .shinyPalette = gMonShinyPalette_RikoFlower,
+        .iconSprite = gMonIcon_RikoFlower, .iconPalette = gMonIconPalette_RikoFlower,
+        .shinyIconPalette = gMonShinyIconPalette_RikoFlower, .pokemonJumpType = PKMN_JUMP_TYPE_NORMAL,
+        SHADOW(-2, 8, SHADOW_SIZE_S)
+        OVERWORLD(
+            sPicTable_RikoFlower,
+            SIZE_32x32,
+            SHADOW_SIZE_M,
+            TRACKS_FOOT,
+            sAnimTable_Following,
+            gOverworldPalette_RikoFlower,
+            gShinyOverworldPalette_RikoFlower
+        )
+        .teachingType = ALL_TEACHABLES, .levelUpLearnset = sRikoFlowerLevelUpLearnset,
+        .evolutions = EVOLUTION({EVO_ITEM, ITEM_RIKOS_BLOOM, SPECIES_RIKO}),
     },
 #if P_GEN_9_MEGA_EVOLUTIONS
     [SPECIES_MEGA_RIKO] =
@@ -218,7 +343,7 @@ const struct SpeciesInfo gSpeciesInfo[] =
         .baseHP = 90, .baseAttack = 85, .baseDefense = 95, .baseSpeed = 130,
         .baseSpAttack = 135, .baseSpDefense = 125,
         .types = MON_TYPES(TYPE_NORMAL, TYPE_FAIRY), .catchRate = 45, .expYield = 300,
-        .evYield_SpAttack = 2, .evYield_Speed = 1, .genderRatio = PERCENT_FEMALE(50),
+        .evYield_SpAttack = 2, .evYield_Speed = 1, .genderRatio = MON_FEMALE,
         .eggCycles = 20, .friendship = STANDARD_FRIENDSHIP, .growthRate = GROWTH_MEDIUM_SLOW,
         .eggGroups = MON_EGG_GROUPS(EGG_GROUP_FIELD, EGG_GROUP_FAIRY),
         .abilities = { ABILITY_PIXILATE, ABILITY_PIXILATE, ABILITY_PIXILATE },
@@ -252,7 +377,7 @@ const struct SpeciesInfo gSpeciesInfo[] =
         .baseHP = 90, .baseAttack = 75, .baseDefense = 85, .baseSpeed = 110,
         .baseSpAttack = 105, .baseSpDefense = 95,
         .types = MON_TYPES(TYPE_FAIRY, TYPE_FLYING), .catchRate = 45, .expYield = 240,
-        .evYield_SpAttack = 2, .evYield_Speed = 1, .genderRatio = PERCENT_FEMALE(50),
+        .evYield_SpAttack = 2, .evYield_Speed = 1, .genderRatio = MON_FEMALE,
         .eggCycles = 20, .friendship = STANDARD_FRIENDSHIP, .growthRate = GROWTH_MEDIUM_SLOW,
         .eggGroups = MON_EGG_GROUPS(EGG_GROUP_FIELD, EGG_GROUP_FAIRY),
         .abilities = { ABILITY_CUTE_CHARM, ABILITY_NONE, ABILITY_FLUFFY },
@@ -279,14 +404,48 @@ const struct SpeciesInfo gSpeciesInfo[] =
             gShinyOverworldPalette_RikoWing
         )
         .teachingType = ALL_TEACHABLES, .levelUpLearnset = sRikoLevelUpLearnset,
-        .evolutions = EVOLUTION({EVO_ITEM, ITEM_BLUE_BRUSH, SPECIES_RIKO}),
+        .evolutions = EVOLUTION({EVO_ITEM, ITEM_BLUE_BRUSH, SPECIES_RIKO}, {EVO_ITEM, ITEM_RIKOS_COURAGE, SPECIES_RIKO_ECHO}),
+    },
+    [SPECIES_RIKO_ECHO] =
+    {
+        .baseHP = 95, .baseAttack = 80, .baseDefense = 90, .baseSpeed = 110,
+        .baseSpAttack = 110, .baseSpDefense = 95,
+        .types = MON_TYPES(TYPE_NORMAL, TYPE_FAIRY), .catchRate = 45, .expYield = 240,
+        .evYield_SpAttack = 2, .evYield_Speed = 1, .genderRatio = MON_FEMALE,
+        .eggCycles = 20, .friendship = STANDARD_FRIENDSHIP, .growthRate = GROWTH_MEDIUM_SLOW,
+        .eggGroups = MON_EGG_GROUPS(EGG_GROUP_FIELD, EGG_GROUP_FAIRY),
+        .abilities = { ABILITY_CUTE_CHARM, ABILITY_NONE, ABILITY_FLUFFY },
+        .bodyColor = BODY_COLOR_WHITE, .speciesName = _("RikoEcho"), .cryId = CRY_SYLVEON,
+        .natDexNum = NATIONAL_DEX_RIKO, .categoryName = _("Brave Echo"), .height = 8, .weight = 100,
+        .description = COMPOUND_STRING("When Riko called, her courage\n"
+                                       "answered. Two voices share one\n"
+                                       "heart, keeping her sisters safe."),
+        .pokemonScale = 256, .trainerScale = 256,
+        .frontPic = gMonFrontPic_RikoEcho, .frontPicSize = MON_COORDS_SIZE(64, 64), .frontPicYOffset = 0,
+        .frontAnimFrames = sAnims_SingleFramePlaceHolder, .backPic = gMonBackPic_RikoEcho,
+        .backPicSize = MON_COORDS_SIZE(64, 64), .backPicYOffset = 0,
+        .palette = gMonPalette_RikoEcho, .shinyPalette = gMonShinyPalette_RikoEcho,
+        .iconSprite = gMonIcon_RikoEcho, .iconPalette = gMonIconPalette_RikoEcho,
+        .shinyIconPalette = gMonShinyIconPalette_RikoEcho, .pokemonJumpType = PKMN_JUMP_TYPE_NORMAL,
+        SHADOW(-2, 8, SHADOW_SIZE_S)
+        OVERWORLD(
+            sPicTable_RikoEcho,
+            SIZE_32x32,
+            SHADOW_SIZE_M,
+            TRACKS_FOOT,
+            sAnimTable_Following,
+            gOverworldPalette_RikoEcho,
+            gShinyOverworldPalette_RikoEcho
+        )
+        .teachingType = ALL_TEACHABLES, .levelUpLearnset = sRikoEchoLevelUpLearnset,
+        .evolutions = EVOLUTION({EVO_ITEM, ITEM_RIKOS_COURAGE, SPECIES_RIKO}),
     },
     [SPECIES_RIKO_SPIRIT] =
     {
         .baseHP = 115, .baseAttack = 115, .baseDefense = 85, .baseSpeed = 100,
         .baseSpAttack = 90, .baseSpDefense = 75,
         .types = MON_TYPES(TYPE_FIRE, TYPE_FAIRY), .catchRate = 3, .expYield = 290,
-        .evYield_HP = 1, .evYield_Attack = 2, .genderRatio = PERCENT_FEMALE(50),
+        .evYield_HP = 1, .evYield_Attack = 2, .genderRatio = MON_FEMALE,
         .eggCycles = 80, .friendship = 35, .growthRate = GROWTH_SLOW,
         .eggGroups = MON_EGG_GROUPS(EGG_GROUP_NO_EGGS_DISCOVERED),
         .abilities = { ABILITY_PRESSURE, ABILITY_NONE, ABILITY_FLASH_FIRE },
@@ -321,7 +480,7 @@ const struct SpeciesInfo gSpeciesInfo[] =
         .baseHP = 80, .baseAttack = 85, .baseDefense = 70, .baseSpeed = 120,
         .baseSpAttack = 95, .baseSpDefense = 80,
         .types = MON_TYPES(TYPE_NORMAL), .catchRate = 60, .expYield = 220, .evYield_Speed = 3,
-        .genderRatio = PERCENT_FEMALE(50), .eggCycles = 20, .friendship = STANDARD_FRIENDSHIP,
+        .genderRatio = MON_FEMALE, .eggCycles = 20, .friendship = STANDARD_FRIENDSHIP,
         .growthRate = GROWTH_MEDIUM_SLOW, .eggGroups = MON_EGG_GROUPS(EGG_GROUP_FIELD),
         .abilities = { ABILITY_LIMBER, ABILITY_NONE, ABILITY_TECHNICIAN },
         .bodyColor = BODY_COLOR_BROWN, .speciesName = _("Bijuu"), .cryId = CRY_MEOWTH,
@@ -348,6 +507,7 @@ const struct SpeciesInfo gSpeciesInfo[] =
         .teachableLearnset = sMeowthTeachableLearnset,
         .eggMoveLearnset = sMeowthEggMoveLearnset,
         .formSpeciesIdTable = sBijuuFormSpeciesIdTable, .formChangeTable = sBijuuFormChangeTable,
+        .evolutions = EVOLUTION({EVO_ITEM, ITEM_BIJUUS_FIRE, SPECIES_BIJUU_EMBER}, {EVO_ITEM, ITEM_BIJUUS_FISH_TOY, SPECIES_BIJUU_PSYCHIC}, {EVO_ITEM, ITEM_MOUSE_TOY, SPECIES_BIJUU_GHOST}, {EVO_ITEM, ITEM_FROZEN_FISH, SPECIES_BIJUU_ICE}),
     },
 #if P_GEN_9_MEGA_EVOLUTIONS
     [SPECIES_MEGA_BIJUU] =
@@ -355,7 +515,7 @@ const struct SpeciesInfo gSpeciesInfo[] =
         .baseHP = 80, .baseAttack = 125, .baseDefense = 90, .baseSpeed = 145,
         .baseSpAttack = 105, .baseSpDefense = 85,
         .types = MON_TYPES(TYPE_NORMAL), .catchRate = 60, .expYield = 280, .evYield_Speed = 3,
-        .genderRatio = PERCENT_FEMALE(50), .eggCycles = 20, .friendship = STANDARD_FRIENDSHIP,
+        .genderRatio = MON_FEMALE, .eggCycles = 20, .friendship = STANDARD_FRIENDSHIP,
         .growthRate = GROWTH_MEDIUM_SLOW, .eggGroups = MON_EGG_GROUPS(EGG_GROUP_FIELD),
         .abilities = { ABILITY_TECHNICIAN, ABILITY_TECHNICIAN, ABILITY_TECHNICIAN },
         .bodyColor = BODY_COLOR_BROWN, .speciesName = _("Bijuu"), .cryId = CRY_MEOWTH,
@@ -393,7 +553,7 @@ const struct SpeciesInfo gSpeciesInfo[] =
         .baseHP = 90, .baseAttack = 75, .baseDefense = 85, .baseSpeed = 110,
         .baseSpAttack = 105, .baseSpDefense = 95,
         .types = MON_TYPES(TYPE_FIRE), .catchRate = 45, .expYield = 240,
-        .evYield_SpAttack = 2, .genderRatio = PERCENT_FEMALE(50),
+        .evYield_SpAttack = 2, .genderRatio = MON_FEMALE,
         .eggCycles = 20, .friendship = STANDARD_FRIENDSHIP, .growthRate = GROWTH_MEDIUM_SLOW,
         .eggGroups = MON_EGG_GROUPS(EGG_GROUP_FIELD, EGG_GROUP_FAIRY),
         .abilities = { ABILITY_CUTE_CHARM, ABILITY_NONE, ABILITY_FLUFFY },
@@ -417,7 +577,8 @@ const struct SpeciesInfo gSpeciesInfo[] =
             gOverworldPalette_RikoFire,
             gShinyOverworldPalette_RikoFire
         )
-        .teachingType = ALL_TEACHABLES, .levelUpLearnset = sFuecocoLevelUpLearnset,
+        .teachingType = ALL_TEACHABLES, .levelUpLearnset = sRikoFireTrioLevelUpLearnset,
+        .evolutions = EVOLUTION({EVO_ITEM, ITEM_GREEN_PEPPER, SPECIES_RIKO}),
     },
 
     [SPECIES_RIKO_WATER] =
@@ -425,7 +586,7 @@ const struct SpeciesInfo gSpeciesInfo[] =
         .baseHP = 90, .baseAttack = 75, .baseDefense = 85, .baseSpeed = 110,
         .baseSpAttack = 105, .baseSpDefense = 95,
         .types = MON_TYPES(TYPE_WATER), .catchRate = 45, .expYield = 240,
-        .evYield_SpAttack = 2, .genderRatio = PERCENT_FEMALE(50),
+        .evYield_SpAttack = 2, .genderRatio = MON_FEMALE,
         .eggCycles = 20, .friendship = STANDARD_FRIENDSHIP, .growthRate = GROWTH_MEDIUM_SLOW,
         .eggGroups = MON_EGG_GROUPS(EGG_GROUP_FIELD, EGG_GROUP_FAIRY),
         .abilities = { ABILITY_CUTE_CHARM, ABILITY_NONE, ABILITY_FLUFFY },
@@ -457,7 +618,7 @@ const struct SpeciesInfo gSpeciesInfo[] =
         .baseHP = 90, .baseAttack = 75, .baseDefense = 85, .baseSpeed = 110,
         .baseSpAttack = 105, .baseSpDefense = 95,
         .types = MON_TYPES(TYPE_GRASS), .catchRate = 45, .expYield = 240,
-        .evYield_SpAttack = 2, .genderRatio = PERCENT_FEMALE(50),
+        .evYield_SpAttack = 2, .genderRatio = MON_FEMALE,
         .eggCycles = 20, .friendship = STANDARD_FRIENDSHIP, .growthRate = GROWTH_MEDIUM_SLOW,
         .eggGroups = MON_EGG_GROUPS(EGG_GROUP_FIELD, EGG_GROUP_FAIRY),
         .abilities = { ABILITY_CUTE_CHARM, ABILITY_NONE, ABILITY_FLUFFY },
@@ -489,7 +650,7 @@ const struct SpeciesInfo gSpeciesInfo[] =
         .baseHP = 90, .baseAttack = 75, .baseDefense = 85, .baseSpeed = 110,
         .baseSpAttack = 105, .baseSpDefense = 95,
         .types = MON_TYPES(TYPE_ELECTRIC), .catchRate = 45, .expYield = 240,
-        .evYield_SpAttack = 2, .genderRatio = PERCENT_FEMALE(50),
+        .evYield_SpAttack = 2, .genderRatio = MON_FEMALE,
         .eggCycles = 20, .friendship = STANDARD_FRIENDSHIP, .growthRate = GROWTH_MEDIUM_SLOW,
         .eggGroups = MON_EGG_GROUPS(EGG_GROUP_FIELD, EGG_GROUP_FAIRY),
         .abilities = { ABILITY_CUTE_CHARM, ABILITY_NONE, ABILITY_FLUFFY },
@@ -513,7 +674,8 @@ const struct SpeciesInfo gSpeciesInfo[] =
             gOverworldPalette_RikoElectric,
             gShinyOverworldPalette_RikoElectric
         )
-        .teachingType = ALL_TEACHABLES, .levelUpLearnset = sPawmiLevelUpLearnset,
+        .teachingType = ALL_TEACHABLES, .levelUpLearnset = sRikoElectricTrioLevelUpLearnset,
+        .evolutions = EVOLUTION({EVO_ITEM, ITEM_EEL_SUSHI, SPECIES_RIKO}),
     },
 
     [SPECIES_RIKO_ICE] =
@@ -521,7 +683,7 @@ const struct SpeciesInfo gSpeciesInfo[] =
         .baseHP = 90, .baseAttack = 75, .baseDefense = 85, .baseSpeed = 110,
         .baseSpAttack = 105, .baseSpDefense = 95,
         .types = MON_TYPES(TYPE_ICE), .catchRate = 45, .expYield = 240,
-        .evYield_SpAttack = 2, .genderRatio = PERCENT_FEMALE(50),
+        .evYield_SpAttack = 2, .genderRatio = MON_FEMALE,
         .eggCycles = 20, .friendship = STANDARD_FRIENDSHIP, .growthRate = GROWTH_MEDIUM_SLOW,
         .eggGroups = MON_EGG_GROUPS(EGG_GROUP_FIELD, EGG_GROUP_FAIRY),
         .abilities = { ABILITY_CUTE_CHARM, ABILITY_NONE, ABILITY_FLUFFY },
@@ -553,7 +715,7 @@ const struct SpeciesInfo gSpeciesInfo[] =
         .baseHP = 90, .baseAttack = 75, .baseDefense = 85, .baseSpeed = 110,
         .baseSpAttack = 105, .baseSpDefense = 95,
         .types = MON_TYPES(TYPE_PSYCHIC), .catchRate = 45, .expYield = 240,
-        .evYield_SpAttack = 2, .genderRatio = PERCENT_FEMALE(50),
+        .evYield_SpAttack = 2, .genderRatio = MON_FEMALE,
         .eggCycles = 20, .friendship = STANDARD_FRIENDSHIP, .growthRate = GROWTH_MEDIUM_SLOW,
         .eggGroups = MON_EGG_GROUPS(EGG_GROUP_FIELD, EGG_GROUP_FAIRY),
         .abilities = { ABILITY_CUTE_CHARM, ABILITY_NONE, ABILITY_FLUFFY },
@@ -585,7 +747,7 @@ const struct SpeciesInfo gSpeciesInfo[] =
         .baseHP = 90, .baseAttack = 75, .baseDefense = 85, .baseSpeed = 110,
         .baseSpAttack = 105, .baseSpDefense = 95,
         .types = MON_TYPES(TYPE_FLYING), .catchRate = 45, .expYield = 240,
-        .evYield_SpAttack = 2, .genderRatio = PERCENT_FEMALE(50),
+        .evYield_SpAttack = 2, .genderRatio = MON_FEMALE,
         .eggCycles = 20, .friendship = STANDARD_FRIENDSHIP, .growthRate = GROWTH_MEDIUM_SLOW,
         .eggGroups = MON_EGG_GROUPS(EGG_GROUP_FIELD, EGG_GROUP_FAIRY),
         .abilities = { ABILITY_CUTE_CHARM, ABILITY_NONE, ABILITY_FLUFFY },
@@ -617,7 +779,7 @@ const struct SpeciesInfo gSpeciesInfo[] =
         .baseHP = 90, .baseAttack = 75, .baseDefense = 85, .baseSpeed = 110,
         .baseSpAttack = 105, .baseSpDefense = 95,
         .types = MON_TYPES(TYPE_DRAGON), .catchRate = 45, .expYield = 240,
-        .evYield_SpAttack = 2, .genderRatio = PERCENT_FEMALE(50),
+        .evYield_SpAttack = 2, .genderRatio = MON_FEMALE,
         .eggCycles = 20, .friendship = STANDARD_FRIENDSHIP, .growthRate = GROWTH_MEDIUM_SLOW,
         .eggGroups = MON_EGG_GROUPS(EGG_GROUP_FIELD, EGG_GROUP_FAIRY),
         .abilities = { ABILITY_CUTE_CHARM, ABILITY_NONE, ABILITY_FLUFFY },
@@ -651,7 +813,7 @@ const struct SpeciesInfo gSpeciesInfo[] =
         .baseHP = 80, .baseAttack = 85, .baseDefense = 70, .baseSpeed = 120,
         .baseSpAttack = 95, .baseSpDefense = 80,
         .types = MON_TYPES(TYPE_FIGHTING), .catchRate = 60, .expYield = 220,
-        .evYield_Speed = 3, .genderRatio = PERCENT_FEMALE(50),
+        .evYield_Speed = 3, .genderRatio = MON_FEMALE,
         .eggCycles = 20, .friendship = STANDARD_FRIENDSHIP, .growthRate = GROWTH_MEDIUM_SLOW,
         .eggGroups = MON_EGG_GROUPS(EGG_GROUP_FIELD),
         .abilities = { ABILITY_LIMBER, ABILITY_NONE, ABILITY_TECHNICIAN },
@@ -683,7 +845,7 @@ const struct SpeciesInfo gSpeciesInfo[] =
         .baseHP = 80, .baseAttack = 85, .baseDefense = 70, .baseSpeed = 120,
         .baseSpAttack = 95, .baseSpDefense = 80,
         .types = MON_TYPES(TYPE_POISON), .catchRate = 60, .expYield = 220,
-        .evYield_Speed = 3, .genderRatio = PERCENT_FEMALE(50),
+        .evYield_Speed = 3, .genderRatio = MON_FEMALE,
         .eggCycles = 20, .friendship = STANDARD_FRIENDSHIP, .growthRate = GROWTH_MEDIUM_SLOW,
         .eggGroups = MON_EGG_GROUPS(EGG_GROUP_FIELD),
         .abilities = { ABILITY_LIMBER, ABILITY_NONE, ABILITY_TECHNICIAN },
@@ -715,7 +877,7 @@ const struct SpeciesInfo gSpeciesInfo[] =
         .baseHP = 80, .baseAttack = 85, .baseDefense = 70, .baseSpeed = 120,
         .baseSpAttack = 95, .baseSpDefense = 80,
         .types = MON_TYPES(TYPE_GROUND), .catchRate = 60, .expYield = 220,
-        .evYield_Speed = 3, .genderRatio = PERCENT_FEMALE(50),
+        .evYield_Speed = 3, .genderRatio = MON_FEMALE,
         .eggCycles = 20, .friendship = STANDARD_FRIENDSHIP, .growthRate = GROWTH_MEDIUM_SLOW,
         .eggGroups = MON_EGG_GROUPS(EGG_GROUP_FIELD),
         .abilities = { ABILITY_LIMBER, ABILITY_NONE, ABILITY_TECHNICIAN },
@@ -747,7 +909,7 @@ const struct SpeciesInfo gSpeciesInfo[] =
         .baseHP = 80, .baseAttack = 85, .baseDefense = 70, .baseSpeed = 120,
         .baseSpAttack = 95, .baseSpDefense = 80,
         .types = MON_TYPES(TYPE_ROCK), .catchRate = 60, .expYield = 220,
-        .evYield_Speed = 3, .genderRatio = PERCENT_FEMALE(50),
+        .evYield_Speed = 3, .genderRatio = MON_FEMALE,
         .eggCycles = 20, .friendship = STANDARD_FRIENDSHIP, .growthRate = GROWTH_MEDIUM_SLOW,
         .eggGroups = MON_EGG_GROUPS(EGG_GROUP_FIELD),
         .abilities = { ABILITY_LIMBER, ABILITY_NONE, ABILITY_TECHNICIAN },
@@ -779,7 +941,7 @@ const struct SpeciesInfo gSpeciesInfo[] =
         .baseHP = 80, .baseAttack = 85, .baseDefense = 70, .baseSpeed = 120,
         .baseSpAttack = 95, .baseSpDefense = 80,
         .types = MON_TYPES(TYPE_BUG), .catchRate = 60, .expYield = 220,
-        .evYield_Speed = 3, .genderRatio = PERCENT_FEMALE(50),
+        .evYield_Speed = 3, .genderRatio = MON_FEMALE,
         .eggCycles = 20, .friendship = STANDARD_FRIENDSHIP, .growthRate = GROWTH_MEDIUM_SLOW,
         .eggGroups = MON_EGG_GROUPS(EGG_GROUP_FIELD),
         .abilities = { ABILITY_LIMBER, ABILITY_NONE, ABILITY_TECHNICIAN },
@@ -811,7 +973,7 @@ const struct SpeciesInfo gSpeciesInfo[] =
         .baseHP = 80, .baseAttack = 85, .baseDefense = 70, .baseSpeed = 120,
         .baseSpAttack = 95, .baseSpDefense = 80,
         .types = MON_TYPES(TYPE_GHOST), .catchRate = 60, .expYield = 220,
-        .evYield_Speed = 3, .genderRatio = PERCENT_FEMALE(50),
+        .evYield_Speed = 3, .genderRatio = MON_FEMALE,
         .eggCycles = 20, .friendship = STANDARD_FRIENDSHIP, .growthRate = GROWTH_MEDIUM_SLOW,
         .eggGroups = MON_EGG_GROUPS(EGG_GROUP_FIELD),
         .abilities = { ABILITY_LIMBER, ABILITY_NONE, ABILITY_TECHNICIAN },
@@ -835,7 +997,8 @@ const struct SpeciesInfo gSpeciesInfo[] =
             gOverworldPalette_BijuuGhost,
             gShinyOverworldPalette_BijuuGhost
         )
-        .teachingType = ALL_TEACHABLES, .levelUpLearnset = sMisdreavusLevelUpLearnset,
+        .teachingType = ALL_TEACHABLES, .levelUpLearnset = sBijuuGhostTrioLevelUpLearnset,
+        .evolutions = EVOLUTION({EVO_ITEM, ITEM_MOUSE_TOY, SPECIES_BIJUU}),
     },
 
     [SPECIES_BIJUU_DARK] =
@@ -843,7 +1006,7 @@ const struct SpeciesInfo gSpeciesInfo[] =
         .baseHP = 80, .baseAttack = 85, .baseDefense = 70, .baseSpeed = 120,
         .baseSpAttack = 95, .baseSpDefense = 80,
         .types = MON_TYPES(TYPE_DARK), .catchRate = 60, .expYield = 220,
-        .evYield_Speed = 3, .genderRatio = PERCENT_FEMALE(50),
+        .evYield_Speed = 3, .genderRatio = MON_FEMALE,
         .eggCycles = 20, .friendship = STANDARD_FRIENDSHIP, .growthRate = GROWTH_MEDIUM_SLOW,
         .eggGroups = MON_EGG_GROUPS(EGG_GROUP_FIELD),
         .abilities = { ABILITY_LIMBER, ABILITY_NONE, ABILITY_TECHNICIAN },
@@ -875,7 +1038,7 @@ const struct SpeciesInfo gSpeciesInfo[] =
         .baseHP = 80, .baseAttack = 85, .baseDefense = 70, .baseSpeed = 120,
         .baseSpAttack = 95, .baseSpDefense = 80,
         .types = MON_TYPES(TYPE_STEEL), .catchRate = 60, .expYield = 220,
-        .evYield_Speed = 3, .genderRatio = PERCENT_FEMALE(50),
+        .evYield_Speed = 3, .genderRatio = MON_FEMALE,
         .eggCycles = 20, .friendship = STANDARD_FRIENDSHIP, .growthRate = GROWTH_MEDIUM_SLOW,
         .eggGroups = MON_EGG_GROUPS(EGG_GROUP_FIELD),
         .abilities = { ABILITY_LIMBER, ABILITY_NONE, ABILITY_TECHNICIAN },
@@ -902,6 +1065,344 @@ const struct SpeciesInfo gSpeciesInfo[] =
         .teachingType = ALL_TEACHABLES, .levelUpLearnset = sTinkatinkLevelUpLearnset,
     },
 
+    [SPECIES_BIJUU_EMBER] =
+    {
+        .baseHP = 80, .baseAttack = 85, .baseDefense = 70, .baseSpeed = 120,
+        .baseSpAttack = 110, .baseSpDefense = 85,
+        .types = MON_TYPES(TYPE_NORMAL, TYPE_FIRE), .catchRate = 60, .expYield = 220,
+        .evYield_Speed = 3, .genderRatio = MON_FEMALE,
+        .eggCycles = 20, .friendship = STANDARD_FRIENDSHIP, .growthRate = GROWTH_MEDIUM_SLOW,
+        .eggGroups = MON_EGG_GROUPS(EGG_GROUP_FIELD),
+        .abilities = { ABILITY_LIMBER, ABILITY_NONE, ABILITY_TECHNICIAN },
+        .bodyColor = BODY_COLOR_BROWN, .speciesName = _("BijuuEmber"), .cryId = CRY_MEOWTH,
+        .natDexNum = NATIONAL_DEX_BIJUU, .categoryName = _("Warm Tail"), .height = 7, .weight = 120,
+        .description = COMPOUND_STRING("A small flame warms her tail.\nShe found her own spark when\nher sisters knew the real her."),
+        .pokemonScale = 256, .trainerScale = 256,
+        .frontPic = gMonFrontPic_BijuuEmber, .frontPicSize = MON_COORDS_SIZE(64, 64), .frontPicYOffset = 0,
+        .frontAnimFrames = sAnims_SingleFramePlaceHolder, .backPic = gMonBackPic_BijuuEmber,
+        .backPicSize = MON_COORDS_SIZE(64, 64), .backPicYOffset = 0,
+        .palette = gMonPalette_BijuuEmber, .shinyPalette = gMonShinyPalette_BijuuEmber,
+        .iconSprite = gMonIcon_BijuuEmber, .iconPalette = gMonIconPalette_BijuuEmber,
+        .shinyIconPalette = gMonShinyIconPalette_BijuuEmber, .pokemonJumpType = PKMN_JUMP_TYPE_FAST,
+        SHADOW(-2, 8, SHADOW_SIZE_S)
+        OVERWORLD(
+            sPicTable_BijuuEmber,
+            SIZE_32x32,
+            SHADOW_SIZE_M,
+            TRACKS_FOOT,
+            sAnimTable_Following,
+            gOverworldPalette_BijuuEmber,
+            gShinyOverworldPalette_BijuuEmber
+        )
+        .teachingType = ALL_TEACHABLES, .levelUpLearnset = sBijuuEmberLevelUpLearnset,
+        .teachableLearnset = sMeowthTeachableLearnset,
+        .eggMoveLearnset = sMeowthEggMoveLearnset,
+        .evolutions = EVOLUTION({EVO_ITEM, ITEM_BIJUUS_FIRE, SPECIES_BIJUU}),
+    },
+    [SPECIES_BIJUU_PSYCHIC] =
+    {
+        .baseHP = 80, .baseAttack = 85, .baseDefense = 70, .baseSpeed = 120,
+        .baseSpAttack = 95, .baseSpDefense = 80,
+        .types = MON_TYPES(TYPE_NORMAL, TYPE_PSYCHIC), .catchRate = 60, .expYield = 220,
+        .evYield_Speed = 3, .genderRatio = MON_FEMALE,
+        .eggCycles = 20, .friendship = STANDARD_FRIENDSHIP, .growthRate = GROWTH_MEDIUM_SLOW,
+        .eggGroups = MON_EGG_GROUPS(EGG_GROUP_FIELD),
+        .abilities = { ABILITY_LIMBER, ABILITY_NONE, ABILITY_TECHNICIAN },
+        .bodyColor = BODY_COLOR_BROWN, .speciesName = _("BijuuPsi"), .cryId = CRY_MEOWTH,
+        .natDexNum = NATIONAL_DEX_BIJUU, .categoryName = _("Astral Cat"), .height = 7, .weight = 120,
+        .description = COMPOUND_STRING("It lifts stones with its mind.\nIts eyes glow when it senses\nsomeone opening a treat bag."),
+        .pokemonScale = 256, .trainerScale = 256,
+        .frontPic = gMonFrontPic_BijuuPsychic, .frontPicSize = MON_COORDS_SIZE(64, 64), .frontPicYOffset = 0,
+        .frontAnimFrames = sAnims_SingleFramePlaceHolder, .backPic = gMonBackPic_BijuuPsychic,
+        .backPicSize = MON_COORDS_SIZE(64, 64), .backPicYOffset = 0,
+        .palette = gMonPalette_BijuuPsychic, .shinyPalette = gMonShinyPalette_BijuuPsychic,
+        .iconSprite = gMonIcon_BijuuPsychic, .iconPalette = gMonIconPalette_BijuuPsychic,
+        .shinyIconPalette = gMonShinyIconPalette_BijuuPsychic, .pokemonJumpType = PKMN_JUMP_TYPE_FAST,
+        SHADOW(-2, 8, SHADOW_SIZE_S)
+        OVERWORLD(
+            sPicTable_BijuuPsychic,
+            SIZE_32x32,
+            SHADOW_SIZE_M,
+            TRACKS_FOOT,
+            sAnimTable_Following,
+            gOverworldPalette_BijuuPsychic,
+            gShinyOverworldPalette_BijuuPsychic
+        )
+        .teachingType = ALL_TEACHABLES, .levelUpLearnset = sMeowthLevelUpLearnset,
+        .teachableLearnset = sMeowthTeachableLearnset,
+        .eggMoveLearnset = sMeowthEggMoveLearnset,
+        .evolutions = EVOLUTION({EVO_ITEM, ITEM_BIJUUS_CAT_NIP, SPECIES_BIJUU}, {EVO_ITEM, ITEM_BIJUUS_FIRE, SPECIES_BIJUU_EMBER}),
+    },
+
+#endif
+
+
+#if P_FAMILY_FIDOUGH
+    [SPECIES_PENNY_BRAVE] =
+    {
+        .baseHP = 85, .baseAttack = 90, .baseDefense = 100, .baseSpeed = 85,
+        .baseSpAttack = 55, .baseSpDefense = 85,
+        .types = MON_TYPES(TYPE_FAIRY), .catchRate = 45, .expYield = 240,
+        .evYield_Defense = 2, .evYield_HP = 1, .genderRatio = MON_FEMALE,
+        .eggCycles = 20, .friendship = STANDARD_FRIENDSHIP, .growthRate = GROWTH_MEDIUM_SLOW,
+        .eggGroups = MON_EGG_GROUPS(EGG_GROUP_FIELD, EGG_GROUP_MINERAL),
+        .abilities = { ABILITY_WELL_BAKED_BODY, ABILITY_NONE, ABILITY_AROMA_VEIL },
+        .innates = { ABILITY_SWEET_VEIL },
+        .bodyColor = BODY_COLOR_YELLOW, .speciesName = _("PennyBrave"), .cryId = CRY_FIDOUGH,
+        .natDexNum = NATIONAL_DEX_FIDOUGH, .categoryName = _("Brave Steps"), .height = 5, .weight = 149,
+        .description = COMPOUND_STRING("A little armor, a growing heart.\nShe walks ahead knowing both\nher sisters will walk with her."),
+        .pokemonScale = 256, .trainerScale = 256,
+        .frontPic = gMonFrontPic_PennyBrave, .frontPicSize = MON_COORDS_SIZE(64, 64), .frontPicYOffset = 4,
+        .frontAnimFrames = sAnims_SingleFramePlaceHolder, .backPic = gMonBackPic_PennyBrave,
+        .backPicSize = MON_COORDS_SIZE(64, 64), .backPicYOffset = 4,
+        .palette = gMonPalette_PennyBrave, .shinyPalette = gMonShinyPalette_PennyBrave,
+        .iconSprite = gMonIcon_PennyBrave, .iconPalette = gMonIconPalette_PennyBrave,
+        .shinyIconPalette = gMonShinyIconPalette_PennyBrave, .pokemonJumpType = PKMN_JUMP_TYPE_NORMAL,
+        SHADOW(-2, 8, SHADOW_SIZE_S)
+        FOOTPRINT(Fidough)
+        OVERWORLD(
+            sPicTable_PennyBrave,
+            SIZE_32x32,
+            SHADOW_SIZE_M,
+            TRACKS_FOOT,
+            sAnimTable_Following,
+            gOverworldPalette_PennyBrave,
+            gShinyOverworldPalette_PennyBrave
+        )
+        .levelUpLearnset = sPennyBraveLevelUpLearnset,
+        .teachableLearnset = sDachsbunTeachableLearnset,
+        .eggMoveLearnset = sFidoughEggMoveLearnset,
+        .evolutions = EVOLUTION({EVO_ITEM, ITEM_PENNYS_BRAVERY, SPECIES_FIDOUGH}),
+    },
+    [SPECIES_PENNY_GUARDIAN] =
+    {
+        .baseHP = 100, .baseAttack = 100, .baseDefense = 120, .baseSpeed = 85,
+        .baseSpAttack = 55, .baseSpDefense = 95,
+        .types = MON_TYPES(TYPE_FAIRY), .catchRate = 45, .expYield = 240,
+        .evYield_Defense = 2, .evYield_HP = 1, .genderRatio = MON_FEMALE,
+        .eggCycles = 20, .friendship = STANDARD_FRIENDSHIP, .growthRate = GROWTH_MEDIUM_SLOW,
+        .eggGroups = MON_EGG_GROUPS(EGG_GROUP_FIELD, EGG_GROUP_MINERAL),
+        .abilities = { ABILITY_WELL_BAKED_BODY, ABILITY_NONE, ABILITY_AROMA_VEIL },
+        .innates = { ABILITY_SWEET_VEIL },
+        .bodyColor = BODY_COLOR_YELLOW, .speciesName = _("PennyGuard"), .cryId = CRY_FIDOUGH,
+        .natDexNum = NATIONAL_DEX_FIDOUGH, .categoryName = _("Hot Dog"), .height = 5, .weight = 149,
+        .description = COMPOUND_STRING("Dad's keys make Penny brave.\n"
+                                       "Her golden coat wears ketchup,\n"
+                                       "but chicken brings her home."),
+        .pokemonScale = 256, .trainerScale = 256,
+        .frontPic = gMonFrontPic_PennyGuardian, .frontPicSize = MON_COORDS_SIZE(64, 64), .frontPicYOffset = 4,
+        .frontAnimFrames = sAnims_SingleFramePlaceHolder, .backPic = gMonBackPic_PennyGuardian,
+        .backPicSize = MON_COORDS_SIZE(64, 64), .backPicYOffset = 4,
+        .palette = gMonPalette_PennyGuardian, .shinyPalette = gMonShinyPalette_PennyGuardian,
+        .iconSprite = gMonIcon_PennyGuardian, .iconPalette = gMonIconPalette_PennyGuardian,
+        .shinyIconPalette = gMonShinyIconPalette_PennyGuardian, .pokemonJumpType = PKMN_JUMP_TYPE_NORMAL,
+        SHADOW(-2, 8, SHADOW_SIZE_S)
+        FOOTPRINT(Fidough)
+        OVERWORLD(
+            sPicTable_PennyGuardian,
+            SIZE_32x32,
+            SHADOW_SIZE_M,
+            TRACKS_FOOT,
+            sAnimTable_Following,
+            gOverworldPalette_PennyGuardian,
+            gShinyOverworldPalette_PennyGuardian
+        )
+        .levelUpLearnset = sDachsbunLevelUpLearnset,
+        .teachableLearnset = sDachsbunTeachableLearnset,
+        .eggMoveLearnset = sFidoughEggMoveLearnset,
+        .evolutions = EVOLUTION({EVO_ITEM, ITEM_PENNYS_BRAVERY, SPECIES_PENNY_BRAVE}, {EVO_ITEM, ITEM_PIECE_OF_CHICKEN, SPECIES_FIDOUGH}, {EVO_ITEM, ITEM_DOG_BOWL, SPECIES_PENNY_WATER}, {EVO_ITEM, ITEM_FETCHING_STICK, SPECIES_PENNY_GRASS}),
+    },
+#endif
+
+#if P_FAMILY_BIJUU
+    [SPECIES_BIJUU_ICE] =
+    {
+        .baseHP = 80, .baseAttack = 85, .baseDefense = 70, .baseSpeed = 120,
+        .baseSpAttack = 95, .baseSpDefense = 80,
+        .types = MON_TYPES(TYPE_ICE), .catchRate = 60, .expYield = 220,
+        .evYield_Speed = 3, .genderRatio = MON_FEMALE,
+        .eggCycles = 20, .friendship = STANDARD_FRIENDSHIP, .growthRate = GROWTH_MEDIUM_SLOW,
+        .eggGroups = MON_EGG_GROUPS(EGG_GROUP_FIELD),
+        .abilities = { ABILITY_LIMBER, ABILITY_NONE, ABILITY_TECHNICIAN },
+        .bodyColor = BODY_COLOR_BROWN, .speciesName = _("BijuuIce"), .cryId = CRY_MEOWTH,
+        .natDexNum = NATIONAL_DEX_BIJUU, .categoryName = _("Copy Cat"), .height = 7, .weight = 120,
+        .description = COMPOUND_STRING("Bijuu leaves tiny frosty pawprints.\n"
+                                       "Her frozen fish is still her\n"
+                                       "favorite chilly treasure."),
+        .pokemonScale = 256, .trainerScale = 256,
+        .frontPic = gMonFrontPic_BijuuIce, .frontPicSize = MON_COORDS_SIZE(64, 64), .frontPicYOffset = 0,
+        .frontAnimFrames = sAnims_SingleFramePlaceHolder, .backPic = gMonBackPic_BijuuIce,
+        .backPicSize = MON_COORDS_SIZE(64, 64), .backPicYOffset = 0,
+        .palette = gMonPalette_BijuuIce, .shinyPalette = gMonShinyPalette_BijuuIce,
+        .iconSprite = gMonIcon_BijuuIce, .iconPalette = gMonIconPalette_BijuuIce,
+        .shinyIconPalette = gMonShinyIconPalette_BijuuIce, .pokemonJumpType = PKMN_JUMP_TYPE_FAST,
+        SHADOW(-2, 8, SHADOW_SIZE_S)
+        OVERWORLD(
+            sPicTable_BijuuIce,
+            SIZE_32x32,
+            SHADOW_SIZE_M,
+            TRACKS_FOOT,
+            sAnimTable_Following,
+            gOverworldPalette_BijuuIce,
+            gShinyOverworldPalette_BijuuIce
+        )
+        .teachingType = ALL_TEACHABLES, .levelUpLearnset = sBijuuIceTrioLevelUpLearnset,
+        .evolutions = EVOLUTION({EVO_ITEM, ITEM_FROZEN_FISH, SPECIES_BIJUU}),
+    },
+
+#endif
+
+#if P_FAMILY_FIDOUGH
+    [SPECIES_PENNY_WATER] =
+    {
+        .baseHP = 100, .baseAttack = 100, .baseDefense = 120, .baseSpeed = 85,
+        .baseSpAttack = 55, .baseSpDefense = 95,
+        .types = MON_TYPES(TYPE_WATER), .catchRate = 45, .expYield = 240,
+        .evYield_Defense = 2, .evYield_HP = 1, .genderRatio = MON_FEMALE,
+        .eggCycles = 20, .friendship = STANDARD_FRIENDSHIP, .growthRate = GROWTH_MEDIUM_SLOW,
+        .eggGroups = MON_EGG_GROUPS(EGG_GROUP_FIELD, EGG_GROUP_MINERAL),
+        .abilities = { ABILITY_WELL_BAKED_BODY, ABILITY_NONE, ABILITY_AROMA_VEIL },
+        .innates = { ABILITY_SWEET_VEIL },
+        .bodyColor = BODY_COLOR_YELLOW, .speciesName = _("PennyWater"), .cryId = CRY_FIDOUGH,
+        .natDexNum = NATIONAL_DEX_FIDOUGH, .categoryName = _("Hot Dog"), .height = 5, .weight = 149,
+        .description = COMPOUND_STRING("Penny bravely guards her sisters.\n"
+                                       "Her element changes, but her\n"
+                                       "golden heart stays the same."),
+        .pokemonScale = 256, .trainerScale = 256,
+        .frontPic = gMonFrontPic_PennyWater, .frontPicSize = MON_COORDS_SIZE(64, 64), .frontPicYOffset = 4,
+        .frontAnimFrames = sAnims_SingleFramePlaceHolder, .backPic = gMonBackPic_PennyWater,
+        .backPicSize = MON_COORDS_SIZE(64, 64), .backPicYOffset = 4,
+        .palette = gMonPalette_PennyWater, .shinyPalette = gMonShinyPalette_PennyWater,
+        .iconSprite = gMonIcon_PennyWater, .iconPalette = gMonIconPalette_PennyWater,
+        .shinyIconPalette = gMonShinyIconPalette_PennyWater, .pokemonJumpType = PKMN_JUMP_TYPE_NORMAL,
+        SHADOW(-2, 8, SHADOW_SIZE_S)
+        FOOTPRINT(Fidough)
+        OVERWORLD(
+            sPicTable_PennyWater,
+            SIZE_32x32,
+            SHADOW_SIZE_M,
+            TRACKS_FOOT,
+            sAnimTable_Following,
+            gOverworldPalette_PennyWater,
+            gShinyOverworldPalette_PennyWater
+        )
+        .levelUpLearnset = sPennyWaterTrioLevelUpLearnset,
+        .teachableLearnset = sDachsbunTeachableLearnset,
+        .eggMoveLearnset = sFidoughEggMoveLearnset,
+        .evolutions = EVOLUTION({EVO_ITEM, ITEM_DOG_BOWL, SPECIES_PENNY_GUARDIAN}),
+    },
+
+    [SPECIES_PENNY_GRASS] =
+    {
+        .baseHP = 100, .baseAttack = 100, .baseDefense = 120, .baseSpeed = 85,
+        .baseSpAttack = 55, .baseSpDefense = 95,
+        .types = MON_TYPES(TYPE_GRASS), .catchRate = 45, .expYield = 240,
+        .evYield_Defense = 2, .evYield_HP = 1, .genderRatio = MON_FEMALE,
+        .eggCycles = 20, .friendship = STANDARD_FRIENDSHIP, .growthRate = GROWTH_MEDIUM_SLOW,
+        .eggGroups = MON_EGG_GROUPS(EGG_GROUP_FIELD, EGG_GROUP_MINERAL),
+        .abilities = { ABILITY_WELL_BAKED_BODY, ABILITY_NONE, ABILITY_AROMA_VEIL },
+        .innates = { ABILITY_SWEET_VEIL },
+        .bodyColor = BODY_COLOR_YELLOW, .speciesName = _("PennyGrass"), .cryId = CRY_FIDOUGH,
+        .natDexNum = NATIONAL_DEX_FIDOUGH, .categoryName = _("Hot Dog"), .height = 5, .weight = 149,
+        .description = COMPOUND_STRING("Penny bravely guards her sisters.\n"
+                                       "Her element changes, but her\n"
+                                       "golden heart stays the same."),
+        .pokemonScale = 256, .trainerScale = 256,
+        .frontPic = gMonFrontPic_PennyGrass, .frontPicSize = MON_COORDS_SIZE(64, 64), .frontPicYOffset = 4,
+        .frontAnimFrames = sAnims_SingleFramePlaceHolder, .backPic = gMonBackPic_PennyGrass,
+        .backPicSize = MON_COORDS_SIZE(64, 64), .backPicYOffset = 4,
+        .palette = gMonPalette_PennyGrass, .shinyPalette = gMonShinyPalette_PennyGrass,
+        .iconSprite = gMonIcon_PennyGrass, .iconPalette = gMonIconPalette_PennyGrass,
+        .shinyIconPalette = gMonShinyIconPalette_PennyGrass, .pokemonJumpType = PKMN_JUMP_TYPE_NORMAL,
+        SHADOW(-2, 8, SHADOW_SIZE_S)
+        FOOTPRINT(Fidough)
+        OVERWORLD(
+            sPicTable_PennyGrass,
+            SIZE_32x32,
+            SHADOW_SIZE_M,
+            TRACKS_FOOT,
+            sAnimTable_Following,
+            gOverworldPalette_PennyGrass,
+            gShinyOverworldPalette_PennyGrass
+        )
+        .levelUpLearnset = sPennyGrassTrioLevelUpLearnset,
+        .teachableLearnset = sDachsbunTeachableLearnset,
+        .eggMoveLearnset = sFidoughEggMoveLearnset,
+        .evolutions = EVOLUTION({EVO_ITEM, ITEM_FETCHING_STICK, SPECIES_PENNY_GUARDIAN}),
+    },
+
+#endif
+
+
+#if P_FAMILY_FIDOUGH
+    [SPECIES_PENNY_SPIRIT] =
+    {
+        .baseHP = 95, .baseAttack = 85, .baseDefense = 105, .baseSpeed = 55,
+        .baseSpAttack = 65, .baseSpDefense = 90,
+        .types = MON_TYPES(TYPE_STEEL, TYPE_FAIRY), .catchRate = 3, .expYield = 240,
+        .evYield_Defense = 2, .evYield_HP = 1, .genderRatio = MON_FEMALE,
+        .eggCycles = 20, .friendship = STANDARD_FRIENDSHIP, .growthRate = GROWTH_MEDIUM_SLOW,
+        .eggGroups = MON_EGG_GROUPS(EGG_GROUP_FIELD, EGG_GROUP_MINERAL),
+        .abilities = { ABILITY_BATTLE_ARMOR, ABILITY_NONE, ABILITY_NONE },
+        .bodyColor = BODY_COLOR_YELLOW, .speciesName = _("PennySoul"), .cryId = CRY_FIDOUGH,
+        .natDexNum = NATIONAL_DEX_FIDOUGH, .categoryName = _("Hot Dog"), .height = 5, .weight = 149,
+        .description = COMPOUND_STRING("Her armor remembers every hug.\nMom made a frightened little dog\nfeel safe enough to be brave."),
+        .pokemonScale = 256, .trainerScale = 256,
+        .frontPic = gMonFrontPic_PennySpirit, .frontPicSize = MON_COORDS_SIZE(64, 64), .frontPicYOffset = 4,
+        .frontAnimFrames = sAnims_SingleFramePlaceHolder, .backPic = gMonBackPic_PennySpirit,
+        .backPicSize = MON_COORDS_SIZE(64, 64), .backPicYOffset = 4,
+        .palette = gMonPalette_PennySpirit, .shinyPalette = gMonShinyPalette_PennySpirit,
+        .iconSprite = gMonIcon_PennySpirit, .iconPalette = gMonIconPalette_PennySpirit,
+        .shinyIconPalette = gMonShinyIconPalette_PennySpirit, .pokemonJumpType = PKMN_JUMP_TYPE_NORMAL,
+        SHADOW(-2, 8, SHADOW_SIZE_S)
+        FOOTPRINT(Fidough)
+        OVERWORLD(
+            sPicTable_PennySpirit,
+            SIZE_32x32,
+            SHADOW_SIZE_M,
+            TRACKS_FOOT,
+            sAnimTable_Following,
+            gOverworldPalette_PennySpirit,
+            gShinyOverworldPalette_PennySpirit
+        )
+        .levelUpLearnset = sPennySpiritLevelUpLearnset,
+        .teachableLearnset = sDachsbunTeachableLearnset,
+        .eggMoveLearnset = sFidoughEggMoveLearnset,
+    },
+#endif
+
+#if P_FAMILY_BIJUU
+    [SPECIES_BIJUU_SPIRIT] =
+    {
+        .baseHP = 80, .baseAttack = 70, .baseDefense = 65, .baseSpeed = 110,
+        .baseSpAttack = 95, .baseSpDefense = 75,
+        .types = MON_TYPES(TYPE_GHOST, TYPE_PSYCHIC), .catchRate = 3, .expYield = 220,
+        .evYield_Speed = 3, .genderRatio = MON_FEMALE,
+        .eggCycles = 20, .friendship = STANDARD_FRIENDSHIP, .growthRate = GROWTH_MEDIUM_SLOW,
+        .eggGroups = MON_EGG_GROUPS(EGG_GROUP_FIELD),
+        .abilities = { ABILITY_LEVITATE, ABILITY_NONE, ABILITY_NONE },
+        .bodyColor = BODY_COLOR_BROWN, .speciesName = _("BijuuSoul"), .cryId = CRY_MEOWTH,
+        .natDexNum = NATIONAL_DEX_BIJUU, .categoryName = _("Copy Cat"), .height = 7, .weight = 120,
+        .description = COMPOUND_STRING("Her blue flames guard a soft heart.\nShe learned to shine because Mom\nloved every strange part of her."),
+        .pokemonScale = 256, .trainerScale = 256,
+        .frontPic = gMonFrontPic_BijuuSpirit, .frontPicSize = MON_COORDS_SIZE(64, 64), .frontPicYOffset = 0,
+        .frontAnimFrames = sAnims_SingleFramePlaceHolder, .backPic = gMonBackPic_BijuuSpirit,
+        .backPicSize = MON_COORDS_SIZE(64, 64), .backPicYOffset = 0,
+        .palette = gMonPalette_BijuuSpirit, .shinyPalette = gMonShinyPalette_BijuuSpirit,
+        .iconSprite = gMonIcon_BijuuSpirit, .iconPalette = gMonIconPalette_BijuuSpirit,
+        .shinyIconPalette = gMonShinyIconPalette_BijuuSpirit, .pokemonJumpType = PKMN_JUMP_TYPE_FAST,
+        SHADOW(-2, 8, SHADOW_SIZE_S)
+        OVERWORLD(
+            sPicTable_BijuuSpirit,
+            SIZE_32x32,
+            SHADOW_SIZE_M,
+            TRACKS_FOOT,
+            sAnimTable_Following,
+            gOverworldPalette_BijuuSpirit,
+            gShinyOverworldPalette_BijuuSpirit
+        )
+        .teachingType = ALL_TEACHABLES, .levelUpLearnset = sBijuuSpiritLevelUpLearnset,
+    },
 #endif
 
     /*
@@ -980,3 +1481,5 @@ const struct EggData gEggDatas[EGG_ID_COUNT] =
 {
 #include "egg_data.h"
 };
+
+

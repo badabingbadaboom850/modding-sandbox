@@ -1805,12 +1805,20 @@ SaffronCity_FightingDojoVIP_Text_Falkner_Rematch:
 	.string "I've been training my\n"
 	.string "Flying-type Pokémon even harder.\p"
 	.string "Think you can take on the power\n"
-	.string "of the skies again?$"
+	.string "of the skies again?\p"
+	.string "I trained for your\n"
+	.string "teamwork this time. The\p"
+	.string "whole trio, and their\n"
+	.string "trainer, will have to earn\p"
+	.string "the sky again!$"
 
 SaffronCity_FightingDojoVIP_Text_Falkner_RematchDefeat:
 	.string "Wow… You beat me again.\p"
 	.string "I'm going to train harder to\n"
-	.string "become the greatest bird master!$"
+	.string "become the greatest bird master!\p"
+	.string "Still in perfect\n"
+	.string "formation. Your girls make\p"
+	.string "a fine flock.$"
 
 SaffronCity_FightingDojoVIP_Text_Bugsy_Rematch:
 	.string "Wow, you're the Johto Champion\n"
@@ -1819,25 +1827,40 @@ SaffronCity_FightingDojoVIP_Text_Bugsy_Rematch:
 	.string "I've been busy with my research.\p"
 	.string "I'm ready to show you my new\n"
 	.string "findings.\p"
-	.string "Want to have a rematch with me?$"
+	.string "Want to have a rematch with me?\p"
+	.string "I studied our last match.\n"
+	.string "Riko's confidence, Bijuu's\p"
+	.string "timing, Penny's patience.\n"
+	.string "Let us test what I\p"
+	.string "learned!$"
 
 SaffronCity_FightingDojoVIP_Text_Bugsy_RematchDefeat:
 	.string "Wow, you must be an expert\n"
 	.string "trainer.\p"
 	.string "My research must not be\n"
-	.string "complete…$"
+	.string "complete…\p"
+	.string "You changed the plan\n"
+	.string "again! I need a much\p"
+	.string "bigger notebook.$"
 
 SaffronCity_FightingDojoVIP_Text_Whitney_Rematch:
 	.string "Hi! It's you!\p"
 	.string "Wow, Johto Champion now?\p"
 	.string "You really are amazing!\p"
 	.string "I want to see how strong you are.\p"
-	.string "Want to have a rematch with me?$"
+	.string "Want to have a rematch with me?\p"
+	.string "I practiced! I even\n"
+	.string "practiced ignoring how\p"
+	.string "cute Penny is. Well, I\n"
+	.string "tried. Come on, girls!$"
 
 SaffronCity_FightingDojoVIP_Text_Whitney_RematchDefeat:
 	.string "Waaaaah!\p"
 	.string "Waaaaah!\p"
-	.string "…Snivel, hic… …You meanie!$"
+	.string "…Snivel, hic… …You meanie!\p"
+	.string "All right, that was good!\n"
+	.string "Do not tell Riko I copied\p"
+	.string "her victory pose.$"
 
 SaffronCity_FightingDojoVIP_Text_Morty_Rematch:
 	.string "Ah, the Johto Champion! Good of\n"
@@ -1849,22 +1872,36 @@ SaffronCity_FightingDojoVIP_Text_Morty_Rematch:
 	.string "Ghost-type Pokémon.\p"
 	.string "Let's see if you can overcome\n"
 	.string "the shadows once again.\p"
-	.string "Want to have a rematch with me?$"
+	.string "Want to have a rematch with me?\p"
+	.string "The city tells stories\n"
+	.string "about you now. I would\p"
+	.string "rather meet the trainer\n"
+	.string "than the tale. Shall we?$"
 
 SaffronCity_FightingDojoVIP_Text_Morty_RematchDefeat:
 	.string "I'm not good enough yet…\p"
 	.string "You have witnessed much more\n"
 	.string "than I.\p"
-	.string "I envy you for that…$"
+	.string "I envy you for that…\p"
+	.string "Your bond keeps growing.\n"
+	.string "Even spirits cannot hold\p"
+	.string "it still.$"
 
 SaffronCity_FightingDojoVIP_Text_Chuck_Rematch:
 	.string "Wahahah! Johto Champion!\p"
 	.string "You've come back for more!\p"
 	.string "I see your skills have improved!\p"
-	.string "Ready to see who's stronger?$"
+	.string "Ready to see who's stronger?\p"
+	.string "Ready for another workout?\n"
+	.string "I trained for three girls\p"
+	.string "and one very clever\n"
+	.string "trainer!$"
 
 SaffronCity_FightingDojoVIP_Text_Chuck_RematchDefeat:
-	.string "Wha? Huh? I lost? Again?$"
+	.string "Wha? Huh? I lost? Again?\p"
+	.string "Ha! You have gotten\n"
+	.string "stronger together. That is\p"
+	.string "the best kind of stronger!$"
 
 SaffronCity_FightingDojoVIP_Text_Jasmine_Rematch:
 	.string "…Congratulations, Johto\n"
@@ -1872,12 +1909,20 @@ SaffronCity_FightingDojoVIP_Text_Jasmine_Rematch:
 	.string "You have become so strong…\p"
 	.string "I wonder if I have improved.\p"
 	.string "Would you like to test that?\p"
-	.string "Want to have a rematch with me?$"
+	.string "Want to have a rematch with me?\p"
+	.string "I have prepared carefully.\n"
+	.string "May I ask the girls and\p"
+	.string "their trainer for another\n"
+	.string "match?$"
 
 SaffronCity_FightingDojoVIP_Text_Jasmine_RematchDefeat:
 	.string "…You are a better trainer than\n"
 	.string "me,\p"
-	.string "in both skill and kindness.$"
+	.string "in both skill and kindness.\p"
+	.string "Steel can bend without\n"
+	.string "losing its strength. Your\p"
+	.string "girls taught me something\n"
+	.string "like that.$"
 
 SaffronCity_FightingDojoVIP_Text_Pryce_Rematch:
 	.string "Ah, Johto Champion!\p"
@@ -1888,14 +1933,20 @@ SaffronCity_FightingDojoVIP_Text_Pryce_Rematch:
 	.string "learn from each other.\p"
 	.string "I, Pryce--the winter trainer--\p"
 	.string "still have a few tricks left.\p"
-	.string "Want to have a rematch with me?$"
+	.string "Want to have a rematch with me?\p"
+	.string "I have heard your name all\n"
+	.string "winter. Let us see what\p"
+	.string "the girls learned beyond\n"
+	.string "these mountains.$"
 
 SaffronCity_FightingDojoVIP_Text_Pryce_RematchDefeat:
 	.string "Ah, yet again I'm impressed by\n"
 	.string "your prowess.\p"
 	.string "With your strong will, I know\n"
 	.string "you will overcome all life's\l"
-	.string "obstacles.$"
+	.string "obstacles.\p"
+	.string "Patience, again. You and\n"
+	.string "Penny understand it well.$"
 
 SaffronCity_FightingDojoVIP_Text_Clair_Rematch:
 	.string "You did it, huh?\p"
@@ -1905,13 +1956,21 @@ SaffronCity_FightingDojoVIP_Text_Clair_Rematch:
 	.string "As a Dragon Master, I won't hold\n"
 	.string "back.\p"
 	.string "Not this time.\p"
-	.string "Want to have a rematch with me?$"
+	.string "Want to have a rematch with me?\p"
+	.string "I trained for your girls.\n"
+	.string "All three. No excuses, no\p"
+	.string "distractions, and no\n"
+	.string "victory poses before we\p"
+	.string "finish!$"
 
 SaffronCity_FightingDojoVIP_Text_Clair_RematchDefeat:
 	.string "I lost?\p"
 	.string "Again?\p"
 	.string "I don't believe it. There must\n"
-	.string "be some mistake…$"
+	.string "be some mistake…\p"
+	.string "Fine! Your teamwork\n"
+	.string "improved. I noticed. That\p"
+	.string "is all.$"
 
 SaffronCity_FightingDojoVIP_Text_Brock_Rematch:
 	.string "Brock: Hey there, {PLAYER}!\p"
@@ -1919,11 +1978,19 @@ SaffronCity_FightingDojoVIP_Text_Brock_Rematch:
 	.string "Champion.\p"
 	.string "That's incredible!\p"
 	.string "You must be even stronger now.\p"
-	.string "Want to have a rematch with me?$"
+	.string "Want to have a rematch with me?\p"
+	.string "I rebuilt my defense after\n"
+	.string "our match. Bring Riko,\p"
+	.string "Penny, and Bijuu. This\n"
+	.string "time I know how you work\p"
+	.string "together!$"
 
 SaffronCity_FightingDojoVIP_Text_Brock_RematchDefeat:
 	.string "Brock: Your Pokémon once again\n"
-	.string "overcame my rock-hard defense…$"
+	.string "overcame my rock-hard defense…\p"
+	.string "You found a new way\n"
+	.string "through! The girls trusted\p"
+	.string "your plan again.$"
 
 SaffronCity_FightingDojoVIP_Text_Misty_Rematch:
 	.string "Misty: Wow, you're the Kanto\n"
@@ -1931,21 +1998,35 @@ SaffronCity_FightingDojoVIP_Text_Misty_Rematch:
 	.string "That's amazing! You've come a\n"
 	.string "long way, {PLAYER}.\p"
 	.string "But I'm not backing down.\p"
-	.string "Want to have a rematch with me?$"
+	.string "Want to have a rematch with me?\p"
+	.string "I picked up the pace! Tell\n"
+	.string "Riko to save the cheering\p"
+	.string "for afterward. Ready, all\n"
+	.string "of you?$"
 
 SaffronCity_FightingDojoVIP_Text_Misty_RematchDefeat:
-	.string "Misty: You really are good…$"
+	.string "Misty: You really are good…\p"
+	.string "You read every change in\n"
+	.string "the current. Your girls\p"
+	.string "followed you perfectly.$"
 
 SaffronCity_FightingDojoVIP_Text_Surge_Rematch:
 	.string "Surge: So, you're now Kanto\n"
 	.string "Champion!\p"
 	.string "Impressive work, kid! But don't\n"
 	.string "think I'm done!\p"
-	.string "How about we have a go again?$"
+	.string "How about we have a go again?\p"
+	.string "I rebuilt my plan for your\n"
+	.string "trio! Same girls, new\p"
+	.string "battle. Let us see your\n"
+	.string "orders!$"
 
 SaffronCity_FightingDojoVIP_Text_Surge_RematchDefeat:
 	.string "Surge: Arrrgh! You're still just\n"
-	.string "as strong!$"
+	.string "as strong!\p"
+	.string "You adapted as a team! I\n"
+	.string "respect that. All four of\p"
+	.string "you!$"
 
 SaffronCity_FightingDojoVIP_Text_Erika_Rematch:
 	.string "Erika: Oh, hello.\p"
@@ -1954,25 +2035,39 @@ SaffronCity_FightingDojoVIP_Text_Erika_Rematch:
 	.string "Your journey must have been so\n"
 	.string "exciting.\p"
 	.string "Even champions enjoy a challenge.\p"
-	.string "Want to have a rematch with me?$"
+	.string "Want to have a rematch with me?\p"
+	.string "The garden has grown since\n"
+	.string "your visit. I hope your\p"
+	.string "girls have too. Shall we\n"
+	.string "see?$"
 
 SaffronCity_FightingDojoVIP_Text_Erika_RematchDefeat:
 	.string "Erika: Losing still leaves a\n"
 	.string "bitter aftertaste…\p"
 	.string "But knowing that there are strong\n"
-	.string "trainers spurs me to do better…$"
+	.string "trainers spurs me to do better…\p"
+	.string "What lovely teamwork.\n"
+	.string "Three different flowers,\p"
+	.string "one garden.$"
 
 SaffronCity_FightingDojoVIP_Text_Sabrina_Rematch:
 	.string "Sabrina: Ah, the Champion.\p"
 	.string "I sensed your return.\p"
 	.string "Your power has grown immensely.\p"
 	.string "Even now, I feel your aura.\p"
-	.string "Want to have a rematch with me?$"
+	.string "Want to have a rematch with me?\p"
+	.string "Your reputation arrives\n"
+	.string "before you. Your girls\p"
+	.string "still look to you first.\n"
+	.string "Let us begin again.$"
 
 SaffronCity_FightingDojoVIP_Text_Sabrina_RematchDefeat:
 	.string "Sabrina: Your love for your\n"
 	.string "Pokémon again overwhelmed my\l"
-	.string "psychic power…$"
+	.string "psychic power…\p"
+	.string "You chose a future I did\n"
+	.string "not see. The trio trusted\p"
+	.string "it.$"
 
 SaffronCity_FightingDojoVIP_Text_Janine_Rematch:
 	.string "Fufufufu…\p"
@@ -1980,12 +2075,19 @@ SaffronCity_FightingDojoVIP_Text_Janine_Rematch:
 	.string "You're the Champion now!\p"
 	.string "I'm so proud of you! But don't\n"
 	.string "think I'll go easy on you.\p"
-	.string "Want to have a rematch with me?$"
+	.string "Want to have a rematch with me?\p"
+	.string "I practiced tricks for all\n"
+	.string "three girls! Bijuu will\p"
+	.string "have to watch closer this\n"
+	.string "time. Ready, trainer?$"
 
 SaffronCity_FightingDojoVIP_Text_Janine_RematchDefeat:
 	.string "Janine: You're still just as\n"
 	.string "tough!\p"
-	.string "You definitely won…$"
+	.string "You definitely won…\p"
+	.string "Even Penny saw that\n"
+	.string "coming! I need a better\p"
+	.string "trick.$"
 
 SaffronCity_FightingDojoVIP_Text_Blaine_Rematch:
 	.string "Blaine: Whoa!\p"
@@ -1994,13 +2096,20 @@ SaffronCity_FightingDojoVIP_Text_Blaine_Rematch:
 	.string "That's blazing!\p"
 	.string "Your skills are top-notch.\p"
 	.string "I'm always up for a battle.\p"
-	.string "Want to have a rematch with me?$"
+	.string "Want to have a rematch with me?\p"
+	.string "I stoked the fire for your\n"
+	.string "return! Three girls, one\p"
+	.string "trainer, and no easy\n"
+	.string "victory!$"
 
 SaffronCity_FightingDojoVIP_Text_Blaine_RematchDefeat:
 	.string "Blaine: Your skills are truly\n"
 	.string "fiery!\p"
 	.string "You've burned right through my\n"
-	.string "defenses.$"
+	.string "defenses.\p"
+	.string "Burned out again! Keep\n"
+	.string "that teamwork burning\p"
+	.string "bright!$"
 
 SaffronCity_FightingDojoVIP_Text_Blue_Rematch:
 	.string "Blue: Well, well. Champion!\p"
@@ -2008,9 +2117,17 @@ SaffronCity_FightingDojoVIP_Text_Blue_Rematch:
 	.string "I used to have that title too,\n"
 	.string "you know. But I won't go easy.\p"
 	.string "Let's see if you can keep it up.\p"
-	.string "Want to have a rematch with me?$"
+	.string "Want to have a rematch with me?\p"
+	.string "Everybody talks about your\n"
+	.string "trio. I am here to beat\p"
+	.string "their trainer. Bring all\n"
+	.string "three and show me your new\p"
+	.string "plan!$"
 
 SaffronCity_FightingDojoVIP_Text_Blue_RematchDefeat:
 	.string "Blue: What?\p"
-	.string "How the heck did I lose again?$"
+	.string "How the heck did I lose again?\p"
+	.string "Fine. You and your girls\n"
+	.string "earned it again. I will be\p"
+	.string "ready next time.$"
 

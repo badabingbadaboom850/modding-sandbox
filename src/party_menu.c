@@ -1,4 +1,5 @@
 #include "global.h"
+#include "trio_camp.h"
 #include "constants/party_menu.h"
 #if PARTY_MENU_STYLE_OPTION
 #if !defined(PARTY_MENU_VARIANT_HGSS)
@@ -536,7 +537,7 @@ static void DisplayGiveHowManyMessage(void);
 static bool8 DoesItemIncreaseEV(u8 itemType);
 static bool8 DoesItemReduceIV(u8 itemType);
 static bool8 ShouldLevelUpItemUseLevelCap(void);
-static u16 GetMaxLevelUpItemQuantity(struct Pokemon *mon, u8 holdEffectParam, u16 quantityInBag);
+static u16 GetMaxLevelUpItemQuantity(struct Pokemon *mon, enum Item item, u8 holdEffectParam, u16 quantityInBag);
 static void ClearHowManyItemsWindow(u8 taskId);
 static void PrintHowManyItemsWindow(u8 taskId);
 static void Task_GiveHowManyItems(u8 taskId);
@@ -5181,6 +5182,7 @@ void ItemUseCB_Medicine(u8 taskId, TaskFunc task)
         {
             PlaySE(SE_USE_ITEM);
             RemoveBagItem(item, 1);
+            TrioCamp_RecordMedicineUse(item);
         }
         else
         {
@@ -6406,7 +6408,7 @@ void ItemUseCB_RareCandy(u8 taskId, TaskFunc task)
     tItemEffect = GetItemEffectType(gSpecialVar_ItemId);
     tQuantityInBag = CountTotalItemQuantityInBag(gSpecialVar_ItemId);
     tItemCount = 1;
-    tMaxItemQuantity = GetMaxLevelUpItemQuantity(mon, tHoldEffectParam, tQuantityInBag);
+    tMaxItemQuantity = GetMaxLevelUpItemQuantity(mon, gSpecialVar_ItemId, tHoldEffectParam, tQuantityInBag);
 
     if (tMaxItemQuantity == 0)
         cannotUseEffect = TRUE;
@@ -6421,7 +6423,7 @@ void ItemUseCB_RareCandy(u8 taskId, TaskFunc task)
 
         ResetLevelUpMoveLearningState();
 
-        if (tHoldEffectParam == 0) // Rare Candy
+        if (tHoldEffectParam == 0 && gSpecialVar_ItemId != ITEM_RIKO_PUFFS) // Rare Candy
         {
             targetSpecies = GetEvolutionTargetSpecies(mon, EVO_MODE_NORMAL, ITEM_NONE, NULL, &canStopEvo, CHECK_EVO);
         }
@@ -6809,7 +6811,7 @@ static bool8 ShouldLevelUpItemUseLevelCap(void)
     return B_RARE_CANDY_CAP && (expCapType == EXP_CAP_SOFT || expCapType == EXP_CAP_HARD);
 }
 
-static u16 GetMaxLevelUpItemQuantity(struct Pokemon *mon, u8 holdEffectParam, u16 quantityInBag)
+static u16 GetMaxLevelUpItemQuantity(struct Pokemon *mon, enum Item item, u8 holdEffectParam, u16 quantityInBag)
 {
     u32 species = GetMonData(mon, MON_DATA_SPECIES);
     u32 growthRate = gSpeciesInfo[species].growthRate;
@@ -6834,7 +6836,8 @@ static u16 GetMaxLevelUpItemQuantity(struct Pokemon *mon, u8 holdEffectParam, u1
 
     if (holdEffectParam == 0)
     {
-        maxQuantity = levelCap - level;
+        u32 levelsPerItem = item == ITEM_RIKO_PUFFS ? 5 : 1;
+        maxQuantity = (levelCap - level + levelsPerItem - 1) / levelsPerItem;
     }
     else
     {
@@ -7315,6 +7318,23 @@ static void Task_SacredAshDisplayHPRestored(u8 taskId)
 #undef tHadEffect
 #undef tLastSlotUsed
 
+// Only the six elemental keepsakes are reusable; ordinary stones are consumed.
+static bool32 IsReusableTrioFormItem(u16 item)
+{
+    switch (item)
+    {
+    case ITEM_GREEN_PEPPER:
+    case ITEM_EEL_SUSHI:
+    case ITEM_FROZEN_FISH:
+    case ITEM_MOUSE_TOY:
+    case ITEM_DOG_BOWL:
+    case ITEM_FETCHING_STICK:
+        return TRUE;
+    default:
+        return FALSE;
+    }
+}
+
 void ItemUseCB_EvolutionStone(u8 taskId, TaskFunc task)
 {
     PlaySE(SE_SELECT);
@@ -7328,7 +7348,8 @@ void ItemUseCB_EvolutionStone(u8 taskId, TaskFunc task)
     }
     else
     {
-        if (GetItemPocket(gSpecialVar_ItemId) != POCKET_KEY_ITEMS)
+        if (GetItemPocket(gSpecialVar_ItemId) != POCKET_KEY_ITEMS
+            && !IsReusableTrioFormItem(gSpecialVar_ItemId))
             RemoveBagItem(gSpecialVar_ItemId, 1);
         FreePartyPointers();
     }
@@ -9554,4 +9575,14 @@ static void FieldCallback_RockClimb(void)
     gFieldEffectArguments[0] = GetCursorSelectionMonId();
     FieldEffectStart(FLDEFF_USE_ROCK_CLIMB);
 }
+#if TESTING
+#if PARTY_MENU_STYLE_OPTION
+u16 PARTY_MENU_VARIANT_NAME(TestLevelUpItemQuantity)(struct Pokemon *mon, enum Item item, u16 quantity)
+#else
+u16 PartyMenu_TestLevelUpItemQuantity(struct Pokemon *mon, enum Item item, u16 quantity)
+#endif
+{
+    return GetMaxLevelUpItemQuantity(mon, item, GetItemHoldEffectParam(item), quantity);
+}
+#endif
 #endif // !SWSH_PARTY_MENU || PARTY_MENU_STYLE_OPTION

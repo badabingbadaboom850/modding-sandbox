@@ -1252,6 +1252,18 @@ Common_Text_ReceivedMon:
 	.include "data/scripts/dexnav.inc"
 	.include "data/scripts/sandpit.inc"
 	.include "data/maps/ShoalCave_LowTideIceRoom_Suicune/scripts.inc"
+	.include "data/scripts/trio_spirit_trials.inc"
+	.include "data/scripts/trio_home_spirit_trials.inc"
+	.include "data/scripts/trio_story_spirit_trials.inc"
+	.include "data/scripts/trio_memories.inc"
+	.include "data/scripts/trio_scott_moments.inc"
+	.include "data/scripts/trio_snack_chase.inc"
+	.include "data/scripts/trio_greedent_gang.inc"
+	.include "data/scripts/trio_camp.inc"
+	.include "data/scripts/trio_camp_keepsakes.inc"
+	.include "data/maps/GoldenrodFestival/scripts.inc"
+	.include "data/scripts/trio_party_checks.inc"
+	.include "data/scripts/trio_gym_trivia.inc"
 	.include "data/scripts/battle_frontier.inc"
 	
 	// Start battle_arcade
@@ -2413,3 +2425,12 @@ Common_Text_ReceivedMon:
 	.include "data/maps/Route50UnderwaterCave2/scripts.inc"
 
 	.include "data/maps/BattleCafe/scripts.inc"
+
+
+	.include "data/maps/TrioEchoWoods/scripts.inc"
+
+	.include "data/maps/TrioMirrorHouse/scripts.inc"
+
+	.include "data/maps/TrioLanternTrail/scripts.inc"
+	.include "data/maps/TrioGarden/scripts.inc"
+	.include "data/maps/RikoSpiritCavern/scripts.inc"

@@ -1552,7 +1552,7 @@ const struct SpeciesInfo gSpeciesInfoGen9[] =
         .catchRate = 190,
         .expYield = 62,
         .evYield_Speed = 1,
-        .genderRatio = PERCENT_FEMALE(50),
+        .genderRatio = MON_FEMALE,
         .eggCycles = 20,
         .friendship = STANDARD_FRIENDSHIP,
         .growthRate = GROWTH_MEDIUM_SLOW,
@@ -1604,7 +1604,8 @@ const struct SpeciesInfo gSpeciesInfoGen9[] =
         .levelUpLearnset = sFidoughLevelUpLearnset,
         .teachableLearnset = sFidoughTeachableLearnset,
         .eggMoveLearnset = sFidoughEggMoveLearnset,
-        .evolutions = EVOLUTION({EVO_LEVEL, 26, SPECIES_DACHSBUN}),
+        .evolutions = EVOLUTION({EVO_ITEM, ITEM_PENNYS_BRAVERY, SPECIES_PENNY_BRAVE}, {EVO_LEVEL, 26, SPECIES_DACHSBUN},
+                                {EVO_ITEM, ITEM_DADS_KEYS, SPECIES_PENNY_GUARDIAN}),
     },
 
     [SPECIES_DACHSBUN] =
@@ -1619,7 +1620,7 @@ const struct SpeciesInfo gSpeciesInfoGen9[] =
         .catchRate = 90,
         .expYield = 167,
         .evYield_Speed = 2,
-        .genderRatio = PERCENT_FEMALE(50),
+        .genderRatio = MON_FEMALE,
         .eggCycles = 20,
         .friendship = STANDARD_FRIENDSHIP,
         .growthRate = GROWTH_MEDIUM_SLOW,
@@ -1670,6 +1671,7 @@ const struct SpeciesInfo gSpeciesInfoGen9[] =
         )
         .levelUpLearnset = sDachsbunLevelUpLearnset,
         .teachableLearnset = sDachsbunTeachableLearnset,
+        .evolutions = EVOLUTION({EVO_ITEM, ITEM_PENNYS_BRAVERY, SPECIES_PENNY_BRAVE}),
     },
 #endif //P_FAMILY_FIDOUGH
 
@@ -8915,3 +8917,4 @@ const struct SpeciesInfo gSpeciesInfoGen9[] =
 #ifdef __INTELLISENSE__
 };
 #endif
+

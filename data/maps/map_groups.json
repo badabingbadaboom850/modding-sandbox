@@ -111,7 +111,8 @@
     "NewBarkTown_House3",
     "NewBarkTown_House1",
     "NewBarkTown_PlayersHouse_1F",
-    "NewBarkTown_PlayersHouse_2F"
+    "NewBarkTown_PlayersHouse_2F",
+    "RikoSpiritCavern"
   ],
   "gMapGroup_IndoorCherrygrove": [
     "CherrygroveCity_PokemonCenter",
@@ -176,7 +177,11 @@
     "GoldenrodBattleAracdeLobby",
     "GoldenrodBattleArcadeHallway",
     "MauvilleCity_GameCorner",
-    "GoldenrodBattleArcadeBattleRoom"
+    "GoldenrodBattleArcadeBattleRoom",
+    "GoldenrodFestival",
+    "TrioEchoWoods",
+    "TrioMirrorHouse",
+    "TrioLanternTrail"
   ],
   "gMapGroup_IndoorEcruteak": [
     "EcruteakCity_PokemonCenter",
@@ -205,7 +210,8 @@
     "OlivineCity_LighthouseTop",
     "Route40_House4",
     "Route40_House5",
-    "OlivineCity_House4"
+    "OlivineCity_House4",
+    "TrioGarden"
   ],
   "gMapGroup_IndoorCianwood": [
     "CianwoodPokecenter",

@@ -68,6 +68,8 @@ GoldenrodCity_Elm_Togepi_Call::
 GoldenrodCity_EventScript_PokefanM::
 	lock
 	faceplayer
+	call TrioRift_CheckAtmosphere
+	goto_if_eq VAR_RESULT, TRUE, GoldenrodCity_RiftAtmosphere
 	msgbox GoldenrodCity_Text_PokefanM, MSGBOX_DEFAULT
 	closemessage
 	release
@@ -98,6 +100,7 @@ GoldenrodCity_EventScript_Lass::
 	lock
 	faceplayer
 	msgbox GoldenrodCity_Text_Lass, MSGBOX_DEFAULT
+	call GoldenrodCity_EventScript_ScrapbookVisit
 	closemessage
 	release
 	end
@@ -105,7 +108,14 @@ GoldenrodCity_EventScript_Lass::
 GoldenrodCity_EventScript_Gramps::
 	lock
 	faceplayer
+	goto_if_set FLAG_BADGE03_GET, GoldenrodCity_Text_Gramps_TrioWorld1_After
 	msgbox GoldenrodCity_Text_Gramps, MSGBOX_DEFAULT
+	goto GoldenrodCity_Text_Gramps_TrioWorld1_Resume
+GoldenrodCity_Text_Gramps_TrioWorld1_After:
+	msgbox GoldenrodCity_Text_Gramps_TrioWorldAfter, MSGBOX_DEFAULT
+GoldenrodCity_Text_Gramps_TrioWorld1_Resume:
+	call_if_ge VAR_TRIO_RESEARCH_STATE, 8, GoldenrodCity_EventScript_ScrapbookNeighbor
+	call_if_set FLAG_TRIO_FESTIVAL_PICNIC, TrioRift_TownOffer
 	closemessage
 	release
 	end
@@ -285,7 +295,11 @@ GoldenrodCity_Text_Beauty:
 GoldenrodCity_Text_Woman:
 	.string "I used to train in Whitney's Gym,\n"
 	.string "but all her crying gave me a\l"
-	.string "headache.$"
+	.string "headache.\p"
+	.string "Riko has the confidence of\n"
+	.string "a girl who has never paid\p"
+	.string "for anything. I respect\n"
+	.string "it. I also hide my snacks.$"
 
 GoldenrodCity_Text_HikerDay:
 	.string "When I went into the Game Corner\n"
@@ -316,7 +330,12 @@ GoldenrodCity_Text_PokefanM:
 
 GoldenrodCity_Text_Youngster1:
 	.string "I know there's a new Bike Shop,\n"
-	.string "but I can't find it anywhere.$"
+	.string "but I can't find it anywhere.\p"
+	.string "I heard the trio's trainer\n"
+	.string "is crossing Goldenrod. My\p"
+	.string "sister wants an autograph.\n"
+	.string "From Penny. She has good\p"
+	.string "taste.$"
 
 GoldenrodCity_Text_CooltrainerF1:
 	.string "Is that man in black dressed up\n"
@@ -344,7 +363,7 @@ GoldenrodCity_Text_Youngster2:
 	.string "the Dept.Store basement.\p"
 	.string "That basement had so many sounds.\p"
 	.string "I swear Bijuu copied the Game Corner\n"
-	.string "music before I could get out!$
+	.string "music before I could get out!$"
 
 GoldenrodCity_Text_Lass:
 	.string "That man inside rates your\n"
@@ -353,13 +372,39 @@ GoldenrodCity_Text_Lass:
 	.string "Some say Penny is so long she\n"
 	.string "wrapped around the earth twice.\p"
 	.string "She was still wagging when she\n"
-	.string "passed the Radio Tower again!$
+	.string "passed the Radio Tower again!$"
 
 
 
 GoldenrodCity_Text_Gramps:
 	.string "Whew! This city is so big,\n"
-	.string "I can't find anything at all.$"
+	.string "I can't find anything at all.\p"
+	.string "A trainer with three girls\n"
+	.string "caused quite a stir at the\p"
+	.string "shops. Riko wanted a\n"
+	.string "purse. Bijuu copied the\p"
+	.string "cashier. Penny wanted to\n"
+	.string "go home.\p"
+	.string "The radio says the girls\n"
+	.string "could wield every element.\p"
+	.string "Yesterday it called Bijuu\n"
+	.string "a weather station. She\p"
+	.string "refused the interview.$"
+
+
+GoldenrodCity_Text_Gramps_TrioWorldAfter:
+	.string "Whew! This city is so big,\n"
+	.string "I can't find anything at all.\p"
+	.string "Whitney held her own\n"
+	.string "against the trio! The\p"
+	.string "crowd cheered for both\n"
+	.string "sides. Three legends did\p"
+	.string "not make it an easy match.\p"
+	.string "Listeners guess a new type\n"
+	.string "for the girls every day.\p"
+	.string "Today's theory is Steel\n"
+	.string "Penny. I hope she keeps\p"
+	.string "her soft ears.$"
 
 GoldenrodCity_Text_RocketScout1:
 	.string "So this is the Radio Tower…$"
@@ -378,7 +423,16 @@ GoldenrodCity_Text_Rocket2:
 
 GoldenrodCity_Text_Rocket3:
 	.string "Pokémon? They're just tools\n"
-	.string "we use to make money!$"
+	.string "we use to make money!\p"
+	.string "Three girls and one\n"
+	.string "trainer? I was told this\p"
+	.string "job involved ordinary\n"
+	.string "Pokemon. Nobody mentioned\p"
+	.string "the loud fluffy one.\p"
+	.string "They told me those girls\n"
+	.string "can use every type! How do\p"
+	.string "I write a weakness report?\n"
+	.string "Riko ate the first draft.$"
 
 GoldenrodCity_Text_Rocket4:
 	.string "Our dream will soon come true…\p"
@@ -390,7 +444,17 @@ GoldenrodCity_Text_Rocket5:
 
 GoldenrodCity_Text_Rocket6:
 	.string "Come and taste the terror of\n"
-	.string "Team Rocket!$"
+	.string "Team Rocket!\p"
+	.string "Bijuu copied our secret\n"
+	.string "signal. Now nobody knows\p"
+	.string "who is giving orders. I\n"
+	.string "blame that mysterious\p"
+	.string "trainer.\p"
+	.string "If Bijuu can copy any\n"
+	.string "element too, I am\p"
+	.string "transferring. Somewhere\n"
+	.string "with ordinary cats. And\p"
+	.string "fewer peppers.$"
 
 GoldenrodCity_Text_StationSign:
 	.string "Goldenrod City Station$"
@@ -469,6 +533,111 @@ GoldenrodCity_Text_MoveTutorNotEnoughCoins:
 Goldenrod_OnFrame:: 
 	map_script_2 VAR_RIVAL_STATE, 6, GoldenrodCity_RivalAfterWhitney
 	.2byte 0
+
+
+GoldenrodCity_EventScript_ScrapbookVisit::
+	goto_if_ge VAR_TRIO_RESEARCH_STATE, 8, GoldenrodCity_EventScript_ScrapbookRemember
+	goto_if_ne VAR_TRIO_RESEARCH_STATE, 7, GoldenrodCity_EventScript_ScrapbookReturn
+	goto_if_unset FLAG_BADGE03_GET, GoldenrodCity_EventScript_ScrapbookNotReady
+	call TrioStory_CheckAll
+	goto_if_eq VAR_RESULT, FALSE, GoldenrodCity_EventScript_ScrapbookNeedGirls
+	msgbox GoldenrodCity_Text_ScrapbookOffer, MSGBOX_YESNO
+	goto_if_eq VAR_RESULT, NO, GoldenrodCity_EventScript_ScrapbookDeclined
+	msgbox GoldenrodCity_Text_ScrapbookScene1, MSGBOX_DEFAULT
+	msgbox GoldenrodCity_Text_ScrapbookScene2, MSGBOX_DEFAULT
+	msgbox GoldenrodCity_Text_ScrapbookScene3, MSGBOX_DEFAULT
+	setvar VAR_TRIO_RESEARCH_STATE, 8
+	msgbox GoldenrodCity_Text_ScrapbookReport, MSGBOX_DEFAULT
+	return
+
+GoldenrodCity_EventScript_ScrapbookRemember::
+	msgbox GoldenrodCity_Text_ScrapbookRemember, MSGBOX_DEFAULT
+	return
+
+GoldenrodCity_EventScript_ScrapbookNotReady::
+	msgbox GoldenrodCity_Text_ScrapbookNotReady, MSGBOX_DEFAULT
+	return
+
+GoldenrodCity_EventScript_ScrapbookNeedGirls::
+	msgbox CherryGroveCity_Text_ScrapbookNeedGirls, MSGBOX_DEFAULT
+	return
+
+GoldenrodCity_EventScript_ScrapbookDeclined::
+	msgbox GoldenrodCity_Text_ScrapbookDeclined, MSGBOX_DEFAULT
+GoldenrodCity_EventScript_ScrapbookReturn::
+	return
+
+GoldenrodCity_Text_ScrapbookOffer:
+	.string "I dropped my purse on the\n"
+	.string "way here. There is a\p"
+	.string "family photo inside. Will\n"
+	.string "the girls help me look?$"
+
+GoldenrodCity_Text_ScrapbookScene1:
+	.string "Riko sniffs the woman's\n"
+	.string "bag strap, then noses\p"
+	.string "toward a nearby hedge.\p"
+	.string "Bijuu peers underneath.\n"
+	.string "She gives a sharp little\p"
+	.string "meow.$"
+
+GoldenrodCity_Text_ScrapbookScene2:
+	.string "Penny stretches down low.\n"
+	.string "You move a branch aside\p"
+	.string "while she noses the purse\n"
+	.string "within reach.\p"
+	.string "Riko inspects it. Bijuu\n"
+	.string "pats the clasp. You return\p"
+	.string "it to its owner.$"
+
+GoldenrodCity_Text_ScrapbookScene3:
+	.string "The woman checks inside.\n"
+	.string "My photo! Thank you!\p"
+	.string "People keep calling them\n"
+	.string "legends. Today they helped\p"
+	.string "me keep a little piece of\n"
+	.string "home.$"
+
+GoldenrodCity_Text_ScrapbookReport:
+	.string "Tell your scrapbook friend\n"
+	.string "in Cherrygrove. All three\p"
+	.string "girls deserve their names\n"
+	.string "on this page.$"
+
+GoldenrodCity_Text_ScrapbookRemember:
+	.string "I put the girls' names on\n"
+	.string "the back of my photo. When\p"
+	.string "anyone asks, I tell them\n"
+	.string "how they helped.\p"
+	.string "Riko checked the purse for\n"
+	.string "snacks. That part stays in\p"
+	.string "the story too.$"
+
+GoldenrodCity_Text_ScrapbookNotReady:
+	.string "Come back after your Gym\n"
+	.string "challenge. I will wait\p"
+	.string "here. I hope my purse\n"
+	.string "turns up soon.$"
+
+GoldenrodCity_Text_ScrapbookDeclined:
+	.string "If you have time later, I\n"
+	.string "would appreciate it. Keep\p"
+	.string "the girls close in this\n"
+	.string "busy city.$"
+
+
+GoldenrodCity_EventScript_ScrapbookNeighbor::
+	msgbox GoldenrodCity_Text_ScrapbookNeighbor, MSGBOX_DEFAULT
+	return
+
+GoldenrodCity_Text_ScrapbookNeighbor:
+	.string "The woman down the street\n"
+	.string "got her family photo back.\p"
+	.string "She named all three girls\n"
+	.string "when she told her story.\p"
+	.string "Nice to hear something\n"
+	.string "besides battle scores.$"
+
 `
 
 script Goldenrod_Daytime_ExpertM {
@@ -612,3 +781,13 @@ script GoldenrodCity_RivalAfterWhitney {
 	}
 	end
 }
+
+raw `
+GoldenrodCity_RiftAtmosphere::
+	msgbox GoldenrodCity_RiftAtmosphereText, MSGBOX_DEFAULT
+	closemessage
+	release
+	end
+GoldenrodCity_RiftAtmosphereText:
+	.string "Something's in the air.\nThe city sounds softer.\pYou can still hear it all.\nIt just feels less lonely.$"
+`

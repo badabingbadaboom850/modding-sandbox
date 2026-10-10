@@ -103,7 +103,7 @@ SINGLE_BATTLE_TEST("Toxic Chain makes Lum/Pecha Berry trigger before being knock
         STATUS_ICON(opponent, badPoison: FALSE);
         NONE_OF {
             ANIMATION(ANIM_TYPE_GENERAL, B_ANIM_ITEM_KNOCKOFF);
-            MESSAGE("Okidogi knocked off the opposing Wobbuffet's Pecha Berry!");
+            MESSAGE("Okidogi knocked off the opposing Wobbuffet's Penny's Pup Cup!");
             MESSAGE("Okidogi knocked off the opposing Wobbuffet's Lum Berry!");
         }
     } THEN {
@@ -214,7 +214,7 @@ SINGLE_BATTLE_TEST("Toxic Chain makes Lum/Pecha Berry trigger before being knock
         STATUS_ICON(opponent, badPoison: FALSE);
         NONE_OF {
             ANIMATION(ANIM_TYPE_GENERAL, B_ANIM_ITEM_KNOCKOFF);
-            MESSAGE("Okidogi knocked off the opposing Wobbuffet's Pecha Berry!");
+            MESSAGE("Okidogi knocked off the opposing Wobbuffet's Penny's Pup Cup!");
             MESSAGE("Okidogi knocked off the opposing Wobbuffet's Lum Berry!");
         }
     } THEN {
@@ -277,7 +277,7 @@ SINGLE_BATTLE_TEST("Toxic Chain makes Lum/Pecha Berry trigger before being knock
         STATUS_ICON(opponent, badPoison: FALSE);
         NONE_OF {
             ANIMATION(ANIM_TYPE_GENERAL, B_ANIM_ITEM_KNOCKOFF);
-            MESSAGE("Okidogi knocked off the opposing Wobbuffet's Pecha Berry!");
+            MESSAGE("Okidogi knocked off the opposing Wobbuffet's Penny's Pup Cup!");
             MESSAGE("Okidogi knocked off the opposing Wobbuffet's Lum Berry!");
         }
     } THEN {

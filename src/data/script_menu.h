@@ -963,6 +963,73 @@ struct MultichoiceListStruct
     u8 count;
 };
 
+static const struct MenuAction MultichoiceList_TrioScrapbook[] =
+{
+    {COMPOUND_STRING("Our journey")},
+    {COMPOUND_STRING("Sister moments")},
+    {COMPOUND_STRING("Spirit letters")},
+    {COMPOUND_STRING("Memory checklist")},
+    {COMPOUND_STRING("Scott moments")},
+    {gText_Exit},
+};
+
+static const struct MenuAction MultichoiceList_TrioCampHost[] =
+{
+    {COMPOUND_STRING("Rest together")},
+    {COMPOUND_STRING("How to play")},
+    {COMPOUND_STRING("Family stats")},
+    {COMPOUND_STRING("Room keepsakes")},
+    {gText_Exit},
+};
+
+static const struct MenuAction MultichoiceList_TrioCampGirl[] =
+{
+    {COMPOUND_STRING("Pet")},
+    {COMPOUND_STRING("Favorite")},
+    {COMPOUND_STRING("Play")},
+    {gText_Exit},
+};
+
+static const struct MenuAction MultichoiceList_TrioCampBarks[] =
+{
+    {COMPOUND_STRING("One bark")},
+    {COMPOUND_STRING("Two barks")},
+    {COMPOUND_STRING("Three barks")},
+    {gText_Exit},
+};
+
+static const struct MenuAction MultichoiceList_FestivalRIKO[] =
+{
+    {COMPOUND_STRING("Face left")},
+    {COMPOUND_STRING("Face right")},
+    {COMPOUND_STRING("Little jump")},
+    {COMPOUND_STRING("Exit")},
+};
+
+static const struct MenuAction MultichoiceList_FestivalPENNY[] =
+{
+    {COMPOUND_STRING("Encourage her")},
+    {COMPOUND_STRING("Show her first")},
+    {COMPOUND_STRING("Ask her sister")},
+    {COMPOUND_STRING("Exit")},
+};
+
+static const struct MenuAction MultichoiceList_FestivalHOST[] =
+{
+    {COMPOUND_STRING("Our itinerary")},
+    {COMPOUND_STRING("Rest here")},
+    {COMPOUND_STRING("Leave festival")},
+    {COMPOUND_STRING("Exit")},
+};
+
+static const struct MenuAction MultichoiceList_FestivalTEST[] =
+{
+    {COMPOUND_STRING("Festival shuttle")},
+    {COMPOUND_STRING("Back to New Bark")},
+    {COMPOUND_STRING("Reset festival")},
+    {COMPOUND_STRING("Exit")},
+};
+
 static const struct MultichoiceListStruct sMultichoiceLists[] =
 {
     [MULTI_BRINEY_ON_DEWFORD]          = MULTICHOICE(MultichoiceList_BrineyOnDewford),
@@ -1101,6 +1168,15 @@ static const struct MultichoiceListStruct sMultichoiceLists[] =
     [MULTI_BATTLE_ARCADE_RECORDS]       = MULTICHOICE(MultichoiceList_BattleArcadeRecords),
     [MULTI_ROCKET_ARCADE_CASH_OUT]      = MULTICHOICE(MultichoiceList_RocketArcadeCashOut),
     [MULTI_LEVEL_MODE_WITH_EXIT]        = MULTICHOICE(MultichoiceList_LevelModeWithExit),
+    [MULTI_TRIO_SCRAPBOOK]              = MULTICHOICE(MultichoiceList_TrioScrapbook),
+    [MULTI_TRIO_CAMP_HOST]               = MULTICHOICE(MultichoiceList_TrioCampHost),
+    [MULTI_TRIO_CAMP_GIRL]               = MULTICHOICE(MultichoiceList_TrioCampGirl),
+    [MULTI_TRIO_CAMP_BARKS]              = MULTICHOICE(MultichoiceList_TrioCampBarks),
+    [MULTI_TRIO_FESTIVAL_RIKO] = MULTICHOICE(MultichoiceList_FestivalRIKO),
+    [MULTI_TRIO_FESTIVAL_PENNY] = MULTICHOICE(MultichoiceList_FestivalPENNY),
+    [MULTI_TRIO_FESTIVAL_HOST] = MULTICHOICE(MultichoiceList_FestivalHOST),
+    [MULTI_TRIO_FESTIVAL_TEST] = MULTICHOICE(MultichoiceList_FestivalTEST),
+
 };
 
 const u8 *const gStdStrings[] =

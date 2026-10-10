@@ -1750,7 +1750,88 @@
 
 #define FLAG_PYRAMID_ACHIEVEMENT_MIGRATION_COMPLETE 0x1041
 #define FLAG_CAUGHT_BIJUU                           0x1042
-#define CUSTOM_FLAGS_END                            FLAG_CAUGHT_BIJUU
+#define FLAG_GREG_WAWA_REWARDED                      0x1043
+#define FLAG_TRIO_QUIZ_VIOLET_CITY                     0x1044
+#define FLAG_TRIO_QUIZ_AZALEA_TOWN                     0x1045
+#define FLAG_TRIO_QUIZ_GOLDENROD_CITY                  0x1046
+#define FLAG_TRIO_QUIZ_ECRUTEAK_CITY                   0x1047
+#define FLAG_TRIO_QUIZ_CIANWOOD_CITY                   0x1048
+#define FLAG_TRIO_QUIZ_OLIVINE_CITY                    0x1049
+#define FLAG_TRIO_QUIZ_MAHOGANYTOWN                    0x104A
+#define FLAG_TRIO_QUIZ_BLACKTHORN_CITY                 0x104B
+#define FLAG_TRIO_QUIZ_PEWTER_CITY                     0x104C
+#define FLAG_TRIO_QUIZ_CERULEAN_CITY                   0x104D
+#define FLAG_TRIO_QUIZ_VERMILION_CITY                  0x104E
+#define FLAG_TRIO_QUIZ_CELADON_CITY                    0x104F
+#define FLAG_TRIO_QUIZ_FUCHSIA_CITY                    0x1050
+#define FLAG_TRIO_QUIZ_SAFFRON_CITY                    0x1051
+#define FLAG_TRIO_QUIZ_CINNABAR_ISLAND                 0x1052
+#define FLAG_TRIO_QUIZ_VIRIDIAN_CITY                   0x1053
+#define FLAG_TRIO_QUIZ_PEWTER_KEYS                       0x1054
+#define FLAG_TRIO_QUIZ_CERULEAN_KEYS                     0x1055
+#define FLAG_TRIO_QUIZ_VERMILION_KEYS                    0x1056
+#define FLAG_TRIO_QUIZ_CINNABAR_KEYS                     0x1057
+// Story Spirit visibility is refreshed on entry; home test battles never set these.
+#define FLAG_HIDE_TRIO_PENNY_SPIRIT                    0x1058
+#define FLAG_HIDE_TRIO_BIJUU_SPIRIT                    0x1059
+#define FLAG_TRIO_PENNY_SPIRIT_COMPLETE                0x105A
+#define FLAG_TRIO_BIJUU_SPIRIT_COMPLETE                0x105B
+#define FLAG_TRIO_PENNY_SIGHTING_SHOWN                 0x105C
+#define FLAG_TRIO_BIJUU_SIGHTING_SHOWN                 0x105D
+#define FLAG_TRIO_RIKO_KEEPSAKE                        0x105E
+#define FLAG_TRIO_PENNY_KEEPSAKE                       0x105F
+#define FLAG_TRIO_BIJUU_KEEPSAKE                       0x1060
+#define FLAG_TRIO_SCRAPBOOK_RECEIVED                   0x1061
+#define FLAG_TRIO_SISTERS_AZALEA                       0x1062
+#define FLAG_TRIO_SISTERS_GOLDENROD                    0x1063
+#define FLAG_TRIO_SISTERS_OLIVINE                      0x1064
+#define FLAG_TRIO_POM_PARTY_SEEN                       0x1065
+#define FLAG_TRIO_PENNY_HOME_WIN                       0x1066
+#define FLAG_TRIO_BIJUU_HOME_WIN                       0x1067
+#define FLAG_TRIO_SISTERS_CERULEAN                     0x1068
+#define FLAG_TRIO_SISTERS_VERMILION                    0x1069
+#define FLAG_TRIO_SISTERS_CELADON                      0x106A
+#define FLAG_TRIO_CHAMPION_PICNIC                      0x106B
+#define FLAG_TRIO_CAMP_STATS_READY                    0x106C
+#define FLAG_HIDE_TRIO_CAMP_RIKO                      0x106D
+#define FLAG_HIDE_TRIO_CAMP_BIJUU                     0x106E
+#define FLAG_HIDE_TRIO_CAMP_PENNY                     0x106F
+#define FLAG_TRIO_CAMP_MEMORY                        0x1070
+
+// Goldenrod festival: independent, old-save-compatible progress.
+#define FLAG_TRIO_FESTIVAL_STARTED                        0x1071
+#define FLAG_TRIO_FESTIVAL_RIKO                           0x1072
+#define FLAG_TRIO_FESTIVAL_CLUE_A                         0x1073
+#define FLAG_TRIO_FESTIVAL_CLUE_B                         0x1074
+#define FLAG_TRIO_FESTIVAL_BIJUU                          0x1075
+#define FLAG_TRIO_FESTIVAL_PENNY                          0x1076
+#define FLAG_TRIO_FESTIVAL_SNACK_A                        0x1077
+#define FLAG_TRIO_FESTIVAL_SNACK_B                        0x1078
+#define FLAG_TRIO_FESTIVAL_PICNIC                         0x1079
+#define FLAG_TRIO_FESTIVAL_SCOTT_WIN                      0x107A
+// Camp keepsake visibility is recomputed from existing milestones on entry.
+#define FLAG_HIDE_TRIO_CAMP_PENNY_CORNER            0x107B
+#define FLAG_HIDE_TRIO_CAMP_RIKO_CHICKY             0x107C
+#define FLAG_HIDE_TRIO_CAMP_BIJUU_TOY               0x107D
+#define FLAG_HIDE_TRIO_CAMP_FESTIVAL                0x107E
+#define FLAG_HIDE_TRIO_CAMP_PENNY_SPIRIT            0x107F
+#define FLAG_HIDE_TRIO_CAMP_BIJUU_SPIRIT            0x1080
+// Optional Scott moments are saved only after an accepted scene.
+#define FLAG_TRIO_SCOTT_AZALEA                         0x1081
+#define FLAG_TRIO_SCOTT_ECRUTEAK                       0x1082
+#define FLAG_TRIO_SCOTT_OLIVINE                        0x1083
+#define FLAG_TRIO_SCOTT_BLACKTHORN                     0x1084
+// Route 37 thief visibility is derived from its saved chase state.
+#define FLAG_HIDE_TRIO_SNACK_START                   0x1085
+#define FLAG_HIDE_TRIO_SNACK_GRASS                   0x1086
+#define FLAG_HIDE_TRIO_SNACK_GROVE                   0x1087
+#define FLAG_HIDE_TRIO_GANG_HIDEOUT                  0x1088
+#define FLAG_TRIO_RIFT_COURAGE_RECEIVED               0x1089
+#define FLAG_TRIO_RIFT_FIRE_RECEIVED                  0x108A
+#define FLAG_TRIO_RIFT_BRAVERY_RECEIVED               0x108B
+#define FLAG_TRIO_GARDEN_BLOOM_RECEIVED               0x108C
+#define FLAG_RIKO_CAVERN_COMPLETE                   0x108D
+#define CUSTOM_FLAGS_END                            FLAG_RIKO_CAVERN_COMPLETE
 
 
 #define FLAG_0x1500                                 0x1500
@@ -1862,3 +1943,4 @@
 #endif // TESTING
 
 #endif // GUARD_CONSTANTS_FLAGS_H
+

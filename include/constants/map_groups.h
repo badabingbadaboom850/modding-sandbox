@@ -87,6 +87,7 @@ enum
     MAP_NEW_BARK_TOWN_HOUSE1           = (3 | (1 << 8)),
     MAP_NEW_BARK_TOWN_PLAYERS_HOUSE_1F = (4 | (1 << 8)),
     MAP_NEW_BARK_TOWN_PLAYERS_HOUSE_2F = (5 | (1 << 8)),
+    MAP_RIKO_SPIRIT_CAVERN             = (6 | (1 << 8)),
 
     // gMapGroup_IndoorCherrygrove
     MAP_CHERRYGROVE_CITY_POKEMON_CENTER = (0 | (2 << 8)),
@@ -152,6 +153,10 @@ enum
     MAP_GOLDENROD_BATTLE_ARCADE_HALLWAY          = (33 | (5 << 8)),
     MAP_MAUVILLE_CITY_GAME_CORNER                = (34 | (5 << 8)),
     MAP_GOLDENROD_BATTLE_ARCADE_BATTLE_ROOM      = (35 | (5 << 8)),
+    MAP_GOLDENROD_FESTIVAL                       = (36 | (5 << 8)),
+    MAP_TRIO_ECHO_WOODS                          = (37 | (5 << 8)),
+    MAP_TRIO_MIRROR_HOUSE                        = (38 | (5 << 8)),
+    MAP_TRIO_LANTERN_TRAIL                       = (39 | (5 << 8)),
 
     // gMapGroup_IndoorEcruteak
     MAP_ECRUTEAK_CITY_POKEMON_CENTER = (0 | (6 << 8)),
@@ -181,6 +186,7 @@ enum
     MAP_ROUTE40_HOUSE4              = (11 | (7 << 8)),
     MAP_ROUTE40_HOUSE5              = (12 | (7 << 8)),
     MAP_OLIVINE_CITY_HOUSE4         = (13 | (7 << 8)),
+    MAP_TRIO_GARDEN                 = (14 | (7 << 8)),
 
     // gMapGroup_IndoorCianwood
     MAP_CIANWOOD_POKECENTER = (0 | (8 << 8)),

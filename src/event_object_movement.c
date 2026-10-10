@@ -5479,23 +5479,30 @@ bool8 MoveNextDirectionInSequence(struct ObjectEvent *objectEvent, struct Sprite
 {
     enum Collision collision;
     u8 movementActionId;
+    // The four Goldenrod party Poms share the normal collision-aware route loop.
+    bool8 pomParty = objectEvent->mapGroup == MAP_GROUP(MAP_GOLDENROD_CITY_HOUSE2)
+                 && objectEvent->mapNum == MAP_NUM(MAP_GOLDENROD_CITY_HOUSE2)
+                 && objectEvent->graphicsId == OBJ_EVENT_GFX_SPECIES(RIKO);
 
     if (objectEvent->directionSequenceIndex == 3 && objectEvent->initialCoords.x == objectEvent->currentCoords.x && objectEvent->initialCoords.y == objectEvent->currentCoords.y)
         objectEvent->directionSequenceIndex = 0;
 
     SetObjectEventDirection(objectEvent, route[objectEvent->directionSequenceIndex]);
-    movementActionId = GetWalkNormalMovementAction(objectEvent->movementDirection);
+    movementActionId = pomParty ? GetWalkFastMovementAction(objectEvent->movementDirection)
+                                   : GetWalkNormalMovementAction(objectEvent->movementDirection);
     collision = GetCollisionInDirection(objectEvent, objectEvent->movementDirection);
     if (collision == COLLISION_OUTSIDE_RANGE)
     {
         objectEvent->directionSequenceIndex++;
         SetObjectEventDirection(objectEvent, route[objectEvent->directionSequenceIndex]);
-        movementActionId = GetWalkNormalMovementAction(objectEvent->movementDirection);
+        movementActionId = pomParty ? GetWalkFastMovementAction(objectEvent->movementDirection)
+                                   : GetWalkNormalMovementAction(objectEvent->movementDirection);
         collision = GetCollisionInDirection(objectEvent, objectEvent->movementDirection);
     }
 
     if (collision)
-        movementActionId = GetWalkInPlaceNormalMovementAction(objectEvent->facingDirection);
+        movementActionId = pomParty ? GetWalkInPlaceFastMovementAction(objectEvent->facingDirection)
+                                   : GetWalkInPlaceNormalMovementAction(objectEvent->facingDirection);
 
     ObjectEventSetSingleMovement(objectEvent, sprite, movementActionId);
     objectEvent->singleMovementActive = TRUE;

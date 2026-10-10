@@ -1,4 +1,5 @@
 Route42_MapScripts::
+	map_script MAP_SCRIPT_ON_FRAME_TABLE, TrioGang_OnFrame
 	map_script MAP_SCRIPT_ON_TRANSITION, Route42_MapScript_OnTransition
 	map_script MAP_SCRIPT_ON_RESUME, SetTimeEncounters
 	.byte 0
@@ -6,6 +7,7 @@ Route42_MapScripts::
 Route42_MapScript_OnTransition::
 	call_if_set FLAG_HIDE_ROUTE42_SUICUNE, Route42_MapScript_HideTrigger
 	callnative SetTimeBasedEncounters
+	special TrioGang_PrepareAmbush
 	end
 
 Route42_MapScript_HideTrigger::
