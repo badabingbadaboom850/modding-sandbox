@@ -894,3 +894,9 @@ bread-mystery paths and all portrait/locked/Back/B/reaction/Scott flows; origina
 tutor cancel/mode resets, geometry/Pory/history/docs/diff checks also pass.
 Rendered new dialogue, portraits, quests and real save/reload still need testing.
 Previous costume batch CI167 completed successfully. This batch has separate CI.
+
+
+Outfit testing cleanup (2026-10-10): user confirmed every new outfit works.
+Removed the Mom-friend testing call in both New Bark sources, restoring her
+original story dialogue. Existing inventory, forms and saved progress remain;
+all ten natural gift sources remain available. Scott stays in New Bark.

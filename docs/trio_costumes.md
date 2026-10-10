@@ -165,3 +165,9 @@ gift flows, seven collision/elevation/old-event-preserving placements, all60
 compiled follower frames/palettes, historical IDs, text and docs-summary.
 The user confirmed the original three costumes; new seven forms and actual
 in-game save/reload still require focused emulator confirmation.
+
+
+Outfit testing cleanup (2026-10-10): user confirmed every new outfit works.
+Removed the Mom-friend testing call in both New Bark sources, restoring her
+original story dialogue. Existing inventory, forms and saved progress remain;
+all ten natural gift sources remain available. Scott stays in New Bark.

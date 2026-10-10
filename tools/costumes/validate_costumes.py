@@ -131,9 +131,8 @@ for bits,capacity,yes in itertools.product(range(1<<len(items)),range(len(items)
 print(count,'test supply owned/decline/partial-Bag/retry/repeat paths pass')
 for file in ['data/maps/NewBarkTown/scripts.inc','data/maps/NewBarkTown/scripts.pory']:
  old=subprocess.check_output(['git','show','541b28b63a63acb7bbb037a41302fc885034a215:'+file],cwd=R,text=True)
- new=(R/file).read_text();assert new.count('\tcall TrioCostume_TestSupplies\n')==1
- assert new.replace('\tcall TrioCostume_TestSupplies\n','',1)==old
-assert '\tcall TrioCostume_TestSupplies\n' in (R/'data/maps/NewBarkTown/scripts.inc').read_text().split('NewBarkTown_EventScript_Lass::',1)[1].split('NewBarkTown_EventScript_LassState2::',1)[0]
+ new=(R/file).read_text();assert '\tcall TrioCostume_TestSupplies\n' not in new
+ assert new==old
 print('Mom friend Pory/assembly hook preserves every existing story branch/movement')
 
 # Execute every new giver's actual assembly through owned/party/decline/full Bag cases.
