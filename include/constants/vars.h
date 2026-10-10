@@ -325,6 +325,8 @@
 #define VAR_TRIO_GANG_PHASE                          0x4129 // 0 inactive, 1 battle pending, 2 won/item pending
 
 // Spirit Rift: three opened paths, victory, then successfully claimed gift.
+#define VAR_TRIO_RIFT_BIJUU_STATE                    0x412B // 0-2 clues, 3 real cat, 4 won, 5 charm
+#define VAR_TRIO_RIFT_PENNY_STATE                    0x412C // 0-3 lanterns, 4 won, 5 charm
 #define VAR_TRIO_RIFT_RIKO_STATE                     0x412A // 0-3 echoes, 4 won/gift pending, 5 complete
 
 #define VARS_END                                         0x42FF

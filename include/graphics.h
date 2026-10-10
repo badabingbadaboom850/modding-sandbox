@@ -3564,5 +3564,12 @@ extern const u16 gItemIconPalette_DogBowl[];
 extern const u32 gItemIcon_FetchingStick[];
 extern const u16 gItemIconPalette_FetchingStick[];
 
-#endif //GUARD_GRAPHICS_H
 
+
+extern const u32 gItemIcon_BijuusFire[];
+extern const u16 gItemIconPalette_BijuusFire[];
+
+extern const u32 gItemIcon_PennysBravery[];
+extern const u16 gItemIconPalette_PennysBravery[];
+
+#endif //GUARD_GRAPHICS_H

@@ -26,6 +26,8 @@ TrioParty_CheckRiko::
 	return
 
 TrioParty_CheckBijuu::
+	checkspecies SPECIES_BIJUU_EMBER
+	goto_if_eq VAR_RESULT, TRUE, TrioParty_SetResultTrue
 	checkspecies SPECIES_BIJUU_ICE
 	goto_if_eq VAR_RESULT, TRUE, TrioParty_SetResultTrue
 	checkspecies SPECIES_BIJUU
@@ -52,6 +54,8 @@ TrioParty_CheckBijuu::
 	return
 
 TrioParty_CheckPenny::
+	checkspecies SPECIES_PENNY_BRAVE
+	goto_if_eq VAR_RESULT, TRUE, TrioParty_SetResultTrue
 	checkspecies SPECIES_PENNY_WATER
 	goto_if_eq VAR_RESULT, TRUE, TrioParty_SetResultTrue
 	checkspecies SPECIES_PENNY_GRASS

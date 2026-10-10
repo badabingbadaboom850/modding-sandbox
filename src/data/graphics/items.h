@@ -2203,3 +2203,9 @@ const u16 gItemIconPalette_FetchingStick[] = INCBIN_U16("graphics/items/icon_pal
 
 const u32 gItemIcon_RikosCourage[] = INCBIN_U32("graphics/items/icons/rikos_courage.4bpp.smol");
 const u16 gItemIconPalette_RikosCourage[] = INCBIN_U16("graphics/items/icon_palettes/rikos_courage.gbapal");
+
+const u32 gItemIcon_BijuusFire[] = INCBIN_U32("graphics/items/icons/bijuus_fire.4bpp.lz");
+const u16 gItemIconPalette_BijuusFire[] = INCBIN_U16("graphics/items/icon_palettes/bijuus_fire.gbapal");
+
+const u32 gItemIcon_PennysBravery[] = INCBIN_U32("graphics/items/icons/pennys_bravery.4bpp.lz");
+const u16 gItemIconPalette_PennysBravery[] = INCBIN_U16("graphics/items/icon_palettes/pennys_bravery.gbapal");

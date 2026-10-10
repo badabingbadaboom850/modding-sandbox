@@ -5,7 +5,8 @@ This is source simulation, not rendered emulator confirmation.
 from pathlib import Path
 import collections,json,re,struct,subprocess,unittest
 ROOT=Path(__file__).resolve().parents[2]
-S=(ROOT/'data/maps/TrioEchoWoods/scripts.inc').read_text()
+ECHO_S=(ROOT/'data/maps/TrioEchoWoods/scripts.inc').read_text()
+S=ECHO_S+'\n'+(ROOT/'data/maps/TrioMirrorHouse/scripts.inc').read_text()+'\n'+(ROOT/'data/maps/TrioLanternTrail/scripts.inc').read_text()
 LABELS={};CODE=[]
 for line in S.splitlines():
  line=line.strip()
@@ -23,7 +24,7 @@ class Run:
   if v.startswith('VAR_'):return self.vars.get(v,0)
   return {'TRUE':1,'FALSE':0,'YES':1,'NO':0,'B_OUTCOME_WON':1}.get(v,int(v,0) if re.fullmatch(r'(\d+|0x[\da-fA-F]+)',v) else v)
  def run(self,name):
-  pc=LABELS['TrioRift_'+name];stack=[]
+  pc=LABELS[name if name.startswith('Trio') else 'TrioRift_'+name];stack=[]
   for _ in range(1000):
    op,_,args=CODE[pc].partition(' ');pc+=1;a=[v.strip() for v in args.split(',')]
    if op=='end':return self
@@ -33,6 +34,7 @@ class Run:
    if op=='lockall':self.locked=True;continue
    if op=='releaseall':self.locked=False;continue
    if op in ('faceplayer','closemessage','waitstate','playmoncry','waitmoncry'):continue
+   if op in ('setflashlevel','animateflash'):self.flash=self.value(a[0]);continue
    if op=='msgbox':
     self.text.append(a[0])
     if a[1]=='MSGBOX_YESNO':self.vars['VAR_RESULT']=next(self.answers,1)
@@ -118,9 +120,9 @@ class Checks(unittest.TestCase):
   layouts=json.loads((ROOT/'data/layouts/layouts.json').read_text())['layouts'];groups=json.loads((ROOT/'data/maps/map_groups.json').read_text())
   for path,current in [('data/layouts/layouts.json',layouts),('data/maps/map_groups.json',groups)]:
    old=json.loads(subprocess.check_output(['git','show','0a22e000:'+path],cwd=ROOT,text=True))
-   if isinstance(current,list):self.assertEqual(current[:-1],old['layouts'])
+   if isinstance(current,list):self.assertEqual(current[:-3],old['layouts'])
    else:
-    expected={k:list(v) if isinstance(v,list) else v for k,v in old.items()};expected['gMapGroup_IndoorGoldenrod'].append('TrioEchoWoods');self.assertEqual(current,expected)
+    expected={k:list(v) if isinstance(v,list) else v for k,v in old.items()};expected['gMapGroup_IndoorGoldenrod'].extend(['TrioEchoWoods','TrioMirrorHouse','TrioLanternTrail']);self.assertEqual(current,expected)
   self.assertLessEqual(len(MAP['object_events'])+2,16)
   # Actual south-arrow warp behavior is required for automatic step exits.
   for warp in MAP['warp_events']:
@@ -135,7 +137,7 @@ class Checks(unittest.TestCase):
   center=json.loads((ROOT/'data/maps/GoldenrodCity_PokemonCenter/map.json').read_text());layout=next(l for l in layouts if l['id']==center['layout']);blocks=struct.unpack('<%dH'%(layout['width']*layout['height']),(ROOT/layout['blockdata_filepath']).read_bytes());self.assertFalse(blocks[6*layout['width']+10]&0x800)
   old=json.loads(subprocess.check_output(['git','show','0a22e000:data/maps/GoldenrodCity_PokemonCenter/map.json'],cwd=ROOT,text=True));self.assertEqual(center['object_events'][:-1],old['object_events']);self.assertEqual(center['warp_events'],old['warp_events'])
  def test_source_authoring_and_safe_lifecycle(self):
-  self.assertEqual((ROOT/'data/maps/TrioEchoWoods/scripts.pory').read_text().split('`',1)[1].rsplit('`',1)[0].strip(),S.strip())
+  self.assertEqual((ROOT/'data/maps/TrioEchoWoods/scripts.pory').read_text().split('`',1)[1].rsplit('`',1)[0].strip(),ECHO_S.strip())
   for name in re.findall(r'\bTrioRift_\w+\b',S):self.assertIn(name,LABELS)
   for text in re.findall(r'\.string "(.*)"',S):
    self.assertTrue(text.endswith('$'))

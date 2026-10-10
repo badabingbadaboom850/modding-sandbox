@@ -131,6 +131,8 @@ TrioScrapbook_Sisters:
 	call_if_set FLAG_TRIO_FESTIVAL_PICNIC, TrioFestival_ReadMemory
 	call_if_eq VAR_TRIO_SNACK_CHASE_STATE, 4, TrioSnack_ReadMemory
 	call_if_ge VAR_TRIO_RIFT_RIKO_STATE, 4, TrioRift_ReadMemory
+	call_if_ge VAR_TRIO_RIFT_BIJUU_STATE, 4, TrioMirror_ReadMemory
+	call_if_ge VAR_TRIO_RIFT_PENNY_STATE, 4, TrioLantern_ReadMemory
 	call_if_eq VAR_TRIO_GANG_WINS, 6, TrioGang_ReadMemory
 	goto TrioScrapbook_Menu
 TrioScrapbook_Letters:

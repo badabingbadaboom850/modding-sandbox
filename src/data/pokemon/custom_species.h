@@ -457,3 +457,65 @@ static const struct LevelUpMove sRikoEchoLevelUpLearnset[] = {
     LEVEL_UP_MOVE(52, MOVE_FLOOF_FURY), LEVEL_UP_MOVE(60, MOVE_MEGA_RIKO), LEVEL_UP_END
 };
 #endif
+
+#if P_FAMILY_BIJUU
+const u32 gMonFrontPic_BijuuEmber[] = INCBIN_U32("graphics/pokemon/bijuu_ember/front.4bpp.smol");
+const u32 gMonBackPic_BijuuEmber[] = INCBIN_U32("graphics/pokemon/bijuu_ember/back.4bpp.smol");
+const u16 gMonPalette_BijuuEmber[] = INCBIN_U16("graphics/pokemon/bijuu_ember/normal.gbapal");
+const u16 gMonShinyPalette_BijuuEmber[] = INCBIN_U16("graphics/pokemon/bijuu_ember/shiny.gbapal");
+const u8 gMonIcon_BijuuEmber[] = INCBIN_U8("graphics/pokemon/bijuu_ember/icon.4bpp");
+const u16 gMonIconPalette_BijuuEmber[] = INCBIN_U16("graphics/pokemon/bijuu_ember/icon_normal.gbapal");
+const u16 gMonShinyIconPalette_BijuuEmber[] = INCBIN_U16("graphics/pokemon/bijuu_ember/icon_shiny.gbapal");
+const u32 gObjectEventPic_BijuuEmber[] = INCBIN_U32("graphics/pokemon/bijuu_ember/overworld.4bpp");
+const u16 gOverworldPalette_BijuuEmber[] = INCBIN_U16("graphics/pokemon/bijuu_ember/overworld_normal.gbapal");
+const u16 gShinyOverworldPalette_BijuuEmber[] = INCBIN_U16("graphics/pokemon/bijuu_ember/overworld_shiny.gbapal");
+static const struct SpriteFrameImage sPicTable_BijuuEmber[] = {
+    overworld_ascending_frames(gObjectEventPic_BijuuEmber, 4, 4),
+};
+static const struct LevelUpMove sBijuuEmberLevelUpLearnset[] = {
+    LEVEL_UP_MOVE(0, MOVE_EMBER),
+    LEVEL_UP_MOVE(1, MOVE_SCRATCH),
+    LEVEL_UP_MOVE(1, MOVE_GROWL),
+    LEVEL_UP_MOVE(6, MOVE_BITE),
+    LEVEL_UP_MOVE(9, MOVE_FAKE_OUT),
+    LEVEL_UP_MOVE(14, MOVE_FLAME_CHARGE),
+    LEVEL_UP_MOVE(17, MOVE_SCREECH),
+    LEVEL_UP_MOVE(22, MOVE_FEINT_ATTACK),
+    LEVEL_UP_MOVE(27, MOVE_FIRE_FANG),
+    LEVEL_UP_MOVE(32, MOVE_FLAMETHROWER),
+    LEVEL_UP_MOVE(38, MOVE_NASTY_PLOT),
+    LEVEL_UP_MOVE(45, MOVE_HEAT_WAVE),
+    LEVEL_UP_END
+};
+#endif
+
+#if P_FAMILY_FIDOUGH
+const u32 gMonFrontPic_PennyBrave[] = INCBIN_U32("graphics/pokemon/penny_brave/front.4bpp.smol");
+const u32 gMonBackPic_PennyBrave[] = INCBIN_U32("graphics/pokemon/penny_brave/back.4bpp.smol");
+const u16 gMonPalette_PennyBrave[] = INCBIN_U16("graphics/pokemon/penny_brave/normal.gbapal");
+const u16 gMonShinyPalette_PennyBrave[] = INCBIN_U16("graphics/pokemon/penny_brave/shiny.gbapal");
+const u8 gMonIcon_PennyBrave[] = INCBIN_U8("graphics/pokemon/penny_brave/icon.4bpp");
+const u16 gMonIconPalette_PennyBrave[] = INCBIN_U16("graphics/pokemon/penny_brave/icon_normal.gbapal");
+const u16 gMonShinyIconPalette_PennyBrave[] = INCBIN_U16("graphics/pokemon/penny_brave/icon_shiny.gbapal");
+const u32 gObjectEventPic_PennyBrave[] = INCBIN_U32("graphics/pokemon/penny_brave/overworld.4bpp");
+const u16 gOverworldPalette_PennyBrave[] = INCBIN_U16("graphics/pokemon/penny_brave/overworld_normal.gbapal");
+const u16 gShinyOverworldPalette_PennyBrave[] = INCBIN_U16("graphics/pokemon/penny_brave/overworld_shiny.gbapal");
+static const struct SpriteFrameImage sPicTable_PennyBrave[] = {
+    overworld_ascending_frames(gObjectEventPic_PennyBrave, 4, 4),
+};
+static const struct LevelUpMove sPennyBraveLevelUpLearnset[] = {
+    LEVEL_UP_MOVE(0, MOVE_HELPING_HAND),
+    LEVEL_UP_MOVE(1, MOVE_TACKLE),
+    LEVEL_UP_MOVE(1, MOVE_GROWL),
+    LEVEL_UP_MOVE(5, MOVE_LICK),
+    LEVEL_UP_MOVE(8, MOVE_TAIL_WHIP),
+    LEVEL_UP_MOVE(12, MOVE_BITE),
+    LEVEL_UP_MOVE(16, MOVE_BABY_DOLL_EYES),
+    LEVEL_UP_MOVE(22, MOVE_DRAINING_KISS),
+    LEVEL_UP_MOVE(28, MOVE_CRUNCH),
+    LEVEL_UP_MOVE(34, MOVE_PLAY_ROUGH),
+    LEVEL_UP_MOVE(40, MOVE_YAWN),
+    LEVEL_UP_MOVE(46, MOVE_LAST_RESORT),
+    LEVEL_UP_END
+};
+#endif

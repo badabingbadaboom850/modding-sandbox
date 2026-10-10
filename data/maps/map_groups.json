@@ -178,7 +178,9 @@
     "MauvilleCity_GameCorner",
     "GoldenrodBattleArcadeBattleRoom",
     "GoldenrodFestival",
-    "TrioEchoWoods"
+    "TrioEchoWoods",
+    "TrioMirrorHouse",
+    "TrioLanternTrail"
   ],
   "gMapGroup_IndoorEcruteak": [
     "EcruteakCity_PokemonCenter",

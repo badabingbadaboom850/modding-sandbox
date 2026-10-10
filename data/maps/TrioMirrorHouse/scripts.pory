@@ -1,0 +1,156 @@
+raw `
+@ Bijuu learns that being known is warmer than being copied.
+TrioMirrorHouse_MapScripts::
+	.byte 0
+TrioMirror_Entrance::
+	lockall
+	faceplayer
+	goto_if_unset FLAG_TRIO_RIFT_COURAGE_RECEIVED, TrioMirror_NotReady
+	call TrioSisters_CheckAll
+	goto_if_eq VAR_RESULT, FALSE, TrioRift_Missing
+	msgbox TrioMirror_OfferText, MSGBOX_YESNO
+	goto_if_eq VAR_RESULT, NO, TrioRift_End
+	closemessage
+	warp MAP_TRIO_MIRROR_HOUSE, 4, 7
+	waitstate
+	goto TrioRift_End
+TrioMirror_NotReady:
+	msgbox TrioMirror_NotReadyText, MSGBOX_DEFAULT
+	goto TrioRift_End
+TrioMirror_Exit::
+	lockall
+	faceplayer
+	msgbox TrioRift_ExitText, MSGBOX_YESNO
+	goto_if_eq VAR_RESULT, NO, TrioRift_End
+	closemessage
+	warp MAP_GOLDENROD_CITY_POKEMON_CENTER, 7, 6
+	waitstate
+	goto TrioRift_End
+TrioMirror_Riko::
+	lockall
+	faceplayer
+	call TrioSisters_CheckAll
+	goto_if_eq VAR_RESULT, FALSE, TrioRift_Missing
+	goto_if_ge VAR_TRIO_RIFT_BIJUU_STATE, 1, TrioMirror_RikoHint
+	setvar VAR_TRIO_RIFT_BIJUU_STATE, 1
+TrioMirror_RikoHint:
+	checkspecies SPECIES_RIKO_ECHO
+	goto_if_eq VAR_RESULT, TRUE, TrioMirror_TwoVoices
+	msgbox TrioMirror_RikoText, MSGBOX_DEFAULT
+	goto TrioRift_End
+TrioMirror_TwoVoices:
+	msgbox TrioMirror_TwoVoicesText, MSGBOX_DEFAULT
+	goto TrioRift_End
+TrioMirror_Penny::
+	lockall
+	faceplayer
+	call TrioSisters_CheckAll
+	goto_if_eq VAR_RESULT, FALSE, TrioRift_Missing
+	goto_if_eq VAR_TRIO_RIFT_BIJUU_STATE, 0, TrioMirror_FirstHint
+	goto_if_ge VAR_TRIO_RIFT_BIJUU_STATE, 2, TrioMirror_PennyHint
+	setvar VAR_TRIO_RIFT_BIJUU_STATE, 2
+TrioMirror_PennyHint:
+	checkspecies SPECIES_PENNY_GUARDIAN
+	goto_if_eq VAR_RESULT, TRUE, TrioMirror_ArmoredSister
+	msgbox TrioMirror_PennyText, MSGBOX_DEFAULT
+	goto TrioRift_End
+TrioMirror_ArmoredSister:
+	msgbox TrioMirror_ArmoredText, MSGBOX_DEFAULT
+	goto TrioRift_End
+TrioMirror_FirstHint:
+	msgbox TrioMirror_FirstHintText, MSGBOX_DEFAULT
+	goto TrioRift_End
+TrioMirror_CopyA::
+	lockall
+	faceplayer
+	msgbox TrioMirror_CopyAText, MSGBOX_DEFAULT
+	goto TrioRift_End
+TrioMirror_CopyB::
+	lockall
+	faceplayer
+	msgbox TrioMirror_CopyBText, MSGBOX_DEFAULT
+	goto TrioRift_End
+TrioMirror_Real::
+	lockall
+	faceplayer
+	msgbox TrioMirror_RealText, MSGBOX_DEFAULT
+	goto_if_ge VAR_TRIO_RIFT_BIJUU_STATE, 3, TrioRift_End
+	goto_if_ne VAR_TRIO_RIFT_BIJUU_STATE, 2, TrioMirror_FirstHint
+	call TrioSisters_CheckAll
+	goto_if_eq VAR_RESULT, FALSE, TrioRift_Missing
+	msgbox TrioMirror_ChooseText, MSGBOX_YESNO
+	goto_if_eq VAR_RESULT, NO, TrioRift_End
+	setvar VAR_TRIO_RIFT_BIJUU_STATE, 3
+	msgbox TrioMirror_FoundText, MSGBOX_DEFAULT
+	goto TrioRift_End
+TrioMirror_Guardian::
+	lockall
+	faceplayer
+	goto_if_ge VAR_TRIO_RIFT_BIJUU_STATE, 4, TrioMirror_Victory
+	goto_if_ne VAR_TRIO_RIFT_BIJUU_STATE, 3, TrioMirror_FirstHint
+	call TrioSisters_CheckAll
+	goto_if_eq VAR_RESULT, FALSE, TrioRift_Missing
+	msgbox TrioMirror_GuardianText, MSGBOX_YESNO
+	goto_if_eq VAR_RESULT, NO, TrioRift_End
+	setvar VAR_0x8004, SPECIES_BIJUU_EMBER
+	specialvar VAR_RESULT, PrepareTrioSpiritTrial
+	goto_if_eq VAR_RESULT, FALSE, TrioRift_Missing
+	closemessage
+	playmoncry SPECIES_BIJUU_EMBER, CRY_MODE_ENCOUNTER
+	waitmoncry
+	special BattleSetup_StartTrioSpiritTrial
+	waitstate
+	specialvar VAR_RESULT, GetBattleOutcome
+	goto_if_ne VAR_RESULT, B_OUTCOME_WON, TrioMirror_Retry
+	setvar VAR_TRIO_RIFT_BIJUU_STATE, 4
+TrioMirror_Victory:
+	msgbox TrioMirror_VictoryText, MSGBOX_DEFAULT
+	goto_if_set FLAG_TRIO_RIFT_FIRE_RECEIVED, TrioRift_End
+	giveitem ITEM_BIJUUS_FIRE
+	goto_if_eq VAR_RESULT, FALSE, TrioMirror_Pending
+	setflag FLAG_TRIO_RIFT_FIRE_RECEIVED
+	setvar VAR_TRIO_RIFT_BIJUU_STATE, 5
+	msgbox TrioMirror_GiftText, MSGBOX_DEFAULT
+	goto TrioRift_End
+TrioMirror_Retry:
+	msgbox TrioRift_RetryText, MSGBOX_DEFAULT
+	goto TrioRift_End
+TrioMirror_Pending:
+	msgbox TrioMirror_PendingText, MSGBOX_DEFAULT
+	goto TrioRift_End
+TrioMirror_ReadMemory::
+	msgbox TrioMirror_VictoryText, MSGBOX_DEFAULT
+	return
+TrioMirror_OfferText:
+	.string "The mirrors are stirring.\nVisit Bijuu's Mirror\pHouse? You can leave any\ntime.$"
+TrioMirror_NotReadyText:
+	.string "Earn Riko's Courage in\nEcho Woods first. A\pfamiliar cat awaits beyond\nthe mirrors.$"
+TrioMirror_RikoText:
+	.string "Riko sniffs the three\ncats. A copy knows a name.\pYour Bijuu knows her\nfamily. Listen before\pchoosing.$"
+TrioMirror_TwoVoicesText:
+	.string "Both Riko heads agree! A\ncopy knows a name. Your\pBijuu knows her family.\nListen before choosing.$"
+TrioMirror_PennyText:
+	.string "Penny remembers the cocoa\nwho loves the backyard.\pThe real Bijuu stays when\na little sister is scared.$"
+TrioMirror_ArmoredText:
+	.string "Penny lowers her armor.\nShe remembers her cocoa in\pthe backyard, always\nstaying for a scared\psister.$"
+TrioMirror_FirstHintText:
+	.string "Listen to Riko, then\nPenny. Their little\pmemories can guide you\nthrough mirrors.$"
+TrioMirror_CopyAText:
+	.string "I am the grandest Bijuu! I\nadore crowds and loud\prooms. Little sisters slow\nme down.$"
+TrioMirror_CopyBText:
+	.string "I am the strongest Bijuu!\nI do not need a family. I\pwould leave Penny behind.$"
+TrioMirror_RealText:
+	.string "Bijuu yawns. Backyard?\nYes. Cocoa? Of course.\pPenny worried? I am\nstaying. She rubs against\pyour hand.$"
+TrioMirror_ChooseText:
+	.string "Her sisters look hopeful.\nIs this your real Bijuu?$"
+TrioMirror_FoundText:
+	.string "Riko barks her approval.\nPenny leans into Bijuu.\pCopies can borrow a face.\nThey cannot borrow love.$"
+TrioMirror_GuardianText:
+	.string "A tiny tail flame wakes.\nBijuu's own spark waits.\pFace this gentle guardian?\nLosses allow safe retries.$"
+TrioMirror_VictoryText:
+	.string "The flame warms Bijuu's\ntail. It does not burn her\psisters. Riko found her\nvoice. Bijuu found her own\pspark. Her full Spirit\nstill sleeps.$"
+TrioMirror_GiftText:
+	.string "Keep Bijuu's Fire. Use it\nfrom Key Items on Bijuu to\pawaken her Ember form. Use\nagain to return. Penny's\planterns await next.$"
+TrioMirror_PendingText:
+	.string "Your Bag has no room.\nBijuu's Fire waits here.\pReturn whenever you like.\nNo new battle is needed.$"
+`

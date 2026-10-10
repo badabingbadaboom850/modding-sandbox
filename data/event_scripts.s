@@ -2428,3 +2428,7 @@ Common_Text_ReceivedMon:
 
 
 	.include "data/maps/TrioEchoWoods/scripts.inc"
+
+	.include "data/maps/TrioMirrorHouse/scripts.inc"
+
+	.include "data/maps/TrioLanternTrail/scripts.inc"

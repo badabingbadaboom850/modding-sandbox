@@ -382,7 +382,7 @@ const struct SpeciesInfo gSpeciesInfo[] =
         .teachableLearnset = sMeowthTeachableLearnset,
         .eggMoveLearnset = sMeowthEggMoveLearnset,
         .formSpeciesIdTable = sBijuuFormSpeciesIdTable, .formChangeTable = sBijuuFormChangeTable,
-        .evolutions = EVOLUTION({EVO_ITEM, ITEM_BIJUUS_FISH_TOY, SPECIES_BIJUU_PSYCHIC}, {EVO_ITEM, ITEM_MOUSE_TOY, SPECIES_BIJUU_GHOST}, {EVO_ITEM, ITEM_FROZEN_FISH, SPECIES_BIJUU_ICE}),
+        .evolutions = EVOLUTION({EVO_ITEM, ITEM_BIJUUS_FIRE, SPECIES_BIJUU_EMBER}, {EVO_ITEM, ITEM_BIJUUS_FISH_TOY, SPECIES_BIJUU_PSYCHIC}, {EVO_ITEM, ITEM_MOUSE_TOY, SPECIES_BIJUU_GHOST}, {EVO_ITEM, ITEM_FROZEN_FISH, SPECIES_BIJUU_ICE}),
     },
 #if P_GEN_9_MEGA_EVOLUTIONS
     [SPECIES_MEGA_BIJUU] =
@@ -940,6 +940,40 @@ const struct SpeciesInfo gSpeciesInfo[] =
         .teachingType = ALL_TEACHABLES, .levelUpLearnset = sTinkatinkLevelUpLearnset,
     },
 
+    [SPECIES_BIJUU_EMBER] =
+    {
+        .baseHP = 80, .baseAttack = 85, .baseDefense = 70, .baseSpeed = 120,
+        .baseSpAttack = 110, .baseSpDefense = 85,
+        .types = MON_TYPES(TYPE_NORMAL, TYPE_FIRE), .catchRate = 60, .expYield = 220,
+        .evYield_Speed = 3, .genderRatio = MON_FEMALE,
+        .eggCycles = 20, .friendship = STANDARD_FRIENDSHIP, .growthRate = GROWTH_MEDIUM_SLOW,
+        .eggGroups = MON_EGG_GROUPS(EGG_GROUP_FIELD),
+        .abilities = { ABILITY_LIMBER, ABILITY_NONE, ABILITY_TECHNICIAN },
+        .bodyColor = BODY_COLOR_BROWN, .speciesName = _("BijuuEmber"), .cryId = CRY_MEOWTH,
+        .natDexNum = NATIONAL_DEX_BIJUU, .categoryName = _("Warm Tail"), .height = 7, .weight = 120,
+        .description = COMPOUND_STRING("A small flame warms her tail.\nShe found her own spark when\nher sisters knew the real her."),
+        .pokemonScale = 256, .trainerScale = 256,
+        .frontPic = gMonFrontPic_BijuuEmber, .frontPicSize = MON_COORDS_SIZE(64, 64), .frontPicYOffset = 0,
+        .frontAnimFrames = sAnims_SingleFramePlaceHolder, .backPic = gMonBackPic_BijuuEmber,
+        .backPicSize = MON_COORDS_SIZE(64, 64), .backPicYOffset = 0,
+        .palette = gMonPalette_BijuuEmber, .shinyPalette = gMonShinyPalette_BijuuEmber,
+        .iconSprite = gMonIcon_BijuuEmber, .iconPalette = gMonIconPalette_BijuuEmber,
+        .shinyIconPalette = gMonShinyIconPalette_BijuuEmber, .pokemonJumpType = PKMN_JUMP_TYPE_FAST,
+        SHADOW(-2, 8, SHADOW_SIZE_S)
+        OVERWORLD(
+            sPicTable_BijuuEmber,
+            SIZE_32x32,
+            SHADOW_SIZE_M,
+            TRACKS_FOOT,
+            sAnimTable_Following,
+            gOverworldPalette_BijuuEmber,
+            gShinyOverworldPalette_BijuuEmber
+        )
+        .teachingType = ALL_TEACHABLES, .levelUpLearnset = sBijuuEmberLevelUpLearnset,
+        .teachableLearnset = sMeowthTeachableLearnset,
+        .eggMoveLearnset = sMeowthEggMoveLearnset,
+        .evolutions = EVOLUTION({EVO_ITEM, ITEM_BIJUUS_FIRE, SPECIES_BIJUU}),
+    },
     [SPECIES_BIJUU_PSYCHIC] =
     {
         .baseHP = 80, .baseAttack = 85, .baseDefense = 70, .baseSpeed = 120,
@@ -972,13 +1006,49 @@ const struct SpeciesInfo gSpeciesInfo[] =
         .teachingType = ALL_TEACHABLES, .levelUpLearnset = sMeowthLevelUpLearnset,
         .teachableLearnset = sMeowthTeachableLearnset,
         .eggMoveLearnset = sMeowthEggMoveLearnset,
-        .evolutions = EVOLUTION({EVO_ITEM, ITEM_BIJUUS_CAT_NIP, SPECIES_BIJUU}),
+        .evolutions = EVOLUTION({EVO_ITEM, ITEM_BIJUUS_CAT_NIP, SPECIES_BIJUU}, {EVO_ITEM, ITEM_BIJUUS_FIRE, SPECIES_BIJUU_EMBER}),
     },
 
 #endif
 
 
 #if P_FAMILY_FIDOUGH
+    [SPECIES_PENNY_BRAVE] =
+    {
+        .baseHP = 85, .baseAttack = 90, .baseDefense = 100, .baseSpeed = 85,
+        .baseSpAttack = 55, .baseSpDefense = 85,
+        .types = MON_TYPES(TYPE_FAIRY), .catchRate = 45, .expYield = 240,
+        .evYield_Defense = 2, .evYield_HP = 1, .genderRatio = MON_FEMALE,
+        .eggCycles = 20, .friendship = STANDARD_FRIENDSHIP, .growthRate = GROWTH_MEDIUM_SLOW,
+        .eggGroups = MON_EGG_GROUPS(EGG_GROUP_FIELD, EGG_GROUP_MINERAL),
+        .abilities = { ABILITY_WELL_BAKED_BODY, ABILITY_NONE, ABILITY_AROMA_VEIL },
+        .innates = { ABILITY_SWEET_VEIL },
+        .bodyColor = BODY_COLOR_YELLOW, .speciesName = _("PennyBrave"), .cryId = CRY_FIDOUGH,
+        .natDexNum = NATIONAL_DEX_FIDOUGH, .categoryName = _("Brave Steps"), .height = 5, .weight = 149,
+        .description = COMPOUND_STRING("A little armor, a growing heart.\nShe walks ahead knowing both\nher sisters will walk with her."),
+        .pokemonScale = 256, .trainerScale = 256,
+        .frontPic = gMonFrontPic_PennyBrave, .frontPicSize = MON_COORDS_SIZE(64, 64), .frontPicYOffset = 4,
+        .frontAnimFrames = sAnims_SingleFramePlaceHolder, .backPic = gMonBackPic_PennyBrave,
+        .backPicSize = MON_COORDS_SIZE(64, 64), .backPicYOffset = 4,
+        .palette = gMonPalette_PennyBrave, .shinyPalette = gMonShinyPalette_PennyBrave,
+        .iconSprite = gMonIcon_PennyBrave, .iconPalette = gMonIconPalette_PennyBrave,
+        .shinyIconPalette = gMonShinyIconPalette_PennyBrave, .pokemonJumpType = PKMN_JUMP_TYPE_NORMAL,
+        SHADOW(-2, 8, SHADOW_SIZE_S)
+        FOOTPRINT(Fidough)
+        OVERWORLD(
+            sPicTable_PennyBrave,
+            SIZE_32x32,
+            SHADOW_SIZE_M,
+            TRACKS_FOOT,
+            sAnimTable_Following,
+            gOverworldPalette_PennyBrave,
+            gShinyOverworldPalette_PennyBrave
+        )
+        .levelUpLearnset = sPennyBraveLevelUpLearnset,
+        .teachableLearnset = sDachsbunTeachableLearnset,
+        .eggMoveLearnset = sFidoughEggMoveLearnset,
+        .evolutions = EVOLUTION({EVO_ITEM, ITEM_PENNYS_BRAVERY, SPECIES_FIDOUGH}),
+    },
     [SPECIES_PENNY_GUARDIAN] =
     {
         .baseHP = 100, .baseAttack = 100, .baseDefense = 120, .baseSpeed = 85,
@@ -1015,7 +1085,7 @@ const struct SpeciesInfo gSpeciesInfo[] =
         .levelUpLearnset = sDachsbunLevelUpLearnset,
         .teachableLearnset = sDachsbunTeachableLearnset,
         .eggMoveLearnset = sFidoughEggMoveLearnset,
-        .evolutions = EVOLUTION({EVO_ITEM, ITEM_PIECE_OF_CHICKEN, SPECIES_FIDOUGH}, {EVO_ITEM, ITEM_DOG_BOWL, SPECIES_PENNY_WATER}, {EVO_ITEM, ITEM_FETCHING_STICK, SPECIES_PENNY_GRASS}),
+        .evolutions = EVOLUTION({EVO_ITEM, ITEM_PENNYS_BRAVERY, SPECIES_PENNY_BRAVE}, {EVO_ITEM, ITEM_PIECE_OF_CHICKEN, SPECIES_FIDOUGH}, {EVO_ITEM, ITEM_DOG_BOWL, SPECIES_PENNY_WATER}, {EVO_ITEM, ITEM_FETCHING_STICK, SPECIES_PENNY_GRASS}),
     },
 #endif
 

@@ -17648,6 +17648,38 @@ const struct ItemInfo gItemsInfo[] =
         .iconPalette = gItemIconPalette_SilkScarf,
     },
 
+    [ITEM_BIJUUS_FIRE] =
+    {
+        .name = ITEM_NAME("Bijuu's Fire"),
+        .price = 0,
+        .description = COMPOUND_STRING("Reusable. Warms Bijuu's\ntail with a small flame.\nUse again to revert."),
+        .importance = 1,
+        .pocket = POCKET_KEY_ITEMS,
+        .sortType = ITEM_TYPE_EVOLUTION_STONE,
+        .heldSlot = 0,
+        .type = ITEM_USE_PARTY_MENU,
+        .fieldUseFunc = ItemUseOutOfBattle_EvolutionStone,
+        .effect = gItemEffect_EvoItem,
+        .iconPic = gItemIcon_BijuusFire,
+        .iconPalette = gItemIconPalette_BijuusFire,
+    },
+
+    [ITEM_PENNYS_BRAVERY] =
+    {
+        .name = ITEM_NAME("Penny's Bravery"),
+        .price = 0,
+        .description = COMPOUND_STRING("Reusable. Gives Penny\nlight armor and courage.\nUse again to revert."),
+        .importance = 1,
+        .pocket = POCKET_KEY_ITEMS,
+        .sortType = ITEM_TYPE_EVOLUTION_STONE,
+        .heldSlot = 0,
+        .type = ITEM_USE_PARTY_MENU,
+        .fieldUseFunc = ItemUseOutOfBattle_EvolutionStone,
+        .effect = gItemEffect_EvoItem,
+        .iconPic = gItemIcon_PennysBravery,
+        .iconPalette = gItemIconPalette_PennysBravery,
+    },
+
     [ITEM_RIKOS_COURAGE] =
     {
         .name = ITEM_NAME("Riko's Courage"),

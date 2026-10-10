@@ -523,7 +523,7 @@ bool8 PrepareTrioSpiritTrial(void)
     u16 species = gSpecialVar_0x8004;
     u32 i;
 
-    if (species != SPECIES_PENNY_SPIRIT && species != SPECIES_BIJUU_SPIRIT && species != SPECIES_RIKO_ECHO)
+    if (species != SPECIES_PENNY_SPIRIT && species != SPECIES_BIJUU_SPIRIT && species != SPECIES_RIKO_ECHO && species != SPECIES_BIJUU_EMBER && species != SPECIES_PENNY_BRAVE)
         return FALSE;
     for (i = 0; i < PARTY_SIZE; i++)
     {
@@ -546,6 +546,14 @@ bool8 PrepareTrioSpiritTrial(void)
         // User-requested easy Echo Woods test guardian; level90 Spirit cave is separate.
         level = 1;
         CreateScriptedWildMon2(species, level, ITEM_NONE, 0, MOVE_DISARMING_VOICE, MOVE_TACKLE, MOVE_BABY_DOLL_EYES, MOVE_HELPING_HAND, FALSE);
+    }
+    else if (species == SPECIES_BIJUU_EMBER)
+    {
+        CreateScriptedWildMon2(species, 1, ITEM_NONE, 0, MOVE_EMBER, MOVE_SCRATCH, MOVE_GROWL, MOVE_HELPING_HAND, FALSE);
+    }
+    else if (species == SPECIES_PENNY_BRAVE)
+    {
+        CreateScriptedWildMon2(species, 1, ITEM_NONE, 0, MOVE_TACKLE, MOVE_BABY_DOLL_EYES, MOVE_HELPING_HAND, MOVE_GROWL, FALSE);
     }
     else if (species == SPECIES_PENNY_SPIRIT)
     {

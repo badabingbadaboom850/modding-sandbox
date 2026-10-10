@@ -1723,7 +1723,9 @@
 #define SPECIES_PENNY_SPIRIT                           1605
 #define SPECIES_BIJUU_SPIRIT                           1606
 #define SPECIES_RIKO_ECHO                              1607
-#define SPECIES_EGG                                     (SPECIES_RIKO_ECHO + 1)
+#define SPECIES_BIJUU_EMBER                            1608
+#define SPECIES_PENNY_BRAVE                            1609
+#define SPECIES_EGG                                     (SPECIES_PENNY_BRAVE + 1)
 
 #define NUM_SPECIES SPECIES_EGG
 

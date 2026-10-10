@@ -2,6 +2,8 @@
 
 
 
+
+
 @ Independent first Rift chapter. All progression is saved; no on-frame battles.
 TrioEchoWoods_MapScripts::
 	map_script MAP_SCRIPT_ON_LOAD, TrioRift_Load
@@ -20,10 +22,10 @@ TrioRift_Entrance::
 	goto_if_unset FLAG_TRIO_FESTIVAL_PICNIC, TrioRift_NotReady
 	call TrioSisters_CheckAll
 	goto_if_eq VAR_RESULT, FALSE, TrioRift_Missing
-	msgbox TrioRift_OfferText, MSGBOX_YESNO
+	call TrioRift_NextOffer
 	goto_if_eq VAR_RESULT, NO, TrioRift_End
 	closemessage
-	warp MAP_TRIO_ECHO_WOODS, 12, 27
+	call TrioRift_WarpNext
 	waitstate
 	goto TrioRift_End
 TrioRift_NotReady:
@@ -243,17 +245,17 @@ TrioRift_CheckDone:
 TrioRift_ChecklistText:
 	.string "Spirit Rift: Echo Woods.\nAfter the festival picnic,\psee the old man in\nGoldenrod's Poke Center.$"
 TrioRift_CheckDoneText:
-	.string "Echo Woods: remembered!\nRiko found a way for all.\pThe other Rift chapters\nare still to come.$"
+	.string "Echo Woods: remembered!\nCollect each girl's charm,\pthen visit the Goldenrod\nguide or festival host for\pthe next chapter.$"
 
 @ Called from the already-locked festival host/picnic. No new progress grants.
 TrioRift_FestivalOffer::
 	goto_if_unset FLAG_TRIO_FESTIVAL_PICNIC, TrioRift_FestivalReturn
 	call TrioSisters_CheckAll
 	goto_if_eq VAR_RESULT, FALSE, TrioRift_FestivalReturn
-	msgbox TrioRift_FestivalOfferText, MSGBOX_YESNO
+	call TrioRift_NextOffer
 	goto_if_eq VAR_RESULT, NO, TrioRift_FestivalReturn
 	closemessage
-	warp MAP_TRIO_ECHO_WOODS, 12, 27
+	call TrioRift_WarpNext
 	waitstate
 	releaseall
 	end
@@ -267,3 +269,47 @@ TrioRift_EchoForm:
 	goto TrioRift_End
 TrioRift_EchoFormText:
 	.string "Riko barks. Riko answers!\nBijuu looks between them.\pPenny hugs both ruffs.\nTwo voices keep her safe.\pThe same little girl.\nA little more courage.$"
+
+TrioRift_NextOffer:
+	goto_if_unset FLAG_TRIO_RIFT_COURAGE_RECEIVED, TrioRift_OfferEcho
+	goto_if_unset FLAG_TRIO_RIFT_FIRE_RECEIVED, TrioRift_OfferMirror
+	goto_if_unset FLAG_TRIO_RIFT_BRAVERY_RECEIVED, TrioRift_OfferLantern
+	setvar VAR_0x8007, 0
+	msgbox TrioRift_RevisitEchoText, MSGBOX_YESNO
+	goto_if_eq VAR_RESULT, YES, TrioRift_OfferReturn
+	setvar VAR_0x8007, 1
+	msgbox TrioRift_RevisitMirrorText, MSGBOX_YESNO
+	goto_if_eq VAR_RESULT, YES, TrioRift_OfferReturn
+	goto TrioRift_OfferLantern
+TrioRift_OfferEcho:
+	setvar VAR_0x8007, 0
+	msgbox TrioRift_FestivalOfferText, MSGBOX_YESNO
+	return
+TrioRift_OfferMirror:
+	setvar VAR_0x8007, 1
+	msgbox TrioRift_MirrorOfferText, MSGBOX_YESNO
+	return
+TrioRift_OfferLantern:
+	setvar VAR_0x8007, 2
+	msgbox TrioRift_LanternOfferText, MSGBOX_YESNO
+TrioRift_OfferReturn:
+	return
+TrioRift_WarpNext:
+	goto_if_eq VAR_0x8007, 1, TrioRift_WarpMirror
+	goto_if_eq VAR_0x8007, 2, TrioRift_WarpLantern
+	warp MAP_TRIO_ECHO_WOODS, 12, 27
+	return
+TrioRift_WarpMirror:
+	warp MAP_TRIO_MIRROR_HOUSE, 4, 7
+	return
+TrioRift_WarpLantern:
+	warp MAP_TRIO_LANTERN_TRAIL, 12, 27
+	return
+TrioRift_RevisitEchoText:
+	.string "Three sparks are awake!\nRevisit Riko's Echo Woods?$"
+TrioRift_RevisitMirrorText:
+	.string "Revisit Bijuu's Mirror\nHouse?$"
+TrioRift_MirrorOfferText:
+	.string "Riko's echo found a path.\nBijuu hears another call.\pReady for the Mirror\nHouse? You can return any\ptime.$"
+TrioRift_LanternOfferText:
+	.string "Bijuu's spark lights a\npath. Penny's lanterns\pwait ahead. Ready for the\nLantern Trail? You can\preturn any time.$"

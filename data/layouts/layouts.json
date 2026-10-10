@@ -10346,6 +10346,26 @@
       "secondary_tileset": "gTileset_NationalPark",
       "border_filepath": "data/layouts/TrioEchoWoods/border.bin",
       "blockdata_filepath": "data/layouts/TrioEchoWoods/map.bin"
+    },
+    {
+      "id": "LAYOUT_TRIO_MIRROR_HOUSE",
+      "name": "TrioMirrorHouse_Layout",
+      "width": 13,
+      "height": 10,
+      "primary_tileset": "gTileset_Johto_Building",
+      "secondary_tileset": "gTileset_House_Lab",
+      "border_filepath": "data/layouts/TrioMirrorHouse/border.bin",
+      "blockdata_filepath": "data/layouts/TrioMirrorHouse/map.bin"
+    },
+    {
+      "id": "LAYOUT_TRIO_LANTERN_TRAIL",
+      "name": "TrioLanternTrail_Layout",
+      "width": 24,
+      "height": 30,
+      "primary_tileset": "gTileset_Johto_General",
+      "secondary_tileset": "gTileset_NationalPark",
+      "border_filepath": "data/layouts/TrioLanternTrail/border.bin",
+      "blockdata_filepath": "data/layouts/TrioLanternTrail/map.bin"
     }
   ]
 }
