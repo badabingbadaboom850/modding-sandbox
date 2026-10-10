@@ -17940,7 +17940,7 @@ const struct ItemInfo gItemsInfo[] =
     {
         .name = ITEM_NAME("Riko's Spark"),
         .price = 0,
-        .description = COMPOUND_STRING("A little spark.\nShe learned courage\nfrom Mom. Use to\nread her letter."),
+        .description = COMPOUND_STRING("Riko's Spirit Mega.\nCarry after victory.\nUse for her letter."),
         .importance = 1,
         .pocket = POCKET_KEY_ITEMS,
         .heldSlot = 0,
@@ -17954,7 +17954,7 @@ const struct ItemInfo gItemsInfo[] =
     {
         .name = ITEM_NAME("Penny's Shield"),
         .price = 0,
-        .description = COMPOUND_STRING("She learned safety.\nNow she carries it\nfor Mom. Use to\nread her letter."),
+        .description = COMPOUND_STRING("Penny's Spirit Mega.\nCarry after victory.\nUse for her letter."),
         .importance = 1,
         .pocket = POCKET_KEY_ITEMS,
         .heldSlot = 0,
@@ -17968,7 +17968,7 @@ const struct ItemInfo gItemsInfo[] =
     {
         .name = ITEM_NAME("Bijuu's Light"),
         .price = 0,
-        .description = COMPOUND_STRING("Mom was her light\nbefore the flames.\nUse to read her\nlittle cocoa letter."),
+        .description = COMPOUND_STRING("Bijuu's Spirit Mega.\nCarry after victory.\nUse for her letter."),
         .importance = 1,
         .pocket = POCKET_KEY_ITEMS,
         .heldSlot = 0,

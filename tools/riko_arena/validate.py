@@ -107,11 +107,14 @@ class Checks(unittest.TestCase):
    # Shrine forces the camera scene's guaranteed south interaction position.
    self.assertIn((16,7),seen);self.assertTrue(all(BASE[y*32+x]&0x800 for x,y in [(15,6),(17,6),(16,5)]))
   self.assertLessEqual(len(MAP['object_events'])+3,16)
- def test_test_warp_reset_and_historical_reward(self):
+ def test_normal_entrance_and_no_test_reset(self):
+  self.assertNotIn('RikoCavern_TestOffer',S)
+  self.assertNotIn('RikoCavern_OfferReset',S)
+  for path in ['data/maps/NewBarkTown/scripts.inc','data/maps/NewBarkTown/scripts.pory']:
+   self.assertNotIn('RikoCavern_TestOffer',(ROOT/path).read_text())
   for state in range(5):
-   r=Run(state,answers=[0]).run('RikoCavern_TestOffer');self.assertFalse(r.warps)
-   r=Run(state).run('RikoCavern_TestOffer');self.assertEqual(r.warps,[('MAP_RIKO_SPIRIT_CAVERN','16','26')]);self.assertEqual(r.vars[STATE],state)
-   r=Run(state,answers=[0,1],flags=['FLAG_TRIO_RIKO_KEEPSAKE','FLAG_RIKO_CAVERN_COMPLETE']).run('RikoCavern_Guide');self.assertEqual(r.vars[STATE],0);self.assertIn('FLAG_TRIO_RIKO_KEEPSAKE',r.flags);self.assertIn('FLAG_RIKO_CAVERN_COMPLETE',r.flags);self.assertFalse(r.lock)
+   r=Run(state,answers=[0],flags=['FLAG_RIKO_CAVERN_COMPLETE']).run('RikoCavern_Guide')
+   self.assertEqual(r.vars[STATE],state);self.assertFalse(r.warps);self.assertFalse(r.lock)
   r=Run(flags=['FLAG_DEFEATED_SUICUNE']).run('TrioKeepsakes_TryRiko');self.assertEqual(r.gifts,1);self.assertEqual(r.vars[STATE],0)
  def test_reunion_returns_camera_before_dialogue_and_uses_bounded_pause(self):
   reveal=S.split('addobject 4')[1].split('RikoCavern_Spirit::')[0]
@@ -136,14 +139,15 @@ class AmuletTests(unittest.TestCase):
   r.room=True;r.run('RikosAmulet_TryGift');self.assertEqual(r.gifts,1);self.assertIn('FLAG_RIKOS_AMULET_RECEIVED',r.flags)
   r.run('RikosAmulet_TryGift');self.assertEqual(r.gifts,1)
  def test_only_both_final_victories_warp_and_keep_progress(self):
-  for mask in range(4):
+  for mask in range(8):
    flags=['FLAG_TRIO_PENNY_HOME_WIN','FLAG_TRIO_BIJUU_HOME_WIN']
+   if mask&4:flags+=['FLAG_TRIO_FESTIVAL_PICNIC']
    if mask&1:flags+=['FLAG_TRIO_PENNY_SPIRIT_COMPLETE']
    if mask&2:flags+=['FLAG_TRIO_BIJUU_SPIRIT_COMPLETE']
    for state in range(5):
     for answer in [0,1]:
      r=Run(state,answers=[answer],flags=flags).run('RikosAmulet_Use')
-     self.assertEqual(bool(r.warps),mask==3 and answer==1);self.assertEqual(r.vars[STATE],state);self.assertFalse(r.lock)
+     self.assertEqual(bool(r.warps),mask==7 and answer==1);self.assertEqual(r.vars[STATE],state);self.assertFalse(r.lock)
  def test_scott_catchup_before_party_and_after_picnic(self):
   f=(ROOT/'data/maps/GoldenrodFestival/scripts.inc').read_text()
   entry=f.split('TrioFestival_Scott::')[1].split('TrioFestival_ScottLost:')[0]

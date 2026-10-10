@@ -329,10 +329,7 @@ TrioKeepsakes_BijuuGift:
 	.string "Mom.$"
 
 TrioKeepsakes_Help:
-	.string "Use this keepsake in KEY\n"
-	.string "ITEMS to read her letter.\p"
-	.string "It will always be there\n"
-	.string "when you need it.$"
+	.string "Keep it in KEY ITEMS.\nAfter her final Spirit\pvictory, use the Mega\nbutton in battle.\pHer Spirit will answer.\nAfter battle she returns.\pUse it to read her letter.\nA held Mega Stone chooses\pher other Mega instead.$"
 
 TrioMemories_RikoLetter:
 	.string "The little spark trembles\n"
@@ -1165,6 +1162,7 @@ RikoCavern_CheckLetter::
 
 @ Reusable travel charm. Only the final story victories awaken it.
 RikosAmulet_Use::
+	goto_if_unset FLAG_TRIO_FESTIVAL_PICNIC, RikosAmulet_Dormant
 	specialvar VAR_RESULT, IsRikosAmuletAwake
 	goto_if_eq VAR_RESULT, FALSE, RikosAmulet_Dormant
 	msgbox RikosAmulet_ReadyText, MSGBOX_YESNO

@@ -13,6 +13,7 @@
 #include "safari_zone.h"
 #include "script.h"
 #include "event_data.h"
+#include "field_specials.h"
 #include "metatile_behavior.h"
 #include "field_player_avatar.h"
 #include "fieldmap.h"
@@ -583,7 +584,7 @@ bool8 PrepareRikoCavernBattle(void)
         {MOVE_PSYCHIC, MOVE_DAZZLING_GLEAM, MOVE_CALM_MIND, MOVE_THUNDER_WAVE},
         {MOVE_BODY_SLAM, MOVE_PLAY_ROUGH, MOVE_CRUNCH, MOVE_BULK_UP},
         {MOVE_DRAINING_KISS, MOVE_SWIFT, MOVE_WISH, MOVE_LIGHT_SCREEN},
-        {MOVE_FLAMETHROWER, MOVE_PLAY_ROUGH, MOVE_CRUNCH, MOVE_CALM_MIND},
+        {MOVE_FLAMETHROWER, MOVE_MOONBLAST, MOVE_DARK_PULSE, MOVE_CALM_MIND},
     };
     static const u16 earlyMoves[][4] = {
         {MOVE_CONFUSION, MOVE_FAIRY_WIND, MOVE_TAIL_WHIP, MOVE_GROWL},
@@ -595,7 +596,7 @@ bool8 PrepareRikoCavernBattle(void)
     u32 highest = 0;
     u32 i;
     const u16 *chosen;
-    if (phase >= ARRAY_COUNT(species))
+    if (phase >= ARRAY_COUNT(species) || !CanAccessRikoSpiritCavern())
         return FALSE;
     for (i = 0; i < PARTY_SIZE; i++)
     {
@@ -607,8 +608,27 @@ bool8 PrepareRikoCavernBattle(void)
         return FALSE;
     chosen = RIKO_CAVERN_LEVEL_ONE_TEST || highest < 20 ? earlyMoves[phase] : moves[phase];
     HealTrioTrialParty();
-    CreateScriptedWildMon2(species[phase], RIKO_CAVERN_LEVEL_ONE_TEST ? 1 : min(highest + 10, MAX_LEVEL), ITEM_NONE, 0,
+    static const u16 items[] = {ITEM_LIFE_ORB, ITEM_LUM_BERRY, ITEM_LEFTOVERS, ITEM_LIFE_ORB};
+    u32 iv = 31, ev = 252, four = 4;
+    CreateScriptedWildMon2(species[phase], RIKO_CAVERN_LEVEL_ONE_TEST ? 1 : min(highest + 10, MAX_LEVEL), items[phase], 0,
         chosen[0], chosen[1], chosen[2], chosen[3], FALSE);
+    for (i = MON_DATA_HP_IV; i <= MON_DATA_SPDEF_IV; i++)
+        SetMonData(&gEnemyParty[0], i, &iv);
+    if (phase == 2)
+    {
+        SetMonData(&gEnemyParty[0], MON_DATA_HP_EV, &ev);
+        SetMonData(&gEnemyParty[0], MON_DATA_SPDEF_EV, &ev);
+        SetMonData(&gEnemyParty[0], MON_DATA_DEF_EV, &four);
+    }
+    else
+    {
+        SetMonData(&gEnemyParty[0], phase == 1 ? MON_DATA_ATK_EV : MON_DATA_SPATK_EV, &ev);
+        SetMonData(&gEnemyParty[0], MON_DATA_SPEED_EV, &ev);
+        SetMonData(&gEnemyParty[0], MON_DATA_HP_EV, &four);
+    }
+    CalculateMonStats(&gEnemyParty[0]);
+    iv = GetMonData(&gEnemyParty[0], MON_DATA_MAX_HP);
+    SetMonData(&gEnemyParty[0], MON_DATA_HP, &iv);
     return TRUE;
 }
 

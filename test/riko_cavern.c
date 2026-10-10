@@ -15,6 +15,14 @@
 #include "constants/vars.h"
 #include "constants/flags.h"
 
+static void UnlockCavernForTest(void)
+{
+    FlagSet(FLAG_TRIO_FESTIVAL_PICNIC);
+    FlagSet(FLAG_TRIO_PENNY_SPIRIT_COMPLETE);
+    FlagSet(FLAG_TRIO_BIJUU_SPIRIT_COMPLETE);
+    AddBagItem(ITEM_RIKOS_AMULET, 1);
+}
+
 TEST("Riko cavern creates four distinct healthy female bosses without changing saved progression")
 {
     static const u16 species[] = {SPECIES_RIKO_ASPECT_MIND, SPECIES_RIKO_ASPECT_BODY, SPECIES_RIKO_ASPECT_SOUL, SPECIES_RIKO_SPIRIT};
@@ -22,6 +30,7 @@ TEST("Riko cavern creates four distinct healthy female bosses without changing s
     static const u16 moves[] = {MOVE_PSYCHIC, MOVE_BODY_SLAM, MOVE_DRAINING_KISS, MOVE_FLAMETHROWER};
     u32 phase;
     u32 hp = 0;
+    UnlockCavernForTest();
     ZeroPlayerPartyMons();
     CreateMon(&gPlayerParty[0], SPECIES_RIKO, 35, 0, OTID_STRUCT_PLAYER_ID);
     CreateMon(&gPlayerParty[1], SPECIES_FIDOUGH, 45, 0, OTID_STRUCT_PLAYER_ID);
@@ -37,6 +46,10 @@ TEST("Riko cavern creates four distinct healthy female bosses without changing s
         EXPECT_EQ(GetMonData(&gEnemyParty[0], MON_DATA_LEVEL), RIKO_CAVERN_LEVEL_ONE_TEST ? 1 : 55);
         EXPECT_EQ(GetMonData(&gEnemyParty[0], MON_DATA_MOVE1), RIKO_CAVERN_LEVEL_ONE_TEST ? earlyMoves[phase] : moves[phase]);
         EXPECT_EQ(GetMonGender(&gEnemyParty[0]), MON_FEMALE);
+        EXPECT_EQ(GetMonData(&gEnemyParty[0], MON_DATA_HP_IV), 31);
+        EXPECT_EQ(GetMonData(&gEnemyParty[0], MON_DATA_SPEED_IV), 31);
+        EXPECT_EQ(GetMonData(&gEnemyParty[0], phase == 2 ? MON_DATA_SPDEF_EV : MON_DATA_SPEED_EV), 252);
+        EXPECT_EQ(GetMonData(&gEnemyParty[0], MON_DATA_HELD_ITEM), (phase == 0 || phase == 3) ? ITEM_LIFE_ORB : phase == 1 ? ITEM_LUM_BERRY : ITEM_LEFTOVERS);
         EXPECT_EQ(GetMonData(&gEnemyParty[0], MON_DATA_HP), GetMonData(&gEnemyParty[0], MON_DATA_MAX_HP));
         EXPECT_EQ(GetMonData(&gPlayerParty[0], MON_DATA_HP), GetMonData(&gPlayerParty[0], MON_DATA_MAX_HP));
         EXPECT_EQ(GetMonData(&gPlayerParty[0], MON_DATA_SPECIES), SPECIES_RIKO);
@@ -50,6 +63,7 @@ TEST("Riko cavern rejects empty egg only and invalid phase without mutating part
 {
     struct Pokemon enemy;
     u32 egg = TRUE;
+    UnlockCavernForTest();
     ZeroPlayerPartyMons();
     CreateMon(&gEnemyParty[0], SPECIES_CLEFAIRY, 12, 0, OTID_STRUCT_PLAYER_ID);
     enemy = gEnemyParty[0];
@@ -72,6 +86,7 @@ TEST("Riko cavern ignores high level Eggs caps levels and provides early starter
     static const u16 early[] = {MOVE_CONFUSION, MOVE_TACKLE, MOVE_FAIRY_WIND, MOVE_EMBER};
     u32 phase;
     u32 egg = TRUE;
+    UnlockCavernForTest();
     ZeroPlayerPartyMons();
     CreateMon(&gPlayerParty[0], SPECIES_RIKO, 5, 0, OTID_STRUCT_PLAYER_ID);
     CreateMon(&gPlayerParty[1], SPECIES_FIDOUGH, 100, 0, OTID_STRUCT_PLAYER_ID);
@@ -157,4 +172,25 @@ TEST("Riko amulet requires both final story spirits regardless of home or Rift w
     EXPECT_EQ(gItemsInfo[ITEM_RIKOS_AMULET].fieldUseFunc, ItemUseOutOfBattle_RikosAmulet);
     EXPECT(gItemsInfo[ITEM_RIKOS_AMULET].iconPic != NULL);
     EXPECT(gItemsInfo[ITEM_RIKOS_AMULET].iconPalette != NULL);
+}
+
+TEST("Riko cavern refuses old test saves until picnic amulet and both final victories")
+{
+    u32 mask;
+    ZeroPlayerPartyMons();
+    CreateMon(&gPlayerParty[0], SPECIES_RIKO, 50, 0, OTID_STRUCT_PLAYER_ID);
+    for (mask = 0; mask < 8; mask++)
+    {
+        FlagClear(FLAG_TRIO_FESTIVAL_PICNIC);
+        FlagClear(FLAG_TRIO_PENNY_SPIRIT_COMPLETE);
+        FlagClear(FLAG_TRIO_BIJUU_SPIRIT_COMPLETE);
+        if (mask & 1) FlagSet(FLAG_TRIO_FESTIVAL_PICNIC);
+        if (mask & 2) FlagSet(FLAG_TRIO_PENNY_SPIRIT_COMPLETE);
+        if (mask & 4) FlagSet(FLAG_TRIO_BIJUU_SPIRIT_COMPLETE);
+        AddBagItem(ITEM_RIKOS_AMULET, 1);
+        gSpecialVar_0x8004 = 0;
+        EXPECT_EQ(PrepareRikoCavernBattle(), mask == 7);
+        RemoveBagItem(ITEM_RIKOS_AMULET, CountTotalItemQuantityInBag(ITEM_RIKOS_AMULET));
+        EXPECT(!PrepareRikoCavernBattle());
+    }
 }

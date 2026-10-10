@@ -4789,3 +4789,9 @@ bool8 IsRikosAmuletAwake(void)
     return FlagGet(FLAG_TRIO_PENNY_SPIRIT_COMPLETE)
         && FlagGet(FLAG_TRIO_BIJUU_SPIRIT_COMPLETE);
 }
+
+bool8 CanAccessRikoSpiritCavern(void)
+{
+    return IsRikosAmuletAwake() && FlagGet(FLAG_TRIO_FESTIVAL_PICNIC)
+        && CheckBagHasItem(ITEM_RIKOS_AMULET, 1);
+}

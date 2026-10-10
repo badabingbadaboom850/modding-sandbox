@@ -2949,7 +2949,8 @@ void MoveGetIdAndSlot(enum BattlerId battlerId, struct MoveContext *ctx, u32 *mo
         enum Item item = ITEM_NONE;
         u32 species = GetMonData(mon, MON_DATA_SPECIES);
         bool32 hasMegaStone = FALSE;
-        bool32 hasItemBasedMegaEvolution = GetFormChangeTargetSpecies(mon, FORM_CHANGE_BATTLE_MEGA_EVOLUTION_ITEM) != species;
+        bool32 hasItemBasedMegaEvolution = GetFormChangeTargetSpecies(mon, FORM_CHANGE_BATTLE_MEGA_EVOLUTION_ITEM) != species
+            || ((battlerId & BIT_SIDE) == B_SIDE_PLAYER && GetTrioSpiritMegaForSpecies(species) != SPECIES_NONE);
         bool32 hasZCrystal = FALSE;
 
         for (u32 i = 0; i < MAX_MON_ITEMS; i++)

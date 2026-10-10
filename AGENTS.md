@@ -619,3 +619,46 @@ Camera repair validation: the production ROM was reassembled and relinked
 successfully (ROM32512276/EWRAM255420 bytes). Nine actual-script cavern groups
 and12 festival groups plus docs/diff checks pass. Runtime visual replay remains
 unconfirmed; prior engine suite is unchanged because no C runtime code changed.
+
+
+## Spirit keepsake Megas and normal cavern access (2026-10-10)
+
+User confirmed the reunion camera repair works, then requested challenging Riko
+fights and final keepsakes as Megas rather than permanent evolutions. This
+supersedes the pilot mailbox/reset/level1 instructions above. Toggle is now0;
+New Bark TEST entrance and guide reset are removed. Battle preparation requires
+festival picnic, Bag amulet and BOTH real final Penny/Bijuu victories. All prior
+saved wins/rewards remain; no forced resets or new save allocations.
+
+Riko's Spark, Penny's Shield and Bijuu's Light stay protected Key Items and retain
+field letters. Carrying the own keepsake plus own actual final victory enables
+Spirit Mega through the normal Mega Ring/button, once per trainer. Riko requires
+cavern completion AND both sisters' real final victories; historical Suicune/home
+wins or earlier Rift trials alone never unlock a Spirit Mega. Held Mega Stones
+retain priority. Opposing battlers/NPC partners cannot borrow player Bag gates.
+
+New Mega-only species1614/1615/1616 reuse established Spirit art and remain
+separate from bosses and permanent item evolutions. All30 ordinary/personal forms
+have Mega eligibility, and new Mega return tables use existing changedSpecies
+fallback to restore exact starting form on faint/end. Personal forms get entry-
+only tables, avoiding unwanted end-battle reversion without a Mega. No new saved
+flags/vars or item-pocket changes. Existing species IDs unchanged; Egg moves.
+
+Cavern bosses scale strongest non-Egg+10 cap100, have31 IVs/252-252-4 EVs and
+phase-specific Life Orb/Lum Berry/Leftovers. Final moves are special Flamethrower,
+Moonblast, Dark Pulse, Calm Mind. Cavern-only AI improves effectiveness, setup,
+finishing, HP and stall decisions without affecting ordinary wild/Rift battles.
+See docs/riko_spirit_cavern.md and test/trio_spirit_megas.c.
+
+
+Release verification:72 focused actual engine/battle/text tests pass, plus7
+expected runner self-test failures and zero unexpected failures. Spirit tests
+exercise all30 eligible forms, fainting and exact-form return, actual final
+victory/Bag gates, opponents and NPC partners, and existing Bondstone Megas.
+Cavern tests cover restored scaling/caps, trained stats/items, proper access
+and save ABI.83 family source/geometry/flow groups plus inclusive docs-summary
+and diff checks pass. The player confirmed the prior reunion camera repair;
+new Spirit Mega UI/animations and difficult balance still need rendered
+interactive confirmation. Headless battle tests are not a rendered playthrough.
+
+Final production ROM compilation passed (ROM32514296 bytes, EWRAM255420 bytes).

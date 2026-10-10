@@ -4,6 +4,8 @@ raw `
 
 
 
+
+
 @ Independent cave pilot. State never overwrites trial, Badge or Suicune flags.
 RikoSpiritCavern_MapScripts::
 	map_script MAP_SCRIPT_ON_TRANSITION, RikoCavern_Transition
@@ -34,15 +36,6 @@ RikoCavern_United:
 	setflag FLAG_TEMP_2
 	setflag FLAG_TEMP_3
 	clearflag FLAG_TEMP_4
-	return
-@ Called from the existing New Bark mailbox while its caller holds lockall.
-RikoCavern_TestOffer::
-	msgbox RikoCavern_TestOfferText, MSGBOX_YESNO
-	goto_if_eq VAR_RESULT, NO, RikoCavern_Return
-	closemessage
-	warp MAP_RIKO_SPIRIT_CAVERN, 16, 26
-	waitstate
-RikoCavern_Return:
 	return
 RikoCavern_Mind::
 	lockall
@@ -192,30 +185,11 @@ RikoCavern_Guide::
 	lockall
 	faceplayer
 	msgbox RikoCavern_LeaveText, MSGBOX_YESNO
-	goto_if_eq VAR_RESULT, NO, RikoCavern_OfferReset
+	goto_if_eq VAR_RESULT, NO, RikoCavern_End
 	closemessage
 	warp MAP_NEW_BARK_TOWN, 18, 12
 	waitstate
 	goto RikoCavern_End
-RikoCavern_OfferReset:
-	msgbox RikoCavern_ResetText, MSGBOX_YESNO
-	goto_if_eq VAR_RESULT, NO, RikoCavern_End
-	closemessage
-	fadescreen FADE_TO_WHITE
-	removeobject 1
-	removeobject 2
-	removeobject 3
-	removeobject 4
-	setvar VAR_RIKO_CAVERN_STATE, 0
-	call RikoCavern_Rebuild
-	clearflag FLAG_TEMP_1
-	addobject 1
-	clearflag FLAG_TEMP_2
-	addobject 2
-	clearflag FLAG_TEMP_3
-	addobject 3
-	fadescreen FADE_FROM_WHITE
-	msgbox RikoCavern_ResetDoneText, MSGBOX_DEFAULT
 RikoCavern_End:
 	releaseall
 	end
@@ -241,8 +215,6 @@ RikoCavern_Happy:
 RikoCavern_ReadMemory::
 	msgbox RikoCavern_VictoryText, MSGBOX_DEFAULT
 	return
-RikoCavern_TestOfferText:
-	.string "A faraway cavern answers\nRiko's little bark. TEST\pentrance: visit the Spirit\nof Riko cavern? No Badges\pare required. You can\nleave any time.$"
 RikoCavern_MindText:
 	.string "A violet aura trembles.\nRiko's Mind tilts her\phead. Every clever little\nplan. Every stolen chicken\pbite. She remembers your\nvoice. Help her find it\pagain? Face Riko's Mind\nfirst? The girls heal each\pround.$"
 RikoCavern_MindWinText:
@@ -268,7 +240,7 @@ RikoCavern_FinalText:
 RikoCavern_VictoryText:
 	.string "Three mighty heads bow.\nOne tiny tail starts to\pwag. You reach for her\nsoft ruff. She leans into\pyour hand. Penny presses\nclose. Bijuu curls beside\pher. No matter how far you\ngo, no matter what you\pbecome, you will always be\nour little Riko. The\pcavern remembers. Your\nfamily is whole.$"
 RikoCavern_NoPartyText:
-	.string "Bring a Pokemon to battle.\nYour progress stays safe.$"
+	.string "Bring a Pokemon and the\namulet from Scott.\pBoth final sister Spirits\nmust be won first.\pYour progress stays safe.$"
 RikoCavern_RetryText:
 	.string "The girls are fully\nhealed. Nothing earned is\plost. That voice still\nwaits. Try again when you\pare ready.$"
 RikoCavern_OrderText:
@@ -281,8 +253,4 @@ RikoCavern_RestText:
 	.string "The girls curl up\ntogether. Your party is\pfully healed. The cavern\ncan wait. There is no need\pto rush.$"
 RikoCavern_LeaveText:
 	.string "Return to New Bark Town?\nEach won phase stays\psaved. The southern steps\nalso lead back to Mom's\phouse.$"
-RikoCavern_ResetText:
-	.string "TEST: restart all four\ncavern fights from Mind?\pOnly this cavern resets.\nEarned keepsakes stay\pyours.$"
-RikoCavern_ResetDoneText:
-	.string "The three voices return.\nRiko's Mind waits again.$"
 `

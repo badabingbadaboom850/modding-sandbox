@@ -2610,6 +2610,7 @@ static const u16 sRikoFormSpeciesIdTable[] = {
     SPECIES_RIKO,
 #if P_GEN_9_MEGA_EVOLUTIONS
     SPECIES_MEGA_RIKO,
+    SPECIES_MEGA_RIKO_SPIRIT,
 #endif
     FORM_SPECIES_END,
 };
@@ -2620,7 +2621,12 @@ static const u16 sBijuuFormSpeciesIdTable[] = {
     SPECIES_BIJUU,
 #if P_GEN_9_MEGA_EVOLUTIONS
     SPECIES_MEGA_BIJUU,
+    SPECIES_MEGA_BIJUU_SPIRIT,
 #endif
     FORM_SPECIES_END,
 };
 #endif //P_FAMILY_BIJUU
+
+#if P_FAMILY_FIDOUGH
+static const u16 sPennySpiritFormSpeciesIdTable[] = {SPECIES_FIDOUGH, SPECIES_MEGA_PENNY_SPIRIT, FORM_SPECIES_END};
+#endif

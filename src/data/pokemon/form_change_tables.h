@@ -2249,5 +2249,31 @@ static const struct FormChange sBijuuFormChangeTable[] =
 };
 #endif //P_FAMILY_BIJUU
 
+// Entry-only tables leave permanent personal forms alone at battle end.
+#if P_FAMILY_RIKO
+static const struct FormChange sRikoSpiritMegaEntryTable[] = {
+    {FORM_CHANGE_BATTLE_MEGA_EVOLUTION_ITEM, SPECIES_MEGA_RIKO_SPIRIT, ITEM_RIKOS_SPARK},
+    {FORM_CHANGE_TERMINATOR},
+};
+#endif
+#if P_FAMILY_FIDOUGH
+static const struct FormChange sPennySpiritMegaEntryTable[] = {
+    {FORM_CHANGE_BATTLE_MEGA_EVOLUTION_ITEM, SPECIES_MEGA_PENNY_SPIRIT, ITEM_PENNYS_SHIELD},
+    {FORM_CHANGE_TERMINATOR},
+};
+#endif
+#if P_FAMILY_BIJUU
+static const struct FormChange sBijuuSpiritMegaEntryTable[] = {
+    {FORM_CHANGE_BATTLE_MEGA_EVOLUTION_ITEM, SPECIES_MEGA_BIJUU_SPIRIT, ITEM_BIJUUS_LIGHT},
+    {FORM_CHANGE_TERMINATOR},
+};
+#endif
+// SPECIES_NONE requests the existing PartyState.changedSpecies fallback.
+static const struct FormChange sTrioSpiritMegaReturnTable[] = {
+    {FORM_CHANGE_FAINT, SPECIES_NONE},
+    {FORM_CHANGE_END_BATTLE, SPECIES_NONE},
+    {FORM_CHANGE_TERMINATOR},
+};
+
 #undef WHEN_LEARNED
 #undef WHEN_FORGOTTEN

@@ -1729,7 +1729,10 @@
 #define SPECIES_RIKO_ASPECT_MIND                       1611
 #define SPECIES_RIKO_ASPECT_BODY                       1612
 #define SPECIES_RIKO_ASPECT_SOUL                       1613
-#define SPECIES_EGG                                     (SPECIES_RIKO_ASPECT_SOUL + 1)
+#define SPECIES_MEGA_RIKO_SPIRIT                       1614
+#define SPECIES_MEGA_PENNY_SPIRIT                      1615
+#define SPECIES_MEGA_BIJUU_SPIRIT                      1616
+#define SPECIES_EGG                                     (SPECIES_MEGA_BIJUU_SPIRIT + 1)
 
 #define NUM_SPECIES SPECIES_EGG
 
