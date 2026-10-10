@@ -1,0 +1,58 @@
+[
+  {
+    "form": "RIKO_PRINCESS",
+    "item": "POM_TIARA",
+    "city": "GoldenrodCity",
+    "x": 42,
+    "y": 15,
+    "script": "TrioCostume_RikoPrincessGift"
+  },
+  {
+    "form": "RIKO_RAINCOAT",
+    "item": "RIKOS_RAINCOAT",
+    "city": "EcruteakCity",
+    "x": 47,
+    "y": 43,
+    "script": "TrioCostume_RikoRaincoatGift"
+  },
+  {
+    "form": "BIJUU_BREAD",
+    "item": "COCOA_TOAST",
+    "city": "GoldenrodCity",
+    "x": 36,
+    "y": 38,
+    "script": "TrioCostume_BijuuBreadGift"
+  },
+  {
+    "form": "BIJUU_DETECTIVE",
+    "item": "COCOAS_DETECTIVE_KIT",
+    "city": "EcruteakCity",
+    "x": 25,
+    "y": 33,
+    "script": "TrioCostume_BijuuDetectiveGift"
+  },
+  {
+    "form": "PENNY_BLANKET",
+    "item": "PENNYS_COZY_WRAP",
+    "city": "Mahoganytown",
+    "x": 23,
+    "y": 21,
+    "script": "TrioCostume_PennyBlanketGift"
+  },
+  {
+    "form": "PENNY_LIFEGUARD",
+    "item": "PENNYS_BEACH_VEST",
+    "city": "OlivineCity",
+    "x": 34,
+    "y": 57,
+    "script": "TrioCostume_PennyLifeguardGift"
+  },
+  {
+    "form": "BIJUU_POISON",
+    "item": "TOXIC_MOUSE",
+    "city": "FuchsiaCity",
+    "x": 6,
+    "y": 33,
+    "script": "TrioCostume_BijuuPoisonGift"
+  }
+]

@@ -112,3 +112,21 @@ static const struct LevelUpMove sPennyGrassTrioLevelUpLearnset[] = {
     LEVEL_UP_END
 };
 
+
+// Poison Fang is available immediately, including Scott's current-form menu.
+static const struct LevelUpMove sBijuuPoisonTrioLevelUpLearnset[] = {
+    LEVEL_UP_MOVE( 0, MOVE_POISON_FANG),
+    LEVEL_UP_MOVE( 1, MOVE_SCRATCH),
+    LEVEL_UP_MOVE( 1, MOVE_GROWL),
+    LEVEL_UP_MOVE( 8, MOVE_BITE),
+    LEVEL_UP_MOVE(12, MOVE_ACID_SPRAY),
+    LEVEL_UP_MOVE(16, MOVE_POISON_FANG),
+    LEVEL_UP_MOVE(20, MOVE_VENOSHOCK),
+    LEVEL_UP_MOVE(24, MOVE_TOXIC),
+    LEVEL_UP_MOVE(28, MOVE_POISON_JAB),
+    LEVEL_UP_MOVE(32, MOVE_SLUDGE_BOMB),
+    LEVEL_UP_MOVE(36, MOVE_CRUNCH),
+    LEVEL_UP_MOVE(40, MOVE_NASTY_PLOT),
+    LEVEL_UP_MOVE(44, MOVE_GUNK_SHOT),
+    LEVEL_UP_END
+};

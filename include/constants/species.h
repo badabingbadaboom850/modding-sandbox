@@ -1736,7 +1736,15 @@
 #define SPECIES_BIJUU_BOX                               1618
 #define SPECIES_PENNY_HOTDOG                            1619
 #define SPECIES_PENNY_HOTDOG_DACHSBUN                   1620
-#define SPECIES_EGG                                     (SPECIES_PENNY_HOTDOG_DACHSBUN + 1)
+#define SPECIES_RIKO_PRINCESS                            1621
+#define SPECIES_RIKO_RAINCOAT                            1622
+#define SPECIES_BIJUU_BREAD                              1623
+#define SPECIES_BIJUU_DETECTIVE                          1624
+#define SPECIES_PENNY_BLANKET                            1625
+#define SPECIES_PENNY_LIFEGUARD                          1626
+#define SPECIES_PENNY_BLANKET_DACHSBUN                   1627
+#define SPECIES_PENNY_LIFEGUARD_DACHSBUN                 1628
+#define SPECIES_EGG                                     (SPECIES_PENNY_LIFEGUARD_DACHSBUN + 1)
 
 #define NUM_SPECIES SPECIES_EGG
 

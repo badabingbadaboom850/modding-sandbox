@@ -7,9 +7,9 @@
 #include "constants/items.h"
 #include "constants/species.h"
 
-static const u16 sBases[] = {SPECIES_RIKO, SPECIES_BIJUU, SPECIES_FIDOUGH, SPECIES_DACHSBUN};
-static const u16 sCostumes[] = {SPECIES_RIKO_BALLOON, SPECIES_BIJUU_BOX, SPECIES_PENNY_HOTDOG, SPECIES_PENNY_HOTDOG_DACHSBUN};
-static const u16 sItems[] = {ITEM_RIKOS_BALLOON, ITEM_BIJUUS_BOX, ITEM_PENNYS_HOTDOG_BUN, ITEM_PENNYS_HOTDOG_BUN};
+static const u16 sBases[] = {SPECIES_RIKO, SPECIES_BIJUU, SPECIES_FIDOUGH, SPECIES_DACHSBUN, SPECIES_RIKO, SPECIES_RIKO, SPECIES_BIJUU, SPECIES_BIJUU, SPECIES_FIDOUGH, SPECIES_DACHSBUN, SPECIES_FIDOUGH, SPECIES_DACHSBUN};
+static const u16 sCostumes[] = {SPECIES_RIKO_BALLOON, SPECIES_BIJUU_BOX, SPECIES_PENNY_HOTDOG, SPECIES_PENNY_HOTDOG_DACHSBUN, SPECIES_RIKO_PRINCESS, SPECIES_RIKO_RAINCOAT, SPECIES_BIJUU_BREAD, SPECIES_BIJUU_DETECTIVE, SPECIES_PENNY_BLANKET, SPECIES_PENNY_BLANKET_DACHSBUN, SPECIES_PENNY_LIFEGUARD, SPECIES_PENNY_LIFEGUARD_DACHSBUN};
+static const u16 sItems[] = {ITEM_RIKOS_BALLOON, ITEM_BIJUUS_BOX, ITEM_PENNYS_HOTDOG_BUN, ITEM_PENNYS_HOTDOG_BUN, ITEM_POM_TIARA, ITEM_RIKOS_RAINCOAT, ITEM_COCOA_TOAST, ITEM_COCOAS_DETECTIVE_KIT, ITEM_PENNYS_COZY_WRAP, ITEM_PENNYS_COZY_WRAP, ITEM_PENNYS_BEACH_VEST, ITEM_PENNYS_BEACH_VEST};
 
 TEST("Costumes toggle through normal evolution without affecting other family forms")
 {
@@ -24,7 +24,7 @@ TEST("Costumes toggle through normal evolution without affecting other family fo
         EXPECT_EQ(GetItemPocket(sItems[j]), POCKET_KEY_ITEMS);
         EXPECT_EQ(GetItemImportance(sItems[j]), 1);
         for (u32 k = 0; k < ARRAY_COUNT(sBases); k++)
-            if (sItems[j] != sItems[k])
+            if (GetTrioSpiritKeepsakeForSpecies(sBases[j]) != GetTrioSpiritKeepsakeForSpecies(sBases[k]))
                 EXPECT_EQ(GetEvolutionTargetSpecies(&mon, EVO_MODE_ITEM_CHECK, sItems[k], NULL, NULL, CHECK_EVO), SPECIES_NONE);
     }
     CreateMon(&mon, SPECIES_RIKO_ELECTRIC, 20, 0, OTID_STRUCT_PLAYER_ID);
@@ -100,4 +100,16 @@ TEST("Hot Dog Penny preserves the costume across ordinary level26 evolution")
     EXPECT_EQ(GetEvolutionTargetSpecies(&mon, EVO_MODE_NORMAL, ITEM_NONE, NULL, NULL, CHECK_EVO), SPECIES_PENNY_HOTDOG_DACHSBUN);
     CreateMon(&mon, SPECIES_PENNY_HOTDOG_DACHSBUN, 26, 0, OTID_STRUCT_PLAYER_ID);
     EXPECT_EQ(GetEvolutionTargetSpecies(&mon, EVO_MODE_ITEM_CHECK, ITEM_PENNYS_HOTDOG_BUN, NULL, NULL, CHECK_EVO), SPECIES_DACHSBUN);
+}
+
+TEST("Every Penny costume stays dressed through her level26 evolution")
+{
+    struct Pokemon mon;
+    static const u16 before[] = {SPECIES_PENNY_HOTDOG, SPECIES_PENNY_BLANKET, SPECIES_PENNY_LIFEGUARD};
+    static const u16 after[] = {SPECIES_PENNY_HOTDOG_DACHSBUN, SPECIES_PENNY_BLANKET_DACHSBUN, SPECIES_PENNY_LIFEGUARD_DACHSBUN};
+    for (u32 i = 0; i < ARRAY_COUNT(before); i++)
+    {
+        CreateMon(&mon, before[i], 26, 0, OTID_STRUCT_PLAYER_ID);
+        EXPECT_EQ(GetEvolutionTargetSpecies(&mon, EVO_MODE_NORMAL, ITEM_NONE, NULL, NULL, CHECK_EVO), after[i]);
+    }
 }

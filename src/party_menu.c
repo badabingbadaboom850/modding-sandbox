@@ -7318,13 +7318,14 @@ static void Task_SacredAshDisplayHPRestored(u8 taskId)
 #undef tHadEffect
 #undef tLastSlotUsed
 
-// Only the six elemental keepsakes are reusable; ordinary stones are consumed.
+// Personal elemental items are reusable; ordinary stones are consumed.
 static bool32 IsReusableTrioFormItem(u16 item)
 {
     switch (item)
     {
     case ITEM_GREEN_PEPPER:
     case ITEM_EEL_SUSHI:
+    case ITEM_TOXIC_MOUSE:
     case ITEM_FROZEN_FISH:
     case ITEM_MOUSE_TOY:
     case ITEM_DOG_BOWL:

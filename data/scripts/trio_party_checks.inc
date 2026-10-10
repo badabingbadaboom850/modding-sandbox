@@ -1,5 +1,9 @@
 @ CheckPartyHasSpecies compares exact IDs. Riko Spirit is a separate species.
 TrioParty_CheckRiko::
+	checkspecies SPECIES_RIKO_RAINCOAT
+	goto_if_eq VAR_RESULT, TRUE, TrioParty_SetResultTrue
+	checkspecies SPECIES_RIKO_PRINCESS
+	goto_if_eq VAR_RESULT, TRUE, TrioParty_SetResultTrue
 	checkspecies SPECIES_RIKO_BALLOON
 	goto_if_eq VAR_RESULT, TRUE, TrioParty_SetResultTrue
 	checkspecies SPECIES_RIKO_FLOWER
@@ -30,6 +34,10 @@ TrioParty_CheckRiko::
 	return
 
 TrioParty_CheckBijuu::
+	checkspecies SPECIES_BIJUU_DETECTIVE
+	goto_if_eq VAR_RESULT, TRUE, TrioParty_SetResultTrue
+	checkspecies SPECIES_BIJUU_BREAD
+	goto_if_eq VAR_RESULT, TRUE, TrioParty_SetResultTrue
 	checkspecies SPECIES_BIJUU_BOX
 	goto_if_eq VAR_RESULT, TRUE, TrioParty_SetResultTrue
 	checkspecies SPECIES_BIJUU_EMBER
@@ -60,6 +68,14 @@ TrioParty_CheckBijuu::
 	return
 
 TrioParty_CheckPenny::
+	checkspecies SPECIES_PENNY_LIFEGUARD
+	goto_if_eq VAR_RESULT, TRUE, TrioParty_SetResultTrue
+	checkspecies SPECIES_PENNY_LIFEGUARD_DACHSBUN
+	goto_if_eq VAR_RESULT, TRUE, TrioParty_SetResultTrue
+	checkspecies SPECIES_PENNY_BLANKET
+	goto_if_eq VAR_RESULT, TRUE, TrioParty_SetResultTrue
+	checkspecies SPECIES_PENNY_BLANKET_DACHSBUN
+	goto_if_eq VAR_RESULT, TRUE, TrioParty_SetResultTrue
 	checkspecies SPECIES_PENNY_HOTDOG_DACHSBUN
 	goto_if_eq VAR_RESULT, TRUE, TrioParty_SetResultTrue
 	checkspecies SPECIES_PENNY_HOTDOG

@@ -254,8 +254,8 @@ TEST("Elemental lessons include transformation attacks and reject other Pokemon"
 {
     struct Pokemon mon;
     u16 moves[MAX_RELEARNER_MOVES];
-    static const u16 species[] = {SPECIES_PENNY_WATER, SPECIES_PENNY_GRASS, SPECIES_BIJUU_ICE, SPECIES_BIJUU_GHOST};
-    static const u16 attack[] = {MOVE_WATER_PULSE, MOVE_RAZOR_LEAF, MOVE_ICY_WIND, MOVE_HEX};
+    static const u16 species[] = {SPECIES_PENNY_WATER, SPECIES_PENNY_GRASS, SPECIES_BIJUU_ICE, SPECIES_BIJUU_GHOST, SPECIES_BIJUU_POISON};
+    static const u16 attack[] = {MOVE_WATER_PULSE, MOVE_RAZOR_LEAF, MOVE_ICY_WIND, MOVE_HEX, MOVE_POISON_FANG};
     for (u32 j = 0; j < ARRAY_COUNT(species); j++)
     {
         CreateMon(&mon, species[j], 5, 0, OTID_STRUCT_PLAYER_ID);

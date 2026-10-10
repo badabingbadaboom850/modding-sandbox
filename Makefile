@@ -842,6 +842,66 @@ RIFT_SISTERS_GFX := graphics/pokemon/bijuu_ember/front.4bpp.smol \
 RIKO_OVERWORLD_GFX += $(filter %/overworld.4bpp %/overworld_normal.gbapal %/overworld_shiny.gbapal,$(RIFT_SISTERS_GFX))
 
 TRIO_COSTUME_GFX := $(foreach mon,riko_balloon bijuu_box penny_hotdog,$(foreach file,front.4bpp.smol back.4bpp.smol normal.gbapal shiny.gbapal icon.4bpp icon_normal.gbapal icon_shiny.gbapal overworld.4bpp overworld_normal.gbapal overworld_shiny.gbapal,graphics/pokemon/$(mon)/$(file)))
+TRIO_COSTUME_GFX += graphics/pokemon/riko_princess/front.4bpp.smol \
+    graphics/pokemon/riko_princess/back.4bpp.smol \
+    graphics/pokemon/riko_princess/normal.gbapal \
+    graphics/pokemon/riko_princess/shiny.gbapal \
+    graphics/pokemon/riko_princess/icon.4bpp \
+    graphics/pokemon/riko_princess/icon_normal.gbapal \
+    graphics/pokemon/riko_princess/icon_shiny.gbapal \
+    graphics/pokemon/riko_princess/overworld.4bpp \
+    graphics/pokemon/riko_princess/overworld_normal.gbapal \
+    graphics/pokemon/riko_princess/overworld_shiny.gbapal \
+    graphics/pokemon/riko_raincoat/front.4bpp.smol \
+    graphics/pokemon/riko_raincoat/back.4bpp.smol \
+    graphics/pokemon/riko_raincoat/normal.gbapal \
+    graphics/pokemon/riko_raincoat/shiny.gbapal \
+    graphics/pokemon/riko_raincoat/icon.4bpp \
+    graphics/pokemon/riko_raincoat/icon_normal.gbapal \
+    graphics/pokemon/riko_raincoat/icon_shiny.gbapal \
+    graphics/pokemon/riko_raincoat/overworld.4bpp \
+    graphics/pokemon/riko_raincoat/overworld_normal.gbapal \
+    graphics/pokemon/riko_raincoat/overworld_shiny.gbapal \
+    graphics/pokemon/bijuu_bread/front.4bpp.smol \
+    graphics/pokemon/bijuu_bread/back.4bpp.smol \
+    graphics/pokemon/bijuu_bread/normal.gbapal \
+    graphics/pokemon/bijuu_bread/shiny.gbapal \
+    graphics/pokemon/bijuu_bread/icon.4bpp \
+    graphics/pokemon/bijuu_bread/icon_normal.gbapal \
+    graphics/pokemon/bijuu_bread/icon_shiny.gbapal \
+    graphics/pokemon/bijuu_bread/overworld.4bpp \
+    graphics/pokemon/bijuu_bread/overworld_normal.gbapal \
+    graphics/pokemon/bijuu_bread/overworld_shiny.gbapal \
+    graphics/pokemon/bijuu_detective/front.4bpp.smol \
+    graphics/pokemon/bijuu_detective/back.4bpp.smol \
+    graphics/pokemon/bijuu_detective/normal.gbapal \
+    graphics/pokemon/bijuu_detective/shiny.gbapal \
+    graphics/pokemon/bijuu_detective/icon.4bpp \
+    graphics/pokemon/bijuu_detective/icon_normal.gbapal \
+    graphics/pokemon/bijuu_detective/icon_shiny.gbapal \
+    graphics/pokemon/bijuu_detective/overworld.4bpp \
+    graphics/pokemon/bijuu_detective/overworld_normal.gbapal \
+    graphics/pokemon/bijuu_detective/overworld_shiny.gbapal \
+    graphics/pokemon/penny_blanket/front.4bpp.smol \
+    graphics/pokemon/penny_blanket/back.4bpp.smol \
+    graphics/pokemon/penny_blanket/normal.gbapal \
+    graphics/pokemon/penny_blanket/shiny.gbapal \
+    graphics/pokemon/penny_blanket/icon.4bpp \
+    graphics/pokemon/penny_blanket/icon_normal.gbapal \
+    graphics/pokemon/penny_blanket/icon_shiny.gbapal \
+    graphics/pokemon/penny_blanket/overworld.4bpp \
+    graphics/pokemon/penny_blanket/overworld_normal.gbapal \
+    graphics/pokemon/penny_blanket/overworld_shiny.gbapal \
+    graphics/pokemon/penny_lifeguard/front.4bpp.smol \
+    graphics/pokemon/penny_lifeguard/back.4bpp.smol \
+    graphics/pokemon/penny_lifeguard/normal.gbapal \
+    graphics/pokemon/penny_lifeguard/shiny.gbapal \
+    graphics/pokemon/penny_lifeguard/icon.4bpp \
+    graphics/pokemon/penny_lifeguard/icon_normal.gbapal \
+    graphics/pokemon/penny_lifeguard/icon_shiny.gbapal \
+    graphics/pokemon/penny_lifeguard/overworld.4bpp \
+    graphics/pokemon/penny_lifeguard/overworld_normal.gbapal \
+    graphics/pokemon/penny_lifeguard/overworld_shiny.gbapal
 RIKO_OVERWORLD_GFX += $(filter %/overworld.4bpp %/overworld_normal.gbapal %/overworld_shiny.gbapal,$(TRIO_COSTUME_GFX))
 
 $(filter %.4bpp,$(RIKO_OVERWORLD_GFX)): %.4bpp: %.png

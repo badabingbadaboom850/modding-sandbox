@@ -8,7 +8,7 @@ from PIL import Image
 import sys
 R=Path(__file__).resolve().parents[2]
 name,source=sys.argv[1:]
-ycuts={'riko_balloon':[0,380,705,1014,1280], 'bijuu_box':[0,350,660,975,1280], 'penny_hotdog':[0,345,660,970,1280]}[name]
+ycuts={'riko_balloon':[0,380,705,1014,1280], 'bijuu_box':[0,350,660,975,1280], 'penny_hotdog':[0,345,660,970,1280], 'bijuu_poison':[0,360,680,990,1280], 'riko_princess':[0,400,705,1015,1280], 'riko_raincoat':[0,400,700,990,1280], 'bijuu_bread':[0,350,680,995,1280], 'bijuu_detective':[0,370,690,1000,1280], 'penny_blanket':[0,365,670,1000,1280], 'penny_lifeguard':[0,350,680,990,1280]}[name]
 sheet=Image.open(source).convert('RGBA');assert sheet.width==sheet.height
 # Crop coordinates are expressed against the inspected 1280px preview.
 factor=sheet.width/1280
@@ -22,9 +22,12 @@ for box in boxes:
 # Learn one shared palette from opaque pixels; reserve index0 solely for transparency.
 pixels=[rgb[:3] for im in subjects for rgb in im.getdata() if rgb[3]>=180]
 sample=Image.new('RGB',(len(pixels),1));sample.putdata(pixels)
-pal=sample.quantize(colors=15,dither=Image.Dither.NONE).getpalette()[:45]
-if name=='bijuu_box':
- pal[39:45]=[70,177,245,20,95,157] # Preserve the Siamese's small blue eyes.
+count=13 if name.startswith('bijuu_') else 14 if name=='riko_princess' else 15
+pal=sample.quantize(colors=count,dither=Image.Dither.NONE).getpalette()[:count*3]
+if name.startswith('bijuu_'):
+ pal += [70,177,245,20,95,157] # Blue eyes, without replacing dark outline colors.
+elif name=='riko_princess':
+ pal += [231,98,161] # Tiny pink tiara jewel.
 colors=[(0,0,0)]+[tuple(pal[i:i+3]) for i in range(0,45,3)]
 quant=Image.new('P',(1,1));quant.putpalette(pal+[0]*(768-45))
 def convert(im,size,limit,scale=None):
@@ -42,6 +45,6 @@ for n,i in enumerate([0,1,4,5,2,3]):out.paste(convert(walk[i],(32,32),(29,29),sc
 out.save(p/'overworld.png',bits=4,transparency=0)
 text='JASC-PAL\n0100\n16\n'+'\n'.join(' '.join(map(str,c)) for c in colors)+'\n'
 for n in ['normal','shiny','icon_normal','icon_shiny','overworld_normal','overworld_shiny']:(p/(n+'.pal')).write_text(text)
-convert(subjects[9],(24,24),(22,22)).save(R/'graphics/items/icons'/(name+'.png'),bits=4,transparency=0)
-(R/'graphics/items/icon_palettes'/(name+'.pal')).write_text(text)
+convert(subjects[9],(24,24),(22,22)).save(R/'graphics/items/icons'/(('toxic_mouse' if name=='bijuu_poison' else name)+'.png'),bits=4,transparency=0)
+(R/'graphics/items/icon_palettes'/(('toxic_mouse' if name=='bijuu_poison' else name)+'.pal')).write_text(text)
 print(name,'battle/icon/follower/item sprites imported')

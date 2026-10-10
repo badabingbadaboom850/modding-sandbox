@@ -808,3 +808,44 @@ text termination/wrapping, full Pory/assembly original-branch parity,
 compiled follower art, historical IDs/save files, docs-summary and diff checks.
 This script-only addition does not alter the engine covered by the previous
 57 focused and93 broader passing checks. New prompt/gifts await emulator use.
+
+
+## Complete costume batch and Poison Bijuu (2026-10-10)
+
+User confirmed the first three costumes and Mom-friend gifts work, then requested
+all six drafted outfits in one build. New species1621-1628 append for Princess/
+Raincoat Riko, Bread/Detective Bijuu and Blankey/Lifeguard Penny; two extra Penny
+entries preserve Dachsbun stats and dressed level26 evolution. All old real IDs
+and form indices remain. Matching protected Key Items959-964 toggle to/from
+ordinary stages, with exact cosmetic metadata, followers, icons and gifts.
+Family checks, Camp swaps, signatures and Spirit/Bondstone exact-form returns
+include the new outfits. No saved structures/flags/vars or trainers change.
+
+Poison Bijuu uses existing1591, new Toxic Mouse958 ordinary Items-pocket reusable
+item. Current-form learnset starts Poison Fang0, Acid Spray12, Venoshock20,
+Toxic24, Poison Jab28, Sludge Bomb32, Gunk Shot44. Scott lists damaging attacks
+at the actual level; Toxic remains normal status learning. The item toggles
+regular/Box to Poison and Poison to ordinary. Existing other forms revert first.
+Its airborne purple bubbles/vapor art replaces old unused Poison art; original
+stats, female identity and family/Spirit eligibility stay fixed.
+
+New optional static gift NPCs append without moving original objects or warps:
+Goldenrod42,15 tiara and36,38 toast; Ecruteak47,43 raincoat and25,33 detective;
+Mahogany23,21 blanket; Olivine34,57 beach vest; Fuchsia6,33 Toxic Mouse outside
+Poison Gym. Bring the matching girl, accept, and retry full Bag. No new gates or
+battles; ownership prevents duplicates. Mom friend temporarily offers all nine
+costumes plus Toxic Mouse, skipping owned gifts; original story still follows.
+This user authorization supersedes the earlier three-only testing restriction.
+See docs/trio_costumes.md, tools/costumes/forms.json and placements.json.
+
+Full-batch validation: RELEASE=1 production ROM compiled (32520152 bytes ROM,
+255416 bytes EWRAM). All60 focused engine checks and93 broader species/text/Mega
+checks pass, each with7 expected harness self-test failures and zero unexpected
+failures. Covers all12 costume stage entries, three dressed Penny level26
+evolutions, Poison item eligibility/current-level lessons, signature/TM metadata,
+encrypted storage/save ABI and normal/Spirit Mega/faint exact-form return.
+Source checks cover22528 test-supply combinations,192 prior gift flows,112 new
+gift flows, seven collision/elevation/old-event-preserving placements, all60
+compiled follower frames/palettes, historical IDs, text and docs-summary.
+The user confirmed the original three costumes; new seven forms and actual
+in-game save/reload still require focused emulator confirmation.

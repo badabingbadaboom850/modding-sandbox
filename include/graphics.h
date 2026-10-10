@@ -3590,3 +3590,24 @@ extern const u32 gItemIcon_PennyHotdog[];
 extern const u16 gItemIconPalette_PennyHotdog[];
 
 #endif //GUARD_GRAPHICS_H
+
+extern const u32 gItemIcon_ToxicMouse[];
+extern const u16 gItemIconPalette_ToxicMouse[];
+
+extern const u32 gItemIcon_RikoPrincess[];
+extern const u16 gItemIconPalette_RikoPrincess[];
+
+extern const u32 gItemIcon_RikoRaincoat[];
+extern const u16 gItemIconPalette_RikoRaincoat[];
+
+extern const u32 gItemIcon_BijuuBread[];
+extern const u16 gItemIconPalette_BijuuBread[];
+
+extern const u32 gItemIcon_BijuuDetective[];
+extern const u16 gItemIconPalette_BijuuDetective[];
+
+extern const u32 gItemIcon_PennyBlanket[];
+extern const u16 gItemIconPalette_PennyBlanket[];
+
+extern const u32 gItemIcon_PennyLifeguard[];
+extern const u16 gItemIconPalette_PennyLifeguard[];

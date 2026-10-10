@@ -17762,6 +17762,102 @@ const struct ItemInfo gItemsInfo[] =
         .iconPalette = gItemIconPalette_BijuuBox,
     },
 
+    [ITEM_POM_TIARA] =
+    {
+        .name = ITEM_NAME("Pom Tiara"),
+        .price = 0,
+        .description = COMPOUND_STRING("A tiara for Riko.\nReusable costume.\nUse again to revert."),
+        .importance = 1,
+        .pocket = POCKET_KEY_ITEMS,
+        .sortType = ITEM_TYPE_EVOLUTION_STONE,
+        .heldSlot = 0,
+        .type = ITEM_USE_PARTY_MENU,
+        .fieldUseFunc = ItemUseOutOfBattle_EvolutionStone,
+        .effect = gItemEffect_EvoItem,
+        .iconPic = gItemIcon_RikoPrincess,
+        .iconPalette = gItemIconPalette_RikoPrincess,
+    },
+
+    [ITEM_RIKOS_RAINCOAT] =
+    {
+        .name = ITEM_NAME("Riko Raincoat"),
+        .price = 0,
+        .description = COMPOUND_STRING("A costume for Riko.\nReusable costume.\nUse again to revert."),
+        .importance = 1,
+        .pocket = POCKET_KEY_ITEMS,
+        .sortType = ITEM_TYPE_EVOLUTION_STONE,
+        .heldSlot = 0,
+        .type = ITEM_USE_PARTY_MENU,
+        .fieldUseFunc = ItemUseOutOfBattle_EvolutionStone,
+        .effect = gItemEffect_EvoItem,
+        .iconPic = gItemIcon_RikoRaincoat,
+        .iconPalette = gItemIconPalette_RikoRaincoat,
+    },
+
+    [ITEM_COCOA_TOAST] =
+    {
+        .name = ITEM_NAME("Cocoa Toast"),
+        .price = 0,
+        .description = COMPOUND_STRING("A costume for Bijuu.\nReusable costume.\nUse again to revert."),
+        .importance = 1,
+        .pocket = POCKET_KEY_ITEMS,
+        .sortType = ITEM_TYPE_EVOLUTION_STONE,
+        .heldSlot = 0,
+        .type = ITEM_USE_PARTY_MENU,
+        .fieldUseFunc = ItemUseOutOfBattle_EvolutionStone,
+        .effect = gItemEffect_EvoItem,
+        .iconPic = gItemIcon_BijuuBread,
+        .iconPalette = gItemIconPalette_BijuuBread,
+    },
+
+    [ITEM_COCOAS_DETECTIVE_KIT] =
+    {
+        .name = ITEM_NAME("Detective Kit"),
+        .price = 0,
+        .description = COMPOUND_STRING("A costume for Bijuu.\nReusable costume.\nUse again to revert."),
+        .importance = 1,
+        .pocket = POCKET_KEY_ITEMS,
+        .sortType = ITEM_TYPE_EVOLUTION_STONE,
+        .heldSlot = 0,
+        .type = ITEM_USE_PARTY_MENU,
+        .fieldUseFunc = ItemUseOutOfBattle_EvolutionStone,
+        .effect = gItemEffect_EvoItem,
+        .iconPic = gItemIcon_BijuuDetective,
+        .iconPalette = gItemIconPalette_BijuuDetective,
+    },
+
+    [ITEM_PENNYS_COZY_WRAP] =
+    {
+        .name = ITEM_NAME("Penny Cozy Wrap"),
+        .price = 0,
+        .description = COMPOUND_STRING("A costume for Penny.\nReusable costume.\nUse again to revert."),
+        .importance = 1,
+        .pocket = POCKET_KEY_ITEMS,
+        .sortType = ITEM_TYPE_EVOLUTION_STONE,
+        .heldSlot = 0,
+        .type = ITEM_USE_PARTY_MENU,
+        .fieldUseFunc = ItemUseOutOfBattle_EvolutionStone,
+        .effect = gItemEffect_EvoItem,
+        .iconPic = gItemIcon_PennyBlanket,
+        .iconPalette = gItemIconPalette_PennyBlanket,
+    },
+
+    [ITEM_PENNYS_BEACH_VEST] =
+    {
+        .name = ITEM_NAME("Penny Beach Vest"),
+        .price = 0,
+        .description = COMPOUND_STRING("A costume for Penny.\nReusable costume.\nUse again to revert."),
+        .importance = 1,
+        .pocket = POCKET_KEY_ITEMS,
+        .sortType = ITEM_TYPE_EVOLUTION_STONE,
+        .heldSlot = 0,
+        .type = ITEM_USE_PARTY_MENU,
+        .fieldUseFunc = ItemUseOutOfBattle_EvolutionStone,
+        .effect = gItemEffect_EvoItem,
+        .iconPic = gItemIcon_PennyLifeguard,
+        .iconPalette = gItemIconPalette_PennyLifeguard,
+    },
+
     [ITEM_PENNYS_HOTDOG_BUN] =
     {
         .name = ITEM_NAME("Penny Hot Dog"),
@@ -17937,6 +18033,21 @@ const struct ItemInfo gItemsInfo[] =
         .flingPower = 30,
         .iconPic = gItemIcon_FrozenFish,
         .iconPalette = gItemIconPalette_FrozenFish,
+    },
+    [ITEM_TOXIC_MOUSE] =
+    {
+        .name = ITEM_NAME("Toxic Mouse"),
+        .price = 500,
+        .description = COMPOUND_STRING("Reusable. Toggles\nBijuu's Poison form.\nUse again to revert."),
+        .pocket = POCKET_ITEMS,
+        .sortType = ITEM_TYPE_EVOLUTION_STONE,
+        .heldSlot = 0,
+        .type = ITEM_USE_PARTY_MENU,
+        .fieldUseFunc = ItemUseOutOfBattle_EvolutionStone,
+        .effect = gItemEffect_EvoItem,
+        .flingPower = 30,
+        .iconPic = gItemIcon_ToxicMouse,
+        .iconPalette = gItemIconPalette_ToxicMouse,
     },
     [ITEM_MOUSE_TOY] =
     {

@@ -96,19 +96,55 @@ TrioCostume_BagText:
 TrioCostume_TestSupplies::
 	msgbox TrioCostume_TestOffer, MSGBOX_YESNO
 	goto_if_eq VAR_RESULT, NO, TrioCostume_TestReturn
+TrioCostume_TestItem0:
 	checkitem ITEM_RIKOS_BALLOON
-	goto_if_eq VAR_RESULT, TRUE, TrioCostume_TestBox
+	goto_if_eq VAR_RESULT, TRUE, TrioCostume_TestItem1
 	giveitem ITEM_RIKOS_BALLOON
 	goto_if_eq VAR_RESULT, FALSE, TrioCostume_TestFullBag
-TrioCostume_TestBox:
+TrioCostume_TestItem1:
 	checkitem ITEM_BIJUUS_BOX
-	goto_if_eq VAR_RESULT, TRUE, TrioCostume_TestBun
+	goto_if_eq VAR_RESULT, TRUE, TrioCostume_TestItem2
 	giveitem ITEM_BIJUUS_BOX
 	goto_if_eq VAR_RESULT, FALSE, TrioCostume_TestFullBag
-TrioCostume_TestBun:
+TrioCostume_TestItem2:
 	checkitem ITEM_PENNYS_HOTDOG_BUN
-	goto_if_eq VAR_RESULT, TRUE, TrioCostume_TestReady
+	goto_if_eq VAR_RESULT, TRUE, TrioCostume_TestItem3
 	giveitem ITEM_PENNYS_HOTDOG_BUN
+	goto_if_eq VAR_RESULT, FALSE, TrioCostume_TestFullBag
+TrioCostume_TestItem3:
+	checkitem ITEM_TOXIC_MOUSE
+	goto_if_eq VAR_RESULT, TRUE, TrioCostume_TestItem4
+	giveitem ITEM_TOXIC_MOUSE
+	goto_if_eq VAR_RESULT, FALSE, TrioCostume_TestFullBag
+TrioCostume_TestItem4:
+	checkitem ITEM_POM_TIARA
+	goto_if_eq VAR_RESULT, TRUE, TrioCostume_TestItem5
+	giveitem ITEM_POM_TIARA
+	goto_if_eq VAR_RESULT, FALSE, TrioCostume_TestFullBag
+TrioCostume_TestItem5:
+	checkitem ITEM_RIKOS_RAINCOAT
+	goto_if_eq VAR_RESULT, TRUE, TrioCostume_TestItem6
+	giveitem ITEM_RIKOS_RAINCOAT
+	goto_if_eq VAR_RESULT, FALSE, TrioCostume_TestFullBag
+TrioCostume_TestItem6:
+	checkitem ITEM_COCOA_TOAST
+	goto_if_eq VAR_RESULT, TRUE, TrioCostume_TestItem7
+	giveitem ITEM_COCOA_TOAST
+	goto_if_eq VAR_RESULT, FALSE, TrioCostume_TestFullBag
+TrioCostume_TestItem7:
+	checkitem ITEM_COCOAS_DETECTIVE_KIT
+	goto_if_eq VAR_RESULT, TRUE, TrioCostume_TestItem8
+	giveitem ITEM_COCOAS_DETECTIVE_KIT
+	goto_if_eq VAR_RESULT, FALSE, TrioCostume_TestFullBag
+TrioCostume_TestItem8:
+	checkitem ITEM_PENNYS_COZY_WRAP
+	goto_if_eq VAR_RESULT, TRUE, TrioCostume_TestItem9
+	giveitem ITEM_PENNYS_COZY_WRAP
+	goto_if_eq VAR_RESULT, FALSE, TrioCostume_TestFullBag
+TrioCostume_TestItem9:
+	checkitem ITEM_PENNYS_BEACH_VEST
+	goto_if_eq VAR_RESULT, TRUE, TrioCostume_TestReady
+	giveitem ITEM_PENNYS_BEACH_VEST
 	goto_if_eq VAR_RESULT, FALSE, TrioCostume_TestFullBag
 TrioCostume_TestReady:
 	msgbox TrioCostume_TestReadyText, MSGBOX_DEFAULT
@@ -118,8 +154,176 @@ TrioCostume_TestFullBag:
 TrioCostume_TestReturn:
 	return
 TrioCostume_TestOffer:
-	.string "Want the three costume\ngifts for quick testing?$"
+	.string "Want all nine costumes\nand Bijuu's Poison item?\pThese are testing gifts.\nWant the missing ones?$"
 TrioCostume_TestReadyText:
-	.string "The three gifts are ready!\nUse them from Key Items.\pUse again to change back.\nHave fun with the girls!$"
+	.string "The gifts are ready!\nUse them from your Bag.\pUse again to change back.\nHave fun with the girls!$"
 TrioCostume_TestBagText:
 	.string "Make some room and return.\nI'll give missing gifts.$"
+
+TrioCostume_RikoPrincessGift::
+	lock
+	faceplayer
+	checkitem ITEM_POM_TIARA
+	goto_if_eq VAR_RESULT, TRUE, TrioCostume_RikoPrincessReady
+	call TrioParty_CheckRiko
+	goto_if_eq VAR_RESULT, FALSE, TrioCostume_RikoPrincessMissing
+	msgbox TrioCostume_RikoPrincessOffer, MSGBOX_YESNO
+	goto_if_eq VAR_RESULT, NO, TrioCostume_Close
+	giveitem ITEM_POM_TIARA
+	goto_if_eq VAR_RESULT, FALSE, TrioCostume_FullBag
+TrioCostume_RikoPrincessReady:
+	msgbox TrioCostume_RikoPrincessReadyText, MSGBOX_DEFAULT
+	goto TrioCostume_Close
+TrioCostume_RikoPrincessMissing:
+	msgbox TrioCostume_RikoPrincessMissingText, MSGBOX_DEFAULT
+	goto TrioCostume_Close
+TrioCostume_RikoPrincessOffer:
+	.string "Riko needs a crown.\nShe already acts royal!\pMay I give your princess\na tiny golden tiara?$"
+TrioCostume_RikoPrincessMissingText:
+	.string "Bring Riko along!\nI have a gift for her.$"
+TrioCostume_RikoPrincessReadyText:
+	.string "Use Pom Tiara\non regular Riko.\pUse it again to return.\nHer moves stay with her!$"
+
+TrioCostume_RikoRaincoatGift::
+	lock
+	faceplayer
+	checkitem ITEM_RIKOS_RAINCOAT
+	goto_if_eq VAR_RESULT, TRUE, TrioCostume_RikoRaincoatReady
+	call TrioParty_CheckRiko
+	goto_if_eq VAR_RESULT, FALSE, TrioCostume_RikoRaincoatMissing
+	msgbox TrioCostume_RikoRaincoatOffer, MSGBOX_YESNO
+	goto_if_eq VAR_RESULT, NO, TrioCostume_Close
+	giveitem ITEM_RIKOS_RAINCOAT
+	goto_if_eq VAR_RESULT, FALSE, TrioCostume_FullBag
+TrioCostume_RikoRaincoatReady:
+	msgbox TrioCostume_RikoRaincoatReadyText, MSGBOX_DEFAULT
+	goto TrioCostume_Close
+TrioCostume_RikoRaincoatMissing:
+	msgbox TrioCostume_RikoRaincoatMissingText, MSGBOX_DEFAULT
+	goto TrioCostume_Close
+TrioCostume_RikoRaincoatOffer:
+	.string "Ecruteak can get damp.\nRiko deserves dry floof!\pWant a yellow raincoat\nfor your little diva?$"
+TrioCostume_RikoRaincoatMissingText:
+	.string "Bring Riko along!\nI have a gift for her.$"
+TrioCostume_RikoRaincoatReadyText:
+	.string "Use Riko Raincoat\non regular Riko.\pUse it again to return.\nHer moves stay with her!$"
+
+TrioCostume_BijuuBreadGift::
+	lock
+	faceplayer
+	checkitem ITEM_COCOA_TOAST
+	goto_if_eq VAR_RESULT, TRUE, TrioCostume_BijuuBreadReady
+	call TrioParty_CheckBijuu
+	goto_if_eq VAR_RESULT, FALSE, TrioCostume_BijuuBreadMissing
+	msgbox TrioCostume_BijuuBreadOffer, MSGBOX_YESNO
+	goto_if_eq VAR_RESULT, NO, TrioCostume_Close
+	giveitem ITEM_COCOA_TOAST
+	goto_if_eq VAR_RESULT, FALSE, TrioCostume_FullBag
+TrioCostume_BijuuBreadReady:
+	msgbox TrioCostume_BijuuBreadReadyText, MSGBOX_DEFAULT
+	goto TrioCostume_Close
+TrioCostume_BijuuBreadMissing:
+	msgbox TrioCostume_BijuuBreadMissingText, MSGBOX_DEFAULT
+	goto TrioCostume_Close
+TrioCostume_BijuuBreadOffer:
+	.string "Bijuu inspected my toast.\nThen put her face in it.\pWant a bread costume\nfor your curious cocoa?$"
+TrioCostume_BijuuBreadMissingText:
+	.string "Bring Bijuu along!\nI have a gift for her.$"
+TrioCostume_BijuuBreadReadyText:
+	.string "Use Cocoa Toast\non regular Bijuu.\pUse it again to return.\nHer moves stay with her!$"
+
+TrioCostume_BijuuDetectiveGift::
+	lock
+	faceplayer
+	checkitem ITEM_COCOAS_DETECTIVE_KIT
+	goto_if_eq VAR_RESULT, TRUE, TrioCostume_BijuuDetectiveReady
+	call TrioParty_CheckBijuu
+	goto_if_eq VAR_RESULT, FALSE, TrioCostume_BijuuDetectiveMissing
+	msgbox TrioCostume_BijuuDetectiveOffer, MSGBOX_YESNO
+	goto_if_eq VAR_RESULT, NO, TrioCostume_Close
+	giveitem ITEM_COCOAS_DETECTIVE_KIT
+	goto_if_eq VAR_RESULT, FALSE, TrioCostume_FullBag
+TrioCostume_BijuuDetectiveReady:
+	msgbox TrioCostume_BijuuDetectiveReadyText, MSGBOX_DEFAULT
+	goto TrioCostume_Close
+TrioCostume_BijuuDetectiveMissing:
+	msgbox TrioCostume_BijuuDetectiveMissingText, MSGBOX_DEFAULT
+	goto TrioCostume_Close
+TrioCostume_BijuuDetectiveOffer:
+	.string "Footprints. Missing fish.\nOne very suspicious cat.\pWant a detective outfit\nfor your little sleuth?$"
+TrioCostume_BijuuDetectiveMissingText:
+	.string "Bring Bijuu along!\nI have a gift for her.$"
+TrioCostume_BijuuDetectiveReadyText:
+	.string "Use Detective Kit\non regular Bijuu.\pUse it again to return.\nHer moves stay with her!$"
+
+TrioCostume_PennyBlanketGift::
+	lock
+	faceplayer
+	checkitem ITEM_PENNYS_COZY_WRAP
+	goto_if_eq VAR_RESULT, TRUE, TrioCostume_PennyBlanketReady
+	call TrioParty_CheckPenny
+	goto_if_eq VAR_RESULT, FALSE, TrioCostume_PennyBlanketMissing
+	msgbox TrioCostume_PennyBlanketOffer, MSGBOX_YESNO
+	goto_if_eq VAR_RESULT, NO, TrioCostume_Close
+	giveitem ITEM_PENNYS_COZY_WRAP
+	goto_if_eq VAR_RESULT, FALSE, TrioCostume_FullBag
+TrioCostume_PennyBlanketReady:
+	msgbox TrioCostume_PennyBlanketReadyText, MSGBOX_DEFAULT
+	goto TrioCostume_Close
+TrioCostume_PennyBlanketMissing:
+	msgbox TrioCostume_PennyBlanketMissingText, MSGBOX_DEFAULT
+	goto TrioCostume_Close
+TrioCostume_PennyBlanketOffer:
+	.string "Penny deserves soft days\nand a safe place to rest.\pMay I give her a cozy\nlavender blanket?$"
+TrioCostume_PennyBlanketMissingText:
+	.string "Bring Penny along!\nI have a gift for her.$"
+TrioCostume_PennyBlanketReadyText:
+	.string "Use Penny Cozy Wrap\non regular Penny.\pUse it again to return.\nHer moves stay with her!$"
+
+TrioCostume_PennyLifeguardGift::
+	lock
+	faceplayer
+	checkitem ITEM_PENNYS_BEACH_VEST
+	goto_if_eq VAR_RESULT, TRUE, TrioCostume_PennyLifeguardReady
+	call TrioParty_CheckPenny
+	goto_if_eq VAR_RESULT, FALSE, TrioCostume_PennyLifeguardMissing
+	msgbox TrioCostume_PennyLifeguardOffer, MSGBOX_YESNO
+	goto_if_eq VAR_RESULT, NO, TrioCostume_Close
+	giveitem ITEM_PENNYS_BEACH_VEST
+	goto_if_eq VAR_RESULT, FALSE, TrioCostume_FullBag
+TrioCostume_PennyLifeguardReady:
+	msgbox TrioCostume_PennyLifeguardReadyText, MSGBOX_DEFAULT
+	goto TrioCostume_Close
+TrioCostume_PennyLifeguardMissing:
+	msgbox TrioCostume_PennyLifeguardMissingText, MSGBOX_DEFAULT
+	goto TrioCostume_Close
+TrioCostume_PennyLifeguardOffer:
+	.string "Penny follows every rule.\nA perfect little guard!\pWant a beach vest for\nyour golden lifeguard?$"
+TrioCostume_PennyLifeguardMissingText:
+	.string "Bring Penny along!\nI have a gift for her.$"
+TrioCostume_PennyLifeguardReadyText:
+	.string "Use Penny Beach Vest\non regular Penny.\pUse it again to return.\nHer moves stay with her!$"
+
+TrioCostume_BijuuPoisonGift::
+	lock
+	faceplayer
+	checkitem ITEM_TOXIC_MOUSE
+	goto_if_eq VAR_RESULT, TRUE, TrioCostume_BijuuPoisonReady
+	call TrioParty_CheckBijuu
+	goto_if_eq VAR_RESULT, FALSE, TrioCostume_BijuuPoisonMissing
+	msgbox TrioCostume_BijuuPoisonOffer, MSGBOX_YESNO
+	goto_if_eq VAR_RESULT, NO, TrioCostume_Close
+	giveitem ITEM_TOXIC_MOUSE
+	goto_if_eq VAR_RESULT, FALSE, TrioCostume_FullBag
+TrioCostume_BijuuPoisonReady:
+	msgbox TrioCostume_BijuuPoisonReadyText, MSGBOX_DEFAULT
+	goto TrioCostume_Close
+TrioCostume_BijuuPoisonMissing:
+	msgbox TrioCostume_BijuuPoisonMissingText, MSGBOX_DEFAULT
+	goto TrioCostume_Close
+TrioCostume_BijuuPoisonOffer:
+	.string "Our Gym knows Poison.\nBijuu knows nasty bites!\pWant a Toxic Mouse for\nyour dangerous cocoa?$"
+TrioCostume_BijuuPoisonMissingText:
+	.string "Bring Bijuu along!\nI have a gift for her.$"
+TrioCostume_BijuuPoisonReadyText:
+	.string "Use Toxic Mouse\non regular Bijuu.\pUse it again to return.\nHer moves stay with her!$"

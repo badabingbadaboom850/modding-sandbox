@@ -1,7 +1,7 @@
 # Trio costume collectibles
 
-The first three of the planned nine cosmetic forms are Balloon Riko, Box Bijuu
-and Hot Dog Penny. Stats, types, abilities, growth, tutor/TM compatibility and
+All nine cosmetic forms are now implemented: Balloon/Princess/Raincoat Riko,
+Box/Bread/Detective Bijuu and Hot Dog/Blankey/Lifeguard Penny. Stats, types, abilities, growth, tutor/TM compatibility and
 level-up moves match the ordinary girl exactly. Each has battle front/back,
 party icon, six walking frames and a matching gift icon. All stay female.
 
@@ -10,6 +10,13 @@ party icon, six walking frames and a matching gift icon. All stay female.
 | Balloon Riko | Riko Balloon from a party-balloon vendor; bring Riko and accept | Cherrygrove: between Mart and Pokemon Center,43,9 |
 | Box Bijuu | Bijuu Box after an optional friendly courier battle; bring Bijuu | Violet: west of Pokemon Center,36,46 |
 | Hot Dog Penny | Penny Hot Dog from a food vendor; bring Penny and accept | Azalea: south-east of Pokemon Center,36,19 |
+| Princess Riko | Pom Tiara from a crown admirer | Goldenrod: near Gym/Flower Shop,42,15 |
+| Raincoat Riko | Riko Raincoat from a rainy-day friend | Ecruteak: south of Mart,47,43 |
+| Bread Bijuu | Cocoa Toast from a cook | Goldenrod: near Department Store,36,38 |
+| Detective Bijuu | Detective Kit from a sleuth | Ecruteak: near western houses,25,33 |
+| Blankey Penny | Penny Cozy Wrap from a blanket giver | Mahogany: south-east of Center,23,21 |
+| Lifeguard Penny | Penny Beach Vest from a shore guard | Olivine: by the wharf,34,57 |
+| Poison Bijuu | Toxic Mouse from a Poison enthusiast; elemental rather than cosmetic | Fuchsia: west of Gym entrance,6,33 |
 
 Morgan the courier uses a level12 Meowth and Zigzagoon. Losses use the normal
 blackout and allow retry; declining never blocks a route. A full-Bag winner can
@@ -80,8 +87,26 @@ followers in engine order down/up/left. Normal/shiny art shares these palettes.
 5. Save in-game while dressed, close/reload the ROM, and verify costume, moves
    and gifts remain. Headless storage/ABI checks do not replace this check.
 
-The remaining six planned costumes are Princess/Raincoat Riko, Bread/Detective
-Bijuu and Blankey/Lifeguard Penny; they are not implemented in this batch.
+The user confirmed the first three costumes work in the emulator. The six new
+costumes and Poison Bijuu still require rendered testing. All costumes preserve
+base/stage stats. Each Penny outfit has both ordinary and evolved metadata.
+
+Poison Bijuu reuses existing species1591, preserving its original stats and
+family/Spirit eligibility. Toxic Mouse958 is a reusable ordinary Items-pocket
+transformation item, gifted outside Fuchsia Gym rather than sold at the Mart.
+Use it on ordinary or Box Bijuu to become Poison, and on Poison to return to
+ordinary Bijuu. Other elemental forms first revert with their own items.
+Poison Fang is a level-zero transformation/Scott lesson attack. Later lessons
+unlock Acid Spray12, Venoshock20, Poison Jab28, Sludge Bomb32 and Gunk Shot44;
+Toxic24 remains a level-up/status attack and is excluded from the damaging-only
+elemental menu. Equipped moves remain after reverting, as with other forms.
+
+The full batch appends cosmetic species1621-1628 (eight entries for six skins)
+and items959-964. Old real species/item IDs and form table indices remain.
+No new saved flags/vars/arrays or trainer changes are introduced. All seven new
+gifts are optional yes/no encounters: bring the matching girl, accept, and use
+Bag possession to prevent duplicates. Full Bags can retry; no battles or
+Gym progression requirements are added.
 
 Validation: RELEASE=1 production ROM compiled (ROM32471016 bytes,
 EWRAM255416 bytes). All57 focused checks and93 broader species/text/Mega
@@ -95,7 +120,7 @@ Approved art and headless checks are separate from in-game emulator testing.
 ## Temporary New Bark testing supplies
 
 At the user's request, Mom's friend (the wandering lass at9,16 in New Bark)
-now offers all three costume Key Items before her ordinary dialogue. Say Yes
+now offers all nine costume Key Items plus Toxic Mouse before her ordinary dialogue. Say Yes
 to receive any missing gifts; repeat visits skip owned items. A full Bag keeps
 earlier successful gifts and lets the next visit finish the rest. No battle,
 party, Badge or quest requirement, and no trainer/progression flags are set.
@@ -110,3 +135,33 @@ text termination/wrapping, full Pory/assembly original-branch parity,
 compiled follower art, historical IDs/save files, docs-summary and diff checks.
 This script-only addition does not alter the engine covered by the previous
 57 focused and93 broader passing checks. New prompt/gifts await emulator use.
+
+## Full batch art provenance
+
+Built-in image generation used the approved first costume sheets as identity
+references and transparent pixel-art sheets with front/back/icon, six walking
+poses, and one isolated gift icon. Prompts specified: black/brown/cream Riko
+with gold/pink tiara or yellow hooded coat; cream/dark-pointed blue-eyed Bijuu
+with bread framing her face, tweed cap/cape, or airborne purple poison bubbles;
+blonde long-haired low-bodied Penny in lavender blanket or red/white vest with
+whistle. No labels, extra animals, wings or previous costumes. Item icons were
+matching tiara, coat, toast, detective kit, blanket, vest and purple mouse toy.
+
+Final consumed assets live in graphics/pokemon/{riko_princess,riko_raincoat,
+bijuu_bread,bijuu_detective,penny_blanket,penny_lifeguard,bijuu_poison}/,
+graphics/items/icons/ and graphics/items/icon_palettes/. The deterministic
+import_assets.py converts generated source art to indexed 16-color native sizes;
+blue eyes and the small tiara jewel have reserved palette colors. Normal/shiny
+art currently shares palettes. forms.json and placements.json record metadata.
+
+Full-batch validation: RELEASE=1 production ROM compiled (32520152 bytes ROM,
+255416 bytes EWRAM). All60 focused engine checks and93 broader species/text/Mega
+checks pass, each with7 expected harness self-test failures and zero unexpected
+failures. Covers all12 costume stage entries, three dressed Penny level26
+evolutions, Poison item eligibility/current-level lessons, signature/TM metadata,
+encrypted storage/save ABI and normal/Spirit Mega/faint exact-form return.
+Source checks cover22528 test-supply combinations,192 prior gift flows,112 new
+gift flows, seven collision/elevation/old-event-preserving placements, all60
+compiled follower frames/palettes, historical IDs, text and docs-summary.
+The user confirmed the original three costumes; new seven forms and actual
+in-game save/reload still require focused emulator confirmation.

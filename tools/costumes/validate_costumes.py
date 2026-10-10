@@ -69,7 +69,7 @@ for city in ['CherrygroveCity','VioletCity','AzaleaTown']:
  assert npc['trainer_type']=='TRAINER_TYPE_NONE' and npc['flag']=='0'
  assert npc['script'] in labels
 print('Three optional NPCs have walkable approaches; old map events/dispatch preserved')
-for folder in ['riko_balloon','bijuu_box','penny_hotdog']:
+for folder in ['riko_balloon','bijuu_box','penny_hotdog','bijuu_poison']+[f[2] for f in json.loads((R/'tools/costumes/forms.json').read_text())]:
  p=R/'graphics/pokemon'/folder
  colors=[tuple(map(int,l.split())) for l in (p/'normal.pal').read_text().splitlines()[3:]];assert len(colors)==16
  for file,size in [('front',(64,64)),('back',(64,64)),('icon',(32,64)),('overworld',(192,32))]:
@@ -77,7 +77,7 @@ for folder in ['riko_balloon','bijuu_box','penny_hotdog']:
   assert max(im.tobytes())<16 and im.getpalette()[:48]==[v for c in colors for v in c]
   if file=='overworld':
    for n in range(6):assert im.crop((n*32,0,(n+1)*32,32)).getbbox()
- icon=Image.open(R/'graphics/items/icons'/(folder+'.png'));assert icon.size==(24,24) and icon.mode=='P'
+ icon=Image.open(R/'graphics/items/icons'/(('toxic_mouse' if folder=='bijuu_poison' else folder)+'.png'));assert icon.size==(24,24) and icon.mode=='P'
  if '--compiled' in sys.argv:
   raw=(p/'overworld.4bpp').read_bytes();assert len(raw)==3072;im=Image.open(p/'overworld.png')
   for n in range(6):
@@ -86,7 +86,7 @@ for folder in ['riko_balloon','bijuu_box','penny_hotdog']:
      b=raw[n*512+((y//8)*4+x//8)*32+(y%8)*4+(x%8)//2];assert ((b>>4 if x%2 else b)&15)==im.getpixel((n*32+x,y))
   expected=[(r>>3)|((g>>3)<<5)|((b>>3)<<10) for r,g,b in colors];assert list(struct.unpack('<16H',(p/'overworld_normal.gbapal').read_bytes()))==expected
 print('All costume battle/icon/six follower frames/item art share transparent 16-color palettes')
-if '--compiled' in sys.argv:print('All18 compiled follower frames and palettes match source pixels')
+if '--compiled' in sys.argv:print('All60 compiled follower frames and palettes match source pixels')
 base='c82cdaaffb38ac96761d15943a95f0412de08e7b'
 for f in ['include/global.h','include/pokemon.h','src/save.c','include/config/save.h']:
  assert (R/f).read_bytes()==subprocess.check_output(['git','show',base+':'+f],cwd=R)
@@ -101,10 +101,10 @@ for name,val in re.findall(r'\b(ITEM_\w+) = (\d+)\b',old):assert re.search(r'\b'
 print('Historical real species/items/trainers, trainer flag bounds and save files unchanged')
 
 # Execute the actual temporary supply helper with partial-Bag and repeat visits.
-items=['ITEM_RIKOS_BALLOON','ITEM_BIJUUS_BOX','ITEM_PENNYS_HOTDOG_BUN']
+items=['ITEM_RIKOS_BALLOON','ITEM_BIJUUS_BOX','ITEM_PENNYS_HOTDOG_BUN','ITEM_TOXIC_MOUSE']+['ITEM_'+f[3] for f in json.loads((R/'tools/costumes/forms.json').read_text())]
 def supplies(owned,capacity,yes):
  pc=labels['TrioCostume_TestSupplies'];result=0;gifts=[]
- for _ in range(80):
+ for _ in range(200):
   op,_,args=code[pc].partition(' ');pc+=1;a=[x.strip() for x in args.split(',')]
   if op=='return':return owned,gifts
   if op=='msgbox':
@@ -118,13 +118,13 @@ def supplies(owned,capacity,yes):
   else:raise AssertionError(op)
  raise AssertionError('Supply helper never returned')
 count=0
-for bits,capacity,yes in itertools.product(range(8),range(4),[False,True]):
+for bits,capacity,yes in itertools.product(range(1<<len(items)),range(len(items)+1),[False,True]):
  owned={v for j,v in enumerate(items) if bits&(1<<j)};initial=set(owned)
  after,gifts=supplies(owned,capacity,yes)
- assert len(gifts)==(min(capacity,3-len(initial)) if yes else 0)
+ assert len(gifts)==(min(capacity,len(items)-len(initial)) if yes else 0)
  assert initial<=after
- again,extra=supplies(after,3,True);assert again==set(items)
- last,duplicate=supplies(again,3,True);assert not duplicate
+ again,extra=supplies(after,len(items),True);assert again==set(items)
+ last,duplicate=supplies(again,len(items),True);assert not duplicate
  count+=1
 print(count,'test supply owned/decline/partial-Bag/retry/repeat paths pass')
 for file in ['data/maps/NewBarkTown/scripts.inc','data/maps/NewBarkTown/scripts.pory']:
@@ -133,3 +133,23 @@ for file in ['data/maps/NewBarkTown/scripts.inc','data/maps/NewBarkTown/scripts.
  assert new.replace('\tcall TrioCostume_TestSupplies\n','',1)==old
 assert '\tcall TrioCostume_TestSupplies\n' in (R/'data/maps/NewBarkTown/scripts.inc').read_text().split('NewBarkTown_EventScript_Lass::',1)[1].split('NewBarkTown_EventScript_LassState2::',1)[0]
 print('Mom friend Pory/assembly hook preserves every existing story branch/movement')
+
+# Execute every new giver's actual assembly through owned/party/decline/full Bag cases.
+placements=json.loads((R/'tools/costumes/placements.json').read_text())
+for gift in placements:
+ for owned,present,yes,room in itertools.product([False,True],repeat=4):
+  run=Run(owned,present,yes,True,room,False).run(gift['script'])
+  assert run.gifts==int(not owned and present and yes and room)
+  assert not run.lock and run.battles==0
+for city in {g['city'] for g in placements}:
+ m,w,h,walk=geometry(city)
+ old=json.loads(subprocess.check_output(['git','show','9aa3a001c36746ff30f72b75f5a991ff85755edd:data/maps/'+city+'/map.json'],cwd=R,text=True))
+ added=[g for g in placements if g['city']==city]
+ assert m['object_events'][:-len(added)]==old['object_events']
+ for k in old:
+  if k!='object_events':assert old[k]==m[k]
+ for g in added:
+  x,y=g['x'],g['y'];assert all(walk(a,b) for a,b in [(x,y),(x-1,y),(x+1,y),(x,y-1),(x,y+1)])
+  assert len([e for e in m['object_events'] if (e['x'],e['y'])==(x,y)])==1
+  assert (x,y) not in {(e['x'],e['y']) for key in ['warp_events','coord_events','bg_events'] for e in m[key]}
+print('112 new gift flows and seven walkable placements pass; old map events unchanged')
