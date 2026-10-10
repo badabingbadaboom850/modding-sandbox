@@ -115,3 +115,21 @@ The approved charcoal-and-gold Pom pendant has three violet/amber/blue gems.
 Its generated standalone art is converted by tools/amulet/import_icon.py into
 one 24x24, sixteen-color Bag icon. The awakened glow is conveyed in dialogue;
 the Bag icon itself stays the same. No save structure or old ID changes.
+
+## Reunion camera return repair
+
+Player testing reached the three-aspect reunion, then left the player offscreen
+and controls unavailable. The old sequence detached its temporary camera while
+still scrolled six tiles south. RemoveCameraObject only changes the followed
+sprite and resets camera tracking; it does not undo the accumulated scroll.
+The reveal now plays a normal cry with a bounded 60-frame pause, pans six tiles
+north, waits for the camera movement explicitly, and removes it BEFORE the
+Awakened dialogue. The final reveal no longer depends on cry completion to
+reach camera cleanup. The cry wait's role in the reported stall is unconfirmed.
+
+The script validator now tracks actual movement definitions and refuses camera
+removal with a nonzero accumulated offset. This regression fails the old script
+and passes the repaired sequence. Pory and assembly remain identical; saved
+phase IDs, victories, pending rewards and level-one testing remain unchanged.
+Reload a normal in-game save before the sequence to replay it; an emulator save
+state captured during the old locked script is not a reliable recovery point.

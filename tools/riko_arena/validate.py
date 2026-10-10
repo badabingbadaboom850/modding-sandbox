@@ -16,7 +16,7 @@ for line in (S+'\n'+MEM).splitlines():
 MAP=json.loads((ROOT/'data/maps/RikoSpiritCavern/map.json').read_text());BASE=struct.unpack('<960H',(ROOT/'data/layouts/RikoSpiritCavern/map.bin').read_bytes())
 class Run:
  def __init__(self,state=0,answers=(),outcome=1,room=True,party=True,flags=()):
-  self.vars={STATE:state};self.answers=iter(answers);self.outcome=outcome;self.room=room;self.party=party;self.flags=set(flags);self.xy={i+1:(o['x'],o['y']) for i,o in enumerate(MAP['object_events'])};self.visible=set(range(1,9));self.battles=[];self.gifts=0;self.warps=[];self.lock=False;self.camera=False
+  self.vars={STATE:state};self.answers=iter(answers);self.outcome=outcome;self.room=room;self.party=party;self.flags=set(flags);self.xy={i+1:(o['x'],o['y']) for i,o in enumerate(MAP['object_events'])};self.visible=set(range(1,9));self.battles=[];self.gifts=0;self.warps=[];self.lock=False;self.camera=False;self.cameraOffset=0
  def val(self,s):
   if s.startswith('VAR_'):return self.vars.get(s,0)
   if re.fullmatch(r'\d+|0x[\da-fA-F]+',s):return int(s,0)
@@ -31,6 +31,10 @@ class Run:
     pc=stack.pop();continue
    if op=='lockall':self.lock=True;continue
    if op=='releaseall':self.lock=False;continue
+   if op=='applymovement' and a[0]=='LOCALID_CAMERA':
+    assert self.camera
+    movement=S.split(a[1]+':')[1].split('step_end')[0]
+    self.cameraOffset+=movement.count('walk_down')-movement.count('walk_up');continue
    if op in ['faceplayer','closemessage','waitstate','playmoncry','waitmoncry','delay','applymovement','waitmovement','fadescreen']:continue
    if op=='msgbox':
     if a[1]=='MSGBOX_YESNO':self.vars['VAR_RESULT']=next(self.answers,1)
@@ -55,7 +59,9 @@ class Run:
    if op=='special':
     if a[0]=='BattleSetup_StartTrioSpiritTrial':self.battles.append(self.vars['VAR_0x8004'])
     elif a[0]=='SpawnCameraObject':self.camera=True
-    elif a[0]=='RemoveCameraObject':self.camera=False
+    elif a[0]=='RemoveCameraObject':
+     assert self.cameraOffset==0,'Camera must return to the player before detaching'
+     self.camera=False
     else:assert a[0]=='HealPlayerParty'
     continue
    jump=False;target=a[-1]
@@ -107,6 +113,12 @@ class Checks(unittest.TestCase):
    r=Run(state).run('RikoCavern_TestOffer');self.assertEqual(r.warps,[('MAP_RIKO_SPIRIT_CAVERN','16','26')]);self.assertEqual(r.vars[STATE],state)
    r=Run(state,answers=[0,1],flags=['FLAG_TRIO_RIKO_KEEPSAKE','FLAG_RIKO_CAVERN_COMPLETE']).run('RikoCavern_Guide');self.assertEqual(r.vars[STATE],0);self.assertIn('FLAG_TRIO_RIKO_KEEPSAKE',r.flags);self.assertIn('FLAG_RIKO_CAVERN_COMPLETE',r.flags);self.assertFalse(r.lock)
   r=Run(flags=['FLAG_DEFEATED_SUICUNE']).run('TrioKeepsakes_TryRiko');self.assertEqual(r.gifts,1);self.assertEqual(r.vars[STATE],0)
+ def test_reunion_returns_camera_before_dialogue_and_uses_bounded_pause(self):
+  reveal=S.split('addobject 4')[1].split('RikoCavern_Spirit::')[0]
+  self.assertNotIn('waitmoncry',reveal)
+  self.assertIn('delay 60',reveal)
+  self.assertLess(reveal.index('RikoCavern_CameraReturn'),reveal.index('special RemoveCameraObject'))
+  self.assertLess(reveal.index('special RemoveCameraObject'),reveal.index('msgbox RikoCavern_AwakenedText'))
  def test_authoring_refs_and_original_ids(self):
   self.assertEqual((ROOT/'data/maps/RikoSpiritCavern/scripts.pory').read_text().split('`')[1].strip(),S.strip())
   for text in re.findall(r'\.string "(.*)"',S):

@@ -3,6 +3,7 @@
 
 
 
+
 @ Independent cave pilot. State never overwrites trial, Badge or Suicune flags.
 RikoSpiritCavern_MapScripts::
 	map_script MAP_SCRIPT_ON_TRANSITION, RikoCavern_Transition
@@ -128,10 +129,14 @@ RikoCavern_Soul::
 	call RikoCavern_United
 	addobject 4
 	fadescreen FADE_FROM_WHITE
-	playmoncry SPECIES_RIKO_SPIRIT, CRY_MODE_ENCOUNTER
-	waitmoncry
-	msgbox RikoCavern_AwakenedText, MSGBOX_DEFAULT
+	playmoncry SPECIES_RIKO_SPIRIT, CRY_MODE_NORMAL
+	@ Fixed reveal pause: cry playback must never keep field controls locked.
+	delay 60
+	@ Camera handoff resets tracking; it does not undo the six-tile scroll.
+	applymovement LOCALID_CAMERA, RikoCavern_CameraReturn
+	waitmovement LOCALID_CAMERA
 	special RemoveCameraObject
+	msgbox RikoCavern_AwakenedText, MSGBOX_DEFAULT
 	goto RikoCavern_End
 RikoCavern_Spirit::
 	lockall
@@ -221,6 +226,14 @@ RikoCavern_CameraPan:
 	walk_down
 	walk_down
 	walk_down
+	step_end
+RikoCavern_CameraReturn:
+	walk_up
+	walk_up
+	walk_up
+	walk_up
+	walk_up
+	walk_up
 	step_end
 RikoCavern_Happy:
 	jump_in_place_down

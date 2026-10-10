@@ -598,3 +598,24 @@ pass. Eight actual-script cavern/amulet groups plus12 festival groups and docs/
 diff checks pass. Compiled amulet icon matches all576 source pixels. Rendered
 Bag/registered use, travel, cave fusion and real save/reload still await user
 confirmation. Temporary level-one wins do record real progress as described.
+
+## Cavern reunion camera repair
+
+User rendered testing confirmed cavern entry, aspect fights and merge, but then
+reported player offscreen/controls unavailable. Camera handoff was unbalanced:
+six walk_down steps with no return. RemoveCameraObject reselects the player's
+sprite and resets tracking, without undoing the scroll. The script now waits
+for six walk_up return steps and removes camera BEFORE Awakened dialogue. Final
+Spirit cry uses CRY_MODE_NORMAL plus bounded delay60 instead of waitmoncry, so
+cry completion cannot block cleanup; whether that wait caused the reported
+stall is unconfirmed. Earlier cries and battle behavior remain unchanged.
+The actual-script validator tracks camera movement definitions and rejects
+nonzero offsets at removal; it fails old code and passes the fix. No saved ABI,
+phase/victory/reward or level-one-test changes. Pory/assembly match. Reload a
+normal in-game save to replay; old mid-script emulator snapshots may retain the
+stalled state. Visual confirmation of the repaired reunion is still pending.
+
+Camera repair validation: the production ROM was reassembled and relinked
+successfully (ROM32512276/EWRAM255420 bytes). Nine actual-script cavern groups
+and12 festival groups plus docs/diff checks pass. Runtime visual replay remains
+unconfirmed; prior engine suite is unchanged because no C runtime code changed.
