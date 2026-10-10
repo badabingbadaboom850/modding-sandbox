@@ -523,7 +523,7 @@ bool8 PrepareTrioSpiritTrial(void)
     u16 species = gSpecialVar_0x8004;
     u32 i;
 
-    if (species != SPECIES_PENNY_SPIRIT && species != SPECIES_BIJUU_SPIRIT && species != SPECIES_RIKO_SPIRIT)
+    if (species != SPECIES_PENNY_SPIRIT && species != SPECIES_BIJUU_SPIRIT && species != SPECIES_RIKO_ECHO)
         return FALSE;
     for (i = 0; i < PARTY_SIZE; i++)
     {
@@ -541,10 +541,11 @@ bool8 PrepareTrioSpiritTrial(void)
     if (level > MAX_LEVEL)
         level = MAX_LEVEL;
     HealTrioTrialParty();
-    if (species == SPECIES_RIKO_SPIRIT)
+    if (species == SPECIES_RIKO_ECHO)
     {
-        // First Rift guardian: a fair scaled encounter, separate from level90 cave trials.
-        CreateScriptedWildMon2(species, level, ITEM_NONE, 0, MOVE_FLAMETHROWER, MOVE_SNARL, MOVE_SWIFT, MOVE_PROTECT, FALSE);
+        // User-requested easy Echo Woods test guardian; level90 Spirit cave is separate.
+        level = 1;
+        CreateScriptedWildMon2(species, level, ITEM_NONE, 0, MOVE_DISARMING_VOICE, MOVE_TACKLE, MOVE_BABY_DOLL_EYES, MOVE_HELPING_HAND, FALSE);
     }
     else if (species == SPECIES_PENNY_SPIRIT)
     {

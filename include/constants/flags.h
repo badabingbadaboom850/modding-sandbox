@@ -1826,7 +1826,8 @@
 #define FLAG_HIDE_TRIO_SNACK_GRASS                   0x1086
 #define FLAG_HIDE_TRIO_SNACK_GROVE                   0x1087
 #define FLAG_HIDE_TRIO_GANG_HIDEOUT                  0x1088
-#define CUSTOM_FLAGS_END                            FLAG_HIDE_TRIO_GANG_HIDEOUT
+#define FLAG_TRIO_RIFT_COURAGE_RECEIVED               0x1089
+#define CUSTOM_FLAGS_END                            FLAG_TRIO_RIFT_COURAGE_RECEIVED
 
 
 #define FLAG_0x1500                                 0x1500

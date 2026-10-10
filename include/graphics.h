@@ -3520,6 +3520,8 @@ extern const u16 gItemIcon_Palette_Radio[];
 
 extern const u32 gItemIcon_BlackMirror[];
 extern const u16 gItemIconPalette_BlackMirror[];
+extern const u32 gItemIcon_RikosCourage[];
+extern const u16 gItemIconPalette_RikosCourage[];
 extern const u32 gItemIcon_RikosWand[];
 extern const u16 gItemIconPalette_RikosWand[];
 extern const u32 gItemIcon_BlueBrush[];

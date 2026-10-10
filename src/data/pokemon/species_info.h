@@ -209,7 +209,7 @@ const struct SpeciesInfo gSpeciesInfo[] =
             gShinyOverworldPalette_Riko
         )
         .teachingType = ALL_TEACHABLES, .levelUpLearnset = sRikoLevelUpLearnset,
-        .evolutions = EVOLUTION({EVO_ITEM, ITEM_RIKOS_WAND, SPECIES_RIKO_WING}, {EVO_ITEM, ITEM_GREEN_PEPPER, SPECIES_RIKO_FIRE}, {EVO_ITEM, ITEM_EEL_SUSHI, SPECIES_RIKO_ELECTRIC}),
+        .evolutions = EVOLUTION({EVO_ITEM, ITEM_RIKOS_COURAGE, SPECIES_RIKO_ECHO}, {EVO_ITEM, ITEM_RIKOS_WAND, SPECIES_RIKO_WING}, {EVO_ITEM, ITEM_GREEN_PEPPER, SPECIES_RIKO_FIRE}, {EVO_ITEM, ITEM_EEL_SUSHI, SPECIES_RIKO_ELECTRIC}),
         .formSpeciesIdTable = sRikoFormSpeciesIdTable, .formChangeTable = sRikoFormChangeTable,
     },
 #if P_GEN_9_MEGA_EVOLUTIONS
@@ -279,7 +279,41 @@ const struct SpeciesInfo gSpeciesInfo[] =
             gShinyOverworldPalette_RikoWing
         )
         .teachingType = ALL_TEACHABLES, .levelUpLearnset = sRikoLevelUpLearnset,
-        .evolutions = EVOLUTION({EVO_ITEM, ITEM_BLUE_BRUSH, SPECIES_RIKO}),
+        .evolutions = EVOLUTION({EVO_ITEM, ITEM_BLUE_BRUSH, SPECIES_RIKO}, {EVO_ITEM, ITEM_RIKOS_COURAGE, SPECIES_RIKO_ECHO}),
+    },
+    [SPECIES_RIKO_ECHO] =
+    {
+        .baseHP = 95, .baseAttack = 80, .baseDefense = 90, .baseSpeed = 110,
+        .baseSpAttack = 110, .baseSpDefense = 95,
+        .types = MON_TYPES(TYPE_NORMAL, TYPE_FAIRY), .catchRate = 45, .expYield = 240,
+        .evYield_SpAttack = 2, .evYield_Speed = 1, .genderRatio = MON_FEMALE,
+        .eggCycles = 20, .friendship = STANDARD_FRIENDSHIP, .growthRate = GROWTH_MEDIUM_SLOW,
+        .eggGroups = MON_EGG_GROUPS(EGG_GROUP_FIELD, EGG_GROUP_FAIRY),
+        .abilities = { ABILITY_CUTE_CHARM, ABILITY_NONE, ABILITY_FLUFFY },
+        .bodyColor = BODY_COLOR_WHITE, .speciesName = _("RikoEcho"), .cryId = CRY_SYLVEON,
+        .natDexNum = NATIONAL_DEX_RIKO, .categoryName = _("Brave Echo"), .height = 8, .weight = 100,
+        .description = COMPOUND_STRING("When Riko called, her courage\n"
+                                       "answered. Two voices share one\n"
+                                       "heart, keeping her sisters safe."),
+        .pokemonScale = 256, .trainerScale = 256,
+        .frontPic = gMonFrontPic_RikoEcho, .frontPicSize = MON_COORDS_SIZE(64, 64), .frontPicYOffset = 0,
+        .frontAnimFrames = sAnims_SingleFramePlaceHolder, .backPic = gMonBackPic_RikoEcho,
+        .backPicSize = MON_COORDS_SIZE(64, 64), .backPicYOffset = 0,
+        .palette = gMonPalette_RikoEcho, .shinyPalette = gMonShinyPalette_RikoEcho,
+        .iconSprite = gMonIcon_RikoEcho, .iconPalette = gMonIconPalette_RikoEcho,
+        .shinyIconPalette = gMonShinyIconPalette_RikoEcho, .pokemonJumpType = PKMN_JUMP_TYPE_NORMAL,
+        SHADOW(-2, 8, SHADOW_SIZE_S)
+        OVERWORLD(
+            sPicTable_RikoEcho,
+            SIZE_32x32,
+            SHADOW_SIZE_M,
+            TRACKS_FOOT,
+            sAnimTable_Following,
+            gOverworldPalette_RikoEcho,
+            gShinyOverworldPalette_RikoEcho
+        )
+        .teachingType = ALL_TEACHABLES, .levelUpLearnset = sRikoEchoLevelUpLearnset,
+        .evolutions = EVOLUTION({EVO_ITEM, ITEM_RIKOS_COURAGE, SPECIES_RIKO}),
     },
     [SPECIES_RIKO_SPIRIT] =
     {

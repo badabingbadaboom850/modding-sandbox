@@ -1,6 +1,7 @@
 raw `
 
 
+
 @ Independent first Rift chapter. All progression is saved; no on-frame battles.
 TrioEchoWoods_MapScripts::
 	map_script MAP_SCRIPT_ON_LOAD, TrioRift_Load
@@ -43,6 +44,8 @@ TrioRift_Exit::
 TrioRift_Riko::
 	lockall
 	faceplayer
+	checkspecies SPECIES_RIKO_ECHO
+	goto_if_eq VAR_RESULT, TRUE, TrioRift_EchoForm
 	checkspecies SPECIES_RIKO_WING
 	goto_if_eq VAR_RESULT, TRUE, TrioRift_Wing
 	msgbox TrioRift_RikoText, MSGBOX_DEFAULT
@@ -151,11 +154,11 @@ TrioRift_Guardian::
 	goto_if_eq VAR_RESULT, FALSE, TrioRift_Missing
 	msgbox TrioRift_GuardianText, MSGBOX_YESNO
 	goto_if_eq VAR_RESULT, NO, TrioRift_End
-	setvar VAR_0x8004, SPECIES_RIKO_SPIRIT
+	setvar VAR_0x8004, SPECIES_RIKO_ECHO
 	specialvar VAR_RESULT, PrepareTrioSpiritTrial
 	goto_if_eq VAR_RESULT, FALSE, TrioRift_Missing
 	closemessage
-	playmoncry SPECIES_RIKO_SPIRIT, CRY_MODE_ENCOUNTER
+	playmoncry SPECIES_RIKO_ECHO, CRY_MODE_ENCOUNTER
 	waitmoncry
 	special BattleSetup_StartTrioSpiritTrial
 	waitstate
@@ -164,9 +167,10 @@ TrioRift_Guardian::
 	setvar VAR_TRIO_RIFT_RIKO_STATE, 4
 TrioRift_Victory:
 	msgbox TrioRift_VictoryText, MSGBOX_DEFAULT
-	goto_if_ge VAR_TRIO_RIFT_RIKO_STATE, 5, TrioRift_End
-	giveitem ITEM_RIKOS_WAND
+	goto_if_set FLAG_TRIO_RIFT_COURAGE_RECEIVED, TrioRift_End
+	giveitem ITEM_RIKOS_COURAGE
 	goto_if_eq VAR_RESULT, FALSE, TrioRift_Pending
+	setflag FLAG_TRIO_RIFT_COURAGE_RECEIVED
 	setvar VAR_TRIO_RIFT_RIKO_STATE, 5
 	msgbox TrioRift_GiftText, MSGBOX_DEFAULT
 	goto TrioRift_End
@@ -215,13 +219,13 @@ TrioRift_AlreadyText:
 TrioRift_OrderText:
 	.string "A nearer echo is waiting.\nFollow the trail together.$"
 TrioRift_GuardianText:
-	.string "Three heads bow to Riko.\nA voice fills the leaves.\pPower is not being loud.\nIt is keeping them safe.\pFace the woods guardian?\nLosses allow safe retries.$"
+	.string "Two heads bow to Riko.\nA voice fills the leaves.\pPower is not being loud.\nIt is keeping them safe.\pFace the woods guardian?\nLosses allow safe retries.$"
 TrioRift_VictoryText:
-	.string "The guardian bows again.\nRiko looks at her sisters.\pHer bark found the way.\nTheir love led her home.\pThe woods remember you.\nOther echoes lie ahead.$"
+	.string "The guardian bows again.\nRiko looks at her sisters.\pA second voice answers.\nTwo heads. One heart.\pHer full Spirit sleeps.\nHer story has just begun.\pHer bark found the way.\nTheir love led her home.\pThe woods remember you.\nOther echoes lie ahead.$"
 TrioRift_GiftText:
-	.string "A wand for Riko, earned\nby listening together.\pHer next form is a choice.\nLoved in every form.$"
+	.string "Riko called to the woods.\nHer courage answered.\pKeep Riko's Courage.\nUse it from Key Items.\pIt awakens her echo form.\nUse again to return.$"
 TrioRift_PendingText:
-	.string "Your Bag has no room.\nThe wand will wait here.\pReturn when you like.\nNo new battle is needed.$"
+	.string "Your Bag has no room.\nHer Courage waits here.\pReturn when you like.\nNo new battle is needed.$"
 TrioRift_RetryText:
 	.string "The guardian waits softly.\nThe girls are healed.\pEvery path stays open.\nTry again when you want.$"
 
@@ -257,4 +261,10 @@ TrioRift_FestivalReturn:
 	return
 TrioRift_FestivalOfferText:
 	.string "Riko hears a distant echo.\nReady for Echo Woods?\pI can take you there now.\nYou can return any time.$"
+
+TrioRift_EchoForm:
+	msgbox TrioRift_EchoFormText, MSGBOX_DEFAULT
+	goto TrioRift_End
+TrioRift_EchoFormText:
+	.string "Riko barks. Riko answers!\nBijuu looks between them.\pPenny hugs both ruffs.\nTwo voices keep her safe.\pThe same little girl.\nA little more courage.$"
 `

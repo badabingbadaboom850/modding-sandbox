@@ -17648,6 +17648,22 @@ const struct ItemInfo gItemsInfo[] =
         .iconPalette = gItemIconPalette_SilkScarf,
     },
 
+    [ITEM_RIKOS_COURAGE] =
+    {
+        .name = ITEM_NAME("Riko's Courage"),
+        .price = 0,
+        .description = COMPOUND_STRING("Reusable. Awakens\nRiko's second voice.\nUse again to revert."),
+        .importance = 1,
+        .pocket = POCKET_KEY_ITEMS,
+        .sortType = ITEM_TYPE_EVOLUTION_STONE,
+        .heldSlot = 0,
+        .type = ITEM_USE_PARTY_MENU,
+        .fieldUseFunc = ItemUseOutOfBattle_EvolutionStone,
+        .effect = gItemEffect_EvoItem,
+        .iconPic = gItemIcon_RikosCourage,
+        .iconPalette = gItemIconPalette_RikosCourage,
+    },
+
     [ITEM_RIKOS_WAND] =
     {
         .name = ITEM_NAME("Riko's Wand"),

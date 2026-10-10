@@ -1131,6 +1131,8 @@ enum __attribute__((packed)) Item
     ITEM_BIJUUS_LIGHT = 947,
     ITEM_MOMS_SCRAPBOOK = 948,
 
+    ITEM_RIKOS_COURAGE = 949,
+
     ITEMS_COUNT,
     ITEM_FIELD_ARROW = ITEMS_COUNT,
 };

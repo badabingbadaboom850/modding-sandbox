@@ -2200,3 +2200,6 @@ const u16 gItemIconPalette_DogBowl[] = INCBIN_U16("graphics/items/icon_palettes/
 
 const u32 gItemIcon_FetchingStick[] = INCBIN_U32("graphics/items/icons/fetching_stick.4bpp.smol");
 const u16 gItemIconPalette_FetchingStick[] = INCBIN_U16("graphics/items/icon_palettes/fetching_stick.gbapal");
+
+const u32 gItemIcon_RikosCourage[] = INCBIN_U32("graphics/items/icons/rikos_courage.4bpp.smol");
+const u16 gItemIconPalette_RikosCourage[] = INCBIN_U16("graphics/items/icon_palettes/rikos_courage.gbapal");

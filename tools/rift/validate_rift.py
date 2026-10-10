@@ -38,6 +38,7 @@ class Run:
     if a[1]=='MSGBOX_YESNO':self.vars['VAR_RESULT']=next(self.answers,1)
     continue
    if op=='setvar':self.vars[a[0]]=self.value(a[1]);continue
+   if op=='setflag':self.flags.add(a[0]);continue
    if op=='checkspecies':self.vars['VAR_RESULT']=int(a[0] in self.forms);continue
    if op=='warp':self.warps.append(tuple(a));continue
    if op=='giveitem':
@@ -103,6 +104,12 @@ class Checks(unittest.TestCase):
   r=Run(3,room=False).run('Guardian');self.assertEqual(r.vars[STATE],4);self.assertEqual(r.battles,1)
   r.girls=False;r.room=True;r.run('Guardian');self.assertEqual(r.gifts,1);self.assertEqual(r.vars[STATE],5);self.assertEqual(r.battles,1)
   r.run('Guardian');self.assertEqual(r.gifts,1);self.assertEqual(r.battles,1)
+  # Previously claimed Wand saves earn the new charm without replaying a battle.
+  r=Run(5,girls=False).run('Guardian');self.assertEqual(r.gifts,1);self.assertEqual(r.battles,0)
+  r.run('Guardian');self.assertEqual(r.gifts,1)
+  r=Run(5,girls=False,room=False).run('Guardian');self.assertEqual(r.gifts,0)
+  self.assertNotIn('FLAG_TRIO_RIFT_COURAGE_RECEIVED',r.flags)
+  r.room=True;r.run('Guardian');self.assertEqual(r.gifts,1);self.assertEqual(r.battles,0)
  def test_forms_and_scrapbook_return(self):
   for npc,form in [('Riko','SPECIES_RIKO_WING'),('Bijuu','SPECIES_BIJUU_PSYCHIC'),('Penny','SPECIES_PENNY_GUARDIAN')]:
    a=Run().run(npc);b=Run(forms=[form]).run(npc);self.assertNotEqual(a.text,b.text);self.assertEqual(b.vars[STATE],0);self.assertFalse(b.locked)
@@ -138,4 +145,18 @@ class Checks(unittest.TestCase):
   self.assertNotIn('MAP_SCRIPT_ON_FRAME',S);self.assertNotIn('FLAG_SYS_NO_CATCHING',S)
   c=(ROOT/'src/battle_setup.c').read_text();callback=c.split('static void CB2_EndTrioSpiritTrial(void)\n{')[1].split('\n}')[0]
   self.assertIn('FlagClear(B_FLAG_NO_CATCHING)',callback);self.assertIn('HealTrioTrialParty()',callback);self.assertIn('CB2_ReturnToFieldContinueScriptPlayMapMusic',callback)
+ def test_courage_asset_contract_and_reuse(self):
+  from PIL import Image
+  folder=ROOT/'graphics/pokemon/riko_echo'
+  for name,size in [('front',(64,64)),('back',(64,64)),('icon',(32,64)),('overworld',(192,32))]:
+   with Image.open(folder/(name+'.png')) as source:im=source.copy()
+   self.assertEqual(im.mode,'P');self.assertEqual(im.size,size)
+   self.assertEqual(im.info['transparency'],0);self.assertLessEqual(max(list(im.tobytes())),15)
+   self.assertIn(0,list(im.tobytes()));self.assertGreater(len(set(list(im.tobytes()))),4)
+  for pal in folder.glob('*.pal'):self.assertEqual(len(pal.read_text().splitlines()[3:]),16)
+  with Image.open(ROOT/'graphics/items/icons/rikos_courage.png') as item:
+   self.assertEqual(item.size,(24,24));self.assertEqual(item.info['transparency'],0)
+  party=(ROOT/'src/party_menu.c').read_text().split('void ItemUseCB_EvolutionStone(u8 taskId, TaskFunc task)\n{')[1]
+  self.assertIn('GetItemPocket(gSpecialVar_ItemId) != POCKET_KEY_ITEMS',party)
+  checks=(ROOT/'data/scripts/trio_party_checks.inc').read_text();self.assertIn('SPECIES_RIKO_ECHO',checks)
 if __name__=='__main__':unittest.main()
