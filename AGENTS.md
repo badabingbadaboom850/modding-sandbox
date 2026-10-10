@@ -703,3 +703,29 @@ returns and standard species/form metadata tests pass. No rendered cafe
 playthrough is claimed; mailbox/counter/exit/parcels/save-reload await testing.
 
 Final production ROM compilation passed (ROM32517676 bytes; EWRAM255420 bytes).
+
+
+## Family release cleanup (2026-10-10)
+
+User confirmed the rendered cafe preview works and requested removal of all
+test features before updating his wife. This supersedes the preview instructions
+above. New Bark mailbox is a normal sign; cafe test offer/text/return routing and
+New Bark parcel hook are removed. Both exits return to Vermilion even from old
+preview saves. VAR_TRIO_CAFE_TEST_RETURN=0x412F stays reserved and unused; no
+IDs, save arrays, earned victories, memories or parcel states are reset.
+Natural House3 access still requires all six victories or final victory pending
+full-Bag reclaim. Mom's friend's repeatable test supplies are removed, preserving
+her original greeting and finishing movement. Fresh-save Mega Ring/Bondstone
+test grants are removed; normal Radio Tower Ring and Elm Bondstone remain.
+Festival test mode and Riko level-one override remain disabled (0); normal
+level5 Riko/Penny opening and Route31 Bijuu join remain. Engine developer menu settings are FALSE in all builds; RELEASE=1 also
+disables assertions. Do not delete legitimate quizzes or the
+intentional level1 festival exhibition. Existing saves keep previously received
+items and progress.
+
+Release cleanup validation: RELEASE=1 production ROM compiled successfully
+(ROM32444588 bytes, EWRAM255416 bytes). All44 focused engine/battle checks pass,
+plus7 expected runner self-test failures and zero unexpected failures; cafe
+access/legacy exit/save ABI, Riko gates/scaling, Spirit Megas and species metadata
+are covered. All89 family source groups, docs-summary and diff checks pass.
+Release routing changes have headless coverage; user confirmed the cafe preview.

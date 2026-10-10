@@ -695,17 +695,7 @@ void SetWarpDestinationToMapWarp(s8 mapGroup, s8 mapNum, s8 warpId)
         && (VarGet(VAR_TRIO_GANG_WINS) >= 6
             || (VarGet(VAR_TRIO_GANG_ACTIVE_WAVE) == 6 && VarGet(VAR_TRIO_GANG_PHASE) == 2)))
     {
-        VarSet(VAR_TRIO_CAFE_TEST_RETURN, 0);
         SetWarpDestination(MAP_GROUP(MAP_TRIO_GREEDENT_CAFE), MAP_NUM(MAP_TRIO_GREEDENT_CAFE), 0, -1, -1);
-        return;
-    }
-    // Retain the test entrance's return town across an in-cafe save/reload.
-    if (gSaveBlock1Ptr->location.mapGroup == MAP_GROUP(MAP_TRIO_GREEDENT_CAFE)
-        && gSaveBlock1Ptr->location.mapNum == MAP_NUM(MAP_TRIO_GREEDENT_CAFE)
-        && mapGroup == MAP_GROUP(MAP_VERMILION_CITY) && mapNum == MAP_NUM(MAP_VERMILION_CITY)
-        && warpId == 7 && VarGet(VAR_TRIO_CAFE_TEST_RETURN) == 1)
-    {
-        SetWarpDestination(MAP_GROUP(MAP_NEW_BARK_TOWN), MAP_NUM(MAP_NEW_BARK_TOWN), WARP_ID_NONE, 18, 12);
         return;
     }
     SetWarpDestination(mapGroup, mapNum, warpId, -1, -1);

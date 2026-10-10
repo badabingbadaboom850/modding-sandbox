@@ -21,7 +21,7 @@ TEST("Greedent cafe replaces only its Vermilion house after final victory includ
                 VarSet(VAR_TRIO_CAFE_TEST_RETURN, 1);
                 SetWarpDestinationToMapWarp(MAP_GROUP(MAP_VERMILION_CITY_HOUSE3), MAP_NUM(MAP_VERMILION_CITY_HOUSE3), 0);
                 EXPECT_EQ(GetDestinationWarpMapHeader(), unlocked ? cafe : house);
-                EXPECT_EQ(VarGet(VAR_TRIO_CAFE_TEST_RETURN), unlocked ? 0 : 1);
+                EXPECT_EQ(VarGet(VAR_TRIO_CAFE_TEST_RETURN), 1);
                 EXPECT_EQ(VarGet(VAR_TRIO_GANG_WINS), wins);
                 EXPECT_EQ(VarGet(VAR_TRIO_GANG_PHASE), phase);
                 EXPECT_EQ(VarGet(VAR_TRIO_GANG_ACTIVE_WAVE), active);
@@ -30,14 +30,14 @@ TEST("Greedent cafe replaces only its Vermilion house after final victory includ
     EXPECT_EQ(GetDestinationWarpMapHeader(), Overworld_GetMapHeaderByGroupAndId(MAP_GROUP(MAP_VERMILION_CITY_HOUSE2), MAP_NUM(MAP_VERMILION_CITY_HOUSE2)));
 }
 
-TEST("Greedent cafe native exit returns to saved test town without affecting other city warps")
+TEST("Greedent cafe native exit ignores retired test mode and returns to Vermilion without affecting other city warps")
 {
     struct WarpData old = gSaveBlock1Ptr->location;
     gSaveBlock1Ptr->location.mapGroup = MAP_GROUP(MAP_TRIO_GREEDENT_CAFE);
     gSaveBlock1Ptr->location.mapNum = MAP_NUM(MAP_TRIO_GREEDENT_CAFE);
     VarSet(VAR_TRIO_CAFE_TEST_RETURN, 1);
     SetWarpDestinationToMapWarp(MAP_GROUP(MAP_VERMILION_CITY), MAP_NUM(MAP_VERMILION_CITY), 7);
-    EXPECT_EQ(GetDestinationWarpMapHeader(), Overworld_GetMapHeaderByGroupAndId(MAP_GROUP(MAP_NEW_BARK_TOWN), MAP_NUM(MAP_NEW_BARK_TOWN)));
+    EXPECT_EQ(GetDestinationWarpMapHeader(), Overworld_GetMapHeaderByGroupAndId(MAP_GROUP(MAP_VERMILION_CITY), MAP_NUM(MAP_VERMILION_CITY)));
     SetWarpDestinationToMapWarp(MAP_GROUP(MAP_VERMILION_CITY), MAP_NUM(MAP_VERMILION_CITY), 0);
     EXPECT_EQ(GetDestinationWarpMapHeader(), Overworld_GetMapHeaderByGroupAndId(MAP_GROUP(MAP_VERMILION_CITY), MAP_NUM(MAP_VERMILION_CITY)));
     VarSet(VAR_TRIO_CAFE_TEST_RETURN, 0);

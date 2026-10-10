@@ -1,5 +1,5 @@
 raw `
-@ Reformed cartel cafe. Test travel never grants cartel wins or Badges.
+@ Reformed cartel cafe. Opens after the final cartel victory.
 TrioGreedentCafe_MapScripts::
 	map_script MAP_SCRIPT_ON_TRANSITION, TrioCafe_OnTransition
 	map_script MAP_SCRIPT_ON_FRAME_TABLE, TrioCafe_OnFrame
@@ -21,17 +21,7 @@ TrioCafe_Introduction:
 	msgbox TrioSisters_Recorded, MSGBOX_DEFAULT
 	goto TrioCafe_End
 
-TrioCafe_TestOffer::
-	msgbox TrioCafe_TestText, MSGBOX_YESNO
-	goto_if_eq VAR_RESULT, NO, TrioCafe_Return
-	setvar VAR_TRIO_CAFE_TEST_RETURN, 1
-	closemessage
-	warp MAP_TRIO_GREEDENT_CAFE, 3, 7
-	waitstate
-TrioCafe_Return:
-	return
-
-@ Called on the two exit towns, so a reload inside never readies a parcel.
+@ Called on Vermilion entry, so a reload inside never readies a parcel.
 TrioCafe_AfterExit::
 	goto_if_eq VAR_TRIO_CAFE_DELIVERY_STATE, 1, TrioCafe_ReadySecond
 	goto_if_eq VAR_TRIO_CAFE_DELIVERY_STATE, 3, TrioCafe_ReadyThird
@@ -118,12 +108,7 @@ TrioCafe_Host::
 	msgbox TrioCafe_HostText, MSGBOX_YESNO
 	goto_if_eq VAR_RESULT, NO, TrioCafe_End
 	closemessage
-	goto_if_eq VAR_TRIO_CAFE_TEST_RETURN, 1, TrioCafe_ReturnNewBark
 	warp MAP_VERMILION_CITY, 38, 23
-	waitstate
-	goto TrioCafe_End
-TrioCafe_ReturnNewBark:
-	warp MAP_NEW_BARK_TOWN, 18, 12
 	waitstate
 	goto TrioCafe_End
 TrioCafe_Riko::
@@ -153,9 +138,6 @@ TrioCafe_Hint::
 
 TrioCafe_ApologyText:
 	.string "Six Greedents stand tall.\nOne drops a stolen spoon.\pBoss: We are sorry for\nthe daylight snack crimes.\pPenny watches the till.\nBijuu checks the receipts.\pRiko taste-tests a Wawa.\nThere may be hope for us.\pWELCOME TO THE DEFINITELY\nLEGITIMATE SNACK CAFE!$"
-
-TrioCafe_TestText:
-	.string "TEST: Visit the reformed\nsquirrel mafia cafe?\pNo cartel wins are given.\nThe exit brings you home.$"
 
 TrioCafe_ShopText:
 	.string "Perfectly legal snacks!\pSmall, medium, large Wawa.\nBerries. Riko Puffs.\pWe have receipts now.\nBijuu insisted.$"

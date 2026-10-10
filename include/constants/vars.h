@@ -332,7 +332,7 @@
 #define VAR_RIKO_CAVERN_STATE                       0x412E // 0 Mind,1 Body,2 Soul,3 reunion/finale,4 won
 #define VAR_TRIO_GARDEN_STATE                        0x412D // 0 seeds,1/3 growing,2 warm,4 guard,5 bloom pending,6 gift
 
-#define VAR_TRIO_CAFE_TEST_RETURN                   0x412F // 1 New Bark test exit, 0 Vermilion
+#define VAR_TRIO_CAFE_TEST_RETURN                   0x412F // Reserved legacy cafe test slot; unused, preserve saved IDs
 #define VAR_TRIO_CAFE_DELIVERY_STATE                0x4130 // 0/2/4 parcel ready,1/3 claimed waiting,5 done
 
 #define VARS_END                                         0x42FF

@@ -32,7 +32,6 @@ NewBarkTown_EventScript_ElmCallAfterLeague::
 	end
 
 NewBarkTown_OnTransition::
-	call TrioCafe_AfterExit
     call Common_EventScript_SetupRivalGfxId
 	call TrioStorySpirit_PrepareBijuuSighting
 	goto_if_eq VAR_NEWBARK_TOWN_STATE, 2, NewBarkTown_Set_TalkToElm
@@ -343,7 +342,6 @@ NewBarkTown_Text_Sign:
 NewBarkTown_EventScript_PlayersHouseMailbox::
 	lockall
 	msgbox NewBarkTown_Text_PlayersHouse, MSGBOX_SIGN
-	call TrioCafe_TestOffer
 	releaseall
 	end
 

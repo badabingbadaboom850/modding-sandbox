@@ -37,28 +37,6 @@ NewBarkTown_PlayersHouse_1F_EventScript_MomsFriend::
 	lock
 	faceplayer
 	msgbox NewBarkTown_PlayersHouse_1F_Text_MomsFriend, MSGBOX_DEFAULT
-	msgbox NewBarkTown_PlayersHouse_1F_Text_PennyTestSupplies, MSGBOX_YESNO
-	goto_if_eq VAR_RESULT, NO, NewBarkTown_PlayersHouse_1F_EventScript_MomsFriend_Finish
-	giveitem ITEM_DADS_KEYS, 5
-	goto_if_eq VAR_RESULT, FALSE, NewBarkTown_PlayersHouse_1F_EventScript_MomsFriend_BagFull
-	giveitem ITEM_PIECE_OF_CHICKEN, 5
-	goto_if_eq VAR_RESULT, FALSE, NewBarkTown_PlayersHouse_1F_EventScript_MomsFriend_BagFull
-	giveitem ITEM_GREEN_PEPPER, 1
-	goto_if_eq VAR_RESULT, FALSE, NewBarkTown_PlayersHouse_1F_EventScript_MomsFriend_BagFull
-	giveitem ITEM_EEL_SUSHI, 1
-	goto_if_eq VAR_RESULT, FALSE, NewBarkTown_PlayersHouse_1F_EventScript_MomsFriend_BagFull
-	giveitem ITEM_FROZEN_FISH, 1
-	goto_if_eq VAR_RESULT, FALSE, NewBarkTown_PlayersHouse_1F_EventScript_MomsFriend_BagFull
-	giveitem ITEM_MOUSE_TOY, 1
-	goto_if_eq VAR_RESULT, FALSE, NewBarkTown_PlayersHouse_1F_EventScript_MomsFriend_BagFull
-	giveitem ITEM_DOG_BOWL, 1
-	goto_if_eq VAR_RESULT, FALSE, NewBarkTown_PlayersHouse_1F_EventScript_MomsFriend_BagFull
-	giveitem ITEM_FETCHING_STICK, 1
-	goto_if_eq VAR_RESULT, FALSE, NewBarkTown_PlayersHouse_1F_EventScript_MomsFriend_BagFull
-	goto NewBarkTown_PlayersHouse_1F_EventScript_MomsFriend_Finish
-
-NewBarkTown_PlayersHouse_1F_EventScript_MomsFriend_BagFull::
-	msgbox NewBarkTown_PlayersHouse_1F_Text_TestSuppliesBagFull, MSGBOX_DEFAULT
 NewBarkTown_PlayersHouse_1F_EventScript_MomsFriend_Finish::
 	applymovement LOCALID_MOMS_FRIEND, NewBarkTown_PlayersHouse_1F_MovementFaceRight
 	waitmovement 0
@@ -417,14 +395,3 @@ NewBarkTown_PlayersHouse_1F_Text_CelestialFamily:
 	.string "should predict the best\p"
 	.string "shopping deals. Riko\n"
 	.string "agrees.$"
-
-
-NewBarkTown_PlayersHouse_1F_Text_PennyTestSupplies:
-	.string "Want some form supplies?\p"
-	.string "Keys, chicken, and all six\n"
-	.string "elemental keepsakes!$"
-
-NewBarkTown_PlayersHouse_1F_Text_TestSuppliesBagFull:
-	.string "Some supplies did not fit.\n"
-	.string "Make room and ask again.$"
-

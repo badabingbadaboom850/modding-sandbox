@@ -57,18 +57,31 @@ class Checks(unittest.TestCase):
    r=Run(state).run('TrioCafe_OnTransition');self.assertEqual(r.vars['VAR_TRIO_CAFE_DELIVERY_STATE'],state)
    r.run('TrioCafe_AfterExit');expected={1:2,3:4}.get(state,state);self.assertEqual(r.vars['VAR_TRIO_CAFE_DELIVERY_STATE'],expected)
    r.run('TrioCafe_AfterExit');self.assertEqual(r.vars['VAR_TRIO_CAFE_DELIVERY_STATE'],expected)
-  for town,label in [('NewBarkTown','NewBarkTown_OnTransition::'),('VermilionCity','VermilionCity_MapScript_OnTransition::')]:
+  for town,label in [('VermilionCity','VermilionCity_MapScript_OnTransition::')]:
    s=(ROOT/f'data/maps/{town}/scripts.inc').read_text();self.assertIn(label+'\n\tcall TrioCafe_AfterExit',s)
- def test_mailbox_decline_accept_host_and_progress_preservation(self):
-  for answer in [0,1]:
-   r=Run(answer=answer);before={k:v for k,v in r.vars.items() if 'GANG' in k};r.run('TrioCafe_TestOffer')
-   self.assertEqual(bool(r.warps),bool(answer));self.assertEqual({k:v for k,v in r.vars.items() if 'GANG' in k},before)
+ def test_release_host_and_retired_test_paths(self):
   for mode in [0,1]:
    for answer in [0,1]:
-    r=Run(answer=answer);r.vars['VAR_TRIO_CAFE_TEST_RETURN']=mode;r.run('TrioCafe_Host');self.assertFalse(r.lock)
-    self.assertEqual(r.warps,[[('MAP_NEW_BARK_TOWN' if mode else 'MAP_VERMILION_CITY'),('18' if mode else '38'),('12' if mode else '23')]] if answer else [])
+    r=Run(answer=answer);r.vars['VAR_TRIO_CAFE_TEST_RETURN']=mode
+    before={k:v for k,v in r.vars.items() if 'GANG' in k};r.run('TrioCafe_Host');self.assertFalse(r.lock)
+    self.assertEqual(r.warps,[['MAP_VERMILION_CITY','38','23']] if answer else [])
+    self.assertEqual({k:v for k,v in r.vars.items() if 'GANG' in k},before)
   for file in ['scripts.inc','scripts.pory']:
-   s=(ROOT/f'data/maps/NewBarkTown/{file}').read_text();self.assertIn('msgbox NewBarkTown_Text_PlayersHouse, MSGBOX_SIGN\n\tcall TrioCafe_TestOffer',s)
+   s=(ROOT/f'data/maps/NewBarkTown/{file}').read_text()
+   self.assertIn('msgbox NewBarkTown_Text_PlayersHouse, MSGBOX_SIGN',s)
+   self.assertNotIn('TrioCafe_TestOffer',s);self.assertNotIn('TrioCafe_AfterExit',s)
+  for bad in ['TrioCafe_TestOffer','TrioCafe_TestText','TrioCafe_ReturnNewBark','VAR_TRIO_CAFE_TEST_RETURN']:
+   self.assertNotIn(bad,SOURCE)
+  self.assertNotIn('VAR_TRIO_CAFE_TEST_RETURN',(ROOT/'src/overworld.c').read_text())
+  home=(ROOT/'data/maps/NewBarkTown_PlayersHouse_1F/scripts.inc').read_text()
+  self.assertNotIn('TestSupplies',home)
+  friend=home.split('NewBarkTown_PlayersHouse_1F_EventScript_MomsFriend::')[1].split('NewBarkTown_PlayersHouse_1F_MomEventScript_GoodLuck::')[0]
+  self.assertNotIn('giveitem',friend)
+  fresh=(ROOT/'src/new_game.c').read_text()
+  self.assertNotIn('AddBagItem(ITEM_MEGA_RING',fresh);self.assertNotIn('AddBagItem(ITEM_BONDSTONE',fresh)
+  debug=(ROOT/'include/config/debug.h').read_text()
+  for setting in ['DEBUG_OVERWORLD_MENU','DEBUG_BATTLE_MENU','DEBUG_POKEMON_SPRITE_VISUALIZER']:
+   self.assertRegex(debug,rf'#define {setting}\s+FALSE')
  def test_intro_memory_and_shop_do_not_change_cartel_or_party(self):
   r=Run().run('TrioCafe_OnTransition').run('TrioCafe_Introduction');self.assertIn('FLAG_TRIO_CAFE_VISITED',r.flags);self.assertFalse(r.lock)
   r.run('TrioCafe_OnTransition');self.assertEqual(r.vars['VAR_TEMP_A'],0)

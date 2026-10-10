@@ -8,13 +8,10 @@ his useful hint afterward. A final-wave full-Bag winner qualifies immediately
 (active wave6, phase2), without reclaiming the stolen item or fighting again.
 Historical six-wave winners qualify automatically.
 
-For this testing build, inspect Mom's mailbox in New Bark(17,11), read the normal
-house sign and accept the explicit TEST visit. No cartel wins, Badges, party
-members, or earlier quest states are granted. The host and ordinary southern
-exit both return to New Bark(18,12). Entry through the natural Vermilion door
-sets ordinary return mode, so both exits return to Vermilion. The test return
-mode persists across an in-cafe save/reload. Remove only the mailbox call when
-this preview is approved; the normal late-city replacement is already wired.
+The user confirmed the cafe in a rendered emulator. The release removes the
+New Bark mailbox shortcut and its return routing. Both cafe exits now return
+to Vermilion, including old saves made inside the preview cafe. Saved memories,
+parcels and cartel victories remain intact.
 
 The independent cafe map uses Olivine Cafe's proven8x10 native layout/tilesets,
 with nine actors: six nontrainer Greedents plus Riko, Penny and Bijuu. Every
@@ -31,7 +28,7 @@ successful claim, leaving and returning readies the next; in-cafe loading and
 saving/reloading do not. No real-time timers or repeatable free gifts.
 
 Allocations audited against d7894d87:
-- `VAR_TRIO_CAFE_TEST_RETURN=0x412F`:0 normal Vermilion exit,1 New Bark test exit.
+- `VAR_TRIO_CAFE_TEST_RETURN=0x412F`:reserved legacy test slot, now unused.
 - `VAR_TRIO_CAFE_DELIVERY_STATE=0x4130`:0/2/4 ready,1/3 delivered awaiting exit,5 done.
 - `FLAG_TRIO_CAFE_VISITED=0x108F`:apology/scrapbook recorded.
 - IndoorVermilion map9 appended; all old maps/layouts/items/species stay stable.
@@ -39,11 +36,11 @@ Allocations audited against d7894d87:
   matches in old trainer source were only #line directives, not flag/var uses.
 
 `tools/cafe/validate_cafe.py` executes actual cafe assembly with stubs for gifts,
-full-Bag retry, decline, visit readiness, mailbox/host travel and once-only intro.
+full-Bag retry, decline, visit readiness, release host travel and once-only intro.
 It also checks native geometry, all actor approaches, original ID prefixes,
 script/Pory parity, registrations and text wrapping. `test/trio_greedent_cafe.c`
 checks actual engine warp selection for all147 saved-state combinations, native
-exit mode/isolation, registered map assets and saved ABI. These are source and
+retired-mode compatibility/isolation, registered map assets and saved ABI. These are source and
 headless engine checks, not rendered interactive emulator playtesting. Verify
 cafe load, counter interaction, first apology, native/host exits, saving/reloading
 inside, parcels and the natural Vermilion door in a rendered emulator.
@@ -56,7 +53,14 @@ source/geometry groups and docs-summary/diff checks pass. Shared Spirit-family
 metadata now includes every eligible personal form, and the previous no-Mega-
 table assertions now verify entry eligibility plus absence of automatic normal
 form faint/end reversion. Permanent evolution, all30 Spirit Mega starting-form
-returns and standard species/form metadata tests pass. No rendered cafe
-playthrough is claimed; mailbox/counter/exit/parcels/save-reload await testing.
+returns and standard species/form metadata tests pass. The user has since confirmed the rendered cafe preview works and approved it.
+Release exit cleanup has separate source and engine checks.
 
 Final production ROM compilation passed (ROM32517676 bytes; EWRAM255420 bytes).
+
+Release cleanup validation: RELEASE=1 production ROM compiled successfully
+(ROM32444588 bytes, EWRAM255416 bytes). All44 focused engine/battle checks pass,
+plus7 expected runner self-test failures and zero unexpected failures; cafe
+access/legacy exit/save ABI, Riko gates/scaling, Spirit Megas and species metadata
+are covered. All89 family source groups, docs-summary and diff checks pass.
+Release routing changes have headless coverage; user confirmed the cafe preview.
