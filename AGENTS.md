@@ -764,3 +764,31 @@ selection, actual-level limits, deduplication/known moves, transformation
 attacks, family/Egg exclusions, equipped-move retention and mode reset.
 Source service/empty/cancel flows, historic move IDs/save files, text, docs
 and diff checks pass. ManicEMU UI and in-game save/reload remain user checks.
+
+## Cosmetic costume collectibles
+
+First batch: Balloon Riko, Box Bijuu and Hot Dog Penny. Species1617-1620
+append (fourth metadata preserves evolved Dachsbun Penny), items955-957 append.
+Shared art for both Penny stages; level26 costume evolution stays dressed.
+Cosmetic metadata exactly matches the ordinary base/stage: no battle benefit.
+Entry-only costume form tables plus changedSpecies-based normal Mega returns
+preserve clothing at battle/faint cleanup. Signature lessons, family checks,
+Camp swaps and Spirit keepsake eligibility include all four species.
+
+Cherrygrove43,9 balloon gift, Violet36,46 optional level12 courier battle/box,
+Azalea36,19 bun gift. Static NPCs append; map progression/visibility unchanged.
+Trainer1163 was audited unused and is now Morgan; trainer counts/flag bounds
+remain1164. Items are protected reusable Key Items. Bag possession prevents
+duplicate gifts; courier trainer flag allows full-Bag claim without a rematch.
+No new persistent flags/vars or save fields. See docs/trio_costumes.md and
+tools/costumes/validate_costumes.py --compiled. User approved generated art;
+this does not establish rendered in-game costume/save confirmation.
+
+Validation: RELEASE=1 production ROM compiled (ROM32471016 bytes,
+EWRAM255416 bytes). All57 focused checks and93 broader species/text/Mega
+regression checks pass, each suite with7 expected harness self-test failures
+and no unexpected failures. Checks include both Penny stages/level26, exact
+metadata/TM/signature access, encrypted storage, toggle eligibility, normal
+and Spirit Mega/faint returns, historical saved ABI,192 gift paths, geometry
+and all18 compiled follower frames/palettes. Docs-summary/diff checks pass.
+Approved art and headless checks are separate from in-game emulator testing.

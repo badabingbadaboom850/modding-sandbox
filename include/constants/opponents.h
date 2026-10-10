@@ -1144,7 +1144,7 @@
 #define TRAINER_FESTIVAL_SNACK_A              1160
 #define TRAINER_FESTIVAL_SNACK_B              1161
 #define TRAINER_ROUTE37_SNACK_THIEF        1162
-#define TRAINER_UNUSED_299                1163
+#define TRAINER_COSTUME_COURIER           1163
 #define TRAINER_UNUSED_300                1164 // This is out of range, don't touch (it refers to FLAG_SYS_POKEMON_GET)
 
 // NOTE: Because each Trainer uses a flag to determine when they are defeated, there is only space for 9 additional trainers before trainer flag space overflows

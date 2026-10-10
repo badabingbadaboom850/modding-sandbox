@@ -18,6 +18,7 @@ SINGLE_BATTLE_TEST("Spirit keepsakes Mega Evolve every personal form and restore
     u32 species, target, item;
     PARAMETRIZE { species = SPECIES_RIKO; target = SPECIES_MEGA_RIKO_SPIRIT; item = ITEM_RIKOS_SPARK; }
     PARAMETRIZE { species = SPECIES_RIKO_FLOWER; target = SPECIES_MEGA_RIKO_SPIRIT; item = ITEM_RIKOS_SPARK; }
+    PARAMETRIZE { species = SPECIES_RIKO_BALLOON; target = SPECIES_MEGA_RIKO_SPIRIT; item = ITEM_RIKOS_SPARK; }
     PARAMETRIZE { species = SPECIES_RIKO_ECHO; target = SPECIES_MEGA_RIKO_SPIRIT; item = ITEM_RIKOS_SPARK; }
     PARAMETRIZE { species = SPECIES_RIKO_WING; target = SPECIES_MEGA_RIKO_SPIRIT; item = ITEM_RIKOS_SPARK; }
     PARAMETRIZE { species = SPECIES_RIKO_FIRE; target = SPECIES_MEGA_RIKO_SPIRIT; item = ITEM_RIKOS_SPARK; }
@@ -34,6 +35,8 @@ SINGLE_BATTLE_TEST("Spirit keepsakes Mega Evolve every personal form and restore
     PARAMETRIZE { species = SPECIES_PENNY_WATER; target = SPECIES_MEGA_PENNY_SPIRIT; item = ITEM_PENNYS_SHIELD; }
     PARAMETRIZE { species = SPECIES_PENNY_GRASS; target = SPECIES_MEGA_PENNY_SPIRIT; item = ITEM_PENNYS_SHIELD; }
     PARAMETRIZE { species = SPECIES_PENNY_BRAVE; target = SPECIES_MEGA_PENNY_SPIRIT; item = ITEM_PENNYS_SHIELD; }
+    PARAMETRIZE { species = SPECIES_PENNY_HOTDOG; target = SPECIES_MEGA_PENNY_SPIRIT; item = ITEM_PENNYS_SHIELD; }
+    PARAMETRIZE { species = SPECIES_PENNY_HOTDOG_DACHSBUN; target = SPECIES_MEGA_PENNY_SPIRIT; item = ITEM_PENNYS_SHIELD; }
     PARAMETRIZE { species = SPECIES_BIJUU; target = SPECIES_MEGA_BIJUU_SPIRIT; item = ITEM_BIJUUS_LIGHT; }
     PARAMETRIZE { species = SPECIES_BIJUU_FIGHTING; target = SPECIES_MEGA_BIJUU_SPIRIT; item = ITEM_BIJUUS_LIGHT; }
     PARAMETRIZE { species = SPECIES_BIJUU_POISON; target = SPECIES_MEGA_BIJUU_SPIRIT; item = ITEM_BIJUUS_LIGHT; }
@@ -46,6 +49,7 @@ SINGLE_BATTLE_TEST("Spirit keepsakes Mega Evolve every personal form and restore
     PARAMETRIZE { species = SPECIES_BIJUU_PSYCHIC; target = SPECIES_MEGA_BIJUU_SPIRIT; item = ITEM_BIJUUS_LIGHT; }
     PARAMETRIZE { species = SPECIES_BIJUU_ICE; target = SPECIES_MEGA_BIJUU_SPIRIT; item = ITEM_BIJUUS_LIGHT; }
     PARAMETRIZE { species = SPECIES_BIJUU_EMBER; target = SPECIES_MEGA_BIJUU_SPIRIT; item = ITEM_BIJUUS_LIGHT; }
+    PARAMETRIZE { species = SPECIES_BIJUU_BOX; target = SPECIES_MEGA_BIJUU_SPIRIT; item = ITEM_BIJUUS_LIGHT; }
     GIVEN {
         UnlockSpiritMegas();
         AddBagItem(item, 1);
@@ -153,14 +157,18 @@ SINGLE_BATTLE_TEST("Fainted Spirit Megas return to their original personal form"
 {
     u32 species, item;
     PARAMETRIZE { species = SPECIES_RIKO_FLOWER; item = ITEM_RIKOS_SPARK; }
+    PARAMETRIZE { species = SPECIES_RIKO_BALLOON; item = ITEM_RIKOS_SPARK; }
     PARAMETRIZE { species = SPECIES_PENNY_BRAVE; item = ITEM_PENNYS_SHIELD; }
+    PARAMETRIZE { species = SPECIES_PENNY_HOTDOG; item = ITEM_PENNYS_SHIELD; }
+    PARAMETRIZE { species = SPECIES_PENNY_HOTDOG_DACHSBUN; item = ITEM_PENNYS_SHIELD; }
     PARAMETRIZE { species = SPECIES_BIJUU_EMBER; item = ITEM_BIJUUS_LIGHT; }
+    PARAMETRIZE { species = SPECIES_BIJUU_BOX; item = ITEM_BIJUUS_LIGHT; }
     GIVEN {
         UnlockSpiritMegas();
         AddBagItem(item, 1);
-        PLAYER(species) { HP(1); }
+        PLAYER(species) { Level(5); HP(1); }
         PLAYER(SPECIES_WOBBUFFET);
-        OPPONENT(SPECIES_WOBBUFFET);
+        OPPONENT(SPECIES_WOBBUFFET) { Level(100); }
     } WHEN {
         TURN { MOVE(player, MOVE_CELEBRATE, gimmick: GIMMICK_MEGA); MOVE(opponent, MOVE_NIGHT_SHADE); SEND_OUT(player, 1); }
         TURN { USE_ITEM(player, ITEM_REVIVE, 0); }
@@ -168,5 +176,26 @@ SINGLE_BATTLE_TEST("Fainted Spirit Megas return to their original personal form"
     } THEN {
         EXPECT_EQ(player->species, species);
         EXPECT(CheckBagHasItem(item, 1));
+    }
+}
+
+
+SINGLE_BATTLE_TEST("Ordinary Bondstone Megas return to their costume starting form")
+{
+    u32 species, target;
+    PARAMETRIZE { species = SPECIES_RIKO_BALLOON; target = SPECIES_MEGA_RIKO; }
+    PARAMETRIZE { species = SPECIES_BIJUU_BOX; target = SPECIES_MEGA_BIJUU; }
+    PARAMETRIZE { species = SPECIES_RIKO; target = SPECIES_MEGA_RIKO; }
+    PARAMETRIZE { species = SPECIES_BIJUU; target = SPECIES_MEGA_BIJUU; }
+    GIVEN {
+        PLAYER(species) { Item(ITEM_BONDSTONE); }
+        OPPONENT(SPECIES_WOBBUFFET);
+    } WHEN {
+        TURN { MOVE(player, MOVE_CELEBRATE, gimmick: GIMMICK_MEGA); }
+    } SCENE {
+        ANIMATION(ANIM_TYPE_GENERAL, B_ANIM_MEGA_EVOLUTION, player);
+    } THEN {
+        EXPECT_EQ(player->species, target);
+        EXPECT_EQ(GetMonData(&gPlayerParty[0], MON_DATA_SPECIES), species);
     }
 }

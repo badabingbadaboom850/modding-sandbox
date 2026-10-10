@@ -3578,4 +3578,15 @@ extern const u16 gItemIconPalette_BijuusFire[];
 extern const u32 gItemIcon_PennysBravery[];
 extern const u16 gItemIconPalette_PennysBravery[];
 
+
+
+extern const u32 gItemIcon_RikoBalloon[];
+extern const u16 gItemIconPalette_RikoBalloon[];
+
+extern const u32 gItemIcon_BijuuBox[];
+extern const u16 gItemIconPalette_BijuuBox[];
+
+extern const u32 gItemIcon_PennyHotdog[];
+extern const u16 gItemIconPalette_PennyHotdog[];
+
 #endif //GUARD_GRAPHICS_H

@@ -162,3 +162,5 @@
 - [Spirit of Riko cavern pilot](riko_spirit_cavern.md)
 
 - [Family signature moves and Scott tutor](trio_signature_moves.md)
+
+- [Trio costume collectibles](trio_costumes.md)

@@ -2437,3 +2437,4 @@ Common_Text_ReceivedMon:
 	.include "data/maps/TrioGreedentCafe/scripts.inc"
 
 	.include "data/scripts/trio_move_tutor.inc"
+	.include "data/scripts/trio_costumes.inc"

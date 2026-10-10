@@ -1732,7 +1732,11 @@
 #define SPECIES_MEGA_RIKO_SPIRIT                       1614
 #define SPECIES_MEGA_PENNY_SPIRIT                      1615
 #define SPECIES_MEGA_BIJUU_SPIRIT                      1616
-#define SPECIES_EGG                                     (SPECIES_MEGA_BIJUU_SPIRIT + 1)
+#define SPECIES_RIKO_BALLOON                            1617
+#define SPECIES_BIJUU_BOX                               1618
+#define SPECIES_PENNY_HOTDOG                            1619
+#define SPECIES_PENNY_HOTDOG_DACHSBUN                   1620
+#define SPECIES_EGG                                     (SPECIES_PENNY_HOTDOG_DACHSBUN + 1)
 
 #define NUM_SPECIES SPECIES_EGG
 

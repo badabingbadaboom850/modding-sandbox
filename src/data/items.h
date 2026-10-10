@@ -17730,6 +17730,54 @@ const struct ItemInfo gItemsInfo[] =
         .iconPalette = gItemIconPalette_RikosAmulet,
     },
 
+    [ITEM_RIKOS_BALLOON] =
+    {
+        .name = ITEM_NAME("Riko Balloon"),
+        .price = 0,
+        .description = COMPOUND_STRING("A balloon for Riko.\nReusable costume.\nUse again to revert."),
+        .importance = 1,
+        .pocket = POCKET_KEY_ITEMS,
+        .sortType = ITEM_TYPE_EVOLUTION_STONE,
+        .heldSlot = 0,
+        .type = ITEM_USE_PARTY_MENU,
+        .fieldUseFunc = ItemUseOutOfBattle_EvolutionStone,
+        .effect = gItemEffect_EvoItem,
+        .iconPic = gItemIcon_RikoBalloon,
+        .iconPalette = gItemIconPalette_RikoBalloon,
+    },
+
+    [ITEM_BIJUUS_BOX] =
+    {
+        .name = ITEM_NAME("Bijuu Box"),
+        .price = 0,
+        .description = COMPOUND_STRING("A box for Bijuu.\nReusable costume.\nUse again to revert."),
+        .importance = 1,
+        .pocket = POCKET_KEY_ITEMS,
+        .sortType = ITEM_TYPE_EVOLUTION_STONE,
+        .heldSlot = 0,
+        .type = ITEM_USE_PARTY_MENU,
+        .fieldUseFunc = ItemUseOutOfBattle_EvolutionStone,
+        .effect = gItemEffect_EvoItem,
+        .iconPic = gItemIcon_BijuuBox,
+        .iconPalette = gItemIconPalette_BijuuBox,
+    },
+
+    [ITEM_PENNYS_HOTDOG_BUN] =
+    {
+        .name = ITEM_NAME("Penny Hot Dog"),
+        .price = 0,
+        .description = COMPOUND_STRING("A bun for Penny.\nReusable costume.\nUse again to revert."),
+        .importance = 1,
+        .pocket = POCKET_KEY_ITEMS,
+        .sortType = ITEM_TYPE_EVOLUTION_STONE,
+        .heldSlot = 0,
+        .type = ITEM_USE_PARTY_MENU,
+        .fieldUseFunc = ItemUseOutOfBattle_EvolutionStone,
+        .effect = gItemEffect_EvoItem,
+        .iconPic = gItemIcon_PennyHotdog,
+        .iconPalette = gItemIconPalette_PennyHotdog,
+    },
+
     [ITEM_RIKOS_BLOOM] =
     {
         .name = ITEM_NAME("Riko's Bloom"),

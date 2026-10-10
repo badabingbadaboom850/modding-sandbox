@@ -2218,3 +2218,12 @@ const u16 gItemIconPalette_RikoPuffs[] = INCBIN_U16("graphics/items/icon_palette
 
 const u32 gItemIcon_RikosAmulet[] = INCBIN_U32("graphics/items/icons/rikos_amulet.4bpp.smol");
 const u16 gItemIconPalette_RikosAmulet[] = INCBIN_U16("graphics/items/icon_palettes/rikos_amulet.gbapal");
+
+const u32 gItemIcon_RikoBalloon[] = INCBIN_U32("graphics/items/icons/riko_balloon.4bpp.smol");
+const u16 gItemIconPalette_RikoBalloon[] = INCBIN_U16("graphics/items/icon_palettes/riko_balloon.gbapal");
+
+const u32 gItemIcon_BijuuBox[] = INCBIN_U32("graphics/items/icons/bijuu_box.4bpp.smol");
+const u16 gItemIconPalette_BijuuBox[] = INCBIN_U16("graphics/items/icon_palettes/bijuu_box.gbapal");
+
+const u32 gItemIcon_PennyHotdog[] = INCBIN_U32("graphics/items/icons/penny_hotdog.4bpp.smol");
+const u16 gItemIconPalette_PennyHotdog[] = INCBIN_U16("graphics/items/icon_palettes/penny_hotdog.gbapal");
