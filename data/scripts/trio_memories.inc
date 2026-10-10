@@ -141,6 +141,7 @@ TrioScrapbook_Sisters:
 	call_if_ge VAR_TRIO_GARDEN_STATE, 5, TrioGarden_ReadMemory
 	call_if_set FLAG_RIKO_CAVERN_COMPLETE, RikoCavern_ReadMemory
 	call_if_eq VAR_TRIO_GANG_WINS, 6, TrioGang_ReadMemory
+	call_if_set FLAG_TRIO_CAFE_VISITED, TrioCafe_ReadMemory
 	goto TrioScrapbook_Menu
 TrioScrapbook_Letters:
 	msgbox TrioScrapbook_LettersIntro, MSGBOX_DEFAULT

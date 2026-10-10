@@ -151,6 +151,7 @@
 - [Scott's gym-city moments](trio_scott_moments.md)
 
 - [The Great Snack Chase](trio_snack_chase.md)
+- [Definitely Legitimate Snack Cafe](trio_greedent_cafe.md)
 
 - [Spirit Rift](trio_spirit_rift.md)
 

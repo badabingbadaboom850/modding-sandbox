@@ -336,6 +336,7 @@ const struct SpeciesInfo gSpeciesInfo[] =
         )
         .teachingType = ALL_TEACHABLES, .levelUpLearnset = sRikoFlowerLevelUpLearnset,
         .evolutions = EVOLUTION({EVO_ITEM, ITEM_RIKOS_BLOOM, SPECIES_RIKO}),
+        .formSpeciesIdTable = sRikoFormSpeciesIdTable,
         .formChangeTable = sRikoSpiritMegaEntryTable,
     },
 #if P_GEN_9_MEGA_EVOLUTIONS
@@ -406,6 +407,7 @@ const struct SpeciesInfo gSpeciesInfo[] =
         )
         .teachingType = ALL_TEACHABLES, .levelUpLearnset = sRikoLevelUpLearnset,
         .evolutions = EVOLUTION({EVO_ITEM, ITEM_BLUE_BRUSH, SPECIES_RIKO}, {EVO_ITEM, ITEM_RIKOS_COURAGE, SPECIES_RIKO_ECHO}),
+        .formSpeciesIdTable = sRikoFormSpeciesIdTable,
         .formChangeTable = sRikoSpiritMegaEntryTable,
     },
     [SPECIES_RIKO_ECHO] =
@@ -441,6 +443,7 @@ const struct SpeciesInfo gSpeciesInfo[] =
         )
         .teachingType = ALL_TEACHABLES, .levelUpLearnset = sRikoEchoLevelUpLearnset,
         .evolutions = EVOLUTION({EVO_ITEM, ITEM_RIKOS_COURAGE, SPECIES_RIKO}),
+        .formSpeciesIdTable = sRikoFormSpeciesIdTable,
         .formChangeTable = sRikoSpiritMegaEntryTable,
     },
     [SPECIES_RIKO_SPIRIT] =
@@ -582,6 +585,7 @@ const struct SpeciesInfo gSpeciesInfo[] =
         )
         .teachingType = ALL_TEACHABLES, .levelUpLearnset = sRikoFireTrioLevelUpLearnset,
         .evolutions = EVOLUTION({EVO_ITEM, ITEM_GREEN_PEPPER, SPECIES_RIKO}),
+        .formSpeciesIdTable = sRikoFormSpeciesIdTable,
         .formChangeTable = sRikoSpiritMegaEntryTable,
     },
 
@@ -615,6 +619,7 @@ const struct SpeciesInfo gSpeciesInfo[] =
             gShinyOverworldPalette_RikoWater
         )
         .teachingType = ALL_TEACHABLES, .levelUpLearnset = sQuaxlyLevelUpLearnset,
+        .formSpeciesIdTable = sRikoFormSpeciesIdTable,
         .formChangeTable = sRikoSpiritMegaEntryTable,
     },
 
@@ -648,6 +653,7 @@ const struct SpeciesInfo gSpeciesInfo[] =
             gShinyOverworldPalette_RikoGrass
         )
         .teachingType = ALL_TEACHABLES, .levelUpLearnset = sSprigatitoLevelUpLearnset,
+        .formSpeciesIdTable = sRikoFormSpeciesIdTable,
         .formChangeTable = sRikoSpiritMegaEntryTable,
     },
 
@@ -682,6 +688,7 @@ const struct SpeciesInfo gSpeciesInfo[] =
         )
         .teachingType = ALL_TEACHABLES, .levelUpLearnset = sRikoElectricTrioLevelUpLearnset,
         .evolutions = EVOLUTION({EVO_ITEM, ITEM_EEL_SUSHI, SPECIES_RIKO}),
+        .formSpeciesIdTable = sRikoFormSpeciesIdTable,
         .formChangeTable = sRikoSpiritMegaEntryTable,
     },
 
@@ -715,6 +722,7 @@ const struct SpeciesInfo gSpeciesInfo[] =
             gShinyOverworldPalette_RikoIce
         )
         .teachingType = ALL_TEACHABLES, .levelUpLearnset = sSwinubLevelUpLearnset,
+        .formSpeciesIdTable = sRikoFormSpeciesIdTable,
         .formChangeTable = sRikoSpiritMegaEntryTable,
     },
 
@@ -748,6 +756,7 @@ const struct SpeciesInfo gSpeciesInfo[] =
             gShinyOverworldPalette_RikoPsychic
         )
         .teachingType = ALL_TEACHABLES, .levelUpLearnset = sFlittleLevelUpLearnset,
+        .formSpeciesIdTable = sRikoFormSpeciesIdTable,
         .formChangeTable = sRikoSpiritMegaEntryTable,
     },
 
@@ -781,6 +790,7 @@ const struct SpeciesInfo gSpeciesInfo[] =
             gShinyOverworldPalette_RikoFlying
         )
         .teachingType = ALL_TEACHABLES, .levelUpLearnset = sWattrelLevelUpLearnset,
+        .formSpeciesIdTable = sRikoFormSpeciesIdTable,
         .formChangeTable = sRikoSpiritMegaEntryTable,
     },
 
@@ -814,6 +824,7 @@ const struct SpeciesInfo gSpeciesInfo[] =
             gShinyOverworldPalette_RikoDragon
         )
         .teachingType = ALL_TEACHABLES, .levelUpLearnset = sFrigibaxLevelUpLearnset,
+        .formSpeciesIdTable = sRikoFormSpeciesIdTable,
         .formChangeTable = sRikoSpiritMegaEntryTable,
     },
 
@@ -849,6 +860,7 @@ const struct SpeciesInfo gSpeciesInfo[] =
             gShinyOverworldPalette_BijuuFighting
         )
         .teachingType = ALL_TEACHABLES, .levelUpLearnset = sFlamigoLevelUpLearnset,
+        .formSpeciesIdTable = sBijuuFormSpeciesIdTable,
         .formChangeTable = sBijuuSpiritMegaEntryTable,
     },
 
@@ -882,6 +894,7 @@ const struct SpeciesInfo gSpeciesInfo[] =
             gShinyOverworldPalette_BijuuPoison
         )
         .teachingType = ALL_TEACHABLES, .levelUpLearnset = sKoffingLevelUpLearnset,
+        .formSpeciesIdTable = sBijuuFormSpeciesIdTable,
         .formChangeTable = sBijuuSpiritMegaEntryTable,
     },
 
@@ -915,6 +928,7 @@ const struct SpeciesInfo gSpeciesInfo[] =
             gShinyOverworldPalette_BijuuGround
         )
         .teachingType = ALL_TEACHABLES, .levelUpLearnset = sPhanpyLevelUpLearnset,
+        .formSpeciesIdTable = sBijuuFormSpeciesIdTable,
         .formChangeTable = sBijuuSpiritMegaEntryTable,
     },
 
@@ -948,6 +962,7 @@ const struct SpeciesInfo gSpeciesInfo[] =
             gShinyOverworldPalette_BijuuRock
         )
         .teachingType = ALL_TEACHABLES, .levelUpLearnset = sNacliLevelUpLearnset,
+        .formSpeciesIdTable = sBijuuFormSpeciesIdTable,
         .formChangeTable = sBijuuSpiritMegaEntryTable,
     },
 
@@ -981,6 +996,7 @@ const struct SpeciesInfo gSpeciesInfo[] =
             gShinyOverworldPalette_BijuuBug
         )
         .teachingType = ALL_TEACHABLES, .levelUpLearnset = sSewaddleLevelUpLearnset,
+        .formSpeciesIdTable = sBijuuFormSpeciesIdTable,
         .formChangeTable = sBijuuSpiritMegaEntryTable,
     },
 
@@ -1015,6 +1031,7 @@ const struct SpeciesInfo gSpeciesInfo[] =
         )
         .teachingType = ALL_TEACHABLES, .levelUpLearnset = sBijuuGhostTrioLevelUpLearnset,
         .evolutions = EVOLUTION({EVO_ITEM, ITEM_MOUSE_TOY, SPECIES_BIJUU}),
+        .formSpeciesIdTable = sBijuuFormSpeciesIdTable,
         .formChangeTable = sBijuuSpiritMegaEntryTable,
     },
 
@@ -1048,6 +1065,7 @@ const struct SpeciesInfo gSpeciesInfo[] =
             gShinyOverworldPalette_BijuuDark
         )
         .teachingType = ALL_TEACHABLES, .levelUpLearnset = sSableyeLevelUpLearnset,
+        .formSpeciesIdTable = sBijuuFormSpeciesIdTable,
         .formChangeTable = sBijuuSpiritMegaEntryTable,
     },
 
@@ -1081,6 +1099,7 @@ const struct SpeciesInfo gSpeciesInfo[] =
             gShinyOverworldPalette_BijuuSteel
         )
         .teachingType = ALL_TEACHABLES, .levelUpLearnset = sTinkatinkLevelUpLearnset,
+        .formSpeciesIdTable = sBijuuFormSpeciesIdTable,
         .formChangeTable = sBijuuSpiritMegaEntryTable,
     },
 
@@ -1117,6 +1136,7 @@ const struct SpeciesInfo gSpeciesInfo[] =
         .teachableLearnset = sMeowthTeachableLearnset,
         .eggMoveLearnset = sMeowthEggMoveLearnset,
         .evolutions = EVOLUTION({EVO_ITEM, ITEM_BIJUUS_FIRE, SPECIES_BIJUU}),
+        .formSpeciesIdTable = sBijuuFormSpeciesIdTable,
         .formChangeTable = sBijuuSpiritMegaEntryTable,
     },
     [SPECIES_BIJUU_PSYCHIC] =
@@ -1152,6 +1172,7 @@ const struct SpeciesInfo gSpeciesInfo[] =
         .teachableLearnset = sMeowthTeachableLearnset,
         .eggMoveLearnset = sMeowthEggMoveLearnset,
         .evolutions = EVOLUTION({EVO_ITEM, ITEM_BIJUUS_CAT_NIP, SPECIES_BIJUU}, {EVO_ITEM, ITEM_BIJUUS_FIRE, SPECIES_BIJUU_EMBER}),
+        .formSpeciesIdTable = sBijuuFormSpeciesIdTable,
         .formChangeTable = sBijuuSpiritMegaEntryTable,
     },
 
@@ -1194,6 +1215,7 @@ const struct SpeciesInfo gSpeciesInfo[] =
         .teachableLearnset = sDachsbunTeachableLearnset,
         .eggMoveLearnset = sFidoughEggMoveLearnset,
         .evolutions = EVOLUTION({EVO_ITEM, ITEM_PENNYS_BRAVERY, SPECIES_FIDOUGH}),
+        .formSpeciesIdTable = sPennySpiritFormSpeciesIdTable,
         .formChangeTable = sPennySpiritMegaEntryTable,
     },
     [SPECIES_PENNY_GUARDIAN] =
@@ -1233,6 +1255,7 @@ const struct SpeciesInfo gSpeciesInfo[] =
         .teachableLearnset = sDachsbunTeachableLearnset,
         .eggMoveLearnset = sFidoughEggMoveLearnset,
         .evolutions = EVOLUTION({EVO_ITEM, ITEM_PENNYS_BRAVERY, SPECIES_PENNY_BRAVE}, {EVO_ITEM, ITEM_PIECE_OF_CHICKEN, SPECIES_FIDOUGH}, {EVO_ITEM, ITEM_DOG_BOWL, SPECIES_PENNY_WATER}, {EVO_ITEM, ITEM_FETCHING_STICK, SPECIES_PENNY_GRASS}),
+        .formSpeciesIdTable = sPennySpiritFormSpeciesIdTable,
         .formChangeTable = sPennySpiritMegaEntryTable,
     },
 #endif
@@ -1271,6 +1294,7 @@ const struct SpeciesInfo gSpeciesInfo[] =
         )
         .teachingType = ALL_TEACHABLES, .levelUpLearnset = sBijuuIceTrioLevelUpLearnset,
         .evolutions = EVOLUTION({EVO_ITEM, ITEM_FROZEN_FISH, SPECIES_BIJUU}),
+        .formSpeciesIdTable = sBijuuFormSpeciesIdTable,
         .formChangeTable = sBijuuSpiritMegaEntryTable,
     },
 
@@ -1314,6 +1338,7 @@ const struct SpeciesInfo gSpeciesInfo[] =
         .teachableLearnset = sDachsbunTeachableLearnset,
         .eggMoveLearnset = sFidoughEggMoveLearnset,
         .evolutions = EVOLUTION({EVO_ITEM, ITEM_DOG_BOWL, SPECIES_PENNY_GUARDIAN}),
+        .formSpeciesIdTable = sPennySpiritFormSpeciesIdTable,
         .formChangeTable = sPennySpiritMegaEntryTable,
     },
 
@@ -1354,6 +1379,7 @@ const struct SpeciesInfo gSpeciesInfo[] =
         .teachableLearnset = sDachsbunTeachableLearnset,
         .eggMoveLearnset = sFidoughEggMoveLearnset,
         .evolutions = EVOLUTION({EVO_ITEM, ITEM_FETCHING_STICK, SPECIES_PENNY_GUARDIAN}),
+        .formSpeciesIdTable = sPennySpiritFormSpeciesIdTable,
         .formChangeTable = sPennySpiritMegaEntryTable,
     },
 

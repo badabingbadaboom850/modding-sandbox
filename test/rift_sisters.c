@@ -1,5 +1,6 @@
 #include "global.h"
 #include "pokemon.h"
+#include "battle_util.h"
 #include "battle_setup.h"
 #include "item.h"
 #include "item_use.h"
@@ -63,7 +64,7 @@ TEST("New midgame sister guardians are healthy +10 level females and keep the pa
     EXPECT(!PrepareTrioSpiritTrial());
 }
 
-TEST("Sister charms are reusable key items and midgame species have complete art, not Mega tables")
+TEST("Sister charms are reusable key items and midgame species retain permanent art with optional Spirit Mega entry")
 {
     static const u16 species[] = {SPECIES_BIJUU_EMBER, SPECIES_PENNY_BRAVE};
     static const u16 items[] = {ITEM_BIJUUS_FIRE, ITEM_PENNYS_BRAVERY};
@@ -81,7 +82,10 @@ TEST("Sister charms are reusable key items and midgame species have complete art
         EXPECT(gItemsInfo[items[i]].iconPic != NULL && gItemsInfo[items[i]].iconPalette != NULL);
         EXPECT(info->frontPic != NULL && info->backPic != NULL && info->iconSprite != NULL);
         EXPECT(info->palette != NULL && info->shinyPalette != NULL && info->overworldData.images != NULL);
-        EXPECT(info->formChangeTable == NULL && !info->isMegaEvolution);
+        EXPECT(!info->isMegaEvolution);
+        EXPECT(DoesSpeciesHaveFormChangeMethod(species[i], FORM_CHANGE_BATTLE_MEGA_EVOLUTION_ITEM));
+        EXPECT(!DoesSpeciesHaveFormChangeMethod(species[i], FORM_CHANGE_END_BATTLE));
+        EXPECT(!DoesSpeciesHaveFormChangeMethod(species[i], FORM_CHANGE_FAINT));
         EXPECT_EQ(info->levelUpLearnset[0].move, moves[i]);
         EXPECT_EQ(info->levelUpLearnset[0].level, 0);
     }

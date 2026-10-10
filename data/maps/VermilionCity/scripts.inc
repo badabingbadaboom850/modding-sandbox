@@ -14,6 +14,7 @@ VermilionCity_OnLoad::
 	end
 
 VermilionCity_MapScript_OnTransition::
+	call TrioCafe_AfterExit
 	call TrioKanto_PrepareVermilion
 	setflag FLAG_VISITED_VERMILION_CITY
 	goto_if_eq VAR_SUICUNE_ENCOUNTERS, 3, VermilionCity_EventScript_SetSuicuneScene

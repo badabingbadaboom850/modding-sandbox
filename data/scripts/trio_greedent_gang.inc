@@ -122,6 +122,7 @@ TrioGang_DoReclaim:
 	goto TrioGang_Return
 TrioGang_Finale:
 	msgbox TrioGang_MemoryText, MSGBOX_DEFAULT
+	msgbox TrioCafe_HintText, MSGBOX_DEFAULT
 	msgbox TrioSisters_Recorded, MSGBOX_DEFAULT
 	goto TrioGang_Return
 TrioGang_FullBag:
@@ -252,7 +253,7 @@ TrioGang_Hint6Text:
 	.string "Six thieves: Route 6 in\nKanto after becoming\pChampion.$"
 
 TrioGang_SavedText:
-	.string "Snack cartel defeated!\nSaved in Sister moments.$"
+	.string "Snack cartel defeated!\nSaved in Sister moments.\pFind their new snack cafe.\nEast of Vermilion Gym.$"
 
 TrioGang_MemoryText:
 	.string "The Broad-Daylight Snack\nCartel:\pIt started with one greedy\ntail. It ended with six.\pYou defeated the entire\nsnack criminal\porganization.\pPenny guarded lunch. Bijuu\ntook statements.\pRiko ate the evidence.\pScott: That was\nridiculous. You looked\pcute doing it.$"

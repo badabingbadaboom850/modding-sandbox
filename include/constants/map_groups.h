@@ -253,6 +253,7 @@ enum
     MAP_VERMILION_CITY_HOUSE1         = (6 | (15 << 8)),
     MAP_VERMILION_CITY_HOUSE2         = (7 | (15 << 8)),
     MAP_VERMILION_CITY_HOUSE3         = (8 | (15 << 8)),
+    MAP_TRIO_GREEDENT_CAFE            = (9 | (15 << 8)),
 
     // gMapGroup_IndoorLavender
     MAP_LAVENDER_TOWN_POKEMON_CENTER = (0 | (16 << 8)),

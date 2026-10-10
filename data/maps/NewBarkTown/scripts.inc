@@ -32,6 +32,7 @@ NewBarkTown_EventScript_ElmCallAfterLeague::
 	end
 
 NewBarkTown_OnTransition::
+	call TrioCafe_AfterExit
     call Common_EventScript_SetupRivalGfxId
 	call TrioStorySpirit_PrepareBijuuSighting
 	goto_if_eq VAR_NEWBARK_TOWN_STATE, 2, NewBarkTown_Set_TalkToElm
@@ -342,6 +343,7 @@ NewBarkTown_Text_Sign:
 NewBarkTown_EventScript_PlayersHouseMailbox::
 	lockall
 	msgbox NewBarkTown_Text_PlayersHouse, MSGBOX_SIGN
+	call TrioCafe_TestOffer
 	releaseall
 	end
 
@@ -483,6 +485,80 @@ NewBarkTown_EventScript_ArcherArcadeCall::
 	end
 
 
+
+@ Repeatable pilot quiz. Update question text and YES/NO checks together.
+NewBarkTown_EventScript_TrioTrivia::
+	lock
+	faceplayer
+	msgbox NewBarkTown_Text_TrioTriviaOffer, MSGBOX_YESNO
+	goto_if_eq VAR_RESULT, NO, NewBarkTown_EventScript_TrioTriviaDecline
+	msgbox NewBarkTown_Text_TrioTriviaQuestion1, MSGBOX_YESNO
+	goto_if_ne VAR_RESULT, YES, NewBarkTown_EventScript_TrioTriviaWrong
+	msgbox NewBarkTown_Text_TrioTriviaQuestion2, MSGBOX_YESNO
+	goto_if_ne VAR_RESULT, NO, NewBarkTown_EventScript_TrioTriviaWrong
+	msgbox NewBarkTown_Text_TrioTriviaQuestion3, MSGBOX_YESNO
+	goto_if_ne VAR_RESULT, YES, NewBarkTown_EventScript_TrioTriviaWrong
+	msgbox NewBarkTown_Text_TrioTriviaWin, MSGBOX_DEFAULT
+	giveitem ITEM_POTION, 1
+	goto_if_eq VAR_RESULT, FALSE, NewBarkTown_EventScript_TrioTriviaBagFull
+	goto NewBarkTown_EventScript_TrioTriviaFinish
+
+NewBarkTown_EventScript_TrioTriviaWrong::
+	msgbox NewBarkTown_Text_TrioTriviaWrong, MSGBOX_DEFAULT
+	goto NewBarkTown_EventScript_TrioTriviaFinish
+
+NewBarkTown_EventScript_TrioTriviaDecline::
+	msgbox NewBarkTown_Text_TrioTriviaDecline, MSGBOX_DEFAULT
+	goto NewBarkTown_EventScript_TrioTriviaFinish
+
+NewBarkTown_EventScript_TrioTriviaBagFull::
+	msgbox NewBarkTown_Text_TrioTriviaBagFull, MSGBOX_DEFAULT
+
+NewBarkTown_EventScript_TrioTriviaFinish::
+	closemessage
+	release
+	end
+
+NewBarkTown_Text_TrioTriviaOffer:
+	.string "Hello! I host a little\n"
+	.string "quiz about the girls.\p"
+	.string "Three right answers earn\n"
+	.string "one small Wawa!\p"
+	.string "You can play again!\n"
+	.string "Want to give it a try?$"
+
+NewBarkTown_Text_TrioTriviaQuestion1:
+	.string "Question one!\p"
+	.string "Is Riko a Pomeranian?$"
+
+NewBarkTown_Text_TrioTriviaQuestion2:
+	.string "Question two!\p"
+	.string "Is Bijuu a dachshund?$"
+
+NewBarkTown_Text_TrioTriviaQuestion3:
+	.string "Question three!\p"
+	.string "Does Penny love chicken?$"
+
+NewBarkTown_Text_TrioTriviaWin:
+	.string "Three out of three!\n"
+	.string "You know your girls!\p"
+	.string "Here is a small Wawa\n"
+	.string "for your clever team.$"
+
+NewBarkTown_Text_TrioTriviaWrong:
+	.string "Oops! That was not right.\n"
+	.string "No worries, try again!\p"
+	.string "Talk to me to start over.$"
+
+NewBarkTown_Text_TrioTriviaDecline:
+	.string "Another time, then!\n"
+	.string "Give the girls my love.$"
+
+NewBarkTown_Text_TrioTriviaBagFull:
+	.string "Your Bag has no room!\p"
+	.string "Make some space, then\n"
+	.string "try my quiz again.$"
+
 NewBarkTown_EventScript_RivalIntro_Movement_0:
 	walk_fast_up
 	walk_fast_up
@@ -604,9 +680,7 @@ NewBarkTown_EventScript_RivalBattle_Text_1:
 	.string "a {STR_VAR_1}!$"
 
 NewBarkTown_EventScript_RivalBattle_Text_2:
-	.string "That's a cute Pokémon you have!\p"
-	.string "I've got three Fidoughs of my own.\n"
-	.string "Let's see which team is stronger!$"
+	.string "That's a cute Pokémon you have!$"
 
 NewBarkTown_EventScript_RivalBattle_Text_3:
 	.string "When you walk with it, it'll become\n"
@@ -651,76 +725,3 @@ NewBarkTown_EventScript_ArcherArcadeCall_Text_0:
 	.string "in the Goldenrod Underground.\p"
 	.string "I assure you no tricks or traps are\n"
 	.string "planned for you this time.$"
-
-@ Repeatable pilot quiz. Update question text and YES/NO checks together.
-NewBarkTown_EventScript_TrioTrivia::
-	lock
-	faceplayer
-	msgbox NewBarkTown_Text_TrioTriviaOffer, MSGBOX_YESNO
-	goto_if_eq VAR_RESULT, NO, NewBarkTown_EventScript_TrioTriviaDecline
-	msgbox NewBarkTown_Text_TrioTriviaQuestion1, MSGBOX_YESNO
-	goto_if_ne VAR_RESULT, YES, NewBarkTown_EventScript_TrioTriviaWrong
-	msgbox NewBarkTown_Text_TrioTriviaQuestion2, MSGBOX_YESNO
-	goto_if_ne VAR_RESULT, NO, NewBarkTown_EventScript_TrioTriviaWrong
-	msgbox NewBarkTown_Text_TrioTriviaQuestion3, MSGBOX_YESNO
-	goto_if_ne VAR_RESULT, YES, NewBarkTown_EventScript_TrioTriviaWrong
-	msgbox NewBarkTown_Text_TrioTriviaWin, MSGBOX_DEFAULT
-	giveitem ITEM_POTION, 1
-	goto_if_eq VAR_RESULT, FALSE, NewBarkTown_EventScript_TrioTriviaBagFull
-	goto NewBarkTown_EventScript_TrioTriviaFinish
-
-NewBarkTown_EventScript_TrioTriviaWrong::
-	msgbox NewBarkTown_Text_TrioTriviaWrong, MSGBOX_DEFAULT
-	goto NewBarkTown_EventScript_TrioTriviaFinish
-
-NewBarkTown_EventScript_TrioTriviaDecline::
-	msgbox NewBarkTown_Text_TrioTriviaDecline, MSGBOX_DEFAULT
-	goto NewBarkTown_EventScript_TrioTriviaFinish
-
-NewBarkTown_EventScript_TrioTriviaBagFull::
-	msgbox NewBarkTown_Text_TrioTriviaBagFull, MSGBOX_DEFAULT
-
-NewBarkTown_EventScript_TrioTriviaFinish::
-	closemessage
-	release
-	end
-
-NewBarkTown_Text_TrioTriviaOffer:
-	.string "Hello! I host a little\n"
-	.string "quiz about the girls.\p"
-	.string "Three right answers earn\n"
-	.string "one small Wawa!\p"
-	.string "You can play again!\n"
-	.string "Want to give it a try?$"
-
-NewBarkTown_Text_TrioTriviaQuestion1:
-	.string "Question one!\p"
-	.string "Is Riko a Pomeranian?$"
-
-NewBarkTown_Text_TrioTriviaQuestion2:
-	.string "Question two!\p"
-	.string "Is Bijuu a dachshund?$"
-
-NewBarkTown_Text_TrioTriviaQuestion3:
-	.string "Question three!\p"
-	.string "Does Penny love chicken?$"
-
-NewBarkTown_Text_TrioTriviaWin:
-	.string "Three out of three!\n"
-	.string "You know your girls!\p"
-	.string "Here is a small Wawa\n"
-	.string "for your clever team.$"
-
-NewBarkTown_Text_TrioTriviaWrong:
-	.string "Oops! That was not right.\n"
-	.string "No worries, try again!\p"
-	.string "Talk to me to start over.$"
-
-NewBarkTown_Text_TrioTriviaDecline:
-	.string "Another time, then!\n"
-	.string "Give the girls my love.$"
-
-NewBarkTown_Text_TrioTriviaBagFull:
-	.string "Your Bag has no room!\p"
-	.string "Make some space, then\n"
-	.string "try my quiz again.$"

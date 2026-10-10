@@ -1,5 +1,6 @@
 #include "global.h"
 #include "pokemon.h"
+#include "battle_util.h"
 #include "item.h"
 #include "item_use.h"
 #include "overworld.h"
@@ -39,7 +40,9 @@ TEST("Riko Echo is a healthy female permanent form with complete art and its own
     EXPECT(info->palette != NULL && info->shinyPalette != NULL);
     EXPECT(info->iconSprite != NULL && info->iconPalette != NULL);
     EXPECT(info->overworldData.images != NULL);
-    EXPECT(info->formChangeTable == NULL);
+    EXPECT(DoesSpeciesHaveFormChangeMethod(SPECIES_RIKO_ECHO, FORM_CHANGE_BATTLE_MEGA_EVOLUTION_ITEM));
+    EXPECT(!DoesSpeciesHaveFormChangeMethod(SPECIES_RIKO_ECHO, FORM_CHANGE_END_BATTLE));
+    EXPECT(!DoesSpeciesHaveFormChangeMethod(SPECIES_RIKO_ECHO, FORM_CHANGE_FAINT));
     EXPECT(!info->isMegaEvolution);
     EXPECT_EQ(info->levelUpLearnset[0].move, MOVE_ECHOED_VOICE);
     EXPECT_EQ(info->levelUpLearnset[0].level, 0);

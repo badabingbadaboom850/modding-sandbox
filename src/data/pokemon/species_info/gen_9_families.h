@@ -1606,6 +1606,7 @@ const struct SpeciesInfo gSpeciesInfoGen9[] =
         .eggMoveLearnset = sFidoughEggMoveLearnset,
         .evolutions = EVOLUTION({EVO_ITEM, ITEM_PENNYS_BRAVERY, SPECIES_PENNY_BRAVE}, {EVO_LEVEL, 26, SPECIES_DACHSBUN},
                                 {EVO_ITEM, ITEM_DADS_KEYS, SPECIES_PENNY_GUARDIAN}),
+        .formSpeciesIdTable = sPennySpiritFormSpeciesIdTable,
         .formChangeTable = sPennySpiritMegaEntryTable,
     },
 
@@ -1673,6 +1674,7 @@ const struct SpeciesInfo gSpeciesInfoGen9[] =
         .levelUpLearnset = sDachsbunLevelUpLearnset,
         .teachableLearnset = sDachsbunTeachableLearnset,
         .evolutions = EVOLUTION({EVO_ITEM, ITEM_PENNYS_BRAVERY, SPECIES_PENNY_BRAVE}),
+        .formSpeciesIdTable = sPennySpiritFormSpeciesIdTable,
         .formChangeTable = sPennySpiritMegaEntryTable,
     },
 #endif //P_FAMILY_FIDOUGH

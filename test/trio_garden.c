@@ -1,5 +1,6 @@
 #include "global.h"
 #include "pokemon.h"
+#include "battle_util.h"
 #include "item.h"
 #include "item_use.h"
 #include "overworld.h"
@@ -40,7 +41,10 @@ TEST("Flower Riko is a healthy female garden form with complete art and Aromathe
     EXPECT(info->palette != NULL && info->shinyPalette != NULL);
     EXPECT(info->iconSprite != NULL && info->iconPalette != NULL);
     EXPECT(info->overworldData.images != NULL);
-    EXPECT(info->formChangeTable == NULL);
+    // Flower remains permanent between battles, with an optional Spirit Mega entry.
+    EXPECT(DoesSpeciesHaveFormChangeMethod(SPECIES_RIKO_FLOWER, FORM_CHANGE_BATTLE_MEGA_EVOLUTION_ITEM));
+    EXPECT(!DoesSpeciesHaveFormChangeMethod(SPECIES_RIKO_FLOWER, FORM_CHANGE_END_BATTLE));
+    EXPECT(!DoesSpeciesHaveFormChangeMethod(SPECIES_RIKO_FLOWER, FORM_CHANGE_FAINT));
     EXPECT(!info->isMegaEvolution);
     EXPECT_EQ(info->baseHP, gSpeciesInfo[SPECIES_RIKO].baseHP);
     EXPECT_EQ(info->baseAttack, gSpeciesInfo[SPECIES_RIKO].baseAttack);

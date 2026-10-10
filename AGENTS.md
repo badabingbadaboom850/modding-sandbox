@@ -662,3 +662,44 @@ new Spirit Mega UI/animations and difficult balance still need rendered
 interactive confirmation. Headless battle tests are not a rendered playthrough.
 
 Final production ROM compilation passed (ROM32514296 bytes, EWRAM255420 bytes).
+
+
+## Reformed squirrel-mafia cafe preview (2026-10-10)
+
+User requested the reformed cartel cafe and explicit New Bark mailbox testing.
+TrioGreedentCafe appends IndoorVermilion map9 and shares Olivine Cafe's proven
+layout. Nine static nontrainer actors are six Greedents plus three girls. Its
+southern native exit is the original cafe warp tile; all actor approaches and
+entry/exit aisle are verified. No battles/thefts/progress grants in the cafe.
+
+SetWarpDestinationToMapWarp redirects ONLY House3 warp0 after six saved wins OR
+activewave6/phase2 (actual final victory/full Bag pending). Beforeward its original
+gentleman remains; cafe boss preserves his Diglett hint. Natural Vermilion door
+38,22 resets return mode0. Test mailbox17,11 reads original sign then offers
+travel3,7, sets returnmode1; native exit and host return18,12 New Bark. Saved test
+mode survives in-cafe reload. Both natural exits otherwise return Vermilion.
+This mailbox cafe call supersedes the previous no-testing-mailbox instruction
+for this user-authorized preview; it does not restore the Riko cavern bypass.
+
+New vars412F(testreturn) and4130(parcels), flag108F(cafe visit) audited free against
+d7894d87; numeric old matches were trainer #line only. No save arrays/old IDs
+change. Delivery states0/2/4 ready,1/3 claimed waiting,5 done; only New Bark and
+Vermilion outside transition helpers ready the next parcel. In-cafe transitions
+never advance it. Successful giveitem alone advances; decline/full Bag keeps
+pending. Scott parcels3smallWawa/3Puffs/1Leftovers each once with a flirty note.
+Stock uses existing Wawa/Oran/Puffs at unchanged prices. First apology flag adds
+Sisters scrapbook memory. Old winners qualify without reset or another fight.
+See docs/trio_greedent_cafe.md, tools/cafe/validate_cafe.py, test/trio_greedent_cafe.c.
+
+
+Cafe validation:100 focused actual engine/battle/text tests pass, plus7 expected
+runner self-test failures and zero unexpected failures. All3 new cafe engine
+checks pass, including147 access states and native exit routing.89 family
+source/geometry groups and docs-summary/diff checks pass. Shared Spirit-family
+metadata now includes every eligible personal form, and the previous no-Mega-
+table assertions now verify entry eligibility plus absence of automatic normal
+form faint/end reversion. Permanent evolution, all30 Spirit Mega starting-form
+returns and standard species/form metadata tests pass. No rendered cafe
+playthrough is claimed; mailbox/counter/exit/parcels/save-reload await testing.
+
+Final production ROM compilation passed (ROM32517676 bytes; EWRAM255420 bytes).
