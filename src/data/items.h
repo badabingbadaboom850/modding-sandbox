@@ -17652,7 +17652,7 @@ const struct ItemInfo gItemsInfo[] =
     {
         .name = ITEM_NAME("Bijuu's Fire"),
         .price = 0,
-        .description = COMPOUND_STRING("Reusable. Warms Bijuu's\ntail with a small flame.\nUse again to revert."),
+        .description = COMPOUND_STRING("Gives Bijuu a flame.\nReusable. Use again\nto change her back."),
         .importance = 1,
         .pocket = POCKET_KEY_ITEMS,
         .sortType = ITEM_TYPE_EVOLUTION_STONE,
@@ -17668,7 +17668,7 @@ const struct ItemInfo gItemsInfo[] =
     {
         .name = ITEM_NAME("Penny's Bravery"),
         .price = 0,
-        .description = COMPOUND_STRING("Reusable. Gives Penny\nlight armor and courage.\nUse again to revert."),
+        .description = COMPOUND_STRING("Gives Penny courage.\nReusable. Use again\nto change her back."),
         .importance = 1,
         .pocket = POCKET_KEY_ITEMS,
         .sortType = ITEM_TYPE_EVOLUTION_STONE,

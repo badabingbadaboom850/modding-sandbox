@@ -1,0 +1,93 @@
+[
+  {
+    "map": "VioletCity",
+    "script": "VioletCity_EventScript_Gramps",
+    "original_text": "VioletCity_Text_Gramps",
+    "atmosphere": "VioletCity_RiftAtmosphere",
+    "text": "VioletCity_RiftAtmosphereText"
+  },
+  {
+    "map": "AzaleaTown",
+    "script": "AzaleaTown_EventScript_Gramps2",
+    "original_text": "AzaleaTown_Text_GrampsAfter",
+    "atmosphere": "AzaleaTown_RiftAtmosphere",
+    "text": "AzaleaTown_RiftAtmosphereText"
+  },
+  {
+    "map": "GoldenrodCity",
+    "script": "GoldenrodCity_EventScript_PokefanM",
+    "original_text": "GoldenrodCity_Text_PokefanM",
+    "atmosphere": "GoldenrodCity_RiftAtmosphere",
+    "text": "GoldenrodCity_RiftAtmosphereText"
+  },
+  {
+    "map": "EcruteakCity",
+    "script": "EcruteakCity_EventScript_SageRight",
+    "original_text": "EcruteakCity_Text_Gramps2",
+    "atmosphere": "EcruteakCity_RiftAtmosphere",
+    "text": "EcruteakCity_RiftAtmosphereText"
+  },
+  {
+    "map": "OlivineCity",
+    "script": "OlivineCity_EventScript_Sailor2",
+    "original_text": "OlivineCity_Text_Sailor2",
+    "atmosphere": "OlivineCity_RiftAtmosphere",
+    "text": "OlivineCity_RiftAtmosphereText"
+  },
+  {
+    "map": "CianwoodCity",
+    "script": "CianwoodCity_EventScript_Lass",
+    "original_text": "CianwoodCity_Text_Lass",
+    "atmosphere": "CianwoodCity_RiftAtmosphere",
+    "text": "CianwoodCity_RiftAtmosphereText"
+  },
+  {
+    "map": "Mahoganytown",
+    "script": "MahoganyTown_EventScript_GrampsAfter",
+    "original_text": "MahoganyTown_Text_GrampsClearedRocketHideout",
+    "atmosphere": "Mahoganytown_RiftAtmosphere",
+    "text": "Mahoganytown_RiftAtmosphereText"
+  },
+  {
+    "map": "BlackthornCity",
+    "script": "BlackthornCity_EventScript_CoolTrainerF2",
+    "original_text": "BlackthornCooltrainerF2Text",
+    "atmosphere": "BlackthornCity_RiftAtmosphere",
+    "text": "BlackthornCity_RiftAtmosphereText"
+  },
+  {
+    "map": "PalletTown",
+    "script": "PalletTown_EventScript_Woman",
+    "original_text": "PalletTown_Text_Teacher",
+    "atmosphere": "PalletTown_RiftAtmosphere",
+    "text": "PalletTown_RiftAtmosphereText"
+  },
+  {
+    "map": "CeladonCity",
+    "script": "CeladonCity_EventScript_Teacher2",
+    "original_text": "CeladonCity_Text_Teacher2",
+    "atmosphere": "CeladonCity_RiftAtmosphere",
+    "text": "CeladonCity_RiftAtmosphereText"
+  },
+  {
+    "map": "FuchsiaCity",
+    "script": "FuchsiaCity_EventScript_Teacher",
+    "original_text": "FuchsiaCity_Text_Teacher",
+    "atmosphere": "FuchsiaCity_RiftAtmosphere",
+    "text": "FuchsiaCity_RiftAtmosphereText"
+  },
+  {
+    "map": "CeruleanCity",
+    "script": "CeruleanCity_EventScript_Youngster",
+    "original_text": "CeruleanCity_Text_Youngster1",
+    "atmosphere": "CeruleanCity_RiftAtmosphere",
+    "text": "CeruleanCity_RiftAtmosphereText"
+  },
+  {
+    "map": "VermilionCity",
+    "script": "VermilionCity_EventScript_Nerd",
+    "original_text": "VermilionCity_Text_SuperNerd",
+    "atmosphere": "VermilionCity_RiftAtmosphere",
+    "text": "VermilionCity_RiftAtmosphereText"
+  }
+]

@@ -198,6 +198,8 @@ OlivineCity_Text_Sailor1_TrioWorld1_Resume:
 OlivineCity_EventScript_Sailor2::
 	lock
 	faceplayer
+	call TrioRift_CheckAtmosphere
+	goto_if_eq VAR_RESULT, TRUE, OlivineCity_RiftAtmosphere
 	msgbox OlivineCity_Text_Sailor2, MSGBOX_DEFAULT
 	closemessage
 	release
@@ -488,3 +490,11 @@ OlivineCity_RivalPier_Text_4:
 
 OlivineCity_RivalPier_Text_5:
 	.string "See you around.$"
+
+OlivineCity_RiftAtmosphere::
+	msgbox OlivineCity_RiftAtmosphereText, MSGBOX_DEFAULT
+	closemessage
+	release
+	end
+OlivineCity_RiftAtmosphereText:
+	.string "The sea wind feels warm.\nNo storm on the horizon.\pThe lighthouse glow stays\nwith you after you turn.$"

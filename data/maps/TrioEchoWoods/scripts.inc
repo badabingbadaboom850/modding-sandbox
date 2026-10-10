@@ -327,3 +327,13 @@ TrioRift_TownOfferText:
 	.string "Since your family picnic,\nthe girls' echoes stir.\pThree trials. Three gifts.\nEach guardian stands ten\plevels above your best.\nPrepare, then follow me.$"
 TrioRift_TownHintText:
 	.string "An old man near Bill's\nhouse has heard echoes.\pFind him west of the\nGoldenrod Poke Center.$"
+
+@ Victory gates atmosphere, independently of a pending full-Bag charm.
+TrioRift_CheckAtmosphere::
+	setvar VAR_RESULT, FALSE
+	goto_if_lt VAR_TRIO_RIFT_RIKO_STATE, 4, TrioRift_AtmosphereReturn
+	goto_if_lt VAR_TRIO_RIFT_BIJUU_STATE, 4, TrioRift_AtmosphereReturn
+	goto_if_lt VAR_TRIO_RIFT_PENNY_STATE, 4, TrioRift_AtmosphereReturn
+	setvar VAR_RESULT, TRUE
+TrioRift_AtmosphereReturn:
+	return

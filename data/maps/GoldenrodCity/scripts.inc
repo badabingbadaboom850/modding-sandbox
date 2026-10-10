@@ -68,6 +68,8 @@ GoldenrodCity_Elm_Togepi_Call::
 GoldenrodCity_EventScript_PokefanM::
 	lock
 	faceplayer
+	call TrioRift_CheckAtmosphere
+	goto_if_eq VAR_RESULT, TRUE, GoldenrodCity_RiftAtmosphere
 	msgbox GoldenrodCity_Text_PokefanM, MSGBOX_DEFAULT
 	closemessage
 	release
@@ -845,3 +847,11 @@ GoldenrodCity_Text_ScrapbookNeighbor:
 	.string "Nice to hear something\n"
 	.string "besides battle scores.$"
 
+
+GoldenrodCity_RiftAtmosphere::
+	msgbox GoldenrodCity_RiftAtmosphereText, MSGBOX_DEFAULT
+	closemessage
+	release
+	end
+GoldenrodCity_RiftAtmosphereText:
+	.string "Something's in the air.\nThe city sounds softer.\pYou can still hear it all.\nIt just feels less lonely.$"

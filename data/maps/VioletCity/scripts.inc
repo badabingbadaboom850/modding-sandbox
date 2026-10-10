@@ -227,6 +227,8 @@ VioletCity_Text_ResearchAlreadyReported:
 VioletCity_EventScript_Gramps::
 	lock
 	faceplayer
+	call TrioRift_CheckAtmosphere
+	goto_if_eq VAR_RESULT, TRUE, VioletCity_RiftAtmosphere
 	msgbox VioletCity_Text_Gramps, MSGBOX_DEFAULT
 	closemessage
 	release
@@ -779,3 +781,11 @@ berrytrader_juggler_Text_11:
 DexnavDude_Text_0:
 	.string "If you have a Pokegéar, you should\n"
 	.string "make use of the Dexnav feature in it.$"
+
+VioletCity_RiftAtmosphere::
+	msgbox VioletCity_RiftAtmosphereText, MSGBOX_DEFAULT
+	closemessage
+	release
+	end
+VioletCity_RiftAtmosphereText:
+	.string "The bell rings only once.\nThen the hills answer.\pNot louder. Just closer.\nAs if they were listening.$"

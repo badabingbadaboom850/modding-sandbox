@@ -88,6 +88,8 @@ FuchsiaCity_Text_PokefanM_TrioWorld1_Resume:
 	end
 
 FuchsiaCity_EventScript_Teacher::
+	call TrioRift_CheckAtmosphere
+	goto_if_eq VAR_RESULT, TRUE, FuchsiaCity_RiftAtmosphere
 	msgbox FuchsiaCity_Text_Teacher, MSGBOX_NPC
 	end
 
@@ -182,3 +184,9 @@ FuchsiaCity_Text_NoLitteringSign:
 	.string "No littering.\p"
 	.string "Please take your waste with you.$"
 
+
+FuchsiaCity_RiftAtmosphere::
+	msgbox FuchsiaCity_RiftAtmosphereText, MSGBOX_NPC
+	end
+FuchsiaCity_RiftAtmosphereText:
+	.string "The evening shadows are\nnot so restless lately.\pEven timid Pokemon linger\nby the garden lanterns.$"

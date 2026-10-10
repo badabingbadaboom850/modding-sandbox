@@ -190,6 +190,8 @@ CianwoodCity_Text_PokefanM_TrioWorldAfter:
 CianwoodCity_EventScript_Lass::
 	lock
 	faceplayer
+	call TrioRift_CheckAtmosphere
+	goto_if_eq VAR_RESULT, TRUE, CianwoodCity_RiftAtmosphere
 	msgbox CianwoodCity_Text_Lass, MSGBOX_DEFAULT
 	closemessage
 	release
@@ -407,3 +409,11 @@ CianwoodCity_Text_Engineer:
 	.string "This path is under construction.\n"
 	.string "We're getting the new Safari Zone\l"
 	.string "up and running!$"
+
+CianwoodCity_RiftAtmosphere::
+	msgbox CianwoodCity_RiftAtmosphereText, MSGBOX_DEFAULT
+	closemessage
+	release
+	end
+CianwoodCity_RiftAtmosphereText:
+	.string "I walk the shore at dusk.\nThe dark feels kinder now.\pLittle lights on the tide\nseem to keep pace with me.$"

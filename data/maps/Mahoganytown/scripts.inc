@@ -217,6 +217,8 @@ MahoganyTown_EventScript_Gramps::
 	end
 
 MahoganyTown_EventScript_GrampsAfter::
+	call TrioRift_CheckAtmosphere
+	goto_if_eq VAR_RESULT, TRUE, Mahoganytown_RiftAtmosphere
 	msgbox MahoganyTown_Text_GrampsClearedRocketHideout, MSGBOX_DEFAULT
 	closemessage
 	release
@@ -399,3 +401,11 @@ ElmPhoneRoute39LegendaryText:
 	.string "{PLAYER}!\n"
 	.string "This may be a rare opportunity\l"
 	.string "to give chase!$"
+
+Mahoganytown_RiftAtmosphere::
+	msgbox Mahoganytown_RiftAtmosphereText, MSGBOX_DEFAULT
+	closemessage
+	release
+	end
+Mahoganytown_RiftAtmosphereText:
+	.string "The cold still bites.\nBut not quite as deep.\pThere is a warmth beneath\nit. Like a sleeping ember.$"

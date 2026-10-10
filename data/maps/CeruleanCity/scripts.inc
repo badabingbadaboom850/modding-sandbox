@@ -155,6 +155,8 @@ CeruleanCity_Text_Fisher_RocketTip:
 	.string "Cerulean's Cape.$"
 
 CeruleanCity_EventScript_Youngster::
+	call TrioRift_CheckAtmosphere
+	goto_if_eq VAR_RESULT, TRUE, CeruleanCity_RiftAtmosphere
 	msgbox CeruleanCity_Text_Youngster1, MSGBOX_NPC
 	end
 
@@ -220,3 +222,9 @@ CeruleanCity_Text_CapeSign:
 CeruleanCity_Text_LockedDoor:
 	.string "It's locked…$"
 
+
+CeruleanCity_RiftAtmosphere::
+	msgbox CeruleanCity_RiftAtmosphereText, MSGBOX_NPC
+	end
+CeruleanCity_RiftAtmosphereText:
+	.string "The water looks the same.\nBut stand by it a while.\pThere is a quiet warmth.\nLike someone sitting near.$"

@@ -80,6 +80,8 @@ AzaleaTown_EventScript_Gramps::
 	end
 
 AzaleaTown_EventScript_Gramps2::
+	call TrioRift_CheckAtmosphere
+	goto_if_eq VAR_RESULT, TRUE, AzaleaTown_RiftAtmosphere
 	msgbox AzaleaTown_Text_GrampsAfter, MSGBOX_DEFAULT
 	closemessage
 	release
@@ -639,3 +641,11 @@ AzaleaTown_Text_ScrapbookNeighbor:
 	.string "I like that sort of\n"
 	.string "legend.$"
 
+
+AzaleaTown_RiftAtmosphere::
+	msgbox AzaleaTown_RiftAtmosphereText, MSGBOX_DEFAULT
+	closemessage
+	release
+	end
+AzaleaTown_RiftAtmosphereText:
+	.string "The woods feel different.\nEven the leaves fall slow.\pI took a wrong turn today.\nSomehow, I felt safe.$"

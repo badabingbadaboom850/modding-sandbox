@@ -224,6 +224,8 @@ EcruteakCity_EventScript_Youngster::
 EcruteakCity_EventScript_SageRight::
 	lock
 	faceplayer
+	call TrioRift_CheckAtmosphere
+	goto_if_eq VAR_RESULT, TRUE, EcruteakCity_RiftAtmosphere
 	msgbox EcruteakCity_Text_Gramps2, MSGBOX_DEFAULT
 	closemessage
 	release
@@ -848,3 +850,11 @@ EcruteakCity_Text_CelestialSkepticAfter:
 	.string "someone else to open her\n"
 	.string "food.$"
 
+
+EcruteakCity_RiftAtmosphere::
+	msgbox EcruteakCity_RiftAtmosphereText, MSGBOX_DEFAULT
+	closemessage
+	release
+	end
+EcruteakCity_RiftAtmosphereText:
+	.string "The pond holds its light\nlong after clouds pass.\pEven the ripples seem to\nfind their way home.$"

@@ -16,9 +16,9 @@ All three personal chapters are implemented. The shared sanctuary and Scott aren
 
 ## First playable chapter
 
-The Center's ninth NPC is the old man at (10,6), separate from the festival guide at (9,5). After `FLAG_TRIO_FESTIVAL_PICNIC`, he offers an optional trip with the full trio. Declining changes nothing. Warp destination is (12,27) on a new 24x30 map using existing Johto General/National Park tilesets, no cave, weather callbacks, connections or wild encounter table.
+Goldenrod's outdoor old man at (17,36), near Bill's house west of the Center, is the city's trial entry. After `FLAG_TRIO_FESTIVAL_PICNIC`, he offers an optional trip with the full trio. Declining changes nothing. Warp destination is (12,27) on a new 24x30 map using existing Johto General/National Park tilesets, no cave, weather callbacks, connections or wild encounter table.
 
-After the picnic, festival dialogue points to the town old man west of the Center near Bill's house. Talking to him introduces the trials and offers travel to the next unfinished chapter. Declining leaves all progress intact. The Center guide remains a fallback and follows the same routing. After all three charms are collected, declining earlier revisit offers lets you select Mirror House or Lantern Trail. No later Badge requirement is added.
+After the picnic, festival dialogue points to the town old man west of the Center near Bill's house. Talking to him introduces the trials and offers travel to the next unfinished chapter. Declining leaves all progress intact. The dedicated Goldenrod Center trial NPC has been removed; its festival guide and other residents remain. After all three charms are collected, declining earlier revisit offers lets you select Mirror House or Lantern Trail. No later Badge requirement is added.
 
 Bottom clearing: Riko (13,27), first echo pad (10,26), exit guide (9,27). Second clearing: Bijuu (14,21), pad (10,21). Third: Penny (9,13), pad (10,13). Final clearing: two-headed Riko Echo guardian (12,4). Three two-wide corridors at x11-12, rows24-25,16-17,8-9 are blocked until the corresponding pad is accepted. They are restored open on map load from persistent state. Bottom warps (11-12,28) and the exit guide return to Goldenrod. Backtracking always remains possible.
 
@@ -83,10 +83,20 @@ Prompt set: Bijuu is a female cream Siamese with dark chocolate points and blue 
 
 ## Trial polish after player feedback
 
-After the festival picnic, the original Goldenrod old man at (17,36), west of the Pokemon Center near Bill's house, introduces the Rift and offers travel to the next unclaimed charm. Festival host/picnic dialogue points toward him without warping. Center guides remain available for returning players. His original dialogue and scrapbook interaction remain intact; no extra object or progress flag is allocated.
+After the festival picnic, the original Goldenrod old man at (17,36), west of the Pokemon Center near Bill's house, introduces the Rift and offers travel to the next unclaimed charm. Festival host/picnic dialogue points toward him without warping. Ecruteak and Olivine Center guides remain available for the later chapters. His original dialogue and scrapbook interaction remain intact; no extra object or progress flag is allocated.
 
 All three midgame guardians use the highest non-egg party level plus10, capped at100, recalculated on each attempt. Riko uses Moonblast/Echoed Voice/Calm Mind/Quick Attack; Bijuu uses Flamethrower/Swift/Will-O-Wisp/Nasty Plot; Penny uses Play Rough/Crunch/Baby-Doll Eyes/Protect. Safe healing, loss/escape retries, pending full-Bag gifts and reusable evolution charms remain intact. Previous winners keep their charms and are not forced to repeat the harder fights. The separate final Spirit challenges are unchanged.
 
 The follower engine expects side frames facing LEFT and mirrors them for eastward movement. Bijuu's imported side frames are now flipped to match. Penny's original uniform crop caught neighboring artwork and truncated tails; an image-generated repair preserves the blonde dachshund/light bronze armor/no shield design while isolating each pose. Updated pose-specific crops remove loose fragments from battle and follower frames. Repair prompt requested individually padded front/back/icon/down/down-step/left/left-step/up/up-step sprites with no neighboring pixels or glow. The importer keeps GBA palette-index0 transparency and six-frame animation ordering.
 
 Player screenshots confirmed the previous chapters and rewards worked, and exposed the sprite defects. New indexed-frame inspection, source simulation, compilation and engine checks are reported separately from a new rendered emulator playthrough.
+
+## Atmosphere after all three victories
+
+Thirteen ordinary residents across Johto and Kanto gain alternate observations after all three saved chapter states reach4 (victory recorded). State5 also qualifies. A full Bag can leave a charm pending without delaying the atmosphere. No charm possession, party form, Badge or new flag is required. Before all three victories, residents retain their original lines. Azalea and Mahogany retain the original Rocket-story dispatch before the new observations become eligible.
+
+The observations describe natural changes rather than reporting the family's achievements: answering hill echoes in Violet and Blackthorn, gentler woods in Azalea, softer city sounds in Goldenrod, lingering pond light in Ecruteak, warm sea breezes and lighthouse light in Olivine, dusk tide lights in Cianwood, warmth beneath Mahogany's cold, together-moving grass in Pallet, flowers anticipating sunlight in Celadon, quieter shadows in Fuchsia, warm water in Cerulean and homeward-feeling breezes in Vermilion. These are dialogue changes; map weather, lighting and battle conditions are not changed.
+
+Exact residents and text labels are listed in tools/rift/atmosphere_manifest.json. tools/rift/validate_atmosphere.py exercises every new interaction across64 saved-state combinations, all victories with full Bag/missing party, original map objects/story dispatch, authoring parity, line width and removal of the Goldenrod Center trial NPC. Existing saves receive the new dialogue on their next conversation without replaying trials.
+
+Local verification for the atmosphere update: production ROM compilation,60 source/geometry/asset regression groups, compilation/parity of modified Pory sources, and the actual engine Bag/Shop text-layout check for all951 item descriptions. Bijuu's Fire and Penny's Bravery descriptions were shortened to fit the102px narrow-font window after CI exposed overflowing lines. Fresh rendered conversation/entry confirmation and remote CI status are separate.

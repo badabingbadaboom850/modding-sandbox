@@ -135,6 +135,8 @@ VermilionCity_EventScript_Machop::
 	end
 
 VermilionCity_EventScript_Nerd::
+	call TrioRift_CheckAtmosphere
+	goto_if_eq VAR_RESULT, TRUE, VermilionCity_RiftAtmosphere
 	msgbox VermilionCity_Text_SuperNerd, MSGBOX_NPC
 	end
 
@@ -412,3 +414,9 @@ VermilionCity_Text_DiglettsCaveSign:
 VermilionCity_Text_PortSign:
 	.string "Vermilion Port\n"
 	.string "Entrance$"
+
+VermilionCity_RiftAtmosphere::
+	msgbox VermilionCity_RiftAtmosphereText, MSGBOX_NPC
+	end
+VermilionCity_RiftAtmosphereText:
+	.string "My compass still points\nnorth. Nothing unusual.\pSo why does every breeze\nfeel like coming home?$"

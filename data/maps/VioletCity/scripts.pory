@@ -227,6 +227,8 @@ VioletCity_Text_ResearchAlreadyReported:
 VioletCity_EventScript_Gramps::
 	lock
 	faceplayer
+	call TrioRift_CheckAtmosphere
+	goto_if_eq VAR_RESULT, TRUE, VioletCity_RiftAtmosphere
 	msgbox VioletCity_Text_Gramps, MSGBOX_DEFAULT
 	closemessage
 	release
@@ -637,6 +639,14 @@ VioletCity_Text_Kimono_Girl4:
 .string "I am counting on you.$"
 
 
+
+VioletCity_RiftAtmosphere::
+	msgbox VioletCity_RiftAtmosphereText, MSGBOX_DEFAULT
+	closemessage
+	release
+	end
+VioletCity_RiftAtmosphereText:
+	.string "The bell rings only once.\nThen the hills answer.\pNot louder. Just closer.\nAs if they were listening.$"
 `
 
 script berrytrader_juggler {

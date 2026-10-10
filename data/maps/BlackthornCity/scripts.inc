@@ -121,6 +121,8 @@ BlackthornCity_EventScript_Youngster::
 	end
 
 BlackthornCity_EventScript_CoolTrainerF2::
+	call TrioRift_CheckAtmosphere
+	goto_if_eq VAR_RESULT, TRUE, BlackthornCity_RiftAtmosphere
 	msgbox BlackthornCooltrainerF2Text, MSGBOX_NPC
 	end
 
@@ -318,3 +320,9 @@ BlackthornCity_Text_MoveDeletersHouseSign:
 
 BlackthornCity_Text_DragonDenSign:
 	.string "Dragon's Den Ahead$"
+
+BlackthornCity_RiftAtmosphere::
+	msgbox BlackthornCity_RiftAtmosphereText, MSGBOX_NPC
+	end
+BlackthornCity_RiftAtmosphereText:
+	.string "I called into the hills.\nTwo echoes answered me.\pFor a moment, even the\nmountain seemed at peace.$"

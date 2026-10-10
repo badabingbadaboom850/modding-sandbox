@@ -31,8 +31,8 @@ class Run:
    if op=='return':
     if not stack:return self
     pc=stack.pop();continue
-   if op=='lockall':self.locked=True;continue
-   if op=='releaseall':self.locked=False;continue
+   if op in ('lockall','lock'):self.locked=True;continue
+   if op in ('releaseall','release'):self.locked=False;continue
    if op in ('faceplayer','closemessage','waitstate','playmoncry','waitmoncry'):continue
    if op in ('setflashlevel','animateflash'):self.flash=self.value(a[0]);continue
    if op=='msgbox':
@@ -58,7 +58,7 @@ class Run:
     suffix=op.split('_if_')[1]
     if suffix in ('set','unset'):jump=(a[0] in self.flags)==(suffix=='set')
     else:
-     x,y=self.value(a[0]),self.value(a[1]);jump={'eq':x==y,'ne':x!=y,'ge':x>=y}[suffix]
+     x,y=self.value(a[0]),self.value(a[1]);jump={'eq':x==y,'ne':x!=y,'ge':x>=y,'lt':x<y}[suffix]
    else:raise AssertionError(CODE[pc-1])
    if jump:
     if target=='TrioSisters_CheckAll':self.vars['VAR_RESULT']=int(self.girls);continue
@@ -135,7 +135,7 @@ class Checks(unittest.TestCase):
     tile=v&0x7ff;self.assertLess((tile%1024)*2+1,len(attrs[tile>=1024]))
     if not(v&0x800) and index not in (28*24+11,28*24+12):self.assertIn(struct.unpack_from('<H',attrs[tile>=1024],(tile%1024)*2)[0]&255,(0,3))
   center=json.loads((ROOT/'data/maps/GoldenrodCity_PokemonCenter/map.json').read_text());layout=next(l for l in layouts if l['id']==center['layout']);blocks=struct.unpack('<%dH'%(layout['width']*layout['height']),(ROOT/layout['blockdata_filepath']).read_bytes());self.assertFalse(blocks[6*layout['width']+10]&0x800)
-  old=json.loads(subprocess.check_output(['git','show','0a22e000:data/maps/GoldenrodCity_PokemonCenter/map.json'],cwd=ROOT,text=True));self.assertEqual(center['object_events'][:-1],old['object_events']);self.assertEqual(center['warp_events'],old['warp_events'])
+  old=json.loads(subprocess.check_output(['git','show','0a22e000:data/maps/GoldenrodCity_PokemonCenter/map.json'],cwd=ROOT,text=True));self.assertEqual(center['object_events'],old['object_events']);self.assertEqual(center['warp_events'],old['warp_events'])
  def test_source_authoring_and_safe_lifecycle(self):
   self.assertEqual((ROOT/'data/maps/TrioEchoWoods/scripts.pory').read_text().split('`',1)[1].rsplit('`',1)[0].strip(),ECHO_S.strip())
   for name in re.findall(r'\bTrioRift_\w+\b',S):self.assertIn(name,LABELS)

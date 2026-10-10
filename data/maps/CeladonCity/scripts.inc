@@ -66,6 +66,8 @@ CeladonCity_EventScript_Youngster2::
 	end
 
 CeladonCity_EventScript_Teacher2::
+	call TrioRift_CheckAtmosphere
+	goto_if_eq VAR_RESULT, TRUE, CeladonCity_RiftAtmosphere
 	msgbox CeladonCity_Text_Teacher2, MSGBOX_NPC
 	end
 
@@ -209,3 +211,9 @@ CeladonCity_Text_TrainerTips:
 	.string "fire and water.\p"
 	.string "Get your items at Celadon Dept.\n"
 	.string "Store!$"
+
+CeladonCity_RiftAtmosphere::
+	msgbox CeladonCity_RiftAtmosphereText, MSGBOX_NPC
+	end
+CeladonCity_RiftAtmosphereText:
+	.string "The flowers turn together\nbefore the sun comes out.\pI cannot explain it.\nBut the garden feels glad.$"

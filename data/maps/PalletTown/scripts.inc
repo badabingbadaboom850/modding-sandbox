@@ -7,6 +7,8 @@ PalletTown_OnLoad::
 	end
 
 PalletTown_EventScript_Woman::
+	call TrioRift_CheckAtmosphere
+	goto_if_eq VAR_RESULT, TRUE, PalletTown_RiftAtmosphere
 	msgbox PalletTown_Text_Teacher, MSGBOX_NPC
 	end
 PalletTown_EventScript_Fatman::
@@ -79,3 +81,9 @@ PalletTown_Text_OaksLabSign:
 
 PalletTown_Text_BluesHouseSign:
 	.string "Blue's House$"
+
+PalletTown_RiftAtmosphere::
+	msgbox PalletTown_RiftAtmosphereText, MSGBOX_NPC
+	end
+PalletTown_RiftAtmosphereText:
+	.string "The grass leans together.\nThere is hardly any wind.\pSomething feels settled.\nI sleep better these days.$"
