@@ -153,3 +153,5 @@
 - [The Great Snack Chase](trio_snack_chase.md)
 
 - [Spirit Rift](trio_spirit_rift.md)
+
+- [The abandoned seaside garden and Flower Riko](trio_garden.md)

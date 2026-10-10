@@ -10366,6 +10366,16 @@
       "secondary_tileset": "gTileset_NationalPark",
       "border_filepath": "data/layouts/TrioLanternTrail/border.bin",
       "blockdata_filepath": "data/layouts/TrioLanternTrail/map.bin"
+    },
+    {
+      "id": "LAYOUT_TRIO_GARDEN",
+      "name": "TrioGarden_Layout",
+      "width": 24,
+      "height": 18,
+      "primary_tileset": "gTileset_Johto_General",
+      "secondary_tileset": "gTileset_NationalPark",
+      "border_filepath": "data/layouts/TrioGarden/border.bin",
+      "blockdata_filepath": "data/layouts/TrioGarden/map.bin"
     }
   ]
 }

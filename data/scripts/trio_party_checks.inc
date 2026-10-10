@@ -1,5 +1,7 @@
 @ CheckPartyHasSpecies compares exact IDs. Riko Spirit is a separate species.
 TrioParty_CheckRiko::
+	checkspecies SPECIES_RIKO_FLOWER
+	goto_if_eq VAR_RESULT, TRUE, TrioParty_SetResultTrue
 	checkspecies SPECIES_RIKO_ECHO
 	goto_if_eq VAR_RESULT, TRUE, TrioParty_SetResultTrue
 	checkspecies SPECIES_RIKO

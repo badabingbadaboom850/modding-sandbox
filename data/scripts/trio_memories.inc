@@ -2,6 +2,8 @@
 @ forces another boss fight. Mom can deliver any pending Spirit memento.
 TrioMemories_Mom::
 	call TrioGang_TryReclaim
+	call TrioGarden_TryBloom
+	goto_if_eq VAR_RESULT, FALSE, TrioMemories_Return
 	call TrioKeepsakes_TryRiko
 	goto_if_eq VAR_RESULT, FALSE, TrioMemories_Return
 	call TrioKeepsakes_TryPenny
@@ -133,6 +135,7 @@ TrioScrapbook_Sisters:
 	call_if_ge VAR_TRIO_RIFT_RIKO_STATE, 4, TrioRift_ReadMemory
 	call_if_ge VAR_TRIO_RIFT_BIJUU_STATE, 4, TrioMirror_ReadMemory
 	call_if_ge VAR_TRIO_RIFT_PENNY_STATE, 4, TrioLantern_ReadMemory
+	call_if_ge VAR_TRIO_GARDEN_STATE, 5, TrioGarden_ReadMemory
 	call_if_eq VAR_TRIO_GANG_WINS, 6, TrioGang_ReadMemory
 	goto TrioScrapbook_Menu
 TrioScrapbook_Letters:

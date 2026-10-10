@@ -17696,6 +17696,22 @@ const struct ItemInfo gItemsInfo[] =
         .iconPalette = gItemIconPalette_RikosCourage,
     },
 
+    [ITEM_RIKOS_BLOOM] =
+    {
+        .name = ITEM_NAME("Riko's Bloom"),
+        .price = 0,
+        .description = COMPOUND_STRING("Flowers for Riko.\nReusable. Use again\nto change her back."),
+        .importance = 1,
+        .pocket = POCKET_KEY_ITEMS,
+        .sortType = ITEM_TYPE_EVOLUTION_STONE,
+        .heldSlot = 0,
+        .type = ITEM_USE_PARTY_MENU,
+        .fieldUseFunc = ItemUseOutOfBattle_EvolutionStone,
+        .effect = gItemEffect_EvoItem,
+        .iconPic = gItemIcon_RikosBloom,
+        .iconPalette = gItemIconPalette_RikosBloom,
+    },
+
     [ITEM_RIKOS_WAND] =
     {
         .name = ITEM_NAME("Riko's Wand"),

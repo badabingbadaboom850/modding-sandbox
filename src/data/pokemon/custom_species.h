@@ -519,3 +519,29 @@ static const struct LevelUpMove sPennyBraveLevelUpLearnset[] = {
     LEVEL_UP_END
 };
 #endif
+
+#if P_FAMILY_RIKO
+const u32 gMonFrontPic_RikoFlower[] = INCBIN_U32("graphics/pokemon/riko_flower/front.4bpp.smol");
+const u32 gMonBackPic_RikoFlower[] = INCBIN_U32("graphics/pokemon/riko_flower/back.4bpp.smol");
+const u16 gMonPalette_RikoFlower[] = INCBIN_U16("graphics/pokemon/riko_flower/normal.gbapal");
+const u16 gMonShinyPalette_RikoFlower[] = INCBIN_U16("graphics/pokemon/riko_flower/shiny.gbapal");
+const u8 gMonIcon_RikoFlower[] = INCBIN_U8("graphics/pokemon/riko_flower/icon.4bpp");
+const u16 gMonIconPalette_RikoFlower[] = INCBIN_U16("graphics/pokemon/riko_flower/icon_normal.gbapal");
+const u16 gMonShinyIconPalette_RikoFlower[] = INCBIN_U16("graphics/pokemon/riko_flower/icon_shiny.gbapal");
+const u32 gObjectEventPic_RikoFlower[] = INCBIN_U32("graphics/pokemon/riko_flower/overworld.4bpp");
+const u16 gOverworldPalette_RikoFlower[] = INCBIN_U16("graphics/pokemon/riko_flower/overworld_normal.gbapal");
+const u16 gShinyOverworldPalette_RikoFlower[] = INCBIN_U16("graphics/pokemon/riko_flower/overworld_shiny.gbapal");
+static const struct SpriteFrameImage sPicTable_RikoFlower[] = {
+    overworld_ascending_frames(gObjectEventPic_RikoFlower, 4, 4),
+};
+static const struct LevelUpMove sRikoFlowerLevelUpLearnset[] = {
+    LEVEL_UP_MOVE(0, MOVE_AROMATHERAPY),
+    LEVEL_UP_MOVE(1, MOVE_TACKLE), LEVEL_UP_MOVE(1, MOVE_TAIL_WHIP),
+    LEVEL_UP_MOVE(5, MOVE_BABY_DOLL_EYES), LEVEL_UP_MOVE(9, MOVE_CHARM),
+    LEVEL_UP_MOVE(13, MOVE_QUICK_ATTACK), LEVEL_UP_MOVE(17, MOVE_DRAINING_KISS),
+    LEVEL_UP_MOVE(22, MOVE_PLAY_ROUGH), LEVEL_UP_MOVE(27, MOVE_TAKE_DOWN),
+    LEVEL_UP_MOVE(32, MOVE_DAZZLING_GLEAM), LEVEL_UP_MOVE(37, MOVE_AGILITY),
+    LEVEL_UP_MOVE(42, MOVE_MOONBLAST), LEVEL_UP_MOVE(47, MOVE_LAST_RESORT),
+    LEVEL_UP_MOVE(52, MOVE_FLOOF_FURY), LEVEL_UP_MOVE(60, MOVE_MEGA_RIKO), LEVEL_UP_END
+};
+#endif

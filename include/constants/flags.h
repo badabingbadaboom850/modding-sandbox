@@ -1829,7 +1829,8 @@
 #define FLAG_TRIO_RIFT_COURAGE_RECEIVED               0x1089
 #define FLAG_TRIO_RIFT_FIRE_RECEIVED                  0x108A
 #define FLAG_TRIO_RIFT_BRAVERY_RECEIVED               0x108B
-#define CUSTOM_FLAGS_END                            FLAG_TRIO_RIFT_BRAVERY_RECEIVED
+#define FLAG_TRIO_GARDEN_BLOOM_RECEIVED               0x108C
+#define CUSTOM_FLAGS_END                            FLAG_TRIO_GARDEN_BLOOM_RECEIVED
 
 
 #define FLAG_0x1500                                 0x1500

@@ -15,10 +15,12 @@ TrioCamp_DecorateRoom::
 	setmetatile 1, 1, 0x110, TRUE
 	setmetatile 6, 1, 0x110, TRUE
 	setmetatile 8, 0, 0x108, TRUE
+	setmetatile 8, 1, 0x113, TRUE
 	call_if_set FLAG_BADGE03_GET, TrioCampKeepsakes_TravelPhotos
 	call_if_set FLAG_BADGE04_GET, TrioCampKeepsakes_PlayMat
 	call_if_set FLAG_BADGE08_GET, TrioCampKeepsakes_LeagueWall
 	call_if_set FLAG_IS_CHAMPION, TrioCampKeepsakes_ChampionRoom
+	call_if_ge VAR_TRIO_GARDEN_STATE, 5, TrioGarden_DecorateCamp
 	end
 TrioCampKeepsakes_TravelPhotos:
 	setmetatile 0, 0, 0x150, TRUE
@@ -126,6 +128,7 @@ TrioCampKeepsakes_ReadRoom::
 	call_if_set FLAG_BADGE04_GET, TrioCampKeepsakes_ReadMat
 	call_if_set FLAG_BADGE08_GET, TrioCampKeepsakes_ReadLeague
 	call_if_set FLAG_IS_CHAMPION, TrioCampKeepsakes_ReadChampion
+	call_if_ge VAR_TRIO_GARDEN_STATE, 5, TrioGarden_ReadCampFlower
 	return
 TrioCampKeepsakes_ReadPennyCorner:
 	msgbox TrioCampKeepsakes_PennyCornerText, MSGBOX_DEFAULT

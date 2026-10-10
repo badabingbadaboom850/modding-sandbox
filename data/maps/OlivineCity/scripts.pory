@@ -12,6 +12,7 @@ OlivineCity_OnLoad::
 	end
 
 OlivineCity_MapScript_OnTransition::
+	call TrioGarden_OnReturn
 	call Common_EventScript_CheckElmRocketCall
 	call Common_EventScript_SetupRivalGfxId
 	goto OlivineCity_MapScript_CheckWeather
@@ -398,6 +399,7 @@ script OlivineCity_Littlegirl_Warf {
     faceplayer
     msgbox("I'm feeding the Mareanie every day!
             They sometimes let me play with them!")
+    call(TrioGarden_Offer)
     release
     end
 }

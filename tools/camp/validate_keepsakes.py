@@ -4,6 +4,8 @@ from pathlib import Path
 import collections,itertools,json,re,struct,subprocess,unittest
 ROOT=Path(__file__).resolve().parents[2]
 SOURCE=(ROOT/'data/scripts/trio_camp_keepsakes.inc').read_text()
+CAMP_SOURCE=SOURCE
+SOURCE+='\n'+(ROOT/'data/maps/TrioGarden/scripts.inc').read_text()
 LABELS={};CODE=[]
 for line in SOURCE.splitlines():
     line=line.strip()
@@ -18,7 +20,7 @@ MAP=json.loads((ROOT/'data/maps/NewBarkTown_House1/map.json').read_text())
 ROWS=re.findall(r'\{(FLAG_HIDE_TRIO_CAMP_\w+), (FLAG_\w+), (FLAG_\w+|0)\}',(ROOT/'src/trio_camp.c').read_text())
 def visibility(flags):return {hide for hide,earned,legacy in ROWS if earned not in flags and legacy not in flags}
 class Run:
-    def __init__(self,flags=()):self.flags=set(flags);self.blocks=BASE.copy();self.text=[];self.locked=False;self.ended=False
+    def __init__(self,flags=(),garden=0):self.garden=garden;self.flags=set(flags);self.blocks=BASE.copy();self.text=[];self.locked=False;self.ended=False
     def run(self,label):
         pc=LABELS[label];stack=[]
         for _ in range(500):
@@ -36,6 +38,10 @@ class Run:
                 if tile is None:tile=int(a[2],0)
                 value=tile|(0x800 if CONSTANTS[a[3]] else 0)
                 self.blocks[y*13+x]=(self.blocks[y*13+x]&0xF000)|value;continue
+            if op=='call_if_ge':
+                assert a[0]=='VAR_TRIO_GARDEN_STATE'
+                if self.garden>=int(a[1]):stack.append(pc);pc=LABELS[a[2]]
+                continue
             if op in ['call_if_set','call_if_unset','goto_if_set','goto_if_unset']:
                 condition=(a[0] in self.flags)==op.endswith('_set')
                 if condition:
@@ -103,10 +109,17 @@ class Checks(unittest.TestCase):
         allflags=flags|{'FLAG_BADGE01_GET','FLAG_TRIO_FESTIVAL_PICNIC','FLAG_TRIO_PENNY_SPIRIT_COMPLETE','FLAG_TRIO_BIJUU_SPIRIT_COMPLETE'}
         r=Run(allflags|visibility(allflags));r.locked=True;r.run('TrioCampKeepsakes_ReadRoom')
         self.assertTrue(r.locked);self.assertFalse(r.ended);self.assertEqual(len(r.text),11)
-        self.assertNotIn('setflag',SOURCE);self.assertNotIn('giveitem',SOURCE)
+        self.assertNotIn('setflag',CAMP_SOURCE);self.assertNotIn('giveitem',CAMP_SOURCE)
+    def test_garden_flower_completion_catchup(self):
+        for state in range(7):
+            r=Run(garden=state).run('TrioCamp_DecorateRoom')
+            self.assertEqual(r.blocks[21]&0x7ff,0x114 if state>=5 else BASE[21]&0x7ff)
+            r.run('TrioCamp_DecorateRoom');self.assertEqual(r.blocks[21]&0xF800,BASE[21]&0xF800)
+            r.locked=True;r.run('TrioCampKeepsakes_ReadRoom');self.assertTrue(r.locked)
+            self.assertEqual('TrioGarden_CampFlowerText' in r.text,state>=5)
     def test_text_and_references(self):
         for name in re.findall(r'\bTrioCampKeepsakes_\w+\b',SOURCE):self.assertIn(name,LABELS)
-        for string in re.findall(r'\.string "(.*)"',SOURCE):
+        for string in re.findall(r'\.string "(.*)"',CAMP_SOURCE):
             self.assertTrue(string.endswith('$'))
             for page in string[:-1].split(r'\p'):
                 lines=page.split(r'\n');self.assertLessEqual(len(lines),2)

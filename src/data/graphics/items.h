@@ -2209,3 +2209,6 @@ const u16 gItemIconPalette_BijuusFire[] = INCBIN_U16("graphics/items/icon_palett
 
 const u32 gItemIcon_PennysBravery[] = INCBIN_U32("graphics/items/icons/pennys_bravery.4bpp.lz");
 const u16 gItemIconPalette_PennysBravery[] = INCBIN_U16("graphics/items/icon_palettes/pennys_bravery.gbapal");
+
+const u32 gItemIcon_RikosBloom[] = INCBIN_U32("graphics/items/icons/rikos_bloom.4bpp.smol");
+const u16 gItemIconPalette_RikosBloom[] = INCBIN_U16("graphics/items/icon_palettes/rikos_bloom.gbapal");

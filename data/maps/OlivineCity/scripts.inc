@@ -12,6 +12,7 @@ OlivineCity_OnLoad::
 	end
 
 OlivineCity_MapScript_OnTransition::
+	call TrioGarden_OnReturn
 	call Common_EventScript_CheckElmRocketCall
 	call Common_EventScript_SetupRivalGfxId
 	goto OlivineCity_MapScript_CheckWeather
@@ -396,6 +397,7 @@ OlivineCity_Littlegirl_Warf::
 	lock
 	faceplayer
 	msgbox OlivineCity_Littlegirl_Warf_Text_0
+	call TrioGarden_Offer
 	release
 	end
 
