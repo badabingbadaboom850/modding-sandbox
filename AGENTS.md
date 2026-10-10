@@ -849,3 +849,48 @@ gift flows, seven collision/elevation/old-event-preserving placements, all60
 compiled follower frames/palettes, historical IDs, text and docs-summary.
 The user confirmed the original three costumes; new seven forms and actual
 in-game save/reload still require focused emulator confirmation.
+
+
+## Outfit reactions, photo album and optional side stories (2026-10-10)
+
+User requested all five proposed ideas together. Ten costume/Poison gift NPCs
+plus three ordinary residents react to current outfits; original dialogue stays.
+Scott has one affectionate line per outfit/Poison at the tutor and four existing
+Badge-city moments. New Bark tutor menu adds Album2, Exit3; Signatures0 and
+Elemental1 keep their behavior. Scrapbook adds Album5 before Exit6, preserving
+old options0-4. Image pages show actual native sprites, close on every return,
+and keep earned portraits independent of current form/Bag ownership.
+
+Audited-unused saved vars4131-4135 reserve three hunts0 offer/1 accepted/2 found/
+3 claimed; bread mystery0 rumor/1 accepted/2 clue/3 reveal/4 claimed; photo bitmask
+0-8 costumes,9 Poison. Existing arrays, bounds, IDs and earned progress unchanged.
+Photo recording is in completed-evolution Camp hook and non-Egg party scan on
+album opening; Penny stages share one bit, reversion cannot erase it. Numeric
+sprite tags4132/4133/4134 are unrelated to hexadecimal saved addresses.
+
+Original costume givers now offer optional hunts: Cherrygrove basket39,17 for
+Riko, Violet parcel18,39 for Bijuu, Azalea mitten43,15 for Penny. Accept/search
+needs own family; state2 reclaim does not. Rewards3 Oran/3smallWawa/3Pecha once,
+state advances only after successful giveitem. Full Bags retry; no battles or
+route gates. Goldenrod man53,14 offers fake legendary mystery, woman61,29 gives
+clue, Bread Bijuu9,3 in eastern House4 reveals toast. Return reward2mediumWawa;
+state3 full-Bag retry and replay preserve discovery. All four memories appear
+in Sisters scrapbook; bread at discovery, hunts after successful claim.
+
+Six props/actors append, no original events/warps change, four walkable approaches
+and nearby actor budgets3-8. Three civilian hooks preserve all commands in both
+Pory/assembly. Specials append, old indices fixed. See docs/trio_outfit_stories.md
+and tools/costumes/validate_stories.py. Rendered new UI/story/save reload remains
+unconfirmed. Mom friend's authorized ten-item testing supplies remain intact.
+
+Validation: RELEASE=1 production ROM compiled (32528344 bytes ROM,255416 bytes
+EWRAM). All70 focused engine/Camp/battle checks pass plus7 expected harness
+self-test failures, zero unexpected failures. New checks cover every portrait
+bit, both Penny stages, Egg exclusions, current-family reactions, existing dressed
+saves, evolution hook retention and photo count; prior costumes/Poison/Megas/
+Camp/cafe/cavern/trainers pass. Actual-source checks execute192 hunt paths,60
+bread-mystery paths and all portrait/locked/Back/B/reaction/Scott flows; original
+22528 test-gift states,304 natural gifts, all60 compiled follower frames,
+tutor cancel/mode resets, geometry/Pory/history/docs/diff checks also pass.
+Rendered new dialogue, portraits, quests and real save/reload still need testing.
+Previous costume batch CI167 completed successfully. This batch has separate CI.

@@ -164,3 +164,5 @@
 - [Family signature moves and Scott tutor](trio_signature_moves.md)
 
 - [Trio costume collectibles](trio_costumes.md)
+
+- [Outfit stories and little family adventures](trio_outfit_stories.md)

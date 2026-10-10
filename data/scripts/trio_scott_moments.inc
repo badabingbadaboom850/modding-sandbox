@@ -3,6 +3,7 @@
 TrioScott_Azalea::
 	lockall
 	faceplayer
+	call TrioOutfit_Scott
 	goto_if_unset FLAG_BADGE02_GET, TrioScott_Azalea_Waiting
 	goto_if_set FLAG_TRIO_SCOTT_AZALEA, TrioScott_Azalea_Replay
 	msgbox TrioScott_Azalea_Offer, MSGBOX_YESNO
@@ -37,6 +38,7 @@ TrioScott_Azalea_Saved:
 TrioScott_Ecruteak::
 	lockall
 	faceplayer
+	call TrioOutfit_Scott
 	goto_if_unset FLAG_BADGE04_GET, TrioScott_Ecruteak_Waiting
 	goto_if_set FLAG_TRIO_SCOTT_ECRUTEAK, TrioScott_Ecruteak_Replay
 	msgbox TrioScott_Ecruteak_Offer, MSGBOX_YESNO
@@ -71,6 +73,7 @@ TrioScott_Ecruteak_Saved:
 TrioScott_Olivine::
 	lockall
 	faceplayer
+	call TrioOutfit_Scott
 	goto_if_unset FLAG_BADGE06_GET, TrioScott_Olivine_Waiting
 	goto_if_set FLAG_TRIO_SCOTT_OLIVINE, TrioScott_Olivine_Replay
 	msgbox TrioScott_Olivine_Offer, MSGBOX_YESNO
@@ -105,6 +108,7 @@ TrioScott_Olivine_Saved:
 TrioScott_Blackthorn::
 	lockall
 	faceplayer
+	call TrioOutfit_Scott
 	goto_if_unset FLAG_BADGE08_GET, TrioScott_Blackthorn_Waiting
 	goto_if_set FLAG_TRIO_SCOTT_BLACKTHORN, TrioScott_Blackthorn_Replay
 	msgbox TrioScott_Blackthorn_Offer, MSGBOX_YESNO

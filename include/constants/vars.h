@@ -335,6 +335,15 @@
 #define VAR_TRIO_CAFE_TEST_RETURN                   0x412F // Reserved legacy cafe test slot; unused, preserve saved IDs
 #define VAR_TRIO_CAFE_DELIVERY_STATE                0x4130 // 0/2/4 parcel ready,1/3 claimed waiting,5 done
 
+// Optional costume stories: 0 offer,1 accepted,2 found/reward pending,3 claimed.
+#define VAR_TRIO_HUNT_RIKO                           0x4131
+#define VAR_TRIO_HUNT_BIJUU                          0x4132
+#define VAR_TRIO_HUNT_PENNY                          0x4133
+// Bread mystery: 0 rumor,1 accepted,2 clue,3 reveal/reward pending,4 complete.
+#define VAR_TRIO_BREAD_MYSTERY                       0x4134
+// Bits0-8 costume portraits, bit9 Poison bonus. Filled by wearing, not owning.
+#define VAR_TRIO_OUTFIT_PHOTOS                       0x4135
+
 #define VARS_END                                         0x42FF
 
 #define VARS_COUNT                                       (VARS_END - VARS_START + 1)

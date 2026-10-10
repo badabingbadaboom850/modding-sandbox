@@ -209,6 +209,7 @@ OlivineCity_EventScript_Sailor2::
 OlivineCity_EventScript_Youngster::
 	lock
 	faceplayer
+	call TrioOutfit_ReactTown
 	msgbox OlivineCity_Text_YoungsterPokegear, MSGBOX_DEFAULT
 	closemessage
 	release

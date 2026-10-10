@@ -38,7 +38,9 @@ class Run:
     if same==(op=='goto_if_eq'):pc=labels[a[2]]
    elif op=='checkitem':self.vars['VAR_RESULT']=int(self.owned)
    elif op=='checktrainerflag':self.cmp=self.prior
-   elif op=='call':assert a[0].startswith('TrioParty_Check');self.vars['VAR_RESULT']=int(self.present)
+   elif op=='call':
+    if a[0].startswith('TrioParty_Check'):self.vars['VAR_RESULT']=int(self.present)
+    else:assert a[0] in ['TrioOutfit_React','TrioHunt_RikoHost','TrioHunt_BijuuHost','TrioHunt_PennyHost'] # separately executed by validate_stories.py
    elif op=='msgbox':
     if a[1]=='MSGBOX_YESNO':self.vars['VAR_RESULT']=int(self.yes)
    elif op=='trainerbattle_no_intro':self.battles+=1
@@ -60,10 +62,10 @@ for owned,present,yes,won,room,prior in itertools.product([False,True],repeat=6)
 print(cases,'gift/decline/missing-party/win/loss/Bag-full/reclaim source paths pass')
 sys.path.insert(0,str(R/'tools/snack'));from gang_geometry import geometry
 for city in ['CherrygroveCity','VioletCity','AzaleaTown']:
- m,w,h,walk=geometry(city);npc=m['object_events'][-1];x,y=npc['x'],npc['y']
+ m,w,h,walk=geometry(city);expected={'CherrygroveCity':'TrioCostume_Balloon','VioletCity':'TrioCostume_Box','AzaleaTown':'TrioCostume_Hotdog'}[city];npc=next(e for e in m['object_events'] if e['script']==expected);x,y=npc['x'],npc['y']
  assert all(walk(a,b) for a,b in [(x,y),(x-1,y),(x+1,y),(x,y-1),(x,y+1)])
- occupied={(e['x'],e['y']) for k in ['object_events','warp_events','coord_events','bg_events'] for e in (m[k][:-1] if k=='object_events' else m[k])};assert (x,y) not in occupied
- old=json.loads(subprocess.check_output(['git','show','c82cdaaffb38ac96761d15943a95f0412de08e7b:data/maps/'+city+'/map.json'],cwd=R,text=True));assert old['object_events']==m['object_events'][:-1]
+ occupied={(e['x'],e['y']) for k in ['object_events','warp_events','coord_events','bg_events'] for e in ([e for e in m[k] if e['script']!=expected] if k=='object_events' else m[k])};assert (x,y) not in occupied
+ old=json.loads(subprocess.check_output(['git','show','c82cdaaffb38ac96761d15943a95f0412de08e7b:data/maps/'+city+'/map.json'],cwd=R,text=True));assert old['object_events']==m['object_events'][:len(old['object_events'])];assert npc==m['object_events'][len(old['object_events'])]
  for k in old:
   if k!='object_events':assert old[k]==m[k]
  assert npc['trainer_type']=='TRAINER_TYPE_NONE' and npc['flag']=='0'
@@ -145,7 +147,7 @@ for city in {g['city'] for g in placements}:
  m,w,h,walk=geometry(city)
  old=json.loads(subprocess.check_output(['git','show','9aa3a001c36746ff30f72b75f5a991ff85755edd:data/maps/'+city+'/map.json'],cwd=R,text=True))
  added=[g for g in placements if g['city']==city]
- assert m['object_events'][:-len(added)]==old['object_events']
+ assert m['object_events'][:len(old['object_events'])]==old['object_events']
  for k in old:
   if k!='object_events':assert old[k]==m[k]
  for g in added:

@@ -4,6 +4,7 @@
 #include "overworld.h"
 #include "string_util.h"
 #include "trio_camp.h"
+#include "trio_outfits.h"
 #include "constants/flags.h"
 #include "constants/game_stat.h"
 #include "constants/items.h"
@@ -40,6 +41,7 @@ void TrioCamp_RecordMedicineUse(u16 item)
 
 void TrioCamp_RecordEvolution(u16 before, u16 after, u16 item)
 {
+    TrioOutfits_RecordPhoto(after);
     static const struct { u16 before, after, item; } swaps[] =
     {
         {SPECIES_BIJUU, SPECIES_BIJUU_EMBER, ITEM_BIJUUS_FIRE},

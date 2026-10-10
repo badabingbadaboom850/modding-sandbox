@@ -664,3 +664,8 @@ gSpecials::
 	def_special IsRikosAmuletAwake
 	def_special BeginTrioElementalLessons
 	def_special EndTrioElementalLessons
+
+	def_special GetTrioOutfitReaction
+	def_special TrioOutfits_RecordPartyPhotos
+	def_special HasTrioOutfitPhoto
+	def_special BufferTrioOutfitPhotoCount

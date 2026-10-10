@@ -2,6 +2,7 @@
 TrioCostume_Balloon::
 	lock
 	faceplayer
+	call TrioOutfit_React
 	checkitem ITEM_RIKOS_BALLOON
 	goto_if_eq VAR_RESULT, TRUE, TrioCostume_BalloonAgain
 	call TrioParty_CheckRiko
@@ -13,6 +14,7 @@ TrioCostume_Balloon::
 	msgbox TrioCostume_BalloonReady, MSGBOX_DEFAULT
 	goto TrioCostume_Close
 TrioCostume_BalloonAgain:
+	call TrioHunt_RikoHost
 	msgbox TrioCostume_BalloonReady, MSGBOX_DEFAULT
 	goto TrioCostume_Close
 TrioCostume_BringRiko:
@@ -22,6 +24,7 @@ TrioCostume_BringRiko:
 TrioCostume_Box::
 	lock
 	faceplayer
+	call TrioOutfit_React
 	checkitem ITEM_BIJUUS_BOX
 	goto_if_eq VAR_RESULT, TRUE, TrioCostume_BoxAgain
 	checktrainerflag TRAINER_COSTUME_COURIER
@@ -38,6 +41,7 @@ TrioCostume_BoxClaim:
 	giveitem ITEM_BIJUUS_BOX
 	goto_if_eq VAR_RESULT, FALSE, TrioCostume_FullBag
 TrioCostume_BoxAgain:
+	call TrioHunt_BijuuHost
 	msgbox TrioCostume_BoxReady, MSGBOX_DEFAULT
 	goto TrioCostume_Close
 TrioCostume_BringBijuu:
@@ -47,6 +51,7 @@ TrioCostume_BringBijuu:
 TrioCostume_Hotdog::
 	lock
 	faceplayer
+	call TrioOutfit_React
 	checkitem ITEM_PENNYS_HOTDOG_BUN
 	goto_if_eq VAR_RESULT, TRUE, TrioCostume_HotdogAgain
 	call TrioParty_CheckPenny
@@ -56,6 +61,7 @@ TrioCostume_Hotdog::
 	giveitem ITEM_PENNYS_HOTDOG_BUN
 	goto_if_eq VAR_RESULT, FALSE, TrioCostume_FullBag
 TrioCostume_HotdogAgain:
+	call TrioHunt_PennyHost
 	msgbox TrioCostume_HotdogReady, MSGBOX_DEFAULT
 	goto TrioCostume_Close
 TrioCostume_BringPenny:
@@ -163,6 +169,7 @@ TrioCostume_TestBagText:
 TrioCostume_RikoPrincessGift::
 	lock
 	faceplayer
+	call TrioOutfit_React
 	checkitem ITEM_POM_TIARA
 	goto_if_eq VAR_RESULT, TRUE, TrioCostume_RikoPrincessReady
 	call TrioParty_CheckRiko
@@ -187,6 +194,7 @@ TrioCostume_RikoPrincessReadyText:
 TrioCostume_RikoRaincoatGift::
 	lock
 	faceplayer
+	call TrioOutfit_React
 	checkitem ITEM_RIKOS_RAINCOAT
 	goto_if_eq VAR_RESULT, TRUE, TrioCostume_RikoRaincoatReady
 	call TrioParty_CheckRiko
@@ -211,6 +219,7 @@ TrioCostume_RikoRaincoatReadyText:
 TrioCostume_BijuuBreadGift::
 	lock
 	faceplayer
+	call TrioOutfit_React
 	checkitem ITEM_COCOA_TOAST
 	goto_if_eq VAR_RESULT, TRUE, TrioCostume_BijuuBreadReady
 	call TrioParty_CheckBijuu
@@ -235,6 +244,7 @@ TrioCostume_BijuuBreadReadyText:
 TrioCostume_BijuuDetectiveGift::
 	lock
 	faceplayer
+	call TrioOutfit_React
 	checkitem ITEM_COCOAS_DETECTIVE_KIT
 	goto_if_eq VAR_RESULT, TRUE, TrioCostume_BijuuDetectiveReady
 	call TrioParty_CheckBijuu
@@ -259,6 +269,7 @@ TrioCostume_BijuuDetectiveReadyText:
 TrioCostume_PennyBlanketGift::
 	lock
 	faceplayer
+	call TrioOutfit_React
 	checkitem ITEM_PENNYS_COZY_WRAP
 	goto_if_eq VAR_RESULT, TRUE, TrioCostume_PennyBlanketReady
 	call TrioParty_CheckPenny
@@ -283,6 +294,7 @@ TrioCostume_PennyBlanketReadyText:
 TrioCostume_PennyLifeguardGift::
 	lock
 	faceplayer
+	call TrioOutfit_React
 	checkitem ITEM_PENNYS_BEACH_VEST
 	goto_if_eq VAR_RESULT, TRUE, TrioCostume_PennyLifeguardReady
 	call TrioParty_CheckPenny
@@ -307,6 +319,7 @@ TrioCostume_PennyLifeguardReadyText:
 TrioCostume_BijuuPoisonGift::
 	lock
 	faceplayer
+	call TrioOutfit_React
 	checkitem ITEM_TOXIC_MOUSE
 	goto_if_eq VAR_RESULT, TRUE, TrioCostume_BijuuPoisonReady
 	call TrioParty_CheckBijuu

@@ -2,11 +2,13 @@
 TrioMoveTutor_Scott::
 	lock
 	faceplayer
+	call TrioOutfit_Scott
 	msgbox TrioMoveTutor_Intro, MSGBOX_DEFAULT
 TrioMoveTutor_ChooseService:
-	dynmultichoice 0, 0, FALSE, 3, 0, DYN_MULTICHOICE_CB_NONE, TrioMoveTutor_SignatureName, TrioMoveTutor_ElementalName, TrioMoveTutor_ExitName
+	dynmultichoice 0, 0, FALSE, 4, 0, DYN_MULTICHOICE_CB_NONE, TrioMoveTutor_SignatureName, TrioMoveTutor_ElementalName, TrioMoveTutor_AlbumName, TrioMoveTutor_ExitName
 	goto_if_eq VAR_RESULT, 0, TrioMoveTutor_ChooseGirl
 	goto_if_eq VAR_RESULT, 1, TrioMoveTutor_Elemental
+	goto_if_eq VAR_RESULT, 2, TrioMoveTutor_Album
 	goto TrioMoveTutor_End
 TrioMoveTutor_Elemental:
 	msgbox TrioMoveTutor_ElementalIntro, MSGBOX_DEFAULT
@@ -361,3 +363,9 @@ TrioMoveTutor_ElementalIntro:
 	.string "Pick a girl! Her current\nform sets these lessons.\pMoves unlock with levels.\nAlready known ones hide.$"
 TrioMoveTutor_ElementalNoMoves:
 	.string "No new elemental attacks\nfor this form and level.\pTry changing her form or\nleveling up, cutie!$"
+
+TrioMoveTutor_Album:
+	call TrioOutfit_Album
+	goto TrioMoveTutor_ChooseService
+TrioMoveTutor_AlbumName:
+	.string "Outfit album$"

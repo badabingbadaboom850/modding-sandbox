@@ -119,6 +119,7 @@ VioletCity_EventScript_EarlTrainerSchoolTransition:
 VioletCity_EventScript_Youngster::
 	lock
 	faceplayer
+	call TrioOutfit_ReactTown
 	msgbox VioletCity_Text_Youngster, MSGBOX_DEFAULT
 	closemessage
 	release

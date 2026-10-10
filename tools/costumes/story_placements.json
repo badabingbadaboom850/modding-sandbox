@@ -1,0 +1,38 @@
+[
+  {
+    "city": "CherrygroveCity",
+    "x": 39,
+    "y": 17,
+    "script": "TrioHunt_RikoSearch"
+  },
+  {
+    "city": "VioletCity",
+    "x": 18,
+    "y": 39,
+    "script": "TrioHunt_BijuuSearch"
+  },
+  {
+    "city": "AzaleaTown",
+    "x": 43,
+    "y": 15,
+    "script": "TrioHunt_PennySearch"
+  },
+  {
+    "city": "GoldenrodCity",
+    "x": 53,
+    "y": 14,
+    "script": "TrioBread_Rumor"
+  },
+  {
+    "city": "GoldenrodCity",
+    "x": 61,
+    "y": 29,
+    "script": "TrioBread_Clue"
+  },
+  {
+    "city": "GoldenrodCity_House4",
+    "x": 9,
+    "y": 3,
+    "script": "TrioBread_Reveal"
+  }
+]

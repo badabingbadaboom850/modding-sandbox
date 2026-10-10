@@ -235,6 +235,7 @@ EcruteakCity_EventScript_SageRight::
 EcruteakCity_EventScript_SageTower::
 	lock
 	faceplayer
+	call TrioOutfit_ReactTown
 	msgbox EcruteakCity_Text_Gramps3, MSGBOX_DEFAULT
 	closemessage
 	release

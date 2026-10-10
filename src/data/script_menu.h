@@ -970,6 +970,7 @@ static const struct MenuAction MultichoiceList_TrioScrapbook[] =
     {COMPOUND_STRING("Spirit letters")},
     {COMPOUND_STRING("Memory checklist")},
     {COMPOUND_STRING("Scott moments")},
+    {COMPOUND_STRING("Outfit album")},
     {gText_Exit},
 };
 

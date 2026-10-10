@@ -48,6 +48,7 @@ class Run:
     elif a==['HasMovesToRelearn']:self.vars['VAR_RESULT']=int(self.has_moves)
     elif a==['TeachMoveRelearnerMove']:assert self.elemental;self.taught.append('elemental')
     else:raise AssertionError(a)
+   elif op=='call':assert a[0] in ['TrioOutfit_Scott','TrioOutfit_Album'] # separately covered by story checks
    elif op in ['faceplayer','fadescreen','waitstate']:pass
    else:raise AssertionError(op)
   raise AssertionError('Script did not end')
@@ -78,9 +79,12 @@ for p in ['include/global.h','include/pokemon.h','src/save.c','include/config/sa
 print('Save structures and read/write implementation unchanged')
 
 for party_cancel,has_moves in [(True,True),(False,False),(False,True)]:
- r=Run([1,2],1,elemental=True,party_cancel=party_cancel,has_moves=has_moves).run()
+ r=Run([1,3],1,elemental=True,party_cancel=party_cancel,has_moves=has_moves).run()
  assert not r.lock and not r.elemental
  assert len(r.taught)==int(not party_cancel and has_moves)
-for cancel in [2,127]:
+for cancel in [3,127]:
  r=Run([cancel],1,elemental=True).run();assert not r.lock and not r.elemental and not r.taught
 print('Elemental select/empty/party cancel/move return and service Back/B restore mode and release')
+
+# Album service returns to the service menu and can then exit normally.
+r=Run([2,3],1,elemental=True).run();assert not r.lock and not r.elemental and not r.taught

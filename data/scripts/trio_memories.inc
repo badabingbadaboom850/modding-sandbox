@@ -112,6 +112,7 @@ TrioScrapbook_Menu::
 	goto_if_eq VAR_RESULT, 2, TrioScrapbook_Letters
 	goto_if_eq VAR_RESULT, 3, TrioScrapbook_Checklist
 	goto_if_eq VAR_RESULT, 4, TrioScott_Scrapbook
+	goto_if_eq VAR_RESULT, 5, TrioOutfit_AlbumFromBook
 	return
 TrioScrapbook_Journey:
 	msgbox TrioScrapbook_OpeningPage, MSGBOX_DEFAULT
@@ -142,6 +143,7 @@ TrioScrapbook_Sisters:
 	call_if_set FLAG_RIKO_CAVERN_COMPLETE, RikoCavern_ReadMemory
 	call_if_eq VAR_TRIO_GANG_WINS, 6, TrioGang_ReadMemory
 	call_if_set FLAG_TRIO_CAFE_VISITED, TrioCafe_ReadMemory
+	call TrioStories_ReadMemories
 	goto TrioScrapbook_Menu
 TrioScrapbook_Letters:
 	msgbox TrioScrapbook_LettersIntro, MSGBOX_DEFAULT
