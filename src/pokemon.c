@@ -3515,6 +3515,12 @@ bool8 PokemonUseItemEffects(struct Pokemon *mon, enum Item item, u8 partyIndex, 
     if (GetItemEffect(item) == NULL && item != ITEM_ENIGMA_BERRY_E_READER)
         return TRUE;
 
+    // Puffs follow the candy UI, but never affect eggs, empty slots or zero uses.
+    if (item == ITEM_RIKO_PUFFS
+        && (itemCount == 0 || GetMonData(mon, MON_DATA_IS_EGG)
+            || GetMonData(mon, MON_DATA_SPECIES) == SPECIES_NONE))
+        return TRUE;
+
     // Get item effect
     itemEffect = GetItemEffect(item);
     isLevelUpItem = (itemEffect[3] & ITEM3_LEVEL_UP) != 0;
@@ -3602,7 +3608,7 @@ bool8 PokemonUseItemEffects(struct Pokemon *mon, enum Item item, u8 partyIndex, 
                     u16 species = GetMonData(mon, MON_DATA_SPECIES);
                     u32 currentExp = GetMonData(mon, MON_DATA_EXP);
                     u32 level = GetMonData(mon, MON_DATA_LEVEL, NULL);
-                    u32 targetLevel = level + itemCount;
+                    u32 targetLevel = level + (u32)itemCount * (item == ITEM_RIKO_PUFFS ? 5 : 1);
                     u32 maxLevel = MAX_LEVEL;
 
                     if (B_RARE_CANDY_CAP && GetCurrentExpCapType() != EXP_CAP_NONE)

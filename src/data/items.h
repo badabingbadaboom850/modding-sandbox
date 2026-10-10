@@ -2479,6 +2479,26 @@ const struct ItemInfo gItemsInfo[] =
 
 // Candy
 
+    [ITEM_RIKO_PUFFS] =
+    {
+        .name = ITEM_NAME("Riko Puffs"),
+        .pluralName = ITEM_PLURAL_NAME("Riko Puffs"),
+        .price = 500,
+        .description = COMPOUND_STRING(
+            "Crunchy kibble bits.\n"
+            "Raises a Pokemon's\n"
+            "level by five."),
+        .pocket = POCKET_ITEMS,
+        .sortType = ITEM_TYPE_LEVEL_UP_ITEM,
+        .heldSlot = 0,
+        .type = ITEM_USE_PARTY_MENU,
+        .fieldUseFunc = ItemUseOutOfBattle_RareCandy,
+        .effect = gItemEffect_RareCandy,
+        .flingPower = 30,
+        .iconPic = gItemIcon_RikoPuffs,
+        .iconPalette = gItemIconPalette_RikoPuffs,
+    },
+
     [ITEM_RARE_CANDY] =
     {
         .name = ITEM_NAME("Cat Food Tin"),

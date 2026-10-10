@@ -155,3 +155,5 @@
 - [Spirit Rift](trio_spirit_rift.md)
 
 - [The abandoned seaside garden and Flower Riko](trio_garden.md)
+
+- [Riko Puffs: five-level catch-up kibble](riko_puffs.md)

@@ -644,7 +644,7 @@ static void DisplayGiveHowManyMessage(void);
 static bool8 DoesItemIncreaseEV(u8 itemType);
 static bool8 DoesItemReduceIV(u8 itemType);
 static bool8 ShouldLevelUpItemUseLevelCap(void);
-static u16 GetMaxLevelUpItemQuantity(struct Pokemon *mon, u8 holdEffectParam, u16 quantityInBag);
+static u16 GetMaxLevelUpItemQuantity(struct Pokemon *mon, enum Item item, u8 holdEffectParam, u16 quantityInBag);
 static void ClearHowManyItemsWindow(u8 taskId);
 static void PrintHowManyItemsWindow(u8 taskId);
 static void Task_GiveHowManyItems(u8 taskId);
@@ -8394,7 +8394,7 @@ void ItemUseCB_RareCandy(u8 taskId, TaskFunc task)
     tItemEffect = GetItemEffectType(gSpecialVar_ItemId);
     tQuantityInBag = CountTotalItemQuantityInBag(gSpecialVar_ItemId);
     tItemCount = 1;
-    tMaxItemQuantity = GetMaxLevelUpItemQuantity(mon, tHoldEffectParam, tQuantityInBag);
+    tMaxItemQuantity = GetMaxLevelUpItemQuantity(mon, gSpecialVar_ItemId, tHoldEffectParam, tQuantityInBag);
 
     if (tMaxItemQuantity == 0)
         cannotUseEffect = TRUE;
@@ -8409,7 +8409,7 @@ void ItemUseCB_RareCandy(u8 taskId, TaskFunc task)
 
         ResetLevelUpMoveLearningState();
 
-        if (tHoldEffectParam == 0) // Rare Candy
+        if (tHoldEffectParam == 0 && gSpecialVar_ItemId != ITEM_RIKO_PUFFS) // Rare Candy
         {
             targetSpecies = GetEvolutionTargetSpecies(mon, EVO_MODE_NORMAL, ITEM_NONE, NULL, &canStopEvo, CHECK_EVO);
         }
@@ -11327,7 +11327,7 @@ static bool8 ShouldLevelUpItemUseLevelCap(void)
     return B_RARE_CANDY_CAP && (expCapType == EXP_CAP_SOFT || expCapType == EXP_CAP_HARD);
 }
 
-static u16 GetMaxLevelUpItemQuantity(struct Pokemon *mon, u8 holdEffectParam, u16 quantityInBag)
+static u16 GetMaxLevelUpItemQuantity(struct Pokemon *mon, enum Item item, u8 holdEffectParam, u16 quantityInBag)
 {
     u32 species = GetMonData(mon, MON_DATA_SPECIES);
     u32 growthRate = gSpeciesInfo[species].growthRate;
@@ -11352,7 +11352,8 @@ static u16 GetMaxLevelUpItemQuantity(struct Pokemon *mon, u8 holdEffectParam, u1
 
     if (holdEffectParam == 0)
     {
-        maxQuantity = levelCap - level;
+        u32 levelsPerItem = item == ITEM_RIKO_PUFFS ? 5 : 1;
+        maxQuantity = (levelCap - level + levelsPerItem - 1) / levelsPerItem;
     }
     else
     {
@@ -11797,4 +11798,10 @@ bool8 PlayerHasMove(enum Move move)
     }
     return CheckBagHasItem(item, 1);
 }
+#if TESTING
+u16 SwShPartyMenu_TestLevelUpItemQuantity(struct Pokemon *mon, enum Item item, u16 quantity)
+{
+    return GetMaxLevelUpItemQuantity(mon, item, GetItemHoldEffectParam(item), quantity);
+}
+#endif
 #endif // SWSH_PARTY_MENU || PARTY_MENU_STYLE_OPTION

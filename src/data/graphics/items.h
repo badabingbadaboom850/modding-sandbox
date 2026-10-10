@@ -2212,3 +2212,6 @@ const u16 gItemIconPalette_PennysBravery[] = INCBIN_U16("graphics/items/icon_pal
 
 const u32 gItemIcon_RikosBloom[] = INCBIN_U32("graphics/items/icons/rikos_bloom.4bpp.smol");
 const u16 gItemIconPalette_RikosBloom[] = INCBIN_U16("graphics/items/icon_palettes/rikos_bloom.gbapal");
+
+const u32 gItemIcon_RikoPuffs[] = INCBIN_U32("graphics/items/icons/riko_puffs.4bpp.smol");
+const u16 gItemIconPalette_RikoPuffs[] = INCBIN_U16("graphics/items/icon_palettes/riko_puffs.gbapal");
