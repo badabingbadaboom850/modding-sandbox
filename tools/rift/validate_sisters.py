@@ -12,13 +12,37 @@ class Sisters(unittest.TestCase):
  def test_hub_and_natural_gates(self):
   for flags,dest in [([],'MAP_TRIO_ECHO_WOODS'),([C],'MAP_TRIO_MIRROR_HOUSE'),([C,F],'MAP_TRIO_LANTERN_TRAIL')]:
    r=Run(flags=['FLAG_TRIO_FESTIVAL_PICNIC',*flags]).run('Entrance');self.assertEqual(r.warps[0][0],dest);self.assertFalse(r.locked)
-   r=Run(flags=['FLAG_TRIO_FESTIVAL_PICNIC',*flags]).run('FestivalOffer');self.assertEqual(r.warps[0][0],dest)
+   r=Run(flags=['FLAG_TRIO_FESTIVAL_PICNIC',*flags]).run('TownOffer');self.assertEqual(r.warps[0][0],dest)
   r=Run(flags=[C,F,V,'FLAG_TRIO_FESTIVAL_PICNIC'],answers=[0,0,1]).run('Entrance');self.assertEqual(r.warps[0][0],'MAP_TRIO_LANTERN_TRAIL')
   for prefix,flag in [('TrioMirror',C),('TrioLantern',F)]:
    self.assertFalse(Run().run(prefix+'_Entrance').warps)
    self.assertFalse(Run(flags=[flag],girls=False).run(prefix+'_Entrance').warps)
    self.assertFalse(Run(flags=[flag],answers=[0]).run(prefix+'_Entrance').warps)
    self.assertTrue(Run(flags=[flag]).run(prefix+'_Entrance').warps)
+ def test_town_offer_is_optional_and_picnic_gated(self):
+  for flags,girls,answers in [([],True,[1]),(['FLAG_TRIO_FESTIVAL_PICNIC'],False,[1]),(['FLAG_TRIO_FESTIVAL_PICNIC'],True,[0])]:
+   r=Run(flags=flags,girls=girls,answers=answers).run('TownOffer')
+   self.assertFalse(r.warps)
+   self.assertEqual(r.flags,set(flags))
+  for ext in ('inc','pory'):
+   source=(ROOT/('data/maps/GoldenrodCity/scripts.'+ext)).read_text()
+   self.assertIn('call_if_set FLAG_TRIO_FESTIVAL_PICNIC, TrioRift_TownOffer',source)
+   self.assertIn('GoldenrodCity_EventScript_ScrapbookNeighbor',source)
+ def test_penny_frames_have_no_detached_import_fragments(self):
+  for name in ('front','back','overworld'):
+   image=Image.open(ROOT/('graphics/pokemon/penny_brave/'+name+'.png'))
+   for k in range(6 if name=='overworld' else 1):
+    frame=image.crop((k*32,0,k*32+32,32)) if name=='overworld' else image
+    pixels={(x,y) for y in range(frame.height) for x in range(frame.width) if frame.getpixel((x,y))!=0}
+    self.assertTrue(pixels)
+    queue=[pixels.pop()]
+    while queue:
+     x,y=queue.pop()
+     for dx in (-1,0,1):
+      for dy in (-1,0,1):
+       neighbor=(x+dx,y+dy)
+       if neighbor in pixels:pixels.remove(neighbor);queue.append(neighbor)
+    self.assertFalse(pixels,(name,k,'detached sprite fragment'))
  def test_mirror_clues_copies_and_real_cat(self):
   r=run_at(B).run('TrioMirror_Penny');self.assertEqual(r.vars[B],0)
   for name in ['CopyA','CopyB','Real']:r.run('TrioMirror_'+name);self.assertEqual(r.vars[B],0)

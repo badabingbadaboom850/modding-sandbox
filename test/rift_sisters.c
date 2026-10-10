@@ -39,7 +39,7 @@ TEST("Sister charms route ordinary and prior forms into midgame forms and back")
     }
 }
 
-TEST("New midgame sister guardians are healthy level 1 females and keep the party intact")
+TEST("New midgame sister guardians are healthy +10 level females and keep the party intact")
 {
     u32 i, hp = 0;
     static const u16 species[] = {SPECIES_BIJUU_EMBER, SPECIES_PENNY_BRAVE};
@@ -51,7 +51,7 @@ TEST("New midgame sister guardians are healthy level 1 females and keep the part
         gSpecialVar_0x8004 = species[i];
         EXPECT(PrepareTrioSpiritTrial());
         EXPECT_EQ(GetMonData(&gEnemyParty[0], MON_DATA_SPECIES), species[i]);
-        EXPECT_EQ(GetMonData(&gEnemyParty[0], MON_DATA_LEVEL), 1);
+        EXPECT_EQ(GetMonData(&gEnemyParty[0], MON_DATA_LEVEL), 90);
         EXPECT(GetMonData(&gEnemyParty[0], MON_DATA_MAX_HP) > 0);
         EXPECT_EQ(GetMonData(&gEnemyParty[0], MON_DATA_HP), GetMonData(&gEnemyParty[0], MON_DATA_MAX_HP));
         EXPECT_EQ(GetMonGender(&gEnemyParty[0]), MON_FEMALE);
@@ -92,4 +92,31 @@ TEST("Sister charms are reusable key items and midgame species have complete art
     TrioCamp_RecordEvolution(SPECIES_FIDOUGH, SPECIES_PENNY_BRAVE, ITEM_PENNYS_BRAVERY);
     TrioCamp_RecordEvolution(SPECIES_PENNY_BRAVE, SPECIES_FIDOUGH, ITEM_PENNYS_BRAVERY);
     EXPECT_EQ(GetGameStat(GAME_STAT_TRIO_FORM_SWAPS), 4);
+}
+
+TEST("All three Rift guardians scale from strongest non-egg party member and cap at 100")
+{
+    static const u16 species[] = {SPECIES_RIKO_ECHO, SPECIES_BIJUU_EMBER, SPECIES_PENNY_BRAVE};
+    static const u8 levels[] = {1, 35, 95, 100};
+    u32 i, j;
+    bool32 isEgg = TRUE;
+    for (i = 0; i < ARRAY_COUNT(species); i++)
+    {
+        for (j = 0; j < ARRAY_COUNT(levels); j++)
+        {
+            ZeroPlayerPartyMons();
+            CreateMon(&gPlayerParty[0], SPECIES_RIKO, levels[j], 0, OTID_STRUCT_PLAYER_ID);
+            CreateMon(&gPlayerParty[1], SPECIES_BIJUU, 1, 0, OTID_STRUCT_PLAYER_ID);
+            gSpecialVar_0x8004 = species[i];
+            EXPECT(PrepareTrioSpiritTrial());
+            EXPECT_EQ(GetMonData(&gEnemyParty[0], MON_DATA_LEVEL), levels[j] > 90 ? 100 : levels[j] + 10);
+        }
+        ZeroPlayerPartyMons();
+        CreateMon(&gPlayerParty[0], SPECIES_RIKO, 20, 0, OTID_STRUCT_PLAYER_ID);
+        CreateMon(&gPlayerParty[1], SPECIES_BIJUU, 100, 0, OTID_STRUCT_PLAYER_ID);
+        SetMonData(&gPlayerParty[1], MON_DATA_IS_EGG, &isEgg);
+        gSpecialVar_0x8004 = species[i];
+        EXPECT(PrepareTrioSpiritTrial());
+        EXPECT_EQ(GetMonData(&gEnemyParty[0], MON_DATA_LEVEL), 30);
+    }
 }

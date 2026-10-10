@@ -536,24 +536,26 @@ bool8 PrepareTrioSpiritTrial(void)
     }
     if (highestLevel == 0)
         return FALSE;
-    // A steady challenge: +5 early on, rising to +10 by party level 50.
-    level = highestLevel + 5 + min(highestLevel / 10, 5);
+    // Earned midgame charms require a +10 trial; older Spirit arenas retain scaling.
+    if (species == SPECIES_RIKO_ECHO || species == SPECIES_BIJUU_EMBER || species == SPECIES_PENNY_BRAVE)
+        level = highestLevel + 10;
+    else
+        level = highestLevel + 5 + min(highestLevel / 10, 5);
     if (level > MAX_LEVEL)
         level = MAX_LEVEL;
     HealTrioTrialParty();
     if (species == SPECIES_RIKO_ECHO)
     {
-        // User-requested easy Echo Woods test guardian; level90 Spirit cave is separate.
-        level = 1;
-        CreateScriptedWildMon2(species, level, ITEM_NONE, 0, MOVE_DISARMING_VOICE, MOVE_TACKLE, MOVE_BABY_DOLL_EYES, MOVE_HELPING_HAND, FALSE);
+        // Echo is a permanent midgame form, separate from the level90 Spirit cave.
+        CreateScriptedWildMon2(species, level, ITEM_NONE, 0, MOVE_MOONBLAST, MOVE_ECHOED_VOICE, MOVE_CALM_MIND, MOVE_QUICK_ATTACK, FALSE);
     }
     else if (species == SPECIES_BIJUU_EMBER)
     {
-        CreateScriptedWildMon2(species, 1, ITEM_NONE, 0, MOVE_EMBER, MOVE_SCRATCH, MOVE_GROWL, MOVE_HELPING_HAND, FALSE);
+        CreateScriptedWildMon2(species, level, ITEM_NONE, 0, MOVE_FLAMETHROWER, MOVE_SWIFT, MOVE_WILL_O_WISP, MOVE_NASTY_PLOT, FALSE);
     }
     else if (species == SPECIES_PENNY_BRAVE)
     {
-        CreateScriptedWildMon2(species, 1, ITEM_NONE, 0, MOVE_TACKLE, MOVE_BABY_DOLL_EYES, MOVE_HELPING_HAND, MOVE_GROWL, FALSE);
+        CreateScriptedWildMon2(species, level, ITEM_NONE, 0, MOVE_PLAY_ROUGH, MOVE_CRUNCH, MOVE_BABY_DOLL_EYES, MOVE_PROTECT, FALSE);
     }
     else if (species == SPECIES_PENNY_SPIRIT)
     {

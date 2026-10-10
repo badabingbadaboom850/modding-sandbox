@@ -313,3 +313,17 @@ TrioRift_MirrorOfferText:
 	.string "Riko's echo found a path.\nBijuu hears another call.\pReady for the Mirror\nHouse? You can return any\ptime.$"
 TrioRift_LanternOfferText:
 	.string "Bijuu's spark lights a\npath. Penny's lanterns\pwait ahead. Ready for the\nLantern Trail? You can\preturn any time.$"
+
+@ Optional conversation with the existing old man west of Goldenrod's Center.
+TrioRift_TownOffer::
+	msgbox TrioRift_TownOfferText, MSGBOX_DEFAULT
+	call TrioRift_FestivalOffer
+	return
+TrioRift_TownHint::
+	goto_if_unset FLAG_TRIO_FESTIVAL_PICNIC, TrioRift_FestivalReturn
+	msgbox TrioRift_TownHintText, MSGBOX_DEFAULT
+	return
+TrioRift_TownOfferText:
+	.string "Since your family picnic,\nthe girls' echoes stir.\pThree trials. Three gifts.\nEach guardian stands ten\plevels above your best.\nPrepare, then follow me.$"
+TrioRift_TownHintText:
+	.string "An old man near Bill's\nhouse has heard echoes.\pFind him west of the\nGoldenrod Poke Center.$"

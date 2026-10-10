@@ -146,7 +146,7 @@ TrioMirror_ChooseText:
 TrioMirror_FoundText:
 	.string "Riko barks her approval.\nPenny leans into Bijuu.\pCopies can borrow a face.\nThey cannot borrow love.$"
 TrioMirror_GuardianText:
-	.string "A tiny tail flame wakes.\nBijuu's own spark waits.\pFace this gentle guardian?\nLosses allow safe retries.$"
+	.string "A tiny tail flame wakes.\nBijuu's own spark waits.\pFace this fierce guardian?\nLosses allow safe retries.$"
 TrioMirror_VictoryText:
 	.string "The flame warms Bijuu's\ntail. It does not burn her\psisters. Riko found her\nvoice. Bijuu found her own\pspark. Her full Spirit\nstill sleeps.$"
 TrioMirror_GiftText:

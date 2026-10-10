@@ -234,7 +234,7 @@ TrioLantern_AlreadyText:
 TrioLantern_OrderText:
 	.string "A nearer lantern is\nwaiting. One small step at\pa time.$"
 TrioLantern_GuardianText:
-	.string "A lightly armored Penny\nwaits. No shield. No magic\pwall. Just one brave\nlittle heart. Face the\pgentle guardian?$"
+	.string "A lightly armored Penny\nwaits. No shield. No magic\pwall. Just one brave\nlittle heart. Face the\pbrave guardian?$"
 TrioLantern_VictoryText:
 	.string "The garden fills with\nlight. Penny led her\psisters home. She did not\nstop being scared. She\plearned she could go on.\nHer full Spirit still\psleeps.$"
 TrioLantern_GiftText:

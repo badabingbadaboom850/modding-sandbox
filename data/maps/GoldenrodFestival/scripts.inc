@@ -55,7 +55,7 @@ TrioFestival_Host::
 	lockall
 	faceplayer
 	msgbox TrioFestival_Welcome, MSGBOX_DEFAULT
-	call TrioRift_FestivalOffer
+	call TrioRift_TownHint
 TrioFestival_HostMenu:
 	closemessage
 	multichoice 0, 0, MULTI_TRIO_FESTIVAL_HOST, FALSE
@@ -384,7 +384,7 @@ TrioFestival_Picnic:
 	msgbox TrioFestival_LetterText, MSGBOX_DEFAULT
 	setflag FLAG_TRIO_FESTIVAL_PICNIC
 	msgbox TrioSisters_Recorded, MSGBOX_DEFAULT
-	call TrioRift_FestivalOffer
+	call TrioRift_TownHint
 	goto TrioFestival_End
 TrioFestival_PicnicReplay:
 	msgbox TrioFestival_PicnicAgain, MSGBOX_DEFAULT

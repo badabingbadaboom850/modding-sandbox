@@ -113,6 +113,7 @@ GoldenrodCity_Text_Gramps_TrioWorld1_After:
 	msgbox GoldenrodCity_Text_Gramps_TrioWorldAfter, MSGBOX_DEFAULT
 GoldenrodCity_Text_Gramps_TrioWorld1_Resume:
 	call_if_ge VAR_TRIO_RESEARCH_STATE, 8, GoldenrodCity_EventScript_ScrapbookNeighbor
+	call_if_set FLAG_TRIO_FESTIVAL_PICNIC, TrioRift_TownOffer
 	closemessage
 	release
 	end

@@ -125,22 +125,21 @@ class FestivalChecks(unittest.TestCase):
         for outcome in (1,2):
             r=Run(required,outcomes=[outcome,1]).run('Scott');self.assertIn(F('PICNIC'),r.flags);self.assertEqual(F('SCOTT_WIN') in r.flags,outcome==1)
             self.assertTrue(r.released);r.run('Scott');self.assertEqual(r.text.count('TrioFestival_LetterText'),1)
-    def test_rift_shortcut_from_picnic_and_host(self):
+    def test_rift_town_hint_after_picnic_and_from_host(self):
         required=[F(x) for x in ('RIKO','BIJUU','PENNY','SNACK_B')]
         for outcome in (1,2):
-            r=Run(required,outcomes=[outcome],answers=[1,1]).run('Scott')
+            r=Run(required,outcomes=[outcome]).run('Scott')
             self.assertIn(F('PICNIC'),r.flags)
-            self.assertEqual(r.warps,[('MAP_TRIO_ECHO_WOODS','12','27')])
+            self.assertFalse(r.warps)
+            self.assertIn('TrioRift_TownHintText',r.text)
             self.assertTrue(r.released)
-            r=Run(required,outcomes=[outcome],answers=[1,0]).run('Scott')
-            self.assertFalse(r.warps);self.assertTrue(r.released)
-        r=Run([F('PICNIC')],answers=[1]).run('Host')
-        self.assertEqual(r.warps,[('MAP_TRIO_ECHO_WOODS','12','27')])
-        for flags,girls in [((),True),([F('PICNIC')],False)]:
-            r=Run(flags,girls=girls,menus=[127]).run('Host')
-            self.assertFalse(r.warps);self.assertTrue(r.released)
-        r=Run([F('PICNIC')],answers=[0],menus=[127]).run('Host')
-        self.assertFalse(r.warps);self.assertTrue(r.released)
+        r=Run([F('PICNIC')],menus=[127]).run('Host')
+        self.assertFalse(r.warps)
+        self.assertIn('TrioRift_TownHintText',r.text)
+        self.assertTrue(r.released)
+        r=Run(menus=[127]).run('Host')
+        self.assertFalse(r.warps)
+        self.assertNotIn('TrioRift_TownHintText',r.text)
 
     def test_reset_only_festival_and_ribbon_display(self):
         owned=set(re.findall(r'#define (FLAG_TRIO_FESTIVAL_\w+)',(ROOT/'include/constants/flags.h').read_text()))
