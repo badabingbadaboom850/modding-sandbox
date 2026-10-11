@@ -1236,3 +1236,20 @@ formats/forms, items and saved ABI, plus Greg/parade/Spirit Mega regressions.
 Five parade source groups,12 test travel paths/two safe destinations and actual
 ROM travel/helper/actor/music registrations passed. Rendered UI/real save reload
 remain user tests. Keep PR2 draft/unmerged and authorized testing hooks in place.
+
+## All family transformation items reusable (2026-10-11)
+
+User approved making all family transformation/reversion items reusable after
+an audit found6 consumed,7 reusable ordinary Items and20 reusable Key Items.
+Riko's Wand/Blue Brush, Bijuu's Fish Toy/Cat Nip, Dad's Keys/Piece of Chicken
+now join the shared callback's reusable exemptions; descriptions say Reusable.
+All33 are reusable:13 ordinary Items and20 Key Items. Preserve their pockets,
+prices, held behavior, shops/gifts, IDs, quantities and saved inventory ABI.
+No pocket migration or restoration of previously consumed copies. Ordinary
+stones still consume normally. Form rules and original successful/failed/cancel
+routing stay. Read docs/trio_reusable_form_items.md and tools/forms validation.
+The authorized100% run-off and round-trip parade/island testing remain.
+Validation: all33 classification/description/history checks pass; RELEASE
+32728296 linked bytes/EWRAM255432/padded32MiB and retained parade/run-off native
+ROM registrations pass. Native battle behavior remains the prior26-check build;
+this change adds6 consumption exemptions and descriptions only.

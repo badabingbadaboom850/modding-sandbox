@@ -7321,11 +7321,17 @@ static void Task_SacredAshDisplayHPRestored(u8 taskId)
 #undef tHadEffect
 #undef tLastSlotUsed
 
-// Personal elemental items are reusable; ordinary stones are consumed.
+// Every personal transformation/reversion item is reusable; ordinary stones are consumed.
 static bool32 IsReusableTrioFormItem(u16 item)
 {
     switch (item)
     {
+    case ITEM_RIKOS_WAND:
+    case ITEM_BLUE_BRUSH:
+    case ITEM_BIJUUS_FISH_TOY:
+    case ITEM_BIJUUS_CAT_NIP:
+    case ITEM_DADS_KEYS:
+    case ITEM_PIECE_OF_CHICKEN:
     case ITEM_GREEN_PEPPER:
     case ITEM_EEL_SUSHI:
     case ITEM_TOXIC_MOUSE:

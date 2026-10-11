@@ -18006,10 +18006,7 @@ const struct ItemInfo gItemsInfo[] =
     {
         .name = ITEM_NAME("Riko's Wand"),
         .price = 500,
-        .description = COMPOUND_STRING(
-            "A fairy wand that\n"
-            "evolves Riko into\n"
-            "RikoWing."),
+        .description = COMPOUND_STRING("Reusable fairy wand.\nChanges Riko into\nher winged form."),
         .pocket = POCKET_ITEMS,
         .sortType = ITEM_TYPE_EVOLUTION_STONE,
         .heldSlot = 0,
@@ -18024,10 +18021,7 @@ const struct ItemInfo gItemsInfo[] =
     {
         .name = ITEM_NAME("Blue Brush"),
         .price = 500,
-        .description = COMPOUND_STRING(
-            "A gentle blue brush\n"
-            "returns RikoWing to\n"
-            "her original form."),
+        .description = COMPOUND_STRING("Reusable blue brush.\nReturns winged Riko\nto her ordinary form."),
         .pocket = POCKET_ITEMS,
         .sortType = ITEM_TYPE_EVOLUTION_STONE,
         .heldSlot = 0,
@@ -18043,7 +18037,7 @@ const struct ItemInfo gItemsInfo[] =
     {
         .name = ITEM_NAME("Bijuu's Fish Toy"),
         .price = 500,
-        .description = COMPOUND_STRING("A plush fish toy that\nhelps Bijuu focus her\npsychic energy."),
+        .description = COMPOUND_STRING("Reusable fish toy.\nChanges Bijuu into\nher Psychic form."),
         .pocket = POCKET_ITEMS,
         .sortType = ITEM_TYPE_EVOLUTION_STONE,
         .heldSlot = 0,
@@ -18058,7 +18052,7 @@ const struct ItemInfo gItemsInfo[] =
     {
         .name = ITEM_NAME("Bijuu's Cat Nip"),
         .price = 500,
-        .description = COMPOUND_STRING("A sprig of Bijuu's\nfavorite catnip. It\nreturns Bijuu to her\noriginal form."),
+        .description = COMPOUND_STRING("Reusable catnip.\nReturns Psychic Bijuu\nto her ordinary form."),
         .pocket = POCKET_ITEMS,
         .sortType = ITEM_TYPE_EVOLUTION_STONE,
         .heldSlot = 0,
@@ -18074,7 +18068,7 @@ const struct ItemInfo gItemsInfo[] =
     {
         .name = ITEM_NAME("Dad's Keys"),
         .price = 500,
-        .description = COMPOUND_STRING("Familiar keys that\nhelp Penny become\na brave guardian."),
+        .description = COMPOUND_STRING("Reusable keys.\nChanges Penny into\nher Guardian form."),
         .pocket = POCKET_ITEMS,
         .sortType = ITEM_TYPE_EVOLUTION_STONE,
         .heldSlot = 0,
@@ -18089,7 +18083,7 @@ const struct ItemInfo gItemsInfo[] =
     {
         .name = ITEM_NAME("Piece of Chicken"),
         .price = 500,
-        .description = COMPOUND_STRING("A tasty bite that\nreturns Penny to\nher regular form."),
+        .description = COMPOUND_STRING("Reusable chicken treat.\nReturns Guardian Penny\nto her ordinary form."),
         .pocket = POCKET_ITEMS,
         .sortType = ITEM_TYPE_EVOLUTION_STONE,
         .heldSlot = 0,
