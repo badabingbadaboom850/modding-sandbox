@@ -33,6 +33,18 @@ for source in sources:
         assert result.size == original.size and result.mode == 'P', path
         assert result.getpalette() == original.getpalette(), path
         assert max(result.tobytes()) < 16, path
+        # Decode the actual frame-sized tile blocks used by the engine. Whole-
+        # sheet tile order is valid 4bpp but tears a horizontal sprite atlas.
+        binary = path.with_suffix('.4bpp').read_bytes()
+        expected = bytearray()
+        for fy in range(0,result.height,fh):
+            for fx in range(0,result.width,fw):
+                for ty in range(0,fh,8):
+                    for tx in range(0,fw,8):
+                        for y in range(8):
+                            for x in range(0,8,2):
+                                expected.append(result.getpixel((fx+tx+x,fy+ty+y)) | result.getpixel((fx+tx+x+1,fy+ty+y)) << 4)
+        assert binary == expected, ('Compiled frame packing mismatch',path)
         a,b=original.load(),result.load()
         for fy in range(0,original.height,fh):
             for fx in range(0,original.width,fw):

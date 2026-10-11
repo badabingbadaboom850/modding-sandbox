@@ -1019,3 +1019,29 @@ focused hats/radio/Road Trip suite32passes+21expected harness failures over
 three shards, zero unexpected.186 accessory frames,9 family-days and10 Road
 Trip source/geometry groups pass. Production build and committed CI are
 separate from rendered emulator/save-reload confirmation. PR remains draft.
+
+## Corrected hat packing and custom thrown balls (2026-10-11)
+
+User's rendered screenshot showed strips instead of the player after selecting
+a hat. Source PNG/native geometry checks had missed whole-sheet4bpp tile order.
+spritesheet_rules.mk now packs narrow hat frames2x4 tiles, wide4x4, trainer8x8;
+the rules file is also a dependency to repair old cached assets. Never assume
+source PNGs or successful builds prove frame order. tools/player_hats/validate.py
+now checks every compiled pixel against186 source frames, reproducing the
+earlier defect and passing for the repair. Hat art/palettes/saved choice remain.
+
+Trio/Great, Riko Ultra, Bijuu Moon and Penny Love previously only rethemed Bag
+art. Their battle three-frame sheets now match that design and bind the exact
+existing Bag palettes. Great/Ultra no longer receive generic gOpenPokeballGfx
+overwrites. Standard Poke/Master/Net/Nest/Repeat/Safari handling remains. Existing
+captured Pokémon keep the historical IDs and get the new send-out art; no
+item/save/catch-rate changes or gifts. Imagegen source sheets live in graphics/
+balls/custom_sources, native conversion in tools/custom_balls. Read docs/
+trio_battle_sprite_repairs.md before extending this path.
+
+Two new native-engine tests verify registration and every1536 custom-ball VRAM
+byte after LoadBallGfx. Focused hats/balls/radio/RoadTrip suite34passes plus21
+expected runner failures over3shards, zero unexpected.186 hat and12 ball frames,
+source/save/palette checks and RELEASE=1 production build pass (32666372 linked
+bytes, EWRAM255416). Rendered emulator hat/throw/open/send-out and save-reload
+confirmation remain separate. Keep PR draft and all earned progress intact.

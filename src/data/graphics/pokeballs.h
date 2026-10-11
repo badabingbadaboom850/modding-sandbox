@@ -5,10 +5,10 @@ const u32 gBallGfx_Poke[] = INCBIN_U32("graphics/balls/poke.4bpp.smol");
 const u16 gBallPal_Poke[] = INCBIN_U16("graphics/balls/poke.gbapal");
 
 const u32 gBallGfx_Great[] = INCBIN_U32("graphics/balls/great.4bpp.smol");
-const u16 gBallPal_Great[] = INCBIN_U16("graphics/balls/great.gbapal");
+const u16 gBallPal_Great[] = INCBIN_U16("graphics/items/icon_palettes/great_ball.gbapal");
 
 const u32 gBallGfx_Ultra[] = INCBIN_U32("graphics/balls/ultra.4bpp.smol");
-const u16 gBallPal_Ultra[] = INCBIN_U16("graphics/balls/ultra.gbapal");
+const u16 gBallPal_Ultra[] = INCBIN_U16("graphics/items/icon_palettes/ultra_ball.gbapal");
 
 const u32 gBallGfx_Master[] = INCBIN_U32("graphics/balls/master.4bpp.smol");
 const u16 gBallPal_Master[] = INCBIN_U16("graphics/balls/master.gbapal");
@@ -50,13 +50,13 @@ const u32 gBallGfx_Lure[] = INCBIN_U32("graphics/balls/lure.4bpp.smol");
 const u16 gBallPal_Lure[] = INCBIN_U16("graphics/balls/lure.gbapal");
 
 const u32 gBallGfx_Moon[] = INCBIN_U32("graphics/balls/moon.4bpp.smol");
-const u16 gBallPal_Moon[] = INCBIN_U16("graphics/balls/moon.gbapal");
+const u16 gBallPal_Moon[] = INCBIN_U16("graphics/items/icon_palettes/moon_ball.gbapal");
 
 const u32 gBallGfx_Friend[] = INCBIN_U32("graphics/balls/friend.4bpp.smol");
 const u16 gBallPal_Friend[] = INCBIN_U16("graphics/balls/friend.gbapal");
 
 const u32 gBallGfx_Love[] = INCBIN_U32("graphics/balls/love.4bpp.smol");
-const u16 gBallPal_Love[] = INCBIN_U16("graphics/balls/love.gbapal");
+const u16 gBallPal_Love[] = INCBIN_U16("graphics/items/icon_palettes/love_ball.gbapal");
 
 const u32 gBallGfx_Fast[] = INCBIN_U32("graphics/balls/fast.4bpp.smol");
 const u16 gBallPal_Fast[] = INCBIN_U16("graphics/balls/fast.gbapal");

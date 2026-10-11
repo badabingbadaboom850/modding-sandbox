@@ -1,4 +1,20 @@
 POKEMONGFXDIR := graphics/pokemon
+PLAYERHATGFXDIR := graphics/player_hats
+
+# Each avatar frame must be contiguous in VRAM, just like the native May sheets.
+# Depending on this rules file also repairs cached assets from the prototype.
+PLAYER_HAT_NARROW := $(foreach style,bow sunhat,$(addprefix $(PLAYERHATGFXDIR)/$(style)/,walking.4bpp running.4bpp decorating.4bpp))
+PLAYER_HAT_WIDE := $(foreach style,bow sunhat,$(addprefix $(PLAYERHATGFXDIR)/$(style)/,field_move.4bpp surfing.4bpp mach_bike.4bpp acro_bike.4bpp fishing.4bpp watering.4bpp underwater.4bpp))
+PLAYER_HAT_TRAINER := $(foreach style,bow sunhat,$(addprefix $(PLAYERHATGFXDIR)/$(style)/,front.4bpp back.4bpp))
+
+$(PLAYER_HAT_NARROW): %.4bpp: %.png spritesheet_rules.mk
+	$(GFX) $< $@ -mwidth 2 -mheight 4
+
+$(PLAYER_HAT_WIDE): %.4bpp: %.png spritesheet_rules.mk
+	$(GFX) $< $@ -mwidth 4 -mheight 4
+
+$(PLAYER_HAT_TRAINER): %.4bpp: %.png spritesheet_rules.mk
+	$(GFX) $< $@ -mwidth 8 -mheight 8
 OBJEVENTGFXDIR := graphics/object_events/pics
 FLDEFFGFXDIR := graphics/field_effects/pics
 BATINTGFXDIR := graphics/battle_interface
