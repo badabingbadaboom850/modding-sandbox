@@ -2449,6 +2449,7 @@ Common_Text_ReceivedMon:
 	.include "data/maps/TrioRoadCabin/scripts.inc"
 
 	.include "data/scripts/trio_family_days.inc"
+	.include "data/scripts/trio_player_hats.inc"
 	.include "data/maps/TrioDinnerDate/scripts.inc"
 	.include "data/maps/TrioRadioStudio/scripts.inc"
 	.include "data/maps/TrioHomecoming/scripts.inc"

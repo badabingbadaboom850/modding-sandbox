@@ -989,3 +989,33 @@ geometry groups,10 Road Trip groups,7 gang groups, costume-story source checks,
 compiled active entry hooks, docs-summary and diff checks pass. Native exits
 share the exact proven layouts/coordinates. Rendered restaurant/studio/home,
 radio UI and real in-game save/reload remain for user testing; new CI is separate.
+
+## Player hats prototype (2026-10-11)
+
+User approved trying female-player hats. Right bedroom bookshelf6,1 (approach
+6,2) is now a free hat shelf: original, pink bow, vacation sunhat. No Badge or
+chapter gates. Cancel preserves current style; ApplyTrioPlayerHat updates the
+actual player immediately. Male avatars retain their normal graphics.
+
+VAR_TRIO_PLAYER_HAT4144 uses the existing saved array, zero original/one bow/
+two sunhat, invalid values read as original without rewriting progress. Saved
+ABI, palettes, historical IDs and dynamic object graphics remain unchanged.
+Explicit field graphics384-401 are handled before ordinary invalid-ID fallback;
+NUM_OBJ_EVENT_GFX must remain330 here, preserving old dynamic IDs331-346. All
+nine native state tables (walking combines running) copy native geometry/anim/
+palette/subsprite metadata. Normalize hat IDs for gender/state recognition.
+Only player-state callers select the variants; Copycat and rival NPCs keep
+their historical native IDs. Decoration preview, local trainer portrait/card,
+Pokédex/Hall of Fame and Safari/normal battle entrances follow saved choice.
+Link back art and received cards preserve default behavior. Four trainer IDs
+append after historical back IDs without moving FRONT_COUNT. The intro throw
+palette indexes the full back ID, matching its existing registered table.
+
+Art uses imagegen accessory reference plus tools/player_hats native C compiler;
+24 PNG variants preserve body art outside head regions and original palettes.
+Underwater accessories retain the native monochrome palette. Read docs/
+trio_player_hats.md and code before extending. Four new engine tests pass;
+focused hats/radio/Road Trip suite32passes+21expected harness failures over
+three shards, zero unexpected.186 accessory frames,9 family-days and10 Road
+Trip source/geometry groups pass. Production build and committed CI are
+separate from rendered emulator/save-reload confirmation. PR remains draft.

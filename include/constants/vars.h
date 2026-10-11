@@ -362,6 +362,8 @@
 #define VAR_TRIO_HOME_GIFTS                          0x4142
 #define VAR_TRIO_HOME_REWARD                         0x4143
 
+#define VAR_TRIO_PLAYER_HAT                          0x4144 // 0 original, 1 bow, 2 sunhat
+
 #define VARS_END                                         0x42FF
 
 #define VARS_COUNT                                       (VARS_END - VARS_START + 1)

@@ -1,0 +1,67 @@
+"""Read-only accessory, registration and historical-save checks."""
+from pathlib import Path
+from PIL import Image
+import json, re, subprocess
+
+R = Path(__file__).resolve().parents[2]
+BASE = 'f5d7a32d88b5d05f9946b3345399c26fcba78dfa'
+def old(path):
+    return subprocess.check_output(['git', 'show', BASE+':'+path], cwd=R)
+
+for path in ['include/global.h', 'include/global.fieldmap.h',
+             'include/constants/species.h', 'include/constants/flags.h',
+             'include/constants/event_objects.h',
+             'graphics/object_events/palettes/may.pal',
+             'graphics/object_events/palettes/may_reflection.pal',
+             'graphics/trainers/palettes/may.pal',
+             'graphics/trainers/palettes/may_back.pal']:
+    assert (R/path).read_bytes().replace(b'\r\n',b'\n') == old(path).replace(b'\r\n',b'\n'), path
+assert '0x4144' not in old('include/constants/vars.h').decode()
+assert '0x4144' in (R/'include/constants/vars.h').read_text()
+
+sources = list((R/'graphics/object_events/pics/people/may').glob('*.png'))
+sources += [R/'graphics/trainers/front_pics/may.png', R/'graphics/trainers/back_pics/may.png']
+frames = changed = 0
+for source in sources:
+    assert source.read_bytes() == old(str(source.relative_to(R)))
+    original = Image.open(source)
+    kind = 1 if 'front_pics' in str(source) else 2 if 'back_pics' in str(source) else 0
+    fw, fh = (64,64) if kind else (16 if source.stem in ('walking','running','decorating') else 32,32)
+    for style in ['bow','sunhat']:
+        path = R/'graphics/player_hats'/style/('front.png' if kind==1 else 'back.png' if kind==2 else source.name)
+        result = Image.open(path)
+        assert result.size == original.size and result.mode == 'P', path
+        assert result.getpalette() == original.getpalette(), path
+        assert max(result.tobytes()) < 16, path
+        a,b=original.load(),result.load()
+        for fy in range(0,original.height,fh):
+            for fx in range(0,original.width,fw):
+                frames += 1
+                gold = (14,9) if source.stem == 'underwater' else (12,13) if not kind else (6,1) if kind==1 else (2,1)
+                points=[(x,y) for y in range(fh) for x in range(fw) if a[fx+x,fy+y] in gold]
+                assert points, (path,fx,fy)
+                top=min(y for x,y in points)
+                head=[(x,y) for x,y in points if y <= top+(18 if kind else 7)]
+                bottom=max(y for x,y in head)
+                diff=[(x,y) for y in range(fh) for x in range(fw) if a[fx+x,fy+y]!=b[fx+x,fy+y]]
+                assert diff, (path,fx,fy)
+                assert all(top-1<=y<=bottom+(2 if kind else 1) for x,y in diff), (path,fx,fy,diff)
+                changed += len(diff)
+
+j=json.loads((R/'data/maps/NewBarkTown_PlayersHouse_2F/map.json').read_text())
+prior=json.loads(old('data/maps/NewBarkTown_PlayersHouse_2F/map.json'))
+assert j['warp_events']==prior['warp_events'] and j['coord_events']==prior['coord_events']
+assert j['object_events']==prior['object_events']
+assert j['bg_events'][-1]['script']=='TrioPlayerHat_Wardrobe'
+assert (j['bg_events'][-1]['x'],j['bg_events'][-1]['y'])==(6,1)
+assert all(j['bg_events'][i]==prior['bg_events'][i] for i in range(len(j['bg_events'])-1))
+s=(R/'data/scripts/trio_player_hats.inc').read_text()
+assert s.index('goto_if_ge TrioPlayerHat_Exit') < s.index('special ApplyTrioPlayerHat')
+for text in re.findall(r'\.string "(.*?)"',s):
+    for page in text.rstrip('$').split('\\p'):
+        lines=page.split('\\n');assert len(lines)<=2
+        assert all(len(line)<=26 for line in lines), lines
+assert 'gObjectEventGraphicsInfo_MayNormal' in (R/'src/data/object_events/object_event_graphics_info_pointers.h').read_text()
+assert 'TRIO_PLAYER_HAT_GFX_BASE' in (R/'src/event_object_movement.c').read_text()
+assert 'GetRivalAvatarGraphicsIdByStateIdAndGender(u8 state, enum Gender gender)\n{\n    return sRivalAvatarGfxIds[state][gender];' in (R/'src/field_player_avatar.c').read_text()
+print(f'PASS: {frames} native accessory frames, {changed} head pixels; body/palette/ABI source unchanged; wardrobe cancellation and historical events intact')

@@ -152,6 +152,7 @@
 #define MULTI_TRIO_FESTIVAL_PENNY        141
 #define MULTI_TRIO_FESTIVAL_HOST         142
 #define MULTI_TRIO_FESTIVAL_TEST         143
+#define MULTI_TRIO_PLAYER_HATS           144
 
 
 // Lilycove SS Tidal Multichoice Selections

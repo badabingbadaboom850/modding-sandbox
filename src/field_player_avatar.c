@@ -1,4 +1,5 @@
 #include "global.h"
+#include "trio_player_hats.h"
 #include "main.h"
 #include "bike.h"
 #include "event_data.h"
@@ -1504,7 +1505,7 @@ u16 GetRivalAvatarGraphicsIdByStateIdAndGender(u8 state, enum Gender gender)
 
 u16 GetPlayerAvatarGraphicsIdByStateIdAndGender(u8 state, enum Gender gender)
 {
-    return sPlayerAvatarGfxIds[state][gender];
+    return TrioPlayerHat_Graphics(sPlayerAvatarGfxIds[state][gender], gender);
 }
 
 u16 GetFRLGAvatarGraphicsIdByGender(enum Gender gender)
@@ -1524,6 +1525,7 @@ u16 GetPlayerAvatarGraphicsIdByStateId(u8 state)
 
 enum Gender GetPlayerAvatarGenderByGraphicsId(u16 gfxId)
 {
+    gfxId = TrioPlayerHat_BaseGraphics(gfxId);
     switch (gfxId)
     {
     case OBJ_EVENT_GFX_MAY_NORMAL:
@@ -1593,6 +1595,7 @@ void SetPlayerAvatarStateMask(u8 flags)
 
 static u8 GetPlayerAvatarStateTransitionByGraphicsId(u16 graphicsId, u8 gender)
 {
+    graphicsId = TrioPlayerHat_BaseGraphics(graphicsId);
     u8 i;
 
     for (i = 0; i < ARRAY_COUNT(sPlayerAvatarGfxToStateFlag[0]); i++)
@@ -1611,7 +1614,7 @@ u16 GetPlayerAvatarGraphicsIdByCurrentState(void)
     for (i = 0; i < ARRAY_COUNT(sPlayerAvatarGfxToStateFlag[0]); i++)
     {
         if (sPlayerAvatarGfxToStateFlag[gPlayerAvatar.gender][i].playerFlag & flags)
-            return sPlayerAvatarGfxToStateFlag[gPlayerAvatar.gender][i].graphicsId;
+            return TrioPlayerHat_Graphics(sPlayerAvatarGfxToStateFlag[gPlayerAvatar.gender][i].graphicsId, gPlayerAvatar.gender);
     }
     return 0;
 }

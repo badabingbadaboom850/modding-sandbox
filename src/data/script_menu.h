@@ -1031,6 +1031,13 @@ static const struct MenuAction MultichoiceList_FestivalTEST[] =
     {COMPOUND_STRING("Exit")},
 };
 
+static const struct MenuAction MultichoiceList_PlayerHats[] = {
+    {COMPOUND_STRING("Original hat")},
+    {COMPOUND_STRING("Pink bow")},
+    {COMPOUND_STRING("Vacation sunhat")},
+    {gText_Exit},
+};
+
 static const struct MultichoiceListStruct sMultichoiceLists[] =
 {
     [MULTI_BRINEY_ON_DEWFORD]          = MULTICHOICE(MultichoiceList_BrineyOnDewford),
@@ -1177,6 +1184,7 @@ static const struct MultichoiceListStruct sMultichoiceLists[] =
     [MULTI_TRIO_FESTIVAL_PENNY] = MULTICHOICE(MultichoiceList_FestivalPENNY),
     [MULTI_TRIO_FESTIVAL_HOST] = MULTICHOICE(MultichoiceList_FestivalHOST),
     [MULTI_TRIO_FESTIVAL_TEST] = MULTICHOICE(MultichoiceList_FestivalTEST),
+    [MULTI_TRIO_PLAYER_HATS] = MULTICHOICE(MultichoiceList_PlayerHats),
 
 };
 
