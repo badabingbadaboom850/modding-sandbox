@@ -1177,3 +1177,31 @@ flags, old Greg/Wawa/neighbor progress and saved ABI. RoadTrip/snack/hats/Spirit
 regressions pass.12 bypasses/map budgets/history,38 texts, reward retries,7 squirrel
 source groups and production-ROM72 mons/12 NPC-script-text pointers pass.
 Rendered approaches/sightings/save-reload await user testing. Keep PR2 draft.
+
+## Goldenrod Pom Parade (2026-10-11)
+
+User approved a replayable parade with about nine Poms and a crowd on the
+connecting street. Existing central woman30,25 offers it before original text
+in both raw Pory/assembly; decline continues normally, Rocket visibility stays.
+Appended IndoorGoldenrod TrioPomParade stages the exact native city layout. Nine
+Riko-art Poms march up32/34, spectators including Scott watch from27/29/31,24,
+Penny/Bijuu sit beside player30,23. Spin/sniff/bark and last-Pom fast catch-up
+finish before crowd cheers and ordinary-city return30,24. Fourteen NPCs plus
+player/possible follower fit16 slots. PrepareTrioParadeActors spawns offscreen
+rear actors and verifies every live sprite; failure returns with no completion.
+Map transition temporarily hides Pokemon follower; every return clears it.
+No camera scroll, battle, gift, party gate, Badge gate or lasting road blockage.
+HG Wi-Fi Parade music is explicitly enabled. Original city events/warps/layout
+and historical IDs, saved ABI, other quests/Greg wins and mailbox stay intact.
+
+Audited unused var4146 records full finale once; replays never reset it. Sisters
+scrapbook page is read-only. Mapframe latch TEMP_A resets only staging. No normal
+save/menu access during scene. Read docs/trio_pom_parade.md and tools/parade.
+Source/path tests distinguish normal saved progress from emulator mid-script
+snapshots; rendered parade/follower/return and real save-reload need user testing.
+
+Validation: RELEASE build32726644 linked bytes/EWRAM255416/padded32MiB passed.
+Five authored flow/geometry/history groups and actual linked-ROM14 actors,
+organizer/frame/movement/memory pointers and enabled parade song passed.20 native
+checks passed plus7 expected harness failures, zero unexpected; parade guards
+and Greg/hats/road-trip regressions included. Keep PR2 draft/unmerged.

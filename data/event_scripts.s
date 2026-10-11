@@ -2456,3 +2456,5 @@ Common_Text_ReceivedMon:
 	.include "data/maps/TrioHomecoming/scripts.inc"
 
 .include "data/scripts/trio_greg_roaming.inc"
+	.include "data/scripts/trio_pom_parade.inc"
+	.include "data/maps/TrioPomParade/scripts.inc"

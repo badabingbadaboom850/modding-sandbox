@@ -675,3 +675,5 @@ gSpecials::
 
 	def_special BufferTrioFamilyRadio
 	def_special ApplyTrioPlayerHat
+
+	def_special PrepareTrioParadeActors

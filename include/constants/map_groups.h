@@ -160,6 +160,7 @@ enum
     MAP_TRIO_LANTERN_TRAIL                       = (39 | (5 << 8)),
     MAP_TRIO_DINNER_DATE                         = (40 | (5 << 8)),
     MAP_TRIO_RADIO_STUDIO                        = (41 | (5 << 8)),
+    MAP_TRIO_POM_PARADE                          = (42 | (5 << 8)),
 
     // gMapGroup_IndoorEcruteak
     MAP_ECRUTEAK_CITY_POKEMON_CENTER = (0 | (6 << 8)),

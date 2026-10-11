@@ -366,6 +366,8 @@
 
 #define VAR_TRIO_GREG_WINS                          0x4145 // Twelve independent Greg stops
 
+#define VAR_TRIO_POM_PARADE                         0x4146 // 1 after full parade; replay never resets
+
 #define VARS_END                                         0x42FF
 
 #define VARS_COUNT                                       (VARS_END - VARS_START + 1)

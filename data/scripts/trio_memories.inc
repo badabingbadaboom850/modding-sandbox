@@ -146,6 +146,7 @@ TrioScrapbook_Sisters:
 	call_if_eq VAR_TRIO_ROAD_COMPLETE, 1, TrioRoad_ReadMemory
 	call TrioStories_ReadMemories
 	call FamilyDays_ReadMemories
+	call_if_eq VAR_TRIO_POM_PARADE, 1, TrioParade_ReadMemory
 	goto TrioScrapbook_Menu
 TrioScrapbook_Letters:
 	msgbox TrioScrapbook_LettersIntro, MSGBOX_DEFAULT
