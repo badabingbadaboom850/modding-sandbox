@@ -3,8 +3,8 @@
 
 #include "pokemon.h"
 
-// User-authorized testing rate. Change to 5 after the rendered test is approved.
-#define TRIO_RUNOFF_CHANCE 100
+// User-approved normal rate: one random eligible girl in 5% of battles.
+#define TRIO_RUNOFF_CHANCE 5
 void TrioRunoff_Begin(u32 chance);
 void TrioRunoff_BeginBattle(void);
 void TrioRunoff_Clear(void);

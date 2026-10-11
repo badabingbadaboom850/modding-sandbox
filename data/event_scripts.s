@@ -1671,6 +1671,7 @@ Common_Text_ReceivedMon:
 	.include "data/maps/OlivineCity_House1/scripts.inc"
 
 	.include "data/maps/OlivineCity_House2/scripts.inc"
+	.include "data/maps/OlivinePomParty/scripts.inc"
 
 	.include "data/maps/OlivineCity_House3/scripts.inc"
 

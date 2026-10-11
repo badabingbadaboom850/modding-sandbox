@@ -95,7 +95,7 @@ void TrioRunoff_BeginBattle(void)
     u32 savedFlags = gBattleTypeFlags;
     if (enabled)
         gBattleTypeFlags &= ~(BATTLE_TYPE_RECORDED | BATTLE_TYPE_RECORDED_LINK);
-    TrioRunoff_Begin(enabled ? TRIO_RUNOFF_CHANCE : 0);
+    TrioRunoff_Begin(enabled ? 100 : 0);
     gBattleTypeFlags = savedFlags;
 #else
     TrioRunoff_Begin(TRIO_RUNOFF_CHANCE);

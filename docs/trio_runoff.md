@@ -1,8 +1,8 @@
-# Girls running off: 100% testing build
+# Girls running off: 5% normal rate
 
-One conscious non-egg family girl is randomly unavailable for each ordinary
-solo wild/trainer battle. The user authorized a temporary100% rate to test;
-TRIO_RUNOFF_CHANCE in include/trio_runoff.h will become5 after approval.
+There is a 5% chance per eligible ordinary solo wild/trainer battle that one
+conscious non-egg family girl is randomly unavailable. The user confirmed the
+freeze fix works and approved returning to the planned normal rate.
 Riko follows a snack bag, Bijuu a mouse and Penny Dad's keys. A battle-intro
 message announces her departure before the player sends out. This version
 uses text rather than a new departure sprite animation.
@@ -25,11 +25,10 @@ first battle, e-reader and Trainer Hill formats retain their original behavior.
 Normal solo bosses and doubles are eligible. Existing tests default to0;
 explicit native battle fixtures opt into100 without changing production flags.
 
-The home mailbox now offers TEST travel to Goldenrod30,24 before its existing
-island offer. The organizer at30,25 offers the parade. Decline the parade and
-accept her TEST trip home to New Bark18,12; declining both preserves original
-dialogue. Travel grants no Badges/items, changes no quest progress and records
-no island departure. Existing earned memories and Greg wins stay intact.
+The home mailbox is a normal sign again: both Goldenrod and island test offers
+have been removed from its active script. The Goldenrod organizer no longer
+offers a test trip home. Historical island-preview return mode still routes
+existing preview saves home safely; earned progress is untouched.
 
 Validate with test/trio_runoff.c and tools/runoff/validate.py, plus the existing
 parade scripts/geometry/ROM checks. Rendered battle text, all three party-menu
@@ -61,6 +60,6 @@ for Riko/Bijuu/Penny, plus ordinary and recorded controls. All27 focused checks
 pass with7 intentional harness failures and zero unexpected failures. Nine
 run-off tests also pass with emulator rendering enabled. RELEASE32728472 linked
 bytes/EWRAM255432, existing ROM travel/parade registrations and all33 reusable
-form-item/history checks pass. ManicEMU confirmation remains the player test.
+form-item/history checks pass. The user confirmed this repair works in ManicEMU.
 Use a normal in-game save before the battle when replacing the ROM; a snapshot
 of the old frozen battle retains the old execution state.

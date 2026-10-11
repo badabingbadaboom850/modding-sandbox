@@ -191,6 +191,7 @@ enum
     MAP_ROUTE40_HOUSE5              = (12 | (7 << 8)),
     MAP_OLIVINE_CITY_HOUSE4         = (13 | (7 << 8)),
     MAP_TRIO_GARDEN                 = (14 | (7 << 8)),
+    MAP_OLIVINE_POM_PARTY           = (15 | (7 << 8)),
 
     // gMapGroup_IndoorCianwood
     MAP_CIANWOOD_POKECENTER = (0 | (8 << 8)),

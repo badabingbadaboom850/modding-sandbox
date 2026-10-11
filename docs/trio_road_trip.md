@@ -44,4 +44,8 @@ These are not interactive emulator confirmation. Test on a copy of an existing i
 
 ## Temporary New Bark preview
 
-At the user's request, the player-house mailbox (17,11) offers island travel without a Badge requirement. It preserves all existing quest states, saves return mode2, and the island ferry returns to New Bark (18,12), including after in-game save/reload. Cianwood/Olivine departures overwrite the return mode normally. No Badge, item or victory grants and no resets. Remove this temporary offer after the user confirms testing; preserve earned progress.
+The temporary mailbox island offer has been removed at the user's request after
+testing. The mailbox is a normal sign again. Preserve historical return mode2:
+existing saves already visiting the preview island can still return to New Bark
+(18,12), including after reload. Cianwood/Olivine departures overwrite the return
+mode normally. No earned progress is reset.

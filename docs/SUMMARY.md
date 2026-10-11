@@ -176,5 +176,7 @@
 - [Complete trio elemental forms](trio_complete_elements.md)
 - [Greg roaming encounters](greg_roaming.md)
 - [Goldenrod Pom Parade](trio_pom_parade.md)
-- [Girls running off: testing build](trio_runoff.md)
+- [Girls running off: 5% normal rate](trio_runoff.md)
 - [Reusable family transformations](trio_reusable_form_items.md)
+
+- [Olivine Pom party encore](trio_pom_party_encore.md)

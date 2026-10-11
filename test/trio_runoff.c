@@ -8,6 +8,7 @@
 #include "constants/items.h"
 #include "constants/battle_string_ids.h"
 #include "sprite.h"
+#include "random.h"
 
 extern bool32 IsValidForBattleButDead(struct Pokemon *mon);
 extern bool32 BattleIntro_ShouldWaitForHealthbox(enum BattlerId battler);
@@ -209,4 +210,28 @@ TEST("Runoff intro advances with an already completed trainer healthbox slide us
     gHealthboxSpriteIds[1] = oldId;
     gSprites[0].callback = oldCallback;
     gBattleTypeFlags = 0;
+}
+
+TEST("Runoff normal rate accepts precisely rolls zero through four")
+{
+    rng_value_t savedRng = gRngValue;
+    MakeParty(SPECIES_RIKO, 2);
+    EXPECT_EQ(TRIO_RUNOFF_CHANCE, 5);
+    u32 seen = 0;
+    bool8 rolls[100] = {FALSE};
+    for (u32 seed = 0; seed < 10000 && seen < 100; seed++)
+    {
+        SeedRng(seed);
+        u32 roll = Random() % 100;
+        if (rolls[roll])
+            continue;
+        rolls[roll] = TRUE;
+        SeedRng(seed);
+        TrioRunoff_Begin(TRIO_RUNOFF_CHANCE);
+        EXPECT_EQ(TrioRunoff_IsAway(&gPlayerParty[0]), roll < 5);
+        seen++;
+    }
+    EXPECT_EQ(seen, 100);
+    TrioRunoff_Clear();
+    gRngValue = savedRng;
 }

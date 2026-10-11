@@ -47,8 +47,7 @@ linked-ROM registration checks and headless tests are separate from rendered
 emulator confirmation. Test the approach, nine marching sprites, movement quirks,
 music, exit controls, follower restoration, repeat and real save/reload.
 
-Keep PR2 draft and unmerged. The existing authorized island mailbox shortcut
-is unaffected.
+Keep PR2 draft and unmerged. Temporary mailbox travel has been removed at the user's request.
 
 Completed validation: RELEASE=1 production build passed (32,726,644 linked
 bytes; EWRAM255,416; padded32MiB). All five source-flow/geometry/history groups
@@ -56,3 +55,7 @@ and linked-ROM actor/script/movement/music checks passed. Twenty focused native
 checks passed with seven intentional harness failures and zero unexpected
 failures, covering parade readiness and Greg/hat/road-trip regressions.
 Rendered emulator playback and an actual player save/reload remain unconfirmed.
+
+User confirmed parade playback and requested removal of temporary travel.
+Mailbox Goldenrod/island offers and organizer home offer are now removed.
+Normal organizer replay and historical island return support remain.

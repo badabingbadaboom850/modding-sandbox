@@ -76,7 +76,8 @@ class Checks(unittest.TestCase):
    if answer:self.assertEqual(x.vars['VAR_TRIO_ROAD_RETURN'],2)
   for ext in ['inc','pory']:
    source=(ROOT/f'data/maps/NewBarkTown/scripts.{ext}').read_text()
-   self.assertIn('msgbox NewBarkTown_Text_PlayersHouse, MSGBOX_SIGN\n\tcall TrioRoad_TestOffer\n\treleaseall',source)
+   self.assertIn('msgbox NewBarkTown_Text_PlayersHouse, MSGBOX_SIGN\n\treleaseall',source)
+   self.assertNotIn('call TrioRoad_TestOffer',source)
  def test_riko_wrong_turns_cancellation_reload_and_portrait(self):
   for state in range(5):
    for name in ['TrailOne','TrailTwo','Lookout']:
@@ -136,7 +137,7 @@ class Checks(unittest.TestCase):
     x,y=q.popleft()
     for p in [(x+1,y),(x-1,y),(x,y+1),(x,y-1)]:
      if p not in seen|occupied and walk(*p):seen.add(p);q.append(p)
-   objects=m['object_events'] if name.startswith('Trio') else m['object_events'][-1:]
+   objects=m['object_events'] if name.startswith('Trio') else [o for o in m['object_events'] if o['script']=='TrioRoad_Entrance']
    for o in objects:
     self.assertTrue(walk(o['x'],o['y']));self.assertTrue(any(p in seen for p in [(o['x']+1,o['y']),(o['x']-1,o['y']),(o['x'],o['y']+1),(o['x'],o['y']-1)]),o)
     # All potential visible templates, plus player/follower, fit 16 slots.
@@ -144,7 +145,7 @@ class Checks(unittest.TestCase):
      for y in range(o['y']-8,o['y']+9):self.assertLessEqual(sum(abs(v['x']-x)<=10 and abs(v['y']-y)<=8 for v in m['object_events'])+2,16,name)
    if name.startswith('Trio'):self.assertEqual(len(occupied),len(m['object_events']))
    else:
-    old=json.loads(subprocess.check_output(['git','show',BASE+f':data/maps/{name}/map.json'],cwd=ROOT));self.assertEqual(m['object_events'][:-1],old['object_events']);self.assertEqual({k:v for k,v in m.items() if k!='object_events'},{k:v for k,v in old.items() if k!='object_events'})
+    old=json.loads(subprocess.check_output(['git','show',BASE+f':data/maps/{name}/map.json'],cwd=ROOT));original=[o for o in m['object_events'] if o['script']!='TrioRoad_Entrance' and not o['script'].startswith('GregRoam_')];self.assertEqual(original,old['object_events']);self.assertEqual({k:v for k,v in m.items() if k!='object_events'},{k:v for k,v in old.items() if k!='object_events'})
   # Exact native building door and arrow behavior; adjacent arrival tiles are land.
   for name in ['TrioRoadIsland','TrioRoadWoods','TrioRoadCove','TrioRoadCabin']:self.assertIn('.include \"data/maps/'+name+'/scripts.inc\"',(ROOT/'data/event_scripts.s').read_text())
   layouts=json.loads((ROOT/'data/layouts/layouts.json').read_text())['layouts'];attrs=(ROOT/'data/tilesets/secondary/cianwood_city/metatile_attributes.bin').read_bytes()

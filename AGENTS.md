@@ -1271,3 +1271,25 @@ linked bytes/EWRAM255432, saved/33 reusable item audits and parade/travel ROM
 registrations pass. Keep100% and authorized travel hooks, saves/IDs unchanged.
 ManicEMU confirmation pending. Use normal in-game save before battle, not old
 frozen battle snapshot. Keep PR2 draft/unmerged.
+
+## Normal run-off rate, mailbox restoration and Olivine encore (2026-10-11)
+
+User confirms freeze fix and parade work. Authorized normal rate:5% per eligible
+battle, selecting one eligible girl. TRIO_RUNOFF_CHANCE5; explicit battle-test
+opt-in stays100 to preserve deterministic intro regressions. No saved changes.
+Mailbox now only original sign: remove active parade AND island offers in both
+Pory/inc. Organizer test-home removed; parade remains. Keep historical island
+return-mode2 support for saves already visiting the preview island.
+OlivinePomParty appended IndoorOlivine clones GoldenrodHouse2 layout/4Pom ring.
+New balding host6,7 in OlivineHouse2 invites optional free repeatable warp4,7;
+door returns to that house's warp0. Original brothers/services/events retained.
+Host: "'Cause a pom party don't stop!" Full catchphrase and sister callbacks.
+Fast loop scoped to exact two party maps/Riko graphics; no saved flag changes.
+Original Goldenrod party/memory remains. See docs/trio_pom_party_encore.md.
+
+Validation: RELEASE32728960 linked bytes/EWRAM255432/padded32MiB passed.
+28 focused native checks passed plus7 intentional harness failures, zero
+unexpected. All100 percentage roll values checked:0-4 depart,5-99 stay.
+Five parade source groups,10 island groups (retained historical return-mode2),
+compiled encore actors/scripts/native exit and all33 reusable item audits pass.
+Olivine encore rendered playback/save reload remains user testing. Keep PR2 draft.

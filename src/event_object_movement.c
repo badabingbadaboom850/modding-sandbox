@@ -5484,9 +5484,11 @@ bool8 MoveNextDirectionInSequence(struct ObjectEvent *objectEvent, struct Sprite
 {
     enum Collision collision;
     u8 movementActionId;
-    // The four Goldenrod party Poms share the normal collision-aware route loop.
-    bool8 pomParty = objectEvent->mapGroup == MAP_GROUP(MAP_GOLDENROD_CITY_HOUSE2)
-                 && objectEvent->mapNum == MAP_NUM(MAP_GOLDENROD_CITY_HOUSE2)
+    // Both party rooms share the normal collision-aware route loop.
+    bool8 pomParty = ((objectEvent->mapGroup == MAP_GROUP(MAP_GOLDENROD_CITY_HOUSE2)
+                   && objectEvent->mapNum == MAP_NUM(MAP_GOLDENROD_CITY_HOUSE2))
+                  || (objectEvent->mapGroup == MAP_GROUP(MAP_OLIVINE_POM_PARTY)
+                   && objectEvent->mapNum == MAP_NUM(MAP_OLIVINE_POM_PARTY)))
                  && objectEvent->graphicsId == OBJ_EVENT_GFX_SPECIES(RIKO);
 
     if (objectEvent->directionSequenceIndex == 3 && objectEvent->initialCoords.x == objectEvent->currentCoords.x && objectEvent->initialCoords.y == objectEvent->currentCoords.y)
