@@ -1151,6 +1151,8 @@ enum __attribute__((packed)) Item
     ITEM_PENNYS_COZY_WRAP = 963,
     ITEM_PENNYS_BEACH_VEST = 964,
 
+    ITEM_RIKOS_BLACK_BELT = 965,
+
     ITEMS_COUNT,
     ITEM_FIELD_ARROW = ITEMS_COUNT,
 };

@@ -190,6 +190,7 @@ CianwoodCity_Text_PokefanM_TrioWorldAfter:
 CianwoodCity_EventScript_Lass::
 	lock
 	faceplayer
+	call PomFu_Offer
 	call TrioRift_CheckAtmosphere
 	goto_if_eq VAR_RESULT, TRUE, CianwoodCity_RiftAtmosphere
 	msgbox CianwoodCity_Text_Lass, MSGBOX_DEFAULT
@@ -417,3 +418,44 @@ CianwoodCity_RiftAtmosphere::
 	end
 CianwoodCity_RiftAtmosphereText:
 	.string "I walk the shore at dusk.\nThe dark feels kinder now.\pLittle lights on the tide\nseem to keep pace with me.$"
+
+
+@ Optional Pom Fu gift: original martial artist story continues after this call.
+PomFu_Offer::
+	checkitem ITEM_RIKOS_BLACK_BELT
+	goto_if_eq VAR_RESULT, TRUE, PomFu_Owned
+	call TrioParty_CheckRiko
+	goto_if_ne VAR_RESULT, TRUE, PomFu_Missing
+	msgbox PomFu_Text_Offer, MSGBOX_YESNO
+	goto_if_eq VAR_RESULT, NO, PomFu_Return
+	giveitem ITEM_RIKOS_BLACK_BELT
+	goto_if_eq VAR_RESULT, FALSE, PomFu_Full
+	msgbox PomFu_Text_Taught, MSGBOX_DEFAULT
+	return
+PomFu_Owned::
+	checkspecies SPECIES_RIKO_FIGHTING
+	goto_if_eq VAR_RESULT, TRUE, PomFu_Trained
+	msgbox PomFu_Text_Owned, MSGBOX_DEFAULT
+	return
+PomFu_Trained::
+	msgbox PomFu_Text_Trained, MSGBOX_DEFAULT
+	return
+PomFu_Missing::
+	msgbox PomFu_Text_Missing, MSGBOX_DEFAULT
+	return
+PomFu_Full::
+	msgbox PomFu_Text_Full, MSGBOX_DEFAULT
+PomFu_Return::
+	return
+PomFu_Text_Offer:
+	.string "That little Pom's stance!\nHer paws have real power.\pRiko has the fighting\nspirit of a champion!\pI call her style Pom Fu.\nMay I give her a belt?$"
+PomFu_Text_Taught:
+	.string "Use it on ordinary Riko\nto awaken her Pom Fu.\pUse it again to return.\nA master takes breaks!$"
+PomFu_Text_Owned:
+	.string "Riko already has her belt.\nA tiny master in training!$"
+PomFu_Text_Trained:
+	.string "Look at that perfect gi!\nSuch powerful little paws.\pPenny watches in awe.\nBijuu wants the belt ends.$"
+PomFu_Text_Missing:
+	.string "Bring your little Riko.\nLet's see her stance!$"
+PomFu_Text_Full:
+	.string "Your Bag is full. Come\nback for Riko's belt!$"

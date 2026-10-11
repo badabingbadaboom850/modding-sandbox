@@ -1087,3 +1087,30 @@ Focused native suite35passes plus21 expected runner self-test failures, zero
 unexpected failures. All three actual production-ROM graphics payloads match
 the verified54 compiled frames byte-for-byte. Existing hats/balls/radio/trip
 checks pass. Source validators cover palette/body/frame order and cancel/Exit.
+
+
+## Pom Fu Riko (2026-10-11)
+
+User explicitly requested a functional new Normal/Fighting Riko form, not a
+costume, with a reusable Black Belt granted by a recognizing karate NPC.
+SPECIES_RIKO_FIGHTING1629/ITEM_RIKOS_BLACK_BELT965 append, old real IDs and form
+indices preserved; Egg follows new tail. Female PomFuRiko has physical560BST,
+whitegi/blackbelt battle/menu/six-frame follower art, matching16color palettes,
+Force Palm evolution move and current-level Fighting lessons through Scott.
+Protected reusable belt ordinary/three cosmetic Riko -> PomFu; reverse -> base.
+Other permanent/elemental forms use existing reversions first. Family/Spirit
+eligibility, signatures and Camp transformation stats include PomFu; no album
+change or save-array/init/quest-progress changes. Existing Cianwood martial
+artist20,54 calls optional gift before original atmosphere/story dispatch;
+owned/decline/missing/full-Bag paths return normally, no battles or new objects.
+See docs/pom_fu_riko.md, tools/costumes/validate_pom_fu.py and test/trio_pom_fu.c.
+
+Pom Fu validation:103 focused engine/battle/species/text checks pass plus21
+expected harness failures, zero unexpected. Four new Pom Fu checks pass and
+Spirit Mega exact-form return includes Pom Fu.16 actual gift paths, body/history
+checks and compiled art pass;240 player-hat frames retain packing and palettes.
+The broader costume source validator reaches a pre-existing New Bark exact-file
+assertion (later authorized Road Trip mailbox preview); no Pom Fu hook is there.
+
+Verified RELEASE production build32688384 linked bytes/EWRAM255416; nine
+actual ROM graphics/palette payloads match compiled native assets.

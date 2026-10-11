@@ -17778,6 +17778,22 @@ const struct ItemInfo gItemsInfo[] =
         .iconPalette = gItemIconPalette_RikoPrincess,
     },
 
+    [ITEM_RIKOS_BLACK_BELT] =
+    {
+        .name = ITEM_NAME("Riko Black Belt"),
+        .price = 0,
+        .description = COMPOUND_STRING("Teaches Riko Pom Fu.\nReusable black belt.\nUse again to revert."),
+        .importance = 1,
+        .pocket = POCKET_KEY_ITEMS,
+        .sortType = ITEM_TYPE_EVOLUTION_STONE,
+        .heldSlot = 0,
+        .type = ITEM_USE_PARTY_MENU,
+        .fieldUseFunc = ItemUseOutOfBattle_EvolutionStone,
+        .effect = gItemEffect_EvoItem,
+        .iconPic = gItemIcon_RikoBlackBelt,
+        .iconPalette = gItemIconPalette_RikoBlackBelt,
+    },
+
     [ITEM_RIKOS_RAINCOAT] =
     {
         .name = ITEM_NAME("Riko Raincoat"),

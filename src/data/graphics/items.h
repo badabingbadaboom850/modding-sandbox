@@ -2248,3 +2248,6 @@ const u16 gItemIconPalette_PennyBlanket[] = INCBIN_U16("graphics/items/icon_pale
 
 const u32 gItemIcon_PennyLifeguard[] = INCBIN_U32("graphics/items/icons/penny_lifeguard.4bpp.smol");
 const u16 gItemIconPalette_PennyLifeguard[] = INCBIN_U16("graphics/items/icon_palettes/penny_lifeguard.gbapal");
+
+const u32 gItemIcon_RikoBlackBelt[] = INCBIN_U32("graphics/items/icons/riko_black_belt.4bpp.smol");
+const u16 gItemIconPalette_RikoBlackBelt[] = INCBIN_U16("graphics/items/icon_palettes/riko_black_belt.gbapal");

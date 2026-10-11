@@ -702,3 +702,18 @@ static const struct SpriteFrameImage sPicTable_PennyLifeguard[] = {
     overworld_ascending_frames(gObjectEventPic_PennyLifeguard, 4, 4),
 };
 #endif
+
+
+const u32 gMonFrontPic_RikoFighting[] = INCBIN_U32("graphics/pokemon/riko_fighting/front.4bpp.smol");
+const u32 gMonBackPic_RikoFighting[] = INCBIN_U32("graphics/pokemon/riko_fighting/back.4bpp.smol");
+const u16 gMonPalette_RikoFighting[] = INCBIN_U16("graphics/pokemon/riko_fighting/normal.gbapal");
+const u16 gMonShinyPalette_RikoFighting[] = INCBIN_U16("graphics/pokemon/riko_fighting/shiny.gbapal");
+const u8 gMonIcon_RikoFighting[] = INCBIN_U8("graphics/pokemon/riko_fighting/icon.4bpp");
+const u16 gMonIconPalette_RikoFighting[] = INCBIN_U16("graphics/pokemon/riko_fighting/icon_normal.gbapal");
+const u16 gMonShinyIconPalette_RikoFighting[] = INCBIN_U16("graphics/pokemon/riko_fighting/icon_shiny.gbapal");
+const u32 gObjectEventPic_RikoFighting[] = INCBIN_U32("graphics/pokemon/riko_fighting/overworld.4bpp");
+const u16 gOverworldPalette_RikoFighting[] = INCBIN_U16("graphics/pokemon/riko_fighting/overworld_normal.gbapal");
+const u16 gShinyOverworldPalette_RikoFighting[] = INCBIN_U16("graphics/pokemon/riko_fighting/overworld_shiny.gbapal");
+static const struct SpriteFrameImage sPicTable_RikoFighting[] = {
+    overworld_ascending_frames(gObjectEventPic_RikoFighting, 4, 4),
+};

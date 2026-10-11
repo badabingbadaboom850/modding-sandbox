@@ -171,3 +171,5 @@
 - [Dinner, radio and homecoming](trio_family_days.md)
 - [Player hats prototype](trio_player_hats.md)
 - [Hat packing and custom battle-ball repair](trio_battle_sprite_repairs.md)
+
+- [Pom Fu Riko](pom_fu_riko.md)

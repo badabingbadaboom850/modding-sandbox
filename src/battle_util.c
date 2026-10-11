@@ -11443,6 +11443,7 @@ u16 GetTrioSpiritKeepsakeForSpecies(u16 species)
     switch (species)
     {
     case SPECIES_RIKO_PRINCESS:
+    case SPECIES_RIKO_FIGHTING:
     case SPECIES_RIKO_RAINCOAT:
     case SPECIES_RIKO_BALLOON:
     case SPECIES_RIKO:

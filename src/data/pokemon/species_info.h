@@ -209,7 +209,7 @@ const struct SpeciesInfo gSpeciesInfo[] =
             gShinyOverworldPalette_Riko
         )
         .teachingType = ALL_TEACHABLES, .levelUpLearnset = sRikoLevelUpLearnset,
-        .evolutions = EVOLUTION({EVO_ITEM, ITEM_POM_TIARA, SPECIES_RIKO_PRINCESS}, {EVO_ITEM, ITEM_RIKOS_RAINCOAT, SPECIES_RIKO_RAINCOAT}, {EVO_ITEM, ITEM_RIKOS_BALLOON, SPECIES_RIKO_BALLOON}, {EVO_ITEM, ITEM_RIKOS_BLOOM, SPECIES_RIKO_FLOWER}, {EVO_ITEM, ITEM_RIKOS_COURAGE, SPECIES_RIKO_ECHO}, {EVO_ITEM, ITEM_RIKOS_WAND, SPECIES_RIKO_WING}, {EVO_ITEM, ITEM_GREEN_PEPPER, SPECIES_RIKO_FIRE}, {EVO_ITEM, ITEM_EEL_SUSHI, SPECIES_RIKO_ELECTRIC}),
+        .evolutions = EVOLUTION({EVO_ITEM, ITEM_RIKOS_BLACK_BELT, SPECIES_RIKO_FIGHTING}, {EVO_ITEM, ITEM_POM_TIARA, SPECIES_RIKO_PRINCESS}, {EVO_ITEM, ITEM_RIKOS_RAINCOAT, SPECIES_RIKO_RAINCOAT}, {EVO_ITEM, ITEM_RIKOS_BALLOON, SPECIES_RIKO_BALLOON}, {EVO_ITEM, ITEM_RIKOS_BLOOM, SPECIES_RIKO_FLOWER}, {EVO_ITEM, ITEM_RIKOS_COURAGE, SPECIES_RIKO_ECHO}, {EVO_ITEM, ITEM_RIKOS_WAND, SPECIES_RIKO_WING}, {EVO_ITEM, ITEM_GREEN_PEPPER, SPECIES_RIKO_FIRE}, {EVO_ITEM, ITEM_EEL_SUSHI, SPECIES_RIKO_ELECTRIC}),
         .formSpeciesIdTable = sRikoFormSpeciesIdTable, .formChangeTable = sRikoFormChangeTable,
     },
     [SPECIES_RIKO_BALLOON] =
@@ -242,7 +242,7 @@ const struct SpeciesInfo gSpeciesInfo[] =
             gShinyOverworldPalette_RikoBalloon
         )
         .teachingType = ALL_TEACHABLES, .levelUpLearnset = sRikoLevelUpLearnset,
-        .evolutions = EVOLUTION({EVO_ITEM, ITEM_POM_TIARA, SPECIES_RIKO_PRINCESS}, {EVO_ITEM, ITEM_RIKOS_RAINCOAT, SPECIES_RIKO_RAINCOAT}, {EVO_ITEM, ITEM_RIKOS_BALLOON, SPECIES_RIKO}, {EVO_ITEM, ITEM_RIKOS_BLOOM, SPECIES_RIKO_FLOWER}, {EVO_ITEM, ITEM_RIKOS_COURAGE, SPECIES_RIKO_ECHO}, {EVO_ITEM, ITEM_RIKOS_WAND, SPECIES_RIKO_WING}, {EVO_ITEM, ITEM_GREEN_PEPPER, SPECIES_RIKO_FIRE}, {EVO_ITEM, ITEM_EEL_SUSHI, SPECIES_RIKO_ELECTRIC}),
+        .evolutions = EVOLUTION({EVO_ITEM, ITEM_RIKOS_BLACK_BELT, SPECIES_RIKO_FIGHTING}, {EVO_ITEM, ITEM_POM_TIARA, SPECIES_RIKO_PRINCESS}, {EVO_ITEM, ITEM_RIKOS_RAINCOAT, SPECIES_RIKO_RAINCOAT}, {EVO_ITEM, ITEM_RIKOS_BALLOON, SPECIES_RIKO}, {EVO_ITEM, ITEM_RIKOS_BLOOM, SPECIES_RIKO_FLOWER}, {EVO_ITEM, ITEM_RIKOS_COURAGE, SPECIES_RIKO_ECHO}, {EVO_ITEM, ITEM_RIKOS_WAND, SPECIES_RIKO_WING}, {EVO_ITEM, ITEM_GREEN_PEPPER, SPECIES_RIKO_FIRE}, {EVO_ITEM, ITEM_EEL_SUSHI, SPECIES_RIKO_ELECTRIC}),
         .formSpeciesIdTable = sRikoFormSpeciesIdTable, .formChangeTable = sRikoCostumeEntryTable,
     },
     [SPECIES_RIKO_RAINCOAT] =
@@ -275,7 +275,7 @@ const struct SpeciesInfo gSpeciesInfo[] =
             gShinyOverworldPalette_RikoRaincoat
         )
         .teachingType = ALL_TEACHABLES, .levelUpLearnset = sRikoLevelUpLearnset,
-        .evolutions = EVOLUTION({EVO_ITEM, ITEM_POM_TIARA, SPECIES_RIKO_PRINCESS}, {EVO_ITEM, ITEM_RIKOS_RAINCOAT, SPECIES_RIKO}, {EVO_ITEM, ITEM_RIKOS_BLOOM, SPECIES_RIKO_FLOWER}, {EVO_ITEM, ITEM_RIKOS_COURAGE, SPECIES_RIKO_ECHO}, {EVO_ITEM, ITEM_RIKOS_WAND, SPECIES_RIKO_WING}, {EVO_ITEM, ITEM_GREEN_PEPPER, SPECIES_RIKO_FIRE}, {EVO_ITEM, ITEM_EEL_SUSHI, SPECIES_RIKO_ELECTRIC}),
+        .evolutions = EVOLUTION({EVO_ITEM, ITEM_RIKOS_BLACK_BELT, SPECIES_RIKO_FIGHTING}, {EVO_ITEM, ITEM_POM_TIARA, SPECIES_RIKO_PRINCESS}, {EVO_ITEM, ITEM_RIKOS_RAINCOAT, SPECIES_RIKO}, {EVO_ITEM, ITEM_RIKOS_BLOOM, SPECIES_RIKO_FLOWER}, {EVO_ITEM, ITEM_RIKOS_COURAGE, SPECIES_RIKO_ECHO}, {EVO_ITEM, ITEM_RIKOS_WAND, SPECIES_RIKO_WING}, {EVO_ITEM, ITEM_GREEN_PEPPER, SPECIES_RIKO_FIRE}, {EVO_ITEM, ITEM_EEL_SUSHI, SPECIES_RIKO_ELECTRIC}),
         .formSpeciesIdTable = sRikoFormSpeciesIdTable, .formChangeTable = sRikoCostumeEntryTable,
     },
     [SPECIES_RIKO_PRINCESS] =
@@ -308,7 +308,7 @@ const struct SpeciesInfo gSpeciesInfo[] =
             gShinyOverworldPalette_RikoPrincess
         )
         .teachingType = ALL_TEACHABLES, .levelUpLearnset = sRikoLevelUpLearnset,
-        .evolutions = EVOLUTION({EVO_ITEM, ITEM_RIKOS_RAINCOAT, SPECIES_RIKO_RAINCOAT}, {EVO_ITEM, ITEM_POM_TIARA, SPECIES_RIKO}, {EVO_ITEM, ITEM_RIKOS_BLOOM, SPECIES_RIKO_FLOWER}, {EVO_ITEM, ITEM_RIKOS_COURAGE, SPECIES_RIKO_ECHO}, {EVO_ITEM, ITEM_RIKOS_WAND, SPECIES_RIKO_WING}, {EVO_ITEM, ITEM_GREEN_PEPPER, SPECIES_RIKO_FIRE}, {EVO_ITEM, ITEM_EEL_SUSHI, SPECIES_RIKO_ELECTRIC}),
+        .evolutions = EVOLUTION({EVO_ITEM, ITEM_RIKOS_BLACK_BELT, SPECIES_RIKO_FIGHTING}, {EVO_ITEM, ITEM_RIKOS_RAINCOAT, SPECIES_RIKO_RAINCOAT}, {EVO_ITEM, ITEM_POM_TIARA, SPECIES_RIKO}, {EVO_ITEM, ITEM_RIKOS_BLOOM, SPECIES_RIKO_FLOWER}, {EVO_ITEM, ITEM_RIKOS_COURAGE, SPECIES_RIKO_ECHO}, {EVO_ITEM, ITEM_RIKOS_WAND, SPECIES_RIKO_WING}, {EVO_ITEM, ITEM_GREEN_PEPPER, SPECIES_RIKO_FIRE}, {EVO_ITEM, ITEM_EEL_SUSHI, SPECIES_RIKO_ELECTRIC}),
         .formSpeciesIdTable = sRikoFormSpeciesIdTable, .formChangeTable = sRikoCostumeEntryTable,
     },
     [SPECIES_RIKO_ASPECT_MIND] =
@@ -755,6 +755,41 @@ const struct SpeciesInfo gSpeciesInfo[] =
 #endif
 
 #if P_FAMILY_RIKO
+    [SPECIES_RIKO_FIGHTING] =
+    {
+        .baseHP = 90, .baseAttack = 110, .baseDefense = 95, .baseSpeed = 105,
+        .baseSpAttack = 70, .baseSpDefense = 90,
+        .types = MON_TYPES(TYPE_NORMAL, TYPE_FIGHTING), .catchRate = 45, .expYield = 240,
+        .evYield_Attack = 2, .genderRatio = MON_FEMALE,
+        .eggCycles = 20, .friendship = STANDARD_FRIENDSHIP, .growthRate = GROWTH_MEDIUM_SLOW,
+        .eggGroups = MON_EGG_GROUPS(EGG_GROUP_FIELD, EGG_GROUP_FAIRY),
+        .abilities = { ABILITY_CUTE_CHARM, ABILITY_NONE, ABILITY_FLUFFY },
+        .bodyColor = BODY_COLOR_WHITE, .speciesName = _("PomFuRiko"), .cryId = CRY_SYLVEON,
+        .natDexNum = NATIONAL_DEX_RIKO, .categoryName = _("Pom Fu"), .height = 6, .weight = 95,
+        .description = COMPOUND_STRING("Her tiny paws strike with\nPom Fu precision. A snack\nbreak follows every lesson."),
+        .pokemonScale = 256, .trainerScale = 256,
+        .frontPic = gMonFrontPic_RikoFighting, .frontPicSize = MON_COORDS_SIZE(64, 64), .frontPicYOffset = 0,
+        .frontAnimFrames = sAnims_SingleFramePlaceHolder, .backPic = gMonBackPic_RikoFighting,
+        .backPicSize = MON_COORDS_SIZE(64, 64), .backPicYOffset = 0,
+        .palette = gMonPalette_RikoFighting, .shinyPalette = gMonShinyPalette_RikoFighting,
+        .iconSprite = gMonIcon_RikoFighting, .iconPalette = gMonIconPalette_RikoFighting,
+        .shinyIconPalette = gMonShinyIconPalette_RikoFighting, .pokemonJumpType = PKMN_JUMP_TYPE_NORMAL,
+        SHADOW(-2, 8, SHADOW_SIZE_S)
+        OVERWORLD(
+            sPicTable_RikoFighting,
+            SIZE_32x32,
+            SHADOW_SIZE_M,
+            TRACKS_FOOT,
+            sAnimTable_Following,
+            gOverworldPalette_RikoFighting,
+            gShinyOverworldPalette_RikoFighting
+        )
+        .teachingType = ALL_TEACHABLES, .levelUpLearnset = sRikoFightingTrioLevelUpLearnset,
+        .evolutions = EVOLUTION({EVO_ITEM, ITEM_RIKOS_BLACK_BELT, SPECIES_RIKO}),
+        .formSpeciesIdTable = sRikoFormSpeciesIdTable,
+        .formChangeTable = sRikoSpiritMegaEntryTable,
+    },
+
     [SPECIES_RIKO_FIRE] =
     {
         .baseHP = 90, .baseAttack = 75, .baseDefense = 85, .baseSpeed = 110,

@@ -9,7 +9,7 @@ def old(path):
     return subprocess.check_output(['git', 'show', BASE+':'+path], cwd=R)
 
 for path in ['include/global.h', 'include/global.fieldmap.h',
-             'include/constants/species.h', 'include/constants/flags.h',
+             'include/constants/flags.h',
              'include/constants/event_objects.h']:
     assert (R/path).read_bytes().replace(b'\r\n',b'\n') == old(path).replace(b'\r\n',b'\n'), path
 
@@ -24,6 +24,10 @@ for path, replacements in palette_changes.items():
         expected[index+3] = " ".join(map(str, rgb))
     assert current == expected, path
 
+prior_species = dict(re.findall(r'^#define (SPECIES_\w+)\s+(.+)$', old('include/constants/species.h').decode(), re.M))
+current_species = dict(re.findall(r'^#define (SPECIES_\w+)\s+(.+)$', (R/'include/constants/species.h').read_text(), re.M))
+for name, value in prior_species.items():
+    if name != 'SPECIES_EGG': assert current_species[name] == value, name
 assert '0x4144' not in old('include/constants/vars.h').decode()
 assert '0x4144' in (R/'include/constants/vars.h').read_text()
 

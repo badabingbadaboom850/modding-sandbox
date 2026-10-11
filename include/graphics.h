@@ -3597,6 +3597,8 @@ extern const u16 gItemIconPalette_ToxicMouse[];
 extern const u32 gItemIcon_RikoPrincess[];
 extern const u16 gItemIconPalette_RikoPrincess[];
 
+extern const u32 gItemIcon_RikoBlackBelt[];
+extern const u16 gItemIconPalette_RikoBlackBelt[];
 extern const u32 gItemIcon_RikoRaincoat[];
 extern const u16 gItemIconPalette_RikoRaincoat[];
 
