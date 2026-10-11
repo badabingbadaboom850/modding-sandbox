@@ -2438,6 +2438,7 @@ Common_Text_ReceivedMon:
 
 	.include "data/scripts/trio_move_tutor.inc"
 	.include "data/scripts/trio_costumes.inc"
+	.include "data/scripts/trio_complete_elements.inc"
 
 	.include "data/scripts/trio_outfit_stories.inc"
 

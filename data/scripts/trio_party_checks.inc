@@ -1,5 +1,7 @@
 @ CheckPartyHasSpecies compares exact IDs. Riko Spirit is a separate species.
 TrioParty_CheckRiko::
+	checkspecies SPECIES_RIKO_BUG
+	goto_if_eq VAR_RESULT, TRUE, TrioParty_SetResultTrue
 	checkspecies SPECIES_RIKO_FIGHTING
 	goto_if_eq VAR_RESULT, TRUE, TrioParty_SetResultTrue
 	checkspecies SPECIES_RIKO_RAINCOAT
@@ -70,6 +72,10 @@ TrioParty_CheckBijuu::
 	return
 
 TrioParty_CheckPenny::
+	checkspecies SPECIES_PENNY_GROUND
+	goto_if_eq VAR_RESULT, TRUE, TrioParty_SetResultTrue
+	checkspecies SPECIES_PENNY_STEEL
+	goto_if_eq VAR_RESULT, TRUE, TrioParty_SetResultTrue
 	checkspecies SPECIES_PENNY_LIFEGUARD
 	goto_if_eq VAR_RESULT, TRUE, TrioParty_SetResultTrue
 	checkspecies SPECIES_PENNY_LIFEGUARD_DACHSBUN

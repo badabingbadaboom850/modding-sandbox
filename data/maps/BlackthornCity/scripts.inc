@@ -121,6 +121,10 @@ BlackthornCity_EventScript_Youngster::
 	end
 
 BlackthornCity_EventScript_CoolTrainerF2::
+	lock
+	faceplayer
+	call TrioElement_RikoDragon
+	release
 	call TrioRift_CheckAtmosphere
 	goto_if_eq VAR_RESULT, TRUE, BlackthornCity_RiftAtmosphere
 	msgbox BlackthornCooltrainerF2Text, MSGBOX_NPC

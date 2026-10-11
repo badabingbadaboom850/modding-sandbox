@@ -1114,3 +1114,39 @@ assertion (later authorized Road Trip mailbox preview); no Pom Fu hook is there.
 
 Verified RELEASE production build32688384 linked bytes/EWRAM255416; nine
 actual ROM graphics/palette payloads match compiled native assets.
+
+## Six complete elemental forms (2026-10-11)
+
+User approved Dragon/Bumble Riko, Midnight/Crystal Bijuu, Digging/Handy Penny
+and all six generated atlases. Digging Penny MUST remain head/floppy ears
+poking out of earth like Diglett; no exposed torso/legs. Battle/menu/followers
+and item art are native16-color sprites with matched approved normal/shiny
+palettes. Source atlases stay under their species directories; native C owns
+cropping/scaling/quantization; Python handles formats/native byte assembly.
+Read docs/trio_complete_elements.md and tools/elements before extending.
+
+Dragon1589/Rock1593/Dark1596 reuse existing species; Bug1630/Ground1631/Steel1632
+append after PomFu1629. Items966-971 append, historical real IDs/form indices
+unchanged. Riko ordinary/three costumes -> Dragon/Bug; Bijuu ordinary/three
+costumes -> Dark/Rock; matching item reverses to ordinary. Guardian Penny ->
+Ground/Steel -> Guardian, matching existing Water/Grass branches. Dad's Keys
+is the entry item for Guardian. Other permanent forms revert first. All six
+keep female family dex/growth/signature/Camp and Spirit Mega eligibility;
+current-level damaging STAB Scott lessons and learned move retention follow
+the existing service. No costume album additions or saved array/init changes.
+
+Six original resident hooks: Blackthorn cooltrainer44,31 dragon plush; Azalea
+elder44,14 honeycomb; Ecruteak man22,42 sneaky cape; Mahogany elder7,13 shiny
+pebble; Violet elder28,36 garden trowel; Olivine sailor33,46 Dad's Toolbox.
+Bring matching girl. Owned/missing/decline/full-Bag return to original dialogue,
+no badges/battles/new objects/progress flags; Pory and assembly stay in sync.
+No temporary New Bark grant. Existing maps/services/earned progress retained.
+
+Validation:122 focused engine/battle/species/text checks pass plus21 expected
+harness failures, zero unexpected.25 new form/evolution/lesson/storage/exclusive
+item tests and new Spirit Mega exact-form parameters pass.96 actual gift flows,
+six original map/NPC dispatches, save/history/form-index checks,60 compiled
+sprite frames/six item palettes and72 actual linked-ROM payloads pass. Existing
+240 hat frames and PomFu gift/art checks pass. RELEASE production build32712496
+linked bytes/EWRAM255416, padded32MiB ROM. Rendered gift/evolution/follower and
+actual emulator save/reload remain for user testing. Keep PR2 draft/unmerged.

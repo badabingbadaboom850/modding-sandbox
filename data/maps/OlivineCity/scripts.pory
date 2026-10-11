@@ -199,6 +199,7 @@ OlivineCity_Text_Sailor1_TrioWorld1_Resume:
 OlivineCity_EventScript_Sailor2::
 	lock
 	faceplayer
+	call TrioElement_PennySteel
 	call TrioRift_CheckAtmosphere
 	goto_if_eq VAR_RESULT, TRUE, OlivineCity_RiftAtmosphere
 	msgbox OlivineCity_Text_Sailor2, MSGBOX_DEFAULT

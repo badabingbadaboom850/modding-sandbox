@@ -59,6 +59,9 @@ SINGLE_BATTLE_TEST("Spirit keepsakes Mega Evolve every personal form and restore
     PARAMETRIZE { species = SPECIES_BIJUU_ICE; target = SPECIES_MEGA_BIJUU_SPIRIT; item = ITEM_BIJUUS_LIGHT; }
     PARAMETRIZE { species = SPECIES_BIJUU_EMBER; target = SPECIES_MEGA_BIJUU_SPIRIT; item = ITEM_BIJUUS_LIGHT; }
     PARAMETRIZE { species = SPECIES_BIJUU_BOX; target = SPECIES_MEGA_BIJUU_SPIRIT; item = ITEM_BIJUUS_LIGHT; }
+    PARAMETRIZE { species = SPECIES_RIKO_BUG; target = SPECIES_MEGA_RIKO_SPIRIT; item = ITEM_RIKOS_SPARK; }
+    PARAMETRIZE { species = SPECIES_PENNY_GROUND; target = SPECIES_MEGA_PENNY_SPIRIT; item = ITEM_PENNYS_SHIELD; }
+    PARAMETRIZE { species = SPECIES_PENNY_STEEL; target = SPECIES_MEGA_PENNY_SPIRIT; item = ITEM_PENNYS_SHIELD; }
     GIVEN {
         UnlockSpiritMegas();
         AddBagItem(item, 1);

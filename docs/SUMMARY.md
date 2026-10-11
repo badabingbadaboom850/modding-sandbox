@@ -173,3 +173,4 @@
 - [Hat packing and custom battle-ball repair](trio_battle_sprite_repairs.md)
 
 - [Pom Fu Riko](pom_fu_riko.md)
+- [Complete trio elemental forms](trio_complete_elements.md)

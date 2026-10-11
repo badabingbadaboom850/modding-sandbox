@@ -210,6 +210,7 @@ MahoganyTown_EventScript_PushPlayer::
 MahoganyTown_EventScript_Gramps::
 	lock
 	faceplayer
+	call TrioElement_BijuuRock
 	goto_if_eq VAR_MAHOGANY_TOWN_STATE, 6, MahoganyTown_EventScript_GrampsAfter
 	msgbox MahoganyTown_Text_Gramps, MSGBOX_DEFAULT
 	closemessage

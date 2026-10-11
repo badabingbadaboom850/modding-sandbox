@@ -2251,3 +2251,16 @@ const u16 gItemIconPalette_PennyLifeguard[] = INCBIN_U16("graphics/items/icon_pa
 
 const u32 gItemIcon_RikoBlackBelt[] = INCBIN_U32("graphics/items/icons/riko_black_belt.4bpp.smol");
 const u16 gItemIconPalette_RikoBlackBelt[] = INCBIN_U16("graphics/items/icon_palettes/riko_black_belt.gbapal");
+
+const u32 gItemIcon_RikoDragonKeepsake[] = INCBIN_U32("graphics/items/icons/riko_dragon_keepsake.4bpp.smol");
+const u16 gItemIconPalette_RikoDragonKeepsake[] = INCBIN_U16("graphics/items/icon_palettes/riko_dragon_keepsake.gbapal");
+const u32 gItemIcon_RikoBugKeepsake[] = INCBIN_U32("graphics/items/icons/riko_bug_keepsake.4bpp.smol");
+const u16 gItemIconPalette_RikoBugKeepsake[] = INCBIN_U16("graphics/items/icon_palettes/riko_bug_keepsake.gbapal");
+const u32 gItemIcon_BijuuDarkKeepsake[] = INCBIN_U32("graphics/items/icons/bijuu_dark_keepsake.4bpp.smol");
+const u16 gItemIconPalette_BijuuDarkKeepsake[] = INCBIN_U16("graphics/items/icon_palettes/bijuu_dark_keepsake.gbapal");
+const u32 gItemIcon_BijuuRockKeepsake[] = INCBIN_U32("graphics/items/icons/bijuu_rock_keepsake.4bpp.smol");
+const u16 gItemIconPalette_BijuuRockKeepsake[] = INCBIN_U16("graphics/items/icon_palettes/bijuu_rock_keepsake.gbapal");
+const u32 gItemIcon_PennyGroundKeepsake[] = INCBIN_U32("graphics/items/icons/penny_ground_keepsake.4bpp.smol");
+const u16 gItemIconPalette_PennyGroundKeepsake[] = INCBIN_U16("graphics/items/icon_palettes/penny_ground_keepsake.gbapal");
+const u32 gItemIcon_PennySteelKeepsake[] = INCBIN_U32("graphics/items/icons/penny_steel_keepsake.4bpp.smol");
+const u16 gItemIconPalette_PennySteelKeepsake[] = INCBIN_U16("graphics/items/icon_palettes/penny_steel_keepsake.gbapal");

@@ -228,6 +228,7 @@ VioletCity_Text_ResearchAlreadyReported:
 VioletCity_EventScript_Gramps::
 	lock
 	faceplayer
+	call TrioElement_PennyGround
 	call TrioRift_CheckAtmosphere
 	goto_if_eq VAR_RESULT, TRUE, VioletCity_RiftAtmosphere
 	msgbox VioletCity_Text_Gramps, MSGBOX_DEFAULT

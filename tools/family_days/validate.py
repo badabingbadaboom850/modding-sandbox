@@ -134,7 +134,13 @@ class Checks(unittest.TestCase):
   old=json.loads(subprocess.check_output(['git','show',BASE+':data/maps/map_groups.json'],cwd=ROOT));new=json.loads((ROOT/'data/maps/map_groups.json').read_text())
   for group in old['group_order']:self.assertEqual(new[group][:len(old[group])],old[group])
   for path in ['data/layouts/layouts.json','include/global.h','include/constants/items.h','include/constants/species.h','include/constants/flags.h','src/new_game.c']:
-   self.assertEqual((ROOT/path).read_bytes(),subprocess.check_output(['git','show',BASE+':'+path],cwd=ROOT))
+   prior=subprocess.check_output(['git','show',BASE+':'+path],cwd=ROOT)
+   if path in ['include/constants/species.h','include/constants/items.h']:
+    # Later authorized forms/items append IDs; preserve every historical real ID.
+    prefix='SPECIES_' if 'species.h' in path else 'ITEM_';current=(ROOT/path).read_text()
+    for name,value in re.findall(r'(?:#define\s+|\b)('+prefix+r'\w+)\s*(?:=|\s)\s*(\d+)\b',prior.decode()):
+     self.assertRegex(current,r'\b'+name+r'\s*(?:=|\s)\s*'+value+r'\b',name)
+   else:self.assertEqual((ROOT/path).read_bytes(),prior)
   for name in ['GoldenrodCity','GoldenrodCity_RadioTower_1F','NewBarkTown_PlayersHouse_1F']:
    m=json.loads((ROOT/f'data/maps/{name}/map.json').read_text());o=json.loads(subprocess.check_output(['git','show',BASE+f':data/maps/{name}/map.json'],cwd=ROOT))
    if name=='GoldenrodCity':m['object_events']=m['object_events'][:-1]

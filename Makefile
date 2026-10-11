@@ -904,9 +904,11 @@ TRIO_COSTUME_GFX += graphics/pokemon/riko_princess/front.4bpp.smol \
     graphics/pokemon/penny_lifeguard/overworld_shiny.gbapal
 POM_FU_GFX := $(addprefix graphics/pokemon/riko_fighting/,front.4bpp.smol back.4bpp.smol normal.gbapal shiny.gbapal icon.4bpp icon_normal.gbapal icon_shiny.gbapal overworld.4bpp overworld_normal.gbapal overworld_shiny.gbapal)
 TRIO_ELEMENTAL_GFX += $(POM_FU_GFX)
-RIKO_OVERWORLD_GFX += $(filter %/overworld.4bpp %/overworld_normal.gbapal %/overworld_shiny.gbapal,$(TRIO_COSTUME_GFX) $(POM_FU_GFX))
+COMPLETE_ELEMENTS_GFX := $(foreach mon,riko_dragon riko_bug bijuu_dark bijuu_rock penny_ground penny_steel,$(addprefix graphics/pokemon/$(mon)/,front.4bpp.smol back.4bpp.smol normal.gbapal shiny.gbapal icon.4bpp icon_normal.gbapal icon_shiny.gbapal overworld.4bpp overworld_normal.gbapal overworld_shiny.gbapal))
+TRIO_ELEMENTAL_GFX += $(COMPLETE_ELEMENTS_GFX)
+RIKO_OVERWORLD_GFX += $(filter %/overworld.4bpp %/overworld_normal.gbapal %/overworld_shiny.gbapal,$(TRIO_COSTUME_GFX) $(POM_FU_GFX) $(COMPLETE_ELEMENTS_GFX))
 
-$(filter %.4bpp,$(RIKO_OVERWORLD_GFX)): %.4bpp: %.png
+$(sort $(filter %.4bpp,$(RIKO_OVERWORLD_GFX))): %.4bpp: %.png
 	$(GFX) $< $@ -mwidth 4 -mheight 4
 
 RIKO_MEGA_GFX := graphics/pokemon/riko/mega/front.4bpp.smol \

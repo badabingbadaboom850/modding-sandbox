@@ -17778,6 +17778,102 @@ const struct ItemInfo gItemsInfo[] =
         .iconPalette = gItemIconPalette_RikoPrincess,
     },
 
+    [ITEM_DADS_TOOLBOX] =
+    {
+        .name = ITEM_NAME("Dad's Toolbox"),
+        .price = 0,
+        .description = COMPOUND_STRING("Changes Penny's form.\nReusable keepsake.\nUse again to revert."),
+        .importance = 1,
+        .pocket = POCKET_KEY_ITEMS,
+        .sortType = ITEM_TYPE_EVOLUTION_STONE,
+        .heldSlot = 0,
+        .type = ITEM_USE_PARTY_MENU,
+        .fieldUseFunc = ItemUseOutOfBattle_EvolutionStone,
+        .effect = gItemEffect_EvoItem,
+        .iconPic = gItemIcon_PennySteelKeepsake,
+        .iconPalette = gItemIconPalette_PennySteelKeepsake,
+    },
+
+    [ITEM_PENNYS_GARDEN_TROWEL] =
+    {
+        .name = ITEM_NAME("Garden Trowel"),
+        .price = 0,
+        .description = COMPOUND_STRING("Changes Penny's form.\nReusable keepsake.\nUse again to revert."),
+        .importance = 1,
+        .pocket = POCKET_KEY_ITEMS,
+        .sortType = ITEM_TYPE_EVOLUTION_STONE,
+        .heldSlot = 0,
+        .type = ITEM_USE_PARTY_MENU,
+        .fieldUseFunc = ItemUseOutOfBattle_EvolutionStone,
+        .effect = gItemEffect_EvoItem,
+        .iconPic = gItemIcon_PennyGroundKeepsake,
+        .iconPalette = gItemIconPalette_PennyGroundKeepsake,
+    },
+
+    [ITEM_COCOAS_SHINY_PEBBLE] =
+    {
+        .name = ITEM_NAME("Shiny Pebble"),
+        .price = 0,
+        .description = COMPOUND_STRING("Changes Bijuu's form.\nReusable keepsake.\nUse again to revert."),
+        .importance = 1,
+        .pocket = POCKET_KEY_ITEMS,
+        .sortType = ITEM_TYPE_EVOLUTION_STONE,
+        .heldSlot = 0,
+        .type = ITEM_USE_PARTY_MENU,
+        .fieldUseFunc = ItemUseOutOfBattle_EvolutionStone,
+        .effect = gItemEffect_EvoItem,
+        .iconPic = gItemIcon_BijuuRockKeepsake,
+        .iconPalette = gItemIconPalette_BijuuRockKeepsake,
+    },
+
+    [ITEM_COCOAS_SNEAKY_CAPE] =
+    {
+        .name = ITEM_NAME("Cocoa Sneaky Cape"),
+        .price = 0,
+        .description = COMPOUND_STRING("Changes Bijuu's form.\nReusable keepsake.\nUse again to revert."),
+        .importance = 1,
+        .pocket = POCKET_KEY_ITEMS,
+        .sortType = ITEM_TYPE_EVOLUTION_STONE,
+        .heldSlot = 0,
+        .type = ITEM_USE_PARTY_MENU,
+        .fieldUseFunc = ItemUseOutOfBattle_EvolutionStone,
+        .effect = gItemEffect_EvoItem,
+        .iconPic = gItemIcon_BijuuDarkKeepsake,
+        .iconPalette = gItemIconPalette_BijuuDarkKeepsake,
+    },
+
+    [ITEM_RIKOS_HONEYCOMB] =
+    {
+        .name = ITEM_NAME("Riko Honeycomb"),
+        .price = 0,
+        .description = COMPOUND_STRING("Changes Riko's form.\nReusable keepsake.\nUse again to revert."),
+        .importance = 1,
+        .pocket = POCKET_KEY_ITEMS,
+        .sortType = ITEM_TYPE_EVOLUTION_STONE,
+        .heldSlot = 0,
+        .type = ITEM_USE_PARTY_MENU,
+        .fieldUseFunc = ItemUseOutOfBattle_EvolutionStone,
+        .effect = gItemEffect_EvoItem,
+        .iconPic = gItemIcon_RikoBugKeepsake,
+        .iconPalette = gItemIconPalette_RikoBugKeepsake,
+    },
+
+    [ITEM_POM_DRAGON_PLUSH] =
+    {
+        .name = ITEM_NAME("Pom Dragon Plush"),
+        .price = 0,
+        .description = COMPOUND_STRING("Changes Riko's form.\nReusable keepsake.\nUse again to revert."),
+        .importance = 1,
+        .pocket = POCKET_KEY_ITEMS,
+        .sortType = ITEM_TYPE_EVOLUTION_STONE,
+        .heldSlot = 0,
+        .type = ITEM_USE_PARTY_MENU,
+        .fieldUseFunc = ItemUseOutOfBattle_EvolutionStone,
+        .effect = gItemEffect_EvoItem,
+        .iconPic = gItemIcon_RikoDragonKeepsake,
+        .iconPalette = gItemIconPalette_RikoDragonKeepsake,
+    },
+
     [ITEM_RIKOS_BLACK_BELT] =
     {
         .name = ITEM_NAME("Riko Black Belt"),

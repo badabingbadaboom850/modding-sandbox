@@ -11443,6 +11443,7 @@ u16 GetTrioSpiritKeepsakeForSpecies(u16 species)
     switch (species)
     {
     case SPECIES_RIKO_PRINCESS:
+    case SPECIES_RIKO_BUG:
     case SPECIES_RIKO_FIGHTING:
     case SPECIES_RIKO_RAINCOAT:
     case SPECIES_RIKO_BALLOON:
@@ -11467,6 +11468,8 @@ u16 GetTrioSpiritKeepsakeForSpecies(u16 species)
     case SPECIES_PENNY_HOTDOG:
     case SPECIES_FIDOUGH:
     case SPECIES_DACHSBUN:
+    case SPECIES_PENNY_GROUND:
+    case SPECIES_PENNY_STEEL:
     case SPECIES_PENNY_GUARDIAN:
     case SPECIES_PENNY_WATER:
     case SPECIES_PENNY_GRASS:

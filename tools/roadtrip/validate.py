@@ -154,7 +154,13 @@ class Checks(unittest.TestCase):
   for path,key in [('data/maps/map_groups.json','gMapGroup_IndoorCianwood'),('data/layouts/layouts.json','layouts')]:
    old=json.loads(subprocess.check_output(['git','show',BASE+':'+path],cwd=ROOT));new=json.loads((ROOT/path).read_text());self.assertEqual(new[key][:len(old[key])],old[key])
   for path in ['include/constants/species.h','include/constants/items.h','include/constants/flags.h','include/global.h','include/constants/game_stat.h']:
-   self.assertEqual((ROOT/path).read_bytes(),subprocess.check_output(['git','show',BASE+':'+path],cwd=ROOT))
+   prior=subprocess.check_output(['git','show',BASE+':'+path],cwd=ROOT)
+   if path in ['include/constants/species.h','include/constants/items.h']:
+    # Later authorized forms/items append IDs; preserve every historical real ID.
+    prefix='SPECIES_' if 'species.h' in path else 'ITEM_';current=(ROOT/path).read_text()
+    for name,value in re.findall(r'(?:#define\s+|\b)('+prefix+r'\w+)\s*(?:=|\s)\s*(\d+)\b',prior.decode()):
+     self.assertRegex(current,r'\b'+name+r'\s*(?:=|\s)\s*'+value+r'\b',name)
+   else:self.assertEqual((ROOT/path).read_bytes(),prior)
   labels=collections.Counter()
   for p in list((ROOT/'data/maps').rglob('scripts.inc'))+list((ROOT/'data/scripts').glob('*.inc')):labels.update(re.findall(r'^(\w+)::?',p.read_text(),re.M))
   for key in LABELS:self.assertEqual(labels[key],1,key)

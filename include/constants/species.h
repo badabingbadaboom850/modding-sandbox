@@ -1745,7 +1745,10 @@
 #define SPECIES_PENNY_BLANKET_DACHSBUN                   1627
 #define SPECIES_PENNY_LIFEGUARD_DACHSBUN                 1628
 #define SPECIES_RIKO_FIGHTING                            1629
-#define SPECIES_EGG                                     (SPECIES_RIKO_FIGHTING + 1)
+#define SPECIES_RIKO_BUG                                 1630
+#define SPECIES_PENNY_GROUND                             1631
+#define SPECIES_PENNY_STEEL                              1632
+#define SPECIES_EGG                                     (SPECIES_PENNY_STEEL + 1)
 
 #define NUM_SPECIES SPECIES_EGG
 

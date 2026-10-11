@@ -717,3 +717,48 @@ const u16 gShinyOverworldPalette_RikoFighting[] = INCBIN_U16("graphics/pokemon/r
 static const struct SpriteFrameImage sPicTable_RikoFighting[] = {
     overworld_ascending_frames(gObjectEventPic_RikoFighting, 4, 4),
 };
+
+
+const u32 gMonFrontPic_RikoBug[] = INCBIN_U32("graphics/pokemon/riko_bug/front.4bpp.smol");
+const u32 gMonBackPic_RikoBug[] = INCBIN_U32("graphics/pokemon/riko_bug/back.4bpp.smol");
+const u16 gMonPalette_RikoBug[] = INCBIN_U16("graphics/pokemon/riko_bug/normal.gbapal");
+const u16 gMonShinyPalette_RikoBug[] = INCBIN_U16("graphics/pokemon/riko_bug/shiny.gbapal");
+const u8 gMonIcon_RikoBug[] = INCBIN_U8("graphics/pokemon/riko_bug/icon.4bpp");
+const u16 gMonIconPalette_RikoBug[] = INCBIN_U16("graphics/pokemon/riko_bug/icon_normal.gbapal");
+const u16 gMonShinyIconPalette_RikoBug[] = INCBIN_U16("graphics/pokemon/riko_bug/icon_shiny.gbapal");
+const u32 gObjectEventPic_RikoBug[] = INCBIN_U32("graphics/pokemon/riko_bug/overworld.4bpp");
+const u16 gOverworldPalette_RikoBug[] = INCBIN_U16("graphics/pokemon/riko_bug/overworld_normal.gbapal");
+const u16 gShinyOverworldPalette_RikoBug[] = INCBIN_U16("graphics/pokemon/riko_bug/overworld_shiny.gbapal");
+static const struct SpriteFrameImage sPicTable_RikoBug[] = {
+    overworld_ascending_frames(gObjectEventPic_RikoBug, 4, 4),
+};
+
+
+const u32 gMonFrontPic_PennyGround[] = INCBIN_U32("graphics/pokemon/penny_ground/front.4bpp.smol");
+const u32 gMonBackPic_PennyGround[] = INCBIN_U32("graphics/pokemon/penny_ground/back.4bpp.smol");
+const u16 gMonPalette_PennyGround[] = INCBIN_U16("graphics/pokemon/penny_ground/normal.gbapal");
+const u16 gMonShinyPalette_PennyGround[] = INCBIN_U16("graphics/pokemon/penny_ground/shiny.gbapal");
+const u8 gMonIcon_PennyGround[] = INCBIN_U8("graphics/pokemon/penny_ground/icon.4bpp");
+const u16 gMonIconPalette_PennyGround[] = INCBIN_U16("graphics/pokemon/penny_ground/icon_normal.gbapal");
+const u16 gMonShinyIconPalette_PennyGround[] = INCBIN_U16("graphics/pokemon/penny_ground/icon_shiny.gbapal");
+const u32 gObjectEventPic_PennyGround[] = INCBIN_U32("graphics/pokemon/penny_ground/overworld.4bpp");
+const u16 gOverworldPalette_PennyGround[] = INCBIN_U16("graphics/pokemon/penny_ground/overworld_normal.gbapal");
+const u16 gShinyOverworldPalette_PennyGround[] = INCBIN_U16("graphics/pokemon/penny_ground/overworld_shiny.gbapal");
+static const struct SpriteFrameImage sPicTable_PennyGround[] = {
+    overworld_ascending_frames(gObjectEventPic_PennyGround, 4, 4),
+};
+
+
+const u32 gMonFrontPic_PennySteel[] = INCBIN_U32("graphics/pokemon/penny_steel/front.4bpp.smol");
+const u32 gMonBackPic_PennySteel[] = INCBIN_U32("graphics/pokemon/penny_steel/back.4bpp.smol");
+const u16 gMonPalette_PennySteel[] = INCBIN_U16("graphics/pokemon/penny_steel/normal.gbapal");
+const u16 gMonShinyPalette_PennySteel[] = INCBIN_U16("graphics/pokemon/penny_steel/shiny.gbapal");
+const u8 gMonIcon_PennySteel[] = INCBIN_U8("graphics/pokemon/penny_steel/icon.4bpp");
+const u16 gMonIconPalette_PennySteel[] = INCBIN_U16("graphics/pokemon/penny_steel/icon_normal.gbapal");
+const u16 gMonShinyIconPalette_PennySteel[] = INCBIN_U16("graphics/pokemon/penny_steel/icon_shiny.gbapal");
+const u32 gObjectEventPic_PennySteel[] = INCBIN_U32("graphics/pokemon/penny_steel/overworld.4bpp");
+const u16 gOverworldPalette_PennySteel[] = INCBIN_U16("graphics/pokemon/penny_steel/overworld_normal.gbapal");
+const u16 gShinyOverworldPalette_PennySteel[] = INCBIN_U16("graphics/pokemon/penny_steel/overworld_shiny.gbapal");
+static const struct SpriteFrameImage sPicTable_PennySteel[] = {
+    overworld_ascending_frames(gObjectEventPic_PennySteel, 4, 4),
+};

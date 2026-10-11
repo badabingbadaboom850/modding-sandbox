@@ -3597,6 +3597,18 @@ extern const u16 gItemIconPalette_ToxicMouse[];
 extern const u32 gItemIcon_RikoPrincess[];
 extern const u16 gItemIconPalette_RikoPrincess[];
 
+extern const u32 gItemIcon_RikoDragonKeepsake[];
+extern const u16 gItemIconPalette_RikoDragonKeepsake[];
+extern const u32 gItemIcon_RikoBugKeepsake[];
+extern const u16 gItemIconPalette_RikoBugKeepsake[];
+extern const u32 gItemIcon_BijuuDarkKeepsake[];
+extern const u16 gItemIconPalette_BijuuDarkKeepsake[];
+extern const u32 gItemIcon_BijuuRockKeepsake[];
+extern const u16 gItemIconPalette_BijuuRockKeepsake[];
+extern const u32 gItemIcon_PennyGroundKeepsake[];
+extern const u16 gItemIconPalette_PennyGroundKeepsake[];
+extern const u32 gItemIcon_PennySteelKeepsake[];
+extern const u16 gItemIconPalette_PennySteelKeepsake[];
 extern const u32 gItemIcon_RikoBlackBelt[];
 extern const u16 gItemIconPalette_RikoBlackBelt[];
 extern const u32 gItemIcon_RikoRaincoat[];

@@ -73,6 +73,7 @@ AzaleaTown_EventScript_Rocket2::
 AzaleaTown_EventScript_Gramps::
 	lock
 	faceplayer
+	call TrioElement_RikoBug
 	goto_if_set FLAG_HIDE_AZALEA_TOWN_ROCKETS, AzaleaTown_EventScript_Gramps2
 	msgbox AzaleaTown_Text_GrampsBefore, MSGBOX_DEFAULT
 	closemessage

@@ -201,6 +201,7 @@ EcruteakCity_EventScript_Girl2::
 EcruteakCity_EventScrip_Man::
 	lock
 	faceplayer
+	call TrioElement_BijuuDark
 	goto_if_set FLAG_AMPHAROS_HEALED, EcruteakCity_EventScrip_Man2
 	msgbox EcruteakCity_Text_Fisher, MSGBOX_DEFAULT
 	closemessage

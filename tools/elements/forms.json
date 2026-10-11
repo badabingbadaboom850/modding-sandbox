@@ -1,0 +1,404 @@
+[
+  {
+    "symbol": "RIKO_DRAGON",
+    "camel": "RikoDragon",
+    "folder": "riko_dragon",
+    "item": "POM_DRAGON_PLUSH",
+    "itemname": "Pom Dragon Plush",
+    "display": "DragonRiko",
+    "types": [
+      "DRAGON",
+      "FAIRY"
+    ],
+    "returnto": "RIKO",
+    "base": [
+      "RIKO",
+      "RIKO_BALLOON",
+      "RIKO_PRINCESS",
+      "RIKO_RAINCOAT"
+    ],
+    "city": "BlackthornCity",
+    "npc": "BlackthornCity_EventScript_CoolTrainerF2",
+    "xy": [
+      44,
+      31
+    ],
+    "offer": "Riko says she's a dragon!\\nI collect dragon plushies!\\pThis one might wake her\\ninner roar. Want it?",
+    "moves": [
+      [
+        0,
+        "DRAGON_BREATH"
+      ],
+      [
+        1,
+        "TACKLE"
+      ],
+      [
+        1,
+        "GROWL"
+      ],
+      [
+        8,
+        "TWISTER"
+      ],
+      [
+        16,
+        "DRAGON_BREATH"
+      ],
+      [
+        20,
+        "DRAGON_TAIL"
+      ],
+      [
+        24,
+        "DRAGON_DANCE"
+      ],
+      [
+        28,
+        "DRAGON_PULSE"
+      ],
+      [
+        32,
+        "DAZZLING_GLEAM"
+      ],
+      [
+        40,
+        "OUTRAGE"
+      ]
+    ]
+  },
+  {
+    "symbol": "RIKO_BUG",
+    "camel": "RikoBug",
+    "folder": "riko_bug",
+    "item": "RIKOS_HONEYCOMB",
+    "itemname": "Riko Honeycomb",
+    "display": "BumbleRiko",
+    "types": [
+      "BUG",
+      "FAIRY"
+    ],
+    "returnto": "RIKO",
+    "base": [
+      "RIKO",
+      "RIKO_BALLOON",
+      "RIKO_PRINCESS",
+      "RIKO_RAINCOAT"
+    ],
+    "city": "AzaleaTown",
+    "npc": "AzaleaTown_EventScript_Gramps",
+    "xy": [
+      44,
+      14
+    ],
+    "offer": "I keep a little beehive.\\nRiko guards every snack!\\pShe'd make a fine bee.\\nWant this honeycomb?",
+    "moves": [
+      [
+        0,
+        "STRUGGLE_BUG"
+      ],
+      [
+        1,
+        "TACKLE"
+      ],
+      [
+        1,
+        "GROWL"
+      ],
+      [
+        8,
+        "BUG_BITE"
+      ],
+      [
+        16,
+        "STRUGGLE_BUG"
+      ],
+      [
+        20,
+        "PIN_MISSILE"
+      ],
+      [
+        24,
+        "SWEET_SCENT"
+      ],
+      [
+        28,
+        "U_TURN"
+      ],
+      [
+        32,
+        "DAZZLING_GLEAM"
+      ],
+      [
+        40,
+        "BUG_BUZZ"
+      ]
+    ]
+  },
+  {
+    "symbol": "BIJUU_DARK",
+    "camel": "BijuuDark",
+    "folder": "bijuu_dark",
+    "item": "COCOAS_SNEAKY_CAPE",
+    "itemname": "Cocoa Sneaky Cape",
+    "display": "MidnightCat",
+    "types": [
+      "NORMAL",
+      "DARK"
+    ],
+    "returnto": "BIJUU",
+    "base": [
+      "BIJUU",
+      "BIJUU_BOX",
+      "BIJUU_BREAD",
+      "BIJUU_DETECTIVE"
+    ],
+    "city": "EcruteakCity",
+    "npc": "EcruteakCity_EventScrip_Man",
+    "xy": [
+      22,
+      42
+    ],
+    "offer": "I tell tales after dark.\\nBijuu moves like a shadow!\\pA cape for night walks.\\nWould she like it?",
+    "moves": [
+      [
+        0,
+        "BITE"
+      ],
+      [
+        1,
+        "SCRATCH"
+      ],
+      [
+        1,
+        "GROWL"
+      ],
+      [
+        8,
+        "ASSURANCE"
+      ],
+      [
+        16,
+        "BITE"
+      ],
+      [
+        20,
+        "FEINT_ATTACK"
+      ],
+      [
+        24,
+        "TAUNT"
+      ],
+      [
+        28,
+        "SUCKER_PUNCH"
+      ],
+      [
+        32,
+        "DARK_PULSE"
+      ],
+      [
+        40,
+        "CRUNCH"
+      ]
+    ]
+  },
+  {
+    "symbol": "BIJUU_ROCK",
+    "camel": "BijuuRock",
+    "folder": "bijuu_rock",
+    "item": "COCOAS_SHINY_PEBBLE",
+    "itemname": "Shiny Pebble",
+    "display": "CrystalCat",
+    "types": [
+      "NORMAL",
+      "ROCK"
+    ],
+    "returnto": "BIJUU",
+    "base": [
+      "BIJUU",
+      "BIJUU_BOX",
+      "BIJUU_BREAD",
+      "BIJUU_DETECTIVE"
+    ],
+    "city": "Mahoganytown",
+    "npc": "MahoganyTown_EventScript_Gramps",
+    "xy": [
+      7,
+      13
+    ],
+    "offer": "I collect sparkling rocks.\\nBijuu eyes my shiny rock.\\pShe has excellent taste!\\nWant this shiny pebble?",
+    "moves": [
+      [
+        0,
+        "ROCK_THROW"
+      ],
+      [
+        1,
+        "SCRATCH"
+      ],
+      [
+        1,
+        "GROWL"
+      ],
+      [
+        8,
+        "ROLLOUT"
+      ],
+      [
+        16,
+        "ROCK_THROW"
+      ],
+      [
+        20,
+        "ROCK_TOMB"
+      ],
+      [
+        24,
+        "ROCK_POLISH"
+      ],
+      [
+        28,
+        "ROCK_SLIDE"
+      ],
+      [
+        32,
+        "POWER_GEM"
+      ],
+      [
+        40,
+        "STONE_EDGE"
+      ]
+    ]
+  },
+  {
+    "symbol": "PENNY_GROUND",
+    "camel": "PennyGround",
+    "folder": "penny_ground",
+    "item": "PENNYS_GARDEN_TROWEL",
+    "itemname": "Garden Trowel",
+    "display": "DiggingPen",
+    "types": [
+      "FAIRY",
+      "GROUND"
+    ],
+    "returnto": "PENNY_GUARDIAN",
+    "base": [
+      "PENNY_GUARDIAN"
+    ],
+    "city": "VioletCity",
+    "npc": "VioletCity_EventScript_Gramps",
+    "xy": [
+      28,
+      36
+    ],
+    "offer": "I tend the little gardens.\\nPenny likes cozy hideouts!\\pA trowel for our digger.\\nWould she like it?",
+    "moves": [
+      [
+        0,
+        "MUD_SLAP"
+      ],
+      [
+        1,
+        "TACKLE"
+      ],
+      [
+        1,
+        "TAIL_WHIP"
+      ],
+      [
+        8,
+        "BULLDOZE"
+      ],
+      [
+        16,
+        "MUD_SHOT"
+      ],
+      [
+        20,
+        "DIG"
+      ],
+      [
+        24,
+        "HELPING_HAND"
+      ],
+      [
+        28,
+        "STOMPING_TANTRUM"
+      ],
+      [
+        32,
+        "PLAY_ROUGH"
+      ],
+      [
+        40,
+        "EARTHQUAKE"
+      ]
+    ]
+  },
+  {
+    "symbol": "PENNY_STEEL",
+    "camel": "PennySteel",
+    "folder": "penny_steel",
+    "item": "DADS_TOOLBOX",
+    "itemname": "Dad's Toolbox",
+    "display": "HandyPenny",
+    "types": [
+      "FAIRY",
+      "STEEL"
+    ],
+    "returnto": "PENNY_GUARDIAN",
+    "base": [
+      "PENNY_GUARDIAN"
+    ],
+    "city": "OlivineCity",
+    "npc": "OlivineCity_EventScript_Sailor2",
+    "xy": [
+      33,
+      46
+    ],
+    "offer": "I repair things on ships.\\nPenny's a trusty helper!\\pDad's toolbox suits her.\\nWant it for Penny?",
+    "moves": [
+      [
+        0,
+        "METAL_CLAW"
+      ],
+      [
+        1,
+        "TACKLE"
+      ],
+      [
+        1,
+        "TAIL_WHIP"
+      ],
+      [
+        8,
+        "IRON_DEFENSE"
+      ],
+      [
+        16,
+        "METAL_CLAW"
+      ],
+      [
+        20,
+        "SMART_STRIKE"
+      ],
+      [
+        24,
+        "HELPING_HAND"
+      ],
+      [
+        28,
+        "IRON_HEAD"
+      ],
+      [
+        32,
+        "PLAY_ROUGH"
+      ],
+      [
+        40,
+        "HEAVY_SLAM"
+      ]
+    ]
+  }
+]
