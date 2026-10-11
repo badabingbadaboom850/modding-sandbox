@@ -942,3 +942,7 @@ production-ROM decoding of all3 new doubles teams, docs-summary and diff checks
 pass. Native doorway tile and cabin south-arrow exit are inspected independently
 of open-floor NPC reachability. No rendered playthrough is claimed. CI for the
 new committed head is separate.
+
+## Authorized Road Trip mailbox preview
+
+User requested immediate New Bark testing. Player-house mailbox17,11 now retains its sign then offers TEST island travel, without Badge/party gates or progress grants/resets. Both Pory/assembly call TrioRoad_TestOffer; saved existing return var413A mode2 routes the island ferry to New Bark18,12 even after reload. Ordinary departures record0/1 normally. Remove the temporary offer only when requested, retaining earned chapter progress and safely routing historical preview saves. This supersedes the prior no-testing-portals rule only for this explicit preview.

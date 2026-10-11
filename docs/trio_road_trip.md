@@ -41,3 +41,7 @@ Four maps append to IndoorCianwood; three layouts append, and the cabin shares t
 `tools/roadtrip/validate.py` executes the actual event scripts with engine stubs, including clues, cancellation, every story state, replay, no-battle finale, battle outcomes, full-Bag retry, saved ports, photo closure, menu lock ownership, tile behaviors, every object's approaches, object budgets and historical IDs. `test/trio_roadtrip.c` checks the actual C helpers, reclaimed flag isolation, saved port/count, save ABI and enabled species graphics.
 
 These are not interactive emulator confirmation. Test on a copy of an existing in-game save: both ferry stops; the house door/native exit; leave/reload each unfinished adventure; wrong choices and B; completed photos without the original party; lost/repeated exhibition with two partners; full-Bag souvenir; all three photos, sunset and scrapbook after in-game save/reload. The user has not yet confirmed a rendered road-trip playthrough.
+
+## Temporary New Bark preview
+
+At the user's request, the player-house mailbox (17,11) offers island travel without a Badge requirement. It preserves all existing quest states, saves return mode2, and the island ferry returns to New Bark (18,12), including after in-game save/reload. Cianwood/Olivine departures overwrite the return mode normally. No Badge, item or victory grants and no resets. Remove this temporary offer after the user confirms testing; preserve earned progress.

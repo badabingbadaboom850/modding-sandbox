@@ -7,6 +7,20 @@ TrioRoad_Weather::
 TrioRoad_Rain::
 	setweather WEATHER_RAIN
 	end
+@ User-authorized temporary New Bark mailbox preview; no Badge grants/reset.
+TrioRoad_TestOffer::
+	msgbox TrioRoad_TestOfferText, MSGBOX_YESNO
+	goto_if_eq VAR_RESULT, NO, TrioRoad_TestDecline
+	special TrioRoad_RecordDeparture
+	setvar VAR_TRIO_ROAD_RETURN, 2
+	closemessage
+	warp MAP_TRIO_ROAD_ISLAND, 18, 24
+	waitstate
+TrioRoad_TestDecline::
+	return
+TrioRoad_TestOfferText:
+	.string "Scott left a ferry ticket.\pTEST the island road trip?\nNo Badge is needed.\pThe island ferry will\nbring you back home.$"
+
 TrioRoad_Entrance::
 	lockall
 	faceplayer
@@ -34,8 +48,13 @@ TrioRoad_Return::
 	msgbox TrioRoad_ReturnOffer, MSGBOX_YESNO
 	goto_if_eq VAR_RESULT, NO, TrioRoad_End
 	closemessage
+	goto_if_eq VAR_TRIO_ROAD_RETURN, 2, TrioRoad_ReturnNewBark
 	goto_if_eq VAR_TRIO_ROAD_RETURN, 1, TrioRoad_ReturnOlivine
 	warp MAP_CIANWOOD_CITY, 23, 48
+	waitstate
+	goto TrioRoad_End
+TrioRoad_ReturnNewBark::
+	warp MAP_NEW_BARK_TOWN, 18, 12
 	waitstate
 	goto TrioRoad_End
 TrioRoad_ReturnOlivine::

@@ -66,9 +66,17 @@ class Checks(unittest.TestCase):
   for badges,answer,port in itertools.product([False,True],[0,1],[0,1]):
    x=Run(r=3,b=2,p=2,answers=[answer],badges=badges,port=port).run('Entrance')
    self.assertEqual(bool(x.warps),badges and answer==1);self.assertFalse(x.lock);self.assertEqual((x.vars[R],x.vars[B],x.vars[P]),(3,2,2))
-  for port in [0,1]:
-   x=Run(port=port).run('Return');self.assertEqual(x.warps[0][0],'MAP_OLIVINE_CITY_PORT_OUTSIDE' if port else 'MAP_CIANWOOD_CITY');self.assertFalse(x.lock)
+  for port in [0,1,2]:
+   x=Run(port=port).run('Return');self.assertEqual(x.warps[0][0],['MAP_CIANWOOD_CITY','MAP_OLIVINE_CITY_PORT_OUTSIDE','MAP_NEW_BARK_TOWN'][port]);self.assertFalse(x.lock)
   self.assertFalse(Run(answers=[0]).run('Return').warps)
+ def test_authorized_new_bark_preview_preserves_progress(self):
+  for answer in [0,1]:
+   x=Run(r=3,b=2,p=1,c=0,answers=[answer],badges=False).run('TestOffer')
+   self.assertEqual(bool(x.warps),bool(answer));self.assertEqual((x.vars[R],x.vars[B],x.vars[P],x.vars[C]),(3,2,1,0))
+   if answer:self.assertEqual(x.vars['VAR_TRIO_ROAD_RETURN'],2)
+  for ext in ['inc','pory']:
+   source=(ROOT/f'data/maps/NewBarkTown/scripts.{ext}').read_text()
+   self.assertIn('msgbox NewBarkTown_Text_PlayersHouse, MSGBOX_SIGN\n\tcall TrioRoad_TestOffer\n\treleaseall',source)
  def test_riko_wrong_turns_cancellation_reload_and_portrait(self):
   for state in range(5):
    for name in ['TrailOne','TrailTwo','Lookout']:
