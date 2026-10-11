@@ -1293,3 +1293,39 @@ unexpected. All100 percentage roll values checked:0-4 depart,5-99 stay.
 Five parade source groups,10 island groups (retained historical return-mode2),
 compiled encore actors/scripts/native exit and all33 reusable item audits pass.
 Olivine encore rendered playback/save reload remains user testing. Keep PR2 draft.
+
+## Eight optional silly family scenes (2026-10-11)
+
+User authorized all8 ideas. Spread through quieter Johto/Kanto houses and the
+unlocked squirrel cafe: Olivine Penny valet; Ecruteak Bijuu forbidden box;
+Mahogany Riko barking ordinance; Blackthorn Greg Fan Club; Cianwood long-hot-dog
+vendor; Pewter Pom traffic; Cerulean fishing inspection; Vermilion cafe apology.
+See docs/trio_silly_scenes.md and tools/silly/locations.json for exact door/host
+coordinates and source event tracing. Original residents/services/scripts kept.
+One new static host appended per source, no changes to original local IDs/warps.
+Cafe new clerk4,6 was checked to preserve every speaker's reachable approach.
+
+Eight appended maps retain historical map IDs.7 automatic stages show all3 girls
+plus Scott, return automatically, and are replayable without rewards/progression
+writes. Greg's freely explorable room has5 talkable existing-sprite disguises
+and Scott; native door returns to BlackthornHouse1. Ordinary family references
+assume the girls present. Existing Box Bijuu art is an NPC-only reveal, not a
+party transformation. Catch/bucket and pup cup are narrated fictional props;
+Apology's moving-box prop is fictional paper. No actual items, battles or theft.
+
+Only VAR_TEMP_A and TEMP_HIDE_FOLLOWER/TEMP_1 touched, clearing on every stage
+return including failed readiness. No saved fields/flags/vars/items/species/
+trainers or party edits. Maintain run-off5%, normal mailbox, all33 reusable
+form items and prior parade/encore. PrepareTrioSillyActors guards7 exact maps,
+spawns/checks5-10 visible actors and returns safely if missing; no movement to
+newly revealed Box Bijuu. Source/native/ROM checks are not rendered playtests.
+Previous CI186 ROM/artifact/docs succeeded; test canceled after runner shutdown,
+not a compile failure. Keep PR2 draft/unmerged and use expected-head publication.
+
+Validation: RELEASE32736532 linked bytes/EWRAM255432/padded32MiB passed;
+29 focused native checks passed +7 intentional harness failures, zero
+unexpected failures.5 new source-flow/geometry/history groups and6 existing
+cafe groups passed.8 compiled guide/map registries,50 actors,7 auto-frames,
+6 club speakers and every authored dialogue byte checked in actual ROM.
+All33 reusable item audits, normal5% run-off/mailbox and prior parade ROM
+checks passed. New rendered scene/save-reload playtesting remains for user.

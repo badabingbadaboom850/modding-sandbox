@@ -677,3 +677,4 @@ gSpecials::
 	def_special ApplyTrioPlayerHat
 
 	def_special PrepareTrioParadeActors
+	def_special PrepareTrioSillyActors

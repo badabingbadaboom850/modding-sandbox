@@ -180,3 +180,4 @@
 - [Reusable family transformations](trio_reusable_form_items.md)
 
 - [Olivine Pom party encore](trio_pom_party_encore.md)
+- [Eight silly family interactions](trio_silly_scenes.md)

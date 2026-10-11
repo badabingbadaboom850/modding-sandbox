@@ -198,7 +198,8 @@
     "BellchimeTrail",
     "EcruteakCity_Gym",
     "EcruteakCity_House3",
-    "EcruteakCity_House4"
+    "EcruteakCity_House4",
+    "TrioBijuuBox"
   ],
   "gMapGroup_IndoorOlivine": [
     "OlivineCity_PokemonCenter",
@@ -216,7 +217,8 @@
     "Route40_House5",
     "OlivineCity_House4",
     "TrioGarden",
-    "OlivinePomParty"
+    "OlivinePomParty",
+    "TrioPennyValet"
   ],
   "gMapGroup_IndoorCianwood": [
     "CianwoodPokecenter",
@@ -228,7 +230,8 @@
     "TrioRoadIsland",
     "TrioRoadWoods",
     "TrioRoadCove",
-    "TrioRoadCabin"
+    "TrioRoadCabin",
+    "TrioPennyHotdog"
   ],
   "gMapGroup_IndoorMahogany": [
     "MahoganyTown_PokemonCenter",
@@ -236,7 +239,8 @@
     "MahoganyTown_Shop",
     "MahoganyTown_House1",
     "LakeOfRage_House1",
-    "LakeOfRage_House2"
+    "LakeOfRage_House2",
+    "TrioRikoNoise"
   ],
   "gMapGroup_IndoorBlackthorn": [
     "BlackthornCity_PokemonCenter",
@@ -244,7 +248,8 @@
     "BlackthornCity_Gym",
     "BlackthornCity_House1",
     "BlackthornCity_House2",
-    "BlackthornCity_House3"
+    "BlackthornCity_House3",
+    "TrioGregFanClub"
   ],
   "gMapGroup_IndoorPallet": [
     "PalletTown_RedsHouse_1F",
@@ -267,7 +272,8 @@
     "PewterCity_House2",
     "PewterCity_Gym",
     "PewterCity_Museum_1F",
-    "PewterCity_Museum_2F"
+    "PewterCity_Museum_2F",
+    "TrioPomTraffic"
   ],
   "gMapGroup_IndoorCerulean": [
     "CeruleanCity_PokemonCenter",
@@ -275,7 +281,8 @@
     "CeruleanCity_House2",
     "CeruleanCity_House3",
     "CeruleanCity_BikeShop",
-    "CeruleanCity_Gym"
+    "CeruleanCity_Gym",
+    "TrioBijuuFishing"
   ],
   "gMapGroup_IndoorVermilion": [
     "VermilionCity_PokemonCenter",
@@ -287,7 +294,8 @@
     "VermilionCity_House1",
     "VermilionCity_House2",
     "VermilionCity_House3",
-    "TrioGreedentCafe"
+    "TrioGreedentCafe",
+    "TrioSquirrelApology"
   ],
   "gMapGroup_IndoorLavender": [
     "LavenderTown_PokemonCenter",

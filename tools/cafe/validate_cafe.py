@@ -90,9 +90,9 @@ class Checks(unittest.TestCase):
   r.run('TrioCafe_Shop');self.assertEqual(r.shops,['TrioCafe_Stock']);self.assertFalse(r.lock)
  def test_geometry_all_actors_and_native_exit_reachable(self):
   sys.path.insert(0,str(ROOT/'tools/snack'));from gang_geometry import geometry
-  m,w,h,walk=geometry('TrioGreedentCafe');self.assertEqual((w,h),(8,10));self.assertEqual(len(m['object_events']),9)
+  m,w,h,walk=geometry('TrioGreedentCafe');self.assertEqual((w,h),(8,10));self.assertEqual(len(m['object_events']),10)
   self.assertTrue(all(a['graphics_id']=='OBJ_EVENT_GFX_SPECIES(GREEDENT)' for a in m['object_events'][:6]))
-  actors={(a['x'],a['y']) for a in m['object_events']};self.assertEqual(len(actors),9);self.assertNotIn((3,7),actors);self.assertTrue(walk(3,7))
+  actors={(a['x'],a['y']) for a in m['object_events']};self.assertEqual(len(actors),10);self.assertNotIn((3,7),actors);self.assertTrue(walk(3,7))
   reachable={(3,7)};q=collections.deque(reachable)
   while q:
    x,y=q.popleft()
@@ -112,8 +112,9 @@ class Checks(unittest.TestCase):
  def test_registration_ids_parity_text_and_allocations(self):
   self.assertEqual((ROOT/'data/maps/TrioGreedentCafe/scripts.pory').read_text().split('`')[1].strip(),SOURCE.strip())
   self.assertIn('data/maps/TrioGreedentCafe/scripts.inc',(ROOT/'data/event_scripts.s').read_text())
-  old=json.loads(subprocess.check_output(['git','show',BASE+':data/maps/map_groups.json'],cwd=ROOT));new=json.loads((ROOT/'data/maps/map_groups.json').read_text());self.assertEqual(new['gMapGroup_IndoorVermilion'][:-1],old['gMapGroup_IndoorVermilion'])
-  self.assertEqual({k:v for k,v in new.items() if k!='gMapGroup_IndoorVermilion'},{k:v for k,v in old.items() if k!='gMapGroup_IndoorVermilion'})
+  old=json.loads(subprocess.check_output(['git','show',BASE+':data/maps/map_groups.json'],cwd=ROOT));new=json.loads((ROOT/'data/maps/map_groups.json').read_text());self.assertEqual(new['gMapGroup_IndoorVermilion'][:len(old['gMapGroup_IndoorVermilion'])],old['gMapGroup_IndoorVermilion']);self.assertEqual(new['gMapGroup_IndoorVermilion'][len(old['gMapGroup_IndoorVermilion'])],'TrioGreedentCafe')
+  self.assertEqual(new['group_order'],old['group_order'])
+  for group in old['group_order']:self.assertEqual(new[group][:len(old[group])],old[group])
   for text in re.findall(r'\.string "(.*)"',SOURCE):
    self.assertTrue(text.endswith('$'))
    for page in text[:-1].split(r'\p'):
