@@ -219,7 +219,11 @@
     "CianwoodHouse2",
     "CianwoodHouse3",
     "CianwoodShop",
-    "CianwoodGym"
+    "CianwoodGym",
+    "TrioRoadIsland",
+    "TrioRoadWoods",
+    "TrioRoadCove",
+    "TrioRoadCabin"
   ],
   "gMapGroup_IndoorMahogany": [
     "MahoganyTown_PokemonCenter",

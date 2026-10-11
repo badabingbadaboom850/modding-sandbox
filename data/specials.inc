@@ -669,3 +669,6 @@ gSpecials::
 	def_special TrioOutfits_RecordPartyPhotos
 	def_special HasTrioOutfitPhoto
 	def_special BufferTrioOutfitPhotoCount
+
+	def_special TrioRoad_RecordBattleWin
+	def_special TrioRoad_RecordDeparture

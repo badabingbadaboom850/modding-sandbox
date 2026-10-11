@@ -195,6 +195,10 @@ enum
     MAP_CIANWOOD_HOUSE3     = (3 | (8 << 8)),
     MAP_CIANWOOD_SHOP       = (4 | (8 << 8)),
     MAP_CIANWOOD_GYM        = (5 | (8 << 8)),
+    MAP_TRIO_ROAD_ISLAND    = (6 | (8 << 8)),
+    MAP_TRIO_ROAD_WOODS     = (7 | (8 << 8)),
+    MAP_TRIO_ROAD_COVE      = (8 | (8 << 8)),
+    MAP_TRIO_ROAD_CABIN     = (9 | (8 << 8)),
 
     // gMapGroup_IndoorMahogany
     MAP_MAHOGANY_TOWN_POKEMON_CENTER = (0 | (9 << 8)),

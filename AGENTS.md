@@ -900,3 +900,45 @@ Outfit testing cleanup (2026-10-10): user confirmed every new outfit works.
 Removed the Mom-friend testing call in both New Bark sources, restoring her
 original story dialogue. Existing inventory, forms and saved progress remain;
 all ten natural gift sources remain available. Scott stays in New Bark.
+
+
+## Great Trio Road Trip (2026-10-10)
+
+User approved the optional midgame island chapter. Scott at Cianwood22,48 and
+Olivine PortOutside17,5 offers free travel after actual Badge05. Four appended
+IndoorCianwood maps (shore/woods/cove/cabin), three appended layouts and the
+proven MirrorHouse cabin layout preserve old IDs. All stories and exhibitions
+are optional; rain never blocks exploration, cabin, ferry or original story.
+Ferry return uses saved port413A so island in-game reload is safe.
+
+Riko reads two physical trail clues then finds the lookout; Bijuu traces
+caretaker/fisherman/pawprints/windchime to an ordinary guardian explanation;
+Penny's deliberately started picnic shower leads to supportive choice, cabin
+blanket and healing rest. Independent vars4136-4138 reach4 for permanent trip
+photos. Sunset requires only those three stories, sets4139=1, adds Sisters
+scrapbook memory/Scott letter. Cabin offers family/outfit talk, illustrated
+photos, existing outfit album and rest forever. Leftovers gift413C advances
+only after successful giveitem; full Bag/decline retry, no party requirement.
+
+Trainer1151/1152/1153 were unused, but flags97F/980/981 belong to Rinto trade,
+Vajra urn and Ariana. Road trainer flag guards MUST remain; independent wins
+use413B bits0/1/2 and never alter those quest flags. Level34/36/38 doubles
+exhibitions heal before/after every outcome with exact shore-map AND trainer
+guard before whiteout; normal battle losses remain. Exact island battles force
+doubles even if global replay is singles, with two non-Egg partners checked.
+413D capped arrival count and413A saved port are runtime-special updates; other
+road vars/old history stay intact. No save-array changes, new forms, real item
+removal, startup grants or testing portals. See docs/trio_road_trip.md and
+tools/roadtrip/validate.py; engine checks are test/trio_roadtrip.c.
+
+Rendered entry/door/cabin/battle/portrait/save-reload still needs user testing.
+
+Road trip validation: RELEASE=1 production ROM compiled (ROM32551784 bytes,
+EWRAM255420 bytes). Four new actual-engine tests pass. The focused existing
+family suite passes103 engine/Camp/battle checks plus21 expected runner self-
+test failures across three shards, zero unexpected failures. Nine actual-
+script/geometry groups, seven gang source groups, costume/story source checks,
+production-ROM decoding of all3 new doubles teams, docs-summary and diff checks
+pass. Native doorway tile and cabin south-arrow exit are inspected independently
+of open-floor NPC reachability. No rendered playthrough is claimed. CI for the
+new committed head is separate.

@@ -2440,3 +2440,10 @@ Common_Text_ReceivedMon:
 	.include "data/scripts/trio_costumes.inc"
 
 	.include "data/scripts/trio_outfit_stories.inc"
+
+	.include "data/scripts/trio_roadtrip.inc"
+
+	.include "data/maps/TrioRoadIsland/scripts.inc"
+	.include "data/maps/TrioRoadWoods/scripts.inc"
+	.include "data/maps/TrioRoadCove/scripts.inc"
+	.include "data/maps/TrioRoadCabin/scripts.inc"

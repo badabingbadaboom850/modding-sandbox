@@ -1133,8 +1133,11 @@
 #define TRAINER_UNUSED_285                1149
 #define TRAINER_UNUSED_286                1150
 #define TRAINER_UNUSED_287                1151
+#define TRAINER_ROAD_BEACH                TRAINER_UNUSED_287
 #define TRAINER_UNUSED_288                1152
+#define TRAINER_ROAD_FOREST                TRAINER_UNUSED_288
 #define TRAINER_UNUSED_289                1153
+#define TRAINER_ROAD_SCOTT                TRAINER_UNUSED_289
 #define TRAINER_GREEDENT_GANG_2             1154
 #define TRAINER_GREEDENT_GANG_3             1155
 #define TRAINER_GREEDENT_GANG_4             1156

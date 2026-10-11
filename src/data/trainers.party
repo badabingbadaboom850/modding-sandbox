@@ -21134,3 +21134,113 @@ IVs: 0 HP / 0 Atk / 0 Def / 0 SpA / 0 SpD / 0 Spe
 - Tackle
 - Growl
 - Tail Whip
+
+
+=== TRAINER_ROAD_BEACH ===
+Name: Marina
+Class: Swimmer F
+Pic: Swimmer F
+Gender: Female
+Music: Hg Boy 1
+Double Battle: Yes
+AI: Basic Trainer
+
+Azumarill
+Level: 34
+IVs: 20 HP / 20 Atk / 20 Def / 20 SpA / 20 SpD / 20 Spe
+- Aqua Jet
+- Play Rough
+- Helping Hand
+- Protect
+
+Pelipper
+Level: 34
+IVs: 20 HP / 20 Atk / 20 Def / 20 SpA / 20 SpD / 20 Spe
+- Water Pulse
+- Wing Attack
+- Tailwind
+- Protect
+
+Lanturn
+Level: 34
+IVs: 20 HP / 20 Atk / 20 Def / 20 SpA / 20 SpD / 20 Spe
+- Spark
+- Bubble Beam
+- Confuse Ray
+- Protect
+
+
+=== TRAINER_ROAD_FOREST ===
+Name: Fern
+Class: Lass
+Pic: Lass
+Gender: Female
+Music: Hg Boy 1
+Double Battle: Yes
+AI: Basic Trainer
+
+Leafeon
+Level: 36
+IVs: 20 HP / 20 Atk / 20 Def / 20 SpA / 20 SpD / 20 Spe
+- Razor Leaf
+- Quick Attack
+- Swords Dance
+- Protect
+
+Butterfree
+Level: 36
+IVs: 20 HP / 20 Atk / 20 Def / 20 SpA / 20 SpD / 20 Spe
+- Air Cutter
+- Psybeam
+- Stun Spore
+- Protect
+
+Pachirisu
+Level: 36
+IVs: 20 HP / 20 Atk / 20 Def / 20 SpA / 20 SpD / 20 Spe
+- Spark
+- Super Fang
+- Helping Hand
+- Protect
+
+
+=== TRAINER_ROAD_SCOTT ===
+Name: Scott
+Class: Rival
+Pic: Silver
+Gender: Male
+Music: Hg Boy 1
+Double Battle: Yes
+AI: Basic Trainer
+
+Dachsbun
+Level: 38
+IVs: 20 HP / 20 Atk / 20 Def / 20 SpA / 20 SpD / 20 Spe
+- Play Rough
+- Body Press
+- Helping Hand
+- Protect
+
+Togetic
+Level: 38
+IVs: 20 HP / 20 Atk / 20 Def / 20 SpA / 20 SpD / 20 Spe
+- Dazzling Gleam
+- Air Cutter
+- Helping Hand
+- Protect
+
+Lapras
+Level: 38
+IVs: 20 HP / 20 Atk / 20 Def / 20 SpA / 20 SpD / 20 Spe
+- Ice Beam
+- Water Pulse
+- Sing
+- Protect
+
+Fidough
+Level: 38
+IVs: 20 HP / 20 Atk / 20 Def / 20 SpA / 20 SpD / 20 Spe
+- Play Rough
+- Bite
+- Baby-Doll Eyes
+- Protect

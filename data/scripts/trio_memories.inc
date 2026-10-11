@@ -143,6 +143,7 @@ TrioScrapbook_Sisters:
 	call_if_set FLAG_RIKO_CAVERN_COMPLETE, RikoCavern_ReadMemory
 	call_if_eq VAR_TRIO_GANG_WINS, 6, TrioGang_ReadMemory
 	call_if_set FLAG_TRIO_CAFE_VISITED, TrioCafe_ReadMemory
+	call_if_eq VAR_TRIO_ROAD_COMPLETE, 1, TrioRoad_ReadMemory
 	call TrioStories_ReadMemories
 	goto TrioScrapbook_Menu
 TrioScrapbook_Letters:
@@ -749,6 +750,7 @@ TrioScrapbook_Checklist::
 	call TrioChecklist_BijuuLetter
 	call TrioChecklist_Picnic
 	call TrioCamp_Checklist
+	call TrioRoad_Checklist
 	call TrioFestival_Checklist
 	call TrioScott_Checklist
 	call TrioSnack_Checklist

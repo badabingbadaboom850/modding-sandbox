@@ -6,6 +6,7 @@
 #include "load_save.h"
 #include "battle_setup.h"
 #include "trio_snack_chase.h"
+#include "trio_roadtrip.h"
 #include "battle_tower.h"
 #include "battle_transition.h"
 #include "main.h"
@@ -1558,6 +1559,8 @@ u8 GetTrainerBattleMode(void)
 
 bool8 GetTrainerFlag(void)
 {
+    if (TrioRoad_IsTrainer(TRAINER_BATTLE_PARAM.opponentA))
+        return TrioRoad_HasWon(TRAINER_BATTLE_PARAM.opponentA);
     if (TrioGang_WaveForTrainer(TRAINER_BATTLE_PARAM.opponentA))
         return HasTrainerBeenFought(TRAINER_BATTLE_PARAM.opponentA);
     if (CurrentBattlePyramidLocation() != PYRAMID_LOCATION_NONE)
@@ -1572,6 +1575,8 @@ static void SetBattledTrainersFlags(void)
 {
     // Greedent gang slots overlap reclaimed puzzle flags; its saved wins own
     // progression instead of ordinary trainer flags. Blackouts stay normal.
+    if (TrioRoad_IsTrainer(TRAINER_BATTLE_PARAM.opponentA))
+        return;
     if (TrioGang_WaveForTrainer(TRAINER_BATTLE_PARAM.opponentA))
         return;
     if (TRAINER_BATTLE_PARAM.opponentB != 0)
@@ -1587,6 +1592,8 @@ static void UNUSED SetBattledTrainerFlag(void)
 
 bool8 HasTrainerBeenFought(u16 trainerId)
 {
+    if (TrioRoad_IsTrainer(trainerId))
+        return TrioRoad_HasWon(trainerId);
     u16 wave = TrioGang_WaveForTrainer(trainerId);
     if (wave)
         return VarGet(VAR_TRIO_GANG_WINS) >= wave;
@@ -1597,12 +1604,16 @@ void SetTrainerFlag(u16 trainerId)
 {
     if (TrioGang_WaveForTrainer(trainerId))
         return;
+    if (TrioRoad_IsTrainer(trainerId))
+        return;
     FlagSet(TRAINER_FLAGS_START + trainerId);
 }
 
 void ClearTrainerFlag(u16 trainerId)
 {
     if (TrioGang_WaveForTrainer(trainerId))
+        return;
+    if (TrioRoad_IsTrainer(trainerId))
         return;
     FlagClear(TRAINER_FLAGS_START + trainerId);
 }
@@ -1663,6 +1674,10 @@ void BattleSetup_StartTrainerBattle(void)
             FillHillTrainerParty();
 
         SetHillTrainerFlag();
+    }
+    else if (TrioRoad_IsFriendlyBattle(gSaveBlock1Ptr->location.mapGroup, gSaveBlock1Ptr->location.mapNum, TRAINER_BATTLE_PARAM.opponentA))
+    {
+        gBattleTypeFlags |= BATTLE_TYPE_DOUBLE;
     }
     else if (ShouldForceReplayTrainerDoubles())
     {
@@ -1755,6 +1770,14 @@ static void CB2_EndTrainerBattle(void)
          && (FNPC_FLAG_HEAL_AFTER_FOLLOWER_BATTLE == FNPC_ALWAYS
          || FlagGet(FNPC_FLAG_HEAL_AFTER_FOLLOWER_BATTLE)))
             HealPlayerParty();
+    }
+
+    // Island exhibitions heal and resume after every outcome, before whiteout.
+    if (TrioRoad_IsFriendlyBattle(gSaveBlock1Ptr->location.mapGroup, gSaveBlock1Ptr->location.mapNum, TRAINER_BATTLE_PARAM.opponentA))
+    {
+        HealPlayerParty();
+        SetMainCallback2(CB2_ReturnToFieldContinueScriptPlayMapMusic);
+        return;
     }
 
     // Festival exhibition battles are friendly and always return to the garden.

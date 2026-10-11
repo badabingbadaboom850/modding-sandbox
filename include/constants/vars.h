@@ -344,6 +344,16 @@
 // Bits0-8 costume portraits, bit9 Poison bonus. Filled by wearing, not owning.
 #define VAR_TRIO_OUTFIT_PHOTOS                       0x4135
 
+// Optional Trio road trip; historical saved addresses remain fixed.
+#define VAR_TRIO_ROAD_RIKO                          0x4136 // 0 offer,1 tour,2 first sign,3 snack trail,4 lookout
+#define VAR_TRIO_ROAD_BIJUU                         0x4137 // 0 rumor,1 case,2 fisher,3 prints,4 reveal
+#define VAR_TRIO_ROAD_PENNY                         0x4138 // 0 picnic,1 rain,2 shelter found,3 rescued,4 settled
+#define VAR_TRIO_ROAD_COMPLETE                      0x4139 // 0 not yet,1 sunset and scrapbook
+#define VAR_TRIO_ROAD_RETURN                        0x413A // 0 Cianwood,1 Olivine; remains across island save/reload
+#define VAR_TRIO_ROAD_BATTLES                       0x413B // bits0/1/2 beach/forest/Scott wins, isolated from trainer flags
+#define VAR_TRIO_ROAD_SOUVENIR                      0x413C // 0 waiting,1 cabin picnic tin claimed
+#define VAR_TRIO_ROAD_VISITS                        0x413D // 0-3 arrival conversation rotation
+
 #define VARS_END                                         0x42FF
 
 #define VARS_COUNT                                       (VARS_END - VARS_START + 1)
