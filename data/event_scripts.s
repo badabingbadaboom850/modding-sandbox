@@ -2454,3 +2454,5 @@ Common_Text_ReceivedMon:
 	.include "data/maps/TrioDinnerDate/scripts.inc"
 	.include "data/maps/TrioRadioStudio/scripts.inc"
 	.include "data/maps/TrioHomecoming/scripts.inc"
+
+.include "data/scripts/trio_greg_roaming.inc"

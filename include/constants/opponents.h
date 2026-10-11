@@ -1159,3 +1159,17 @@
 #define TRAINER_PARTNER(partner)           (MAX_TRAINERS_COUNT + partner)
 
 #endif  // GUARD_CONSTANTS_OPPONENTS_H
+
+// Greg uses saved win bits, never these reclaimed trainer flags.
+#define TRAINER_GREG_GOLDENROD_CITY                TRAINER_UNUSED_216
+#define TRAINER_GREG_ROUTE38                       TRAINER_UNUSED_217
+#define TRAINER_GREG_ECRUTEAK_CITY                 TRAINER_UNUSED_218
+#define TRAINER_GREG_CIANWOOD_CITY                 TRAINER_UNUSED_219
+#define TRAINER_GREG_ROUTE42                       TRAINER_UNUSED_220
+#define TRAINER_GREG_BLACKTHORN_CITY               TRAINER_UNUSED_221
+#define TRAINER_GREG_PEWTER_CITY                   TRAINER_UNUSED_222
+#define TRAINER_GREG_CERULEAN_CITY                 TRAINER_UNUSED_223
+#define TRAINER_GREG_VERMILION_CITY                TRAINER_UNUSED_224
+#define TRAINER_GREG_CELADON_CITY                  TRAINER_UNUSED_225
+#define TRAINER_GREG_FUCHSIA_CITY                  TRAINER_UNUSED_226
+#define TRAINER_GREG_SAFFRON_CITY                  TRAINER_UNUSED_227

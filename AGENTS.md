@@ -1150,3 +1150,30 @@ sprite frames/six item palettes and72 actual linked-ROM payloads pass. Existing
 240 hat frames and PomFu gift/art checks pass. RELEASE production build32712496
 linked bytes/EWRAM255416, padded32MiB ROM. Rendered gift/evolution/follower and
 actual emulator save/reload remain for user testing. Keep PR2 draft/unmerged.
+
+## Greg roaming expansion (2026-10-11)
+
+User requested enough Greg appearances for paranoia and very annoying local jokes,
+especially Caleb's view/Garchomp boast.15 custom stops total: original3 unchanged
+plus Goldenrod,Route38,Ecruteak,Cianwood,Route42,Blackthorn,Pewter,Cerulean,Vermilion,
+Celadon,Fuchsia,Saffron. New last actors face down, two-tile sight, original man art;
+walkable full sight-line bypasses, no doors/triggers/sign conflicts and conservative
+16-object budgets. Existing scripts/objects/IDs/warps/services remain. Each copies
+original six level99 mons with normal blackouts; independent wins quiet that stop.
+38 text boxes add local intro/brag/defeat excuses and family/Scott callbacks.
+All share the existing one-time Wawa flag, with full-Bag post-win claim retry.
+
+IMPORTANT: aliases1080-1091/UNUSED216-227 overlap reclaimed0x938-0x943 replay/story
+flags. All trainer sight/interaction/read/set/clear/victory paths MUST use Greg's
+saved wins, NEVER those flags. VAR_TRIO_GREG_WINS4145 is a12bit mask in the existing
+saved variable array; no new arrays/counts/init or changed historical wins/rewards.
+Read docs/greg_roaming.md and tools/greg. Geometry includes beach sand0x21.
+Source scripts are global assembly; active map JSON actors point directly to them.
+Original Route37 Psychic Greg is independent, unmodified.
+
+Validation44 focused engine/battle checks pass +21 expected harness failures,
+zero unexpected.3 Greg tests cover independent wins/all APIs, prior reclaimed
+flags, old Greg/Wawa/neighbor progress and saved ABI. RoadTrip/snack/hats/Spirit
+regressions pass.12 bypasses/map budgets/history,38 texts, reward retries,7 squirrel
+source groups and production-ROM72 mons/12 NPC-script-text pointers pass.
+Rendered approaches/sightings/save-reload await user testing. Keep PR2 draft.

@@ -7,6 +7,7 @@
 #include "battle_setup.h"
 #include "trio_snack_chase.h"
 #include "trio_roadtrip.h"
+#include "trio_greg.h"
 #include "battle_tower.h"
 #include "battle_transition.h"
 #include "main.h"
@@ -1559,6 +1560,8 @@ u8 GetTrainerBattleMode(void)
 
 bool8 GetTrainerFlag(void)
 {
+    if (TrioGreg_IsTrainer(TRAINER_BATTLE_PARAM.opponentA))
+        return TrioGreg_HasWon(TRAINER_BATTLE_PARAM.opponentA);
     if (TrioRoad_IsTrainer(TRAINER_BATTLE_PARAM.opponentA))
         return TrioRoad_HasWon(TRAINER_BATTLE_PARAM.opponentA);
     if (TrioGang_WaveForTrainer(TRAINER_BATTLE_PARAM.opponentA))
@@ -1573,6 +1576,15 @@ bool8 GetTrainerFlag(void)
 
 static void SetBattledTrainersFlags(void)
 {
+    if (TrioGreg_IsTrainer(TRAINER_BATTLE_PARAM.opponentA)
+     || TrioGreg_IsTrainer(TRAINER_BATTLE_PARAM.opponentB))
+    {
+        SetTrainerFlag(TRAINER_BATTLE_PARAM.opponentA);
+        if (TRAINER_BATTLE_PARAM.opponentB != 0)
+            SetTrainerFlag(TRAINER_BATTLE_PARAM.opponentB);
+        VsSeekerUpdateExpertQualifications();
+        return;
+    }
     // Greedent gang slots overlap reclaimed puzzle flags; its saved wins own
     // progression instead of ordinary trainer flags. Blackouts stay normal.
     if (TrioRoad_IsTrainer(TRAINER_BATTLE_PARAM.opponentA))
@@ -1592,6 +1604,8 @@ static void UNUSED SetBattledTrainerFlag(void)
 
 bool8 HasTrainerBeenFought(u16 trainerId)
 {
+    if (TrioGreg_IsTrainer(trainerId))
+        return TrioGreg_HasWon(trainerId);
     if (TrioRoad_IsTrainer(trainerId))
         return TrioRoad_HasWon(trainerId);
     u16 wave = TrioGang_WaveForTrainer(trainerId);
@@ -1602,6 +1616,11 @@ bool8 HasTrainerBeenFought(u16 trainerId)
 
 void SetTrainerFlag(u16 trainerId)
 {
+    if (TrioGreg_IsTrainer(trainerId))
+    {
+        TrioGreg_SetWon(trainerId, TRUE);
+        return;
+    }
     if (TrioGang_WaveForTrainer(trainerId))
         return;
     if (TrioRoad_IsTrainer(trainerId))
@@ -1611,6 +1630,11 @@ void SetTrainerFlag(u16 trainerId)
 
 void ClearTrainerFlag(u16 trainerId)
 {
+    if (TrioGreg_IsTrainer(trainerId))
+    {
+        TrioGreg_SetWon(trainerId, FALSE);
+        return;
+    }
     if (TrioGang_WaveForTrainer(trainerId))
         return;
     if (TrioRoad_IsTrainer(trainerId))

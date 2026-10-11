@@ -364,6 +364,8 @@
 
 #define VAR_TRIO_PLAYER_HAT                          0x4144 // 0 original, 1 bow, 2 sunhat
 
+#define VAR_TRIO_GREG_WINS                          0x4145 // Twelve independent Greg stops
+
 #define VARS_END                                         0x42FF
 
 #define VARS_COUNT                                       (VARS_END - VARS_START + 1)

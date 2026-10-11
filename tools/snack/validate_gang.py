@@ -88,6 +88,8 @@ class Checks(unittest.TestCase):
    stripped=now.replace('\tmap_script MAP_SCRIPT_ON_FRAME_TABLE, TrioGang_OnFrame\n','').replace('\tspecial TrioGang_PrepareAmbush\n','');self.assertEqual(stripped,old)
    self.assertIn('map_script MAP_SCRIPT_ON_RESUME, SetTimeEncounters',now)
    oldmap=json.loads(subprocess.check_output(['git','show',BASE+':'+prefix+'map.json'],cwd=ROOT));newmap=json.loads((ROOT/(prefix+'map.json')).read_text())
+   # Greg appends a sideline actor without moving existing hideout local IDs.
+   newmap['object_events']=[o for o in newmap['object_events'] if not o['script'].startswith('GregRoam_')]
    self.assertEqual(newmap['coord_events'],oldmap['coord_events'])
    if city=='Route37':self.assertEqual(newmap,oldmap)
    else:
@@ -134,7 +136,8 @@ class Checks(unittest.TestCase):
   self.assertNotIn('TrioSnack_IsFriendlyBattle',source);self.assertNotIn('TrioGang_',body);self.assertIn('SetMainCallback2(CB2_WhiteOut)',body)
   self.assertIn('if (TrioGang_WaveForTrainer(TRAINER_BATTLE_PARAM.opponentA))\n        return;',source)
   for fn in ['SetTrainerFlag','ClearTrainerFlag']:
-   self.assertIn(f'void {fn}(u16 trainerId)\n{{\n    if (TrioGang_WaveForTrainer(trainerId))\n        return;',source)
+   fnbody=re.search(r'void '+fn+r'\(u16 trainerId\)\n\{(.*?)\n\}',source,re.S)[1]
+   self.assertIn('if (TrioGang_WaveForTrainer(trainerId))\n        return;',fnbody)
   self.assertNotRegex(SOURCE,r'\b(HealPlayerParty|FLAG_SYS_NO_CATCHING|FLAG_SYS_NO_WHITEOUT)\b')
  def test_parties_levels_labels_and_wrapped_text(self):
   party=(ROOT/'src/data/trainers.party').read_text();levels=[22,35,48,62,78,100]
