@@ -1,4 +1,5 @@
 #include "global.h"
+#include "trio_runoff.h"
 #include "battle.h"
 #include "battle_boss.h"
 #include "battle_ai_main.h"
@@ -71,6 +72,7 @@ void AllocateBattleResources(void)
 void FreeBattleResources(void)
 {
     bool32 wasBossBattle = (gBattleTypeFlags & BATTLE_TYPE_BOSS) || IsBossBattlePending();
+    TrioRunoff_Clear();
 
     if (gBattleTypeFlags & BATTLE_TYPE_TRAINER_HILL)
         FreeTrainerHillBattleStruct();

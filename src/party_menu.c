@@ -1,4 +1,5 @@
 #include "global.h"
+#include "trio_runoff.h"
 #include "trio_camp.h"
 #include "constants/party_menu.h"
 #if PARTY_MENU_STYLE_OPTION
@@ -1379,6 +1380,8 @@ void AnimatePartySlot(u8 slot, u8 animNum)
 static u8 GetPartyBoxPaletteFlags(u8 slot, u8 animNum)
 {
     u8 palFlags = 0;
+    if (TrioRunoff_IsAway(&gPlayerParty[slot]))
+        palFlags |= PARTY_PAL_MULTI_ALT;
 
     if (animNum == 1)
         palFlags |= PARTY_PAL_SELECTED;
@@ -5089,7 +5092,7 @@ void ItemUseCB_Medicine(u8 taskId, TaskFunc task)
     tQuantityInBag = CountTotalItemQuantityInBag(item);
     tItemCount = 1;
 
-    if (NotUsingHPEVItemOnShedinja(mon, item) == FALSE)
+    if (TrioRunoff_IsAway(mon) || NotUsingHPEVItemOnShedinja(mon, item) == FALSE)
     {
         cannotUse = TRUE;
     }
@@ -8749,6 +8752,8 @@ void ChooseMonForInBattleItem(void)
 
 static u8 GetPartyMenuActionsTypeInBattle(struct Pokemon *mon)
 {
+    if (TrioRunoff_IsAway(mon))
+        return ACTIONS_SUMMARY_ONLY;
     if (GetMonData(&gPlayerParty[1], MON_DATA_SPECIES) != SPECIES_NONE && GetMonData(mon, MON_DATA_IS_EGG) == FALSE)
     {
         if (gPartyMenu.action == PARTY_ACTION_SEND_OUT)
@@ -8763,6 +8768,12 @@ static bool8 TrySwitchInPokemon(void)
 {
     u8 slot = GetCursorSelectionMonId();
     u8 newSlot;
+
+    if (TrioRunoff_IsAway(&gPlayerParty[slot]))
+    {
+        StringCopy(gStringVar4, COMPOUND_STRING("She ran off! She will\nreturn after the battle."));
+        return FALSE;
+    }
 
     // In a multi battle, slots 1, 4, and 5 are the partner's Pokémon
     if (IsMultiBattle() == TRUE && (slot == 1 || slot == 4 || slot == 5))

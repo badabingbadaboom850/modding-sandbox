@@ -342,6 +342,7 @@ NewBarkTown_Text_Sign:
 NewBarkTown_EventScript_PlayersHouseMailbox::
 	lockall
 	msgbox NewBarkTown_Text_PlayersHouse, MSGBOX_SIGN
+	call TrioParade_TestOffer
 	call TrioRoad_TestOffer
 	releaseall
 	end

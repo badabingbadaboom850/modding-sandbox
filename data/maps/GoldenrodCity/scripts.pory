@@ -190,6 +190,7 @@ GoldenrodCity_EventScript_Woman::
 	lock
 	faceplayer
 	call TrioParade_Offer
+	call TrioParade_TestReturnOffer
 	msgbox GoldenrodCity_Text_Woman, MSGBOX_DEFAULT
 	closemessage
 	release

@@ -1,4 +1,5 @@
 #include "global.h"
+#include "trio_runoff.h"
 #include "achievements.h"
 #include "malloc.h"
 #include "apprentice.h"
@@ -3507,6 +3508,9 @@ bool8 PokemonUseItemEffects(struct Pokemon *mon, enum Item item, u8 partyIndex, 
     u8 levelBefore;
     bool8 didLevelUp = FALSE;
     bool8 isLevelUpItem;
+
+    if (TrioRunoff_IsAway(mon))
+        return TRUE;
 
     // Determine the EV cap to use
     u32 maxAllowedEVs = !B_EV_ITEMS_CAP ? MAX_TOTAL_EVS : GetCurrentEVCap();

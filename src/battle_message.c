@@ -1003,6 +1003,9 @@ const u8 *const gBattleStringsTable[STRINGID_COUNT] =
     [STRINGID_BOSSTRANSFORMED]                      = COMPOUND_STRING("{B_ATK_NAME_WITH_PREFIX} transformed!"),
     [STRINGID_BOSSPHASESURGINGWITHPOWER]            = COMPOUND_STRING("{B_DEF_NAME_WITH_PREFIX} is surging with power!"),
     [STRINGID_BOSSPHASETRANSFORMED]                 = COMPOUND_STRING("{B_DEF_NAME_WITH_PREFIX} transformed!"),
+    [STRINGID_TRIO_RIKO_RUNOFF] = COMPOUND_STRING("Riko heard a snack bag!\nRiko, get back here!\pShe will return after\nthis battle."),
+    [STRINGID_TRIO_BIJUU_RUNOFF] = COMPOUND_STRING("Bijuu spotted a mouse!\nWait, no! Come back!\pShe will return after\nthis battle."),
+    [STRINGID_TRIO_PENNY_RUNOFF] = COMPOUND_STRING("Penny heard Dad's keys!\nWe are NOT taking a ride!\pShe will return after\nthis battle."),
     [STRINGID_MALICEAURAENTERS]                     = COMPOUND_STRING("{B_SCR_NAME_WITH_PREFIX} is radiating a malicious aura!"),
 };
 

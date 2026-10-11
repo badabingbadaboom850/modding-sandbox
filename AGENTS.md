@@ -1205,3 +1205,34 @@ Five authored flow/geometry/history groups and actual linked-ROM14 actors,
 organizer/frame/movement/memory pointers and enabled parade song passed.20 native
 checks passed plus7 expected harness failures, zero unexpected; parade guards
 and Greg/hats/road-trip regressions included. Keep PR2 draft/unmerged.
+
+## Trio battle run-off: user-authorized testing (2026-10-11)
+
+User authorized100% run-off for testing and home travel to Goldenrod for parade.
+TRIO_RUNOFF_CHANCE100 is temporary; change to5 only when requested/approved.
+One healthy non-egg family girl sits out an ordinary solo battle, chosen at start
+before controller party IDs. Includes personal forms via existing keepsake-family
+classifier, excludes boss species. At least1 singles/2 doubles starters remain.
+No partner/multi/link/recorded/Frontier/Safari/tutorial/first/e-reader/Hill changes.
+
+Read docs/trio_runoff.md. Battle-only personality/OT/family identity survives menu
+reordering; duplicate family identities skipped to prevent multiple exclusions.
+No HP/species/item/party removal/Box transfer/save IDs or structures altered.
+IsValidForBattle/ButDead, loss detection, switching/forced random switch/reserves,
+EXP eligibility, start forms, party menus/item effects and team status healing
+honor absence. Intro text announces snack bag/mouse/Dad's keys; no new animation.
+Common resource teardown and field return clear it for every end outcome.
+
+New Bark home mailbox offers Goldenrod30,24 before existing island preview.
+Organizer30,25 offers replayable parade; declining it offers TEST return18,12.
+Declining travel returns to original dialogue. No quest reset, Badge/item grants,
+island departure counts, or story visibility changes. Pory/assembly both updated.
+Parade/trial/festival pacing relocation remains unimplemented/unapproved.
+
+Validation: RELEASE32728292 linked bytes/EWRAM255432/padded32MiB passed.26 native
+checks pass +7 expected harness failures, zero unexpected;9 run-off cases cover
+actual intro message, lead substitution, doubles, loss, identity/reordering,
+formats/forms, items and saved ABI, plus Greg/parade/Spirit Mega regressions.
+Five parade source groups,12 test travel paths/two safe destinations and actual
+ROM travel/helper/actor/music registrations passed. Rendered UI/real save reload
+remain user tests. Keep PR2 draft/unmerged and authorized testing hooks in place.

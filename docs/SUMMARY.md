@@ -176,3 +176,4 @@
 - [Complete trio elemental forms](trio_complete_elements.md)
 - [Greg roaming encounters](greg_roaming.md)
 - [Goldenrod Pom Parade](trio_pom_parade.md)
+- [Girls running off: testing build](trio_runoff.md)

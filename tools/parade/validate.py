@@ -123,7 +123,7 @@ class Checks(unittest.TestCase):
         groups=json.loads(old('data/maps/map_groups.json')); new=json.loads((R/'data/maps/map_groups.json').read_text())
         for group in groups['group_order']:self.assertEqual(new[group][:len(groups[group])],groups[group])
         for path in ['data/maps/GoldenrodCity/scripts.inc','data/maps/GoldenrodCity/scripts.pory']:
-            current=(R/path).read_text().replace('\tcall TrioParade_Offer\n','')
+            current=(R/path).read_text().replace('\tcall TrioParade_Offer\n','').replace('\tcall TrioParade_TestReturnOffer\n','')
             if path.endswith('.pory'):
                 self.assertEqual(current,old(path).decode())
             else:

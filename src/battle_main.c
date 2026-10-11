@@ -1,4 +1,5 @@
 #include "global.h"
+#include "trio_runoff.h"
 #include "battle.h"
 #include "battle_boss.h"
 #include "battle_anim.h"
@@ -569,6 +570,7 @@ static void CB2_InitBattleInternal(void)
     FreeAllSpritePalettes();
     gReservedSpritePaletteCount = MAX_BATTLERS_COUNT;
     SetVBlankCallback(VBlankCB_Battle);
+    TrioRunoff_BeginBattle();
     SetUpBattleVarsAndBirchZigzagoon();
 
     if ((IsMultibattleTest() && gBattleTypeFlags & BATTLE_TYPE_INGAME_PARTNER)
@@ -600,7 +602,8 @@ static void CB2_InitBattleInternal(void)
         AdjustFriendship(&gPlayerParty[i], FRIENDSHIP_EVENT_LEAGUE_BATTLE);
 
         // Apply party-wide start-of-battle form changes for both sides.
-        TryFormChange(&gPlayerParty[i], FORM_CHANGE_BEGIN_BATTLE);
+        if (!TrioRunoff_IsAway(&gPlayerParty[i]))
+            TryFormChange(&gPlayerParty[i], FORM_CHANGE_BEGIN_BATTLE);
         TryFormChange(&gEnemyParty[i], FORM_CHANGE_BEGIN_BATTLE);
     }
 
@@ -3876,7 +3879,13 @@ static void DoBattleIntro(void)
         break;
     case BATTLE_INTRO_STATE_WAIT_FOR_WILD_BATTLE_TEXT:
         if (!IsBattlerMarkedForControllerExec(GetBattlerAtPosition(B_POSITION_PLAYER_LEFT)))
-        gBattleStruct->eventState.battleIntro++;
+        {
+            u32 stringId = TrioRunoff_TakeDepartureString();
+            if (stringId != 0)
+                PrepareStringBattle(stringId, GetBattlerAtPosition(B_POSITION_PLAYER_LEFT));
+            else
+                gBattleStruct->eventState.battleIntro++;
+        }
         break;
     case BATTLE_INTRO_STATE_PRINT_PLAYER_SEND_OUT_TEXT:
         if (!(gBattleTypeFlags & BATTLE_TYPE_SAFARI))
@@ -6141,6 +6150,7 @@ static void WaitForEvoSceneToFinish(void)
 
 static void ReturnFromBattleToOverworld(void)
 {
+    TrioRunoff_Clear();
     if (!(gBattleTypeFlags & BATTLE_TYPE_LINK))
     {
         CalculatePlayerPartyCount();

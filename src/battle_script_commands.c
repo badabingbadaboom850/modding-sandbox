@@ -1,4 +1,5 @@
 #include "global.h"
+#include "trio_runoff.h"
 #include "trio_camp.h"
 #include "achievements.h"
 #include "battle.h"
@@ -4948,9 +4949,7 @@ static u32 CountAliveMonsForBattlerSide(enum BattlerId battler)
 
     for (u32 partyMon = 0; partyMon < PARTY_SIZE; partyMon++)
     {
-        if (GetMonData(&party[partyMon], MON_DATA_SPECIES)
-         && GetMonData(&party[partyMon], MON_DATA_HP) > 0
-         && !GetMonData(&party[partyMon], MON_DATA_IS_EGG))
+        if (IsValidForBattle(&party[partyMon]))
             aliveMons++;
     }
 
@@ -4975,7 +4974,8 @@ bool32 NoAliveMonsForPlayer(void)
     // Get total HP for the player's party to determine if the player has lost
     for (i = 0; i < maxI; i++)
     {
-        if (GetMonData(&gPlayerParty[i], MON_DATA_SPECIES) && !GetMonData(&gPlayerParty[i], MON_DATA_IS_EGG)
+        if (!TrioRunoff_IsAway(&gPlayerParty[i])
+            && GetMonData(&gPlayerParty[i], MON_DATA_SPECIES) && !GetMonData(&gPlayerParty[i], MON_DATA_IS_EGG)
             && (!(gBattleTypeFlags & BATTLE_TYPE_ARENA) || !(gBattleStruct->arenaLostPlayerMons & (1u << i))))
         {
             HP_count += GetMonData(&gPlayerParty[i], MON_DATA_HP);
@@ -5872,7 +5872,8 @@ bool32 CanBattlerSwitch(enum BattlerId battler)
 
         for (i = 0; i < PARTY_SIZE; i++)
         {
-            if (GetMonData(&party[i], MON_DATA_HP) != 0
+            if (!TrioRunoff_IsAway(&party[i])
+             && GetMonData(&party[i], MON_DATA_HP) != 0
              && GetMonData(&party[i], MON_DATA_SPECIES) != SPECIES_NONE
              && !GetMonData(&party[i], MON_DATA_IS_EGG)
              && i != gBattlerPartyIndexes[battlerIn1] && i != gBattlerPartyIndexes[battlerIn2])
@@ -5891,7 +5892,8 @@ bool32 CanBattlerSwitch(enum BattlerId battler)
 
         for (i = lastMonId; i < lastMonId + MULTI_PARTY_SIZE; i++)
         {
-            if (GetMonData(&party[i], MON_DATA_SPECIES) != SPECIES_NONE
+            if (!TrioRunoff_IsAway(&party[i])
+             && GetMonData(&party[i], MON_DATA_SPECIES) != SPECIES_NONE
              && !GetMonData(&party[i], MON_DATA_IS_EGG)
              && GetMonData(&party[i], MON_DATA_HP) != 0
              && gBattlerPartyIndexes[battler] != i)
@@ -5933,7 +5935,8 @@ bool32 CanBattlerSwitch(enum BattlerId battler)
 
         for (i = lastMonId; i < lastMonId + MULTI_PARTY_SIZE; i++)
         {
-            if (GetMonData(&party[i], MON_DATA_SPECIES) != SPECIES_NONE
+            if (!TrioRunoff_IsAway(&party[i])
+             && GetMonData(&party[i], MON_DATA_SPECIES) != SPECIES_NONE
              && !GetMonData(&party[i], MON_DATA_IS_EGG)
              && GetMonData(&party[i], MON_DATA_HP) != 0
              && gBattlerPartyIndexes[battler] != i)
@@ -5952,7 +5955,8 @@ bool32 CanBattlerSwitch(enum BattlerId battler)
 
         for (i = lastMonId; i < lastMonId + (PARTY_SIZE / 2); i++)
         {
-            if (GetMonData(&party[i], MON_DATA_SPECIES) != SPECIES_NONE
+            if (!TrioRunoff_IsAway(&party[i])
+             && GetMonData(&party[i], MON_DATA_SPECIES) != SPECIES_NONE
              && !GetMonData(&party[i], MON_DATA_IS_EGG)
              && GetMonData(&party[i], MON_DATA_HP) != 0
              && gBattlerPartyIndexes[battler] != i)
@@ -5989,7 +5993,8 @@ bool32 CanBattlerSwitch(enum BattlerId battler)
 
         for (i = 0; i < PARTY_SIZE; i++)
         {
-            if (GetMonData(&party[i], MON_DATA_HP) != 0
+            if (!TrioRunoff_IsAway(&party[i])
+             && GetMonData(&party[i], MON_DATA_HP) != 0
              && GetMonData(&party[i], MON_DATA_SPECIES) != SPECIES_NONE
              && !GetMonData(&party[i], MON_DATA_IS_EGG)
              && i != gBattlerPartyIndexes[battlerIn1] && i != gBattlerPartyIndexes[battlerIn2])
@@ -8888,7 +8893,8 @@ static void Cmd_forcerandomswitch(void)
 
         for (u32 i = firstMonId; i < lastMonId; i++)
         {
-            if (GetMonData(&party[i], MON_DATA_SPECIES) != SPECIES_NONE
+            if (!TrioRunoff_IsAway(&party[i])
+             && GetMonData(&party[i], MON_DATA_SPECIES) != SPECIES_NONE
              && !GetMonData(&party[i], MON_DATA_IS_EGG)
              && GetMonData(&party[i], MON_DATA_HP) != 0
              && i != battler1PartyId

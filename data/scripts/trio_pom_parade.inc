@@ -162,3 +162,28 @@ TrioParade_NotReadyText:
 
 TrioParade_MemoryText:
 	.string "Pom Parade, Goldenrod.\nNine Poms borrowed a road.\pRiko led. Penny kept\nwatch. Bijuu judged. Scott\pwatched you smile. The\nlast Pom arrived at full\pspeed.$"
+
+@ User-authorized temporary home shortcut; no progression grants or resets.
+TrioParade_TestOffer::
+	msgbox TrioParade_TestOfferText, MSGBOX_YESNO
+	goto_if_ne VAR_RESULT, YES, TrioParade_TestDecline
+	closemessage
+	warp MAP_GOLDENROD_CITY, 30, 24
+	waitstate
+	releaseall
+	end
+TrioParade_TestDecline::
+	return
+TrioParade_TestOfferText:
+	.string "TEST the Pom Parade?\pTravel to Goldenrod's\nparade organizer?\pShe stands just north\nof the Game Corner.$"
+
+TrioParade_TestReturnOffer::
+	msgbox TrioParade_TestReturnText, MSGBOX_YESNO
+	goto_if_ne VAR_RESULT, YES, TrioParade_TestDecline
+	closemessage
+	warp MAP_NEW_BARK_TOWN, 18, 12
+	waitstate
+	releaseall
+	end
+TrioParade_TestReturnText:
+	.string "TEST trip home?\pReturn to New Bark Town?\nYour progress stays saved.$"
