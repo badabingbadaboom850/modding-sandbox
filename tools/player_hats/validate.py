@@ -10,12 +10,20 @@ def old(path):
 
 for path in ['include/global.h', 'include/global.fieldmap.h',
              'include/constants/species.h', 'include/constants/flags.h',
-             'include/constants/event_objects.h',
-             'graphics/object_events/palettes/may.pal',
-             'graphics/object_events/palettes/may_reflection.pal',
-             'graphics/trainers/palettes/may.pal',
-             'graphics/trainers/palettes/may_back.pal']:
+             'include/constants/event_objects.h']:
     assert (R/path).read_bytes().replace(b'\r\n',b'\n') == old(path).replace(b'\r\n',b'\n'), path
+
+# More-pink wardrobe edits are palette-only; protect skin, brown hair, outlines,
+# transparency and white highlights against the original accessory baseline.
+palette_changes = {'graphics/object_events/palettes/may.pal': {7: (238, 172, 205), 9: (255, 210, 237), 12: (255, 164, 214), 13: (222, 89, 164)}, 'graphics/object_events/palettes/may_reflection.pal': {7: (247, 222, 239), 9: (255, 238, 249), 12: (255, 222, 242), 13: (248, 194, 226)}, 'graphics/trainers/palettes/may.pal': {1: (222, 89, 164), 2: (205, 123, 164), 6: (255, 164, 214), 14: (255, 210, 237)}, 'graphics/trainers/palettes/may_back.pal': {1: (222, 89, 164), 2: (255, 164, 214), 3: (255, 210, 237)}}
+for path, replacements in palette_changes.items():
+    prior = old(path).decode().splitlines()
+    current = (R/path).read_text().splitlines()
+    expected = prior.copy()
+    for index, rgb in replacements.items():
+        expected[index+3] = " ".join(map(str, rgb))
+    assert current == expected, path
+
 assert '0x4144' not in old('include/constants/vars.h').decode()
 assert '0x4144' in (R/'include/constants/vars.h').read_text()
 
@@ -76,4 +84,4 @@ for text in re.findall(r'\.string "(.*?)"',s):
 assert 'gObjectEventGraphicsInfo_MayNormal' in (R/'src/data/object_events/object_event_graphics_info_pointers.h').read_text()
 assert 'TRIO_PLAYER_HAT_GFX_BASE' in (R/'src/event_object_movement.c').read_text()
 assert 'GetRivalAvatarGraphicsIdByStateIdAndGender(u8 state, enum Gender gender)\n{\n    return sRivalAvatarGfxIds[state][gender];' in (R/'src/field_player_avatar.c').read_text()
-print(f'PASS: {frames} native accessory frames, {changed} head pixels; body/palette/ABI source unchanged; wardrobe cancellation and historical events intact')
+print(f'PASS: {frames} native accessory frames, {changed} head pixels; body/ABI source unchanged; authorized pink palettes verified; wardrobe cancellation and historical events intact')

@@ -1045,3 +1045,20 @@ expected runner failures over3shards, zero unexpected.186 hat and12 ball frames,
 source/save/palette checks and RELEASE=1 production build pass (32666372 linked
 bytes, EWRAM255416). Rendered emulator hat/throw/open/send-out and save-reload
 confirmation remain separate. Keep PR draft and all earned progress intact.
+
+
+## More-pink player wardrobe (2026-10-11)
+
+User confirmed the repaired hats and balls work, then requested more pink.
+The four existing May palettes now give shorts/cap/sunhat pink shading and
+jacket blush highlights. Skin, brown hair, outlines, transparency, white and
+existing top pink remain unchanged. Shared hat palettes cover original/bow/
+sunhat in field and trainer art; underwater keeps its native monochrome palette.
+Source PNGs, frame packing, saved hat choice and all gameplay/saves remain fixed.
+Player-hat validator now permits only the exact authorized palette indices,
+continuing to check all186 compiled frames and historical ABI/body art.
+
+Validation: production RELEASE build passes; all four linked ROM palettes
+match the requested colors and all186 hat frames pass existing binary checks.
+Sprite PNGs and gameplay/save source remain unchanged from8091d4e472.
+Prior repair CI176 passed; user confirmed hats and thrown balls work.
