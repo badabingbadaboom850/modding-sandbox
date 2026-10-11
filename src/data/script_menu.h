@@ -1035,6 +1035,9 @@ static const struct MenuAction MultichoiceList_PlayerHats[] = {
     {COMPOUND_STRING("Original hat")},
     {COMPOUND_STRING("Pink bow")},
     {COMPOUND_STRING("Vacation sunhat")},
+    {COMPOUND_STRING("Riko Hat")},
+    {COMPOUND_STRING("Penny Hat")},
+    {COMPOUND_STRING("Bijuu Hat")},
     {gText_Exit},
 };
 

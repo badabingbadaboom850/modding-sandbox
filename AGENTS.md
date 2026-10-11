@@ -1062,3 +1062,28 @@ Validation: production RELEASE build passes; all four linked ROM palettes
 match the requested colors and all186 hat frames pass existing binary checks.
 Sprite PNGs and gameplay/save source remain unchanged from8091d4e472.
 Prior repair CI176 passed; user confirmed hats and thrown balls work.
+
+
+## Walking/running family hats (2026-10-11)
+
+User approved Riko Pom ears, Bijuu Siamese ears and surprise Penny hot-dog hat,
+walking/running only. Existing wardrobe adds Riko Hat3/Penny Hat4/Bijuu Hat5;
+Original0/Bow1/Sunhat2 and saved var4144 retain meaning. Exit6/B cancel never
+apply a selection. Fitting dialogue reveals Penny's hot dog only after choice.
+Three explicit graphic IDs402-404 append after384-401, normalized to MayNormal.
+Other activities/trainers use ordinary art without clearing the selection;
+walking restores it. Existing bow/sunhat full-state behavior remains unchanged.
+NUM_OBJ_EVENT_GFX330 and historical dynamic IDs/saved ABI stay fixed.
+
+Three built-in imagegen direction atlases are under player_hats/family_sources;
+native C assembly and format-only Python entry preserve original body pixels,
+existing shared more-pink palette and contiguous2x4 native frame packing.
+Read docs/trio_player_hats.md and tools/player_hats/build_family.py before
+extending. All54 new plus186 old accessory frames pass compiled/body checks.
+Production RELEASE build passes (32680852 linked bytes/EWRAM255416).
+Rendered hat directions and actual save/reload await user testing.
+
+Focused native suite35passes plus21 expected runner self-test failures, zero
+unexpected failures. All three actual production-ROM graphics payloads match
+the verified54 compiled frames byte-for-byte. Existing hats/balls/radio/trip
+checks pass. Source validators cover palette/body/frame order and cancel/Exit.

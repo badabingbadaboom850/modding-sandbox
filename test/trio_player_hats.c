@@ -23,7 +23,7 @@ TEST("Player hats preserve historical IDs and the saved ABI")
 
 TEST("Every female avatar state keeps native animation geometry for all hats")
 {
-    for (u32 hat = 0; hat < 3; hat++)
+    for (u32 hat = 0; hat < TRIO_PLAYER_HAT_COUNT; hat++)
     {
         VarSet(VAR_TRIO_PLAYER_HAT, hat);
         gPlayerAvatar.gender = FEMALE;
@@ -49,7 +49,7 @@ TEST("Every female avatar state keeps native animation geometry for all hats")
 
 TEST("Player hat trainer art uses complete battle frames and the existing palettes")
 {
-    for (u32 hat = 0; hat < 3; hat++)
+    for (u32 hat = 0; hat < TRIO_PLAYER_HAT_COUNT; hat++)
     {
         VarSet(VAR_TRIO_PLAYER_HAT, hat);
         u16 front = TrioPlayerHat_FrontPic(FEMALE), back = TrioPlayerHat_BackPic(FEMALE);
@@ -70,4 +70,36 @@ TEST("Invalid saved hat choices fall back safely without rewriting progress")
     EXPECT_EQ(TrioPlayerHat_BackPic(FEMALE), TRAINER_PIC_BACK_MAY);
     EXPECT_EQ(VarGet(VAR_TRIO_PLAYER_HAT), 0xffff);
     EXPECT_EQ(VarGet(VAR_TRIO_ROAD_COMPLETE), 1);
+}
+
+TEST("Family hats appear only on foot and restore across activity changes")
+{
+    for (u32 hat = 3; hat < TRIO_PLAYER_HAT_COUNT; hat++)
+    {
+        VarSet(VAR_TRIO_PLAYER_HAT, hat);
+        u16 walking = TrioPlayerHat_Graphics(OBJ_EVENT_GFX_MAY_NORMAL, FEMALE);
+        EXPECT_EQ(walking, TRIO_PLAYER_FAMILY_HAT_GFX_BASE + hat - 3);
+        EXPECT_EQ(TrioPlayerHat_BaseGraphics(walking), OBJ_EVENT_GFX_MAY_NORMAL);
+        EXPECT_EQ(TrioPlayerHat_Graphics(walking, FEMALE), walking);
+        EXPECT_EQ(TrioPlayerHat_Graphics(walking, MALE), OBJ_EVENT_GFX_MAY_NORMAL);
+        const struct ObjectEventGraphicsInfo *info = GetObjectEventGraphicsInfo(walking);
+        const struct ObjectEventGraphicsInfo *base = GetObjectEventGraphicsInfo(OBJ_EVENT_GFX_MAY_NORMAL);
+        EXPECT(info != base);
+        EXPECT_EQ(info->size, base->size);
+        EXPECT_EQ(info->images[0].size, base->images[0].size);
+        EXPECT(info->images[0].data != base->images[0].data);
+        for (u32 state = PLAYER_AVATAR_STATE_MACH_BIKE; state <= PLAYER_AVATAR_STATE_VSSEEKER; state++)
+        {
+            gPlayerAvatar.gender = FEMALE;
+            u16 id = GetPlayerAvatarGraphicsIdByStateId(state);
+            if (TrioPlayerHat_BaseGraphics(id) != OBJ_EVENT_GFX_MAY_NORMAL)
+                EXPECT_EQ(id, TrioPlayerHat_BaseGraphics(id));
+        }
+        EXPECT_EQ(TrioPlayerHat_Graphics(OBJ_EVENT_GFX_MAY_MACH_BIKE, FEMALE), OBJ_EVENT_GFX_MAY_MACH_BIKE);
+        EXPECT_EQ(TrioPlayerHat_Graphics(OBJ_EVENT_GFX_MAY_FISHING, FEMALE), OBJ_EVENT_GFX_MAY_FISHING);
+        EXPECT_EQ(TrioPlayerHat_FrontPic(FEMALE), TRAINER_PIC_FRONT_MAY);
+        EXPECT_EQ(TrioPlayerHat_BackPic(FEMALE), TRAINER_PIC_BACK_MAY);
+        EXPECT_EQ(VarGet(VAR_TRIO_PLAYER_HAT), hat);
+        EXPECT_EQ(TrioPlayerHat_Graphics(OBJ_EVENT_GFX_MAY_NORMAL, FEMALE), walking);
+    }
 }

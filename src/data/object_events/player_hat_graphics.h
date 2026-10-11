@@ -487,6 +487,81 @@ const struct ObjectEventGraphicsInfo gObjectEventGraphicsInfo_MaySunhatDecoratin
     .images = sPicTable_MaySunhatDecorating,
 };
 
+const u32 gObjectEventPic_MayRikoHatNormalRunning[] = INCBIN_U32("graphics/player_hats/riko/walking.4bpp", "graphics/player_hats/riko/running.4bpp");
+
+static const struct SpriteFrameImage sPicTable_MayRikoHatNormal[] = {
+    overworld_ascending_frames(gObjectEventPic_MayRikoHatNormalRunning, 2, 4),
+};
+
+const struct ObjectEventGraphicsInfo gObjectEventGraphicsInfo_MayRikoHatNormal = {
+    .tileTag = TAG_NONE,
+    .paletteTag = OBJ_EVENT_PAL_TAG_MAY,
+    .reflectionPaletteTag = OBJ_EVENT_PAL_TAG_BRIDGE_REFLECTION,
+    .size = 512,
+    .width = 16,
+    .height = 32,
+    .paletteSlot = PALSLOT_PLAYER,
+    .shadowSize = SHADOW_SIZE_M,
+    .inanimate = FALSE,
+    .compressed = FALSE,
+    .tracks = TRACKS_FOOT,
+    .oam = &gObjectEventBaseOam_16x32,
+    .subspriteTables = sOamTables_16x32,
+    .anims = sAnimTable_BrendanMayNormal,
+    .images = sPicTable_MayRikoHatNormal,
+};
+
+
+const u32 gObjectEventPic_MayPennyHatNormalRunning[] = INCBIN_U32("graphics/player_hats/penny/walking.4bpp", "graphics/player_hats/penny/running.4bpp");
+
+static const struct SpriteFrameImage sPicTable_MayPennyHatNormal[] = {
+    overworld_ascending_frames(gObjectEventPic_MayPennyHatNormalRunning, 2, 4),
+};
+
+const struct ObjectEventGraphicsInfo gObjectEventGraphicsInfo_MayPennyHatNormal = {
+    .tileTag = TAG_NONE,
+    .paletteTag = OBJ_EVENT_PAL_TAG_MAY,
+    .reflectionPaletteTag = OBJ_EVENT_PAL_TAG_BRIDGE_REFLECTION,
+    .size = 512,
+    .width = 16,
+    .height = 32,
+    .paletteSlot = PALSLOT_PLAYER,
+    .shadowSize = SHADOW_SIZE_M,
+    .inanimate = FALSE,
+    .compressed = FALSE,
+    .tracks = TRACKS_FOOT,
+    .oam = &gObjectEventBaseOam_16x32,
+    .subspriteTables = sOamTables_16x32,
+    .anims = sAnimTable_BrendanMayNormal,
+    .images = sPicTable_MayPennyHatNormal,
+};
+
+
+const u32 gObjectEventPic_MayBijuuHatNormalRunning[] = INCBIN_U32("graphics/player_hats/bijuu/walking.4bpp", "graphics/player_hats/bijuu/running.4bpp");
+
+static const struct SpriteFrameImage sPicTable_MayBijuuHatNormal[] = {
+    overworld_ascending_frames(gObjectEventPic_MayBijuuHatNormalRunning, 2, 4),
+};
+
+const struct ObjectEventGraphicsInfo gObjectEventGraphicsInfo_MayBijuuHatNormal = {
+    .tileTag = TAG_NONE,
+    .paletteTag = OBJ_EVENT_PAL_TAG_MAY,
+    .reflectionPaletteTag = OBJ_EVENT_PAL_TAG_BRIDGE_REFLECTION,
+    .size = 512,
+    .width = 16,
+    .height = 32,
+    .paletteSlot = PALSLOT_PLAYER,
+    .shadowSize = SHADOW_SIZE_M,
+    .inanimate = FALSE,
+    .compressed = FALSE,
+    .tracks = TRACKS_FOOT,
+    .oam = &gObjectEventBaseOam_16x32,
+    .subspriteTables = sOamTables_16x32,
+    .anims = sAnimTable_BrendanMayNormal,
+    .images = sPicTable_MayBijuuHatNormal,
+};
+
+
 static const struct ObjectEventGraphicsInfo *const sPlayerHatGraphics[] = {
 
     &gObjectEventGraphicsInfo_MayBowNormal,
@@ -525,4 +600,8 @@ static const struct ObjectEventGraphicsInfo *const sPlayerHatGraphics[] = {
 
     &gObjectEventGraphicsInfo_MaySunhatDecorating,
 
+    // Appended IDs402-404: historical bow/sunhat indices stay fixed.
+    &gObjectEventGraphicsInfo_MayRikoHatNormal,
+    &gObjectEventGraphicsInfo_MayPennyHatNormal,
+    &gObjectEventGraphicsInfo_MayBijuuHatNormal,
 };

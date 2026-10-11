@@ -4,6 +4,7 @@ PLAYERHATGFXDIR := graphics/player_hats
 # Each avatar frame must be contiguous in VRAM, just like the native May sheets.
 # Depending on this rules file also repairs cached assets from the prototype.
 PLAYER_HAT_NARROW := $(foreach style,bow sunhat,$(addprefix $(PLAYERHATGFXDIR)/$(style)/,walking.4bpp running.4bpp decorating.4bpp))
+PLAYER_HAT_NARROW += $(foreach style,riko penny bijuu,$(addprefix $(PLAYERHATGFXDIR)/$(style)/,walking.4bpp running.4bpp))
 PLAYER_HAT_WIDE := $(foreach style,bow sunhat,$(addprefix $(PLAYERHATGFXDIR)/$(style)/,field_move.4bpp surfing.4bpp mach_bike.4bpp acro_bike.4bpp fishing.4bpp watering.4bpp underwater.4bpp))
 PLAYER_HAT_TRAINER := $(foreach style,bow sunhat,$(addprefix $(PLAYERHATGFXDIR)/$(style)/,front.4bpp back.4bpp))
 

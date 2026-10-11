@@ -26,6 +26,8 @@ u16 TrioPlayerHat_BaseGraphics(u16 graphicsId)
 {
     if (graphicsId >= TRIO_PLAYER_HAT_GFX_BASE && graphicsId < TRIO_PLAYER_HAT_GFX_BASE + 2 * TRIO_PLAYER_HAT_GFX_STATES)
         return sBaseGraphics[(graphicsId - TRIO_PLAYER_HAT_GFX_BASE) % TRIO_PLAYER_HAT_GFX_STATES];
+    if (graphicsId >= TRIO_PLAYER_FAMILY_HAT_GFX_BASE && graphicsId < TRIO_PLAYER_FAMILY_HAT_GFX_BASE + 3)
+        return OBJ_EVENT_GFX_MAY_NORMAL;
     return graphicsId;
 }
 
@@ -33,6 +35,10 @@ u16 TrioPlayerHat_Graphics(u16 graphicsId, u32 gender)
 {
     u32 style = TrioPlayerHat_GetStyle();
     graphicsId = TrioPlayerHat_BaseGraphics(graphicsId);
+    // Family hats are deliberately walking/running only. Other activities
+    // retain native art, without changing the saved choice.
+    if (gender == FEMALE && style >= 3)
+        return graphicsId == OBJ_EVENT_GFX_MAY_NORMAL ? TRIO_PLAYER_FAMILY_HAT_GFX_BASE + style - 3 : graphicsId;
     if (gender == FEMALE && style)
         for (u32 i = 0; i < ARRAY_COUNT(sBaseGraphics); i++)
             if (graphicsId == sBaseGraphics[i])

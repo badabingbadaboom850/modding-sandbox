@@ -68,6 +68,34 @@ for source in sources:
                 assert all(top-1<=y<=bottom+(2 if kind else 1) for x,y in diff), (path,fx,fy,diff)
                 changed += len(diff)
 
+# Walking-only family accessories: body and historical compiled atlas order.
+family_frames = 0
+for style in ['riko', 'penny', 'bijuu']:
+    for sheet in ['walking', 'running']:
+        source = Image.open(R/'graphics/object_events/pics/people/may'/f'{sheet}.png')
+        path = R/'graphics/player_hats'/style/f'{sheet}.png'
+        result = Image.open(path)
+        assert result.size == source.size and result.mode == 'P'
+        assert result.getpalette() == source.getpalette()
+        assert max(result.tobytes()) < 16
+        binary = bytearray()
+        for fx in range(0,result.width,16):
+            gold = [(x,y) for y in range(32) for x in range(16) if source.getpixel((fx+x,y)) in (12,13)]
+            top = min(y for x,y in gold)
+            bottom = max(y for x,y in gold if y <= top+7)
+            diff = [(x,y) for y in range(32) for x in range(16) if source.getpixel((fx+x,y)) != result.getpixel((fx+x,y))]
+            assert diff and all(top-3 <= y <= bottom for x,y in diff), (style,sheet,fx)
+            assert all(result.getpixel((fx+x,y)) == source.getpixel((fx+x,y)) for y in range(bottom+1,32) for x in range(16))
+            for ty in range(0,32,8):
+                for tx in range(0,16,8):
+                    for y in range(8):
+                        for x in range(0,8,2):
+                            binary.append(result.getpixel((fx+tx+x,ty+y)) | result.getpixel((fx+tx+x+1,ty+y)) << 4)
+            family_frames += 1
+        assert path.with_suffix('.4bpp').read_bytes() == binary, path
+        assert len(set(result.tobytes())) > 5
+assert family_frames == 54
+
 j=json.loads((R/'data/maps/NewBarkTown_PlayersHouse_2F/map.json').read_text())
 prior=json.loads(old('data/maps/NewBarkTown_PlayersHouse_2F/map.json'))
 assert j['warp_events']==prior['warp_events'] and j['coord_events']==prior['coord_events']
@@ -84,4 +112,10 @@ for text in re.findall(r'\.string "(.*?)"',s):
 assert 'gObjectEventGraphicsInfo_MayNormal' in (R/'src/data/object_events/object_event_graphics_info_pointers.h').read_text()
 assert 'TRIO_PLAYER_HAT_GFX_BASE' in (R/'src/event_object_movement.c').read_text()
 assert 'GetRivalAvatarGraphicsIdByStateIdAndGender(u8 state, enum Gender gender)\n{\n    return sRivalAvatarGfxIds[state][gender];' in (R/'src/field_player_avatar.c').read_text()
-print(f'PASS: {frames} native accessory frames, {changed} head pixels; body/ABI source unchanged; authorized pink palettes verified; wardrobe cancellation and historical events intact')
+print(f'PASS: {frames} original plus {family_frames} family native accessory frames, {changed} head pixels; body/ABI source unchanged; authorized pink palettes verified; wardrobe cancellation and historical events intact')
+
+menu = (R/'src/data/script_menu.h').read_text().split('MultichoiceList_PlayerHats[]')[1].split('};')[0]
+assert menu.index('Riko Hat') < menu.index('Penny Hat') < menu.index('Bijuu Hat')
+assert 'hot dog' not in menu.lower()
+assert 'compare VAR_RESULT, 6' in s
+print('PASS: hidden Penny surprise, six saved choices, menu cancel/Exit guard')
