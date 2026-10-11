@@ -194,6 +194,20 @@ EWRAM_DATA enum BattlerId gEffectBattler = 0;
 EWRAM_DATA enum BattlerId gEffectBattler2 = 0; // Backup for when gEffectBattler is already in use (Multi)
 EWRAM_DATA enum BattlerId gPotentialItemEffectBattler = 0;
 
+// The extra run-off text can outlast the opponent's healthbox slide. Once
+// that text is announced, an idle healthbox means the slide may be finished;
+// do not wait forever for it to become active again. The caller already waits
+// for the departure text controller to complete before reaching this gate.
+bool32 BattleIntro_ShouldWaitForHealthbox(enum BattlerId battler)
+{
+    return B_FAST_INTRO_PKMN_TEXT == TRUE
+        && (gBattleTypeFlags & BATTLE_TYPE_TRAINER)
+        && !(gBattleTypeFlags & (BATTLE_TYPE_RECORDED | BATTLE_TYPE_RECORDED_LINK
+            | BATTLE_TYPE_RECORDED_IS_MASTER | BATTLE_TYPE_LINK))
+        && gSprites[gHealthboxSpriteIds[battler ^ BIT_SIDE]].callback == SpriteCallbackDummy
+        && !TrioRunoff_DepartureAnnounced();
+}
+
 bool32 IsFastIntroNoSlideEnabled(void)
 {
     return (gSaveBlock2Ptr->optionsFastIntroNoSlide
@@ -3896,10 +3910,7 @@ static void DoBattleIntro(void)
                 battler = GetBattlerAtPosition(B_POSITION_PLAYER_LEFT);
 
             // A hack that makes fast intro work in trainer battles too.
-            if (B_FAST_INTRO_PKMN_TEXT == TRUE
-                && gBattleTypeFlags & BATTLE_TYPE_TRAINER
-                && !(gBattleTypeFlags & (BATTLE_TYPE_RECORDED | BATTLE_TYPE_RECORDED_LINK | BATTLE_TYPE_RECORDED_IS_MASTER | BATTLE_TYPE_LINK))
-                && gSprites[gHealthboxSpriteIds[battler ^ BIT_SIDE]].callback == SpriteCallbackDummy)
+            if (BattleIntro_ShouldWaitForHealthbox(battler))
             {
                 return;
             }

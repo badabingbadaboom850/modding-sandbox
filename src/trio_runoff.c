@@ -109,3 +109,8 @@ u32 TrioRunoff_TakeDepartureString(void)
     sAnnounced = TRUE;
     return sDepartureString;
 }
+
+bool32 TrioRunoff_DepartureAnnounced(void)
+{
+    return sAway && sAnnounced;
+}

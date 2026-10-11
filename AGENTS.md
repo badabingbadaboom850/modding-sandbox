@@ -1253,3 +1253,21 @@ Validation: all33 classification/description/history checks pass; RELEASE
 32728296 linked bytes/EWRAM255432/padded32MiB and retained parade/run-off native
 ROM registrations pass. Native battle behavior remains the prior26-check build;
 this change adds6 consumption exemptions and descriptions only.
+
+## Run-off fast-intro freeze repair and parade confirmation (2026-10-11)
+
+User confirms Pom Parade works in emulator. Run-off froze after departure text
+before player send-out. Fast trainer gate used an idle opponent-healthbox
+callback to wait for its slide to start; added departure pages could outlast
+slide, returning callback to idle and creating an endless wait. Prior battle
+fixtures used recorded flags that skipped this gate. BattleIntro_ShouldWaitForHealthbox
+now skips that pre-animation wait once TrioRunoff_DepartureAnnounced is true;
+its caller already waits for text controller completion. No-run-off timing stays.
+
+Production-flags regression covers all3 girls with completed/idle healthbox,
+plus normal/recorded controls.27 native checks pass +7 expected harness failures,
+zero unexpected.9 run-off tests with rendering enabled pass. RELEASE32728472
+linked bytes/EWRAM255432, saved/33 reusable item audits and parade/travel ROM
+registrations pass. Keep100% and authorized travel hooks, saves/IDs unchanged.
+ManicEMU confirmation pending. Use normal in-game save before battle, not old
+frozen battle snapshot. Keep PR2 draft/unmerged.

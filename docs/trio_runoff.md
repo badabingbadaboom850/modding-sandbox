@@ -44,3 +44,23 @@ actual intro text, missing lead, doubles, exhausted available team, temporary
 identity, item rejection, formats/forms and saved ABI. Greg/parade/Spirit Mega
 regressions passed. Five parade source groups and12 test travel paths passed;
 production-ROM travel hooks, helper registrations, actors and music passed.
+
+## Fast trainer-intro freeze repair
+
+The user confirmed the Pom Parade works, but reported a freeze after the
+run-off message and before the player's send-out. The fast trainer-intro gate
+originally waited while the opponent healthbox callback was idle, expecting
+its slide to start. The added multi-page departure text could outlast that
+slide; its completed callback was idle again and the gate waited forever.
+Recorded-battle flags in previous fixtures bypassed this production-only gate.
+
+The gate now recognizes an announced departure and accepts an already finished
+slide after the text controller completes. Normal intros without run-off keep
+existing behavior. A production-flags regression exercises the idle healthbox
+for Riko/Bijuu/Penny, plus ordinary and recorded controls. All27 focused checks
+pass with7 intentional harness failures and zero unexpected failures. Nine
+run-off tests also pass with emulator rendering enabled. RELEASE32728472 linked
+bytes/EWRAM255432, existing ROM travel/parade registrations and all33 reusable
+form-item/history checks pass. ManicEMU confirmation remains the player test.
+Use a normal in-game save before the battle when replacing the ROM; a snapshot
+of the old frozen battle retains the old execution state.

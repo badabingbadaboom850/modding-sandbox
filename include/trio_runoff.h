@@ -10,6 +10,7 @@ void TrioRunoff_BeginBattle(void);
 void TrioRunoff_Clear(void);
 bool32 TrioRunoff_IsAway(struct Pokemon *mon);
 u32 TrioRunoff_TakeDepartureString(void);
+bool32 TrioRunoff_DepartureAnnounced(void);
 #if TESTING
 void TrioRunoff_EnableBattleTest(void);
 #endif

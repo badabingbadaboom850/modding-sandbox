@@ -37,7 +37,7 @@ assert 'GetItemPocket(gSpecialVar_ItemId) != POCKET_KEY_ITEMS\n            && !I
 assert 'return TRUE;' in switch and 'default:\n        return FALSE;' in switch
 assert 'ITEM_FIRE_STONE' not in reusable and 'ITEM_THUNDER_STONE' not in reusable
 for path in ['include/constants/items.h','include/constants/species.h','include/constants/vars.h',
-             'include/constants/flags.h','include/global.h','include/trio_runoff.h',
+             'include/constants/flags.h','include/global.h',
              'src/data/pokemon/species_info.h','src/data/pokemon/species_info/gen_9_families.h']:
     assert (R/path).read_text() == old(path),path
 print('PASS all33 form items reusable (20 Key/13 Items), six updated descriptions, ordinary stones and historical saved inventory metadata preserved')

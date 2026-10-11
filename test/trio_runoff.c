@@ -7,8 +7,10 @@
 #include "trio_runoff.h"
 #include "constants/items.h"
 #include "constants/battle_string_ids.h"
+#include "sprite.h"
 
 extern bool32 IsValidForBattleButDead(struct Pokemon *mon);
+extern bool32 BattleIntro_ShouldWaitForHealthbox(enum BattlerId battler);
 
 static void MakeParty(u16 girl, u32 size)
 {
@@ -174,4 +176,37 @@ WILD_BATTLE_TEST("Runoff cannot force another send out after the available team 
         EXPECT_EQ(gBattleOutcome, B_OUTCOME_LOST);
         EXPECT_GT(GetMonData(&gPlayerParty[1], MON_DATA_HP), 0);
     }
+}
+
+TEST("Runoff intro advances with an already completed trainer healthbox slide using production flags")
+{
+    u16 girls[] = {SPECIES_RIKO, SPECIES_BIJUU, SPECIES_FIDOUGH};
+    u8 oldId = gHealthboxSpriteIds[1];
+    SpriteCallback oldCallback = gSprites[0].callback;
+    gHealthboxSpriteIds[1] = 0;
+    gSprites[0].callback = SpriteCallbackDummy;
+    for (u32 i = 0; i < ARRAY_COUNT(girls); i++)
+    {
+        MakeParty(girls[i], 2);
+        gBattleTypeFlags = BATTLE_TYPE_TRAINER;
+        TrioRunoff_Begin(100);
+        EXPECT(!TrioRunoff_DepartureAnnounced());
+        EXPECT(BattleIntro_ShouldWaitForHealthbox((enum BattlerId)0));
+        EXPECT_NE(TrioRunoff_TakeDepartureString(), 0);
+        EXPECT(TrioRunoff_DepartureAnnounced());
+        // The opponent's animation has finished while the departure text was
+        // printing. The old guard returned forever here with this idle sprite.
+        EXPECT(!BattleIntro_ShouldWaitForHealthbox((enum BattlerId)0));
+        EXPECT_EQ(TrioRunoff_TakeDepartureString(), 0);
+        TrioRunoff_Clear();
+        EXPECT(!TrioRunoff_DepartureAnnounced());
+        EXPECT(BattleIntro_ShouldWaitForHealthbox((enum BattlerId)0));
+        gBattleTypeFlags = 0;
+        EXPECT(!BattleIntro_ShouldWaitForHealthbox((enum BattlerId)0));
+        gBattleTypeFlags = BATTLE_TYPE_TRAINER | BATTLE_TYPE_RECORDED;
+        EXPECT(!BattleIntro_ShouldWaitForHealthbox((enum BattlerId)0));
+    }
+    gHealthboxSpriteIds[1] = oldId;
+    gSprites[0].callback = oldCallback;
+    gBattleTypeFlags = 0;
 }
