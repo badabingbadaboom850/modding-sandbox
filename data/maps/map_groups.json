@@ -112,7 +112,8 @@
     "NewBarkTown_House1",
     "NewBarkTown_PlayersHouse_1F",
     "NewBarkTown_PlayersHouse_2F",
-    "RikoSpiritCavern"
+    "RikoSpiritCavern",
+    "TrioHomecoming"
   ],
   "gMapGroup_IndoorCherrygrove": [
     "CherrygroveCity_PokemonCenter",
@@ -181,7 +182,9 @@
     "GoldenrodFestival",
     "TrioEchoWoods",
     "TrioMirrorHouse",
-    "TrioLanternTrail"
+    "TrioLanternTrail",
+    "TrioDinnerDate",
+    "TrioRadioStudio"
   ],
   "gMapGroup_IndoorEcruteak": [
     "EcruteakCity_PokemonCenter",

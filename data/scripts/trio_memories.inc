@@ -145,6 +145,7 @@ TrioScrapbook_Sisters:
 	call_if_set FLAG_TRIO_CAFE_VISITED, TrioCafe_ReadMemory
 	call_if_eq VAR_TRIO_ROAD_COMPLETE, 1, TrioRoad_ReadMemory
 	call TrioStories_ReadMemories
+	call FamilyDays_ReadMemories
 	goto TrioScrapbook_Menu
 TrioScrapbook_Letters:
 	msgbox TrioScrapbook_LettersIntro, MSGBOX_DEFAULT
@@ -734,6 +735,7 @@ TrioScrapbook_PicnicLetter::
 	msgbox TrioChampionPicnic_ScottLetter, MSGBOX_DEFAULT
 	return
 TrioScrapbook_Checklist::
+	call FamilyDays_Checklist
 	msgbox TrioChecklist_Intro, MSGBOX_DEFAULT
 	call TrioChecklist_FirstBadge
 	call TrioChecklist_GoldenrodBadge

@@ -168,3 +168,4 @@
 - [Outfit stories and little family adventures](trio_outfit_stories.md)
 
 - [The Great Trio Road Trip](trio_road_trip.md)
+- [Dinner, radio and homecoming](trio_family_days.md)

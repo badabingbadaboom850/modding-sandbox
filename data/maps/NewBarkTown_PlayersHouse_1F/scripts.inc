@@ -23,6 +23,7 @@ NewBarkTown_PlayersHouse_1F_EventScript_Mom::
 	lock
 	faceplayer
 	call TrioMemories_Mom
+	call FamilyHome_Offer
 	call TrioChampionPicnic_Offer
 	call TrioFestival_Invitation
 	goto_if_set FLAG_MOM_VISITED, NewBarkTown_PlayersHouse_1F_EventScript_Mom_Regular

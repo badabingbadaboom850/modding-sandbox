@@ -354,6 +354,14 @@
 #define VAR_TRIO_ROAD_SOUVENIR                      0x413C // 0 waiting,1 cabin picnic tin claimed
 #define VAR_TRIO_ROAD_VISITS                        0x413D // 0-3 arrival conversation rotation
 
+// Optional dinner, studio and homecoming; existing saved arrays unchanged.
+#define VAR_TRIO_DINNER_STATE                        0x413E
+#define VAR_TRIO_RADIO_STATE                         0x413F
+#define VAR_TRIO_HOMECOMING_STATE                    0x4140
+#define VAR_TRIO_DINNER_REWARD                       0x4141
+#define VAR_TRIO_HOME_GIFTS                          0x4142
+#define VAR_TRIO_HOME_REWARD                         0x4143
+
 #define VARS_END                                         0x42FF
 
 #define VARS_COUNT                                       (VARS_END - VARS_START + 1)

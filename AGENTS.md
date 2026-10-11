@@ -946,3 +946,46 @@ new committed head is separate.
 ## Authorized Road Trip mailbox preview
 
 User requested immediate New Bark testing. Player-house mailbox17,11 now retains its sign then offers TEST island travel, without Badge/party gates or progress grants/resets. Both Pory/assembly call TrioRoad_TestOffer; saved existing return var413A mode2 routes the island ferry to New Bark18,12 even after reload. Ordinary departures record0/1 normally. Remove the temporary offer only when requested, retaining earned chapter progress and safely routing historical preview saves. This supersedes the prior no-testing-portals rule only for this explicit preview.
+
+
+## Dinner, native family radio and homecoming (2026-10-10)
+
+User approved all three optional midgame chapters. Scott at Goldenrod15,25
+(after Badge04, ordinary civilian visibility) offers TrioDinnerDate, appended
+IndoorGoldenrod40, using native Olivine Cafe layout/arrow exit. RadioTower1F's
+existing woman23,8 retains original text then offers separate TrioRadioStudio
+(after normal FLAG_ENABLE_RADIO and Badge03, no Rocket takeover). That appended
+IndoorGoldenrod41 shares MirrorHouse layout/exit to the lobby. Preserve both
+Pory/assembly hooks and all original quiz/password/radio services.
+
+Three saved recording prep steps unlock Tails of the Trio on native Pokégear
+dial52. Random four segments read earned story state; they never write saves.
+Existing Rocket takeover substitutes Rocket on this channel too. Studio and
+field share bounded helper strings (<=12 lines,<=26 characters/line); station
+music is existing radio lullaby. New special appends only. No new saved arrays.
+
+Pryce's first Badge07 award supplies Mom's note; eligible older saves can talk
+to Mom directly. Her optional offer precedes ordinary original story/heal
+branches, returning normally on decline. Separate TrioHomecoming appends
+IndoorNewBark7 and shares the original home layout, preserving normal home
+objects/triggers. Mom/Scott/girls plus3 virtual story gifts and3 earned decor
+props total12 actors+player/follower14. Native exit returns outdoor home.
+TEMP1-3 hide flags reconstruct festival/garden/island decor on transition;
+never grant achievements. Sequential gifts, finale, replay and healing persist.
+Both meals give small existing snack rewards once, full-Bag/decline pending.
+
+Vars413E dinner0-5,413F radio0-4,4140 homecompletion0/1,4141 dinnerreward0/1,
+4142 homevirtualgifts0-3,4143 homereward0/1 were audited unused in source against
+c8cf449076. Historical IDs, saved ABI, natural quests and authorized Road Trip
+mailbox preview remain intact. Read docs/trio_family_days.md and actual code;
+source/engine validation is distinct from rendered player confirmation.
+
+Family-days verification: RELEASE=1 production ROM compiled (32564940 linked
+bytes, EWRAM255416). Three new actual-engine radio tests pass, including512
+segment/scenario bounds/page-format checks, saved ABI and earned-state gating.
+Focused radio/Road Trip/outfit/cafe suite reports34 passes+21 expected runner
+self-test failures over3shards, zero unexpected failures. Nine actual-script/
+geometry groups,10 Road Trip groups,7 gang groups, costume-story source checks,
+compiled active entry hooks, docs-summary and diff checks pass. Native exits
+share the exact proven layouts/coordinates. Rendered restaurant/studio/home,
+radio UI and real in-game save/reload remain for user testing; new CI is separate.

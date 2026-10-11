@@ -672,3 +672,5 @@ gSpecials::
 
 	def_special TrioRoad_RecordBattleWin
 	def_special TrioRoad_RecordDeparture
+
+	def_special BufferTrioFamilyRadio

@@ -25,6 +25,7 @@ RadioTower1F_EventScript_Lass::
 	lock
 	faceplayer
 	msgbox RadioTower1F_Text_Lass, MSGBOX_DEFAULT
+	call FamilyRadio_Offer
 	closemessage
 	release
 	end

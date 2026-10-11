@@ -88,6 +88,7 @@ enum
     MAP_NEW_BARK_TOWN_PLAYERS_HOUSE_1F = (4 | (1 << 8)),
     MAP_NEW_BARK_TOWN_PLAYERS_HOUSE_2F = (5 | (1 << 8)),
     MAP_RIKO_SPIRIT_CAVERN             = (6 | (1 << 8)),
+    MAP_TRIO_HOMECOMING                = (7 | (1 << 8)),
 
     // gMapGroup_IndoorCherrygrove
     MAP_CHERRYGROVE_CITY_POKEMON_CENTER = (0 | (2 << 8)),
@@ -157,6 +158,8 @@ enum
     MAP_TRIO_ECHO_WOODS                          = (37 | (5 << 8)),
     MAP_TRIO_MIRROR_HOUSE                        = (38 | (5 << 8)),
     MAP_TRIO_LANTERN_TRAIL                       = (39 | (5 << 8)),
+    MAP_TRIO_DINNER_DATE                         = (40 | (5 << 8)),
+    MAP_TRIO_RADIO_STUDIO                        = (41 | (5 << 8)),
 
     // gMapGroup_IndoorEcruteak
     MAP_ECRUTEAK_CITY_POKEMON_CENTER = (0 | (6 << 8)),
