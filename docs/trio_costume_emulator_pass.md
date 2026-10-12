@@ -104,8 +104,8 @@ consuming one is expected control behavior; a family item doing so is not.
 
 ## Halloween trail rendered checks
 
-Visit Ecruteak's Itemfinder house (city door19,33), talk to Gastly9,5, decline
-once, then accept. Verify the original Itemfinder still works. No party gate.
+After Chuck's fifth Badge, visit Olivine Cafe (city door8,43), talk to Gastly1,6, decline
+once, then accept. Verify original cafe services still work; before Badge5, the invitation stays locked. No party gate.
 Explore all13 actors and inspect Gastly/Haunter/Duskull/Pumpkaboo followers.
 Try wrong/cancelled memory answers, then BOO/POM/TREAT for Riko's hat.
 Find Fish/Moon/Star treat balls for Bijuu; visit Left/Right/Middle Pumpkaboo
@@ -122,5 +122,5 @@ at17,11 and accept Halloween test travel. Decline once to confirm the original
 house sign, then accept and play normally. Save/restart inside, use Exit Gastly
 and each walk-out exit on separate visits, and confirm return to New Bark18,12.
 No automatic costume gifts, Badges, party additions or story resets should occur.
-Then enter through Ecruteak's Gastly and confirm the origin changes back to
-Ecruteak for every exit. All earned games/items/photos must remain.
+Then enter through Olivine's Gastly after Badge5 and confirm the origin changes back to
+Olivine Cafe for every exit. All earned games/items/photos must remain.

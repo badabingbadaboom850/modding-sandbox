@@ -17909,7 +17909,7 @@ const struct ItemInfo gItemsInfo[] =
     {
         .name = ITEM_NAME("Riko Witch Hat"),
         .price = 0,
-        .description = COMPOUND_STRING("Reusable Halloween outfit.\nUse again to revert."),
+        .description = COMPOUND_STRING("Reusable costume.\nUse again to revert."),
         .importance = 1,
         .pocket = POCKET_KEY_ITEMS,
         .sortType = ITEM_TYPE_EVOLUTION_STONE,
@@ -17972,7 +17972,7 @@ const struct ItemInfo gItemsInfo[] =
     {
         .name = ITEM_NAME("Vampire Cape"),
         .price = 0,
-        .description = COMPOUND_STRING("Reusable Halloween outfit.\nUse again to revert."),
+        .description = COMPOUND_STRING("Reusable costume.\nUse again to revert."),
         .importance = 1,
         .pocket = POCKET_KEY_ITEMS,
         .sortType = ITEM_TYPE_EVOLUTION_STONE,
@@ -18035,7 +18035,7 @@ const struct ItemInfo gItemsInfo[] =
     {
         .name = ITEM_NAME("Pumpkin Suit"),
         .price = 0,
-        .description = COMPOUND_STRING("Reusable Halloween outfit.\nUse again to revert."),
+        .description = COMPOUND_STRING("Reusable costume.\nUse again to revert."),
         .importance = 1,
         .pocket = POCKET_KEY_ITEMS,
         .sortType = ITEM_TYPE_EVOLUTION_STONE,

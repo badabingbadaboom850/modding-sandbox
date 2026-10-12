@@ -2,6 +2,7 @@
 TrioHalloween_Offer::
 	lockall
 	faceplayer
+	goto_if_unset FLAG_BADGE05_GET, TrioHalloween_NotReady
 	playmoncry SPECIES_GASTLY, CRY_MODE_NORMAL
 	waitmoncry
 	msgbox TrioHalloween_OfferText, MSGBOX_YESNO
@@ -253,7 +254,7 @@ TrioHalloween_WalkExit::
 TrioHalloween_Return:
 	closemessage
 	goto_if_eq VAR_TRIO_HALLOWEEN_RETURN, 1, TrioHalloween_ReturnNewBark
-	warp MAP_ECRUTEAK_CITY_HOUSE4, 8, 6
+	warp MAP_OLIVINE_CITY_CAFE, 2, 7
 	waitstate
 	goto TrioHalloween_End
 TrioHalloween_ReturnNewBark:
@@ -262,3 +263,9 @@ TrioHalloween_ReturnNewBark:
 	goto TrioHalloween_End
 TrioHalloween_TestOfferText:
 	.string "Halloween test trip?\nPlay three ghost games!\pThis mailbox trip returns\nyou safely to New Bark.$"
+
+TrioHalloween_NotReady:
+	msgbox TrioHalloween_NotReadyText, MSGBOX_DEFAULT
+	goto TrioHalloween_End
+TrioHalloween_NotReadyText:
+	.string "Gastly: Our spooky trail\nopens after Chuck's Badge!\pCome back from Cianwood.\nWe will keep a seat warm!$"

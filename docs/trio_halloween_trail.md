@@ -1,10 +1,12 @@
 # Trick-or-Treat Trail
 
-A friendly Gastly waits in Ecruteak's Itemfinder house, city doorway19,33,
-at interior9,5. Talk and accept an optional trip to a haunted garden with
-Riko, Bijuu and Penny. No battle, fee, party, Badge or real-time requirement.
-The trail remains available all year and works on existing saves.
-The original Itemfinder NPC/service and all original house events remain.
+A friendly Gastly waits in western Olivine Cafe, city doorway8,43, at
+interior1,6. The normal invitation unlocks after Chuck's fifth Badge
+(FLAG_BADGE05_GET), on the way to Jasmine's sixth Badge. Before that, Gastly
+explains when to return. Talk and accept an optional trip to a haunted garden
+with Riko, Bijuu and Penny. No battle, fee, party or real-time requirement.
+The trail remains available all year and works on existing saves. The earlier
+Ecruteak ghost is removed; the original Itemfinder/cafe services remain.
 
 ## Games and rewards
 
@@ -28,10 +30,10 @@ All three prior direct Halloween gift calls/helpers are removed, leaving the
 ordinary/Butterfly/Astronaut/Ballerina sources intact. Previously earned items,
 forms and album photos stay valid. Games can still be completed if already owned.
 
-Exit Gastly9,15 offers an immediate return to8,6 in the Itemfinder house.
-Both bottom south-arrow warps11/12,17 return through its native entrance warp0.
+Exit Gastly9,15 and both walk-out exits11/12,16 return normal visitors to
+Olivine Cafe2,7. Boundary south-arrow warps11/12,17 use its native entrance0.
 The player can save, quit, return and resume searches. There is no timer,
-encounter restriction, forced follower hiding, party mutation or story gate.
+encounter restriction, forced follower hiding, party mutation or additional story gate.
 The three ordinary girls are present as NPCs using the established permission
 to assume their company. Treat props describe fictional sweets, not real food.
 
@@ -66,9 +68,9 @@ Badges, battles, progress resets or automatic item grants. Decline continues
 the original house sign. Both raw Pory and assembly contain the same one call.
 
 The saved return choice VAR_TRIO_HALLOWEEN_RETURN0x414A is0 for the normal
-Ecruteak invitation and1 for the New Bark test trip. Successful entry sets the
+Olivine invitation and1 for the New Bark test trip. Successful entry sets the
 origin; declines preserve it. Exit Gastly and both walk-out coordinate exits
-at11/12,16 route to New Bark18,12 for test trips or Ecruteak House4 at8,6 for
+at11/12,16 route to New Bark18,12 for test trips or Olivine Cafe at2,7 for
 normal invitations. On-load initializes only the map-local temporary exit
 latch, so saving/reloading inside retains the origin and all puzzle progress.
 The original south-arrow warps remain a normal-route fallback at the boundary.
@@ -95,3 +97,19 @@ and actual apology-offer script. No cafe runtime/map changes. The silly-scenes
 source history check now permits the subsequently authorized appended costume
 IDs/variables while preserving every historical numeric ID and saved structure.
 All five scene/source groups and actual cafe clerk registration checks pass.
+
+## User-requested pacing move to the sixth Badge approach
+
+Gastly is now in Olivine Cafe1,6 (west-side city door8,43), after Chuck's
+fifth Badge and before Jasmine's sixth. A pre-Badge5 visit gives a clear hint.
+Normal travel/return and both native boundary warps use the cafe; New Bark
+testing mode1 still returns home and bypasses the normal Badge gate. No earned
+game/item/photo reset, new save allocation or map-ID change. Original Ecruteak
+house and Olivine cafe dialogue/scripts/services remain unchanged. Added30
+pre-Badge5 normal/preview source cases; all original cafe paths/approaches stay
+connected with the new ghost, including Jasmine's story-gated spot.
+
+CI196 also exposed120px Halloween item description wording vs102px limit.
+All three now say "Reusable costume. / Use again to revert." A glyph-based
+source audit verifies every one of39 family transformation descriptions fits
+the actual Bag/Shop font bound. Item behavior/IDs/pockets stay unchanged.

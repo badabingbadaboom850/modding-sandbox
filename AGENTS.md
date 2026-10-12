@@ -1471,3 +1471,20 @@ vs102px FONT_NARROW limit. Text shortened/reflowed to "Reusable. Returns" /
 ID/pocket/price/icon/form/reusability/save behavior unchanged. New glyph-width
 validator reproduces old107 and verifies new lines; all39 item metadata checks
 pass. This accompanies Pumpkin Penny crop rebuild; report CI/ROM separately.
+
+
+## Halloween pacing moved after Badge5, before Badge6 (2026-10-12)
+
+User asked to move normal event onto approach to6 (7fallback). Chosen western
+Olivine Cafe door8,43: Gastly1,6 unlocks invitation via FLAG_BADGE05_GET (Chuck),
+matching Jasmine FLAG_BADGE06_GET. Prior Ecruteak house ghost removed; originals
+unchanged. Before5 ghost says return afterChuck. Mode0 returns Cafe2,7 via both
+ghost/walk exits; native boundary warps useCafe entrance0. Mode1 NewBark preview
+bypassesBadge and still returns home, including saved visits. Cafe actors/services
+unchanged except appended ghost; reachability differs only by occupied ghosttile.
+All progress/items/photos/savevars/mapIDs remain.30new pre5normal/preview cases
+plus prior3454puzzle/30origin/4productionwarp checks pass. Existing map remains
+in original IndoorEcruteak group to preserve IDs, with Olivine region label.
+CI196 found Halloween descriptions120px vs102px: all3shortened toReusable costume
+/Use again to revert. Actual-font audit now checks all39family descriptions; all
+fit. Existing behavior and source palette/Penny crop checks retained. PRdraft.

@@ -12,8 +12,8 @@ for line in S.splitlines():
 VARS=['VAR_TRIO_HALLOWEEN_'+f for f in ['RIKO','BIJUU','PENNY','RETURN']]
 ITEMS=['ITEM_RIKOS_WITCH_HAT','ITEM_BIJUUS_VAMPIRE_CAPE','ITEM_PENNYS_PUMPKIN_SUIT']
 class Run:
- def __init__(self,state=0,family=0,owned=False,room=True,answers=()):
-  self.vars={v:0 for v in VARS};self.vars[VARS[family]]=state;self.owned=set([ITEMS[family]]) if owned else set();self.room=room;self.answers=iter(answers);self.lock=False;self.gifts=[];self.warps=[]
+ def __init__(self,state=0,family=0,owned=False,room=True,answers=(),badge=True):
+  self.vars={v:0 for v in VARS};self.vars[VARS[family]]=state;self.owned=set([ITEMS[family]]) if owned else set();self.room=room;self.answers=iter(answers);self.lock=False;self.gifts=[];self.warps=[];self.flags={'FLAG_BADGE05_GET'} if badge else set()
  def value(self,x):
   if x.startswith('VAR_'):return self.vars.get(x,0)
   return {'TRUE':1,'FALSE':0,'YES':1,'NO':0,'MULTI_B_PRESSED':127}.get(x,int(x) if x.isdigit() else x)
@@ -36,6 +36,8 @@ class Run:
     if self.room:self.owned.add(a[0]);self.gifts.append(a[0])
    elif op=='warp':self.warps.append(tuple(a))
    elif op=='goto':pc=LABELS[a[0]]
+   elif op in ['goto_if_set','goto_if_unset']:
+    if (a[0] in self.flags)==(op=='goto_if_set'):pc=LABELS[a[1]]
    elif op.startswith('goto_if_'):
     x,y=self.value(a[0]),self.value(a[1]);test={'eq':x==y,'ne':x!=y,'gt':x>y,'ge':x>=y}[op[8:]]
     if test:pc=LABELS[a[2]]
@@ -90,13 +92,14 @@ while q:
 for o in m['object_events']:
  x,y=o['x'],o['y'];assert walk(x,y);assert any(p in seen for p in [(x-1,y),(x+1,y),(x,y-1),(x,y+1)]),o['script'];assert o['script'] in LABELS
 assert len(m['object_events'])+2<=16
-for e in m['warp_events']:assert (e['x'],e['y']) in seen and e['dest_map']=='MAP_ECRUTEAK_CITY_HOUSE4' and e['dest_warp_id']=='0'
+for e in m['warp_events']:assert (e['x'],e['y']) in seen and e['dest_map']=='MAP_OLIVINE_CITY_CAFE' and e['dest_warp_id']=='0'
 old=lambda p:subprocess.check_output(['git','show',BASE+':'+p],cwd=R,text=True)
-p='data/maps/EcruteakCity_House4/map.json';house=json.loads((R/p).read_text());before=json.loads(old(p));assert house['object_events'][:-1]==before['object_events']
+p='data/maps/OlivineCity_Cafe/map.json';house=json.loads((R/p).read_text());before=json.loads(old(p));assert house['object_events'][:-1]==before['object_events']
 for k in before:
  if k!='object_events':assert house[k]==before[k]
-_,_,_,hw=geometry('EcruteakCity_House4');assert hw(9,5) and hw(8,6)
-assert (R/'data/maps/EcruteakCity_House4/scripts.inc').read_text()==old('data/maps/EcruteakCity_House4/scripts.inc')
+_,_,_,hw=geometry('OlivineCity_Cafe');assert hw(1,6) and hw(2,7)
+for p in ['data/maps/OlivineCity_Cafe/scripts.inc','data/maps/EcruteakCity_House4/map.json','data/maps/EcruteakCity_House4/scripts.inc']:
+ assert (R/p).read_text()==old(p),p
 p='data/maps/map_groups.json';before=json.loads(old(p));now=json.loads((R/p).read_text())
 for k,value in before.items():assert now[k]==(value+['TrioHalloweenTrail'] if k=='gMapGroup_IndoorEcruteak' else value)
 for p in ['include/global.h','include/global.fieldmap.h','src/new_game.c','include/constants/flags.h']:assert (R/p).read_text()==old(p),p
@@ -130,7 +133,7 @@ for state,mode,answer in itertools.product(range(5),[0,1],[0,1,127]):
  assert r.vars[returnvar]==(0 if answer==1 else mode) and r.vars[VARS[0]]==state
  for label in ['Exit','WalkExit']:
   r=Run(state,answers=[1]);r.vars[returnvar]=mode;r.run(label)
-  assert r.warps==[('MAP_NEW_BARK_TOWN','18','12') if mode else ('MAP_ECRUTEAK_CITY_HOUSE4','8','6')]
+  assert r.warps==[('MAP_NEW_BARK_TOWN','18','12') if mode else ('MAP_OLIVINE_CITY_CAFE','2','7')]
   assert r.vars[VARS[0]]==state and not r.gifts and not r.lock
   # Return choice survives a normal save reconstruction.
   reload=Run(state);reload.vars[returnvar]=mode;reload.run('WalkExit');assert reload.warps==r.warps
@@ -166,3 +169,29 @@ with tempfile.TemporaryDirectory() as td:
  current={n:(a,b) for n,a,b in re.findall(r'^\s*(MAP_\w+)\s*=\s*\((\d+) \| \((\d+) << 8\)\)',generated,re.M)}
  for n,a,b in oldmaps:assert current.get(n)==(a,b),(n,a,b,current.get(n))
 print('PASS',len(warps),'warp references resolve in production-generated map constants; historical map numbers remain fixed')
+
+# Normal invitation belongs after Chuck's fifth Badge; preview remains independent.
+for state,mode,answer in itertools.product(range(5),[0,1],[0,1,127]):
+ r=Run(state,answers=[answer],badge=False);r.vars[returnvar]=mode;r.run('Offer')
+ assert not r.warps and not r.gifts and r.vars[VARS[0]]==state and r.vars[returnvar]==mode
+ r=Run(state,answers=[answer],badge=False);r.vars[returnvar]=mode;r.lock=True;r.run('TestOffer')
+ assert bool(r.warps)==(answer==1) and r.vars[VARS[0]]==state and not r.gifts
+ assert r.vars[returnvar]==(1 if answer==1 else mode)
+# Validate cafe access with all original actors, including story-gated Jasmine.
+cm,w,h,cw=geometry('OlivineCity_Cafe');occ={(o['x'],o['y']) for o in cm['object_events']};seen={(3,8)};q=collections.deque(seen)
+while q:
+ x,y=q.popleft()
+ for point in [(x-1,y),(x+1,y),(x,y-1),(x,y+1)]:
+  if point not in seen and point not in occ and cw(*point):seen.add(point);q.append(point)
+assert (2,7) in seen and len(cm['object_events'])+2<=16
+before=json.loads(old('data/maps/OlivineCity_Cafe/map.json'));oldocc={(o['x'],o['y']) for o in before['object_events']};oldseen={(3,8)};q=collections.deque(oldseen)
+while q:
+ x,y=q.popleft()
+ for point in [(x-1,y),(x+1,y),(x,y-1),(x,y+1)]:
+  if point not in oldseen and point not in oldocc and cw(*point):oldseen.add(point);q.append(point)
+assert seen==oldseen-{(1,6)} # no original approach/room path is disconnected
+assert any(p in seen for p in [(0,6),(2,6),(1,5),(1,7)])
+
+assert 'setflag FLAG_BADGE05_GET' in (R/'data/maps/CianwoodGym/scripts.inc').read_text()
+assert 'setflag FLAG_BADGE06_GET' in (R/'data/maps/OlivineCity_Gym/scripts.inc').read_text()
+print('PASS30 pre-Badge5 normal/preview cases and cafe reachability/service preservation; normal unlock is Chuck5 before Jasmine6')

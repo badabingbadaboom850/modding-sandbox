@@ -2,11 +2,11 @@
 
 Witch Riko, Vampire Bijuu and Pumpkin Penny are purely cosmetic and remain
 obtainable all year. No date, Badge, battle or new quest requirement is added.
-A friendly Gastly in Ecruteak's Itemfinder house (city door19,33; Gastly9,5)
+A friendly Gastly in western Olivine Cafe (city door8,43; Gastly1,6)
 invites an optional trip to the Trick-or-Treat Trail. Halloween items now come
 from its three games, replacing the direct gifts from costume vendors. Earlier
 collected items/forms/photos stay intact; existing original/extra costume gifts
-and the Itemfinder service remain. No party, date, Badge or battle gate.
+and the Itemfinder service remain. Unlocks after Chuck's fifth Badge, before Jasmine's sixth; no party/date/battle gate.
 
 | Costume | Reusable protected Key Item | Game |
 | --- | --- | --- |
