@@ -115,7 +115,12 @@ for c,ch in enumerate(chapters):
    assert (7,4) in seen # Original nurse/Chansey are served across the counter.
    continue
   x,y=o['x'],o['y'];assert any(p in seen for p in [(x-1,y),(x+1,y),(x,y-1),(x,y+1)]),(source,o)
- garden='TrioSeason'+season;m,w,h,walk=geometry(garden);occupied={(o['x'],o['y']) for o in m['object_events']};assert len(occupied)==len(m['object_events']) and len(occupied)+2<=16
+ garden='TrioSeason'+season
+ assembly=(R/'data/event_scripts.s').read_text();include='\t.include \"data/maps/'+garden+'/scripts.inc\"'
+ assert assembly.count(include)==1,(garden,'missing map-script assembly registration')
+ mapscript=(R/'data/maps'/garden/'scripts.inc').read_text()
+ assert garden+'_MapScripts::' in mapscript and 'map_script MAP_SCRIPT_ON_LOAD, '+garden+'_Load' in mapscript and 'setvar VAR_TEMP_A, 1' in mapscript
+ m,w,h,walk=geometry(garden);occupied={(o['x'],o['y']) for o in m['object_events']};assert len(occupied)==len(m['object_events']) and len(occupied)+2<=16
  seen=reachable((12,15),walk,occupied)
  for o in m['object_events']:
   x,y=o['x'],o['y'];assert walk(x,y) and any(p in seen for p in [(x-1,y),(x+1,y),(x,y-1),(x,y+1)]),(garden,o);assert o['script'] in labels

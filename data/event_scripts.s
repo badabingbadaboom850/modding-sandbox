@@ -2474,3 +2474,7 @@ Common_Text_ReceivedMon:
 	.include "data/scripts/trio_halloween_trail.inc"
 
 	.include "data/scripts/trio_seasonal_chapters.inc"
+	.include "data/maps/TrioSeasonFall/scripts.inc"
+	.include "data/maps/TrioSeasonThanksgiving/scripts.inc"
+	.include "data/maps/TrioSeasonChristmas/scripts.inc"
+	.include "data/maps/TrioSeasonNewYear/scripts.inc"

@@ -1510,3 +1510,9 @@ Seasonalsource runner1238branches+mapgeometry/productionwarps/nativeart/font/
 metadata checks; oldHalloween3454+30origins+30pregate checks andPennycrop retained.
 51familyitemsreusable(38Key/13ordinary);51descriptionsfit102px. Engine/rendered
 confirmation separate. Keep PR2draft/unmerged; preserve HalloweenNewBarkhook.
+
+
+CI198 seasonal C/assets compiled; linker missed all4TrioSeasonMapScripts labels.
+Explicit4map scripts includes added todata/event_scripts.s. Source runner now
+asserts eachinclude once plusMapScripts/ON_LOAD/TEMP_Aexit initialization.
+Gates/items/rewards/saves unchanged; report rebuilt ROM separately.

@@ -76,3 +76,9 @@ in `trio_costume_emulator_pass.md` for animation, evolutions, follower movement,
 boxing, fainting, reusable Bag items, actual save/reload, old saves and all chapter
 routes/replays. PR2 remains draft and unmerged; CI ROM/full engine results are
 reported separately from source/native checks.
+
+CI198 compiled the seasonal C code/assets and failed linking four missing
+MapScripts symbols: the new stages needed explicit event-script assembly
+includes. All four are now registered; the source validator asserts each include
+and ON_LOAD/exit trigger registration. This repair changes no saved IDs, gates,
+rounds or rewards. A rebuilt ROM and engine run are separate.
