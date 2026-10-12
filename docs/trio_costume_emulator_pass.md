@@ -116,3 +116,11 @@ without repeating the game. Repeat host interactions while owning items.
 Both south-arrow exits and the exit Gastly return safely. Save inside/reload
 and leave. Old costume copies/photos stay; earlier direct Halloween gift calls
 are removed. Then run every costume item/storage/faint/reversion check above.
+
+For the authorized fresh-save shortcut, inspect the player's New Bark mailbox
+at17,11 and accept Halloween test travel. Decline once to confirm the original
+house sign, then accept and play normally. Save/restart inside, use Exit Gastly
+and each walk-out exit on separate visits, and confirm return to New Bark18,12.
+No automatic costume gifts, Badges, party additions or story resets should occur.
+Then enter through Ecruteak's Gastly and confirm the origin changes back to
+Ecruteak for every exit. All earned games/items/photos must remain.

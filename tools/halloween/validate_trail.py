@@ -9,7 +9,7 @@ for line in S.splitlines():
  if re.fullmatch(r'\w+::?',line):
   assert line.rstrip(':') not in LABELS;LABELS[line.rstrip(':')]=len(CODE)
  else:CODE.append(line)
-VARS=['VAR_TRIO_HALLOWEEN_'+f for f in ['RIKO','BIJUU','PENNY']]
+VARS=['VAR_TRIO_HALLOWEEN_'+f for f in ['RIKO','BIJUU','PENNY','RETURN']]
 ITEMS=['ITEM_RIKOS_WITCH_HAT','ITEM_BIJUUS_VAMPIRE_CAPE','ITEM_PENNYS_PUMPKIN_SUIT']
 class Run:
  def __init__(self,state=0,family=0,owned=False,room=True,answers=()):
@@ -22,6 +22,7 @@ class Run:
   for _ in range(250):
    line=CODE[pc];pc+=1;op,_,rest=line.partition(' ');a=[x.strip() for x in rest.split(',')]
    if op=='end':assert not self.lock;return self
+   if op=='return':return self
    if op in ['lockall','lock']:self.lock=True
    elif op in ['releaseall','release']:self.lock=False
    elif op=='setvar':assert a[0] in VARS;self.vars[a[0]]=self.value(a[1])
@@ -116,3 +117,35 @@ assert 'data/scripts/trio_halloween_trail.inc' in (R/'data/event_scripts.s').rea
 assert 'data/maps/TrioHalloweenTrail/scripts.inc' in (R/'data/event_scripts.s').read_text()
 for name in ['RikoWitch','BijuuVampire','PennyPumpkin']:assert 'TrioCostume_'+name+'Gift' not in (R/'data/scripts/trio_costumes.inc').read_text()
 print('PASS thirteen actors/two exits/host geometry, original service/map IDs/save ABI, three audited vars, item-source replacement and script/text registration')
+# Authorized fresh-save test trip, saved return routing, decline and original mailbox parity.
+returnvar=VARS[3];routes=0
+for state,mode,answer in itertools.product(range(5),[0,1],[0,1,127]):
+ r=Run(state,answers=[answer]);r.vars[returnvar]=mode;r.lock=True;r.run('TestOffer')
+ assert r.vars[VARS[0]]==state and not r.gifts
+ if answer==1:
+  assert r.vars[returnvar]==1 and r.warps==[('MAP_TRIO_HALLOWEEN_TRAIL','12','15')] and not r.lock
+ else:
+  assert r.vars[returnvar]==mode and not r.warps and r.lock # caller retains its lock/sign/release
+ r=Run(state,answers=[answer]);r.vars[returnvar]=mode;r.run('Offer')
+ assert r.vars[returnvar]==(0 if answer==1 else mode) and r.vars[VARS[0]]==state
+ for label in ['Exit','WalkExit']:
+  r=Run(state,answers=[1]);r.vars[returnvar]=mode;r.run(label)
+  assert r.warps==[('MAP_NEWBARK_TOWN','18','12') if mode else ('MAP_ECRUTEAK_CITY_HOUSE4','8','6')]
+  assert r.vars[VARS[0]]==state and not r.gifts and not r.lock
+  # Return choice survives a normal save reconstruction.
+  reload=Run(state);reload.vars[returnvar]=mode;reload.run('WalkExit');assert reload.warps==r.warps
+ routes+=1
+for filename in ['scripts.inc','scripts.pory']:
+ p='data/maps/NewBarkTown/'+filename;s=(R/p).read_text()
+ assert s.count('\tcall TrioHalloween_TestOffer\n')==1
+ assert s.replace('\tcall TrioHalloween_TestOffer\n','')==old(p),p
+m=json.loads((R/'data/maps/TrioHalloweenTrail/map.json').read_text())
+for e in m['coord_events']:
+ assert e['script']=='TrioHalloween_WalkExit' and e['var']=='VAR_TEMP_A' and e['var_value']=='1'
+ assert (e['x'],e['y']) in seen
+script=(R/'data/maps/TrioHalloweenTrail/scripts.inc').read_text();assert 'MAP_SCRIPT_ON_LOAD, TrioHalloweenTrail_Load' in script and 'setvar VAR_TEMP_A, 1' in script
+_,_,_,walk=geometry('NewBarkTown');assert walk(18,12)
+n=json.loads((R/'data/maps/NewBarkTown/map.json').read_text());assert (18,12) not in {(o['x'],o['y']) for key in ['object_events','warp_events','coord_events','bg_events'] for o in n[key]}
+assert (R/'data/maps/NewBarkTown/map.json').read_text()==old('data/maps/NewBarkTown/map.json')
+assert 'VAR_TRIO_HALLOWEEN_RETURN                   0x414A' in (R/'include/constants/vars.h').read_text()
+print('PASS',routes,'test origin/decline/reload/ghost+walk return combinations, fresh-save no gates/grants, rawPory mailbox parity and safe home tile')

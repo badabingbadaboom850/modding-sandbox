@@ -437,3 +437,5 @@
 #define VAR_TRIO_HALLOWEEN_RIKO                     0x4147
 #define VAR_TRIO_HALLOWEEN_BIJUU                    0x4148
 #define VAR_TRIO_HALLOWEEN_PENNY                    0x4149
+
+#define VAR_TRIO_HALLOWEEN_RETURN                   0x414A // 0 Ecruteak,1 authorized New Bark test trip

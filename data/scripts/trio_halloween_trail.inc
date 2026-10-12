@@ -6,6 +6,7 @@ TrioHalloween_Offer::
 	waitmoncry
 	msgbox TrioHalloween_OfferText, MSGBOX_YESNO
 	goto_if_ne VAR_RESULT, YES, TrioHalloween_End
+	setvar VAR_TRIO_HALLOWEEN_RETURN, 0
 	closemessage
 	warp MAP_TRIO_HALLOWEEN_TRAIL, 12, 15
 	waitstate
@@ -15,10 +16,7 @@ TrioHalloween_Exit::
 	faceplayer
 	msgbox TrioHalloween_ExitText, MSGBOX_YESNO
 	goto_if_ne VAR_RESULT, YES, TrioHalloween_End
-	closemessage
-	warp MAP_ECRUTEAK_CITY_HOUSE4, 8, 6
-	waitstate
-	goto TrioHalloween_End
+	goto TrioHalloween_Return
 TrioHalloween_End:
 	releaseall
 	end
@@ -237,3 +235,30 @@ TrioHalloween_BijuuText:
 	.string "Bijuu suspects the treats\nare fake. She investigates\panyway.$"
 TrioHalloween_PennyText:
 	.string "Penny is safe with her\nsisters. The pumpkins say\phello softly.$"
+
+@ Authorized temporary test entrance; caller already locks the home mailbox.
+TrioHalloween_TestOffer::
+	msgbox TrioHalloween_TestOfferText, MSGBOX_YESNO
+	goto_if_ne VAR_RESULT, YES, TrioHalloween_TestDecline
+	setvar VAR_TRIO_HALLOWEEN_RETURN, 1
+	closemessage
+	warp MAP_TRIO_HALLOWEEN_TRAIL, 12, 15
+	waitstate
+	goto TrioHalloween_End
+TrioHalloween_TestDecline:
+	return
+TrioHalloween_WalkExit::
+	lockall
+	goto TrioHalloween_Return
+TrioHalloween_Return:
+	closemessage
+	goto_if_eq VAR_TRIO_HALLOWEEN_RETURN, 1, TrioHalloween_ReturnNewBark
+	warp MAP_ECRUTEAK_CITY_HOUSE4, 8, 6
+	waitstate
+	goto TrioHalloween_End
+TrioHalloween_ReturnNewBark:
+	warp MAP_NEWBARK_TOWN, 18, 12
+	waitstate
+	goto TrioHalloween_End
+TrioHalloween_TestOfferText:
+	.string "Halloween test trip?\nPlay three ghost games!\pThis mailbox trip returns\nyou safely to New Bark.$"

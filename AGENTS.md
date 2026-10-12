@@ -1412,3 +1412,18 @@ owned-item checks stop duplicate awards. Source interpreter3454branches plus
 checks pass. Costume art/metadata/39reusable items and48other extra gifts pass.
 Local ARM/libpng unavailable; CI and actual rendered playthrough remain distinct.
 See docs/trio_halloween_trail.md and extended emulator pass. Keep PRdraft.
+
+## Authorized New Bark Halloween testing trip (2026-10-12)
+
+User requested a fresh-save trigger from New Bark. Player-house mailbox17,11
+calls TrioHalloween_TestOffer in matching rawPory/assembly. Decline returns to
+original sign; accept enters trail12,15 with no party/Badge/progress/item grants.
+Audited saved var414A stores origin0Ecruteak/1NewBark, set only on accepted entry.
+Exit ghost and new walk-out coord events11/12,16 route to NewBark18,12 or normal
+house8,6, keeping origin through actual save/reload. Mapload sets only TEMP_A1
+for coord dispatch. Both old south-arrow warps stay a normal-route boundary
+fallback. Original NewBark map/story state/mailbox sign and all game rewards
+remain.30 additional source route/decline/reconstruction/Pory/home tile checks
+pass alongside3454puzzle branches/art/39reusable items. Rendered travel/new-save
+still needs emulator checks. Temporary authorized hook: remove only when asked,
+retaining mode1 safe returns for saves already inside and earned progress.

@@ -57,3 +57,25 @@ Local ARM compilation remains unavailable. CI compilation/engine tests and
 actual emulator map loading/puzzles/save-reload are separate checks; do not call
 this a rendered playthrough. Follow docs/trio_costume_emulator_pass.md.
 Keep PR2 draft/unmerged, run-off5%, normal mailbox and Bag-icon repair.
+
+## Authorized New Bark testing shortcut
+
+Inspect the mailbox outside the player's house (17,11) and accept the
+Halloween test-trip offer. It works on fresh/existing saves without party,
+Badges, battles, progress resets or automatic item grants. Decline continues
+the original house sign. Both raw Pory and assembly contain the same one call.
+
+The saved return choice VAR_TRIO_HALLOWEEN_RETURN0x414A is0 for the normal
+Ecruteak invitation and1 for the New Bark test trip. Successful entry sets the
+origin; declines preserve it. Exit Gastly and both walk-out coordinate exits
+at11/12,16 route to New Bark18,12 for test trips or Ecruteak House4 at8,6 for
+normal invitations. On-load initializes only the map-local temporary exit
+latch, so saving/reloading inside retains the origin and all puzzle progress.
+The original south-arrow warps remain a normal-route fallback at the boundary.
+
+Thirty additional origin/decline/save-reconstruction/ghost+walk return source
+combinations and mailbox rawPory parity/safe home tile checks pass. Actual
+rendered travel and fresh-save/reload still need emulator confirmation.
+This is an explicitly authorized temporary testing hook. Remove the mailbox
+call/helper when requested, preserving safe return-mode1 handling for saves
+already visiting the trail and retaining all earned outfits/game progress.
