@@ -2264,3 +2264,12 @@ const u32 gItemIcon_PennyGroundKeepsake[] = INCBIN_U32("graphics/items/icons/pen
 const u16 gItemIconPalette_PennyGroundKeepsake[] = INCBIN_U16("graphics/items/icon_palettes/penny_ground_keepsake.gbapal");
 const u32 gItemIcon_PennySteelKeepsake[] = INCBIN_U32("graphics/items/icons/penny_steel_keepsake.4bpp.smol");
 const u16 gItemIconPalette_PennySteelKeepsake[] = INCBIN_U16("graphics/items/icon_palettes/penny_steel_keepsake.gbapal");
+
+const u32 gItemIcon_RikoButterfly[] = INCBIN_U32("graphics/items/icons/riko_butterfly.4bpp.smol");
+const u16 gItemIconPalette_RikoButterfly[] = INCBIN_U16("graphics/items/icon_palettes/riko_butterfly.gbapal");
+
+const u32 gItemIcon_BijuuAstronaut[] = INCBIN_U32("graphics/items/icons/bijuu_astronaut.4bpp.smol");
+const u16 gItemIconPalette_BijuuAstronaut[] = INCBIN_U16("graphics/items/icon_palettes/bijuu_astronaut.gbapal");
+
+const u32 gItemIcon_PennyBallerina[] = INCBIN_U32("graphics/items/icons/penny_ballerina.4bpp.smol");
+const u16 gItemIconPalette_PennyBallerina[] = INCBIN_U16("graphics/items/icon_palettes/penny_ballerina.gbapal");

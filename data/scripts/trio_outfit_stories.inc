@@ -12,6 +12,9 @@ TrioOutfit_React::
 	goto_if_eq VAR_RESULT, 8, TrioOutfit_React7
 	goto_if_eq VAR_RESULT, 9, TrioOutfit_React8
 	goto_if_eq VAR_RESULT, 10, TrioOutfit_React9
+	goto_if_eq VAR_RESULT, 13, TrioOutfit_React12
+	goto_if_eq VAR_RESULT, 12, TrioOutfit_React11
+	goto_if_eq VAR_RESULT, 11, TrioOutfit_React10
 	return
 TrioOutfit_React0:
 	msgbox TrioOutfit_ReactText0, MSGBOX_DEFAULT
@@ -83,6 +86,9 @@ TrioOutfit_ScottOne:
 	goto_if_eq VAR_RESULT, 8, TrioOutfit_Scott7
 	goto_if_eq VAR_RESULT, 9, TrioOutfit_Scott8
 	goto_if_eq VAR_RESULT, 10, TrioOutfit_Scott9
+	goto_if_eq VAR_RESULT, 13, TrioOutfit_Scott12
+	goto_if_eq VAR_RESULT, 12, TrioOutfit_Scott11
+	goto_if_eq VAR_RESULT, 11, TrioOutfit_Scott10
 	return
 TrioOutfit_Scott0:
 	msgbox TrioOutfit_ScottText0, MSGBOX_DEFAULT
@@ -150,7 +156,7 @@ TrioOutfit_AlbumMenu:
 	goto_if_eq VAR_RESULT, 3, TrioOutfit_AlbumBonus
 	return
 TrioOutfit_AlbumIntro:
-	.string "Photos: {STR_VAR_1}/9\nPoison has a bonus page!\pWear each costume once.\nIts photo stays forever.$"
+	.string "Photos: {STR_VAR_1}/12\nPoison has a bonus page!\pWear each costume once.\nIts photo stays forever.$"
 TrioOutfit_RikoName:
 	.string "Riko$"
 TrioOutfit_BijuuName:
@@ -163,24 +169,27 @@ TrioOutfit_BackName:
 	.string "Back$"
 TrioOutfit_AlbumRiko:
 	closemessage
-	dynmultichoice 0, 0, FALSE, 4, 0, DYN_MULTICHOICE_CB_NONE, TrioOutfit_PageName0, TrioOutfit_PageName1, TrioOutfit_PageName2, TrioOutfit_BackName
+	dynmultichoice 0, 0, FALSE, 4, 0, DYN_MULTICHOICE_CB_NONE, TrioOutfit_PageName0, TrioOutfit_PageName1, TrioOutfit_PageName2, TrioOutfit_PageName10, TrioOutfit_BackName
 	goto_if_eq VAR_RESULT, 0, TrioOutfit_Page0
 	goto_if_eq VAR_RESULT, 1, TrioOutfit_Page1
 	goto_if_eq VAR_RESULT, 2, TrioOutfit_Page2
+	goto_if_eq VAR_RESULT, 3, TrioOutfit_Page10
 	goto TrioOutfit_AlbumMenu
 TrioOutfit_AlbumBijuu:
 	closemessage
-	dynmultichoice 0, 0, FALSE, 4, 0, DYN_MULTICHOICE_CB_NONE, TrioOutfit_PageName3, TrioOutfit_PageName4, TrioOutfit_PageName5, TrioOutfit_BackName
+	dynmultichoice 0, 0, FALSE, 4, 0, DYN_MULTICHOICE_CB_NONE, TrioOutfit_PageName3, TrioOutfit_PageName4, TrioOutfit_PageName5, TrioOutfit_PageName11, TrioOutfit_BackName
 	goto_if_eq VAR_RESULT, 0, TrioOutfit_Page3
 	goto_if_eq VAR_RESULT, 1, TrioOutfit_Page4
 	goto_if_eq VAR_RESULT, 2, TrioOutfit_Page5
+	goto_if_eq VAR_RESULT, 3, TrioOutfit_Page11
 	goto TrioOutfit_AlbumMenu
 TrioOutfit_AlbumPenny:
 	closemessage
-	dynmultichoice 0, 0, FALSE, 4, 0, DYN_MULTICHOICE_CB_NONE, TrioOutfit_PageName6, TrioOutfit_PageName7, TrioOutfit_PageName8, TrioOutfit_BackName
+	dynmultichoice 0, 0, FALSE, 4, 0, DYN_MULTICHOICE_CB_NONE, TrioOutfit_PageName6, TrioOutfit_PageName7, TrioOutfit_PageName8, TrioOutfit_PageName12, TrioOutfit_BackName
 	goto_if_eq VAR_RESULT, 0, TrioOutfit_Page6
 	goto_if_eq VAR_RESULT, 1, TrioOutfit_Page7
 	goto_if_eq VAR_RESULT, 2, TrioOutfit_Page8
+	goto_if_eq VAR_RESULT, 3, TrioOutfit_Page12
 	goto TrioOutfit_AlbumMenu
 TrioOutfit_AlbumBonus:
 	closemessage
@@ -661,3 +670,81 @@ TrioOutfit_Town9:
 	return
 TrioOutfit_TownText9:
 	.string "Bijuu has purple bubbles.\nI will admire her from\phere.$"
+
+TrioOutfit_React10:
+	msgbox TrioOutfit_ReactText10, MSGBOX_DEFAULT
+	return
+TrioOutfit_ReactText10:
+	.string "A butterfly pom!\nThe snacks must be nectar.$"
+
+TrioOutfit_Scott10:
+	msgbox TrioOutfit_ScottText10, MSGBOX_DEFAULT
+	return
+TrioOutfit_ScottText10:
+	.string "Riko gives me butterflies.\nYou always did, too.$"
+
+TrioOutfit_Page10:
+	setvar VAR_0x8004, 10
+	specialvar VAR_RESULT, HasTrioOutfitPhoto
+	goto_if_eq VAR_RESULT, FALSE, TrioOutfit_Locked
+	showmonpic SPECIES_RIKO_BUTTERFLY, 10, 3
+	msgbox TrioOutfit_Caption10, MSGBOX_DEFAULT
+	closemessage
+	hidemonpic
+	goto TrioOutfit_AlbumMenu
+TrioOutfit_PageName10:
+	.string "Butterfly$"
+TrioOutfit_Caption10:
+	.string "Light as a butterfly.\nHeavy on the attitude.$"
+
+TrioOutfit_React11:
+	msgbox TrioOutfit_ReactText11, MSGBOX_DEFAULT
+	return
+TrioOutfit_ReactText11:
+	.string "Houston, we have a cocoa.\nShe demands space fish.$"
+
+TrioOutfit_Scott11:
+	msgbox TrioOutfit_ScottText11, MSGBOX_DEFAULT
+	return
+TrioOutfit_ScottText11:
+	.string "Bijuu can have the moon.\nYou are my whole world.$"
+
+TrioOutfit_Page11:
+	setvar VAR_0x8004, 11
+	specialvar VAR_RESULT, HasTrioOutfitPhoto
+	goto_if_eq VAR_RESULT, FALSE, TrioOutfit_Locked
+	showmonpic SPECIES_BIJUU_ASTRONAUT, 10, 3
+	msgbox TrioOutfit_Caption11, MSGBOX_DEFAULT
+	closemessage
+	hidemonpic
+	goto TrioOutfit_AlbumMenu
+TrioOutfit_PageName11:
+	.string "Astronaut$"
+TrioOutfit_Caption11:
+	.string "One small step for cocoa.\nOne giant leap for fish.$"
+
+TrioOutfit_React12:
+	msgbox TrioOutfit_ReactText12, MSGBOX_DEFAULT
+	return
+TrioOutfit_ReactText12:
+	.string "Penny takes center stage.\nEvery paw gets applause.$"
+
+TrioOutfit_Scott12:
+	msgbox TrioOutfit_ScottText12, MSGBOX_DEFAULT
+	return
+TrioOutfit_ScottText12:
+	.string "Penny gets the spotlight.\nYou get my last dance.$"
+
+TrioOutfit_Page12:
+	setvar VAR_0x8004, 12
+	specialvar VAR_RESULT, HasTrioOutfitPhoto
+	goto_if_eq VAR_RESULT, FALSE, TrioOutfit_Locked
+	showmonpic SPECIES_PENNY_BALLERINA, 10, 3
+	msgbox TrioOutfit_Caption12, MSGBOX_DEFAULT
+	closemessage
+	hidemonpic
+	goto TrioOutfit_AlbumMenu
+TrioOutfit_PageName12:
+	.string "Ballerina$"
+TrioOutfit_Caption12:
+	.string "Four tiny dancing paws.\nHer sisters cheer loudest.$"

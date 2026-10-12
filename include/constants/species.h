@@ -1748,7 +1748,11 @@
 #define SPECIES_RIKO_BUG                                 1630
 #define SPECIES_PENNY_GROUND                             1631
 #define SPECIES_PENNY_STEEL                              1632
-#define SPECIES_EGG                                     (SPECIES_PENNY_STEEL + 1)
+#define SPECIES_RIKO_BUTTERFLY                                  1633
+#define SPECIES_BIJUU_ASTRONAUT                                 1634
+#define SPECIES_PENNY_BALLERINA                                 1635
+#define SPECIES_PENNY_BALLERINA_DACHSBUN                 1636
+#define SPECIES_EGG                                     (SPECIES_PENNY_BALLERINA_DACHSBUN + 1)
 
 #define NUM_SPECIES SPECIES_EGG
 

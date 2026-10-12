@@ -182,3 +182,5 @@
 - [Olivine Pom party encore](trio_pom_party_encore.md)
 - [Eight silly family interactions](trio_silly_scenes.md)
 - [Bag icon buffer overflow repair](trio_bag_icon_repair.md)
+
+- [New trio costumes](trio_new_costumes.md)

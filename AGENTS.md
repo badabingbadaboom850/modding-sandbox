@@ -1348,3 +1348,23 @@ all-item-dimension/evolution checks pass.37 focused native passes+7 intentional
 harness cases, zero unexpected. RELEASE32736364/EWRAM255432/padded32MiB passed.
 See docs/trio_bag_icon_repair.md and test/trio_wand_bag.c. User Bag retest remains.
 Use normal in-game save before freeze, not old frozen snapshot. Keep draft PR2.
+
+
+## Three new purely cosmetic costumes (2026-10-12)
+
+User chose cosmetic outfits with unchanged stats/types/moves. Butterfly Riko,
+Astronaut Bijuu and Ballerina Penny append species1633-1636/items972-974.
+Penny has ordinary and Dachsbun metadata and dressed level26 evolution.
+Reusable Key Items: Riko Wings/Space Helmet/Penny Tutu. Existing raincoat,
+detective and beach-vest givers offer additional optional gifts, then original
+conversation; no new map objects or saved quest state. Album bits10-12 append
+without changing old nine/Poison bits;12-photo count and new reactions/Scott
+comments included. All family checks/Camp/signatures/Spirit return include them.
+Existing elemental/other-costume forms first revert to ordinary to dress up.
+
+Read docs/trio_new_costumes.md and tools/costumes/validate_new.py. Source atlases
+are saved per species; new_render.c owns pixel conversions, import_new.py only
+formats/packs bytes.48 source gift cases, old save/ID/map preservation and text/
+indexed formats pass. Native tests now cover new forms but were not run locally:
+ARM compiler/libpng dependencies unavailable. CI/build/actual emulator checks
+remain separate. Keep Bag-icon repair, run-off5%, mailbox normal, PR2 draft.

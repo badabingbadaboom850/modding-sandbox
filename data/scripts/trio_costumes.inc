@@ -194,6 +194,7 @@ TrioCostume_RikoPrincessReadyText:
 TrioCostume_RikoRaincoatGift::
 	lock
 	faceplayer
+	call TrioCostume_RikoButterflyGift
 	call TrioOutfit_React
 	checkitem ITEM_RIKOS_RAINCOAT
 	goto_if_eq VAR_RESULT, TRUE, TrioCostume_RikoRaincoatReady
@@ -244,6 +245,7 @@ TrioCostume_BijuuBreadReadyText:
 TrioCostume_BijuuDetectiveGift::
 	lock
 	faceplayer
+	call TrioCostume_BijuuAstronautGift
 	call TrioOutfit_React
 	checkitem ITEM_COCOAS_DETECTIVE_KIT
 	goto_if_eq VAR_RESULT, TRUE, TrioCostume_BijuuDetectiveReady
@@ -294,6 +296,7 @@ TrioCostume_PennyBlanketReadyText:
 TrioCostume_PennyLifeguardGift::
 	lock
 	faceplayer
+	call TrioCostume_PennyBallerinaGift
 	call TrioOutfit_React
 	checkitem ITEM_PENNYS_BEACH_VEST
 	goto_if_eq VAR_RESULT, TRUE, TrioCostume_PennyLifeguardReady
@@ -340,3 +343,63 @@ TrioCostume_BijuuPoisonMissingText:
 	.string "Bring Bijuu along!\nI have a gift for her.$"
 TrioCostume_BijuuPoisonReadyText:
 	.string "Use Toxic Mouse\non regular Bijuu.\pUse it again to return.\nHer moves stay with her!$"
+
+TrioCostume_RikoButterflyGift::
+	checkitem ITEM_RIKOS_BUTTERFLY_WINGS
+	goto_if_eq VAR_RESULT, TRUE, TrioCostume_RikoButterflyReturn
+	call TrioParty_CheckRiko
+	goto_if_eq VAR_RESULT, FALSE, TrioCostume_RikoButterflyReturn
+	msgbox TrioCostume_RikoButterflyOffer, MSGBOX_YESNO
+	goto_if_eq VAR_RESULT, NO, TrioCostume_RikoButterflyReturn
+	giveitem ITEM_RIKOS_BUTTERFLY_WINGS
+	goto_if_eq VAR_RESULT, FALSE, TrioCostume_RikoButterflyFull
+	msgbox TrioCostume_RikoButterflyReady, MSGBOX_DEFAULT
+TrioCostume_RikoButterflyReturn:
+	return
+TrioCostume_RikoButterflyFull:
+	msgbox TrioCostume_BagText, MSGBOX_DEFAULT
+	return
+TrioCostume_RikoButterflyOffer:
+	.string "Riko can float in style!\nWant butterfly wings?$"
+TrioCostume_RikoButterflyReady:
+	.string "Use Riko Wings\non ordinary Riko.\pUse it again to revert.\nSame moves, new outfit!$"
+
+TrioCostume_BijuuAstronautGift::
+	checkitem ITEM_BIJUUS_SPACE_HELMET
+	goto_if_eq VAR_RESULT, TRUE, TrioCostume_BijuuAstronautReturn
+	call TrioParty_CheckBijuu
+	goto_if_eq VAR_RESULT, FALSE, TrioCostume_BijuuAstronautReturn
+	msgbox TrioCostume_BijuuAstronautOffer, MSGBOX_YESNO
+	goto_if_eq VAR_RESULT, NO, TrioCostume_BijuuAstronautReturn
+	giveitem ITEM_BIJUUS_SPACE_HELMET
+	goto_if_eq VAR_RESULT, FALSE, TrioCostume_BijuuAstronautFull
+	msgbox TrioCostume_BijuuAstronautReady, MSGBOX_DEFAULT
+TrioCostume_BijuuAstronautReturn:
+	return
+TrioCostume_BijuuAstronautFull:
+	msgbox TrioCostume_BagText, MSGBOX_DEFAULT
+	return
+TrioCostume_BijuuAstronautOffer:
+	.string "Mission: steal moon fish.\nWant a space helmet?$"
+TrioCostume_BijuuAstronautReady:
+	.string "Use Space Helmet\non ordinary Bijuu.\pUse it again to revert.\nSame moves, new outfit!$"
+
+TrioCostume_PennyBallerinaGift::
+	checkitem ITEM_PENNYS_BALLET_TUTU
+	goto_if_eq VAR_RESULT, TRUE, TrioCostume_PennyBallerinaReturn
+	call TrioParty_CheckPenny
+	goto_if_eq VAR_RESULT, FALSE, TrioCostume_PennyBallerinaReturn
+	msgbox TrioCostume_PennyBallerinaOffer, MSGBOX_YESNO
+	goto_if_eq VAR_RESULT, NO, TrioCostume_PennyBallerinaReturn
+	giveitem ITEM_PENNYS_BALLET_TUTU
+	goto_if_eq VAR_RESULT, FALSE, TrioCostume_PennyBallerinaFull
+	msgbox TrioCostume_PennyBallerinaReady, MSGBOX_DEFAULT
+TrioCostume_PennyBallerinaReturn:
+	return
+TrioCostume_PennyBallerinaFull:
+	msgbox TrioCostume_BagText, MSGBOX_DEFAULT
+	return
+TrioCostume_PennyBallerinaOffer:
+	.string "Tiny paws. Big applause.\nWant a tutu for Penny?$"
+TrioCostume_PennyBallerinaReady:
+	.string "Use Penny Tutu\non ordinary Penny.\pUse it again to revert.\nSame moves, new outfit!$"

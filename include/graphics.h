@@ -3625,3 +3625,12 @@ extern const u16 gItemIconPalette_PennyBlanket[];
 
 extern const u32 gItemIcon_PennyLifeguard[];
 extern const u16 gItemIconPalette_PennyLifeguard[];
+
+extern const u32 gItemIcon_RikoButterfly[];
+extern const u16 gItemIconPalette_RikoButterfly[];
+
+extern const u32 gItemIcon_BijuuAstronaut[];
+extern const u16 gItemIconPalette_BijuuAstronaut[];
+
+extern const u32 gItemIcon_PennyBallerina[];
+extern const u16 gItemIconPalette_PennyBallerina[];

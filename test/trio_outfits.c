@@ -72,3 +72,27 @@ TEST("Existing dressed saves and evolution hooks earn permanent album portraits"
     BufferTrioOutfitPhotoCount();
     EXPECT_EQ(gStringVar1[0], CHAR_0 + 3);
 }
+
+TEST("New cosmetic portraits append without altering earned old photos")
+{
+    static const u16 forms[] = {SPECIES_RIKO_BUTTERFLY, SPECIES_BIJUU_ASTRONAUT, SPECIES_PENNY_BALLERINA};
+    VarSet(VAR_TRIO_OUTFIT_PHOTOS, 0x3FF);
+    ZeroPlayerPartyMons();
+    for (u32 i = 0; i < ARRAY_COUNT(forms); i++)
+    {
+        CreateMon(&gPlayerParty[i], forms[i], 30, 0, OTID_STRUCT_PLAYER_ID);
+        TrioOutfits_RecordPhoto(forms[i]);
+        gSpecialVar_0x8004 = i;
+        EXPECT_EQ(GetTrioOutfitReaction(), 11 + i);
+        gSpecialVar_0x8004 = 10 + i;
+        EXPECT(HasTrioOutfitPhoto());
+    }
+    EXPECT_EQ(VarGet(VAR_TRIO_OUTFIT_PHOTOS), 0x1FFF);
+    TrioOutfits_RecordPhoto(SPECIES_PENNY_BALLERINA_DACHSBUN);
+    EXPECT_EQ(VarGet(VAR_TRIO_OUTFIT_PHOTOS), 0x1FFF);
+    BufferTrioOutfitPhotoCount();
+    EXPECT_EQ(gStringVar1[0], CHAR_0 + 1);
+    EXPECT_EQ(gStringVar1[1], CHAR_0 + 2);
+    gSpecialVar_0x8004 = 13;
+    EXPECT_EQ(HasTrioOutfitPhoto(), FALSE);
+}

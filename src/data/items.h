@@ -17890,6 +17890,22 @@ const struct ItemInfo gItemsInfo[] =
         .iconPalette = gItemIconPalette_RikoBlackBelt,
     },
 
+    [ITEM_RIKOS_BUTTERFLY_WINGS] =
+    {
+        .name = ITEM_NAME("Riko Wings"),
+        .price = 0,
+        .description = COMPOUND_STRING("A costume for Riko.\nReusable costume.\nUse again to revert."),
+        .importance = 1,
+        .pocket = POCKET_KEY_ITEMS,
+        .sortType = ITEM_TYPE_EVOLUTION_STONE,
+        .heldSlot = 0,
+        .type = ITEM_USE_PARTY_MENU,
+        .fieldUseFunc = ItemUseOutOfBattle_EvolutionStone,
+        .effect = gItemEffect_EvoItem,
+        .iconPic = gItemIcon_RikoButterfly,
+        .iconPalette = gItemIconPalette_RikoButterfly,
+    },
+
     [ITEM_RIKOS_RAINCOAT] =
     {
         .name = ITEM_NAME("Riko Raincoat"),
@@ -17922,6 +17938,22 @@ const struct ItemInfo gItemsInfo[] =
         .iconPalette = gItemIconPalette_BijuuBread,
     },
 
+    [ITEM_BIJUUS_SPACE_HELMET] =
+    {
+        .name = ITEM_NAME("Space Helmet"),
+        .price = 0,
+        .description = COMPOUND_STRING("A costume for Bijuu.\nReusable costume.\nUse again to revert."),
+        .importance = 1,
+        .pocket = POCKET_KEY_ITEMS,
+        .sortType = ITEM_TYPE_EVOLUTION_STONE,
+        .heldSlot = 0,
+        .type = ITEM_USE_PARTY_MENU,
+        .fieldUseFunc = ItemUseOutOfBattle_EvolutionStone,
+        .effect = gItemEffect_EvoItem,
+        .iconPic = gItemIcon_BijuuAstronaut,
+        .iconPalette = gItemIconPalette_BijuuAstronaut,
+    },
+
     [ITEM_COCOAS_DETECTIVE_KIT] =
     {
         .name = ITEM_NAME("Detective Kit"),
@@ -17952,6 +17984,22 @@ const struct ItemInfo gItemsInfo[] =
         .effect = gItemEffect_EvoItem,
         .iconPic = gItemIcon_PennyBlanket,
         .iconPalette = gItemIconPalette_PennyBlanket,
+    },
+
+    [ITEM_PENNYS_BALLET_TUTU] =
+    {
+        .name = ITEM_NAME("Penny Tutu"),
+        .price = 0,
+        .description = COMPOUND_STRING("A costume for Penny.\nReusable costume.\nUse again to revert."),
+        .importance = 1,
+        .pocket = POCKET_KEY_ITEMS,
+        .sortType = ITEM_TYPE_EVOLUTION_STONE,
+        .heldSlot = 0,
+        .type = ITEM_USE_PARTY_MENU,
+        .fieldUseFunc = ItemUseOutOfBattle_EvolutionStone,
+        .effect = gItemEffect_EvoItem,
+        .iconPic = gItemIcon_PennyBallerina,
+        .iconPalette = gItemIconPalette_PennyBallerina,
     },
 
     [ITEM_PENNYS_BEACH_VEST] =
