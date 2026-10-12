@@ -257,7 +257,7 @@ TrioHalloween_Return:
 	waitstate
 	goto TrioHalloween_End
 TrioHalloween_ReturnNewBark:
-	warp MAP_NEWBARK_TOWN, 18, 12
+	warp MAP_NEW_BARK_TOWN, 18, 12
 	waitstate
 	goto TrioHalloween_End
 TrioHalloween_TestOfferText:

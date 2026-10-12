@@ -79,3 +79,11 @@ rendered travel and fresh-save/reload still need emulator confirmation.
 This is an explicitly authorized temporary testing hook. Remove the mailbox
 call/helper when requested, preserving safe return-mode1 handling for saves
 already visiting the trail and retaining all earned outfits/game progress.
+
+Build repair: CI192 failed during event-script assembly because the New Bark
+return used MAP_NEWBARK_TOWN, while the registered symbol is MAP_NEW_BARK_TOWN.
+Corrected that one warp target. No map numbers, saved origin, rewards or puzzle
+rules change. The source runner now invokes the production map generator and
+resolves all four authored warp targets against its actual constants, while
+checking every historical map number.3454 puzzle and30 return cases pass.
+Compilation/CI results must still be reported separately.

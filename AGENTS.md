@@ -1427,3 +1427,13 @@ remain.30 additional source route/decline/reconstruction/Pory/home tile checks
 pass alongside3454puzzle branches/art/39reusable items. Rendered travel/new-save
 still needs emulator checks. Temporary authorized hook: remove only when asked,
 retaining mode1 safe returns for saves already inside and earned progress.
+
+## Halloween New Bark return build repair (2026-10-12)
+
+CI192 failed in ROM event-script assembly, not runner setup. Return target was
+incorrect MAP_NEWBARK_TOWN; engine registered name is MAP_NEW_BARK_TOWN.
+One warp target corrected; saved map/origin/items/puzzles unchanged. Source
+validator now runs production tools/mapjson groups and checks all4warp symbols
+against generated constants plus historical map numbers.3454puzzle/30return
+cases pass. Source-only mocked warp routing previously missed this typo.
+Keep mailbox test hook/user progress/PRdraft; report rebuilt ROM separately.

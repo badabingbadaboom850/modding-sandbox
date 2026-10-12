@@ -130,7 +130,7 @@ for state,mode,answer in itertools.product(range(5),[0,1],[0,1,127]):
  assert r.vars[returnvar]==(0 if answer==1 else mode) and r.vars[VARS[0]]==state
  for label in ['Exit','WalkExit']:
   r=Run(state,answers=[1]);r.vars[returnvar]=mode;r.run(label)
-  assert r.warps==[('MAP_NEWBARK_TOWN','18','12') if mode else ('MAP_ECRUTEAK_CITY_HOUSE4','8','6')]
+  assert r.warps==[('MAP_NEW_BARK_TOWN','18','12') if mode else ('MAP_ECRUTEAK_CITY_HOUSE4','8','6')]
   assert r.vars[VARS[0]]==state and not r.gifts and not r.lock
   # Return choice survives a normal save reconstruction.
   reload=Run(state);reload.vars[returnvar]=mode;reload.run('WalkExit');assert reload.warps==r.warps
@@ -149,3 +149,20 @@ n=json.loads((R/'data/maps/NewBarkTown/map.json').read_text());assert (18,12) no
 assert (R/'data/maps/NewBarkTown/map.json').read_text()==old('data/maps/NewBarkTown/map.json')
 assert 'VAR_TRIO_HALLOWEEN_RETURN                   0x414A' in (R/'include/constants/vars.h').read_text()
 print('PASS',routes,'test origin/decline/reload/ghost+walk return combinations, fresh-save no gates/grants, rawPory mailbox parity and safe home tile')
+# Resolve authored warps through the production generator, not a mocked map namespace.
+import tempfile
+exe=R/'tools/mapjson/mapjson'
+if not exe.exists():subprocess.run(['make','-C',str(R/'tools/mapjson')],check=True)
+with tempfile.TemporaryDirectory() as td:
+ td=Path(td);(td/'maps').mkdir();(td/'constants').mkdir()
+ subprocess.run([str(exe),'groups','emerald','data/maps/map_groups.json',str(td/'maps'),str(td/'constants')],cwd=R,check=True)
+ generated=(td/'constants/map_groups.h').read_text()
+ ids=set(re.findall(r'^\s*(MAP_\w+)\s*=',generated,re.M))
+ warps=re.findall(r'^\s*warp\s+(MAP_\w+)',S,re.M)
+ for dest in warps:assert dest in ids,'Undefined production warp map: '+dest
+ assert 'MAP_NEW_BARK_TOWN' in warps and 'MAP_NEWBARK_TOWN' not in S
+ assert re.search(r'MAP_TRIO_HALLOWEEN_TRAIL\s*=\s*\(12 \| \(6 << 8\)\)',generated)
+ oldmaps=re.findall(r'^\s*(MAP_\w+)\s*=\s*\((\d+) \| \((\d+) << 8\)\)',old('include/constants/map_groups.h'),re.M)
+ current={n:(a,b) for n,a,b in re.findall(r'^\s*(MAP_\w+)\s*=\s*\((\d+) \| \((\d+) << 8\)\)',generated,re.M)}
+ for n,a,b in oldmaps:assert current.get(n)==(a,b),(n,a,b,current.get(n))
+print('PASS',len(warps),'warp references resolve in production-generated map constants; historical map numbers remain fixed')
