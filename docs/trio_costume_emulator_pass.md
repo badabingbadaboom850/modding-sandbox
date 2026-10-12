@@ -147,8 +147,8 @@ Run the earlier toggle lifecycle matrix for all12 seasonal items and both Penny
 stages: use/reuse, cancel, save while dressed, box/withdraw, faint/revive, reversion,
 reload and Mega return. Compare stats/moves/personality/held item before/after.
 Confirm the Key Item remains quantity1 on every successful/cancelled toggle and
-after evolution, boxing, fainting and reload. Sale/toss/hold/deposit must not
-remove a protected costume key. Any vanished/consumed key is a defect, even if
+after evolution, boxing, fainting and reload. Sale/toss/hold/PC deposit must not
+remove a protected costume key. Any unexplained vanished/consumed key is a defect, even if
 its costume or photo remains. Do not grow the save's Bag layout to work around a
 full50-slot pocket; keep full-pocket prizes pending for review.
 
@@ -158,3 +158,14 @@ tails, head direction, centering and clipping. Photograph every outfit: old16bit
 must remain intact, new12bits append in the separate mask, ordinary/evolved Penny
 share a page, each girl's four new pages open, locked pages and Back/B close the
 portrait, and full costume count shows27 with Poison still a separate bonus.
+
+For all12 seasonal keys, visit the wardrobe attendant8,8 in any chapter. Test
+Store/Take, both menus' Back/B, No confirmation, missing and unclaimed imported
+copies, and a full50-slot Key Items pocket. A confirmed Store must remove one
+Bag key and preserve it in the wardrobe across saving/reloading and visits to a
+different chapter. Failed/full retrieval must leave it stored; successful Take
+restores exactly one reusable key. Store the first/second partial reward to free
+space, finish the host's pending claims, reload, retrieve, and ensure no costume
+key duplicates. Storage must not change a currently worn/boxed/fainted costume,
+Pokemon data, gift count or photo bits. Explicit wardrobe storage explains a
+key's absence from the Bag; loss from both Bag and wardrobe is a defect.

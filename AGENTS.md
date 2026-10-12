@@ -1516,3 +1516,18 @@ CI198 seasonal C/assets compiled; linker missed all4TrioSeasonMapScripts labels.
 Explicit4map scripts includes added todata/event_scripts.s. Source runner now
 asserts eachinclude once plusMapScripts/ON_LOAD/TEMP_Aexit initialization.
 Gates/items/rewards/saves unchanged; report rebuilt ROM separately.
+
+
+## Seasonal wardrobe prevents protected-Key pocket exhaustion (2026-10-12)
+
+Current catalog43customKeys + normalstorykeys can exceed Bag50; importantkeys
+cannotPCdeposit. Add saved shared wardrobeattendant8,8 inall4stages for12earned
+seasonalkeys only. Scroll Store/Take/Leave + perkeyYESNO/Back/B. Cspecial
+ExchangeTrioSeasonalCostume checksindex0-11/mode0-1/claimedgiftthreshold; removes
+exactly1key onlyforconfirmedstorage, writes12bitVAR_TRIO_SEASONAL_WARDROBE4160.
+Retrieval addsrealkey beforeclearingbit; fullBagretainsstorage. Claimedgiftcounts
+neverreset, so storing partialrewards freesroom withoutduplicateclaims.
+CurrentPokemon/form/photos unchanged. Runtime specialappends; save/BagABIexact.
+22savedslots audited;254wardrobeUIpaths plus1238chapterpaths pass.3nativeengine
+tests coverall12keys/idempotence/unclaimedguards/partialclaims/full50/invalid/
+photos+outfit. CI199 mapfixROMcompiled/uploaded; finalwardrobebuild separate.

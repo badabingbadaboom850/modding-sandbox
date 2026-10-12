@@ -462,3 +462,5 @@
 #define VAR_TRIO_NEW_YEAR_PROGRESS     0x415D
 #define VAR_TRIO_NEW_YEAR_GIFTS        0x415E
 #define VAR_TRIO_NEW_YEAR_SNACK        0x415F
+
+#define VAR_TRIO_SEASONAL_WARDROBE                  0x4160 // twelve safely stored earned costume keys

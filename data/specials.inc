@@ -678,3 +678,5 @@ gSpecials::
 
 	def_special PrepareTrioParadeActors
 	def_special PrepareTrioSillyActors
+
+	def_special ExchangeTrioSeasonalCostume

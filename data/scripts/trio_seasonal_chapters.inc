@@ -240,7 +240,7 @@ TrioSeasonFall_WinText:
 TrioSeasonFall_ClaimedText:
 	.string "Gifts are yours forever.\nReturn for a varied round!$"
 TrioSeasonFall_FullText:
-	.string "Your Bag is full.\nYour gifts will wait.$"
+	.string "Your gifts will wait.\nAsk the wardrobe for room.$"
 TrioSeasonFall_Back:
 	.string "Later$"
 TrioSeasonFall_GirlText0:
@@ -498,7 +498,7 @@ TrioSeasonThanksgiving_WinText:
 TrioSeasonThanksgiving_ClaimedText:
 	.string "Gifts are yours forever.\nReturn for a varied round!$"
 TrioSeasonThanksgiving_FullText:
-	.string "Your Bag is full.\nYour gifts will wait.$"
+	.string "Your gifts will wait.\nAsk the wardrobe for room.$"
 TrioSeasonThanksgiving_Back:
 	.string "Later$"
 TrioSeasonThanksgiving_GirlText0:
@@ -757,7 +757,7 @@ TrioSeasonChristmas_WinText:
 TrioSeasonChristmas_ClaimedText:
 	.string "Gifts are yours forever.\nReturn for a varied round!$"
 TrioSeasonChristmas_FullText:
-	.string "Your Bag is full.\nYour gifts will wait.$"
+	.string "Your gifts will wait.\nAsk the wardrobe for room.$"
 TrioSeasonChristmas_Back:
 	.string "Later$"
 TrioSeasonChristmas_GirlText0:
@@ -1023,7 +1023,7 @@ TrioSeasonNewYear_WinText:
 TrioSeasonNewYear_ClaimedText:
 	.string "Gifts are yours forever.\nReturn for a varied round!$"
 TrioSeasonNewYear_FullText:
-	.string "Your Bag is full.\nYour gifts will wait.$"
+	.string "Your gifts will wait.\nAsk the wardrobe for room.$"
 TrioSeasonNewYear_Back:
 	.string "Later$"
 TrioSeasonNewYear_GirlText0:
@@ -1053,3 +1053,138 @@ TrioSeasonFall_LeafText1:
 
 TrioSeasonFall_LeafText2:
 	.string "A pile of golden leaves.\nA tiny rustle from below!$"
+
+@ Shared saved wardrobe for claimed seasonal keys. No party/form/progression writes.
+TrioSeasonWardrobe_Offer::
+	lockall
+	faceplayer
+	msgbox TrioSeasonWardrobe_Intro, MSGBOX_DEFAULT
+TrioSeasonWardrobe_Menu:
+	closemessage
+	dynmultichoice 0, 0, FALSE, 4, 0, DYN_MULTICHOICE_CB_NONE, TrioSeasonWardrobe_Store, TrioSeasonWardrobe_Take, TrioSeasonWardrobe_Back
+	goto_if_eq VAR_RESULT, MULTI_B_PRESSED, TrioSeasonWardrobe_End
+	goto_if_eq VAR_RESULT, 2, TrioSeasonWardrobe_End
+	copyvar VAR_0x8005, VAR_RESULT
+	dynmultichoice 0, 0, FALSE, 4, 0, DYN_MULTICHOICE_CB_NONE, TrioSeasonWardrobe_Name0, TrioSeasonWardrobe_Name1, TrioSeasonWardrobe_Name2, TrioSeasonWardrobe_Name3, TrioSeasonWardrobe_Name4, TrioSeasonWardrobe_Name5, TrioSeasonWardrobe_Name6, TrioSeasonWardrobe_Name7, TrioSeasonWardrobe_Name8, TrioSeasonWardrobe_Name9, TrioSeasonWardrobe_Name10, TrioSeasonWardrobe_Name11, TrioSeasonWardrobe_Back
+	goto_if_eq VAR_RESULT, MULTI_B_PRESSED, TrioSeasonWardrobe_End
+	goto_if_eq VAR_RESULT, 12, TrioSeasonWardrobe_End
+	copyvar VAR_0x8004, VAR_RESULT
+	goto_if_eq VAR_RESULT, 0, TrioSeasonWardrobe_Select0
+	goto_if_eq VAR_RESULT, 1, TrioSeasonWardrobe_Select1
+	goto_if_eq VAR_RESULT, 2, TrioSeasonWardrobe_Select2
+	goto_if_eq VAR_RESULT, 3, TrioSeasonWardrobe_Select3
+	goto_if_eq VAR_RESULT, 4, TrioSeasonWardrobe_Select4
+	goto_if_eq VAR_RESULT, 5, TrioSeasonWardrobe_Select5
+	goto_if_eq VAR_RESULT, 6, TrioSeasonWardrobe_Select6
+	goto_if_eq VAR_RESULT, 7, TrioSeasonWardrobe_Select7
+	goto_if_eq VAR_RESULT, 8, TrioSeasonWardrobe_Select8
+	goto_if_eq VAR_RESULT, 9, TrioSeasonWardrobe_Select9
+	goto_if_eq VAR_RESULT, 10, TrioSeasonWardrobe_Select10
+	goto_if_eq VAR_RESULT, 11, TrioSeasonWardrobe_Select11
+	goto TrioSeasonWardrobe_End
+TrioSeasonWardrobe_Select0:
+	bufferitemname STR_VAR_1, ITEM_RIKOS_LEAF_BUNDLE
+	goto TrioSeasonWardrobe_Confirm
+TrioSeasonWardrobe_Select1:
+	bufferitemname STR_VAR_1, ITEM_COCOAS_KNIT_SET
+	goto TrioSeasonWardrobe_Confirm
+TrioSeasonWardrobe_Select2:
+	bufferitemname STR_VAR_1, ITEM_PENNYS_CARDIGAN
+	goto TrioSeasonWardrobe_Confirm
+TrioSeasonWardrobe_Select3:
+	bufferitemname STR_VAR_1, ITEM_RIKOS_FEATHER_FAN
+	goto TrioSeasonWardrobe_Confirm
+TrioSeasonWardrobe_Select4:
+	bufferitemname STR_VAR_1, ITEM_COCOAS_CHEF_HAT
+	goto TrioSeasonWardrobe_Confirm
+TrioSeasonWardrobe_Select5:
+	bufferitemname STR_VAR_1, ITEM_PENNYS_YAM_WRAP
+	goto TrioSeasonWardrobe_Confirm
+TrioSeasonWardrobe_Select6:
+	bufferitemname STR_VAR_1, ITEM_POM_SANTA_HAT
+	goto TrioSeasonWardrobe_Confirm
+TrioSeasonWardrobe_Select7:
+	bufferitemname STR_VAR_1, ITEM_COCOA_GIFT_BOX
+	goto TrioSeasonWardrobe_Confirm
+TrioSeasonWardrobe_Select8:
+	bufferitemname STR_VAR_1, ITEM_PENNYS_ANTLERS
+	goto TrioSeasonWardrobe_Confirm
+TrioSeasonWardrobe_Select9:
+	bufferitemname STR_VAR_1, ITEM_POM_PARTY_HAT
+	goto TrioSeasonWardrobe_Confirm
+TrioSeasonWardrobe_Select10:
+	bufferitemname STR_VAR_1, ITEM_COCOA_SILVER_BOW
+	goto TrioSeasonWardrobe_Confirm
+TrioSeasonWardrobe_Select11:
+	bufferitemname STR_VAR_1, ITEM_PENNYS_STAR_DRESS
+	goto TrioSeasonWardrobe_Confirm
+TrioSeasonWardrobe_Confirm:
+	goto_if_eq VAR_0x8005, 1, TrioSeasonWardrobe_TakeConfirm
+	msgbox TrioSeasonWardrobe_StoreText, MSGBOX_YESNO
+	goto TrioSeasonWardrobe_Exchange
+TrioSeasonWardrobe_TakeConfirm:
+	msgbox TrioSeasonWardrobe_TakeText, MSGBOX_YESNO
+TrioSeasonWardrobe_Exchange:
+	goto_if_ne VAR_RESULT, YES, TrioSeasonWardrobe_End
+	specialvar VAR_RESULT, ExchangeTrioSeasonalCostume
+	goto_if_eq VAR_RESULT, 2, TrioSeasonWardrobe_Full
+	goto_if_eq VAR_RESULT, 0, TrioSeasonWardrobe_Missing
+	goto_if_eq VAR_0x8005, 1, TrioSeasonWardrobe_Taken
+	msgbox TrioSeasonWardrobe_StoredText, MSGBOX_DEFAULT
+	goto TrioSeasonWardrobe_Menu
+TrioSeasonWardrobe_Taken:
+	msgbox TrioSeasonWardrobe_TakenText, MSGBOX_DEFAULT
+	goto TrioSeasonWardrobe_Menu
+TrioSeasonWardrobe_Full:
+	msgbox TrioSeasonWardrobe_FullText, MSGBOX_DEFAULT
+	goto TrioSeasonWardrobe_Menu
+TrioSeasonWardrobe_Missing:
+	msgbox TrioSeasonWardrobe_MissingText, MSGBOX_DEFAULT
+	goto TrioSeasonWardrobe_Menu
+TrioSeasonWardrobe_End:
+	releaseall
+	end
+TrioSeasonWardrobe_Intro:
+	.string "Store your seasonal keys.\nTake them back to toggle!$"
+TrioSeasonWardrobe_Store:
+	.string "Store a key$"
+TrioSeasonWardrobe_Take:
+	.string "Take a key$"
+TrioSeasonWardrobe_Back:
+	.string "Leave$"
+TrioSeasonWardrobe_StoreText:
+	.string "{STR_VAR_1}\nStore this costume key?$"
+TrioSeasonWardrobe_TakeText:
+	.string "{STR_VAR_1}\nTake this costume key?$"
+TrioSeasonWardrobe_StoredText:
+	.string "Stored safely forever.\nReturn to take it anytime!$"
+TrioSeasonWardrobe_TakenText:
+	.string "Back in your Bag!\nUse again to dress/revert.$"
+TrioSeasonWardrobe_FullText:
+	.string "Your Bag is full.\nYour key stays stored.$"
+TrioSeasonWardrobe_MissingText:
+	.string "That key is not here.\nOnly earned costumes fit.$"
+TrioSeasonWardrobe_Name0:
+	.string "Riko Leaves$"
+TrioSeasonWardrobe_Name1:
+	.string "Cocoa Knit$"
+TrioSeasonWardrobe_Name2:
+	.string "Penny Cardigan$"
+TrioSeasonWardrobe_Name3:
+	.string "Riko Feathers$"
+TrioSeasonWardrobe_Name4:
+	.string "Cocoa Chef Hat$"
+TrioSeasonWardrobe_Name5:
+	.string "Penny Yam Wrap$"
+TrioSeasonWardrobe_Name6:
+	.string "Pom Santa Hat$"
+TrioSeasonWardrobe_Name7:
+	.string "Cocoa Gift Box$"
+TrioSeasonWardrobe_Name8:
+	.string "Penny Antlers$"
+TrioSeasonWardrobe_Name9:
+	.string "Pom Party Hat$"
+TrioSeasonWardrobe_Name10:
+	.string "Silver Bow$"
+TrioSeasonWardrobe_Name11:
+	.string "Penny Star Dress$"

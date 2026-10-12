@@ -16,7 +16,7 @@ for line in S.splitlines():
 for n in re.findall(r'\bTrioSeason\w+_\w+',S):assert n in labels,n
 class Run:
  def __init__(self,c,round=0,answers=(),room=100,vars=None,bag=None,flags=None):
-  self.c=c;self.p='TrioSeason'+chapters[c][0];self.v='VAR_TRIO_'+chapters[c][1]+'_';self.vars=dict(vars or {});self.bag=collections.Counter(bag or {});self.flags=set(chapters[c][8] if flags is None else flags);self.answers=iter(answers);self.room=room;self.round=round;self.gifts=[];self.warps=[];self.lock=False
+  self.c=c;self.p='TrioSeason'+chapters[c][0];self.v='VAR_TRIO_'+chapters[c][1]+'_';self.vars=dict(vars or {});self.bag=collections.Counter(bag or {});self.flags=set(chapters[c][8] if flags is None else flags);self.answers=iter(answers);self.room=room;self.round=round;self.gifts=[];self.warps=[];self.lock=False;self.exchanges=[];self.exchange_result=1
  def val(self,a):
   if a.startswith('VAR_'):return self.vars.get(a,0)
   return {'TRUE':1,'FALSE':0,'YES':1,'NO':0,'MULTI_B_PRESSED':127}.get(a,int(a) if a.isdigit() else a)
@@ -38,6 +38,9 @@ class Run:
    elif op=='giveitem':
     assert len(a)<=2 and (len(a)==1 or a[1]=='1');success=self.room>0;self.vars['VAR_RESULT']=int(success)
     if success:self.room-=1;self.bag[a[0]]+=1;self.gifts.append(a[0])
+   elif op=='specialvar':
+    assert a[1]=='ExchangeTrioSeasonalCostume';self.exchanges.append((self.vars['VAR_0x8004'],self.vars['VAR_0x8005']));self.vars[a[0]]=self.exchange_result
+   elif op=='bufferitemname':pass
    elif op=='warp':self.warps.append(tuple(a))
    elif op=='goto':pc=labels[a[0]]
    elif op=='goto_if_unset':
@@ -93,6 +96,15 @@ for c,ch in enumerate(chapters):
    assert all(r.bag[item]==1 for item in items) and r.bag[ch[7]]==2
    r=r.reload(answers=[0]).run('Host');assert not r.gifts and r.bag[ch[7]]==2;cases+=1
 print('PASS',cases,'seasonal source branches: gates, declines, all variants/wrong/cancel, old-save zero state, reloads, partial/full Bag, owned gifts and two-round rewards')
+wardrobe_cases=0
+for mode,index,yes,result in itertools.product([0,1],list(range(13))+[127],[0,1,127],[0,1,2]):
+ r=Run(0,answers=[mode,index,yes,2]);r.p='TrioSeasonWardrobe';r.exchange_result=result;r.run('Offer')
+ assert r.exchanges==([(index,mode)] if index<12 and yes==1 else []),(mode,index,yes,result,r.exchanges)
+ assert not r.gifts and not r.warps and not r.lock;wardrobe_cases+=1
+for choice in [2,127]:
+ r=Run(0,answers=[choice]);r.p='TrioSeasonWardrobe';r.run('Offer');assert not r.exchanges;wardrobe_cases+=1
+print('PASS',wardrobe_cases,'wardrobe menu/scroll/Back/B/decline/store/take/full/missing paths; actual transfers have native engine tests')
+
 old=lambda p:subprocess.check_output(['git','show',BASE+':'+p],cwd=R,text=True)
 sys.path.insert(0,str(R/'tools/greg'));from geometry import geometry
 for c,ch in enumerate(chapters):
@@ -131,7 +143,7 @@ for p in ['include/global.h','include/global.fieldmap.h','src/new_game.c','inclu
  assert (R/p).read_text()==old(p),p
 vars=(R/'include/constants/vars.h').read_text();assert vars.startswith(old('include/constants/vars.h'))
 # Numeric usage audit against all tracked baseline code/data, including decimal literals.
-for value in range(0x414B,0x4160):
+for value in range(0x414B,0x4161):
  assert len(re.findall(r'\b0x'+f'{value:04X}'+r'\b',vars,re.I))==1
  pat=rf'\b(0x{value:04X}|{value})\b'
  result=subprocess.run(['git','grep','-i','-n','-E',pat,BASE,'--','include','src','data'],cwd=R,stdout=subprocess.PIPE,text=True)
@@ -143,7 +155,7 @@ with tempfile.TemporaryDirectory() as td:
  before={n:(a,b) for n,a,b in re.findall(r'^\s*(MAP_\w+)\s*=\s*\((\d+) \| \((\d+) << 8\)\)',old('include/constants/map_groups.h'),re.M)}
  now={n:(a,b) for n,a,b in re.findall(r'^\s*(MAP_\w+)\s*=\s*\((\d+) \| \((\d+) << 8\)\)',generated,re.M)}
  for n,v in before.items():assert now[n]==v,(n,v,now[n])
-print('PASS all four hosts, stages, actor approaches/budgets, safe exits, 21 unused saved vars and production warp namespace; historical maps/IDs/save ABI unchanged')
+print('PASS all four hosts, stages, actor approaches/budgets, safe exits, 22 unused saved vars and production warp namespace; historical maps/IDs/save ABI unchanged')
 # Actual-font limits and image registration/metadata contracts.
 font=(R/'src/fonts.c').read_text();chars={}
 for line in (R/'charmap.txt').read_text().splitlines():

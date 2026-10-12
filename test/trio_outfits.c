@@ -1,6 +1,7 @@
 #include "global.h"
 #include "event_data.h"
 #include "pokemon.h"
+#include "item.h"
 #include "string_util.h"
 #include "constants/characters.h"
 #include "trio_camp.h"
@@ -153,4 +154,89 @@ TEST("Seasonal photos preserve all old bits and share dressed Penny stages")
     EXPECT_EQ(gStringVar1[1], CHAR_0 + 7);
     gSpecialVar_0x8004 = 28;
     EXPECT_EQ(HasTrioOutfitPhoto(), FALSE);
+}
+
+TEST("Seasonal wardrobe preserves earned keys without duplicating or changing outfits")
+{
+    static const u16 items[] = {ITEM_RIKOS_LEAF_BUNDLE, ITEM_COCOAS_KNIT_SET, ITEM_PENNYS_CARDIGAN, ITEM_RIKOS_FEATHER_FAN, ITEM_COCOAS_CHEF_HAT, ITEM_PENNYS_YAM_WRAP, ITEM_POM_SANTA_HAT, ITEM_COCOA_GIFT_BOX, ITEM_PENNYS_ANTLERS, ITEM_POM_PARTY_HAT, ITEM_COCOA_SILVER_BOW, ITEM_PENNYS_STAR_DRESS};
+    static const u16 claims[] = {VAR_TRIO_FALL_GIFTS, VAR_TRIO_THANKSGIVING_GIFTS, VAR_TRIO_CHRISTMAS_GIFTS, VAR_TRIO_NEW_YEAR_GIFTS};
+    ZeroPlayerPartyMons();
+    CreateMon(&gPlayerParty[0], SPECIES_PENNY_STARS_DACHSBUN, 30, 0, OTID_STRUCT_PLAYER_ID);
+    VarSet(VAR_TRIO_OUTFIT_PHOTOS, 0xFFFF);
+    VarSet(VAR_TRIO_SEASONAL_PHOTOS, 0x0FFF);
+    for (u32 i = 0; i < ARRAY_COUNT(items); i++)
+    {
+        ClearBag();
+        VarSet(VAR_TRIO_SEASONAL_WARDROBE, 0);
+        VarSet(claims[i / 3], 0);
+        EXPECT(AddBagItem(items[i], 1));
+        gSpecialVar_0x8004 = i;
+        gSpecialVar_0x8005 = 0;
+        EXPECT_EQ(ExchangeTrioSeasonalCostume(), 0); // Unclaimed imported copies stay in Bag.
+        EXPECT(CheckBagHasItem(items[i], 1));
+        VarSet(claims[i / 3], i % 3 + 1);
+        EXPECT_EQ(ExchangeTrioSeasonalCostume(), 1);
+        EXPECT(!CheckBagHasItem(items[i], 1));
+        EXPECT_EQ(VarGet(VAR_TRIO_SEASONAL_WARDROBE), 1u << i);
+        EXPECT_EQ(ExchangeTrioSeasonalCostume(), 0);
+        EXPECT_EQ(VarGet(claims[i / 3]), i % 3 + 1); // Pending later gifts still resume correctly.
+        gSpecialVar_0x8005 = 1;
+        EXPECT_EQ(ExchangeTrioSeasonalCostume(), 1);
+        EXPECT_EQ(VarGet(VAR_TRIO_SEASONAL_WARDROBE), 0);
+        EXPECT(CheckBagHasItem(items[i], 1));
+        EXPECT(!CheckBagHasItem(items[i], 2));
+        EXPECT_EQ(ExchangeTrioSeasonalCostume(), 0);
+        EXPECT_EQ(GetMonData(&gPlayerParty[0], MON_DATA_SPECIES), SPECIES_PENNY_STARS_DACHSBUN);
+        EXPECT_EQ(VarGet(VAR_TRIO_OUTFIT_PHOTOS), 0xFFFF);
+        EXPECT_EQ(VarGet(VAR_TRIO_SEASONAL_PHOTOS), 0x0FFF);
+        VarSet(claims[i / 3], 0);
+    }
+    ClearBag();
+    ZeroPlayerPartyMons();
+}
+
+TEST("Full Key Items pocket leaves seasonal wardrobe ownership saved until retrieval succeeds")
+{
+    ClearBag();
+    VarSet(VAR_TRIO_SEASONAL_WARDROBE, 0x0FFF);
+    u32 count = 0;
+    for (u32 item = 1; item < ITEMS_COUNT && count < BAG_KEYITEMS_COUNT; item++)
+    {
+        if (GetItemPocket(item) == POCKET_KEY_ITEMS && item < ITEM_RIKOS_LEAF_BUNDLE)
+        {
+            EXPECT(AddBagItem(item, 1));
+            count++;
+        }
+    }
+    EXPECT_EQ(count, BAG_KEYITEMS_COUNT);
+    gSpecialVar_0x8004 = 0;
+    gSpecialVar_0x8005 = 1;
+    EXPECT_EQ(ExchangeTrioSeasonalCostume(), 2);
+    EXPECT_EQ(VarGet(VAR_TRIO_SEASONAL_WARDROBE), 0x0FFF);
+    EXPECT(!CheckBagHasItem(ITEM_RIKOS_LEAF_BUNDLE, 1));
+    ClearBag();
+    EXPECT_EQ(ExchangeTrioSeasonalCostume(), 1);
+    EXPECT(CheckBagHasItem(ITEM_RIKOS_LEAF_BUNDLE, 1));
+    EXPECT_EQ(VarGet(VAR_TRIO_SEASONAL_WARDROBE), 0x0FFE);
+    ClearBag();
+    VarSet(VAR_TRIO_SEASONAL_WARDROBE, 0);
+}
+
+TEST("Invalid seasonal wardrobe inputs preserve saved storage and Bag inventory")
+{
+    ClearBag();
+    EXPECT(AddBagItem(ITEM_RIKOS_LEAF_BUNDLE, 1));
+    VarSet(VAR_TRIO_SEASONAL_WARDROBE, 0x0555);
+    static const u16 inputs[][2] = {{12,0},{0xFFFF,1},{0,2},{0,0xFFFF}};
+    for (u32 i = 0; i < ARRAY_COUNT(inputs); i++)
+    {
+        gSpecialVar_0x8004 = inputs[i][0];
+        gSpecialVar_0x8005 = inputs[i][1];
+        EXPECT_EQ(ExchangeTrioSeasonalCostume(), 0);
+        EXPECT_EQ(VarGet(VAR_TRIO_SEASONAL_WARDROBE), 0x0555);
+        EXPECT(CheckBagHasItem(ITEM_RIKOS_LEAF_BUNDLE, 1));
+        EXPECT(!CheckBagHasItem(ITEM_RIKOS_LEAF_BUNDLE, 2));
+    }
+    ClearBag();
+    VarSet(VAR_TRIO_SEASONAL_WARDROBE, 0);
 }

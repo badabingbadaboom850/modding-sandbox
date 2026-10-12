@@ -82,3 +82,31 @@ MapScripts symbols: the new stages needed explicit event-script assembly
 includes. All four are now registered; the source validator asserts each include
 and ON_LOAD/exit trigger registration. This repair changes no saved IDs, gates,
 rounds or rewards. A rebuilt ROM and engine run are separate.
+
+## Saved seasonal wardrobe
+
+The catalog now includes43 custom Key Items, alongside ordinary story keys. The
+Bag has50 Key Items slots and importance-protected keys cannot enter the PC;
+keeping every new reward in that pocket could block later costume claims.
+Each seasonal stage therefore adds a stationary wardrobe attendant at8,8.
+Her shared scroll menu can store or retrieve any of the12 already claimed
+seasonal costume keys, with confirmation and Back/B cancellation. Store a
+received key to free a slot, then return to the host for pending rewards.
+
+Intentional storage moves one key from Bag to a saved12bit ownership mask at
+`VAR_TRIO_SEASONAL_WARDROBE`0x4160; this is transfer, not consumption or loss.
+Only previously claimed gifts may be stored. Retrieval adds the real reusable
+protected key to the Bag before clearing its storage bit. A full Bag keeps it
+stored. Invalid, missing, already stored or declined transfers leave ownership
+intact. Current outfits, Pokemon, photo masks, other possessions and sequential
+gift claims stay unchanged. Take the key back before using its toggle again.
+The shared wardrobe remains available permanently in all four chapters.
+
+The wardrobe adds one audited unused saved variable and one appended runtime
+special, with no saved-array or Bag-layout change. Total newly audited saved
+slots are22. Source checks cover254 wardrobe menu/scroll/Back/B/confirmation/
+missing/full paths. Three native engine tests cover all12 store/take/idempotent
+transfers, unclaimed-copy guards, partial-claim continuity, a real full50-slot
+Key Items pocket, invalid input, preserved photos/outfit and no duplicate keys.
+CI199 built/uploaded the four-chapter ROM after the map-script repair; the final
+wardrobe build and full engine results are separate.

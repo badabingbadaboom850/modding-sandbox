@@ -1,6 +1,8 @@
 #include "global.h"
 #include "event_data.h"
 #include "pokemon.h"
+#include "item.h"
+#include "constants/items.h"
 #include "string_util.h"
 #include "trio_outfits.h"
 #include "constants/species.h"
@@ -97,4 +99,36 @@ void BufferTrioOutfitPhotoCount(void)
     mask = VarGet(VAR_TRIO_SEASONAL_PHOTOS) & 0x0FFF;
     for (u32 i = 0; i < 12; i++) count += (mask >> i) & 1;
     ConvertIntToDecimalStringN(gStringVar1, count, STR_CONV_MODE_LEFT_ALIGN, 2);
+}
+
+// Explicit wardrobe transfer, never consumption. Saved ownership stays intact.
+// Input8004: costume0-11. Input8005:0store,1take. Result:0unavailable,1success,2full.
+u16 ExchangeTrioSeasonalCostume(void)
+{
+    static const u16 items[] = {ITEM_RIKOS_LEAF_BUNDLE, ITEM_COCOAS_KNIT_SET, ITEM_PENNYS_CARDIGAN, ITEM_RIKOS_FEATHER_FAN, ITEM_COCOAS_CHEF_HAT, ITEM_PENNYS_YAM_WRAP, ITEM_POM_SANTA_HAT, ITEM_COCOA_GIFT_BOX, ITEM_PENNYS_ANTLERS, ITEM_POM_PARTY_HAT, ITEM_COCOA_SILVER_BOW, ITEM_PENNYS_STAR_DRESS};
+    static const u16 claims[] = {VAR_TRIO_FALL_GIFTS, VAR_TRIO_THANKSGIVING_GIFTS, VAR_TRIO_CHRISTMAS_GIFTS, VAR_TRIO_NEW_YEAR_GIFTS};
+    u16 index = gSpecialVar_0x8004;
+    u16 mode = gSpecialVar_0x8005;
+    if (index >= ARRAY_COUNT(items) || mode > 1)
+        return 0;
+    u16 bit = 1u << index;
+    u16 stored = VarGet(VAR_TRIO_SEASONAL_WARDROBE);
+    if (mode == 0)
+    {
+        // Only already claimed gifts may leave the Bag; pending claims cannot duplicate.
+        if ((stored & bit) || VarGet(claims[index / 3]) <= index % 3
+            || !CheckBagHasItem(items[index], 1) || !RemoveBagItem(items[index], 1))
+            return 0;
+        VarSet(VAR_TRIO_SEASONAL_WARDROBE, stored | bit);
+    }
+    else
+    {
+        if (!(stored & bit))
+            return 0;
+        if (!AddBagItem(items[index], 1))
+            return 2;
+        // Clear saved storage only after the Bag accepted the real protected key.
+        VarSet(VAR_TRIO_SEASONAL_WARDROBE, stored & ~bit);
+    }
+    return 1;
 }
