@@ -4,7 +4,7 @@ This is source/native validation, not rendered emulator confirmation.
 from pathlib import Path
 import collections,itertools,json,re,subprocess,sys,tempfile
 from PIL import Image
-R=Path(__file__).resolve().parents[2];BASE='b7f12f7bdf'
+R=Path(__file__).resolve().parents[2];BASE='8ce7bf9953021d5d808cc2c11336dc241feda872'
 rows=json.loads((R/'tools/costumes/seasons.json').read_text());chapters=json.loads((R/'tools/costumes/chapters.json').read_text())
 S=(R/'data/scripts/trio_seasonal_chapters.inc').read_text();labels={};code=[]
 for line in S.splitlines():
