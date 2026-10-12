@@ -56,3 +56,19 @@ confirmation must be reported separately. Keep PR2 draft and unmerged.
 See [Focused emulator pass](trio_costume_emulator_pass.md).
 
 See [Trick-or-Treat Trail](trio_halloween_trail.md) for locations and game details.
+
+## Pumpkin Penny up-frame crop repair
+
+The user reports Halloween gameplay works and supplied a minor upward follower
+sprite issue. Native conversion reproduced an unwanted24pixel component: the
+left-facing pose's tail crosses into the neighboring up-standing source cell.
+The default cell crop included it, shifting/shrinking Penny and showing a loose
+fragment. The approved source art itself is unchanged.
+
+new_render.c adds opt-in largest connected silhouette selection before bounds/
+scaling. Only Pumpkin Penny's up cells7/8 request it. Native reproduction proves
+only up-standing output changes; the other five follower frames remain byte-exact.
+Both up poses are connected and centered. Battle/menu/item/source art, normal/
+shiny palettes, family stats/items/saves/game rules and mailbox test travel stay.
+validate_penny_pumpkin_crop.py checks actual default/fixed C outputs and native
+PNG/palette packing. CI compilation and in-game visual retest remain separate.

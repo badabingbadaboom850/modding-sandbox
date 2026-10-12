@@ -1448,3 +1448,17 @@ script. Original map IDs/layout/exit/save-ABI assertions remain. No gameplay
 or cafe map change. Silly source validator permits later authorized appended
 items/species/vars by comparing every historical literal ID rather than whole
 files; global saved layouts stay exact. All5source scene groups pass.
+
+## Pumpkin Penny follower up-idle crop (2026-10-12)
+
+User confirms Halloween gameplay works; screenshot shows a detached part while
+Penny faces up. Source side-left tail crosses into up-standing cell7. Native
+converter default reproduces277pixel Penny +24pixel foreign tail; default bounds
+shift/shrink her. Approved source art is unchanged. new_render.c optional9th
+argument1 selects largest8connected silhouette before bounds/scaling, leaving
+all8argument callers unchanged. import_halloween.py opts in only Penny upcells7/8.
+Actual native outputs prove only up-idle frame2 changes; other5frames byte-exact,
+both up poses connected/centered, palettes/battle/menu/item/source unchanged.
+See tools/costumes/validate_penny_pumpkin_crop.py. Game/items/save/travel unchanged;
+rendered follower confirmation and new ROM build remain separate. Keep testhook
+and PRdraft/unmerged.

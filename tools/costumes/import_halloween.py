@@ -18,7 +18,10 @@ with tempfile.TemporaryDirectory() as td:
     atlas=Image.open(p/'source.png').convert('RGBA');raw=td/'source.raw';raw.write_bytes(atlas.tobytes())
     rgb=td/'palette.rgb';rgb.write_text(' '.join(map(str,pal)))
     def convert(cell,size):
-        out=td/'out.raw';subprocess.run([str(exe),str(raw),*map(str,atlas.size),str(cell),str(size),str(out),str(rgb)],check=True)
+        out=td/'out.raw'
+        # Penny's left pose tail crosses into the adjacent up-pose cell.
+        isolate=['1'] if name=='penny_pumpkin' and cell in (7,8) else []
+        subprocess.run([str(exe),str(raw),*map(str,atlas.size),str(cell),str(size),str(out),str(rgb),*isolate],check=True)
         im=Image.frombytes('P',(size,size),out.read_bytes());im.putpalette(pal+[0]*720);return im
     for asset_name,cell in [('front',0),('back',1)]:convert(cell,64).save(p/(asset_name+'.png'),bits=4,transparency=0)
     icon=convert(2,32);out=Image.frombytes('P',(32,64),icon.tobytes()*2);out.putpalette(pal+[0]*720);out.save(p/'icon.png',bits=4,transparency=0)
