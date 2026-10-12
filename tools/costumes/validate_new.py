@@ -5,8 +5,9 @@ from PIL import Image
 R=Path(__file__).resolve().parents[2]
 BASE='be744111538531e7f27978e5bcc7b31f3c7ed1fe'
 def old(p):return subprocess.check_output(['git','show',BASE+':'+p],cwd=R,text=True)
-for p in ['include/global.h','include/global.fieldmap.h','src/new_game.c','include/constants/vars.h','include/constants/flags.h']:
+for p in ['include/global.h','include/global.fieldmap.h','src/new_game.c','include/constants/flags.h']:
  assert (R/p).read_text()==old(p),p
+assert (R/'include/constants/vars.h').read_text().startswith(old('include/constants/vars.h'))
 for p,prefix in [('include/constants/species.h','SPECIES_'),('include/constants/items.h','ITEM_')]:
  for name,value in re.findall(r'(?:#define\s+|\b)('+prefix+r'\w+)\s*(?:=|\s)\s*(\d+)\b',old(p)):
   assert re.search(r'\b'+name+r'\s*(?:=|\s)\s*'+value+r'\b',(R/p).read_text()),name

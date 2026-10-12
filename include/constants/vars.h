@@ -432,3 +432,8 @@
 #endif // TESTING
 
 #endif // GUARD_CONSTANTS_VARS_H
+
+// Halloween trail:0-2 puzzle progress,3 solved/prize pending,4 prize received.
+#define VAR_TRIO_HALLOWEEN_RIKO                     0x4147
+#define VAR_TRIO_HALLOWEEN_BIJUU                    0x4148
+#define VAR_TRIO_HALLOWEEN_PENNY                    0x4149

@@ -2,18 +2,22 @@
 
 Witch Riko, Vampire Bijuu and Pumpkin Penny are purely cosmetic and remain
 obtainable all year. No date, Badge, battle or new quest requirement is added.
-Bring the matching girl and accept an optional gift from the existing host:
+A friendly Gastly in Ecruteak's Itemfinder house (city door19,33; Gastly9,5)
+invites an optional trip to the Trick-or-Treat Trail. Halloween items now come
+from its three games, replacing the direct gifts from costume vendors. Earlier
+collected items/forms/photos stay intact; existing original/extra costume gifts
+and the Itemfinder service remain. No party, date, Badge or battle gate.
 
-| Costume | Protected reusable Key Item | Existing host |
+| Costume | Reusable protected Key Item | Game |
 | --- | --- | --- |
-| Witch Riko | Riko Witch Hat | Ecruteak raincoat giver,47,43 |
-| Vampire Bijuu | Vampire Cape | Ecruteak detective giver,25,33 |
-| Pumpkin Penny | Pumpkin Suit | Olivine beach-vest giver,34,57 |
+| Witch Riko | Riko Witch Hat | Gastly's BOO/POM/TREAT memory game |
+| Vampire Bijuu | Vampire Cape | Haunter's Fish/Moon/Star treat hunt |
+| Pumpkin Penny | Pumpkin Suit | Duskull's Left/Right/Middle Pumpkaboo trail |
 
-Halloween offers precede the existing extra/original costume conversations.
-Owned items skip duplicate gifts; decline, absent party and full Bag return
-normally. A full Bag can retry on another visit. There are no new map objects,
-visibility changes, startup grants, test shortcuts or real-time checks.
+Wrong guesses allow retries without losing completed searches. Partial hunt
+progress and solved-but-unclaimed rewards save normally. Full Bags can reclaim
+without replaying; owned items prevent duplicates. Exit Gastly and two native
+south-arrow exits return to the original house. The trail remains year-round.
 
 Use each item on the ordinary girl to dress up; use it again to revert. Return
 from other personal forms with their existing item first. Stats, types,
@@ -39,14 +43,16 @@ existing16bit mask, preserving bits0-12 and the Poison bonus at9. Album counts
 15 costumes plus that bonus. Penny stages share a portrait. Future portraits
 need a separately audited storage design; never shift beyond bit15 here.
 Scott comments, outfit reactions, family checks, Camp, signatures and normal/
-Spirit Mega eligibility include the new costumes. No new save variables/flags.
+Spirit Mega eligibility include the new costumes. Three audited unused variables4147-4149 record the games; no save arrays or flags change.
 
-Validation:48 Halloween and48 prior extra gift source paths pass, including
-owned/absent/decline/full-Bag states; historical map/save/ID checks, native indexed
-asset format checks, text wrapping, all39 reusable transformation-item checks
-and docs-summary/diff checks pass. Native costume/storage/level26/Mega/album
+Validation:3454 actual authored puzzle/offer/retry/reward source paths pass,
+plus13 actors/two exits and original service/map/save-ID preservation.48 prior
+extra gift paths, costume metadata/native palettes/art registration, all39
+reusable items and docs-summary/diff checks pass. Native costume/storage/level26/Mega/album
 engine tests are extended, but local ARM compilation is unavailable (missing
 arm-none-eabi-gcc and libpng headers). CI compilation/tests and rendered emulator
 confirmation must be reported separately. Keep PR2 draft and unmerged.
 
 See [Focused emulator pass](trio_costume_emulator_pass.md).
+
+See [Trick-or-Treat Trail](trio_halloween_trail.md) for locations and game details.

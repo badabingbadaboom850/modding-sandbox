@@ -2469,3 +2469,6 @@ Common_Text_ReceivedMon:
 	.include "data/maps/TrioPomTraffic/scripts.inc"
 	.include "data/maps/TrioBijuuFishing/scripts.inc"
 	.include "data/maps/TrioSquirrelApology/scripts.inc"
+
+	.include "data/maps/TrioHalloweenTrail/scripts.inc"
+	.include "data/scripts/trio_halloween_trail.inc"

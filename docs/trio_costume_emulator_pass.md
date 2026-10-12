@@ -62,7 +62,7 @@ older costume presentation are useful history, not confirmation of this full pas
 
 ## Acquisition and existing-save controls
 
-For each gift source: absent matching girl, decline, accept, repeat while owned
+For ordinary costume gift sources: absent matching girl, decline, accept, repeat while owned
 and visit with full Key Item storage (on a separate test-save copy if practical).
 Full storage must leave the gift retryable; repeated successful visits must not
 multiply protected costume items. Original conversations/services and routes
@@ -101,3 +101,18 @@ reversion, wrong Penny stage, changed ordinary costume stats/type/moves, unusabl
 item after restart, corrupt followers/Bag, crash or softlock. Report exact ROM
 commit/save/action and before/after quantities. An ordinary evolution stone
 consuming one is expected control behavior; a family item doing so is not.
+
+## Halloween trail rendered checks
+
+Visit Ecruteak's Itemfinder house (city door19,33), talk to Gastly9,5, decline
+once, then accept. Verify the original Itemfinder still works. No party gate.
+Explore all13 actors and inspect Gastly/Haunter/Duskull/Pumpkaboo followers.
+Try wrong/cancelled memory answers, then BOO/POM/TREAT for Riko's hat.
+Find Fish/Moon/Star treat balls for Bijuu; visit Left/Right/Middle Pumpkaboo
+for Penny. Use host hints, try wrong order/duplicate searches, save/restart
+after one correct find, exit/reenter and resume without resets. Speak to
+Haunter/Duskull for prizes. Test full-Bag solved rewards, then retry claims
+without repeating the game. Repeat host interactions while owning items.
+Both south-arrow exits and the exit Gastly return safely. Save inside/reload
+and leave. Old costume copies/photos stay; earlier direct Halloween gift calls
+are removed. Then run every costume item/storage/faint/reversion check above.

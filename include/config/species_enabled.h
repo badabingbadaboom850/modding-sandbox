@@ -414,7 +414,7 @@
 #define P_FAMILY_GOOMY                   P_GEN_6_POKEMON
 #define P_FAMILY_KLEFKI                  P_GEN_6_POKEMON
 #define P_FAMILY_PHANTUMP                P_GEN_6_POKEMON
-#define P_FAMILY_PUMPKABOO               FALSE
+#define P_FAMILY_PUMPKABOO               TRUE // Optional Halloween trail hosts
 #define P_FAMILY_BERGMITE                P_GEN_6_POKEMON
 #define P_FAMILY_NOIBAT                  P_GEN_6_POKEMON
 #define P_FAMILY_XERNEAS                 P_GEN_6_POKEMON

@@ -1390,3 +1390,25 @@ IDs/inventory/save-layout checks.48 Halloween +48 prior extra gift/source/asset
 checks pass; engine tests extended but local ARM/libpng dependencies unavailable.
 CI build/tests and rendered emulator pass remain distinct. Keep5% run-off,
 normal mailbox, Bag-icon repair and PR2 draft/unmerged.
+
+
+## Ghost-led Trick-or-Treat Trail (2026-10-12)
+
+User requested earning Halloween outfits through an optional ghost teleport
+and minigame. Ecruteak Itemfinder house(city door19,33) appends Gastly9,5,
+preserving original NPC/service/events. Accept -> appended IndoorEcruteak
+TrioHalloweenTrail on existing garden layout.13actors+player/follower=15slots.
+Gastly memory BOO/POM/TREAT -> Riko Witch Hat; Haunter Fish/Moon/Star balls
+-> Vampire Cape; Duskull Left/Right/Middle Pumpkaboo -> Pumpkin Suit. Existing
+Pumpkaboo family/art enabled. No battles/party/date/Badge gate. The ordinary
+girls stay present. Earlier direct Halloween costume gift calls/helpers removed;
+all other costume sources/earned copies/photos retained. ExitGastly warps to
+house8,6; two native south-arrow exits return to house warp0. Original house
+door remains normal. No temp follower restrictions, forced party edits or timers.
+Audited saved vars4147-4149 append to existing array:0-2partial,3solved/pending,
+4claimed. Wrong order/duplicates preserve finds; full Bag/reloads retain progress;
+owned-item checks stop duplicate awards. Source interpreter3454branches plus
+13actor/two-exit geometry/native behavior0x65/history/save/service/registration
+checks pass. Costume art/metadata/39reusable items and48other extra gifts pass.
+Local ARM/libpng unavailable; CI and actual rendered playthrough remain distinct.
+See docs/trio_halloween_trail.md and extended emulator pass. Keep PRdraft.
