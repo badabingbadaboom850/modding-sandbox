@@ -4,6 +4,11 @@
 #include "event_data.h"
 #include "constants/map_groups.h"
 #include "constants/vars.h"
+#include "constants/event_objects.h"
+#include "constants/species.h"
+#include "constants/trainer_types.h"
+
+extern const u8 TrioSilly_ApologyOffer[];
 
 TEST("Greedent cafe replaces only its Vermilion house after final victory including full Bag winners")
 {
@@ -46,12 +51,18 @@ TEST("Greedent cafe native exit ignores retired test mode and returns to Vermili
     gSaveBlock1Ptr->location = old;
 }
 
-TEST("Greedent cafe registrations use six harmless employees preserve old map IDs and save ABI")
+TEST("Greedent cafe registrations retain original employees and the appended apology clerk")
 {
     const struct MapHeader *cafe = Overworld_GetMapHeaderByGroupAndId(MAP_GROUP(MAP_TRIO_GREEDENT_CAFE), MAP_NUM(MAP_TRIO_GREEDENT_CAFE));
     const struct MapHeader *source = Overworld_GetMapHeaderByGroupAndId(MAP_GROUP(MAP_OLIVINE_CITY_CAFE), MAP_NUM(MAP_OLIVINE_CITY_CAFE));
     EXPECT_EQ(cafe->mapLayout, source->mapLayout);
-    EXPECT_EQ((u32)cafe->events->objectEventCount, 9);
+    EXPECT_EQ((u32)cafe->events->objectEventCount, 10);
+    const struct ObjectEventTemplate *clerk = &cafe->events->objectEvents[9];
+    EXPECT_EQ(clerk->graphicsId, OBJ_EVENT_GFX_SPECIES(GREEDENT));
+    EXPECT_EQ(clerk->x, 4);
+    EXPECT_EQ(clerk->y, 6);
+    EXPECT_EQ(clerk->trainerType, TRAINER_TYPE_NONE);
+    EXPECT_EQ(clerk->script, TrioSilly_ApologyOffer);
     EXPECT_EQ((u32)cafe->events->warpCount, 1);
     EXPECT_EQ(MAP_NUM(MAP_TRIO_GREEDENT_CAFE), 9);
     EXPECT_EQ(MAP_NUM(MAP_VERMILION_CITY_HOUSE3), 8);

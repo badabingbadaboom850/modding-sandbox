@@ -96,8 +96,13 @@ class Checks(unittest.TestCase):
   oldgroups=json.loads(old('data/maps/map_groups.json'));newgroups=json.loads((R/'data/maps/map_groups.json').read_text())
   self.assertEqual(oldgroups['group_order'],newgroups['group_order'])
   for group in oldgroups['group_order']:self.assertEqual(newgroups[group][:len(oldgroups[group])],oldgroups[group])
-  for path in ['include/global.h','include/constants/vars.h','include/constants/flags.h','include/constants/species.h','include/constants/items.h','include/constants/opponents.h','include/trio_runoff.h']:
+  for path in ['include/global.h','include/constants/flags.h','include/constants/opponents.h','include/trio_runoff.h']:
    self.assertEqual((R/path).read_bytes(),old(path))
+  # Later authorized costumes/trail append IDs and saved variables without moving history.
+  for path,prefix in [('include/constants/vars.h','VAR_'),('include/constants/species.h','SPECIES_'),('include/constants/items.h','ITEM_')]:
+   pattern=r'(?:#define\s+|\b)('+prefix+r'\w+)\s*(?:=|\s)\s*(0x[0-9a-fA-F]+|\d+)\b'
+   current=dict(re.findall(pattern,(R/path).read_text()))
+   for name,value in re.findall(pattern,old(path).decode()):self.assertEqual(current.get(name),value,(path,name))
   for scene in SCENES:
    path=f"data/maps/{scene['source']}/map.json";now=json.loads((R/path).read_text());prior=json.loads(old(path))
    self.assertEqual(now['object_events'][:-1],prior['object_events'])

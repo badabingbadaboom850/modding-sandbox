@@ -87,3 +87,11 @@ rules change. The source runner now invokes the production map generator and
 resolves all four authored warp targets against its actual constants, while
 checking every historical map number.3454 puzzle and30 return cases pass.
 Compilation/CI results must still be reported separately.
+
+Separate older CI190/191 engine-test failure: the cafe fixture still expected9
+actors after the authorized apology clerk was appended. It now expects10 and
+checks the final clerk's Greedent graphic,4,6 position, harmless trainer type
+and actual apology-offer script. No cafe runtime/map changes. The silly-scenes
+source history check now permits the subsequently authorized appended costume
+IDs/variables while preserving every historical numeric ID and saved structure.
+All five scene/source groups and actual cafe clerk registration checks pass.

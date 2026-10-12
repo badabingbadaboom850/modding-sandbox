@@ -1437,3 +1437,14 @@ validator now runs production tools/mapjson groups and checks all4warp symbols
 against generated constants plus historical map numbers.3454puzzle/30return
 cases pass. Source-only mocked warp routing previously missed this typo.
 Keep mailbox test hook/user progress/PRdraft; report rebuilt ROM separately.
+
+## Older cafe test fixture reconciled (2026-10-12)
+
+CI190/191 ROMs built; their sole unexpected engine failure was cafe objectCount
+EXPECT_EQ(10,9) at test/trio_greedent_cafe.c54. Authorized apology clerk from
+silly-scenes update adds a tenth actor, not a runtime regression. Fixture now
+expects10 and checks final clerk Greedent4,6/TRAINER_TYPE_NONE/exact apology
+script. Original map IDs/layout/exit/save-ABI assertions remain. No gameplay
+or cafe map change. Silly source validator permits later authorized appended
+items/species/vars by comparing every historical literal ID rather than whole
+files; global saved layouts stay exact. All5source scene groups pass.
