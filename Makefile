@@ -907,6 +907,7 @@ TRIO_ELEMENTAL_GFX += $(POM_FU_GFX)
 COMPLETE_ELEMENTS_GFX := $(foreach mon,riko_dragon riko_bug bijuu_dark bijuu_rock penny_ground penny_steel,$(addprefix graphics/pokemon/$(mon)/,front.4bpp.smol back.4bpp.smol normal.gbapal shiny.gbapal icon.4bpp icon_normal.gbapal icon_shiny.gbapal overworld.4bpp overworld_normal.gbapal overworld_shiny.gbapal))
 TRIO_ELEMENTAL_GFX += $(COMPLETE_ELEMENTS_GFX)
 NEW_COSTUME_GFX := $(foreach mon,riko_butterfly bijuu_astronaut penny_ballerina,$(addprefix graphics/pokemon/$(mon)/,front.4bpp.smol back.4bpp.smol normal.gbapal shiny.gbapal icon.4bpp icon_normal.gbapal icon_shiny.gbapal overworld.4bpp overworld_normal.gbapal overworld_shiny.gbapal))
+NEW_COSTUME_GFX += $(foreach mon,riko_witch bijuu_vampire penny_pumpkin,$(addprefix graphics/pokemon/$(mon)/,front.4bpp.smol back.4bpp.smol normal.gbapal shiny.gbapal icon.4bpp icon_normal.gbapal icon_shiny.gbapal overworld.4bpp overworld_normal.gbapal overworld_shiny.gbapal))
 TRIO_COSTUME_GFX += $(NEW_COSTUME_GFX)
 RIKO_OVERWORLD_GFX += $(filter %/overworld.4bpp %/overworld_normal.gbapal %/overworld_shiny.gbapal,$(TRIO_COSTUME_GFX) $(POM_FU_GFX) $(COMPLETE_ELEMENTS_GFX))
 

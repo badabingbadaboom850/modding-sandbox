@@ -28,6 +28,10 @@ static u16 OutfitIndex(u16 species)
     case SPECIES_BIJUU_ASTRONAUT: return 12;
     case SPECIES_PENNY_BALLERINA:
     case SPECIES_PENNY_BALLERINA_DACHSBUN: return 13;
+    case SPECIES_RIKO_WITCH: return 14;
+    case SPECIES_BIJUU_VAMPIRE: return 15;
+    case SPECIES_PENNY_PUMPKIN:
+    case SPECIES_PENNY_PUMPKIN_DACHSBUN: return 16;
     default: return 0;
     }
 }
@@ -53,7 +57,7 @@ u16 GetTrioOutfitReaction(void)
         if (GetMonData(&gPlayerParty[i], MON_DATA_IS_EGG)) continue;
         u16 index = OutfitIndex(GetMonData(&gPlayerParty[i], MON_DATA_SPECIES));
         if (!index) continue;
-        u16 family = (index <= 3 || index == 11) ? 0 : (index <= 6 || index == 10 || index == 12) ? 1 : 2;
+        u16 family = (index <= 3 || index == 11 || index == 14) ? 0 : (index <= 6 || index == 10 || index == 12 || index == 15) ? 1 : 2;
         if (gSpecialVar_0x8004 == 3 || gSpecialVar_0x8004 == family) return index;
     }
     return 0;
@@ -61,14 +65,14 @@ u16 GetTrioOutfitReaction(void)
 
 u16 HasTrioOutfitPhoto(void)
 {
-    if (gSpecialVar_0x8004 >= 13) return FALSE;
+    if (gSpecialVar_0x8004 >= 16) return FALSE;
     return (VarGet(VAR_TRIO_OUTFIT_PHOTOS) & (1u << gSpecialVar_0x8004)) != 0;
 }
 
 void BufferTrioOutfitPhotoCount(void)
 {
-    u16 mask = VarGet(VAR_TRIO_OUTFIT_PHOTOS) & 0x1DFF;
+    u16 mask = VarGet(VAR_TRIO_OUTFIT_PHOTOS) & 0xFDFF;
     u16 count = 0;
-    for (u32 i = 0; i < 13; i++) count += (mask >> i) & 1;
+    for (u32 i = 0; i < 16; i++) count += (mask >> i) & 1;
     ConvertIntToDecimalStringN(gStringVar1, count, STR_CONV_MODE_LEFT_ALIGN, 2);
 }

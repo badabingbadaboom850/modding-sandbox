@@ -184,3 +184,6 @@
 - [Bag icon buffer overflow repair](trio_bag_icon_repair.md)
 
 - [New trio costumes](trio_new_costumes.md)
+
+- [Permanent Halloween costumes](trio_halloween_costumes.md)
+- [Focused costume emulator pass](trio_costume_emulator_pass.md)

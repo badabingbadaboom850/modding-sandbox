@@ -13,6 +13,9 @@ TrioOutfit_React::
 	goto_if_eq VAR_RESULT, 9, TrioOutfit_React8
 	goto_if_eq VAR_RESULT, 10, TrioOutfit_React9
 	goto_if_eq VAR_RESULT, 13, TrioOutfit_React12
+	goto_if_eq VAR_RESULT, 14, TrioOutfit_React13
+	goto_if_eq VAR_RESULT, 15, TrioOutfit_React14
+	goto_if_eq VAR_RESULT, 16, TrioOutfit_React15
 	goto_if_eq VAR_RESULT, 12, TrioOutfit_React11
 	goto_if_eq VAR_RESULT, 11, TrioOutfit_React10
 	return
@@ -87,6 +90,9 @@ TrioOutfit_ScottOne:
 	goto_if_eq VAR_RESULT, 9, TrioOutfit_Scott8
 	goto_if_eq VAR_RESULT, 10, TrioOutfit_Scott9
 	goto_if_eq VAR_RESULT, 13, TrioOutfit_Scott12
+	goto_if_eq VAR_RESULT, 14, TrioOutfit_Scott13
+	goto_if_eq VAR_RESULT, 15, TrioOutfit_Scott14
+	goto_if_eq VAR_RESULT, 16, TrioOutfit_Scott15
 	goto_if_eq VAR_RESULT, 12, TrioOutfit_Scott11
 	goto_if_eq VAR_RESULT, 11, TrioOutfit_Scott10
 	return
@@ -156,7 +162,7 @@ TrioOutfit_AlbumMenu:
 	goto_if_eq VAR_RESULT, 3, TrioOutfit_AlbumBonus
 	return
 TrioOutfit_AlbumIntro:
-	.string "Photos: {STR_VAR_1}/12\nPoison has a bonus page!\pWear each costume once.\nIts photo stays forever.$"
+	.string "Photos: {STR_VAR_1}/15\nPoison has a bonus page!\pWear each costume once.\nIts photo stays forever.$"
 TrioOutfit_RikoName:
 	.string "Riko$"
 TrioOutfit_BijuuName:
@@ -169,27 +175,30 @@ TrioOutfit_BackName:
 	.string "Back$"
 TrioOutfit_AlbumRiko:
 	closemessage
-	dynmultichoice 0, 0, FALSE, 4, 0, DYN_MULTICHOICE_CB_NONE, TrioOutfit_PageName0, TrioOutfit_PageName1, TrioOutfit_PageName2, TrioOutfit_PageName10, TrioOutfit_BackName
+	dynmultichoice 0, 0, FALSE, 4, 0, DYN_MULTICHOICE_CB_NONE, TrioOutfit_PageName0, TrioOutfit_PageName1, TrioOutfit_PageName2, TrioOutfit_PageName10, TrioOutfit_PageName13, TrioOutfit_BackName
 	goto_if_eq VAR_RESULT, 0, TrioOutfit_Page0
 	goto_if_eq VAR_RESULT, 1, TrioOutfit_Page1
 	goto_if_eq VAR_RESULT, 2, TrioOutfit_Page2
 	goto_if_eq VAR_RESULT, 3, TrioOutfit_Page10
+	goto_if_eq VAR_RESULT, 4, TrioOutfit_Page13
 	goto TrioOutfit_AlbumMenu
 TrioOutfit_AlbumBijuu:
 	closemessage
-	dynmultichoice 0, 0, FALSE, 4, 0, DYN_MULTICHOICE_CB_NONE, TrioOutfit_PageName3, TrioOutfit_PageName4, TrioOutfit_PageName5, TrioOutfit_PageName11, TrioOutfit_BackName
+	dynmultichoice 0, 0, FALSE, 4, 0, DYN_MULTICHOICE_CB_NONE, TrioOutfit_PageName3, TrioOutfit_PageName4, TrioOutfit_PageName5, TrioOutfit_PageName11, TrioOutfit_PageName14, TrioOutfit_BackName
 	goto_if_eq VAR_RESULT, 0, TrioOutfit_Page3
 	goto_if_eq VAR_RESULT, 1, TrioOutfit_Page4
 	goto_if_eq VAR_RESULT, 2, TrioOutfit_Page5
 	goto_if_eq VAR_RESULT, 3, TrioOutfit_Page11
+	goto_if_eq VAR_RESULT, 4, TrioOutfit_Page14
 	goto TrioOutfit_AlbumMenu
 TrioOutfit_AlbumPenny:
 	closemessage
-	dynmultichoice 0, 0, FALSE, 4, 0, DYN_MULTICHOICE_CB_NONE, TrioOutfit_PageName6, TrioOutfit_PageName7, TrioOutfit_PageName8, TrioOutfit_PageName12, TrioOutfit_BackName
+	dynmultichoice 0, 0, FALSE, 4, 0, DYN_MULTICHOICE_CB_NONE, TrioOutfit_PageName6, TrioOutfit_PageName7, TrioOutfit_PageName8, TrioOutfit_PageName12, TrioOutfit_PageName15, TrioOutfit_BackName
 	goto_if_eq VAR_RESULT, 0, TrioOutfit_Page6
 	goto_if_eq VAR_RESULT, 1, TrioOutfit_Page7
 	goto_if_eq VAR_RESULT, 2, TrioOutfit_Page8
 	goto_if_eq VAR_RESULT, 3, TrioOutfit_Page12
+	goto_if_eq VAR_RESULT, 4, TrioOutfit_Page15
 	goto TrioOutfit_AlbumMenu
 TrioOutfit_AlbumBonus:
 	closemessage
@@ -748,3 +757,81 @@ TrioOutfit_PageName12:
 	.string "Ballerina$"
 TrioOutfit_Caption12:
 	.string "Four tiny dancing paws.\nHer sisters cheer loudest.$"
+
+TrioOutfit_React13:
+	msgbox TrioOutfit_ReactText13, MSGBOX_DEFAULT
+	return
+TrioOutfit_ReactText13:
+	.string "Riko bewitched the snacks.\nNobody is surprised.$"
+
+TrioOutfit_Scott13:
+	msgbox TrioOutfit_ScottText13, MSGBOX_DEFAULT
+	return
+TrioOutfit_ScottText13:
+	.string "Riko has her little spell.\nYou have my whole heart.$"
+
+TrioOutfit_Page13:
+	setvar VAR_0x8004, 13
+	specialvar VAR_RESULT, HasTrioOutfitPhoto
+	goto_if_eq VAR_RESULT, FALSE, TrioOutfit_Locked
+	showmonpic SPECIES_RIKO_WITCH, 10, 3
+	msgbox TrioOutfit_Caption13, MSGBOX_DEFAULT
+	closemessage
+	hidemonpic
+	goto TrioOutfit_AlbumMenu
+TrioOutfit_PageName13:
+	.string "Witch$"
+TrioOutfit_Caption13:
+	.string "A tiny witch, a big bark.\nHer spell summons snacks.$"
+
+TrioOutfit_React14:
+	msgbox TrioOutfit_ReactText14, MSGBOX_DEFAULT
+	return
+TrioOutfit_ReactText14:
+	.string "Count Cocoa is awake!\nHide the fish, not garlic.$"
+
+TrioOutfit_Scott14:
+	msgbox TrioOutfit_ScottText14, MSGBOX_DEFAULT
+	return
+TrioOutfit_ScottText14:
+	.string "Bijuu wants midnight fish.\nI want a night with you.$"
+
+TrioOutfit_Page14:
+	setvar VAR_0x8004, 14
+	specialvar VAR_RESULT, HasTrioOutfitPhoto
+	goto_if_eq VAR_RESULT, FALSE, TrioOutfit_Locked
+	showmonpic SPECIES_BIJUU_VAMPIRE, 10, 3
+	msgbox TrioOutfit_Caption14, MSGBOX_DEFAULT
+	closemessage
+	hidemonpic
+	goto TrioOutfit_AlbumMenu
+TrioOutfit_PageName14:
+	.string "Vampire$"
+TrioOutfit_Caption14:
+	.string "A cape, a cocoa, a fang.\nThe fish had no chance.$"
+
+TrioOutfit_React15:
+	msgbox TrioOutfit_ReactText15, MSGBOX_DEFAULT
+	return
+TrioOutfit_ReactText15:
+	.string "That pumpkin has paws!\nPenny makes autumn sweet.$"
+
+TrioOutfit_Scott15:
+	msgbox TrioOutfit_ScottText15, MSGBOX_DEFAULT
+	return
+TrioOutfit_ScottText15:
+	.string "Penny is our pumpkin.\nYou are my sweetie pie.$"
+
+TrioOutfit_Page15:
+	setvar VAR_0x8004, 15
+	specialvar VAR_RESULT, HasTrioOutfitPhoto
+	goto_if_eq VAR_RESULT, FALSE, TrioOutfit_Locked
+	showmonpic SPECIES_PENNY_PUMPKIN, 10, 3
+	msgbox TrioOutfit_Caption15, MSGBOX_DEFAULT
+	closemessage
+	hidemonpic
+	goto TrioOutfit_AlbumMenu
+TrioOutfit_PageName15:
+	.string "Pumpkin$"
+TrioOutfit_Caption15:
+	.string "The sweetest little gourd.\nHer sisters picked her.$"

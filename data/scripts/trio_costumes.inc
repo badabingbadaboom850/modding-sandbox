@@ -194,6 +194,7 @@ TrioCostume_RikoPrincessReadyText:
 TrioCostume_RikoRaincoatGift::
 	lock
 	faceplayer
+	call TrioCostume_RikoWitchGift
 	call TrioCostume_RikoButterflyGift
 	call TrioOutfit_React
 	checkitem ITEM_RIKOS_RAINCOAT
@@ -245,6 +246,7 @@ TrioCostume_BijuuBreadReadyText:
 TrioCostume_BijuuDetectiveGift::
 	lock
 	faceplayer
+	call TrioCostume_BijuuVampireGift
 	call TrioCostume_BijuuAstronautGift
 	call TrioOutfit_React
 	checkitem ITEM_COCOAS_DETECTIVE_KIT
@@ -296,6 +298,7 @@ TrioCostume_PennyBlanketReadyText:
 TrioCostume_PennyLifeguardGift::
 	lock
 	faceplayer
+	call TrioCostume_PennyPumpkinGift
 	call TrioCostume_PennyBallerinaGift
 	call TrioOutfit_React
 	checkitem ITEM_PENNYS_BEACH_VEST
@@ -403,3 +406,63 @@ TrioCostume_PennyBallerinaOffer:
 	.string "Tiny paws. Big applause.\nWant a tutu for Penny?$"
 TrioCostume_PennyBallerinaReady:
 	.string "Use Penny Tutu\non ordinary Penny.\pUse it again to revert.\nSame moves, new outfit!$"
+
+TrioCostume_RikoWitchGift::
+	checkitem ITEM_RIKOS_WITCH_HAT
+	goto_if_eq VAR_RESULT, TRUE, TrioCostume_RikoWitchReturn
+	call TrioParty_CheckRiko
+	goto_if_eq VAR_RESULT, FALSE, TrioCostume_RikoWitchReturn
+	msgbox TrioCostume_RikoWitchOffer, MSGBOX_YESNO
+	goto_if_eq VAR_RESULT, NO, TrioCostume_RikoWitchReturn
+	giveitem ITEM_RIKOS_WITCH_HAT
+	goto_if_eq VAR_RESULT, FALSE, TrioCostume_RikoWitchFull
+	msgbox TrioCostume_RikoWitchReady, MSGBOX_DEFAULT
+TrioCostume_RikoWitchReturn:
+	return
+TrioCostume_RikoWitchFull:
+	msgbox TrioCostume_BagText, MSGBOX_DEFAULT
+	return
+TrioCostume_RikoWitchOffer:
+	.string "Riko casts snack spells!\nWant a witch hat?$"
+TrioCostume_RikoWitchReady:
+	.string "Use Riko Witch Hat\non ordinary Riko.\pUse it again to revert.\nSame moves, new outfit!$"
+
+TrioCostume_BijuuVampireGift::
+	checkitem ITEM_BIJUUS_VAMPIRE_CAPE
+	goto_if_eq VAR_RESULT, TRUE, TrioCostume_BijuuVampireReturn
+	call TrioParty_CheckBijuu
+	goto_if_eq VAR_RESULT, FALSE, TrioCostume_BijuuVampireReturn
+	msgbox TrioCostume_BijuuVampireOffer, MSGBOX_YESNO
+	goto_if_eq VAR_RESULT, NO, TrioCostume_BijuuVampireReturn
+	giveitem ITEM_BIJUUS_VAMPIRE_CAPE
+	goto_if_eq VAR_RESULT, FALSE, TrioCostume_BijuuVampireFull
+	msgbox TrioCostume_BijuuVampireReady, MSGBOX_DEFAULT
+TrioCostume_BijuuVampireReturn:
+	return
+TrioCostume_BijuuVampireFull:
+	msgbox TrioCostume_BagText, MSGBOX_DEFAULT
+	return
+TrioCostume_BijuuVampireOffer:
+	.string "Count Cocoa wants fish.\nWant a vampire cape?$"
+TrioCostume_BijuuVampireReady:
+	.string "Use Vampire Cape\non ordinary Bijuu.\pUse it again to revert.\nSame moves, new outfit!$"
+
+TrioCostume_PennyPumpkinGift::
+	checkitem ITEM_PENNYS_PUMPKIN_SUIT
+	goto_if_eq VAR_RESULT, TRUE, TrioCostume_PennyPumpkinReturn
+	call TrioParty_CheckPenny
+	goto_if_eq VAR_RESULT, FALSE, TrioCostume_PennyPumpkinReturn
+	msgbox TrioCostume_PennyPumpkinOffer, MSGBOX_YESNO
+	goto_if_eq VAR_RESULT, NO, TrioCostume_PennyPumpkinReturn
+	giveitem ITEM_PENNYS_PUMPKIN_SUIT
+	goto_if_eq VAR_RESULT, FALSE, TrioCostume_PennyPumpkinFull
+	msgbox TrioCostume_PennyPumpkinReady, MSGBOX_DEFAULT
+TrioCostume_PennyPumpkinReturn:
+	return
+TrioCostume_PennyPumpkinFull:
+	msgbox TrioCostume_BagText, MSGBOX_DEFAULT
+	return
+TrioCostume_PennyPumpkinOffer:
+	.string "Our sweetest pumpkin!\nWant a suit for Penny?$"
+TrioCostume_PennyPumpkinReady:
+	.string "Use Pumpkin Suit\non ordinary Penny.\pUse it again to revert.\nSame moves, new outfit!$"

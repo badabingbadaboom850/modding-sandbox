@@ -27,7 +27,7 @@ TEST("Outfit portraits record each costume and Poison once without duplicate Pen
     TrioOutfits_RecordPhoto(SPECIES_RIKO);
     TrioOutfits_RecordPhoto(SPECIES_PIKACHU);
     EXPECT_EQ(VarGet(VAR_TRIO_OUTFIT_PHOTOS), 0x3FF);
-    gSpecialVar_0x8004 = 10;
+    gSpecialVar_0x8004 = 16;
     EXPECT_EQ(HasTrioOutfitPhoto(), FALSE);
     gSpecialVar_0x8004 = 0xFFFF;
     EXPECT_EQ(HasTrioOutfitPhoto(), FALSE);
@@ -93,6 +93,30 @@ TEST("New cosmetic portraits append without altering earned old photos")
     BufferTrioOutfitPhotoCount();
     EXPECT_EQ(gStringVar1[0], CHAR_0 + 1);
     EXPECT_EQ(gStringVar1[1], CHAR_0 + 2);
-    gSpecialVar_0x8004 = 13;
+    gSpecialVar_0x8004 = 16;
+    EXPECT_EQ(HasTrioOutfitPhoto(), FALSE);
+}
+
+TEST("Halloween portraits fill final mask bits without erasing historical photos")
+{
+    static const u16 forms[] = {SPECIES_RIKO_WITCH, SPECIES_BIJUU_VAMPIRE, SPECIES_PENNY_PUMPKIN};
+    VarSet(VAR_TRIO_OUTFIT_PHOTOS, 0x1FFF);
+    ZeroPlayerPartyMons();
+    for (u32 i = 0; i < ARRAY_COUNT(forms); i++)
+    {
+        CreateMon(&gPlayerParty[i], forms[i], 30, 0, OTID_STRUCT_PLAYER_ID);
+        TrioOutfits_RecordPhoto(forms[i]);
+        gSpecialVar_0x8004 = i;
+        EXPECT_EQ(GetTrioOutfitReaction(), 14 + i);
+        gSpecialVar_0x8004 = 13 + i;
+        EXPECT(HasTrioOutfitPhoto());
+    }
+    EXPECT_EQ(VarGet(VAR_TRIO_OUTFIT_PHOTOS), 0xFFFF);
+    TrioOutfits_RecordPhoto(SPECIES_PENNY_PUMPKIN_DACHSBUN);
+    EXPECT_EQ(VarGet(VAR_TRIO_OUTFIT_PHOTOS), 0xFFFF);
+    BufferTrioOutfitPhotoCount();
+    EXPECT_EQ(gStringVar1[0], CHAR_0 + 1);
+    EXPECT_EQ(gStringVar1[1], CHAR_0 + 5);
+    gSpecialVar_0x8004 = 16;
     EXPECT_EQ(HasTrioOutfitPhoto(), FALSE);
 }

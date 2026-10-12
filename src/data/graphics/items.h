@@ -2273,3 +2273,10 @@ const u16 gItemIconPalette_BijuuAstronaut[] = INCBIN_U16("graphics/items/icon_pa
 
 const u32 gItemIcon_PennyBallerina[] = INCBIN_U32("graphics/items/icons/penny_ballerina.4bpp.smol");
 const u16 gItemIconPalette_PennyBallerina[] = INCBIN_U16("graphics/items/icon_palettes/penny_ballerina.gbapal");
+
+const u32 gItemIcon_RikoWitch[] = INCBIN_U32("graphics/items/icons/riko_witch.4bpp.smol");
+const u16 gItemIconPalette_RikoWitch[] = INCBIN_U16("graphics/items/icon_palettes/riko_witch.gbapal");
+const u32 gItemIcon_BijuuVampire[] = INCBIN_U32("graphics/items/icons/bijuu_vampire.4bpp.smol");
+const u16 gItemIconPalette_BijuuVampire[] = INCBIN_U16("graphics/items/icon_palettes/bijuu_vampire.gbapal");
+const u32 gItemIcon_PennyPumpkin[] = INCBIN_U32("graphics/items/icons/penny_pumpkin.4bpp.smol");
+const u16 gItemIconPalette_PennyPumpkin[] = INCBIN_U16("graphics/items/icon_palettes/penny_pumpkin.gbapal");

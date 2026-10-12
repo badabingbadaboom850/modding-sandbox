@@ -18,7 +18,8 @@ for line in source.splitlines():
  else:code.append(line)
 cases=0
 for family,sym,item,name,base in [('Riko','RikoButterfly','RIKOS_BUTTERFLY_WINGS','riko_butterfly','RikoRaincoat'),('Bijuu','BijuuAstronaut','BIJUUS_SPACE_HELMET','bijuu_astronaut','BijuuDetective'),('Penny','PennyBallerina','PENNYS_BALLET_TUTU','penny_ballerina','PennyLifeguard')]:
- assert 'TrioCostume_'+base+'Gift::\n\tlock\n\tfaceplayer\n\tcall TrioCostume_'+sym+'Gift' in source
+ entry=source.split('TrioCostume_'+base+'Gift::',1)[1].split('TrioCostume_'+base+'Ready:',1)[0]
+ assert '\tcall TrioCostume_'+sym+'Gift' in entry
  for owned,present,yes,room in itertools.product([0,1],repeat=4):
   pc=labels['TrioCostume_'+sym+'Gift'];result=0;gifts=0
   for step in range(60):

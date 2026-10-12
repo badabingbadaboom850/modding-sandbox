@@ -1368,3 +1368,25 @@ formats/packs bytes.48 source gift cases, old save/ID/map preservation and text/
 indexed formats pass. Native tests now cover new forms but were not run locally:
 ARM compiler/libpng dependencies unavailable. CI/build/actual emulator checks
 remain separate. Keep Bag-icon repair, run-off5%, mailbox normal, PR2 draft.
+
+
+## Permanent Halloween cosmetic costumes (2026-10-12)
+
+User chose permanent optional gifts. Witch Riko/Vampire Bijuu/Pumpkin Penny
+append species1637-1640/items975-977, female cosmetic ordinary-stage metadata.
+Penny retains Fidough/Dachsbun and dressed level26 evolution. Protected reusable
+Key Items are Riko Witch Hat/Vampire Cape/Pumpkin Suit, gifted before existing
+raincoat/detective/beach-vest host conversations. No new map actors/date gates/
+test supplies/save structures. Album bits13-15 fill existing16bit mask; no future
+portrait may shift past15 without a new audited design. All15 costumes plus
+Poison bonus preserve prior bit assignments; current count excludes Poison.
+Native art reference atlases and C conversion follow existing workflow. Vampire
+up-facing cells repaired with imagegen. See docs/trio_halloween_costumes.md and
+docs/trio_costume_emulator_pass.md for all15 costume/stage restart/Box/faint/
+reversion/existing-save checks. All39 form items audited reusable26 Key/13 Items;
+historical inventories/pockets unchanged, lost older copies not auto-restored.
+The inherited audit was updated for appended items, keeping historical numeric
+IDs/inventory/save-layout checks.48 Halloween +48 prior extra gift/source/asset
+checks pass; engine tests extended but local ARM/libpng dependencies unavailable.
+CI build/tests and rendered emulator pass remain distinct. Keep5% run-off,
+normal mailbox, Bag-icon repair and PR2 draft/unmerged.

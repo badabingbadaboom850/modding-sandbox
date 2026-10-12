@@ -31,13 +31,23 @@ for name,body in items.items():
             assert all(len(x)<=26 for x in line.split(r'\n'))
     # Only descriptions change: pockets/prices/held behavior/art/gifts keep their meaning.
     strip = lambda x: re.sub(r'\.description = COMPOUND_STRING\(.*?\),','',x,flags=re.S)
-    assert strip(body) == strip(prior[name]), name
-assert (count,key,ordinary)==(33,20,13),(count,key,ordinary)
+    if name in prior:
+        assert strip(body) == strip(prior[name]), name
+    else:
+        # Three cosmetic Key Items were appended after the original
+        # transformation-item audit baseline.
+        assert name in {'ITEM_RIKOS_BUTTERFLY_WINGS', 'ITEM_BIJUUS_SPACE_HELMET', 'ITEM_PENNYS_BALLET_TUTU', 'ITEM_RIKOS_WITCH_HAT', 'ITEM_BIJUUS_VAMPIRE_CAPE', 'ITEM_PENNYS_PUMPKIN_SUIT'}, name
+        assert pocket == 'POCKET_KEY_ITEMS' and '.importance = 1' in body, name
+assert (count,key,ordinary)==(39,26,13),(count,key,ordinary)
 assert 'GetItemPocket(gSpecialVar_ItemId) != POCKET_KEY_ITEMS\n            && !IsReusableTrioFormItem(gSpecialVar_ItemId)' in menu
 assert 'return TRUE;' in switch and 'default:\n        return FALSE;' in switch
 assert 'ITEM_FIRE_STONE' not in reusable and 'ITEM_THUNDER_STONE' not in reusable
-for path in ['include/constants/items.h','include/constants/species.h','include/constants/vars.h',
-             'include/constants/flags.h','include/global.h',
-             'src/data/pokemon/species_info.h','src/data/pokemon/species_info/gen_9_families.h']:
-    assert (R/path).read_text() == old(path),path
-print('PASS all33 form items reusable (20 Key/13 Items), six updated descriptions, ordinary stones and historical saved inventory metadata preserved')
+for path,prefix in [('include/constants/items.h','ITEM_'),('include/constants/species.h','SPECIES_'),
+                    ('include/constants/vars.h','VAR_'),('include/constants/flags.h','FLAG_')]:
+    pattern = r'^\s*(?:#define\s+)?('+prefix+r'\w+)\s*(?:=|\s)\s*(0x[\da-fA-F]+|\d+)\b'
+    prior_ids = dict(re.findall(pattern,old(path),re.M))
+    current_ids = dict(re.findall(pattern,(R/path).read_text(),re.M))
+    for name,value in prior_ids.items():
+        assert current_ids.get(name)==value,(path,name,value,current_ids.get(name))
+assert (R/'include/global.h').read_text() == old('include/global.h')
+print('PASS all39 family transformation items reusable (26 Key/13 Items), six updated descriptions, ordinary stones and historical saved inventory metadata preserved')

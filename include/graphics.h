@@ -3634,3 +3634,10 @@ extern const u16 gItemIconPalette_BijuuAstronaut[];
 
 extern const u32 gItemIcon_PennyBallerina[];
 extern const u16 gItemIconPalette_PennyBallerina[];
+
+extern const u32 gItemIcon_RikoWitch[];
+extern const u16 gItemIconPalette_RikoWitch[];
+extern const u32 gItemIcon_BijuuVampire[];
+extern const u16 gItemIconPalette_BijuuVampire[];
+extern const u32 gItemIcon_PennyPumpkin[];
+extern const u16 gItemIconPalette_PennyPumpkin[];
