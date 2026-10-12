@@ -1462,3 +1462,12 @@ both up poses connected/centered, palettes/battle/menu/item/source unchanged.
 See tools/costumes/validate_penny_pumpkin_crop.py. Game/items/save/travel unchanged;
 rendered follower confirmation and new ROM build remain separate. Keep testhook
 and PRdraft/unmerged.
+
+## Piece of Chicken Bag description width (2026-10-12)
+
+CI194 confirmed cafe fixture passes but exposed prior item938 description107px
+vs102px FONT_NARROW limit. Text shortened/reflowed to "Reusable. Returns" /
+"Guardian Penny to" / "her ordinary form." Actual charmap/font widths80/80/83.
+ID/pocket/price/icon/form/reusability/save behavior unchanged. New glyph-width
+validator reproduces old107 and verifies new lines; all39 item metadata checks
+pass. This accompanies Pumpkin Penny crop rebuild; report CI/ROM separately.

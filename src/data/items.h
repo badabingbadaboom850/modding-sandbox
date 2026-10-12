@@ -18176,7 +18176,7 @@ const struct ItemInfo gItemsInfo[] =
     {
         .name = ITEM_NAME("Piece of Chicken"),
         .price = 500,
-        .description = COMPOUND_STRING("Reusable chicken treat.\nReturns Guardian Penny\nto her ordinary form."),
+        .description = COMPOUND_STRING("Reusable. Returns\nGuardian Penny to\nher ordinary form."),
         .pocket = POCKET_ITEMS,
         .sortType = ITEM_TYPE_EVOLUTION_STONE,
         .heldSlot = 0,

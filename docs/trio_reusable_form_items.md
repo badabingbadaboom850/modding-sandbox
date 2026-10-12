@@ -29,3 +29,10 @@ Validation: all33 item classifications and the six updated descriptions pass;
 ordinary stones, historical inventory metadata and species/form rules are
 unchanged. RELEASE production build passed (32,728,296 linked bytes,
 EWRAM255,432, padded32MiB). Existing parade/run-off ROM registrations pass.
+
+CI194 reached the Bag text-width check and found the existing Piece of Chicken
+reusable description at107px, exceeding FONT_NARROW's102px bound. Its wording
+is now "Reusable. Returns / Guardian Penny to / her ordinary form." Actual
+engine glyph widths are80/80/83px. Item ID938, price/pocket/reusability, targets,
+icons and saved inventory remain unchanged. validate_chicken_text.py reproduces
+the prior107px and checks the corrected lines using the actual charmap/font table.
