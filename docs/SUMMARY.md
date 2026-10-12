@@ -189,3 +189,5 @@
 - [Focused costume emulator pass](trio_costume_emulator_pass.md)
 
 - [Trick-or-Treat Trail](trio_halloween_trail.md)
+
+- [Seasonal expansion proposal](trio_seasonal_expansion_plan.md)
