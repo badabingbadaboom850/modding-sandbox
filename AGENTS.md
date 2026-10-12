@@ -1329,3 +1329,22 @@ cafe groups passed.8 compiled guide/map registries,50 actors,7 auto-frames,
 6 club speakers and every authored dialogue byte checked in actual ROM.
 All33 reusable item audits, normal5% run-off/mailbox and prior parade ROM
 checks passed. New rendered scene/save-reload playtesting remains for user.
+
+## Bag freeze while looking for Riko's Wand (2026-10-12 UTC)
+
+User's wife froze while looking in Bag to use Wand; exact action unknown.
+Wand's288-byte icon and evolution selection pass native checks. Reproduced a
+real shared-loader overflow: Fish Toy and Cat Nip512-byte32x32 icons decompressed
+into288-byte buffer.224-byte overwrite can damage heap and manifest at a later
+selection. Do not claim the exact user trigger proven without save/cursor info.
+
+src/item_icon.c reserves512 bytes and shares bounded24x24/32x32 conversion in
+standard/custom-template sprites and window blits. Standard padding unchanged;
+full32x32 art copied directly. Unsupported dimensions free buffers and return
+existing failure sentinel. No art, inventory/IDs/pockets/quantities/reusability/
+form rules/save data changes. Only224 additional temporary heap bytes; no globals.
+Old native testfailedEXPECT_GE(288,512).8 new loader/source/capacity/VRAM/window/
+all-item-dimension/evolution checks pass.37 focused native passes+7 intentional
+harness cases, zero unexpected. RELEASE32736364/EWRAM255432/padded32MiB passed.
+See docs/trio_bag_icon_repair.md and test/trio_wand_bag.c. User Bag retest remains.
+Use normal in-game save before freeze, not old frozen snapshot. Keep draft PR2.

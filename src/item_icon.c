@@ -57,7 +57,8 @@ const struct SpriteTemplate gItemIconSpriteTemplate =
 // code
 bool8 AllocItemIconTemporaryBuffers(void)
 {
-    gItemIconDecompressionBuffer = Alloc(0x120);
+    // Both the ordinary 24x24 icons and custom 32x32 icons must fit.
+    gItemIconDecompressionBuffer = Alloc(0x200);
     if (gItemIconDecompressionBuffer == NULL)
         return FALSE;
 
@@ -85,6 +86,23 @@ void CopyItemIconPicTo4x4Buffer(const void *src, void *dest)
         CpuCopy16(src + i * 96, dest + i * 128, 0x60);
 }
 
+// Sprite/window destinations are already 32x32. Only the older 24x24 source
+// needs padding; copying three rows of a 32x32 source would scramble its art.
+static bool32 DecompressItemIconToBuffers(enum Item itemId)
+{
+    const u32 *pic = GetItemIconPic(itemId);
+    u32 size = GetDecompressedDataSize(pic);
+    if (size != 0x120 && size != 0x200)
+        return FALSE;
+
+    DecompressDataWithHeaderWram(pic, gItemIconDecompressionBuffer);
+    if (size == 0x200)
+        CpuCopy32(gItemIconDecompressionBuffer, gItemIcon4x4Buffer, 0x200);
+    else
+        CopyItemIconPicTo4x4Buffer(gItemIconDecompressionBuffer, gItemIcon4x4Buffer);
+    return TRUE;
+}
+
 u8 AddItemIconSprite(u16 tilesTag, u16 paletteTag, enum Item itemId)
 {
     if (!AllocItemIconTemporaryBuffers())
@@ -98,8 +116,11 @@ u8 AddItemIconSprite(u16 tilesTag, u16 paletteTag, enum Item itemId)
         struct SpritePalette spritePalette;
         struct SpriteTemplate *spriteTemplate;
 
-        DecompressDataWithHeaderWram(GetItemIconPic(itemId), gItemIconDecompressionBuffer);
-        CopyItemIconPicTo4x4Buffer(gItemIconDecompressionBuffer, gItemIcon4x4Buffer);
+        if (!DecompressItemIconToBuffers(itemId))
+        {
+            FreeItemIconTemporaryBuffers();
+            return MAX_SPRITES;
+        }
         spriteSheet.data = gItemIcon4x4Buffer;
         spriteSheet.size = 0x200;
         spriteSheet.tag = tilesTag;
@@ -126,8 +147,11 @@ u8 BlitItemIconToWindow(enum Item itemId, u8 windowId, u16 x, u16 y, void * pale
     if (!AllocItemIconTemporaryBuffers())
         return 16;
 
-    DecompressDataWithHeaderWram(GetItemIconPic(itemId), gItemIconDecompressionBuffer);
-    CopyItemIconPicTo4x4Buffer(gItemIconDecompressionBuffer, gItemIcon4x4Buffer);
+    if (!DecompressItemIconToBuffers(itemId))
+    {
+        FreeItemIconTemporaryBuffers();
+        return 16;
+    }
     BlitBitmapToWindow(windowId, gItemIcon4x4Buffer, x, y, 32, 32);
 
     // if paletteDest is nonzero, copies the palette directly into it
@@ -154,8 +178,11 @@ u8 AddCustomItemIconSprite(const struct SpriteTemplate *customSpriteTemplate, u1
         struct SpritePalette spritePalette;
         struct SpriteTemplate *spriteTemplate;
 
-        DecompressDataWithHeaderWram(GetItemIconPic(itemId), gItemIconDecompressionBuffer);
-        CopyItemIconPicTo4x4Buffer(gItemIconDecompressionBuffer, gItemIcon4x4Buffer);
+        if (!DecompressItemIconToBuffers(itemId))
+        {
+            FreeItemIconTemporaryBuffers();
+            return MAX_SPRITES;
+        }
         spriteSheet.data = gItemIcon4x4Buffer;
         spriteSheet.size = 0x200;
         spriteSheet.tag = tilesTag;
