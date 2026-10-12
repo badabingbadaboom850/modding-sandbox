@@ -124,3 +124,37 @@ and each walk-out exit on separate visits, and confirm return to New Bark18,12.
 No automatic costume gifts, Badges, party additions or story resets should occur.
 Then enter through Olivine's Gastly after Badge5 and confirm the origin changes back to
 Olivine Cafe for every exit. All earned games/items/photos must remain.
+
+## Four seasonal chapters and twelve more toggles
+
+Use an existing save with earned photos and independently verify the gates:
+Mahogany Center Fall after Jasmine6, Blackthorn Thanksgiving after all8Johto,
+Celadon Christmas after Champion, Saffron New Year after all16. All hosts are5,6.
+They remain available outside the named season. Declining keeps normal Center
+services and progress. Both stage exits return safely to the source Center.
+
+For each chapter, accept a round, save after each of its three correct choices,
+reload and consult the saved clue. Test a wrong/repeated choice and Later/B.
+Leave by host and walk exit; return without losing progress or changing pattern.
+Win with a full Key Items pocket, with space for only one/two costume gifts, and
+with a full snack pocket/stack. Clear space and retry the host: received gifts
+must not repeat, missing prizes stay claimable without another win, and one
+snack completes the claim. Save/reload between claims. Pre-owned items must not
+produce duplicate copies. Replay twice: choose varied rounds, earn one small
+snack each time, retain all three keys and all previously earned photos.
+
+Run the earlier toggle lifecycle matrix for all12 seasonal items and both Penny
+stages: use/reuse, cancel, save while dressed, box/withdraw, faint/revive, reversion,
+reload and Mega return. Compare stats/moves/personality/held item before/after.
+Confirm the Key Item remains quantity1 on every successful/cancelled toggle and
+after evolution, boxing, fainting and reload. Sale/toss/hold/deposit must not
+remove a protected costume key. Any vanished/consumed key is a defect, even if
+its costume or photo remains. Do not grow the save's Bag layout to work around a
+full50-slot pocket; keep full-pocket prizes pending for review.
+
+Check front/back, party icon and down/up/left/right idle/step followers for all
+new costumes. Inspect both Penny up poses especially for detached neighboring
+tails, head direction, centering and clipping. Photograph every outfit: old16bits
+must remain intact, new12bits append in the separate mask, ordinary/evolved Penny
+share a page, each girl's four new pages open, locked pages and Back/B close the
+portrait, and full costume count shows27 with Poison still a separate bonus.

@@ -13,6 +13,7 @@
 TEST("Outfit portraits record each costume and Poison once without duplicate Penny stage pages")
 {
     static const u16 outfits[] = {SPECIES_RIKO_BALLOON, SPECIES_RIKO_PRINCESS, SPECIES_RIKO_RAINCOAT, SPECIES_BIJUU_BOX, SPECIES_BIJUU_BREAD, SPECIES_BIJUU_DETECTIVE, SPECIES_PENNY_HOTDOG, SPECIES_PENNY_BLANKET, SPECIES_PENNY_LIFEGUARD, SPECIES_BIJUU_POISON};
+    VarSet(VAR_TRIO_SEASONAL_PHOTOS, 0);
     VarSet(VAR_TRIO_OUTFIT_PHOTOS, 0);
     for (u32 i = 0; i < ARRAY_COUNT(outfits); i++)
     {
@@ -27,7 +28,7 @@ TEST("Outfit portraits record each costume and Poison once without duplicate Pen
     TrioOutfits_RecordPhoto(SPECIES_RIKO);
     TrioOutfits_RecordPhoto(SPECIES_PIKACHU);
     EXPECT_EQ(VarGet(VAR_TRIO_OUTFIT_PHOTOS), 0x3FF);
-    gSpecialVar_0x8004 = 16;
+    gSpecialVar_0x8004 = 28;
     EXPECT_EQ(HasTrioOutfitPhoto(), FALSE);
     gSpecialVar_0x8004 = 0xFFFF;
     EXPECT_EQ(HasTrioOutfitPhoto(), FALSE);
@@ -51,6 +52,7 @@ TEST("Outfit reactions match each girl and ignore eggs and empty party slots")
     EXPECT_EQ(GetTrioOutfitReaction(), 0);
     gSpecialVar_0x8004 = 3;
     EXPECT_EQ(GetTrioOutfitReaction(), 10);
+    VarSet(VAR_TRIO_SEASONAL_PHOTOS, 0);
     VarSet(VAR_TRIO_OUTFIT_PHOTOS, 0);
     TrioOutfits_RecordPartyPhotos();
     EXPECT_EQ(VarGet(VAR_TRIO_OUTFIT_PHOTOS), (1u << 9) | (1u << 7));
@@ -61,6 +63,7 @@ TEST("Outfit reactions match each girl and ignore eggs and empty party slots")
 TEST("Existing dressed saves and evolution hooks earn permanent album portraits")
 {
     ZeroPlayerPartyMons();
+    VarSet(VAR_TRIO_SEASONAL_PHOTOS, 0);
     VarSet(VAR_TRIO_OUTFIT_PHOTOS, 1);
     CreateMon(&gPlayerParty[0], SPECIES_BIJUU_DETECTIVE, 20, 0, OTID_STRUCT_PLAYER_ID);
     TrioOutfits_RecordPartyPhotos();
@@ -76,6 +79,7 @@ TEST("Existing dressed saves and evolution hooks earn permanent album portraits"
 TEST("New cosmetic portraits append without altering earned old photos")
 {
     static const u16 forms[] = {SPECIES_RIKO_BUTTERFLY, SPECIES_BIJUU_ASTRONAUT, SPECIES_PENNY_BALLERINA};
+    VarSet(VAR_TRIO_SEASONAL_PHOTOS, 0);
     VarSet(VAR_TRIO_OUTFIT_PHOTOS, 0x3FF);
     ZeroPlayerPartyMons();
     for (u32 i = 0; i < ARRAY_COUNT(forms); i++)
@@ -93,13 +97,14 @@ TEST("New cosmetic portraits append without altering earned old photos")
     BufferTrioOutfitPhotoCount();
     EXPECT_EQ(gStringVar1[0], CHAR_0 + 1);
     EXPECT_EQ(gStringVar1[1], CHAR_0 + 2);
-    gSpecialVar_0x8004 = 16;
+    gSpecialVar_0x8004 = 28;
     EXPECT_EQ(HasTrioOutfitPhoto(), FALSE);
 }
 
 TEST("Halloween portraits fill final mask bits without erasing historical photos")
 {
     static const u16 forms[] = {SPECIES_RIKO_WITCH, SPECIES_BIJUU_VAMPIRE, SPECIES_PENNY_PUMPKIN};
+    VarSet(VAR_TRIO_SEASONAL_PHOTOS, 0);
     VarSet(VAR_TRIO_OUTFIT_PHOTOS, 0x1FFF);
     ZeroPlayerPartyMons();
     for (u32 i = 0; i < ARRAY_COUNT(forms); i++)
@@ -117,6 +122,35 @@ TEST("Halloween portraits fill final mask bits without erasing historical photos
     BufferTrioOutfitPhotoCount();
     EXPECT_EQ(gStringVar1[0], CHAR_0 + 1);
     EXPECT_EQ(gStringVar1[1], CHAR_0 + 5);
-    gSpecialVar_0x8004 = 16;
+    gSpecialVar_0x8004 = 28;
+    EXPECT_EQ(HasTrioOutfitPhoto(), FALSE);
+}
+
+TEST("Seasonal photos preserve all old bits and share dressed Penny stages")
+{
+    static const u16 forms[] = {SPECIES_RIKO_LEAVES, SPECIES_BIJUU_SWEATER, SPECIES_PENNY_SWEATER, SPECIES_RIKO_TURKEY, SPECIES_BIJUU_CHEF, SPECIES_PENNY_YAM, SPECIES_RIKO_SANTA, SPECIES_BIJUU_PRESENT, SPECIES_PENNY_REINDEER, SPECIES_RIKO_PARTY, SPECIES_BIJUU_GALA, SPECIES_PENNY_STARS};
+    VarSet(VAR_TRIO_OUTFIT_PHOTOS, 0xFFFF);
+    VarSet(VAR_TRIO_SEASONAL_PHOTOS, 0);
+    for (u32 i = 0; i < ARRAY_COUNT(forms); i++)
+    {
+        ZeroPlayerPartyMons();
+        CreateMon(&gPlayerParty[0], forms[i], 30, 0, OTID_STRUCT_PLAYER_ID);
+        TrioOutfits_RecordPartyPhotos();
+        EXPECT_EQ(VarGet(VAR_TRIO_OUTFIT_PHOTOS), 0xFFFF);
+        EXPECT_EQ(VarGet(VAR_TRIO_SEASONAL_PHOTOS), (1u << (i + 1)) - 1);
+        gSpecialVar_0x8004 = i % 3;
+        EXPECT_EQ(GetTrioOutfitReaction(), 17 + i);
+        gSpecialVar_0x8004 = 16 + i;
+        EXPECT(HasTrioOutfitPhoto());
+    }
+    TrioOutfits_RecordPhoto(SPECIES_PENNY_SWEATER_DACHSBUN);
+    TrioOutfits_RecordPhoto(SPECIES_PENNY_YAM_DACHSBUN);
+    TrioOutfits_RecordPhoto(SPECIES_PENNY_REINDEER_DACHSBUN);
+    TrioOutfits_RecordPhoto(SPECIES_PENNY_STARS_DACHSBUN);
+    EXPECT_EQ(VarGet(VAR_TRIO_SEASONAL_PHOTOS), 0x0FFF);
+    BufferTrioOutfitPhotoCount();
+    EXPECT_EQ(gStringVar1[0], CHAR_0 + 2);
+    EXPECT_EQ(gStringVar1[1], CHAR_0 + 7);
+    gSpecialVar_0x8004 = 28;
     EXPECT_EQ(HasTrioOutfitPhoto(), FALSE);
 }

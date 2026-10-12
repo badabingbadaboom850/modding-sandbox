@@ -241,7 +241,8 @@
     "MahoganyTown_House1",
     "LakeOfRage_House1",
     "LakeOfRage_House2",
-    "TrioRikoNoise"
+    "TrioRikoNoise",
+    "TrioSeasonFall"
   ],
   "gMapGroup_IndoorBlackthorn": [
     "BlackthornCity_PokemonCenter",
@@ -250,7 +251,8 @@
     "BlackthornCity_House1",
     "BlackthornCity_House2",
     "BlackthornCity_House3",
-    "TrioGregFanClub"
+    "TrioGregFanClub",
+    "TrioSeasonThanksgiving"
   ],
   "gMapGroup_IndoorPallet": [
     "PalletTown_RedsHouse_1F",
@@ -325,7 +327,8 @@
     "CeladonCity_DepartmentStore_5F",
     "CeladonCity_DepartmentStore_RoofDay",
     "CeladonCity_DepartmentStore_RoofNight",
-    "CeladonCity_Gym"
+    "CeladonCity_Gym",
+    "TrioSeasonChristmas"
   ],
   "gMapGroup_IndoorSaffron": [
     "SaffronCity_PokemonCenter",
@@ -337,7 +340,8 @@
     "SaffronCity_SilphCo",
     "SaffronCity_CopyCatsHouse_1F",
     "SaffronCity_CopyCatsHouse_2F",
-    "SaffronCity_House1"
+    "SaffronCity_House1",
+    "TrioSeasonNewYear"
   ],
   "gMapGroup_IndoorFuchsia": [
     "FuchsiaCity_PokemonCenter",

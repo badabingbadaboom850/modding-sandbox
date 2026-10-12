@@ -439,3 +439,26 @@
 #define VAR_TRIO_HALLOWEEN_PENNY                    0x4149
 
 #define VAR_TRIO_HALLOWEEN_RETURN                   0x414A // 0 Olivine Cafe,1 authorized New Bark test trip
+
+// Append-only seasonal saves: zero is idle/unearned on existing saves.
+#define VAR_TRIO_SEASONAL_PHOTOS                    0x414B
+#define VAR_TRIO_FALL_STATE        0x414C
+#define VAR_TRIO_FALL_ROUND        0x414D
+#define VAR_TRIO_FALL_PROGRESS     0x414E
+#define VAR_TRIO_FALL_GIFTS        0x414F
+#define VAR_TRIO_FALL_SNACK        0x4150
+#define VAR_TRIO_THANKSGIVING_STATE        0x4151
+#define VAR_TRIO_THANKSGIVING_ROUND        0x4152
+#define VAR_TRIO_THANKSGIVING_PROGRESS     0x4153
+#define VAR_TRIO_THANKSGIVING_GIFTS        0x4154
+#define VAR_TRIO_THANKSGIVING_SNACK        0x4155
+#define VAR_TRIO_CHRISTMAS_STATE        0x4156
+#define VAR_TRIO_CHRISTMAS_ROUND        0x4157
+#define VAR_TRIO_CHRISTMAS_PROGRESS     0x4158
+#define VAR_TRIO_CHRISTMAS_GIFTS        0x4159
+#define VAR_TRIO_CHRISTMAS_SNACK        0x415A
+#define VAR_TRIO_NEW_YEAR_STATE        0x415B
+#define VAR_TRIO_NEW_YEAR_ROUND        0x415C
+#define VAR_TRIO_NEW_YEAR_PROGRESS     0x415D
+#define VAR_TRIO_NEW_YEAR_GIFTS        0x415E
+#define VAR_TRIO_NEW_YEAR_SNACK        0x415F

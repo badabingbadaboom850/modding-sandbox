@@ -36,9 +36,9 @@ for name,body in items.items():
     else:
         # Three cosmetic Key Items were appended after the original
         # transformation-item audit baseline.
-        assert name in {'ITEM_RIKOS_BUTTERFLY_WINGS', 'ITEM_BIJUUS_SPACE_HELMET', 'ITEM_PENNYS_BALLET_TUTU', 'ITEM_RIKOS_WITCH_HAT', 'ITEM_BIJUUS_VAMPIRE_CAPE', 'ITEM_PENNYS_PUMPKIN_SUIT'}, name
+        assert name in {'ITEM_RIKOS_BUTTERFLY_WINGS', 'ITEM_BIJUUS_SPACE_HELMET', 'ITEM_PENNYS_BALLET_TUTU', 'ITEM_RIKOS_WITCH_HAT', 'ITEM_BIJUUS_VAMPIRE_CAPE', 'ITEM_PENNYS_PUMPKIN_SUIT', 'ITEM_RIKOS_LEAF_BUNDLE', 'ITEM_COCOAS_KNIT_SET', 'ITEM_PENNYS_CARDIGAN', 'ITEM_RIKOS_FEATHER_FAN', 'ITEM_COCOAS_CHEF_HAT', 'ITEM_PENNYS_YAM_WRAP', 'ITEM_POM_SANTA_HAT', 'ITEM_COCOA_GIFT_BOX', 'ITEM_PENNYS_ANTLERS', 'ITEM_POM_PARTY_HAT', 'ITEM_COCOA_SILVER_BOW', 'ITEM_PENNYS_STAR_DRESS'}, name
         assert pocket == 'POCKET_KEY_ITEMS' and '.importance = 1' in body, name
-assert (count,key,ordinary)==(39,26,13),(count,key,ordinary)
+assert (count,key,ordinary)==(51,38,13),(count,key,ordinary)
 assert 'GetItemPocket(gSpecialVar_ItemId) != POCKET_KEY_ITEMS\n            && !IsReusableTrioFormItem(gSpecialVar_ItemId)' in menu
 assert 'return TRUE;' in switch and 'default:\n        return FALSE;' in switch
 assert 'ITEM_FIRE_STONE' not in reusable and 'ITEM_THUNDER_STONE' not in reusable
@@ -50,4 +50,4 @@ for path,prefix in [('include/constants/items.h','ITEM_'),('include/constants/sp
     for name,value in prior_ids.items():
         assert current_ids.get(name)==value,(path,name,value,current_ids.get(name))
 assert (R/'include/global.h').read_text() == old('include/global.h')
-print('PASS all39 family transformation items reusable (26 Key/13 Items), six updated descriptions, ordinary stones and historical saved inventory metadata preserved')
+print('PASS all51 family transformation items reusable (38 Key/13 Items), six updated descriptions, ordinary stones and historical saved inventory metadata preserved')

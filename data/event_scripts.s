@@ -2472,3 +2472,5 @@ Common_Text_ReceivedMon:
 
 	.include "data/maps/TrioHalloweenTrail/scripts.inc"
 	.include "data/scripts/trio_halloween_trail.inc"
+
+	.include "data/scripts/trio_seasonal_chapters.inc"

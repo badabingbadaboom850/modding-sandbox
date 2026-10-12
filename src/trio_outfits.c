@@ -32,6 +32,22 @@ static u16 OutfitIndex(u16 species)
     case SPECIES_BIJUU_VAMPIRE: return 15;
     case SPECIES_PENNY_PUMPKIN:
     case SPECIES_PENNY_PUMPKIN_DACHSBUN: return 16;
+    case SPECIES_RIKO_LEAVES: return 17;
+    case SPECIES_BIJUU_SWEATER: return 18;
+    case SPECIES_PENNY_SWEATER:
+    case SPECIES_PENNY_SWEATER_DACHSBUN: return 19;
+    case SPECIES_RIKO_TURKEY: return 20;
+    case SPECIES_BIJUU_CHEF: return 21;
+    case SPECIES_PENNY_YAM:
+    case SPECIES_PENNY_YAM_DACHSBUN: return 22;
+    case SPECIES_RIKO_SANTA: return 23;
+    case SPECIES_BIJUU_PRESENT: return 24;
+    case SPECIES_PENNY_REINDEER:
+    case SPECIES_PENNY_REINDEER_DACHSBUN: return 25;
+    case SPECIES_RIKO_PARTY: return 26;
+    case SPECIES_BIJUU_GALA: return 27;
+    case SPECIES_PENNY_STARS:
+    case SPECIES_PENNY_STARS_DACHSBUN: return 28;
     default: return 0;
     }
 }
@@ -39,7 +55,9 @@ static u16 OutfitIndex(u16 species)
 void TrioOutfits_RecordPhoto(u16 species)
 {
     u16 index = OutfitIndex(species);
-    if (index) VarSet(VAR_TRIO_OUTFIT_PHOTOS, VarGet(VAR_TRIO_OUTFIT_PHOTOS) | (1u << (index - 1)));
+    if (index > 16)
+        VarSet(VAR_TRIO_SEASONAL_PHOTOS, VarGet(VAR_TRIO_SEASONAL_PHOTOS) | (1u << (index - 17)));
+    else if (index) VarSet(VAR_TRIO_OUTFIT_PHOTOS, VarGet(VAR_TRIO_OUTFIT_PHOTOS) | (1u << (index - 1)));
 }
 
 void TrioOutfits_RecordPartyPhotos(void)
@@ -57,7 +75,7 @@ u16 GetTrioOutfitReaction(void)
         if (GetMonData(&gPlayerParty[i], MON_DATA_IS_EGG)) continue;
         u16 index = OutfitIndex(GetMonData(&gPlayerParty[i], MON_DATA_SPECIES));
         if (!index) continue;
-        u16 family = (index <= 3 || index == 11 || index == 14) ? 0 : (index <= 6 || index == 10 || index == 12 || index == 15) ? 1 : 2;
+        u16 family = index > 16 ? (index - 17) % 3 : (index <= 3 || index == 11 || index == 14) ? 0 : (index <= 6 || index == 10 || index == 12 || index == 15) ? 1 : 2;
         if (gSpecialVar_0x8004 == 3 || gSpecialVar_0x8004 == family) return index;
     }
     return 0;
@@ -65,7 +83,9 @@ u16 GetTrioOutfitReaction(void)
 
 u16 HasTrioOutfitPhoto(void)
 {
-    if (gSpecialVar_0x8004 >= 16) return FALSE;
+    if (gSpecialVar_0x8004 >= 28) return FALSE;
+    if (gSpecialVar_0x8004 >= 16)
+        return (VarGet(VAR_TRIO_SEASONAL_PHOTOS) & (1u << (gSpecialVar_0x8004 - 16))) != 0;
     return (VarGet(VAR_TRIO_OUTFIT_PHOTOS) & (1u << gSpecialVar_0x8004)) != 0;
 }
 
@@ -74,5 +94,7 @@ void BufferTrioOutfitPhotoCount(void)
     u16 mask = VarGet(VAR_TRIO_OUTFIT_PHOTOS) & 0xFDFF;
     u16 count = 0;
     for (u32 i = 0; i < 16; i++) count += (mask >> i) & 1;
+    mask = VarGet(VAR_TRIO_SEASONAL_PHOTOS) & 0x0FFF;
+    for (u32 i = 0; i < 12; i++) count += (mask >> i) & 1;
     ConvertIntToDecimalStringN(gStringVar1, count, STR_CONV_MODE_LEFT_ALIGN, 2);
 }

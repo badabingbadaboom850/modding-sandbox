@@ -6,6 +6,10 @@ TrioParty_CheckRiko::
 	goto_if_eq VAR_RESULT, TRUE, TrioParty_SetResultTrue
 	checkspecies SPECIES_RIKO_BUTTERFLY
 	checkspecies SPECIES_RIKO_WITCH
+	checkspecies SPECIES_RIKO_PARTY
+	checkspecies SPECIES_RIKO_SANTA
+	checkspecies SPECIES_RIKO_TURKEY
+	checkspecies SPECIES_RIKO_LEAVES
 	goto_if_eq VAR_RESULT, TRUE, TrioParty_SetResultTrue
 	checkspecies SPECIES_RIKO_RAINCOAT
 	goto_if_eq VAR_RESULT, TRUE, TrioParty_SetResultTrue
@@ -43,6 +47,10 @@ TrioParty_CheckRiko::
 TrioParty_CheckBijuu::
 	checkspecies SPECIES_BIJUU_ASTRONAUT
 	checkspecies SPECIES_BIJUU_VAMPIRE
+	checkspecies SPECIES_BIJUU_GALA
+	checkspecies SPECIES_BIJUU_PRESENT
+	checkspecies SPECIES_BIJUU_CHEF
+	checkspecies SPECIES_BIJUU_SWEATER
 	goto_if_eq VAR_RESULT, TRUE, TrioParty_SetResultTrue
 	checkspecies SPECIES_BIJUU_DETECTIVE
 	goto_if_eq VAR_RESULT, TRUE, TrioParty_SetResultTrue
@@ -84,11 +92,19 @@ TrioParty_CheckPenny::
 	goto_if_eq VAR_RESULT, TRUE, TrioParty_SetResultTrue
 	checkspecies SPECIES_PENNY_BALLERINA
 	checkspecies SPECIES_PENNY_PUMPKIN
+	checkspecies SPECIES_PENNY_STARS
+	checkspecies SPECIES_PENNY_REINDEER
+	checkspecies SPECIES_PENNY_YAM
+	checkspecies SPECIES_PENNY_SWEATER
 	goto_if_eq VAR_RESULT, TRUE, TrioParty_SetResultTrue
 	checkspecies SPECIES_PENNY_LIFEGUARD
 	goto_if_eq VAR_RESULT, TRUE, TrioParty_SetResultTrue
 	checkspecies SPECIES_PENNY_BALLERINA_DACHSBUN
 	checkspecies SPECIES_PENNY_PUMPKIN_DACHSBUN
+	checkspecies SPECIES_PENNY_STARS_DACHSBUN
+	checkspecies SPECIES_PENNY_REINDEER_DACHSBUN
+	checkspecies SPECIES_PENNY_YAM_DACHSBUN
+	checkspecies SPECIES_PENNY_SWEATER_DACHSBUN
 	goto_if_eq VAR_RESULT, TRUE, TrioParty_SetResultTrue
 	checkspecies SPECIES_PENNY_LIFEGUARD_DACHSBUN
 	goto_if_eq VAR_RESULT, TRUE, TrioParty_SetResultTrue

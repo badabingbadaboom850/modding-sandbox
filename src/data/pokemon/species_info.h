@@ -209,7 +209,7 @@ const struct SpeciesInfo gSpeciesInfo[] =
             gShinyOverworldPalette_Riko
         )
         .teachingType = ALL_TEACHABLES, .levelUpLearnset = sRikoLevelUpLearnset,
-        .evolutions = EVOLUTION({EVO_ITEM, ITEM_RIKOS_WITCH_HAT, SPECIES_RIKO_WITCH}, {EVO_ITEM, ITEM_RIKOS_BUTTERFLY_WINGS, SPECIES_RIKO_BUTTERFLY}, {EVO_ITEM, ITEM_RIKOS_HONEYCOMB, SPECIES_RIKO_BUG}, {EVO_ITEM, ITEM_POM_DRAGON_PLUSH, SPECIES_RIKO_DRAGON}, {EVO_ITEM, ITEM_RIKOS_BLACK_BELT, SPECIES_RIKO_FIGHTING}, {EVO_ITEM, ITEM_POM_TIARA, SPECIES_RIKO_PRINCESS}, {EVO_ITEM, ITEM_RIKOS_RAINCOAT, SPECIES_RIKO_RAINCOAT}, {EVO_ITEM, ITEM_RIKOS_BALLOON, SPECIES_RIKO_BALLOON}, {EVO_ITEM, ITEM_RIKOS_BLOOM, SPECIES_RIKO_FLOWER}, {EVO_ITEM, ITEM_RIKOS_COURAGE, SPECIES_RIKO_ECHO}, {EVO_ITEM, ITEM_RIKOS_WAND, SPECIES_RIKO_WING}, {EVO_ITEM, ITEM_GREEN_PEPPER, SPECIES_RIKO_FIRE}, {EVO_ITEM, ITEM_EEL_SUSHI, SPECIES_RIKO_ELECTRIC}),
+        .evolutions = EVOLUTION({EVO_ITEM, ITEM_POM_PARTY_HAT, SPECIES_RIKO_PARTY}, {EVO_ITEM, ITEM_POM_SANTA_HAT, SPECIES_RIKO_SANTA}, {EVO_ITEM, ITEM_RIKOS_FEATHER_FAN, SPECIES_RIKO_TURKEY}, {EVO_ITEM, ITEM_RIKOS_LEAF_BUNDLE, SPECIES_RIKO_LEAVES}, {EVO_ITEM, ITEM_RIKOS_WITCH_HAT, SPECIES_RIKO_WITCH}, {EVO_ITEM, ITEM_RIKOS_BUTTERFLY_WINGS, SPECIES_RIKO_BUTTERFLY}, {EVO_ITEM, ITEM_RIKOS_HONEYCOMB, SPECIES_RIKO_BUG}, {EVO_ITEM, ITEM_POM_DRAGON_PLUSH, SPECIES_RIKO_DRAGON}, {EVO_ITEM, ITEM_RIKOS_BLACK_BELT, SPECIES_RIKO_FIGHTING}, {EVO_ITEM, ITEM_POM_TIARA, SPECIES_RIKO_PRINCESS}, {EVO_ITEM, ITEM_RIKOS_RAINCOAT, SPECIES_RIKO_RAINCOAT}, {EVO_ITEM, ITEM_RIKOS_BALLOON, SPECIES_RIKO_BALLOON}, {EVO_ITEM, ITEM_RIKOS_BLOOM, SPECIES_RIKO_FLOWER}, {EVO_ITEM, ITEM_RIKOS_COURAGE, SPECIES_RIKO_ECHO}, {EVO_ITEM, ITEM_RIKOS_WAND, SPECIES_RIKO_WING}, {EVO_ITEM, ITEM_GREEN_PEPPER, SPECIES_RIKO_FIRE}, {EVO_ITEM, ITEM_EEL_SUSHI, SPECIES_RIKO_ELECTRIC}),
         .formSpeciesIdTable = sRikoFormSpeciesIdTable, .formChangeTable = sRikoFormChangeTable,
     },
     [SPECIES_RIKO_BALLOON] =
@@ -342,6 +342,138 @@ const struct SpeciesInfo gSpeciesInfo[] =
         )
         .teachingType = ALL_TEACHABLES, .levelUpLearnset = sRikoLevelUpLearnset,
         .evolutions = EVOLUTION({EVO_ITEM, ITEM_RIKOS_HONEYCOMB, SPECIES_RIKO_BUG}, {EVO_ITEM, ITEM_POM_DRAGON_PLUSH, SPECIES_RIKO_DRAGON}, {EVO_ITEM, ITEM_RIKOS_BLACK_BELT, SPECIES_RIKO_FIGHTING}, {EVO_ITEM, ITEM_POM_TIARA, SPECIES_RIKO_PRINCESS}, {EVO_ITEM, ITEM_RIKOS_WITCH_HAT, SPECIES_RIKO}, {EVO_ITEM, ITEM_RIKOS_BLOOM, SPECIES_RIKO_FLOWER}, {EVO_ITEM, ITEM_RIKOS_COURAGE, SPECIES_RIKO_ECHO}, {EVO_ITEM, ITEM_RIKOS_WAND, SPECIES_RIKO_WING}, {EVO_ITEM, ITEM_GREEN_PEPPER, SPECIES_RIKO_FIRE}, {EVO_ITEM, ITEM_EEL_SUSHI, SPECIES_RIKO_ELECTRIC}),
+        .formSpeciesIdTable = sRikoFormSpeciesIdTable, .formChangeTable = sRikoCostumeEntryTable,
+    },
+    [SPECIES_RIKO_PARTY] =
+    {
+        .baseHP = 90, .baseAttack = 75, .baseDefense = 85, .baseSpeed = 110,
+        .baseSpAttack = 105, .baseSpDefense = 95,
+        .types = MON_TYPES(TYPE_NORMAL, TYPE_FAIRY), .catchRate = 45, .expYield = 240,
+        .evYield_SpAttack = 2, .evYield_Speed = 1, .genderRatio = MON_FEMALE,
+        .eggCycles = 20, .friendship = STANDARD_FRIENDSHIP, .growthRate = GROWTH_MEDIUM_SLOW,
+        .eggGroups = MON_EGG_GROUPS(EGG_GROUP_FIELD, EGG_GROUP_FAIRY),
+        .abilities = { ABILITY_CUTE_CHARM, ABILITY_NONE, ABILITY_FLUFFY },
+        .bodyColor = BODY_COLOR_WHITE, .speciesName = _("RikoParty"), .cryId = CRY_SYLVEON,
+        .natDexNum = NATIONAL_DEX_RIKO, .categoryName = _("Fluff Bunny"), .height = 6, .weight = 95,
+        .description = COMPOUND_STRING("Its fluffy coat stores fairy\nenergy. It demands compliments,\nsnacks, and a dramatic entrance."),
+        .pokemonScale = 256, .trainerScale = 256,
+        .frontPic = gMonFrontPic_RikoParty, .frontPicSize = MON_COORDS_SIZE(64, 64), .frontPicYOffset = 0,
+        .frontAnimFrames = sAnims_SingleFramePlaceHolder, .backPic = gMonBackPic_RikoParty,
+        .backPicSize = MON_COORDS_SIZE(64, 64), .backPicYOffset = 0,
+        .palette = gMonPalette_RikoParty, .shinyPalette = gMonShinyPalette_RikoParty,
+        .iconSprite = gMonIcon_RikoParty, .iconPalette = gMonIconPalette_RikoParty,
+        .shinyIconPalette = gMonShinyIconPalette_RikoParty, .pokemonJumpType = PKMN_JUMP_TYPE_NORMAL,
+        SHADOW(-2, 8, SHADOW_SIZE_S)
+        OVERWORLD(
+            sPicTable_RikoParty,
+            SIZE_32x32,
+            SHADOW_SIZE_M,
+            TRACKS_NONE,
+            sAnimTable_Following,
+            gOverworldPalette_RikoParty,
+            gShinyOverworldPalette_RikoParty
+        )
+        .teachingType = ALL_TEACHABLES, .levelUpLearnset = sRikoLevelUpLearnset,
+        .evolutions = EVOLUTION({EVO_ITEM, ITEM_RIKOS_HONEYCOMB, SPECIES_RIKO_BUG}, {EVO_ITEM, ITEM_POM_DRAGON_PLUSH, SPECIES_RIKO_DRAGON}, {EVO_ITEM, ITEM_RIKOS_BLACK_BELT, SPECIES_RIKO_FIGHTING}, {EVO_ITEM, ITEM_POM_TIARA, SPECIES_RIKO_PRINCESS}, {EVO_ITEM, ITEM_POM_PARTY_HAT, SPECIES_RIKO}, {EVO_ITEM, ITEM_RIKOS_BLOOM, SPECIES_RIKO_FLOWER}, {EVO_ITEM, ITEM_RIKOS_COURAGE, SPECIES_RIKO_ECHO}, {EVO_ITEM, ITEM_RIKOS_WAND, SPECIES_RIKO_WING}, {EVO_ITEM, ITEM_GREEN_PEPPER, SPECIES_RIKO_FIRE}, {EVO_ITEM, ITEM_EEL_SUSHI, SPECIES_RIKO_ELECTRIC}),
+        .formSpeciesIdTable = sRikoFormSpeciesIdTable, .formChangeTable = sRikoCostumeEntryTable,
+    },
+    [SPECIES_RIKO_SANTA] =
+    {
+        .baseHP = 90, .baseAttack = 75, .baseDefense = 85, .baseSpeed = 110,
+        .baseSpAttack = 105, .baseSpDefense = 95,
+        .types = MON_TYPES(TYPE_NORMAL, TYPE_FAIRY), .catchRate = 45, .expYield = 240,
+        .evYield_SpAttack = 2, .evYield_Speed = 1, .genderRatio = MON_FEMALE,
+        .eggCycles = 20, .friendship = STANDARD_FRIENDSHIP, .growthRate = GROWTH_MEDIUM_SLOW,
+        .eggGroups = MON_EGG_GROUPS(EGG_GROUP_FIELD, EGG_GROUP_FAIRY),
+        .abilities = { ABILITY_CUTE_CHARM, ABILITY_NONE, ABILITY_FLUFFY },
+        .bodyColor = BODY_COLOR_WHITE, .speciesName = _("RikoSanta"), .cryId = CRY_SYLVEON,
+        .natDexNum = NATIONAL_DEX_RIKO, .categoryName = _("Fluff Bunny"), .height = 6, .weight = 95,
+        .description = COMPOUND_STRING("Its fluffy coat stores fairy\nenergy. It demands compliments,\nsnacks, and a dramatic entrance."),
+        .pokemonScale = 256, .trainerScale = 256,
+        .frontPic = gMonFrontPic_RikoSanta, .frontPicSize = MON_COORDS_SIZE(64, 64), .frontPicYOffset = 0,
+        .frontAnimFrames = sAnims_SingleFramePlaceHolder, .backPic = gMonBackPic_RikoSanta,
+        .backPicSize = MON_COORDS_SIZE(64, 64), .backPicYOffset = 0,
+        .palette = gMonPalette_RikoSanta, .shinyPalette = gMonShinyPalette_RikoSanta,
+        .iconSprite = gMonIcon_RikoSanta, .iconPalette = gMonIconPalette_RikoSanta,
+        .shinyIconPalette = gMonShinyIconPalette_RikoSanta, .pokemonJumpType = PKMN_JUMP_TYPE_NORMAL,
+        SHADOW(-2, 8, SHADOW_SIZE_S)
+        OVERWORLD(
+            sPicTable_RikoSanta,
+            SIZE_32x32,
+            SHADOW_SIZE_M,
+            TRACKS_NONE,
+            sAnimTable_Following,
+            gOverworldPalette_RikoSanta,
+            gShinyOverworldPalette_RikoSanta
+        )
+        .teachingType = ALL_TEACHABLES, .levelUpLearnset = sRikoLevelUpLearnset,
+        .evolutions = EVOLUTION({EVO_ITEM, ITEM_RIKOS_HONEYCOMB, SPECIES_RIKO_BUG}, {EVO_ITEM, ITEM_POM_DRAGON_PLUSH, SPECIES_RIKO_DRAGON}, {EVO_ITEM, ITEM_RIKOS_BLACK_BELT, SPECIES_RIKO_FIGHTING}, {EVO_ITEM, ITEM_POM_TIARA, SPECIES_RIKO_PRINCESS}, {EVO_ITEM, ITEM_POM_SANTA_HAT, SPECIES_RIKO}, {EVO_ITEM, ITEM_RIKOS_BLOOM, SPECIES_RIKO_FLOWER}, {EVO_ITEM, ITEM_RIKOS_COURAGE, SPECIES_RIKO_ECHO}, {EVO_ITEM, ITEM_RIKOS_WAND, SPECIES_RIKO_WING}, {EVO_ITEM, ITEM_GREEN_PEPPER, SPECIES_RIKO_FIRE}, {EVO_ITEM, ITEM_EEL_SUSHI, SPECIES_RIKO_ELECTRIC}),
+        .formSpeciesIdTable = sRikoFormSpeciesIdTable, .formChangeTable = sRikoCostumeEntryTable,
+    },
+    [SPECIES_RIKO_TURKEY] =
+    {
+        .baseHP = 90, .baseAttack = 75, .baseDefense = 85, .baseSpeed = 110,
+        .baseSpAttack = 105, .baseSpDefense = 95,
+        .types = MON_TYPES(TYPE_NORMAL, TYPE_FAIRY), .catchRate = 45, .expYield = 240,
+        .evYield_SpAttack = 2, .evYield_Speed = 1, .genderRatio = MON_FEMALE,
+        .eggCycles = 20, .friendship = STANDARD_FRIENDSHIP, .growthRate = GROWTH_MEDIUM_SLOW,
+        .eggGroups = MON_EGG_GROUPS(EGG_GROUP_FIELD, EGG_GROUP_FAIRY),
+        .abilities = { ABILITY_CUTE_CHARM, ABILITY_NONE, ABILITY_FLUFFY },
+        .bodyColor = BODY_COLOR_WHITE, .speciesName = _("RikoTurkey"), .cryId = CRY_SYLVEON,
+        .natDexNum = NATIONAL_DEX_RIKO, .categoryName = _("Fluff Bunny"), .height = 6, .weight = 95,
+        .description = COMPOUND_STRING("Its fluffy coat stores fairy\nenergy. It demands compliments,\nsnacks, and a dramatic entrance."),
+        .pokemonScale = 256, .trainerScale = 256,
+        .frontPic = gMonFrontPic_RikoTurkey, .frontPicSize = MON_COORDS_SIZE(64, 64), .frontPicYOffset = 0,
+        .frontAnimFrames = sAnims_SingleFramePlaceHolder, .backPic = gMonBackPic_RikoTurkey,
+        .backPicSize = MON_COORDS_SIZE(64, 64), .backPicYOffset = 0,
+        .palette = gMonPalette_RikoTurkey, .shinyPalette = gMonShinyPalette_RikoTurkey,
+        .iconSprite = gMonIcon_RikoTurkey, .iconPalette = gMonIconPalette_RikoTurkey,
+        .shinyIconPalette = gMonShinyIconPalette_RikoTurkey, .pokemonJumpType = PKMN_JUMP_TYPE_NORMAL,
+        SHADOW(-2, 8, SHADOW_SIZE_S)
+        OVERWORLD(
+            sPicTable_RikoTurkey,
+            SIZE_32x32,
+            SHADOW_SIZE_M,
+            TRACKS_NONE,
+            sAnimTable_Following,
+            gOverworldPalette_RikoTurkey,
+            gShinyOverworldPalette_RikoTurkey
+        )
+        .teachingType = ALL_TEACHABLES, .levelUpLearnset = sRikoLevelUpLearnset,
+        .evolutions = EVOLUTION({EVO_ITEM, ITEM_RIKOS_HONEYCOMB, SPECIES_RIKO_BUG}, {EVO_ITEM, ITEM_POM_DRAGON_PLUSH, SPECIES_RIKO_DRAGON}, {EVO_ITEM, ITEM_RIKOS_BLACK_BELT, SPECIES_RIKO_FIGHTING}, {EVO_ITEM, ITEM_POM_TIARA, SPECIES_RIKO_PRINCESS}, {EVO_ITEM, ITEM_RIKOS_FEATHER_FAN, SPECIES_RIKO}, {EVO_ITEM, ITEM_RIKOS_BLOOM, SPECIES_RIKO_FLOWER}, {EVO_ITEM, ITEM_RIKOS_COURAGE, SPECIES_RIKO_ECHO}, {EVO_ITEM, ITEM_RIKOS_WAND, SPECIES_RIKO_WING}, {EVO_ITEM, ITEM_GREEN_PEPPER, SPECIES_RIKO_FIRE}, {EVO_ITEM, ITEM_EEL_SUSHI, SPECIES_RIKO_ELECTRIC}),
+        .formSpeciesIdTable = sRikoFormSpeciesIdTable, .formChangeTable = sRikoCostumeEntryTable,
+    },
+    [SPECIES_RIKO_LEAVES] =
+    {
+        .baseHP = 90, .baseAttack = 75, .baseDefense = 85, .baseSpeed = 110,
+        .baseSpAttack = 105, .baseSpDefense = 95,
+        .types = MON_TYPES(TYPE_NORMAL, TYPE_FAIRY), .catchRate = 45, .expYield = 240,
+        .evYield_SpAttack = 2, .evYield_Speed = 1, .genderRatio = MON_FEMALE,
+        .eggCycles = 20, .friendship = STANDARD_FRIENDSHIP, .growthRate = GROWTH_MEDIUM_SLOW,
+        .eggGroups = MON_EGG_GROUPS(EGG_GROUP_FIELD, EGG_GROUP_FAIRY),
+        .abilities = { ABILITY_CUTE_CHARM, ABILITY_NONE, ABILITY_FLUFFY },
+        .bodyColor = BODY_COLOR_WHITE, .speciesName = _("RikoLeaves"), .cryId = CRY_SYLVEON,
+        .natDexNum = NATIONAL_DEX_RIKO, .categoryName = _("Fluff Bunny"), .height = 6, .weight = 95,
+        .description = COMPOUND_STRING("Its fluffy coat stores fairy\nenergy. It demands compliments,\nsnacks, and a dramatic entrance."),
+        .pokemonScale = 256, .trainerScale = 256,
+        .frontPic = gMonFrontPic_RikoLeaves, .frontPicSize = MON_COORDS_SIZE(64, 64), .frontPicYOffset = 0,
+        .frontAnimFrames = sAnims_SingleFramePlaceHolder, .backPic = gMonBackPic_RikoLeaves,
+        .backPicSize = MON_COORDS_SIZE(64, 64), .backPicYOffset = 0,
+        .palette = gMonPalette_RikoLeaves, .shinyPalette = gMonShinyPalette_RikoLeaves,
+        .iconSprite = gMonIcon_RikoLeaves, .iconPalette = gMonIconPalette_RikoLeaves,
+        .shinyIconPalette = gMonShinyIconPalette_RikoLeaves, .pokemonJumpType = PKMN_JUMP_TYPE_NORMAL,
+        SHADOW(-2, 8, SHADOW_SIZE_S)
+        OVERWORLD(
+            sPicTable_RikoLeaves,
+            SIZE_32x32,
+            SHADOW_SIZE_M,
+            TRACKS_NONE,
+            sAnimTable_Following,
+            gOverworldPalette_RikoLeaves,
+            gShinyOverworldPalette_RikoLeaves
+        )
+        .teachingType = ALL_TEACHABLES, .levelUpLearnset = sRikoLevelUpLearnset,
+        .evolutions = EVOLUTION({EVO_ITEM, ITEM_RIKOS_HONEYCOMB, SPECIES_RIKO_BUG}, {EVO_ITEM, ITEM_POM_DRAGON_PLUSH, SPECIES_RIKO_DRAGON}, {EVO_ITEM, ITEM_RIKOS_BLACK_BELT, SPECIES_RIKO_FIGHTING}, {EVO_ITEM, ITEM_POM_TIARA, SPECIES_RIKO_PRINCESS}, {EVO_ITEM, ITEM_RIKOS_LEAF_BUNDLE, SPECIES_RIKO}, {EVO_ITEM, ITEM_RIKOS_BLOOM, SPECIES_RIKO_FLOWER}, {EVO_ITEM, ITEM_RIKOS_COURAGE, SPECIES_RIKO_ECHO}, {EVO_ITEM, ITEM_RIKOS_WAND, SPECIES_RIKO_WING}, {EVO_ITEM, ITEM_GREEN_PEPPER, SPECIES_RIKO_FIRE}, {EVO_ITEM, ITEM_EEL_SUSHI, SPECIES_RIKO_ELECTRIC}),
         .formSpeciesIdTable = sRikoFormSpeciesIdTable, .formChangeTable = sRikoCostumeEntryTable,
     },
     [SPECIES_RIKO_PRINCESS] =
@@ -678,7 +810,7 @@ const struct SpeciesInfo gSpeciesInfo[] =
         .teachableLearnset = sMeowthTeachableLearnset,
         .eggMoveLearnset = sMeowthEggMoveLearnset,
         .formSpeciesIdTable = sBijuuFormSpeciesIdTable, .formChangeTable = sBijuuFormChangeTable,
-        .evolutions = EVOLUTION({EVO_ITEM, ITEM_BIJUUS_VAMPIRE_CAPE, SPECIES_BIJUU_VAMPIRE}, {EVO_ITEM, ITEM_BIJUUS_SPACE_HELMET, SPECIES_BIJUU_ASTRONAUT}, {EVO_ITEM, ITEM_COCOAS_SHINY_PEBBLE, SPECIES_BIJUU_ROCK}, {EVO_ITEM, ITEM_COCOAS_SNEAKY_CAPE, SPECIES_BIJUU_DARK}, {EVO_ITEM, ITEM_COCOA_TOAST, SPECIES_BIJUU_BREAD}, {EVO_ITEM, ITEM_COCOAS_DETECTIVE_KIT, SPECIES_BIJUU_DETECTIVE}, {EVO_ITEM, ITEM_BIJUUS_BOX, SPECIES_BIJUU_BOX}, {EVO_ITEM, ITEM_BIJUUS_FIRE, SPECIES_BIJUU_EMBER}, {EVO_ITEM, ITEM_BIJUUS_FISH_TOY, SPECIES_BIJUU_PSYCHIC}, {EVO_ITEM, ITEM_MOUSE_TOY, SPECIES_BIJUU_GHOST}, {EVO_ITEM, ITEM_FROZEN_FISH, SPECIES_BIJUU_ICE}, {EVO_ITEM, ITEM_TOXIC_MOUSE, SPECIES_BIJUU_POISON}),
+        .evolutions = EVOLUTION({EVO_ITEM, ITEM_COCOA_SILVER_BOW, SPECIES_BIJUU_GALA}, {EVO_ITEM, ITEM_COCOA_GIFT_BOX, SPECIES_BIJUU_PRESENT}, {EVO_ITEM, ITEM_COCOAS_CHEF_HAT, SPECIES_BIJUU_CHEF}, {EVO_ITEM, ITEM_COCOAS_KNIT_SET, SPECIES_BIJUU_SWEATER}, {EVO_ITEM, ITEM_BIJUUS_VAMPIRE_CAPE, SPECIES_BIJUU_VAMPIRE}, {EVO_ITEM, ITEM_BIJUUS_SPACE_HELMET, SPECIES_BIJUU_ASTRONAUT}, {EVO_ITEM, ITEM_COCOAS_SHINY_PEBBLE, SPECIES_BIJUU_ROCK}, {EVO_ITEM, ITEM_COCOAS_SNEAKY_CAPE, SPECIES_BIJUU_DARK}, {EVO_ITEM, ITEM_COCOA_TOAST, SPECIES_BIJUU_BREAD}, {EVO_ITEM, ITEM_COCOAS_DETECTIVE_KIT, SPECIES_BIJUU_DETECTIVE}, {EVO_ITEM, ITEM_BIJUUS_BOX, SPECIES_BIJUU_BOX}, {EVO_ITEM, ITEM_BIJUUS_FIRE, SPECIES_BIJUU_EMBER}, {EVO_ITEM, ITEM_BIJUUS_FISH_TOY, SPECIES_BIJUU_PSYCHIC}, {EVO_ITEM, ITEM_MOUSE_TOY, SPECIES_BIJUU_GHOST}, {EVO_ITEM, ITEM_FROZEN_FISH, SPECIES_BIJUU_ICE}, {EVO_ITEM, ITEM_TOXIC_MOUSE, SPECIES_BIJUU_POISON}),
     },
     [SPECIES_BIJUU_BOX] =
     {
@@ -815,6 +947,142 @@ const struct SpeciesInfo gSpeciesInfo[] =
         .eggMoveLearnset = sMeowthEggMoveLearnset,
         .formSpeciesIdTable = sBijuuFormSpeciesIdTable, .formChangeTable = sBijuuCostumeEntryTable,
         .evolutions = EVOLUTION({EVO_ITEM, ITEM_COCOAS_SHINY_PEBBLE, SPECIES_BIJUU_ROCK}, {EVO_ITEM, ITEM_COCOAS_SNEAKY_CAPE, SPECIES_BIJUU_DARK}, {EVO_ITEM, ITEM_COCOA_TOAST, SPECIES_BIJUU_BREAD}, {EVO_ITEM, ITEM_BIJUUS_VAMPIRE_CAPE, SPECIES_BIJUU}, {EVO_ITEM, ITEM_BIJUUS_FIRE, SPECIES_BIJUU_EMBER}, {EVO_ITEM, ITEM_BIJUUS_FISH_TOY, SPECIES_BIJUU_PSYCHIC}, {EVO_ITEM, ITEM_MOUSE_TOY, SPECIES_BIJUU_GHOST}, {EVO_ITEM, ITEM_FROZEN_FISH, SPECIES_BIJUU_ICE}, {EVO_ITEM, ITEM_TOXIC_MOUSE, SPECIES_BIJUU_POISON}),
+    },
+    [SPECIES_BIJUU_GALA] =
+    {
+        .baseHP = 80, .baseAttack = 85, .baseDefense = 70, .baseSpeed = 120,
+        .baseSpAttack = 95, .baseSpDefense = 80,
+        .types = MON_TYPES(TYPE_NORMAL), .catchRate = 60, .expYield = 220, .evYield_Speed = 3,
+        .genderRatio = MON_FEMALE, .eggCycles = 20, .friendship = STANDARD_FRIENDSHIP,
+        .growthRate = GROWTH_MEDIUM_SLOW, .eggGroups = MON_EGG_GROUPS(EGG_GROUP_FIELD),
+        .abilities = { ABILITY_LIMBER, ABILITY_NONE, ABILITY_TECHNICIAN },
+        .bodyColor = BODY_COLOR_BROWN, .speciesName = _("BijuuGala"), .cryId = CRY_MEOWTH,
+        .natDexNum = NATIONAL_DEX_BIJUU, .categoryName = _("Copy Cat"), .height = 7, .weight = 120,
+        .description = COMPOUND_STRING("It studies every creature nearby,\nthen copies their tricks before\nthey know they were observed."),
+        .pokemonScale = 256, .trainerScale = 256,
+        .frontPic = gMonFrontPic_BijuuGala, .frontPicSize = MON_COORDS_SIZE(64, 64), .frontPicYOffset = 0,
+        .frontAnimFrames = sAnims_SingleFramePlaceHolder, .backPic = gMonBackPic_BijuuGala,
+        .backPicSize = MON_COORDS_SIZE(64, 64), .backPicYOffset = 0,
+        .palette = gMonPalette_BijuuGala, .shinyPalette = gMonShinyPalette_BijuuGala,
+        .iconSprite = gMonIcon_BijuuGala, .iconPalette = gMonIconPalette_BijuuGala,
+        .shinyIconPalette = gMonShinyIconPalette_BijuuGala, .pokemonJumpType = PKMN_JUMP_TYPE_FAST,
+        SHADOW(-2, 8, SHADOW_SIZE_S)
+        OVERWORLD(
+            sPicTable_BijuuGala,
+            SIZE_32x32,
+            SHADOW_SIZE_M,
+            TRACKS_FOOT,
+            sAnimTable_Following,
+            gOverworldPalette_BijuuGala,
+            gShinyOverworldPalette_BijuuGala
+        )
+        .levelUpLearnset = sMeowthLevelUpLearnset,
+        .teachableLearnset = sMeowthTeachableLearnset,
+        .eggMoveLearnset = sMeowthEggMoveLearnset,
+        .formSpeciesIdTable = sBijuuFormSpeciesIdTable, .formChangeTable = sBijuuCostumeEntryTable,
+        .evolutions = EVOLUTION({EVO_ITEM, ITEM_COCOAS_SHINY_PEBBLE, SPECIES_BIJUU_ROCK}, {EVO_ITEM, ITEM_COCOAS_SNEAKY_CAPE, SPECIES_BIJUU_DARK}, {EVO_ITEM, ITEM_COCOA_TOAST, SPECIES_BIJUU_BREAD}, {EVO_ITEM, ITEM_COCOA_SILVER_BOW, SPECIES_BIJUU}, {EVO_ITEM, ITEM_BIJUUS_FIRE, SPECIES_BIJUU_EMBER}, {EVO_ITEM, ITEM_BIJUUS_FISH_TOY, SPECIES_BIJUU_PSYCHIC}, {EVO_ITEM, ITEM_MOUSE_TOY, SPECIES_BIJUU_GHOST}, {EVO_ITEM, ITEM_FROZEN_FISH, SPECIES_BIJUU_ICE}, {EVO_ITEM, ITEM_TOXIC_MOUSE, SPECIES_BIJUU_POISON}),
+    },
+    [SPECIES_BIJUU_PRESENT] =
+    {
+        .baseHP = 80, .baseAttack = 85, .baseDefense = 70, .baseSpeed = 120,
+        .baseSpAttack = 95, .baseSpDefense = 80,
+        .types = MON_TYPES(TYPE_NORMAL), .catchRate = 60, .expYield = 220, .evYield_Speed = 3,
+        .genderRatio = MON_FEMALE, .eggCycles = 20, .friendship = STANDARD_FRIENDSHIP,
+        .growthRate = GROWTH_MEDIUM_SLOW, .eggGroups = MON_EGG_GROUPS(EGG_GROUP_FIELD),
+        .abilities = { ABILITY_LIMBER, ABILITY_NONE, ABILITY_TECHNICIAN },
+        .bodyColor = BODY_COLOR_BROWN, .speciesName = _("BijuuGift"), .cryId = CRY_MEOWTH,
+        .natDexNum = NATIONAL_DEX_BIJUU, .categoryName = _("Copy Cat"), .height = 7, .weight = 120,
+        .description = COMPOUND_STRING("It studies every creature nearby,\nthen copies their tricks before\nthey know they were observed."),
+        .pokemonScale = 256, .trainerScale = 256,
+        .frontPic = gMonFrontPic_BijuuPresent, .frontPicSize = MON_COORDS_SIZE(64, 64), .frontPicYOffset = 0,
+        .frontAnimFrames = sAnims_SingleFramePlaceHolder, .backPic = gMonBackPic_BijuuPresent,
+        .backPicSize = MON_COORDS_SIZE(64, 64), .backPicYOffset = 0,
+        .palette = gMonPalette_BijuuPresent, .shinyPalette = gMonShinyPalette_BijuuPresent,
+        .iconSprite = gMonIcon_BijuuPresent, .iconPalette = gMonIconPalette_BijuuPresent,
+        .shinyIconPalette = gMonShinyIconPalette_BijuuPresent, .pokemonJumpType = PKMN_JUMP_TYPE_FAST,
+        SHADOW(-2, 8, SHADOW_SIZE_S)
+        OVERWORLD(
+            sPicTable_BijuuPresent,
+            SIZE_32x32,
+            SHADOW_SIZE_M,
+            TRACKS_FOOT,
+            sAnimTable_Following,
+            gOverworldPalette_BijuuPresent,
+            gShinyOverworldPalette_BijuuPresent
+        )
+        .levelUpLearnset = sMeowthLevelUpLearnset,
+        .teachableLearnset = sMeowthTeachableLearnset,
+        .eggMoveLearnset = sMeowthEggMoveLearnset,
+        .formSpeciesIdTable = sBijuuFormSpeciesIdTable, .formChangeTable = sBijuuCostumeEntryTable,
+        .evolutions = EVOLUTION({EVO_ITEM, ITEM_COCOAS_SHINY_PEBBLE, SPECIES_BIJUU_ROCK}, {EVO_ITEM, ITEM_COCOAS_SNEAKY_CAPE, SPECIES_BIJUU_DARK}, {EVO_ITEM, ITEM_COCOA_TOAST, SPECIES_BIJUU_BREAD}, {EVO_ITEM, ITEM_COCOA_GIFT_BOX, SPECIES_BIJUU}, {EVO_ITEM, ITEM_BIJUUS_FIRE, SPECIES_BIJUU_EMBER}, {EVO_ITEM, ITEM_BIJUUS_FISH_TOY, SPECIES_BIJUU_PSYCHIC}, {EVO_ITEM, ITEM_MOUSE_TOY, SPECIES_BIJUU_GHOST}, {EVO_ITEM, ITEM_FROZEN_FISH, SPECIES_BIJUU_ICE}, {EVO_ITEM, ITEM_TOXIC_MOUSE, SPECIES_BIJUU_POISON}),
+    },
+    [SPECIES_BIJUU_CHEF] =
+    {
+        .baseHP = 80, .baseAttack = 85, .baseDefense = 70, .baseSpeed = 120,
+        .baseSpAttack = 95, .baseSpDefense = 80,
+        .types = MON_TYPES(TYPE_NORMAL), .catchRate = 60, .expYield = 220, .evYield_Speed = 3,
+        .genderRatio = MON_FEMALE, .eggCycles = 20, .friendship = STANDARD_FRIENDSHIP,
+        .growthRate = GROWTH_MEDIUM_SLOW, .eggGroups = MON_EGG_GROUPS(EGG_GROUP_FIELD),
+        .abilities = { ABILITY_LIMBER, ABILITY_NONE, ABILITY_TECHNICIAN },
+        .bodyColor = BODY_COLOR_BROWN, .speciesName = _("BijuuChef"), .cryId = CRY_MEOWTH,
+        .natDexNum = NATIONAL_DEX_BIJUU, .categoryName = _("Copy Cat"), .height = 7, .weight = 120,
+        .description = COMPOUND_STRING("It studies every creature nearby,\nthen copies their tricks before\nthey know they were observed."),
+        .pokemonScale = 256, .trainerScale = 256,
+        .frontPic = gMonFrontPic_BijuuChef, .frontPicSize = MON_COORDS_SIZE(64, 64), .frontPicYOffset = 0,
+        .frontAnimFrames = sAnims_SingleFramePlaceHolder, .backPic = gMonBackPic_BijuuChef,
+        .backPicSize = MON_COORDS_SIZE(64, 64), .backPicYOffset = 0,
+        .palette = gMonPalette_BijuuChef, .shinyPalette = gMonShinyPalette_BijuuChef,
+        .iconSprite = gMonIcon_BijuuChef, .iconPalette = gMonIconPalette_BijuuChef,
+        .shinyIconPalette = gMonShinyIconPalette_BijuuChef, .pokemonJumpType = PKMN_JUMP_TYPE_FAST,
+        SHADOW(-2, 8, SHADOW_SIZE_S)
+        OVERWORLD(
+            sPicTable_BijuuChef,
+            SIZE_32x32,
+            SHADOW_SIZE_M,
+            TRACKS_FOOT,
+            sAnimTable_Following,
+            gOverworldPalette_BijuuChef,
+            gShinyOverworldPalette_BijuuChef
+        )
+        .levelUpLearnset = sMeowthLevelUpLearnset,
+        .teachableLearnset = sMeowthTeachableLearnset,
+        .eggMoveLearnset = sMeowthEggMoveLearnset,
+        .formSpeciesIdTable = sBijuuFormSpeciesIdTable, .formChangeTable = sBijuuCostumeEntryTable,
+        .evolutions = EVOLUTION({EVO_ITEM, ITEM_COCOAS_SHINY_PEBBLE, SPECIES_BIJUU_ROCK}, {EVO_ITEM, ITEM_COCOAS_SNEAKY_CAPE, SPECIES_BIJUU_DARK}, {EVO_ITEM, ITEM_COCOA_TOAST, SPECIES_BIJUU_BREAD}, {EVO_ITEM, ITEM_COCOAS_CHEF_HAT, SPECIES_BIJUU}, {EVO_ITEM, ITEM_BIJUUS_FIRE, SPECIES_BIJUU_EMBER}, {EVO_ITEM, ITEM_BIJUUS_FISH_TOY, SPECIES_BIJUU_PSYCHIC}, {EVO_ITEM, ITEM_MOUSE_TOY, SPECIES_BIJUU_GHOST}, {EVO_ITEM, ITEM_FROZEN_FISH, SPECIES_BIJUU_ICE}, {EVO_ITEM, ITEM_TOXIC_MOUSE, SPECIES_BIJUU_POISON}),
+    },
+    [SPECIES_BIJUU_SWEATER] =
+    {
+        .baseHP = 80, .baseAttack = 85, .baseDefense = 70, .baseSpeed = 120,
+        .baseSpAttack = 95, .baseSpDefense = 80,
+        .types = MON_TYPES(TYPE_NORMAL), .catchRate = 60, .expYield = 220, .evYield_Speed = 3,
+        .genderRatio = MON_FEMALE, .eggCycles = 20, .friendship = STANDARD_FRIENDSHIP,
+        .growthRate = GROWTH_MEDIUM_SLOW, .eggGroups = MON_EGG_GROUPS(EGG_GROUP_FIELD),
+        .abilities = { ABILITY_LIMBER, ABILITY_NONE, ABILITY_TECHNICIAN },
+        .bodyColor = BODY_COLOR_BROWN, .speciesName = _("BijuuKnit"), .cryId = CRY_MEOWTH,
+        .natDexNum = NATIONAL_DEX_BIJUU, .categoryName = _("Copy Cat"), .height = 7, .weight = 120,
+        .description = COMPOUND_STRING("It studies every creature nearby,\nthen copies their tricks before\nthey know they were observed."),
+        .pokemonScale = 256, .trainerScale = 256,
+        .frontPic = gMonFrontPic_BijuuSweater, .frontPicSize = MON_COORDS_SIZE(64, 64), .frontPicYOffset = 0,
+        .frontAnimFrames = sAnims_SingleFramePlaceHolder, .backPic = gMonBackPic_BijuuSweater,
+        .backPicSize = MON_COORDS_SIZE(64, 64), .backPicYOffset = 0,
+        .palette = gMonPalette_BijuuSweater, .shinyPalette = gMonShinyPalette_BijuuSweater,
+        .iconSprite = gMonIcon_BijuuSweater, .iconPalette = gMonIconPalette_BijuuSweater,
+        .shinyIconPalette = gMonShinyIconPalette_BijuuSweater, .pokemonJumpType = PKMN_JUMP_TYPE_FAST,
+        SHADOW(-2, 8, SHADOW_SIZE_S)
+        OVERWORLD(
+            sPicTable_BijuuSweater,
+            SIZE_32x32,
+            SHADOW_SIZE_M,
+            TRACKS_FOOT,
+            sAnimTable_Following,
+            gOverworldPalette_BijuuSweater,
+            gShinyOverworldPalette_BijuuSweater
+        )
+        .levelUpLearnset = sMeowthLevelUpLearnset,
+        .teachableLearnset = sMeowthTeachableLearnset,
+        .eggMoveLearnset = sMeowthEggMoveLearnset,
+        .formSpeciesIdTable = sBijuuFormSpeciesIdTable, .formChangeTable = sBijuuCostumeEntryTable,
+        .evolutions = EVOLUTION({EVO_ITEM, ITEM_COCOAS_SHINY_PEBBLE, SPECIES_BIJUU_ROCK}, {EVO_ITEM, ITEM_COCOAS_SNEAKY_CAPE, SPECIES_BIJUU_DARK}, {EVO_ITEM, ITEM_COCOA_TOAST, SPECIES_BIJUU_BREAD}, {EVO_ITEM, ITEM_COCOAS_KNIT_SET, SPECIES_BIJUU}, {EVO_ITEM, ITEM_BIJUUS_FIRE, SPECIES_BIJUU_EMBER}, {EVO_ITEM, ITEM_BIJUUS_FISH_TOY, SPECIES_BIJUU_PSYCHIC}, {EVO_ITEM, ITEM_MOUSE_TOY, SPECIES_BIJUU_GHOST}, {EVO_ITEM, ITEM_FROZEN_FISH, SPECIES_BIJUU_ICE}, {EVO_ITEM, ITEM_TOXIC_MOUSE, SPECIES_BIJUU_POISON}),
     },
     [SPECIES_BIJUU_BREAD] =
     {

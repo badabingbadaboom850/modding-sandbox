@@ -14,5 +14,5 @@ for name,body in re.findall(r'\[(ITEM_\w+)\]\s*=\s*\{(.*?)\n    \},',source,re.S
  text=''.join(re.findall(r'"(.*?)"',desc[1]));sizes=[sum(widths[charmap[c]] for c in line) for line in text.split(r'\n')]
  assert len(sizes)<=3 and max(sizes)<=102,(name,sizes,text)
  count+=1
-assert count==39,count
-print('PASS all39 family transformation descriptions fit actual102px Bag/Shop FONT_NARROW limit')
+assert count==51,count
+print('PASS all51 family transformation descriptions fit actual102px Bag/Shop FONT_NARROW limit')

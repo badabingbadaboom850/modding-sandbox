@@ -101,7 +101,8 @@ _,_,_,hw=geometry('OlivineCity_Cafe');assert hw(1,6) and hw(2,7)
 for p in ['data/maps/OlivineCity_Cafe/scripts.inc','data/maps/EcruteakCity_House4/map.json','data/maps/EcruteakCity_House4/scripts.inc']:
  assert (R/p).read_text()==old(p),p
 p='data/maps/map_groups.json';before=json.loads(old(p));now=json.loads((R/p).read_text())
-for k,value in before.items():assert now[k]==(value+['TrioHalloweenTrail'] if k=='gMapGroup_IndoorEcruteak' else value)
+additions={'gMapGroup_IndoorEcruteak':['TrioHalloweenTrail'],'gMapGroup_IndoorMahogany':['TrioSeasonFall'],'gMapGroup_IndoorBlackthorn':['TrioSeasonThanksgiving'],'gMapGroup_IndoorCeladon':['TrioSeasonChristmas'],'gMapGroup_IndoorSaffron':['TrioSeasonNewYear']}
+for k,value in before.items():assert now[k]==value+additions.get(k,[])
 for p in ['include/global.h','include/global.fieldmap.h','src/new_game.c','include/constants/flags.h']:assert (R/p).read_text()==old(p),p
 for p,prefix in [('include/constants/items.h','ITEM_'),('include/constants/species.h','SPECIES_')]:
  pattern=r'(?:#define\s+|\b)('+prefix+r'\w+)\s*(?:=|\s)\s*(\d+)\b'

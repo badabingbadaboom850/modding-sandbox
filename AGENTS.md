@@ -1488,3 +1488,25 @@ in original IndoorEcruteak group to preserve IDs, with Olivine region label.
 CI196 found Halloween descriptions120px vs102px: all3shortened toReusable costume
 /Use again to revert. Actual-font audit now checks all39family descriptions; all
 fit. Existing behavior and source palette/Penny crop checks retained. PRdraft.
+
+
+## Four permanent seasonal chapters (2026-10-12)
+
+User authorized all4chapters/12costumes with varied replay rounds and small
+snacks. Fall hostMahoganyCenter5,6 afterJasmine6; ThanksgivingBlackthornCenter5,6
+afterall8Johto; ChristmasCeladonCenter5,6 afterChampion; NewYearSaffronCenter5,6
+afterall16Badges. Append4gardenstages to relevantindoor groups; oldmaps unchanged.
+Three saved cluepatterns, physical leafhunt/giftdelivery and menu recipe/rhythm
+rounds. Wrong/cancel/exit/reload preservesprogress; wonstate resumes pending
+rewards. Firstwin3protectedkeys then1snack; replayonly1snack. FullBag/partial
+claim/ownedkeys neverduplicate. Randompatterns may repeat. No realcalendar.
+Species1641-1656/items978-989 append; Penny bothstages/level26, base stats/types/
+abilities/learnsets/growth/femaleidentity exact. Normal/Spirit Mega tests include
+newcostumes. Sixfollowers native isolated pose import avoids neighboringtails.
+Photos old16bits intact;12newbitsVAR_TRIO_SEASONAL_PHOTOS414B, new pages16-27,
+count27 excludingPoison. Progress5vars/chapter414C-415F auditedraw/decimalunused.
+SaveABI/Bag50slotcapacity unchanged; fullpocket prizes remainpending.
+Seasonalsource runner1238branches+mapgeometry/productionwarps/nativeart/font/
+metadata checks; oldHalloween3454+30origins+30pregate checks andPennycrop retained.
+51familyitemsreusable(38Key/13ordinary);51descriptionsfit102px. Engine/rendered
+confirmation separate. Keep PR2draft/unmerged; preserve HalloweenNewBarkhook.

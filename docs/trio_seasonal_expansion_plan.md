@@ -1,57 +1,78 @@
-# Seasonal expansion proposal
+# Permanent seasonal chapters
 
-Status: design draft, not implemented. User requested fall, Thanksgiving,
-Christmas and New Year content to extend the adventure. Preserve permanent
-access, optional participation, cosmetic-only outfits, female family identity,
-reusable protected items and existing saves. Halloween remains after Chuck5.
+Implemented on PR2's draft branch following approval of varied replay rounds and
+small snack rewards. These four optional chapters stay open permanently after
+their story milestone. There is no calendar check, timer, compulsory battle or
+party edit. Halloween remains after Chuck's fifth Badge in western Olivine Cafe;
+its authorized New Bark mailbox preview and pending saves are preserved.
 
-## Four seasonal chapters and twelve proposed costumes
-
-| Chapter | Riko | Bijuu | Penny | Main activity |
+| Chapter | Stationary host | Opens after | Game | One snack per win |
 | --- | --- | --- | --- | --- |
-| Fall: Leaf-Pile Picnic | Leaf-pile pom, face/paws/tail peeking through leaves | Cozy scarf and knit sweater | Oversized cable-knit sweater, blonde ears visible | Leaf search and picnic preparation |
-| Thanksgiving: Thankful Table | Turkey-feather costume with her own face | Little chef hat and apron | Sweet-potato outfit with a tiny butter patch | Help each girl prepare a family feast |
-| Christmas: Three Little Helpers | Santa hat and red coat | Gift-box costume with ribbon | Reindeer antlers and warm scarf | Sort gifts and deliver them to the right sister |
-| New Year: Midnight Pawty | Gold party hat and confetti collar | Silver bow tie and sparkly collar | Party dress with tiny star clips | Restore lanterns and complete a celebratory rhythm/memory round |
+| Leaf-Pile Picnic | Mahogany Pokemon Center,5,6 | Jasmine's sixth Badge | Search three named leaf piles in the saved clue order | Small Wawa (`ITEM_POTION`) |
+| Thankful Table | Blackthorn Pokemon Center,5,6 | All eight Johto Badges | Choose the feast recipe props in the saved order | Medium Wawa (`ITEM_SUPER_POTION`) |
+| Three Little Helpers | Celadon Pokemon Center,5,6 | Hall of Fame Champion flag | Deliver to the three sisters in the saved gift order | Medium Wawa (`ITEM_SUPER_POTION`) |
+| Midnight Pawty | Saffron Pokemon Center,5,6 | All sixteen Badges | Repeat a three-beat Pom/Meow/Wag rhythm | One Riko Puffs |
 
-All costumes need separate battle front/back, party icon, six follower frames
-and matching item icon. Penny needs both ordinary/evolved metadata and dressed
-level26 evolution. Original stats/types/abilities/moves/growth/female identity
-stay; Mega cleanup returns the exact starting outfit. No real food or actual
-feeding is implied by Thanksgiving costume props.
+Each round chooses one of three clue patterns. Accepting a new round saves the
+pattern; re-entry, hints and reloads never reroll it. Wrong or repeated choices
+preserve progress. Later/B cancellation, both exits and saving preserve the
+unfinished round. After winning, the host resumes claims before offering a new
+round. The first win gives three permanent costume items in order, then a snack;
+later wins give only the snack. Pre-owned costumes are acknowledged without a
+second copy. A full Bag leaves the next gift or snack pending. Successfully
+claimed gifts stay claimed across reloads; a second visit cannot duplicate them.
+Repeated random patterns are possible; the games have three available variants.
 
-## Longevity design decision to settle before implementation
+| Chapter | Riko | Bijuu | Penny |
+| --- | --- | --- | --- |
+| Fall | Leaf pile | Sage knit and burgundy scarf | Pink cardigan |
+| Thanksgiving | Turkey feather fan | Chef hat and apron | Sweet potato wrap |
+| Christmas | Santa hat and coat | Green present with red ribbon | Antlers and scarf |
+| New Year | Golden party hat | Silver bow and collar | Pink star dress |
 
-A one-time chapter model would spread discoveries across later Johto/Kanto
-milestones, with permanent costume rewards and new scrapbook/album memories.
-A replay model would additionally provide optional varied rounds after reward
-completion, with modest existing Wawa/Puffs prizes under safe full-Bag handling.
-Both models can coexist: one-time costume unlocks plus repeatable minigames.
-No real-date lock or system-clock dependency is needed. Decide the desired
-revisit behavior before implementing progress/reward state or scripting art.
+Twelve protected, zero-price Key Items append at978-989; sixteen species append
+at1641-1656 because Penny keeps both ordinary and Dachsbun costume stages. Each
+item toggles its ordinary family stage to its costume and back through normal
+evolution routing. Costume stats, types, abilities, growth, learnsets, signature
+eligibility and female identity match the corresponding ordinary stage. Dressed
+Penny still evolves at level26. Normal/Spirit Mega entry and exact-form return
+use the established tables. No transformation consumes the reusable item.
 
-Pacing proposal: Fall near the seventh-Badge approach, Thanksgiving after eight
-Johto Badges, Christmas during Kanto, New Year as a League/Kanto celebration.
-Exact hosts, routes and triggers must be traced and audited before placement.
-These are proposed milestones, not currently wired events or promises about
-what an existing save has completed. Halloween's current event stays unchanged.
+Every costume has native indexed front/back, menu icon, six distinct follower
+poses, item icon and matching normal/shiny palettes. The native importer isolates
+poses before cropping, avoiding the adjacent-tail problem previously fixed for
+Pumpkin Penny. Original source atlases are committed for reproducibility.
 
-## Implementation constraints verified against current code
+The old16bit photo mask keeps all original bits, including Poison. Twelve new
+portraits use `VAR_TRIO_SEASONAL_PHOTOS` at0x414B; all four Penny evolved stages
+share their outfit page. Album menus append four pages per girl, with locked
+pages, Back/B cleanup and new outfit/Scott reactions. The outfit count is27 plus
+the existing Poison bonus page, which stays excluded from the displayed count.
 
-The existing16bit outfit photo mask is full: fifteen costumes plus Poison bonus.
-Append a separate audited saved-variable mask for seasonal photos, preserving
-every old bit and existing save-array layout. Never shift past bit15 or silently
-reset prior portraits. New progress variables/flags need a raw/numeric-use audit.
-Do not allocate speculative numeric species/item/map IDs from old handoffs.
+Each chapter uses five appended saved variables: STATE(0idle,1active,2won),
+ROUND(0-2), PROGRESS(0-3), GIFTS(0-3 sequential costume claims), SNACK(0pending,
+1claimed). These occupy0x414C-0x415F and were audited for prior raw hexadecimal
+and decimal use. Existing saves see zero/unearned seasonal state. No save-array,
+Bag capacity, save structure, historical flag/species/item/map ID is changed.
+The existing50-slot Key Items limit remains; a full pocket keeps prizes pending.
 
-Use the existing costume/toggle and normal/Spirit Mega integration, the fixed
-Penny crop isolation, frame-contiguous follower packing and palette contracts.
-Measure new item names/descriptions using actual font tables, not character
-counts alone. All51 eventual family transformation items must retain reusable
-routing; full-Bag rewards must remain pending rather than require another win.
+Four new garden stages append within the relevant indoor map groups. Original
+Center actors, services, scripts and warp IDs remain. Added hosts are stationary
+and have reachable approaches. Explicit return exits land at the source
+Center7,7; boundary warps return through its original entrance0. Original
+Halloween behavior is unchanged.
 
-Test normal and old saves, cancellation/loss/exit/replay, independently earned
-outfits, boxing/fainting/reversion/restart, dressed Penny evolution, exact-form
-Mega returns, photo bit preservation, native asset/frame registration, safe
-host/warp geometry and production-generated map constants. Keep PR2 draft and
-unmerged. Rendered event checks remain separate from source/native/CI checks.
+Validation: `tools/costumes/validate_seasonal.py` executes1238 actual source
+branches, audits old save/numeric usage, all host/stage approaches, actor limits,
+production map constants, native art registration, palettes, frame differences,
+metadata and actual font widths. Existing Halloween3454-branch checks,30origin
+returns,30pre-Badge normal/preview paths and Pumpkin Penny native crop regression
+remain. All51 family transformation items are audited reusable (38Key/13Items);
+all51 descriptions fit actual102px Bag text. Engine costume, dressed evolution,
+photo preservation and Mega tests now include every seasonal form.
+
+These checks do not establish rendered emulator behavior. Use the focused pass
+in `trio_costume_emulator_pass.md` for animation, evolutions, follower movement,
+boxing, fainting, reusable Bag items, actual save/reload, old saves and all chapter
+routes/replays. PR2 remains draft and unmerged; CI ROM/full engine results are
+reported separately from source/native checks.

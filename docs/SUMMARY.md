@@ -190,4 +190,4 @@
 
 - [Trick-or-Treat Trail](trio_halloween_trail.md)
 
-- [Seasonal expansion proposal](trio_seasonal_expansion_plan.md)
+- [Permanent seasonal chapters](trio_seasonal_expansion_plan.md)

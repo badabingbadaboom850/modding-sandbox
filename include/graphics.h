@@ -3589,6 +3589,30 @@ extern const u16 gItemIconPalette_BijuuBox[];
 extern const u32 gItemIcon_PennyHotdog[];
 extern const u16 gItemIconPalette_PennyHotdog[];
 
+extern const u32 gItemIcon_RikoLeaves[];
+extern const u16 gItemIconPalette_RikoLeaves[];
+extern const u32 gItemIcon_BijuuSweater[];
+extern const u16 gItemIconPalette_BijuuSweater[];
+extern const u32 gItemIcon_PennySweater[];
+extern const u16 gItemIconPalette_PennySweater[];
+extern const u32 gItemIcon_RikoTurkey[];
+extern const u16 gItemIconPalette_RikoTurkey[];
+extern const u32 gItemIcon_BijuuChef[];
+extern const u16 gItemIconPalette_BijuuChef[];
+extern const u32 gItemIcon_PennyYam[];
+extern const u16 gItemIconPalette_PennyYam[];
+extern const u32 gItemIcon_RikoSanta[];
+extern const u16 gItemIconPalette_RikoSanta[];
+extern const u32 gItemIcon_BijuuPresent[];
+extern const u16 gItemIconPalette_BijuuPresent[];
+extern const u32 gItemIcon_PennyReindeer[];
+extern const u16 gItemIconPalette_PennyReindeer[];
+extern const u32 gItemIcon_RikoParty[];
+extern const u16 gItemIconPalette_RikoParty[];
+extern const u32 gItemIcon_BijuuGala[];
+extern const u16 gItemIconPalette_BijuuGala[];
+extern const u32 gItemIcon_PennyStars[];
+extern const u16 gItemIconPalette_PennyStars[];
 #endif //GUARD_GRAPHICS_H
 
 extern const u32 gItemIcon_ToxicMouse[];

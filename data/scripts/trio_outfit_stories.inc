@@ -16,6 +16,18 @@ TrioOutfit_React::
 	goto_if_eq VAR_RESULT, 14, TrioOutfit_React13
 	goto_if_eq VAR_RESULT, 15, TrioOutfit_React14
 	goto_if_eq VAR_RESULT, 16, TrioOutfit_React15
+	goto_if_eq VAR_RESULT, 17, TrioOutfit_React16
+	goto_if_eq VAR_RESULT, 18, TrioOutfit_React17
+	goto_if_eq VAR_RESULT, 19, TrioOutfit_React18
+	goto_if_eq VAR_RESULT, 20, TrioOutfit_React19
+	goto_if_eq VAR_RESULT, 21, TrioOutfit_React20
+	goto_if_eq VAR_RESULT, 22, TrioOutfit_React21
+	goto_if_eq VAR_RESULT, 23, TrioOutfit_React22
+	goto_if_eq VAR_RESULT, 24, TrioOutfit_React23
+	goto_if_eq VAR_RESULT, 25, TrioOutfit_React24
+	goto_if_eq VAR_RESULT, 26, TrioOutfit_React25
+	goto_if_eq VAR_RESULT, 27, TrioOutfit_React26
+	goto_if_eq VAR_RESULT, 28, TrioOutfit_React27
 	goto_if_eq VAR_RESULT, 12, TrioOutfit_React11
 	goto_if_eq VAR_RESULT, 11, TrioOutfit_React10
 	return
@@ -93,6 +105,18 @@ TrioOutfit_ScottOne:
 	goto_if_eq VAR_RESULT, 14, TrioOutfit_Scott13
 	goto_if_eq VAR_RESULT, 15, TrioOutfit_Scott14
 	goto_if_eq VAR_RESULT, 16, TrioOutfit_Scott15
+	goto_if_eq VAR_RESULT, 17, TrioOutfit_Scott16
+	goto_if_eq VAR_RESULT, 18, TrioOutfit_Scott17
+	goto_if_eq VAR_RESULT, 19, TrioOutfit_Scott18
+	goto_if_eq VAR_RESULT, 20, TrioOutfit_Scott19
+	goto_if_eq VAR_RESULT, 21, TrioOutfit_Scott20
+	goto_if_eq VAR_RESULT, 22, TrioOutfit_Scott21
+	goto_if_eq VAR_RESULT, 23, TrioOutfit_Scott22
+	goto_if_eq VAR_RESULT, 24, TrioOutfit_Scott23
+	goto_if_eq VAR_RESULT, 25, TrioOutfit_Scott24
+	goto_if_eq VAR_RESULT, 26, TrioOutfit_Scott25
+	goto_if_eq VAR_RESULT, 27, TrioOutfit_Scott26
+	goto_if_eq VAR_RESULT, 28, TrioOutfit_Scott27
 	goto_if_eq VAR_RESULT, 12, TrioOutfit_Scott11
 	goto_if_eq VAR_RESULT, 11, TrioOutfit_Scott10
 	return
@@ -175,30 +199,42 @@ TrioOutfit_BackName:
 	.string "Back$"
 TrioOutfit_AlbumRiko:
 	closemessage
-	dynmultichoice 0, 0, FALSE, 4, 0, DYN_MULTICHOICE_CB_NONE, TrioOutfit_PageName0, TrioOutfit_PageName1, TrioOutfit_PageName2, TrioOutfit_PageName10, TrioOutfit_PageName13, TrioOutfit_BackName
+	dynmultichoice 0, 0, FALSE, 4, 0, DYN_MULTICHOICE_CB_NONE, TrioOutfit_PageName0, TrioOutfit_PageName1, TrioOutfit_PageName2, TrioOutfit_PageName10, TrioOutfit_PageName13, TrioOutfit_PageName16, TrioOutfit_PageName19, TrioOutfit_PageName22, TrioOutfit_PageName25, TrioOutfit_BackName
 	goto_if_eq VAR_RESULT, 0, TrioOutfit_Page0
 	goto_if_eq VAR_RESULT, 1, TrioOutfit_Page1
 	goto_if_eq VAR_RESULT, 2, TrioOutfit_Page2
 	goto_if_eq VAR_RESULT, 3, TrioOutfit_Page10
 	goto_if_eq VAR_RESULT, 4, TrioOutfit_Page13
+	goto_if_eq VAR_RESULT, 5, TrioOutfit_Page16
+	goto_if_eq VAR_RESULT, 6, TrioOutfit_Page19
+	goto_if_eq VAR_RESULT, 7, TrioOutfit_Page22
+	goto_if_eq VAR_RESULT, 8, TrioOutfit_Page25
 	goto TrioOutfit_AlbumMenu
 TrioOutfit_AlbumBijuu:
 	closemessage
-	dynmultichoice 0, 0, FALSE, 4, 0, DYN_MULTICHOICE_CB_NONE, TrioOutfit_PageName3, TrioOutfit_PageName4, TrioOutfit_PageName5, TrioOutfit_PageName11, TrioOutfit_PageName14, TrioOutfit_BackName
+	dynmultichoice 0, 0, FALSE, 4, 0, DYN_MULTICHOICE_CB_NONE, TrioOutfit_PageName3, TrioOutfit_PageName4, TrioOutfit_PageName5, TrioOutfit_PageName11, TrioOutfit_PageName14, TrioOutfit_PageName17, TrioOutfit_PageName20, TrioOutfit_PageName23, TrioOutfit_PageName26, TrioOutfit_BackName
 	goto_if_eq VAR_RESULT, 0, TrioOutfit_Page3
 	goto_if_eq VAR_RESULT, 1, TrioOutfit_Page4
 	goto_if_eq VAR_RESULT, 2, TrioOutfit_Page5
 	goto_if_eq VAR_RESULT, 3, TrioOutfit_Page11
 	goto_if_eq VAR_RESULT, 4, TrioOutfit_Page14
+	goto_if_eq VAR_RESULT, 5, TrioOutfit_Page17
+	goto_if_eq VAR_RESULT, 6, TrioOutfit_Page20
+	goto_if_eq VAR_RESULT, 7, TrioOutfit_Page23
+	goto_if_eq VAR_RESULT, 8, TrioOutfit_Page26
 	goto TrioOutfit_AlbumMenu
 TrioOutfit_AlbumPenny:
 	closemessage
-	dynmultichoice 0, 0, FALSE, 4, 0, DYN_MULTICHOICE_CB_NONE, TrioOutfit_PageName6, TrioOutfit_PageName7, TrioOutfit_PageName8, TrioOutfit_PageName12, TrioOutfit_PageName15, TrioOutfit_BackName
+	dynmultichoice 0, 0, FALSE, 4, 0, DYN_MULTICHOICE_CB_NONE, TrioOutfit_PageName6, TrioOutfit_PageName7, TrioOutfit_PageName8, TrioOutfit_PageName12, TrioOutfit_PageName15, TrioOutfit_PageName18, TrioOutfit_PageName21, TrioOutfit_PageName24, TrioOutfit_PageName27, TrioOutfit_BackName
 	goto_if_eq VAR_RESULT, 0, TrioOutfit_Page6
 	goto_if_eq VAR_RESULT, 1, TrioOutfit_Page7
 	goto_if_eq VAR_RESULT, 2, TrioOutfit_Page8
 	goto_if_eq VAR_RESULT, 3, TrioOutfit_Page12
 	goto_if_eq VAR_RESULT, 4, TrioOutfit_Page15
+	goto_if_eq VAR_RESULT, 5, TrioOutfit_Page18
+	goto_if_eq VAR_RESULT, 6, TrioOutfit_Page21
+	goto_if_eq VAR_RESULT, 7, TrioOutfit_Page24
+	goto_if_eq VAR_RESULT, 8, TrioOutfit_Page27
 	goto TrioOutfit_AlbumMenu
 TrioOutfit_AlbumBonus:
 	closemessage
@@ -835,3 +871,291 @@ TrioOutfit_PageName15:
 	.string "Pumpkin$"
 TrioOutfit_Caption15:
 	.string "The sweetest little gourd.\nHer sisters picked her.$"
+
+TrioOutfit_React16:
+	msgbox TrioOutfit_ReactText16, MSGBOX_DEFAULT
+	return
+TrioOutfit_ReactText16:
+	.string "A rustle, then a pom!\nFall found its fluffy pom.$"
+
+TrioOutfit_Scott16:
+	msgbox TrioOutfit_ScottText16, MSGBOX_DEFAULT
+	return
+TrioOutfit_ScottText16:
+	.string "Another season with you.\nOur girls make it special.$"
+
+TrioOutfit_Page16:
+	setvar VAR_0x8004, 16
+	specialvar VAR_RESULT, HasTrioOutfitPhoto
+	goto_if_eq VAR_RESULT, FALSE, TrioOutfit_Locked
+	showmonpic SPECIES_RIKO_LEAVES, 10, 3
+	msgbox TrioOutfit_ReactText16, MSGBOX_DEFAULT
+	closemessage
+	hidemonpic
+	goto TrioOutfit_AlbumMenu
+TrioOutfit_PageName16:
+	.string "Leaf Pile$"
+
+TrioOutfit_React17:
+	msgbox TrioOutfit_ReactText17, MSGBOX_DEFAULT
+	return
+TrioOutfit_ReactText17:
+	.string "Cocoa in cozy stitches.\nShe brings her own warmth.$"
+
+TrioOutfit_Scott17:
+	msgbox TrioOutfit_ScottText17, MSGBOX_DEFAULT
+	return
+TrioOutfit_ScottText17:
+	.string "Another season with you.\nOur girls make it special.$"
+
+TrioOutfit_Page17:
+	setvar VAR_0x8004, 17
+	specialvar VAR_RESULT, HasTrioOutfitPhoto
+	goto_if_eq VAR_RESULT, FALSE, TrioOutfit_Locked
+	showmonpic SPECIES_BIJUU_SWEATER, 10, 3
+	msgbox TrioOutfit_ReactText17, MSGBOX_DEFAULT
+	closemessage
+	hidemonpic
+	goto TrioOutfit_AlbumMenu
+TrioOutfit_PageName17:
+	.string "Knit Scarf$"
+
+TrioOutfit_React18:
+	msgbox TrioOutfit_ReactText18, MSGBOX_DEFAULT
+	return
+TrioOutfit_ReactText18:
+	.string "A sweater full of Penny.\nHer ears stayed golden.$"
+
+TrioOutfit_Scott18:
+	msgbox TrioOutfit_ScottText18, MSGBOX_DEFAULT
+	return
+TrioOutfit_ScottText18:
+	.string "Another season with you.\nOur girls make it special.$"
+
+TrioOutfit_Page18:
+	setvar VAR_0x8004, 18
+	specialvar VAR_RESULT, HasTrioOutfitPhoto
+	goto_if_eq VAR_RESULT, FALSE, TrioOutfit_Locked
+	showmonpic SPECIES_PENNY_SWEATER, 10, 3
+	msgbox TrioOutfit_ReactText18, MSGBOX_DEFAULT
+	closemessage
+	hidemonpic
+	goto TrioOutfit_AlbumMenu
+TrioOutfit_PageName18:
+	.string "Cardigan$"
+
+TrioOutfit_React19:
+	msgbox TrioOutfit_ReactText19, MSGBOX_DEFAULT
+	return
+TrioOutfit_ReactText19:
+	.string "Riko leads a feather fan.\nThe table is her stage.$"
+
+TrioOutfit_Scott19:
+	msgbox TrioOutfit_ScottText19, MSGBOX_DEFAULT
+	return
+TrioOutfit_ScottText19:
+	.string "Another season with you.\nOur girls make it special.$"
+
+TrioOutfit_Page19:
+	setvar VAR_0x8004, 19
+	specialvar VAR_RESULT, HasTrioOutfitPhoto
+	goto_if_eq VAR_RESULT, FALSE, TrioOutfit_Locked
+	showmonpic SPECIES_RIKO_TURKEY, 10, 3
+	msgbox TrioOutfit_ReactText19, MSGBOX_DEFAULT
+	closemessage
+	hidemonpic
+	goto TrioOutfit_AlbumMenu
+TrioOutfit_PageName19:
+	.string "Turkey Fan$"
+
+TrioOutfit_React20:
+	msgbox TrioOutfit_ReactText20, MSGBOX_DEFAULT
+	return
+TrioOutfit_ReactText20:
+	.string "Bijuu checks the feast.\nFish gets first approval.$"
+
+TrioOutfit_Scott20:
+	msgbox TrioOutfit_ScottText20, MSGBOX_DEFAULT
+	return
+TrioOutfit_ScottText20:
+	.string "Another season with you.\nOur girls make it special.$"
+
+TrioOutfit_Page20:
+	setvar VAR_0x8004, 20
+	specialvar VAR_RESULT, HasTrioOutfitPhoto
+	goto_if_eq VAR_RESULT, FALSE, TrioOutfit_Locked
+	showmonpic SPECIES_BIJUU_CHEF, 10, 3
+	msgbox TrioOutfit_ReactText20, MSGBOX_DEFAULT
+	closemessage
+	hidemonpic
+	goto TrioOutfit_AlbumMenu
+TrioOutfit_PageName20:
+	.string "Little Chef$"
+
+TrioOutfit_React21:
+	msgbox TrioOutfit_ReactText21, MSGBOX_DEFAULT
+	return
+TrioOutfit_ReactText21:
+	.string "Our tiny sweet potato.\nPenny brings sweetness.$"
+
+TrioOutfit_Scott21:
+	msgbox TrioOutfit_ScottText21, MSGBOX_DEFAULT
+	return
+TrioOutfit_ScottText21:
+	.string "Another season with you.\nOur girls make it special.$"
+
+TrioOutfit_Page21:
+	setvar VAR_0x8004, 21
+	specialvar VAR_RESULT, HasTrioOutfitPhoto
+	goto_if_eq VAR_RESULT, FALSE, TrioOutfit_Locked
+	showmonpic SPECIES_PENNY_YAM, 10, 3
+	msgbox TrioOutfit_ReactText21, MSGBOX_DEFAULT
+	closemessage
+	hidemonpic
+	goto TrioOutfit_AlbumMenu
+TrioOutfit_PageName21:
+	.string "Sweet Potato$"
+
+TrioOutfit_React22:
+	msgbox TrioOutfit_ReactText22, MSGBOX_DEFAULT
+	return
+TrioOutfit_ReactText22:
+	.string "Santa Pom has arrived.\nEvery sister gets a smile.$"
+
+TrioOutfit_Scott22:
+	msgbox TrioOutfit_ScottText22, MSGBOX_DEFAULT
+	return
+TrioOutfit_ScottText22:
+	.string "Another season with you.\nOur girls make it special.$"
+
+TrioOutfit_Page22:
+	setvar VAR_0x8004, 22
+	specialvar VAR_RESULT, HasTrioOutfitPhoto
+	goto_if_eq VAR_RESULT, FALSE, TrioOutfit_Locked
+	showmonpic SPECIES_RIKO_SANTA, 10, 3
+	msgbox TrioOutfit_ReactText22, MSGBOX_DEFAULT
+	closemessage
+	hidemonpic
+	goto TrioOutfit_AlbumMenu
+TrioOutfit_PageName22:
+	.string "Santa Pom$"
+
+TrioOutfit_React23:
+	msgbox TrioOutfit_ReactText23, MSGBOX_DEFAULT
+	return
+TrioOutfit_ReactText23:
+	.string "The gift picked her box.\nBijuu says it is hers.$"
+
+TrioOutfit_Scott23:
+	msgbox TrioOutfit_ScottText23, MSGBOX_DEFAULT
+	return
+TrioOutfit_ScottText23:
+	.string "Another season with you.\nOur girls make it special.$"
+
+TrioOutfit_Page23:
+	setvar VAR_0x8004, 23
+	specialvar VAR_RESULT, HasTrioOutfitPhoto
+	goto_if_eq VAR_RESULT, FALSE, TrioOutfit_Locked
+	showmonpic SPECIES_BIJUU_PRESENT, 10, 3
+	msgbox TrioOutfit_ReactText23, MSGBOX_DEFAULT
+	closemessage
+	hidemonpic
+	goto TrioOutfit_AlbumMenu
+TrioOutfit_PageName23:
+	.string "Gift Box$"
+
+TrioOutfit_React24:
+	msgbox TrioOutfit_ReactText24, MSGBOX_DEFAULT
+	return
+TrioOutfit_ReactText24:
+	.string "Penny guides the sleigh.\nLittle legs, big heart.$"
+
+TrioOutfit_Scott24:
+	msgbox TrioOutfit_ScottText24, MSGBOX_DEFAULT
+	return
+TrioOutfit_ScottText24:
+	.string "Another season with you.\nOur girls make it special.$"
+
+TrioOutfit_Page24:
+	setvar VAR_0x8004, 24
+	specialvar VAR_RESULT, HasTrioOutfitPhoto
+	goto_if_eq VAR_RESULT, FALSE, TrioOutfit_Locked
+	showmonpic SPECIES_PENNY_REINDEER, 10, 3
+	msgbox TrioOutfit_ReactText24, MSGBOX_DEFAULT
+	closemessage
+	hidemonpic
+	goto TrioOutfit_AlbumMenu
+TrioOutfit_PageName24:
+	.string "Reindeer$"
+
+TrioOutfit_React25:
+	msgbox TrioOutfit_ReactText25, MSGBOX_DEFAULT
+	return
+TrioOutfit_ReactText25:
+	.string "One hat, endless sparkle.\nRiko starts the pawty.$"
+
+TrioOutfit_Scott25:
+	msgbox TrioOutfit_ScottText25, MSGBOX_DEFAULT
+	return
+TrioOutfit_ScottText25:
+	.string "Another season with you.\nOur girls make it special.$"
+
+TrioOutfit_Page25:
+	setvar VAR_0x8004, 25
+	specialvar VAR_RESULT, HasTrioOutfitPhoto
+	goto_if_eq VAR_RESULT, FALSE, TrioOutfit_Locked
+	showmonpic SPECIES_RIKO_PARTY, 10, 3
+	msgbox TrioOutfit_ReactText25, MSGBOX_DEFAULT
+	closemessage
+	hidemonpic
+	goto TrioOutfit_AlbumMenu
+TrioOutfit_PageName25:
+	.string "Party Hat$"
+
+TrioOutfit_React26:
+	msgbox TrioOutfit_ReactText26, MSGBOX_DEFAULT
+	return
+TrioOutfit_ReactText26:
+	.string "A silver bow for cocoa.\nBijuu shines at midnight.$"
+
+TrioOutfit_Scott26:
+	msgbox TrioOutfit_ScottText26, MSGBOX_DEFAULT
+	return
+TrioOutfit_ScottText26:
+	.string "Another season with you.\nOur girls make it special.$"
+
+TrioOutfit_Page26:
+	setvar VAR_0x8004, 26
+	specialvar VAR_RESULT, HasTrioOutfitPhoto
+	goto_if_eq VAR_RESULT, FALSE, TrioOutfit_Locked
+	showmonpic SPECIES_BIJUU_GALA, 10, 3
+	msgbox TrioOutfit_ReactText26, MSGBOX_DEFAULT
+	closemessage
+	hidemonpic
+	goto TrioOutfit_AlbumMenu
+TrioOutfit_PageName26:
+	.string "Silver Bow$"
+
+TrioOutfit_React27:
+	msgbox TrioOutfit_ReactText27, MSGBOX_DEFAULT
+	return
+TrioOutfit_ReactText27:
+	.string "Penny wears little stars.\nA new year with our girls.$"
+
+TrioOutfit_Scott27:
+	msgbox TrioOutfit_ScottText27, MSGBOX_DEFAULT
+	return
+TrioOutfit_ScottText27:
+	.string "Another season with you.\nOur girls make it special.$"
+
+TrioOutfit_Page27:
+	setvar VAR_0x8004, 27
+	specialvar VAR_RESULT, HasTrioOutfitPhoto
+	goto_if_eq VAR_RESULT, FALSE, TrioOutfit_Locked
+	showmonpic SPECIES_PENNY_STARS, 10, 3
+	msgbox TrioOutfit_ReactText27, MSGBOX_DEFAULT
+	closemessage
+	hidemonpic
+	goto TrioOutfit_AlbumMenu
+TrioOutfit_PageName27:
+	.string "Star Dress$"

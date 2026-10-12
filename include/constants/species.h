@@ -1756,7 +1756,23 @@
 #define SPECIES_BIJUU_VAMPIRE                                    1638
 #define SPECIES_PENNY_PUMPKIN                                    1639
 #define SPECIES_PENNY_PUMPKIN_DACHSBUN                           1640
-#define SPECIES_EGG                                     (SPECIES_PENNY_PUMPKIN_DACHSBUN + 1)
+#define SPECIES_RIKO_LEAVES                                      1641
+#define SPECIES_BIJUU_SWEATER                                    1642
+#define SPECIES_PENNY_SWEATER                                    1643
+#define SPECIES_PENNY_SWEATER_DACHSBUN                           1644
+#define SPECIES_RIKO_TURKEY                                      1645
+#define SPECIES_BIJUU_CHEF                                       1646
+#define SPECIES_PENNY_YAM                                        1647
+#define SPECIES_PENNY_YAM_DACHSBUN                               1648
+#define SPECIES_RIKO_SANTA                                       1649
+#define SPECIES_BIJUU_PRESENT                                    1650
+#define SPECIES_PENNY_REINDEER                                   1651
+#define SPECIES_PENNY_REINDEER_DACHSBUN                          1652
+#define SPECIES_RIKO_PARTY                                       1653
+#define SPECIES_BIJUU_GALA                                       1654
+#define SPECIES_PENNY_STARS                                      1655
+#define SPECIES_PENNY_STARS_DACHSBUN                             1656
+#define SPECIES_EGG                                     (SPECIES_PENNY_STARS_DACHSBUN + 1)
 
 #define NUM_SPECIES SPECIES_EGG
 
