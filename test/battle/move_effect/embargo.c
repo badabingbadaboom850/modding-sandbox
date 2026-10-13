@@ -248,7 +248,7 @@ SINGLE_BATTLE_TEST("Embargo doesn't block the effects of berries obtained throug
         // Turn 2
         MESSAGE("Wobbuffet used Pluck!");
         HP_BAR(opponent);
-        MESSAGE("Wobbuffet stole and ate its target's Oran Berry!");
+        MESSAGE("Wobbuffet stole and ate its target's Chicky Fil-A!");
         HP_BAR(player, damage: -hp);
     }
 }
@@ -635,7 +635,7 @@ SINGLE_BATTLE_TEST("Embargo doesn't block the effects of berries obtained throug
         // Turn 2
         MESSAGE("Wobbuffet used Pluck!");
         HP_BAR(opponent);
-        MESSAGE("Wobbuffet stole and ate its target's Oran Berry!");
+        MESSAGE("Wobbuffet stole and ate its target's Chicky Fil-A!");
         HP_BAR(player, damage: -hp);
     }
 }

@@ -2169,3 +2169,150 @@ const u16 gItemIconPalette_RikosWand[] = INCBIN_U16("graphics/items/icon_palette
 
 const u32 gItemIcon_BlueBrush[] = INCBIN_U32("graphics/items/icons/blue_brush.4bpp.smol");
 const u16 gItemIconPalette_BlueBrush[] = INCBIN_U16("graphics/items/icon_palettes/blue_brush.gbapal");
+
+const u32 gItemIcon_BijuusFishToy[] = INCBIN_U32("graphics/items/icons/bijuus_fish_toy.4bpp.smol");
+const u16 gItemIconPalette_BijuusFishToy[] = INCBIN_U16("graphics/items/icon_palettes/bijuus_fish_toy.gbapal");
+
+const u32 gItemIcon_BijuusCatNip[] = INCBIN_U32("graphics/items/icons/bijuus_cat_nip.4bpp.smol");
+const u16 gItemIconPalette_BijuusCatNip[] = INCBIN_U16("graphics/items/icon_palettes/bijuus_cat_nip.gbapal");
+
+
+const u32 gItemIcon_DadsKeys[] = INCBIN_U32("graphics/items/icons/dads_keys.4bpp.smol");
+const u16 gItemIconPalette_DadsKeys[] = INCBIN_U16("graphics/items/icon_palettes/dads_keys.gbapal");
+const u32 gItemIcon_PieceOfChicken[] = INCBIN_U32("graphics/items/icons/piece_of_chicken.4bpp.smol");
+const u16 gItemIconPalette_PieceOfChicken[] = INCBIN_U16("graphics/items/icon_palettes/piece_of_chicken.gbapal");
+
+
+const u32 gItemIcon_GreenPepper[] = INCBIN_U32("graphics/items/icons/green_pepper.4bpp.smol");
+const u16 gItemIconPalette_GreenPepper[] = INCBIN_U16("graphics/items/icon_palettes/green_pepper.gbapal");
+
+const u32 gItemIcon_EelSushi[] = INCBIN_U32("graphics/items/icons/eel_sushi.4bpp.smol");
+const u16 gItemIconPalette_EelSushi[] = INCBIN_U16("graphics/items/icon_palettes/eel_sushi.gbapal");
+
+const u32 gItemIcon_FrozenFish[] = INCBIN_U32("graphics/items/icons/frozen_fish.4bpp.smol");
+const u16 gItemIconPalette_FrozenFish[] = INCBIN_U16("graphics/items/icon_palettes/frozen_fish.gbapal");
+
+const u32 gItemIcon_MouseToy[] = INCBIN_U32("graphics/items/icons/mouse_toy.4bpp.smol");
+const u16 gItemIconPalette_MouseToy[] = INCBIN_U16("graphics/items/icon_palettes/mouse_toy.gbapal");
+
+const u32 gItemIcon_DogBowl[] = INCBIN_U32("graphics/items/icons/dog_bowl.4bpp.smol");
+const u16 gItemIconPalette_DogBowl[] = INCBIN_U16("graphics/items/icon_palettes/dog_bowl.gbapal");
+
+const u32 gItemIcon_FetchingStick[] = INCBIN_U32("graphics/items/icons/fetching_stick.4bpp.smol");
+const u16 gItemIconPalette_FetchingStick[] = INCBIN_U16("graphics/items/icon_palettes/fetching_stick.gbapal");
+
+const u32 gItemIcon_RikosCourage[] = INCBIN_U32("graphics/items/icons/rikos_courage.4bpp.smol");
+const u16 gItemIconPalette_RikosCourage[] = INCBIN_U16("graphics/items/icon_palettes/rikos_courage.gbapal");
+
+const u32 gItemIcon_BijuusFire[] = INCBIN_U32("graphics/items/icons/bijuus_fire.4bpp.lz");
+const u16 gItemIconPalette_BijuusFire[] = INCBIN_U16("graphics/items/icon_palettes/bijuus_fire.gbapal");
+
+const u32 gItemIcon_PennysBravery[] = INCBIN_U32("graphics/items/icons/pennys_bravery.4bpp.lz");
+const u16 gItemIconPalette_PennysBravery[] = INCBIN_U16("graphics/items/icon_palettes/pennys_bravery.gbapal");
+
+const u32 gItemIcon_RikosBloom[] = INCBIN_U32("graphics/items/icons/rikos_bloom.4bpp.smol");
+const u16 gItemIconPalette_RikosBloom[] = INCBIN_U16("graphics/items/icon_palettes/rikos_bloom.gbapal");
+
+const u32 gItemIcon_RikoPuffs[] = INCBIN_U32("graphics/items/icons/riko_puffs.4bpp.smol");
+const u16 gItemIconPalette_RikoPuffs[] = INCBIN_U16("graphics/items/icon_palettes/riko_puffs.gbapal");
+
+const u32 gItemIcon_RikosAmulet[] = INCBIN_U32("graphics/items/icons/rikos_amulet.4bpp.smol");
+const u16 gItemIconPalette_RikosAmulet[] = INCBIN_U16("graphics/items/icon_palettes/rikos_amulet.gbapal");
+
+const u32 gItemIcon_RikoBalloon[] = INCBIN_U32("graphics/items/icons/riko_balloon.4bpp.smol");
+const u16 gItemIconPalette_RikoBalloon[] = INCBIN_U16("graphics/items/icon_palettes/riko_balloon.gbapal");
+
+const u32 gItemIcon_BijuuBox[] = INCBIN_U32("graphics/items/icons/bijuu_box.4bpp.smol");
+const u16 gItemIconPalette_BijuuBox[] = INCBIN_U16("graphics/items/icon_palettes/bijuu_box.gbapal");
+
+const u32 gItemIcon_PennyHotdog[] = INCBIN_U32("graphics/items/icons/penny_hotdog.4bpp.smol");
+const u16 gItemIconPalette_PennyHotdog[] = INCBIN_U16("graphics/items/icon_palettes/penny_hotdog.gbapal");
+
+const u32 gItemIcon_ToxicMouse[] = INCBIN_U32("graphics/items/icons/toxic_mouse.4bpp.smol");
+const u16 gItemIconPalette_ToxicMouse[] = INCBIN_U16("graphics/items/icon_palettes/toxic_mouse.gbapal");
+
+const u32 gItemIcon_RikoPrincess[] = INCBIN_U32("graphics/items/icons/riko_princess.4bpp.smol");
+const u16 gItemIconPalette_RikoPrincess[] = INCBIN_U16("graphics/items/icon_palettes/riko_princess.gbapal");
+
+const u32 gItemIcon_RikoRaincoat[] = INCBIN_U32("graphics/items/icons/riko_raincoat.4bpp.smol");
+const u16 gItemIconPalette_RikoRaincoat[] = INCBIN_U16("graphics/items/icon_palettes/riko_raincoat.gbapal");
+
+const u32 gItemIcon_BijuuBread[] = INCBIN_U32("graphics/items/icons/bijuu_bread.4bpp.smol");
+const u16 gItemIconPalette_BijuuBread[] = INCBIN_U16("graphics/items/icon_palettes/bijuu_bread.gbapal");
+
+const u32 gItemIcon_BijuuDetective[] = INCBIN_U32("graphics/items/icons/bijuu_detective.4bpp.smol");
+const u16 gItemIconPalette_BijuuDetective[] = INCBIN_U16("graphics/items/icon_palettes/bijuu_detective.gbapal");
+
+const u32 gItemIcon_PennyBlanket[] = INCBIN_U32("graphics/items/icons/penny_blanket.4bpp.smol");
+const u16 gItemIconPalette_PennyBlanket[] = INCBIN_U16("graphics/items/icon_palettes/penny_blanket.gbapal");
+
+const u32 gItemIcon_PennyLifeguard[] = INCBIN_U32("graphics/items/icons/penny_lifeguard.4bpp.smol");
+const u16 gItemIconPalette_PennyLifeguard[] = INCBIN_U16("graphics/items/icon_palettes/penny_lifeguard.gbapal");
+
+const u32 gItemIcon_RikoBlackBelt[] = INCBIN_U32("graphics/items/icons/riko_black_belt.4bpp.smol");
+const u16 gItemIconPalette_RikoBlackBelt[] = INCBIN_U16("graphics/items/icon_palettes/riko_black_belt.gbapal");
+
+const u32 gItemIcon_RikoDragonKeepsake[] = INCBIN_U32("graphics/items/icons/riko_dragon_keepsake.4bpp.smol");
+const u16 gItemIconPalette_RikoDragonKeepsake[] = INCBIN_U16("graphics/items/icon_palettes/riko_dragon_keepsake.gbapal");
+const u32 gItemIcon_RikoBugKeepsake[] = INCBIN_U32("graphics/items/icons/riko_bug_keepsake.4bpp.smol");
+const u16 gItemIconPalette_RikoBugKeepsake[] = INCBIN_U16("graphics/items/icon_palettes/riko_bug_keepsake.gbapal");
+const u32 gItemIcon_BijuuDarkKeepsake[] = INCBIN_U32("graphics/items/icons/bijuu_dark_keepsake.4bpp.smol");
+const u16 gItemIconPalette_BijuuDarkKeepsake[] = INCBIN_U16("graphics/items/icon_palettes/bijuu_dark_keepsake.gbapal");
+const u32 gItemIcon_BijuuRockKeepsake[] = INCBIN_U32("graphics/items/icons/bijuu_rock_keepsake.4bpp.smol");
+const u16 gItemIconPalette_BijuuRockKeepsake[] = INCBIN_U16("graphics/items/icon_palettes/bijuu_rock_keepsake.gbapal");
+const u32 gItemIcon_PennyGroundKeepsake[] = INCBIN_U32("graphics/items/icons/penny_ground_keepsake.4bpp.smol");
+const u16 gItemIconPalette_PennyGroundKeepsake[] = INCBIN_U16("graphics/items/icon_palettes/penny_ground_keepsake.gbapal");
+const u32 gItemIcon_PennySteelKeepsake[] = INCBIN_U32("graphics/items/icons/penny_steel_keepsake.4bpp.smol");
+const u16 gItemIconPalette_PennySteelKeepsake[] = INCBIN_U16("graphics/items/icon_palettes/penny_steel_keepsake.gbapal");
+
+const u32 gItemIcon_RikoButterfly[] = INCBIN_U32("graphics/items/icons/riko_butterfly.4bpp.smol");
+const u16 gItemIconPalette_RikoButterfly[] = INCBIN_U16("graphics/items/icon_palettes/riko_butterfly.gbapal");
+
+const u32 gItemIcon_BijuuAstronaut[] = INCBIN_U32("graphics/items/icons/bijuu_astronaut.4bpp.smol");
+const u16 gItemIconPalette_BijuuAstronaut[] = INCBIN_U16("graphics/items/icon_palettes/bijuu_astronaut.gbapal");
+
+const u32 gItemIcon_PennyBallerina[] = INCBIN_U32("graphics/items/icons/penny_ballerina.4bpp.smol");
+const u16 gItemIconPalette_PennyBallerina[] = INCBIN_U16("graphics/items/icon_palettes/penny_ballerina.gbapal");
+
+const u32 gItemIcon_RikoWitch[] = INCBIN_U32("graphics/items/icons/riko_witch.4bpp.smol");
+const u16 gItemIconPalette_RikoWitch[] = INCBIN_U16("graphics/items/icon_palettes/riko_witch.gbapal");
+const u32 gItemIcon_BijuuVampire[] = INCBIN_U32("graphics/items/icons/bijuu_vampire.4bpp.smol");
+const u16 gItemIconPalette_BijuuVampire[] = INCBIN_U16("graphics/items/icon_palettes/bijuu_vampire.gbapal");
+const u32 gItemIcon_PennyPumpkin[] = INCBIN_U32("graphics/items/icons/penny_pumpkin.4bpp.smol");
+const u16 gItemIconPalette_PennyPumpkin[] = INCBIN_U16("graphics/items/icon_palettes/penny_pumpkin.gbapal");
+
+const u32 gItemIcon_RikoLeaves[] = INCBIN_U32("graphics/items/icons/riko_leaves.4bpp.smol");
+const u16 gItemIconPalette_RikoLeaves[] = INCBIN_U16("graphics/items/icon_palettes/riko_leaves.gbapal");
+
+const u32 gItemIcon_BijuuSweater[] = INCBIN_U32("graphics/items/icons/bijuu_sweater.4bpp.smol");
+const u16 gItemIconPalette_BijuuSweater[] = INCBIN_U16("graphics/items/icon_palettes/bijuu_sweater.gbapal");
+
+const u32 gItemIcon_PennySweater[] = INCBIN_U32("graphics/items/icons/penny_sweater.4bpp.smol");
+const u16 gItemIconPalette_PennySweater[] = INCBIN_U16("graphics/items/icon_palettes/penny_sweater.gbapal");
+
+const u32 gItemIcon_RikoTurkey[] = INCBIN_U32("graphics/items/icons/riko_turkey.4bpp.smol");
+const u16 gItemIconPalette_RikoTurkey[] = INCBIN_U16("graphics/items/icon_palettes/riko_turkey.gbapal");
+
+const u32 gItemIcon_BijuuChef[] = INCBIN_U32("graphics/items/icons/bijuu_chef.4bpp.smol");
+const u16 gItemIconPalette_BijuuChef[] = INCBIN_U16("graphics/items/icon_palettes/bijuu_chef.gbapal");
+
+const u32 gItemIcon_PennyYam[] = INCBIN_U32("graphics/items/icons/penny_yam.4bpp.smol");
+const u16 gItemIconPalette_PennyYam[] = INCBIN_U16("graphics/items/icon_palettes/penny_yam.gbapal");
+
+const u32 gItemIcon_RikoSanta[] = INCBIN_U32("graphics/items/icons/riko_santa.4bpp.smol");
+const u16 gItemIconPalette_RikoSanta[] = INCBIN_U16("graphics/items/icon_palettes/riko_santa.gbapal");
+
+const u32 gItemIcon_BijuuPresent[] = INCBIN_U32("graphics/items/icons/bijuu_present.4bpp.smol");
+const u16 gItemIconPalette_BijuuPresent[] = INCBIN_U16("graphics/items/icon_palettes/bijuu_present.gbapal");
+
+const u32 gItemIcon_PennyReindeer[] = INCBIN_U32("graphics/items/icons/penny_reindeer.4bpp.smol");
+const u16 gItemIconPalette_PennyReindeer[] = INCBIN_U16("graphics/items/icon_palettes/penny_reindeer.gbapal");
+
+const u32 gItemIcon_RikoParty[] = INCBIN_U32("graphics/items/icons/riko_party.4bpp.smol");
+const u16 gItemIconPalette_RikoParty[] = INCBIN_U16("graphics/items/icon_palettes/riko_party.gbapal");
+
+const u32 gItemIcon_BijuuGala[] = INCBIN_U32("graphics/items/icons/bijuu_gala.4bpp.smol");
+const u16 gItemIconPalette_BijuuGala[] = INCBIN_U16("graphics/items/icon_palettes/bijuu_gala.gbapal");
+
+const u32 gItemIcon_PennyStars[] = INCBIN_U32("graphics/items/icons/penny_stars.4bpp.smol");
+const u16 gItemIconPalette_PennyStars[] = INCBIN_U16("graphics/items/icon_palettes/penny_stars.gbapal");

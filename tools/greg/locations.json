@@ -1,0 +1,194 @@
+[
+  {
+    "map": "GoldenrodCity",
+    "xy": [
+      49,
+      37
+    ],
+    "trainer": 1080,
+    "sight": 2,
+    "budget": 16,
+    "symbol": "TRAINER_GREG_GOLDENROD_CITY",
+    "seen": "Greg: Scott booked dinner? Cute. I booked six level-99 problems.",
+    "beaten": "Greg: I was distracted by Scott's terrible flirting.",
+    "after": "Greg: Scott says you looked cute winning. I say suspicious.",
+    "local_id": 51,
+    "local_symbol": "LOCALID_GREG_ROAM_GOLDENRODCITY"
+  },
+  {
+    "map": "Route38",
+    "xy": [
+      32,
+      16
+    ],
+    "trainer": 1081,
+    "sight": 2,
+    "budget": 9,
+    "symbol": "TRAINER_GREG_ROUTE38",
+    "seen": "Greg: Nice countryside. Better when viewed from behind my Garchomp.",
+    "beaten": "Greg: A leaf blew past. Completely unfair.",
+    "after": "Greg: You can beat me. You cannot mute me.",
+    "local_id": 12,
+    "local_symbol": "LOCALID_GREG_ROAM_ROUTE38"
+  },
+  {
+    "map": "EcruteakCity",
+    "xy": [
+      52,
+      40
+    ],
+    "trainer": 1082,
+    "sight": 2,
+    "budget": 16,
+    "symbol": "TRAINER_GREG_ECRUTEAK_CITY",
+    "seen": "Greg: This city has ancient legends. Mine has perfect IVs.",
+    "beaten": "Greg: The ghosts coached you. I saw it.",
+    "after": "Greg: Even the ghosts wish I would leave. I will not.",
+    "local_id": 49,
+    "local_symbol": "LOCALID_GREG_ROAM_ECRUTEAKCITY"
+  },
+  {
+    "map": "CianwoodCity",
+    "xy": [
+      20,
+      46
+    ],
+    "trainer": 1083,
+    "sight": 2,
+    "budget": 11,
+    "symbol": "TRAINER_GREG_CIANWOOD_CITY",
+    "seen": "Greg: You sailed here to escape me? Garchomp packed a lunch.",
+    "beaten": "Greg: Sea breeze. Rematch in a vacuum.",
+    "after": "Greg: Scott's romantic ferry plan had one flaw. Not enough Greg.",
+    "local_id": 22,
+    "local_symbol": "LOCALID_GREG_ROAM_CIANWOODCITY"
+  },
+  {
+    "map": "Route42",
+    "xy": [
+      65,
+      14
+    ],
+    "trainer": 1084,
+    "sight": 2,
+    "budget": 11,
+    "symbol": "TRAINER_GREG_ROUTE42",
+    "seen": "Greg: Three cave entrances. Zero exits from this conversation.",
+    "beaten": "Greg: Cave echo. I heard the wrong move.",
+    "after": "Greg: Nice scenic route. Shame about the Greg.",
+    "local_id": 21,
+    "local_symbol": "LOCALID_GREG_ROAM_ROUTE42"
+  },
+  {
+    "map": "BlackthornCity",
+    "xy": [
+      35,
+      43
+    ],
+    "trainer": 1085,
+    "sight": 2,
+    "budget": 14,
+    "symbol": "TRAINER_GREG_BLACKTHORN_CITY",
+    "seen": "Greg: Clair trains dragons. I train everyone to fear mine.",
+    "beaten": "Greg: Clair bribed my dragons. Obviously.",
+    "after": "Greg: You have Gym Badges. I have six reasons to remain annoying.",
+    "local_id": 31,
+    "local_symbol": "LOCALID_GREG_ROAM_BLACKTHORNCITY"
+  },
+  {
+    "map": "PewterCity",
+    "xy": [
+      26,
+      23
+    ],
+    "trainer": 1086,
+    "sight": 2,
+    "budget": 8,
+    "symbol": "TRAINER_GREG_PEWTER_CITY",
+    "seen": "Greg: Brock studies rocks. I study how fast your team hits them.",
+    "beaten": "Greg: My fossils were buffering.",
+    "after": "Greg: They tried putting me in the museum. Too annoying to display.",
+    "local_id": 11,
+    "local_symbol": "LOCALID_GREG_ROAM_PEWTERCITY"
+  },
+  {
+    "map": "CeruleanCity",
+    "xy": [
+      31,
+      21
+    ],
+    "trainer": 1087,
+    "sight": 2,
+    "budget": 10,
+    "symbol": "TRAINER_GREG_CERULEAN_CITY",
+    "seen": "Greg: Misty likes water. My Garchomp likes making you sweat.",
+    "beaten": "Greg: Splash damage. Does not count.",
+    "after": "Greg: Riko's raincoat cannot protect you from this conversation.",
+    "local_id": 11,
+    "local_symbol": "LOCALID_GREG_ROAM_CERULEANCITY"
+  },
+  {
+    "map": "VermilionCity",
+    "xy": [
+      33,
+      21
+    ],
+    "trainer": 1088,
+    "sight": 2,
+    "budget": 13,
+    "symbol": "TRAINER_GREG_VERMILION_CITY",
+    "seen": "Greg: You took a boat? I took that personally.",
+    "beaten": "Greg: Boat lag. Maritime technicality.",
+    "after": "Greg: You crossed the ocean and I was still here. Incredible, right?",
+    "local_id": 26,
+    "local_symbol": "LOCALID_GREG_ROAM_VERMILIONCITY"
+  },
+  {
+    "map": "CeladonCity",
+    "xy": [
+      30,
+      25
+    ],
+    "trainer": 1089,
+    "sight": 2,
+    "budget": 9,
+    "symbol": "TRAINER_GREG_CELADON_CITY",
+    "seen": "Greg: Erika grows flowers. I grow increasingly unbearable.",
+    "beaten": "Greg: Pollen. My Garchomp has allergies.",
+    "after": "Greg: Penny gets a pup cup. I get a victory cup. Mine is currently empty.",
+    "local_id": 17,
+    "local_symbol": "LOCALID_GREG_ROAM_CELADONCITY"
+  },
+  {
+    "map": "FuchsiaCity",
+    "xy": [
+      20,
+      33
+    ],
+    "trainer": 1090,
+    "sight": 2,
+    "budget": 9,
+    "symbol": "TRAINER_GREG_FUCHSIA_CITY",
+    "seen": "Greg: Riko learned karate? My Garchomp missed the memo.",
+    "beaten": "Greg: Penny's tiny hardhat broke my concentration.",
+    "after": "Greg: Bijuu stole my seat. I stole your peaceful afternoon.",
+    "local_id": 18,
+    "local_symbol": "LOCALID_GREG_ROAM_FUCHSIACITY"
+  },
+  {
+    "map": "SaffronCity",
+    "xy": [
+      28,
+      41
+    ],
+    "trainer": 1091,
+    "sight": 2,
+    "budget": 9,
+    "symbol": "TRAINER_GREG_SAFFRON_CITY",
+    "seen": "Greg: Psychic city, huh? Predict what happens when I say Garchomp.",
+    "beaten": "Greg: You read my mind. Illegal outside Saffron.",
+    "after": "Greg: Sabrina predicted I would be annoying. Finally, a correct prediction.",
+    "local_id": 16,
+    "local_symbol": "LOCALID_GREG_ROAM_SAFFRONCITY"
+  }
+]

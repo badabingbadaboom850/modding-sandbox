@@ -1,4 +1,5 @@
 #include "global.h"
+#include "trio_runoff.h"
 #include "battle.h"
 #include "battle_boss.h"
 #include "battle_anim.h"
@@ -192,6 +193,20 @@ EWRAM_DATA enum BattlerId gBattlerFainted = 0;
 EWRAM_DATA enum BattlerId gEffectBattler = 0;
 EWRAM_DATA enum BattlerId gEffectBattler2 = 0; // Backup for when gEffectBattler is already in use (Multi)
 EWRAM_DATA enum BattlerId gPotentialItemEffectBattler = 0;
+
+// The extra run-off text can outlast the opponent's healthbox slide. Once
+// that text is announced, an idle healthbox means the slide may be finished;
+// do not wait forever for it to become active again. The caller already waits
+// for the departure text controller to complete before reaching this gate.
+bool32 BattleIntro_ShouldWaitForHealthbox(enum BattlerId battler)
+{
+    return B_FAST_INTRO_PKMN_TEXT == TRUE
+        && (gBattleTypeFlags & BATTLE_TYPE_TRAINER)
+        && !(gBattleTypeFlags & (BATTLE_TYPE_RECORDED | BATTLE_TYPE_RECORDED_LINK
+            | BATTLE_TYPE_RECORDED_IS_MASTER | BATTLE_TYPE_LINK))
+        && gSprites[gHealthboxSpriteIds[battler ^ BIT_SIDE]].callback == SpriteCallbackDummy
+        && !TrioRunoff_DepartureAnnounced();
+}
 
 bool32 IsFastIntroNoSlideEnabled(void)
 {
@@ -569,6 +584,7 @@ static void CB2_InitBattleInternal(void)
     FreeAllSpritePalettes();
     gReservedSpritePaletteCount = MAX_BATTLERS_COUNT;
     SetVBlankCallback(VBlankCB_Battle);
+    TrioRunoff_BeginBattle();
     SetUpBattleVarsAndBirchZigzagoon();
 
     if ((IsMultibattleTest() && gBattleTypeFlags & BATTLE_TYPE_INGAME_PARTNER)
@@ -600,7 +616,8 @@ static void CB2_InitBattleInternal(void)
         AdjustFriendship(&gPlayerParty[i], FRIENDSHIP_EVENT_LEAGUE_BATTLE);
 
         // Apply party-wide start-of-battle form changes for both sides.
-        TryFormChange(&gPlayerParty[i], FORM_CHANGE_BEGIN_BATTLE);
+        if (!TrioRunoff_IsAway(&gPlayerParty[i]))
+            TryFormChange(&gPlayerParty[i], FORM_CHANGE_BEGIN_BATTLE);
         TryFormChange(&gEnemyParty[i], FORM_CHANGE_BEGIN_BATTLE);
     }
 
@@ -3876,7 +3893,13 @@ static void DoBattleIntro(void)
         break;
     case BATTLE_INTRO_STATE_WAIT_FOR_WILD_BATTLE_TEXT:
         if (!IsBattlerMarkedForControllerExec(GetBattlerAtPosition(B_POSITION_PLAYER_LEFT)))
-        gBattleStruct->eventState.battleIntro++;
+        {
+            u32 stringId = TrioRunoff_TakeDepartureString();
+            if (stringId != 0)
+                PrepareStringBattle(stringId, GetBattlerAtPosition(B_POSITION_PLAYER_LEFT));
+            else
+                gBattleStruct->eventState.battleIntro++;
+        }
         break;
     case BATTLE_INTRO_STATE_PRINT_PLAYER_SEND_OUT_TEXT:
         if (!(gBattleTypeFlags & BATTLE_TYPE_SAFARI))
@@ -3887,10 +3910,7 @@ static void DoBattleIntro(void)
                 battler = GetBattlerAtPosition(B_POSITION_PLAYER_LEFT);
 
             // A hack that makes fast intro work in trainer battles too.
-            if (B_FAST_INTRO_PKMN_TEXT == TRUE
-                && gBattleTypeFlags & BATTLE_TYPE_TRAINER
-                && !(gBattleTypeFlags & (BATTLE_TYPE_RECORDED | BATTLE_TYPE_RECORDED_LINK | BATTLE_TYPE_RECORDED_IS_MASTER | BATTLE_TYPE_LINK))
-                && gSprites[gHealthboxSpriteIds[battler ^ BIT_SIDE]].callback == SpriteCallbackDummy)
+            if (BattleIntro_ShouldWaitForHealthbox(battler))
             {
                 return;
             }
@@ -6141,6 +6161,7 @@ static void WaitForEvoSceneToFinish(void)
 
 static void ReturnFromBattleToOverworld(void)
 {
+    TrioRunoff_Clear();
     if (!(gBattleTypeFlags & BATTLE_TYPE_LINK))
     {
         CalculatePlayerPartyCount();

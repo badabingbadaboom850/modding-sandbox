@@ -1410,7 +1410,9 @@ void LoadBallGfx(u8 ballId)
 
     switch (ballId)
     {
-    case BALL_POKE ... BALL_MASTER:
+    // Custom Great/Ultra sheets carry their own matching opening frames.
+    case BALL_POKE:
+    case BALL_MASTER:
     case BALL_NET ... BALL_NEST:
     case BALL_REPEAT:
     case BALL_SAFARI:

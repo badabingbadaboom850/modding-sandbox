@@ -1,0 +1,210 @@
+[
+  {
+    "key": "Valet",
+    "map": "TrioPennyValet",
+    "source": "OlivineCity_House1",
+    "group": "gMapGroup_IndoorOlivine",
+    "invite": "A tiny valet service!|The attendant jingles|his keys.||See who answers?",
+    "host": "OBJ_EVENT_GFX_GENTLEMAN",
+    "id": "MAP_TRIO_SILLY_VALET",
+    "entry": [
+      4,
+      7
+    ],
+    "return": [
+      4,
+      7
+    ],
+    "actors": 5,
+    "required": 5,
+    "interactive": false,
+    "guide": [
+      6,
+      7
+    ],
+    "source_id": "MAP_OLIVINE_CITY_HOUSE1",
+    "guide_id": 2
+  },
+  {
+    "key": "Box",
+    "map": "TrioBijuuBox",
+    "source": "EcruteakCity_House1",
+    "group": "gMapGroup_IndoorEcruteak",
+    "invite": "A priceless artifact|is being guarded here.||Would you like to see|the forbidden box?",
+    "host": "OBJ_EVENT_GFX_SCIENTIST_1",
+    "id": "MAP_TRIO_SILLY_BOX",
+    "entry": [
+      4,
+      7
+    ],
+    "return": [
+      4,
+      7
+    ],
+    "actors": 7,
+    "required": 6,
+    "interactive": false,
+    "guide": [
+      6,
+      7
+    ],
+    "source_id": "MAP_ECRUTEAK_CITY_HOUSE1",
+    "guide_id": 3
+  },
+  {
+    "key": "Noise",
+    "map": "TrioRikoNoise",
+    "source": "MahoganyTown_House1",
+    "group": "gMapGroup_IndoorMahogany",
+    "invite": "The town has a new|barking ordinance.||Riko requested a hearing.|Want to attend?",
+    "host": "OBJ_EVENT_GFX_GENTLEMAN",
+    "id": "MAP_TRIO_SILLY_NOISE",
+    "entry": [
+      4,
+      7
+    ],
+    "return": [
+      4,
+      7
+    ],
+    "actors": 5,
+    "required": 5,
+    "interactive": false,
+    "guide": [
+      6,
+      7
+    ],
+    "source_id": "MAP_MAHOGANY_TOWN_HOUSE1",
+    "guide_id": 3
+  },
+  {
+    "key": "Greg",
+    "map": "TrioGregFanClub",
+    "source": "BlackthornCity_House1",
+    "group": "gMapGroup_IndoorBlackthorn",
+    "invite": "The Greg Fan Club is|accepting visitors.||Membership: suspicious.|Admission: free.||Visit the club?",
+    "host": "OBJ_EVENT_GFX_MAN_1",
+    "id": "MAP_TRIO_SILLY_GREG",
+    "entry": [
+      4,
+      7
+    ],
+    "return": [
+      4,
+      7
+    ],
+    "actors": 6,
+    "required": 6,
+    "interactive": true,
+    "guide": [
+      6,
+      7
+    ],
+    "source_id": "MAP_BLACKTHORN_CITY_HOUSE1",
+    "guide_id": 3
+  },
+  {
+    "key": "Hotdog",
+    "map": "TrioPennyHotdog",
+    "source": "CianwoodHouse2",
+    "group": "gMapGroup_IndoorCianwood",
+    "invite": "A hot-dog vendor has|a very strange question.||Scott looks concerned.||Go hear him out?",
+    "host": "OBJ_EVENT_GFX_MAN_1",
+    "id": "MAP_TRIO_SILLY_HOTDOG",
+    "entry": [
+      4,
+      7
+    ],
+    "return": [
+      4,
+      7
+    ],
+    "actors": 5,
+    "required": 5,
+    "interactive": false,
+    "guide": [
+      6,
+      7
+    ],
+    "source_id": "MAP_CIANWOOD_HOUSE2",
+    "guide_id": 4
+  },
+  {
+    "key": "Jam",
+    "map": "TrioPomTraffic",
+    "source": "PewterCity_House1",
+    "group": "gMapGroup_IndoorPewter",
+    "invite": "Three Poms have stopped|traffic over a snack.||Negotiations have failed.||Help clear the road?",
+    "host": "OBJ_EVENT_GFX_MAN_1",
+    "id": "MAP_TRIO_SILLY_JAM",
+    "entry": [
+      26,
+      25
+    ],
+    "return": [
+      4,
+      7
+    ],
+    "actors": 10,
+    "required": 10,
+    "interactive": false,
+    "guide": [
+      6,
+      7
+    ],
+    "source_id": "MAP_PEWTER_CITY_HOUSE1",
+    "guide_id": 3
+  },
+  {
+    "key": "Fishing",
+    "map": "TrioBijuuFishing",
+    "source": "CeruleanCity_House1",
+    "group": "gMapGroup_IndoorCerulean",
+    "invite": "A fisherman wants Bijuu|to inspect his catch.||This seems unwise.||Watch the inspection?",
+    "host": "OBJ_EVENT_GFX_FISHERMAN",
+    "id": "MAP_TRIO_SILLY_FISHING",
+    "entry": [
+      40,
+      25
+    ],
+    "return": [
+      4,
+      7
+    ],
+    "actors": 5,
+    "required": 5,
+    "interactive": false,
+    "guide": [
+      6,
+      7
+    ],
+    "source_id": "MAP_CERULEAN_CITY_HOUSE1",
+    "guide_id": 2
+  },
+  {
+    "key": "Apology",
+    "map": "TrioSquirrelApology",
+    "source": "TrioGreedentCafe",
+    "group": "gMapGroup_IndoorVermilion",
+    "invite": "The Apology Department|has opened next door.||No actual belongings|will be taken.||Attend the apology?",
+    "host": "OBJ_EVENT_GFX_SPECIES(GREEDENT)",
+    "id": "MAP_TRIO_SILLY_APOLOGY",
+    "entry": [
+      4,
+      7
+    ],
+    "return": [
+      3,
+      7
+    ],
+    "actors": 7,
+    "required": 7,
+    "interactive": false,
+    "guide": [
+      4,
+      6
+    ],
+    "source_id": "MAP_TRIO_GREEDENT_CAFE",
+    "guide_id": 10
+  }
+]

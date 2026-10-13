@@ -9,7 +9,7 @@
 #include "constants/difficulty.h"
 
 #define TRAINER_MOVE_SCORE_REJECT (-10000)
-#define TRAINER_MOVE_SEEN_BYTES DIV_ROUND_UP(MOVES_COUNT, 8)
+#define TRAINER_MOVE_SEEN_BYTES DIV_ROUND_UP(MOVES_COUNT_ALL, 8)
 #define HARD_TRAINER_BASIC_TEACHABLE_LEVEL 33
 #define HARD_TRAINER_ADVANCED_TEACHABLE_LEVEL 43
 #define HARD_TRAINER_FULL_TEACHABLE_LEVEL 50
@@ -77,13 +77,13 @@ static s32 ClampTrainerMoveScore(s32 value, s32 minValue, s32 maxValue)
 static bool32 IsValidAutomaticTrainerMove(enum Move move)
 {
     return move > MOVE_NONE
-        && move < MOVES_COUNT
+        && IS_STANDARD_MOVE(move)
         && GetMoveEffect(move) != EFFECT_PLACEHOLDER;
 }
 
 static enum Move SanitizeTrainerMove(enum Move move)
 {
-    assertf(move < MOVES_COUNT, "invalid trainer move: %d", move)
+    assertf(IS_STANDARD_MOVE(move), "invalid trainer move: %d", move)
     {
         return MOVE_NONE;
     }

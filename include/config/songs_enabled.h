@@ -197,7 +197,7 @@
 #define SONG_MUS_HG_MYSTERY_GIFT                        0
 #define SONG_MUS_HG_WIFI_PLAZA                          0
 #define SONG_MUS_HG_WIFI_MINIGAMES                      0
-#define SONG_MUS_HG_WIFI_PARADE                         0
+#define SONG_MUS_HG_WIFI_PARADE                         1
 #define SONG_MUS_HG_GLOBAL_TERMINAL                     0
 #define SONG_MUS_HG_SPIN_TRADE                          0
 #define SONG_MUS_HG_GTS                                 0

@@ -1252,6 +1252,18 @@ Common_Text_ReceivedMon:
 	.include "data/scripts/dexnav.inc"
 	.include "data/scripts/sandpit.inc"
 	.include "data/maps/ShoalCave_LowTideIceRoom_Suicune/scripts.inc"
+	.include "data/scripts/trio_spirit_trials.inc"
+	.include "data/scripts/trio_home_spirit_trials.inc"
+	.include "data/scripts/trio_story_spirit_trials.inc"
+	.include "data/scripts/trio_memories.inc"
+	.include "data/scripts/trio_scott_moments.inc"
+	.include "data/scripts/trio_snack_chase.inc"
+	.include "data/scripts/trio_greedent_gang.inc"
+	.include "data/scripts/trio_camp.inc"
+	.include "data/scripts/trio_camp_keepsakes.inc"
+	.include "data/maps/GoldenrodFestival/scripts.inc"
+	.include "data/scripts/trio_party_checks.inc"
+	.include "data/scripts/trio_gym_trivia.inc"
 	.include "data/scripts/battle_frontier.inc"
 	
 	// Start battle_arcade
@@ -1659,6 +1671,7 @@ Common_Text_ReceivedMon:
 	.include "data/maps/OlivineCity_House1/scripts.inc"
 
 	.include "data/maps/OlivineCity_House2/scripts.inc"
+	.include "data/maps/OlivinePomParty/scripts.inc"
 
 	.include "data/maps/OlivineCity_House3/scripts.inc"
 
@@ -2413,3 +2426,57 @@ Common_Text_ReceivedMon:
 	.include "data/maps/Route50UnderwaterCave2/scripts.inc"
 
 	.include "data/maps/BattleCafe/scripts.inc"
+
+
+	.include "data/maps/TrioEchoWoods/scripts.inc"
+
+	.include "data/maps/TrioMirrorHouse/scripts.inc"
+
+	.include "data/maps/TrioLanternTrail/scripts.inc"
+	.include "data/maps/TrioGarden/scripts.inc"
+	.include "data/maps/RikoSpiritCavern/scripts.inc"
+	.include "data/maps/TrioGreedentCafe/scripts.inc"
+
+	.include "data/scripts/trio_move_tutor.inc"
+	.include "data/scripts/trio_costumes.inc"
+	.include "data/scripts/trio_complete_elements.inc"
+
+	.include "data/scripts/trio_outfit_stories.inc"
+
+	.include "data/scripts/trio_roadtrip.inc"
+
+	.include "data/maps/TrioRoadIsland/scripts.inc"
+	.include "data/maps/TrioRoadWoods/scripts.inc"
+	.include "data/maps/TrioRoadCove/scripts.inc"
+	.include "data/maps/TrioRoadCabin/scripts.inc"
+
+	.include "data/scripts/trio_family_days.inc"
+	.include "data/scripts/trio_player_hats.inc"
+	.include "data/maps/TrioDinnerDate/scripts.inc"
+	.include "data/maps/TrioRadioStudio/scripts.inc"
+	.include "data/maps/TrioHomecoming/scripts.inc"
+
+.include "data/scripts/trio_greg_roaming.inc"
+	.include "data/scripts/trio_pom_parade.inc"
+	.include "data/maps/TrioPomParade/scripts.inc"
+
+	.include "data/scripts/trio_silly_scenes.inc"
+	.include "data/maps/TrioPennyValet/scripts.inc"
+	.include "data/maps/TrioBijuuBox/scripts.inc"
+	.include "data/maps/TrioRikoNoise/scripts.inc"
+	.include "data/maps/TrioGregFanClub/scripts.inc"
+	.include "data/maps/TrioPennyHotdog/scripts.inc"
+	.include "data/maps/TrioPomTraffic/scripts.inc"
+	.include "data/maps/TrioBijuuFishing/scripts.inc"
+	.include "data/maps/TrioSquirrelApology/scripts.inc"
+
+	.include "data/maps/TrioHalloweenTrail/scripts.inc"
+	.include "data/scripts/trio_halloween_trail.inc"
+
+	.include "data/scripts/trio_seasonal_chapters.inc"
+	.include "data/maps/TrioSeasonFall/scripts.inc"
+	.include "data/maps/TrioSeasonThanksgiving/scripts.inc"
+	.include "data/maps/TrioSeasonChristmas/scripts.inc"
+	.include "data/maps/TrioSeasonNewYear/scripts.inc"
+
+	.include "data/scripts/trio_scenic.inc"

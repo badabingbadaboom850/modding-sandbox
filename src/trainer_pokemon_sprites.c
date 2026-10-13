@@ -1,4 +1,5 @@
 #include "global.h"
+#include "trio_player_hats.h"
 #include "sprite.h"
 #include "window.h"
 #include "malloc.h"
@@ -353,7 +354,7 @@ u16 PlayerGenderToFrontTrainerPicId_Debug(enum Gender gender, bool8 getClass)
     if (getClass == TRUE)
     {
         if (gender != MALE)
-            return gFacilityClassToPicIndex[FACILITY_CLASS_MAY];
+            return TrioPlayerHat_FrontPic(FEMALE);
         else
             return gFacilityClassToPicIndex[FACILITY_CLASS_BRENDAN];
     }

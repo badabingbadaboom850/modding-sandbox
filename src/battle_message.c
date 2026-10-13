@@ -1003,6 +1003,9 @@ const u8 *const gBattleStringsTable[STRINGID_COUNT] =
     [STRINGID_BOSSTRANSFORMED]                      = COMPOUND_STRING("{B_ATK_NAME_WITH_PREFIX} transformed!"),
     [STRINGID_BOSSPHASESURGINGWITHPOWER]            = COMPOUND_STRING("{B_DEF_NAME_WITH_PREFIX} is surging with power!"),
     [STRINGID_BOSSPHASETRANSFORMED]                 = COMPOUND_STRING("{B_DEF_NAME_WITH_PREFIX} transformed!"),
+    [STRINGID_TRIO_RIKO_RUNOFF] = COMPOUND_STRING("Riko heard a snack bag!\nRiko, get back here!\pShe will return after\nthis battle."),
+    [STRINGID_TRIO_BIJUU_RUNOFF] = COMPOUND_STRING("Bijuu spotted a mouse!\nWait, no! Come back!\pShe will return after\nthis battle."),
+    [STRINGID_TRIO_PENNY_RUNOFF] = COMPOUND_STRING("Penny heard Dad's keys!\nWe are NOT taking a ride!\pShe will return after\nthis battle."),
     [STRINGID_MALICEAURAENTERS]                     = COMPOUND_STRING("{B_SCR_NAME_WITH_PREFIX} is radiating a malicious aura!"),
 };
 
@@ -2657,7 +2660,7 @@ void BufferStringBattle(enum StringID stringID, enum BattlerId battler)
         }*/
         break;
     case STRINGID_USEDMOVE: // Pokémon used a move msg
-        if (gBattleMsgDataPtr->currentMove >= MOVES_COUNT
+        if (!IS_STANDARD_MOVE(gBattleMsgDataPtr->currentMove)
          && !IsZMove(gBattleMsgDataPtr->currentMove)
          && !IsMaxMove(gBattleMsgDataPtr->currentMove))
             StringCopy(gBattleTextBuff3, gTypesInfo[*(&gBattleStruct->stringMoveType)].generic);
@@ -3149,7 +3152,7 @@ u32 BattleStringExpandPlaceholders(const u8 *src, u8 *dst, u32 dstSize)
                 HANDLE_NICKNAME_STRING_CASE(gBattleScripting.battler)
                 break;
             case B_TXT_CURRENT_MOVE: // current move name
-                if (gBattleMsgDataPtr->currentMove >= MOVES_COUNT
+                if (!IS_STANDARD_MOVE(gBattleMsgDataPtr->currentMove)
                  && !IsZMove(gBattleMsgDataPtr->currentMove)
                  && !IsMaxMove(gBattleMsgDataPtr->currentMove))
                     toCpy = gTypesInfo[gBattleStruct->stringMoveType].generic;
@@ -3157,7 +3160,7 @@ u32 BattleStringExpandPlaceholders(const u8 *src, u8 *dst, u32 dstSize)
                     toCpy = GetMoveName(gBattleMsgDataPtr->currentMove);
                 break;
             case B_TXT_LAST_MOVE: // originally used move name
-                if (gBattleMsgDataPtr->originallyUsedMove >= MOVES_COUNT
+                if (!IS_STANDARD_MOVE(gBattleMsgDataPtr->originallyUsedMove)
                  && !IsZMove(gBattleMsgDataPtr->currentMove)
                  && !IsMaxMove(gBattleMsgDataPtr->currentMove))
                     toCpy = gTypesInfo[gBattleStruct->stringMoveType].generic;

@@ -10336,6 +10336,86 @@
       "secondary_tileset": "gTileset_SaffronCity_FightingDojoVIP",
       "border_filepath": "data/layouts/BattleCafe/border.bin",
       "blockdata_filepath": "data/layouts/BattleCafe/map.bin"
+    },
+    {
+      "id": "LAYOUT_TRIO_ECHO_WOODS",
+      "name": "TrioEchoWoods_Layout",
+      "width": 24,
+      "height": 30,
+      "primary_tileset": "gTileset_Johto_General",
+      "secondary_tileset": "gTileset_NationalPark",
+      "border_filepath": "data/layouts/TrioEchoWoods/border.bin",
+      "blockdata_filepath": "data/layouts/TrioEchoWoods/map.bin"
+    },
+    {
+      "id": "LAYOUT_TRIO_MIRROR_HOUSE",
+      "name": "TrioMirrorHouse_Layout",
+      "width": 13,
+      "height": 10,
+      "primary_tileset": "gTileset_Johto_Building",
+      "secondary_tileset": "gTileset_House_Lab",
+      "border_filepath": "data/layouts/TrioMirrorHouse/border.bin",
+      "blockdata_filepath": "data/layouts/TrioMirrorHouse/map.bin"
+    },
+    {
+      "id": "LAYOUT_TRIO_LANTERN_TRAIL",
+      "name": "TrioLanternTrail_Layout",
+      "width": 24,
+      "height": 30,
+      "primary_tileset": "gTileset_Johto_General",
+      "secondary_tileset": "gTileset_NationalPark",
+      "border_filepath": "data/layouts/TrioLanternTrail/border.bin",
+      "blockdata_filepath": "data/layouts/TrioLanternTrail/map.bin"
+    },
+    {
+      "id": "LAYOUT_TRIO_GARDEN",
+      "name": "TrioGarden_Layout",
+      "width": 24,
+      "height": 18,
+      "primary_tileset": "gTileset_Johto_General",
+      "secondary_tileset": "gTileset_NationalPark",
+      "border_filepath": "data/layouts/TrioGarden/border.bin",
+      "blockdata_filepath": "data/layouts/TrioGarden/map.bin"
+    },
+    {
+      "id": "LAYOUT_RIKO_SPIRIT_CAVERN",
+      "name": "RikoSpiritCavern_Layout",
+      "width": 32,
+      "height": 30,
+      "primary_tileset": "gTileset_Johto_General",
+      "secondary_tileset": "gTileset_Cave_Default",
+      "border_filepath": "data/layouts/RikoSpiritCavern/border.bin",
+      "blockdata_filepath": "data/layouts/RikoSpiritCavern/map.bin"
+    },
+    {
+      "id": "LAYOUT_TRIO_ROAD_ISLAND",
+      "name": "TrioRoadIsland_Layout",
+      "width": 36,
+      "height": 28,
+      "primary_tileset": "gTileset_Johto_General",
+      "secondary_tileset": "gTileset_CianwoodCity",
+      "border_filepath": "data/layouts/TrioRoadIsland/border.bin",
+      "blockdata_filepath": "data/layouts/TrioRoadIsland/map.bin"
+    },
+    {
+      "id": "LAYOUT_TRIO_ROAD_WOODS",
+      "name": "TrioRoadWoods_Layout",
+      "width": 28,
+      "height": 28,
+      "primary_tileset": "gTileset_Johto_General",
+      "secondary_tileset": "gTileset_NationalPark",
+      "border_filepath": "data/layouts/TrioRoadWoods/border.bin",
+      "blockdata_filepath": "data/layouts/TrioRoadWoods/map.bin"
+    },
+    {
+      "id": "LAYOUT_TRIO_ROAD_COVE",
+      "name": "TrioRoadCove_Layout",
+      "width": 24,
+      "height": 20,
+      "primary_tileset": "gTileset_Johto_General",
+      "secondary_tileset": "gTileset_CianwoodCity",
+      "border_filepath": "data/layouts/TrioRoadCove/border.bin",
+      "blockdata_filepath": "data/layouts/TrioRoadCove/map.bin"
     }
   ]
 }

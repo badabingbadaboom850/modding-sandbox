@@ -414,7 +414,7 @@
 #define P_FAMILY_GOOMY                   P_GEN_6_POKEMON
 #define P_FAMILY_KLEFKI                  P_GEN_6_POKEMON
 #define P_FAMILY_PHANTUMP                P_GEN_6_POKEMON
-#define P_FAMILY_PUMPKABOO               FALSE
+#define P_FAMILY_PUMPKABOO               TRUE // Optional Halloween trail hosts
 #define P_FAMILY_BERGMITE                P_GEN_6_POKEMON
 #define P_FAMILY_NOIBAT                  P_GEN_6_POKEMON
 #define P_FAMILY_XERNEAS                 P_GEN_6_POKEMON
@@ -483,7 +483,7 @@
 #define P_FAMILY_GROOKEY                 P_GEN_8_POKEMON
 #define P_FAMILY_SCORBUNNY               P_GEN_8_POKEMON
 #define P_FAMILY_SOBBLE                  P_GEN_8_POKEMON
-#define P_FAMILY_SKWOVET                 FALSE
+#define P_FAMILY_SKWOVET                 TRUE // Festival snack boss requires Greedent data and graphics.
 #define P_FAMILY_ROOKIDEE                P_GEN_8_POKEMON
 #define P_FAMILY_BLIPBUG                 FALSE
 #define P_FAMILY_NICKIT                  FALSE

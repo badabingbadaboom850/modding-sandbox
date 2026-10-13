@@ -1151,4 +1151,8 @@
 #define METATILE_Viridian_2_Viridian                                     0x419
 #define METATILE_route34_11_Saffron                                      0x4DC
 
+
+// gTileset_House_Lab: appended Camp-specific composites using existing tiles.
+#define METATILE_HouseLab_TrioPlayMat              0x4D8
+
 #endif // GUARD_METATILE_LABELS_H

@@ -1,4 +1,5 @@
 #include "global.h"
+#include "trio_runoff.h"
 #include "battle.h"
 #include "battle_ai_main.h"
 #include "battle_ai_util.h"
@@ -386,7 +387,8 @@ static void InitBtlControllersInternal(void)
 bool32 IsValidForBattle(struct Pokemon *mon)
 {
     u32 species = GetMonData(mon, MON_DATA_SPECIES_OR_EGG);
-    return (species != SPECIES_NONE
+    return (!TrioRunoff_IsAway(mon)
+         && species != SPECIES_NONE
          && species != SPECIES_EGG
          && GetMonData(mon, MON_DATA_HP) != 0
          && GetMonData(mon, MON_DATA_IS_EGG) == FALSE);
@@ -395,7 +397,8 @@ bool32 IsValidForBattle(struct Pokemon *mon)
 bool32 IsValidForBattleButDead(struct Pokemon *mon)
 {
     u32 species = GetMonData(mon, MON_DATA_SPECIES_OR_EGG);
-    return (species != SPECIES_NONE
+    return (!TrioRunoff_IsAway(mon)
+         && species != SPECIES_NONE
          && species != SPECIES_EGG
          && GetMonData(mon, MON_DATA_IS_EGG) == FALSE);
 }

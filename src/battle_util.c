@@ -11380,6 +11380,9 @@ void ActivateMegaEvolution(enum BattlerId battler)
     if (gLastUsedItem == ITEM_NONE && GET_BASE_SPECIES_ID(gBattleMons[battler].species) == SPECIES_OGERPON)
         gLastUsedItem = GetBattlerHeldItemWithEffect(battler, HOLD_EFFECT_OGERPON_MASK, FALSE);
 
+    if (GetTrioSpiritMegaTargetSpecies(battler) != SPECIES_NONE)
+        gLastUsedItem = GetTrioSpiritKeepsakeForSpecies(gBattleMons[battler].species);
+
     SetActiveGimmick(battler, GIMMICK_MEGA);
     SetGimmickAsActivated(battler, GIMMICK_MEGA);
 
@@ -11435,10 +11438,123 @@ bool32 IsBattlerInTeraForm(enum BattlerId battler)
     return (gSpeciesInfo[gBattleMons[battler].species].isTeraForm);
 }
 
+u16 GetTrioSpiritKeepsakeForSpecies(u16 species)
+{
+    switch (species)
+    {
+    case SPECIES_RIKO_PRINCESS:
+    case SPECIES_RIKO_BUG:
+    case SPECIES_RIKO_FIGHTING:
+    case SPECIES_RIKO_BUTTERFLY:
+    case SPECIES_RIKO_WITCH:
+    case SPECIES_RIKO_PARTY:
+    case SPECIES_RIKO_SANTA:
+    case SPECIES_RIKO_TURKEY:
+    case SPECIES_RIKO_LEAVES:
+    case SPECIES_RIKO_RAINCOAT:
+    case SPECIES_RIKO_BALLOON:
+    case SPECIES_RIKO:
+    case SPECIES_RIKO_FLOWER:
+    case SPECIES_RIKO_ECHO:
+    case SPECIES_RIKO_WING:
+    case SPECIES_RIKO_FIRE:
+    case SPECIES_RIKO_WATER:
+    case SPECIES_RIKO_GRASS:
+    case SPECIES_RIKO_ELECTRIC:
+    case SPECIES_RIKO_ICE:
+    case SPECIES_RIKO_PSYCHIC:
+    case SPECIES_RIKO_FLYING:
+    case SPECIES_RIKO_DRAGON:
+        return ITEM_RIKOS_SPARK;
+    case SPECIES_PENNY_HOTDOG_DACHSBUN:
+    case SPECIES_PENNY_BLANKET:
+    case SPECIES_PENNY_BLANKET_DACHSBUN:
+    case SPECIES_PENNY_BALLERINA:
+    case SPECIES_PENNY_PUMPKIN:
+    case SPECIES_PENNY_STARS:
+    case SPECIES_PENNY_REINDEER:
+    case SPECIES_PENNY_YAM:
+    case SPECIES_PENNY_SWEATER:
+    case SPECIES_PENNY_BALLERINA_DACHSBUN:
+    case SPECIES_PENNY_PUMPKIN_DACHSBUN:
+    case SPECIES_PENNY_STARS_DACHSBUN:
+    case SPECIES_PENNY_REINDEER_DACHSBUN:
+    case SPECIES_PENNY_YAM_DACHSBUN:
+    case SPECIES_PENNY_SWEATER_DACHSBUN:
+    case SPECIES_PENNY_LIFEGUARD:
+    case SPECIES_PENNY_LIFEGUARD_DACHSBUN:
+    case SPECIES_PENNY_HOTDOG:
+    case SPECIES_FIDOUGH:
+    case SPECIES_DACHSBUN:
+    case SPECIES_PENNY_GROUND:
+    case SPECIES_PENNY_STEEL:
+    case SPECIES_PENNY_GUARDIAN:
+    case SPECIES_PENNY_WATER:
+    case SPECIES_PENNY_GRASS:
+    case SPECIES_PENNY_BRAVE:
+        return ITEM_PENNYS_SHIELD;
+    case SPECIES_BIJUU_BREAD:
+    case SPECIES_BIJUU_ASTRONAUT:
+    case SPECIES_BIJUU_VAMPIRE:
+    case SPECIES_BIJUU_GALA:
+    case SPECIES_BIJUU_PRESENT:
+    case SPECIES_BIJUU_CHEF:
+    case SPECIES_BIJUU_SWEATER:
+    case SPECIES_BIJUU_DETECTIVE:
+    case SPECIES_BIJUU_BOX:
+    case SPECIES_BIJUU:
+    case SPECIES_BIJUU_FIGHTING:
+    case SPECIES_BIJUU_POISON:
+    case SPECIES_BIJUU_GROUND:
+    case SPECIES_BIJUU_ROCK:
+    case SPECIES_BIJUU_BUG:
+    case SPECIES_BIJUU_GHOST:
+    case SPECIES_BIJUU_DARK:
+    case SPECIES_BIJUU_STEEL:
+    case SPECIES_BIJUU_PSYCHIC:
+    case SPECIES_BIJUU_ICE:
+    case SPECIES_BIJUU_EMBER:
+        return ITEM_BIJUUS_LIGHT;
+    default: return ITEM_NONE;
+    }
+}
+
+u32 GetTrioSpiritMegaForSpecies(u32 species)
+{
+    u16 item = GetTrioSpiritKeepsakeForSpecies(species);
+    if (item == ITEM_NONE || !CheckBagHasItem(item, 1))
+        return SPECIES_NONE;
+    switch (item)
+    {
+    case ITEM_RIKOS_SPARK:
+        return FlagGet(FLAG_RIKO_CAVERN_COMPLETE)
+            && FlagGet(FLAG_TRIO_PENNY_SPIRIT_COMPLETE) && FlagGet(FLAG_TRIO_BIJUU_SPIRIT_COMPLETE)
+            ? SPECIES_MEGA_RIKO_SPIRIT : SPECIES_NONE;
+    case ITEM_PENNYS_SHIELD:
+        return FlagGet(FLAG_TRIO_PENNY_SPIRIT_COMPLETE) ? SPECIES_MEGA_PENNY_SPIRIT : SPECIES_NONE;
+    case ITEM_BIJUUS_LIGHT:
+        return FlagGet(FLAG_TRIO_BIJUU_SPIRIT_COMPLETE) ? SPECIES_MEGA_BIJUU_SPIRIT : SPECIES_NONE;
+    default: return SPECIES_NONE;
+    }
+}
+
+u32 GetTrioSpiritMegaTargetSpecies(enum BattlerId battler)
+{
+    if (!IsOnPlayerSide(battler)
+        || (GetBattlerPosition(battler) == B_POSITION_PLAYER_RIGHT
+            && (gBattleTypeFlags & BATTLE_TYPE_PLAYER_HAS_PARTNER))
+        || GetBattlerHeldItemWithEffect(battler, HOLD_EFFECT_MEGA_STONE, FALSE) != ITEM_NONE)
+        return SPECIES_NONE;
+    return GetTrioSpiritMegaForSpecies(gBattleMons[battler].species);
+}
+
 u32 GetBattleFormChangeTargetSpecies(enum BattlerId battler, enum FormChanges method)
 {
     u32 i;
     u32 species = gBattleMons[battler].species;
+    u32 spiritMega = method == FORM_CHANGE_BATTLE_MEGA_EVOLUTION_ITEM ? GetTrioSpiritMegaTargetSpecies(battler) : SPECIES_NONE;
+    if (spiritMega != SPECIES_NONE)
+        return spiritMega;
     const struct FormChange *formChanges = GetSpeciesFormChanges(species);
     enum Ability battlerTraits[MAX_MON_TRAITS];
     STORE_BATTLER_TRAITS(battler);

@@ -45,10 +45,20 @@ LavenderTown_EventScript_SoulHouseSign::
 
 LavenderTown_Text_PokefanM:
 	.string "That's quite some building, eh?\p"
-	.string "It's Kanto's Radio Tower.$"
+	.string "It's Kanto's Radio Tower.\p"
+	.string "I heard a mysterious\n"
+	.string "trainer is taking the\p"
+	.string "girls across Kanto. I hope\n"
+	.string "Lavender gives them a\p"
+	.string "quiet place to rest.$"
 
 LavenderTown_Text_Teacher:
-	.string "Kanto has many good radio shows.$"
+	.string "Kanto has many good radio shows.\p"
+	.string "Some people tell scary\n"
+	.string "stories about legends. The\p"
+	.string "trio's trainer brought\n"
+	.string "three girls who stopped to\p"
+	.string "comfort a stranger.$"
 
 LavenderTown_Text_Gramps:
 	.string "People come from all over to pay\n"
@@ -60,7 +70,12 @@ LavenderTown_Text_Gramps:
 LavenderTown_Text_Youngster:
 	.string "You need a Poké Flute to wake\n"
 	.string "sleeping Pokémon.\p"
-	.string "Every trainer has to know that!$"
+	.string "Every trainer has to know that!\p"
+	.string "Bijuu copied the radio\n"
+	.string "announcer saying her own\p"
+	.string "name. Riko wanted a turn.\n"
+	.string "Penny was happy just to\p"
+	.string "hear her sisters.$"
 
 LavenderTown_Text_Sign:
 	.string "Lavender Town\p"

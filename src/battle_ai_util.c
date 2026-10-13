@@ -1,4 +1,5 @@
 #include "global.h"
+#include "trio_runoff.h"
 #include "battle_z_move.h"
 #include "malloc.h"
 #include "battle.h"
@@ -4663,7 +4664,7 @@ s32 CountUsablePartyMons(enum BattlerId battlerId)
     for (u32 monIndex = firstId; monIndex < lastId; monIndex++)
     {
         if (monIndex != battlerOnField1 && monIndex != battlerOnField2
-         && GetMonData(&party[monIndex], MON_DATA_HP) != 0
+         && IsValidForBattle(&party[monIndex])
          && GetMonData(&party[monIndex], MON_DATA_SPECIES_OR_EGG) != SPECIES_NONE
          && GetMonData(&party[monIndex], MON_DATA_SPECIES_OR_EGG) != SPECIES_EGG)
         {

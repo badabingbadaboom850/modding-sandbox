@@ -401,6 +401,11 @@ const u16 gTrainerBackPicPalette_Leaf[] = INCBIN_U16("graphics/trainers/back_pic
         .mugshotRotation = DEFAULT_3(0x200, __VA_ARGS__),                      \
     }
 
+const u32 gTrainerFrontPic_MayBow[] = INCBIN_U32("graphics/player_hats/bow/front.4bpp.smol");
+const u8 gTrainerBackPic_MayBow[] = INCBIN_U8("graphics/player_hats/bow/back.4bpp");
+const u32 gTrainerFrontPic_MaySunhat[] = INCBIN_U32("graphics/player_hats/sunhat/front.4bpp.smol");
+const u8 gTrainerBackPic_MaySunhat[] = INCBIN_U8("graphics/player_hats/sunhat/back.4bpp");
+
 const struct TrainerSprite gTrainerSprites[] =
 {
     TRAINER_SPRITE(TRAINER_PIC_FRONT_HIKER, gTrainerFrontPic_Hiker, gTrainerPalette_Hiker),
@@ -476,6 +481,9 @@ const struct TrainerSprite gTrainerSprites[] =
     TRAINER_SPRITE(TRAINER_PIC_FRONT_WALLY, gTrainerFrontPic_Wally, gTrainerPalette_Wally),
     TRAINER_SPRITE(TRAINER_PIC_FRONT_BRENDAN, gTrainerFrontPic_Brendan, gTrainerPalette_Brendan),
     TRAINER_SPRITE(TRAINER_PIC_FRONT_MAY, gTrainerFrontPic_May, gTrainerPalette_May),
+    TRAINER_SPRITE(TRAINER_PIC_FRONT_MAY_BOW, gTrainerFrontPic_MayBow, gTrainerPalette_May),
+    TRAINER_SPRITE(TRAINER_PIC_FRONT_MAY_SUNHAT, gTrainerFrontPic_MaySunhat, gTrainerPalette_May),
+
     TRAINER_SPRITE(TRAINER_PIC_FRONT_BUG_CATCHER, gTrainerFrontPic_BugCatcher, gTrainerPalette_BugCatcher),
     TRAINER_SPRITE(TRAINER_PIC_FRONT_POKEMON_RANGER_M, gTrainerFrontPic_PokemonRangerM, gTrainerPalette_PokemonRangerM),
     TRAINER_SPRITE(TRAINER_PIC_FRONT_POKEMON_RANGER_F, gTrainerFrontPic_PokemonRangerF, gTrainerPalette_PokemonRangerF),
@@ -609,6 +617,9 @@ const struct TrainerBacksprite gTrainerBacksprites[] =
 {
     TRAINER_BACK_SPRITE(TRAINER_PIC_BACK_BRENDAN, 4, gTrainerBackPic_Brendan, gTrainerPalette_Brendan_Back, sBackAnims_Hoenn),
     TRAINER_BACK_SPRITE(TRAINER_PIC_BACK_MAY, 4, gTrainerBackPic_May, gTrainerPalette_May_Back, sBackAnims_Hoenn),
+    TRAINER_BACK_SPRITE(TRAINER_PIC_BACK_MAY_BOW, 4, gTrainerBackPic_MayBow, gTrainerPalette_May_Back, sBackAnims_Hoenn),
+    TRAINER_BACK_SPRITE(TRAINER_PIC_BACK_MAY_SUNHAT, 4, gTrainerBackPic_MaySunhat, gTrainerPalette_May_Back, sBackAnims_Hoenn),
+
     TRAINER_BACK_SPRITE(TRAINER_PIC_BACK_RED, 5, gTrainerBackPic_Red, gTrainerBackPicPalette_Red, sBackAnims_Kanto),
     TRAINER_BACK_SPRITE(TRAINER_PIC_BACK_LEAF, 5, gTrainerBackPic_Leaf, gTrainerBackPicPalette_Leaf, sBackAnims_Kanto),
     TRAINER_BACK_SPRITE(TRAINER_PIC_BACK_RUBY_SAPPHIRE_BRENDAN, 4, gTrainerBackPic_RubySapphireBrendan, gTrainerPalette_RubySapphireBrendan, sBackAnims_Hoenn),

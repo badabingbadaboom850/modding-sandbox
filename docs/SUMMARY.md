@@ -3,6 +3,7 @@
 - [README](./README.md)
 - [FEATURES](./FEATURES.md)
 - [Riko in-game implementation and evolution](riko_in_game_implementation_and_evolution.md)
+- [Trio test portal and reputation pilot](trio_test_portal_update.md)
 - [Installation](./INSTALL.md)
     - [Setting up WSL1 (Legacy Portion)](./legacy_WSL1_INSTALL.md)
     - [ChromeOS](./install/chromeos/CHROME_OS.md)
@@ -138,3 +139,57 @@
     - [Release Schedule and Process](team_procedures/schedule.md)
     - [Merge Checklist](team_procedures/merge_checklist.md)
     - [Scope Guidelines](team_procedures/scope.md)
+
+- [Trio world-building action items](trio_world_roadmap.md)
+
+- [Keepsakes, sister moments, and Mom's scrapbook](trio_memories_and_pom_party.md)
+
+- [The Girls' Day Out festival and test shuttle](trio_festival.md)
+
+- [The evolving Trio Camp playroom](trio_camp_keepsakes.md)
+
+- [Scott's gym-city moments](trio_scott_moments.md)
+
+- [The Great Snack Chase](trio_snack_chase.md)
+- [Definitely Legitimate Snack Cafe](trio_greedent_cafe.md)
+
+- [Spirit Rift](trio_spirit_rift.md)
+
+- [The abandoned seaside garden and Flower Riko](trio_garden.md)
+
+- [Riko Puffs: five-level catch-up kibble](riko_puffs.md)
+
+- [Spirit of Riko cavern pilot](riko_spirit_cavern.md)
+
+- [Family signature moves and Scott tutor](trio_signature_moves.md)
+
+- [Trio costume collectibles](trio_costumes.md)
+
+- [Outfit stories and little family adventures](trio_outfit_stories.md)
+
+- [The Great Trio Road Trip](trio_road_trip.md)
+- [Dinner, radio and homecoming](trio_family_days.md)
+- [Player hats prototype](trio_player_hats.md)
+- [Hat packing and custom battle-ball repair](trio_battle_sprite_repairs.md)
+
+- [Pom Fu Riko](pom_fu_riko.md)
+- [Complete trio elemental forms](trio_complete_elements.md)
+- [Greg roaming encounters](greg_roaming.md)
+- [Goldenrod Pom Parade](trio_pom_parade.md)
+- [Girls running off: 5% normal rate](trio_runoff.md)
+- [Reusable family transformations](trio_reusable_form_items.md)
+
+- [Olivine Pom party encore](trio_pom_party_encore.md)
+- [Eight silly family interactions](trio_silly_scenes.md)
+- [Bag icon buffer overflow repair](trio_bag_icon_repair.md)
+
+- [New trio costumes](trio_new_costumes.md)
+
+- [Permanent Halloween costumes](trio_halloween_costumes.md)
+- [Focused costume emulator pass](trio_costume_emulator_pass.md)
+
+- [Trick-or-Treat Trail](trio_halloween_trail.md)
+
+- [Permanent seasonal chapters](trio_seasonal_expansion_plan.md)
+
+- [Scenic family photos and weather reactions](trio_scenic_photos.md)

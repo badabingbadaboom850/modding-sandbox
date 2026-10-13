@@ -1,0 +1,339 @@
+
+
+
+
+
+
+@ Independent first Rift chapter. All progression is saved; no on-frame battles.
+TrioEchoWoods_MapScripts::
+	map_script MAP_SCRIPT_ON_LOAD, TrioRift_Load
+	.byte 0
+TrioRift_Load:
+	call TrioRift_Paths
+	end
+TrioRift_Paths:
+	call_if_ge VAR_TRIO_RIFT_RIKO_STATE, 1, TrioRift_Open1
+	call_if_ge VAR_TRIO_RIFT_RIKO_STATE, 2, TrioRift_Open2
+	call_if_ge VAR_TRIO_RIFT_RIKO_STATE, 3, TrioRift_Open3
+	return
+TrioRift_Entrance::
+	lockall
+	faceplayer
+	goto_if_unset FLAG_TRIO_FESTIVAL_PICNIC, TrioRift_NotReady
+	call TrioSisters_CheckAll
+	goto_if_eq VAR_RESULT, FALSE, TrioRift_Missing
+	call TrioRift_NextOffer
+	goto_if_eq VAR_RESULT, NO, TrioRift_End
+	closemessage
+	call TrioRift_WarpNext
+	waitstate
+	goto TrioRift_End
+TrioRift_NotReady:
+	msgbox TrioRift_NotReadyText, MSGBOX_DEFAULT
+	goto TrioRift_End
+TrioRift_Missing:
+	msgbox TrioRift_MissingText, MSGBOX_DEFAULT
+	goto TrioRift_End
+TrioRift_Exit::
+	lockall
+	faceplayer
+	msgbox TrioRift_ExitText, MSGBOX_YESNO
+	goto_if_eq VAR_RESULT, NO, TrioRift_End
+	closemessage
+	warp MAP_GOLDENROD_CITY_POKEMON_CENTER, 7, 6
+	waitstate
+	goto TrioRift_End
+TrioRift_Riko::
+	lockall
+	faceplayer
+	checkspecies SPECIES_RIKO_ECHO
+	goto_if_eq VAR_RESULT, TRUE, TrioRift_EchoForm
+	checkspecies SPECIES_RIKO_WING
+	goto_if_eq VAR_RESULT, TRUE, TrioRift_Wing
+	msgbox TrioRift_RikoText, MSGBOX_DEFAULT
+	goto TrioRift_End
+TrioRift_Wing:
+	msgbox TrioRift_WingText, MSGBOX_DEFAULT
+	goto TrioRift_End
+TrioRift_Bijuu::
+	lockall
+	faceplayer
+	checkspecies SPECIES_BIJUU_PSYCHIC
+	goto_if_eq VAR_RESULT, TRUE, TrioRift_Psychic
+	msgbox TrioRift_BijuuText, MSGBOX_DEFAULT
+	goto TrioRift_End
+TrioRift_Psychic:
+	msgbox TrioRift_PsychicText, MSGBOX_DEFAULT
+	goto TrioRift_End
+TrioRift_Penny::
+	lockall
+	faceplayer
+	checkspecies SPECIES_PENNY_GUARDIAN
+	goto_if_eq VAR_RESULT, TRUE, TrioRift_Armor
+	msgbox TrioRift_PennyText, MSGBOX_DEFAULT
+	goto TrioRift_End
+TrioRift_Armor:
+	msgbox TrioRift_ArmorText, MSGBOX_DEFAULT
+	goto TrioRift_End
+TrioRift_Echo1::
+	lockall
+	faceplayer
+	goto_if_ge VAR_TRIO_RIFT_RIKO_STATE, 1, TrioRift_Already
+	goto_if_ne VAR_TRIO_RIFT_RIKO_STATE, 0, TrioRift_Order
+	call TrioSisters_CheckAll
+	goto_if_eq VAR_RESULT, FALSE, TrioRift_Missing
+	msgbox TrioRift_Echo1Text, MSGBOX_YESNO
+	goto_if_eq VAR_RESULT, NO, TrioRift_End
+	playmoncry SPECIES_RIKO, CRY_MODE_NORMAL
+	waitmoncry
+	msgbox TrioRift_Answer1Text, MSGBOX_DEFAULT
+	setvar VAR_TRIO_RIFT_RIKO_STATE, 1
+	call TrioRift_Open1
+	special DrawWholeMapView
+	goto TrioRift_End
+TrioRift_Echo2::
+	lockall
+	faceplayer
+	goto_if_ge VAR_TRIO_RIFT_RIKO_STATE, 2, TrioRift_Already
+	goto_if_ne VAR_TRIO_RIFT_RIKO_STATE, 1, TrioRift_Order
+	call TrioSisters_CheckAll
+	goto_if_eq VAR_RESULT, FALSE, TrioRift_Missing
+	msgbox TrioRift_Echo2Text, MSGBOX_YESNO
+	goto_if_eq VAR_RESULT, NO, TrioRift_End
+	playmoncry SPECIES_RIKO, CRY_MODE_NORMAL
+	waitmoncry
+	msgbox TrioRift_Answer2Text, MSGBOX_DEFAULT
+	setvar VAR_TRIO_RIFT_RIKO_STATE, 2
+	call TrioRift_Open2
+	special DrawWholeMapView
+	goto TrioRift_End
+TrioRift_Echo3::
+	lockall
+	faceplayer
+	goto_if_ge VAR_TRIO_RIFT_RIKO_STATE, 3, TrioRift_Already
+	goto_if_ne VAR_TRIO_RIFT_RIKO_STATE, 2, TrioRift_Order
+	call TrioSisters_CheckAll
+	goto_if_eq VAR_RESULT, FALSE, TrioRift_Missing
+	msgbox TrioRift_Echo3Text, MSGBOX_YESNO
+	goto_if_eq VAR_RESULT, NO, TrioRift_End
+	playmoncry SPECIES_RIKO, CRY_MODE_NORMAL
+	waitmoncry
+	msgbox TrioRift_Answer3Text, MSGBOX_DEFAULT
+	setvar VAR_TRIO_RIFT_RIKO_STATE, 3
+	call TrioRift_Open3
+	special DrawWholeMapView
+	goto TrioRift_End
+TrioRift_Open1:
+	setmetatile 11, 24, 0x40C, FALSE
+	setmetatile 12, 24, 0x40C, FALSE
+	setmetatile 11, 25, 0x40C, FALSE
+	setmetatile 12, 25, 0x40C, FALSE
+	return
+TrioRift_Open2:
+	setmetatile 11, 16, 0x40C, FALSE
+	setmetatile 12, 16, 0x40C, FALSE
+	setmetatile 11, 17, 0x40C, FALSE
+	setmetatile 12, 17, 0x40C, FALSE
+	return
+TrioRift_Open3:
+	setmetatile 11, 8, 0x40C, FALSE
+	setmetatile 12, 8, 0x40C, FALSE
+	setmetatile 11, 9, 0x40C, FALSE
+	setmetatile 12, 9, 0x40C, FALSE
+	return
+TrioRift_Already:
+	msgbox TrioRift_AlreadyText, MSGBOX_DEFAULT
+	goto TrioRift_End
+TrioRift_Order:
+	msgbox TrioRift_OrderText, MSGBOX_DEFAULT
+	goto TrioRift_End
+TrioRift_Guardian::
+	lockall
+	faceplayer
+	goto_if_ge VAR_TRIO_RIFT_RIKO_STATE, 4, TrioRift_Victory
+	goto_if_ne VAR_TRIO_RIFT_RIKO_STATE, 3, TrioRift_Order
+	call TrioSisters_CheckAll
+	goto_if_eq VAR_RESULT, FALSE, TrioRift_Missing
+	msgbox TrioRift_GuardianText, MSGBOX_YESNO
+	goto_if_eq VAR_RESULT, NO, TrioRift_End
+	setvar VAR_0x8004, SPECIES_RIKO_ECHO
+	specialvar VAR_RESULT, PrepareTrioSpiritTrial
+	goto_if_eq VAR_RESULT, FALSE, TrioRift_Missing
+	closemessage
+	playmoncry SPECIES_RIKO_ECHO, CRY_MODE_ENCOUNTER
+	waitmoncry
+	special BattleSetup_StartTrioSpiritTrial
+	waitstate
+	specialvar VAR_RESULT, GetBattleOutcome
+	goto_if_ne VAR_RESULT, B_OUTCOME_WON, TrioRift_Retry
+	setvar VAR_TRIO_RIFT_RIKO_STATE, 4
+TrioRift_Victory:
+	msgbox TrioRift_VictoryText, MSGBOX_DEFAULT
+	goto_if_set FLAG_TRIO_RIFT_COURAGE_RECEIVED, TrioRift_End
+	giveitem ITEM_RIKOS_COURAGE
+	goto_if_eq VAR_RESULT, FALSE, TrioRift_Pending
+	setflag FLAG_TRIO_RIFT_COURAGE_RECEIVED
+	setvar VAR_TRIO_RIFT_RIKO_STATE, 5
+	msgbox TrioRift_GiftText, MSGBOX_DEFAULT
+	goto TrioRift_End
+TrioRift_Pending:
+	msgbox TrioRift_PendingText, MSGBOX_DEFAULT
+	goto TrioRift_End
+TrioRift_Retry:
+	msgbox TrioRift_RetryText, MSGBOX_DEFAULT
+TrioRift_End:
+	releaseall
+	end
+TrioRift_OfferText:
+	.string "Since your family picnic,\na wood has begun to echo.\pRiko hears her own bark.\nHer sisters hear it too.\pExplore Echo Woods?\nYou can leave at any time.$"
+TrioRift_NotReadyText:
+	.string "Enjoy the family festival\nand its picnic first.\pThen bring the girls here.\nA new story is waiting.$"
+TrioRift_MissingText:
+	.string "Bring Riko, Bijuu and\nPenny to explore together.$"
+TrioRift_ExitText:
+	.string "Return to Goldenrod?\nOpened paths stay open.$"
+TrioRift_RikoText:
+	.string "Riko barks at the stones.\nThe woods bark back!\pTouch the soft echo pads.\nHer sisters will help.$"
+TrioRift_WingText:
+	.string "Riko folds her wings.\nEven the leaves listen.\pShe could fly on ahead...\nbut waits for her sisters.$"
+TrioRift_BijuuText:
+	.string "Bijuu flicks her tail.\nThat echo sounds lonely.\pA louder bark might not\nbe what it needs.$"
+TrioRift_PsychicText:
+	.string "Bijuu feels the echo\nbefore the leaves move.\pA frightened little voice.\nShe sends it a warm purr.$"
+TrioRift_PennyText:
+	.string "Penny stays close to Mom.\nRiko waits beside her.\pOne small step together.\nNo one is left behind.$"
+TrioRift_ArmorText:
+	.string "Penny lowers her shield\nso Riko can nuzzle her.\pBeing brave means keeping\nyour family close.$"
+TrioRift_Echo1Text:
+	.string "The first pad hums softly.\nLet Riko answer it?$"
+TrioRift_Answer1Text:
+	.string "Riko gives a tiny bark.\nPenny answers with a wag.\pThe stones shift.\nHer sisters follow her.$"
+TrioRift_Echo2Text:
+	.string "The next echo trembles.\nLet Riko answer gently?$"
+TrioRift_Answer2Text:
+	.string "Riko tries a softer bark.\nBijuu adds a sleepy purr.\pThe lonely echo settles.\nAnother path appears.$"
+TrioRift_Echo3Text:
+	.string "The last echo goes quiet.\nCall to it together?$"
+TrioRift_Answer3Text:
+	.string "Penny leans against Riko.\nBijuu curls beside them.\pOne bark. One safe family.\nThe guardian awakens.$"
+TrioRift_AlreadyText:
+	.string "This echo remembers you.\nThe path is still open.$"
+TrioRift_OrderText:
+	.string "A nearer echo is waiting.\nFollow the trail together.$"
+TrioRift_GuardianText:
+	.string "Two heads bow to Riko.\nA voice fills the leaves.\pPower is not being loud.\nIt is keeping them safe.\pFace the woods guardian?\nLosses allow safe retries.$"
+TrioRift_VictoryText:
+	.string "The guardian bows again.\nRiko looks at her sisters.\pA second voice answers.\nTwo heads. One heart.\pHer full Spirit sleeps.\nHer story has just begun.\pHer bark found the way.\nTheir love led her home.\pThe woods remember you.\nOther echoes lie ahead.$"
+TrioRift_GiftText:
+	.string "Riko called to the woods.\nHer courage answered.\pKeep Riko's Courage.\nUse it from Key Items.\pIt awakens her echo form.\nUse again to return.$"
+TrioRift_PendingText:
+	.string "Your Bag has no room.\nHer Courage waits here.\pReturn when you like.\nNo new battle is needed.$"
+TrioRift_RetryText:
+	.string "The guardian waits softly.\nThe girls are healed.\pEvery path stays open.\nTry again when you want.$"
+
+@ Returning helpers keep the scrapbook caller's lock/menu intact.
+TrioRift_ReadMemory::
+	msgbox TrioRift_VictoryText, MSGBOX_DEFAULT
+	return
+TrioRift_Checklist::
+	goto_if_ge VAR_TRIO_RIFT_RIKO_STATE, 4, TrioRift_CheckDone
+	msgbox TrioRift_ChecklistText, MSGBOX_DEFAULT
+	return
+TrioRift_CheckDone:
+	msgbox TrioRift_CheckDoneText, MSGBOX_DEFAULT
+	return
+TrioRift_ChecklistText:
+	.string "Spirit Rift: Echo Woods.\nAfter the festival picnic,\psee the old man in\nGoldenrod's Poke Center.$"
+TrioRift_CheckDoneText:
+	.string "Echo Woods: remembered!\nCollect each girl's charm,\pthen visit the Goldenrod\nguide or festival host for\pthe next chapter.$"
+
+@ Called from the already-locked festival host/picnic. No new progress grants.
+TrioRift_FestivalOffer::
+	goto_if_unset FLAG_TRIO_FESTIVAL_PICNIC, TrioRift_FestivalReturn
+	call TrioSisters_CheckAll
+	goto_if_eq VAR_RESULT, FALSE, TrioRift_FestivalReturn
+	call TrioRift_NextOffer
+	goto_if_eq VAR_RESULT, NO, TrioRift_FestivalReturn
+	closemessage
+	call TrioRift_WarpNext
+	waitstate
+	releaseall
+	end
+TrioRift_FestivalReturn:
+	return
+TrioRift_FestivalOfferText:
+	.string "Riko hears a distant echo.\nReady for Echo Woods?\pI can take you there now.\nYou can return any time.$"
+
+TrioRift_EchoForm:
+	msgbox TrioRift_EchoFormText, MSGBOX_DEFAULT
+	goto TrioRift_End
+TrioRift_EchoFormText:
+	.string "Riko barks. Riko answers!\nBijuu looks between them.\pPenny hugs both ruffs.\nTwo voices keep her safe.\pThe same little girl.\nA little more courage.$"
+
+TrioRift_NextOffer:
+	goto_if_unset FLAG_TRIO_RIFT_COURAGE_RECEIVED, TrioRift_OfferEcho
+	goto_if_unset FLAG_TRIO_RIFT_FIRE_RECEIVED, TrioRift_OfferMirror
+	goto_if_unset FLAG_TRIO_RIFT_BRAVERY_RECEIVED, TrioRift_OfferLantern
+	setvar VAR_0x8007, 0
+	msgbox TrioRift_RevisitEchoText, MSGBOX_YESNO
+	goto_if_eq VAR_RESULT, YES, TrioRift_OfferReturn
+	setvar VAR_0x8007, 1
+	msgbox TrioRift_RevisitMirrorText, MSGBOX_YESNO
+	goto_if_eq VAR_RESULT, YES, TrioRift_OfferReturn
+	goto TrioRift_OfferLantern
+TrioRift_OfferEcho:
+	setvar VAR_0x8007, 0
+	msgbox TrioRift_FestivalOfferText, MSGBOX_YESNO
+	return
+TrioRift_OfferMirror:
+	setvar VAR_0x8007, 1
+	msgbox TrioRift_MirrorOfferText, MSGBOX_YESNO
+	return
+TrioRift_OfferLantern:
+	setvar VAR_0x8007, 2
+	msgbox TrioRift_LanternOfferText, MSGBOX_YESNO
+TrioRift_OfferReturn:
+	return
+TrioRift_WarpNext:
+	goto_if_eq VAR_0x8007, 1, TrioRift_WarpMirror
+	goto_if_eq VAR_0x8007, 2, TrioRift_WarpLantern
+	warp MAP_TRIO_ECHO_WOODS, 12, 27
+	return
+TrioRift_WarpMirror:
+	warp MAP_TRIO_MIRROR_HOUSE, 4, 7
+	return
+TrioRift_WarpLantern:
+	warp MAP_TRIO_LANTERN_TRAIL, 12, 27
+	return
+TrioRift_RevisitEchoText:
+	.string "Three sparks are awake!\nRevisit Riko's Echo Woods?$"
+TrioRift_RevisitMirrorText:
+	.string "Revisit Bijuu's Mirror\nHouse?$"
+TrioRift_MirrorOfferText:
+	.string "Riko's echo found a path.\nBijuu hears another call.\pReady for the Mirror\nHouse? You can return any\ptime.$"
+TrioRift_LanternOfferText:
+	.string "Bijuu's spark lights a\npath. Penny's lanterns\pwait ahead. Ready for the\nLantern Trail? You can\preturn any time.$"
+
+@ Optional conversation with the existing old man west of Goldenrod's Center.
+TrioRift_TownOffer::
+	msgbox TrioRift_TownOfferText, MSGBOX_DEFAULT
+	call TrioRift_FestivalOffer
+	return
+TrioRift_TownHint::
+	goto_if_unset FLAG_TRIO_FESTIVAL_PICNIC, TrioRift_FestivalReturn
+	msgbox TrioRift_TownHintText, MSGBOX_DEFAULT
+	return
+TrioRift_TownOfferText:
+	.string "Since your family picnic,\nthe girls' echoes stir.\pThree trials. Three gifts.\nEach guardian stands ten\plevels above your best.\nPrepare, then follow me.$"
+TrioRift_TownHintText:
+	.string "An old man near Bill's\nhouse has heard echoes.\pFind him west of the\nGoldenrod Poke Center.$"
+
+@ Victory gates atmosphere, independently of a pending full-Bag charm.
+TrioRift_CheckAtmosphere::
+	setvar VAR_RESULT, FALSE
+	goto_if_lt VAR_TRIO_RIFT_RIKO_STATE, 4, TrioRift_AtmosphereReturn
+	goto_if_lt VAR_TRIO_RIFT_BIJUU_STATE, 4, TrioRift_AtmosphereReturn
+	goto_if_lt VAR_TRIO_RIFT_PENNY_STATE, 4, TrioRift_AtmosphereReturn
+	setvar VAR_RESULT, TRUE
+TrioRift_AtmosphereReturn:
+	return

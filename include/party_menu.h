@@ -140,6 +140,13 @@ bool32 SetUpFieldMove_RockClimb(void);
 bool32 SetUpFieldMove_Whirlpool(void);
 
 #if TESTING
+#if PARTY_MENU_STYLE_OPTION
+u16 BwPartyMenu_TestLevelUpItemQuantity(struct Pokemon *mon, enum Item item, u16 quantity);
+u16 HgssPartyMenu_TestLevelUpItemQuantity(struct Pokemon *mon, enum Item item, u16 quantity);
+#else
+u16 PartyMenu_TestLevelUpItemQuantity(struct Pokemon *mon, enum Item item, u16 quantity);
+#endif
+u16 SwShPartyMenu_TestLevelUpItemQuantity(struct Pokemon *mon, enum Item item, u16 quantity);
 bool32 SwShPartyMenu_TestGiveHeldItemToMon(u8 partyId, enum Item item);
 bool32 SwShPartyMenu_TestCancelHeldItemSwitch(enum Item item);
 bool32 SwShPartyMenu_TestTossHeldItem(u8 partyId);

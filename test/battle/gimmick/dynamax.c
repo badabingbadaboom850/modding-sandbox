@@ -401,7 +401,7 @@ SINGLE_BATTLE_TEST("Dynamax: Dynamaxed Pokemon are not immune to Knock Off")
     } SCENE {
         MESSAGE("Wobbuffet used Max Strike!");
         MESSAGE("The opposing Wobbuffet used Knock Off!");
-        MESSAGE("The opposing Wobbuffet knocked off Wobbuffet's Potion!");
+        MESSAGE("The opposing Wobbuffet knocked off Wobbuffet's McDonalds Wawa S!");
     } THEN {
         EXPECT_EQ(player->item, ITEM_NONE);
     }
@@ -1610,7 +1610,7 @@ SINGLE_BATTLE_TEST("Dynamax: Dynamaxed Pokemon are not immune to Knock Off (Item
     } SCENE {
         MESSAGE("Wobbuffet used Max Strike!");
         MESSAGE("The opposing Wobbuffet used Knock Off!");
-        MESSAGE("The opposing Wobbuffet knocked off Wobbuffet's Potion!");
+        MESSAGE("The opposing Wobbuffet knocked off Wobbuffet's McDonalds Wawa S!");
     } THEN {
         EXPECT_EQ(player->items[1], ITEM_NONE);
         EXPECT_EQ(player->items[1], ITEM_NONE);

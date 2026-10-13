@@ -56,7 +56,19 @@
 #define GAME_STAT_DEXNAV_SCANNED              52
 #define GAME_STAT_BATTLE_PYRAMID_FLOORS       53
 
-#define NUM_USED_GAME_STATS                   54
+// Existing save storage; old saves are initialized by TrioCamp's guarded helper.
+#define GAME_STAT_TRIO_WAWA_S                 54
+#define GAME_STAT_TRIO_WAWA_M                 55
+#define GAME_STAT_TRIO_WAWA_L                 56
+#define GAME_STAT_TRIO_CHICKY                 57
+#define GAME_STAT_TRIO_SPRINGS                58
+#define GAME_STAT_TRIO_PUP_CUP                59
+#define GAME_STAT_TRIO_FORM_SWAPS             60
+#define GAME_STAT_TRIO_CAMP_VISITS            61
+#define GAME_STAT_TRIO_CAMP_GAMES             62
+#define GAME_STAT_TRIO_CAMP_PETS              63
+
+#define NUM_USED_GAME_STATS                   64
 #define NUM_GAME_STATS                        64
 
 #endif // GUARD_CONSTANTS_GAME_STAT_H

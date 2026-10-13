@@ -27,7 +27,7 @@ Blackthorn_Mart2::
 	faceplayer
 	message Blackthorn_Mart2_Text_0
 	waitmessage
-	pokemart Blackthorn2
+	call TrioPuffs_Shop
 	msgbox Blackthorn_Mart2_Text_1
 	release
 	end
@@ -44,6 +44,38 @@ Blackthorn2:
 	.2byte ITEM_LUXURY_BALL
 	.2byte ITEM_RETRO_MAIL
 	.2byte ITEM_NONE
+
+	.align 2
+BlackthornPuffs:
+	.2byte ITEM_RIKO_PUFFS
+	.2byte ITEM_TM_ACROBATICS
+	.2byte ITEM_TM_DRAGON_TAIL
+	.2byte ITEM_TM_SKY_DROP
+	.2byte ITEM_QUICK_BALL
+	.2byte ITEM_DUSK_BALL
+	.2byte ITEM_PREMIER_BALL
+	.2byte ITEM_LUXURY_BALL
+	.2byte ITEM_RETRO_MAIL
+	.2byte ITEM_NONE
+
+
+TrioPuffs_Shop::
+	goto_if_unset FLAG_BADGE01_GET, TrioPuffs_OriginalShop
+	goto_if_unset FLAG_BADGE02_GET, TrioPuffs_OriginalShop
+	goto_if_unset FLAG_BADGE03_GET, TrioPuffs_OriginalShop
+	goto_if_unset FLAG_BADGE04_GET, TrioPuffs_OriginalShop
+	goto_if_unset FLAG_BADGE05_GET, TrioPuffs_OriginalShop
+	goto_if_unset FLAG_BADGE06_GET, TrioPuffs_OriginalShop
+	goto_if_unset FLAG_BADGE07_GET, TrioPuffs_OriginalShop
+	goto_if_unset FLAG_BADGE08_GET, TrioPuffs_OriginalShop
+	msgbox TrioPuffs_ShopText, MSGBOX_DEFAULT
+	pokemart BlackthornPuffs
+	return
+TrioPuffs_OriginalShop:
+	pokemart Blackthorn2
+	return
+TrioPuffs_ShopText:
+	.string "Eight Badges! Riko Puffs\nare now in stock.\pHelp your new friends\ncatch up with the team.$"
 
 Blackthorn_Mart2_Text_0:
 	.string "Welcome! How may I help you?$"

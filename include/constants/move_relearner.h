@@ -4,7 +4,7 @@
 // Max number of moves shown by the move relearner.
 // This must fit the largest move source; compile-time checks in move_relearner.c
 // ensure the TM/HM and tutor pools cannot outgrow it unnoticed.
-#define MAX_RELEARNER_MOVES 160
+#define MAX_RELEARNER_MOVES 192
 
 // Move Relearner menu change constants
 enum MoveRelearnerStates
@@ -13,6 +13,7 @@ enum MoveRelearnerStates
     MOVE_RELEARNER_EGG_MOVES,
     MOVE_RELEARNER_TM_MOVES,
     MOVE_RELEARNER_TUTOR_MOVES,
+    MOVE_RELEARNER_TRIO_ELEMENTAL_MOVES,
     MOVE_RELEARNER_COUNT,
 };
 

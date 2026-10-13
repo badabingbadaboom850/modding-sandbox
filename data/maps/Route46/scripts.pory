@@ -48,7 +48,11 @@ Route46_Text_HikerBaileyAfterBattle:
 
 Route46_Text_CamperTedSeen:
 	.string "I'm raising Pokémon too!\p"
-	.string "Will you battle with me?$"
+	.string "Will you battle with me?\p"
+	.string "Riko, Penny, and Bijuu? I\n"
+	.string "heard you have a trainer\p"
+	.string "now! I want to see how all\n"
+	.string "four of you work together.$"
 
 Route46_Text_CamperTedBeaten:
 	.string "Wha…?$"
@@ -56,7 +60,12 @@ Route46_Text_CamperTedBeaten:
 Route46_Text_CamperTedAfterBattle:
 	.string "I did my best but came up\n"
 	.string "short.\p"
-	.string "No excuses--I admit I lost.$"
+	.string "No excuses--I admit I lost.\p"
+	.string "Riko made it look\n"
+	.string "exciting. Bijuu made it\p"
+	.string "look clever. Penny made it\n"
+	.string "look safe. You made it\p"
+	.string "work.$"
 
 Route46_Text_PicnickerErinSeen:
 	.string "I raise Pokémon too!\p"

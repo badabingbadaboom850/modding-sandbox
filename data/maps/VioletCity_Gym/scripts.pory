@@ -68,14 +68,21 @@ VioletGym_Text_Falkner_Intro:
 	.string "I'll show you the real power\n"
 	.string "of the magnificent bird Pokémon!\p"
 	.string "So the legendary trio is real.\n"
-	.string "This is a sight to remember!$"
+	.string "This is a sight to remember!\p"
+	.string "Riko, I see those wings.\n"
+	.string "Bijuu, keep your eyes on\p"
+	.string "the sky. Penny, a steady\n"
+	.string "heart can fly too!$"
 
 VioletGym_Text_Falkner_WinLoss:
 	.string "…Darn! My dad's cherished bird\n"
 	.string "Pokémon…\p"
 	.string "All right. Take this.\p"
 	.string "It's the official Pokémon League\n"
-	.string "Zephyrbadge.$"
+	.string "Zephyrbadge.\p"
+	.string "Your girls trusted every\n"
+	.string "call. That is what lifted\p"
+	.string "you above me.$"
 
 VioletGym_Text_ReceivedZephyrBadge:
 	.string "{PLAYER} received Zephyrbadge.$"
@@ -94,7 +101,12 @@ VioletGym_Text_Falkner_AfterFight:
 	.string "You should test your skills at\n"
 	.string "these Gyms.\p"
 	.string "I'm going to train harder to\n"
-	.string "become the greatest bird master!$"
+	.string "become the greatest bird master!\p"
+	.string "The town keeps asking\n"
+	.string "about our match. Tell\p"
+	.string "Penny she can watch the\n"
+	.string "birds here whenever she\p"
+	.string "likes.$"
 
 VioletGym_Text_Falkner_Rematch:
 	.string "Congratulations on defeating\n"
@@ -102,12 +114,20 @@ VioletGym_Text_Falkner_Rematch:
 	.string "I've been training my\n"
 	.string "Flying-type Pokémon even harder.\p"
 	.string "Think you can take on the power\n"
-	.string "of the skies again?$"
+	.string "of the skies again?\p"
+	.string "I trained for your\n"
+	.string "teamwork this time. The\p"
+	.string "whole trio, and their\n"
+	.string "trainer, will have to earn\p"
+	.string "the sky again!$"
 
 VioletGym_Text_Falkner_RematchLoss:
 	.string "Wow… You beat me again.\p"
 	.string "I'm going to train harder to\n"
-	.string "become the greatest bird master!$"
+	.string "become the greatest bird master!\p"
+	.string "Still in perfect\n"
+	.string "formation. Your girls make\p"
+	.string "a fine flock.$"
 
 VioletGym_Text_BirdKeeperRod_Seen:
 	.string "The keyword is guts!\p"

@@ -13,7 +13,7 @@ SINGLE_BATTLE_TEST("Multi - IsOnSwitchInFirstTurnActivation")
     } SCENE {
         // Since only one item activates per timing window, both battlers activate one item on initial switch-in then one more after their turns.
         ANIMATION(ANIM_TYPE_GENERAL, B_ANIM_HELD_ITEM_EFFECT, player);
-        MESSAGE("Wobbuffet restored its health using its Oran Berry!");
+        MESSAGE("Wobbuffet restored its health using its Chicky Fil-A!");
         HP_BAR(player);
         ANIMATION(ANIM_TYPE_GENERAL, B_ANIM_HELD_ITEM_EFFECT, opponent);
         ANIMATION(ANIM_TYPE_GENERAL, B_ANIM_STATS_CHANGE, opponent);
@@ -21,7 +21,7 @@ SINGLE_BATTLE_TEST("Multi - IsOnSwitchInFirstTurnActivation")
         ANIMATION(ANIM_TYPE_STATUS, B_ANIM_STATUS_CONFUSION, opponent);
         ANIMATION(ANIM_TYPE_MOVE, MOVE_CELEBRATE, player);
         ANIMATION(ANIM_TYPE_GENERAL, B_ANIM_HELD_ITEM_EFFECT, player);
-        MESSAGE("Wobbuffet's Pecha Berry cured its poison!");
+        MESSAGE("Wobbuffet's Penny's Pup Cup cured its poison!");
         ANIMATION(ANIM_TYPE_GENERAL, B_ANIM_HELD_ITEM_EFFECT, opponent);
         MESSAGE("The opposing Wobbuffet's Persim Berry snapped it out of its confusion!");
     }

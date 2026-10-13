@@ -1,0 +1,53 @@
+"""Audit all native family transformation items and protect historical inventory metadata."""
+from pathlib import Path
+import re, subprocess
+R = Path(__file__).resolve().parents[2]
+BASE = '8bf5c134f30b1c638a5902a27a2aa76452b644de'
+def old(path): return subprocess.check_output(['git','show',BASE+':'+path],cwd=R,text=True)
+def entries(source): return dict(re.findall(r'\[(ITEM_\w+)\]\s*=\s*\{(.*?)\n    \},', source, re.S))
+items = entries((R/'src/data/items.h').read_text())
+prior = entries(old('src/data/items.h'))
+menu = (R/'src/party_menu.c').read_text()
+switch = menu.split('static bool32 IsReusableTrioFormItem',1)[1].split('void ItemUseCB_EvolutionStone',1)[0]
+reusable = set(re.findall(r'case (ITEM_\w+):', switch))
+added = {'ITEM_RIKOS_WAND','ITEM_BLUE_BRUSH','ITEM_BIJUUS_FISH_TOY',
+         'ITEM_BIJUUS_CAT_NIP','ITEM_DADS_KEYS','ITEM_PIECE_OF_CHICKEN'}
+assert added <= reusable
+old_switch = old('src/party_menu.c').split('static bool32 IsReusableTrioFormItem',1)[1].split('void ItemUseCB_EvolutionStone',1)[0]
+assert reusable == added | set(re.findall(r'case (ITEM_\w+):',old_switch))
+count = key = ordinary = 0
+for name,body in items.items():
+    # Family item entries occupy the established appended block.
+    if '[%s]'%name not in (R/'src/data/items.h').read_text().split('[ITEM_RIKOS_PURSE]',1)[1]: continue
+    if '.fieldUseFunc = ItemUseOutOfBattle_EvolutionStone' not in body: continue
+    count += 1
+    pocket = re.search(r'\.pocket = (\w+)',body).group(1)
+    assert pocket == 'POCKET_KEY_ITEMS' or name in reusable, name
+    key += pocket == 'POCKET_KEY_ITEMS'; ordinary += pocket == 'POCKET_ITEMS'
+    if name in added:
+        desc = re.search(r'\.description = COMPOUND_STRING\((.*?)\),',body,re.S).group(1)
+        assert 'Reusable' in desc
+        for line in re.findall(r'"(.*?)"',desc):
+            assert all(len(x)<=26 for x in line.split(r'\n'))
+    # Only descriptions change: pockets/prices/held behavior/art/gifts keep their meaning.
+    strip = lambda x: re.sub(r'\.description = COMPOUND_STRING\(.*?\),','',x,flags=re.S)
+    if name in prior:
+        assert strip(body) == strip(prior[name]), name
+    else:
+        # Three cosmetic Key Items were appended after the original
+        # transformation-item audit baseline.
+        assert name in {'ITEM_RIKOS_BUTTERFLY_WINGS', 'ITEM_BIJUUS_SPACE_HELMET', 'ITEM_PENNYS_BALLET_TUTU', 'ITEM_RIKOS_WITCH_HAT', 'ITEM_BIJUUS_VAMPIRE_CAPE', 'ITEM_PENNYS_PUMPKIN_SUIT', 'ITEM_RIKOS_LEAF_BUNDLE', 'ITEM_COCOAS_KNIT_SET', 'ITEM_PENNYS_CARDIGAN', 'ITEM_RIKOS_FEATHER_FAN', 'ITEM_COCOAS_CHEF_HAT', 'ITEM_PENNYS_YAM_WRAP', 'ITEM_POM_SANTA_HAT', 'ITEM_COCOA_GIFT_BOX', 'ITEM_PENNYS_ANTLERS', 'ITEM_POM_PARTY_HAT', 'ITEM_COCOA_SILVER_BOW', 'ITEM_PENNYS_STAR_DRESS'}, name
+        assert pocket == 'POCKET_KEY_ITEMS' and '.importance = 1' in body, name
+assert (count,key,ordinary)==(51,38,13),(count,key,ordinary)
+assert 'GetItemPocket(gSpecialVar_ItemId) != POCKET_KEY_ITEMS\n            && !IsReusableTrioFormItem(gSpecialVar_ItemId)' in menu
+assert 'return TRUE;' in switch and 'default:\n        return FALSE;' in switch
+assert 'ITEM_FIRE_STONE' not in reusable and 'ITEM_THUNDER_STONE' not in reusable
+for path,prefix in [('include/constants/items.h','ITEM_'),('include/constants/species.h','SPECIES_'),
+                    ('include/constants/vars.h','VAR_'),('include/constants/flags.h','FLAG_')]:
+    pattern = r'^\s*(?:#define\s+)?('+prefix+r'\w+)\s*(?:=|\s)\s*(0x[\da-fA-F]+|\d+)\b'
+    prior_ids = dict(re.findall(pattern,old(path),re.M))
+    current_ids = dict(re.findall(pattern,(R/path).read_text(),re.M))
+    for name,value in prior_ids.items():
+        assert current_ids.get(name)==value,(path,name,value,current_ids.get(name))
+assert (R/'include/global.h').read_text() == old('include/global.h')
+print('PASS all51 family transformation items reusable (38 Key/13 Items), six updated descriptions, ordinary stones and historical saved inventory metadata preserved')
