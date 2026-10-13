@@ -186,7 +186,7 @@ TrioOutfit_AlbumMenu:
 	goto_if_eq VAR_RESULT, 3, TrioOutfit_AlbumBonus
 	return
 TrioOutfit_AlbumIntro:
-	.string "Photos: {STR_VAR_1}/15\nPoison has a bonus page!\pWear each costume once.\nIts photo stays forever.$"
+	.string "Photos: {STR_VAR_1}/27\nPoison has a bonus page!\pWear each costume once.\nIts photo stays forever.$"
 TrioOutfit_RikoName:
 	.string "Riko$"
 TrioOutfit_BijuuName:

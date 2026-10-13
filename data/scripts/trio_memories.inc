@@ -113,6 +113,7 @@ TrioScrapbook_Menu::
 	goto_if_eq VAR_RESULT, 3, TrioScrapbook_Checklist
 	goto_if_eq VAR_RESULT, 4, TrioScott_Scrapbook
 	goto_if_eq VAR_RESULT, 5, TrioOutfit_AlbumFromBook
+	goto_if_eq VAR_RESULT, 6, TrioScenic_Album
 	return
 TrioScrapbook_Journey:
 	msgbox TrioScrapbook_OpeningPage, MSGBOX_DEFAULT

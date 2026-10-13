@@ -191,3 +191,5 @@
 - [Trick-or-Treat Trail](trio_halloween_trail.md)
 
 - [Permanent seasonal chapters](trio_seasonal_expansion_plan.md)
+
+- [Scenic family photos and weather reactions](trio_scenic_photos.md)

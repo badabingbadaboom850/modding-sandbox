@@ -464,3 +464,15 @@
 #define VAR_TRIO_NEW_YEAR_SNACK        0x415F
 
 #define VAR_TRIO_SEASONAL_WARDROBE                  0x4160 // twelve safely stored earned costume keys
+
+// Scenic snapshots append to existing vars; original photo masks stay intact.
+#define VAR_TRIO_SCENIC_PHOTOS                   0x4161
+#define VAR_TRIO_SCENIC_LIGHTHOUSE_RIKO          0x4162
+#define VAR_TRIO_SCENIC_LIGHTHOUSE_BIJUU         0x4163
+#define VAR_TRIO_SCENIC_LIGHTHOUSE_PENNY         0x4164
+#define VAR_TRIO_SCENIC_LAKE_RIKO                0x4165
+#define VAR_TRIO_SCENIC_LAKE_BIJUU               0x4166
+#define VAR_TRIO_SCENIC_LAKE_PENNY               0x4167
+#define VAR_TRIO_SCENIC_ICE_RIKO                 0x4168
+#define VAR_TRIO_SCENIC_ICE_BIJUU                0x4169
+#define VAR_TRIO_SCENIC_ICE_PENNY                0x416A

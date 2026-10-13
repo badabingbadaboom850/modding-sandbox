@@ -1531,3 +1531,27 @@ CurrentPokemon/form/photos unchanged. Runtime specialappends; save/BagABIexact.
 22savedslots audited;254wardrobeUIpaths plus1238chapterpaths pass.3nativeengine
 tests coverall12keys/idempotence/unclaimedguards/partialclaims/full50/invalid/
 photos+outfit. CI199 mapfixROMcompiled/uploaded; finalwardrobebuild separate.
+
+## Scenic family photos and weather reactions (2026-10-13 UTC)
+
+User authorized both. Three optional gentleman photographers append at
+LighthouseTop9,11/LakeOfRage35,43/IcePath1F13,22, no original map changes.
+All three non-egg personal families required to capture; exact species per
+girl saved. Separate4161mask/4162-416A snapshots preserve old photo masks,
+arrays/ABI/IDs. Retake confirms replacement; missing/decline never writes.
+Scrapbook appends Scenic photos6, Exit7; old choices0-5 stay. Saved panels
+show exact native form art and Scott captions without current party/items.
+Read validates family/range before sprite access. See trio_scenic_photos.md.
+GetFollowerAction uses actual healthy first-live follower and current weather,
+weather-specific personal comments including raincoat Riko. Status/lowHP and
+unrelated Pokemon retain ordinary messages. No automatic scripts/weather edits.
+Source/host, committed CI/ROM, rendered player confirmation remain distinct.
+
+Local validation: production ROM compiled (33027000 linked bytes,
+EWRAM255436, padded32MiB). All3 new native engine tests passed in the
+headless emulator.52 actual-script paths, three decoded placement/reachability
+checks, actual-font limits and audited saved slots pass. Actual linked-ROM
+photographer/script/special/weather/album registrations pass. Existing1238
+seasonal/254wardrobe source paths, all51 reusable-item/description checks and
+Halloween/Pumpkin follower regressions pass. Rendered player confirmation and
+remote CI are separate from these local checks.

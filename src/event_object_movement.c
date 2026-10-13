@@ -1,5 +1,6 @@
 #include "global.h"
 #include "trio_player_hats.h"
+#include "trio_scenic.h"
 #include "malloc.h"
 #include "battle_anim.h"
 #include "battle_pyramid.h"
@@ -2834,6 +2835,14 @@ void GetFollowerAction(struct ScriptContext *ctx) // Essentially a big switch fo
     // Set the script to the very end; we'll be calling another script dynamically
     ScriptJump(ctx, EventScript_FollowerEnd);
     species = GetMonData(mon, MON_DATA_SPECIES);
+    // Only a requested, healthy follower interaction. Preserve illness reactions.
+    const u8 *weatherText = TrioWeatherReaction(species, GetCurrentWeather());
+    if (weatherText != NULL && mon->status == 0 && mon->hp * 2 >= mon->maxHP)
+    {
+        ctx->data[0] = (u32) weatherText;
+        ScriptCall(ctx, EventScript_FollowerGeneric);
+        return;
+    }
     multi = GetMonData(mon, MON_DATA_FRIENDSHIP);
     if (multi > 80)
     {

@@ -680,3 +680,6 @@ gSpecials::
 	def_special PrepareTrioSillyActors
 
 	def_special ExchangeTrioSeasonalCostume
+
+	def_special TakeTrioScenicPhoto
+	def_special ReadTrioScenicPhoto
