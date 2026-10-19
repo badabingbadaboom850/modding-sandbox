@@ -1555,3 +1555,47 @@ photographer/script/special/weather/album registrations pass. Existing1238
 seasonal/254wardrobe source paths, all51 reusable-item/description checks and
 Halloween/Pumpkin follower regressions pass. Rendered player confirmation and
 remote CI are separate from these local checks.
+
+
+## Native real-time Trio Action Arena (2026-10-19)
+
+User explicitly requested an optional arena and a separate New Bark NPC for
+testing. Gentleman18,14 appends as local18; original mailbox, trivia16, tutor17,
+story scripts/events and all previous IDs stay. Conservative viewport count
+with player/follower is16. Accept enters appended IndoorNewBark8 TrioActionArena
+on the existing garden layout. Scott9,6 starts native practice; guide9,15 and
+walk-outs11/12,16 return to New Bark18,12. Native south arrows retain boundary
+returns to New Bark warp1. VAR_TEMP_A1 is map-local dispatch; no saved allocation.
+
+Three selectable ordinary training representations: Riko bark/Pom Boom, Bijuu
+moon orbs/slowing frost fan, Penny swipe/Brave Charge. D-pad movement/aim; holdA
+primary, pressB secondary, R dodge, holdL face opponent/strafe, Start/Select pause,
+pausedB exits. Uses raw keys so the field L=A option does not break aiming.
+Three Greedent rounds introduce charge, volley and stomp with locked-target
+telegraphs, separate100HP and between-round25HP recovery. No rewards/catching,
+party access/mutation, move/form/species edits, experience, inventory, money,
+quest flags/vars or saved layout changes. No global turn-based battle rewrite.
+
+Core lives in trio_action_arena_core.c and deterministic temporary state;
+separate4friendly/8enemy projectile pools. Runtime native window/sprites lives
+in trio_action_arena.c, with bounded resources and the established minigame
+fade/CB2_ReturnToFieldContinueScriptPlayMapMusic lifecycle. Preserve backdrop
+cache: full bitmap rasterization every effects update caused emulator input
+hitches. Cache full floor once, memcpy tile rows and clear HUD rows directly.
+Free its buffer on all exits; allocation/setup failure resumes the script with
+FALSE and a retry message. New special appends only.
+
+Validation: production ROM compiled33037672 linked bytes, EWRAM255440, padded
+32MiB. Six new native combat tests pass; focused scenic/run-off/support suite
+27passes +7 intentional harness failures, zero unexpected. Address/UB-sanitized
+host stress passes600000frames/615restarted matches. All3girls can clear3rounds.
+Actual scripts, decoded paths/actor budget/arrow exits, font limits, unchanged
+save declarations/IDs/story and docs-summary checks pass.
+
+Rendered libmGBA fresh-save fixture verified actual New Bark guide interaction,
+garden travel and Scott, choice/sprites of all3girls, projectile/frost/charge
+effects, pause/resume, round-clear and complete3round victory, return to waiting
+referee. Source/native checks are distinct from rendered confirmation. User's
+existing-save/ManicEMU touch-control and real in-game save/reload pass remains.
+See docs/trio_action_arena.md and tools/action_arena/validate.py. Keep PR2 draft
+and unmerged; publish related changes atomically with an expected-head lease.

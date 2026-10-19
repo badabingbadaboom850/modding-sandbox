@@ -89,6 +89,7 @@ enum
     MAP_NEW_BARK_TOWN_PLAYERS_HOUSE_2F = (5 | (1 << 8)),
     MAP_RIKO_SPIRIT_CAVERN             = (6 | (1 << 8)),
     MAP_TRIO_HOMECOMING                = (7 | (1 << 8)),
+    MAP_TRIO_ACTION_ARENA              = (8 | (1 << 8)),
 
     // gMapGroup_IndoorCherrygrove
     MAP_CHERRYGROVE_CITY_POKEMON_CENTER = (0 | (2 << 8)),
@@ -175,6 +176,7 @@ enum
     MAP_ECRUTEAK_CITY_HOUSE3         = (9 | (6 << 8)),
     MAP_ECRUTEAK_CITY_HOUSE4         = (10 | (6 << 8)),
     MAP_TRIO_SILLY_BOX               = (11 | (6 << 8)),
+    MAP_TRIO_HALLOWEEN_TRAIL         = (12 | (6 << 8)),
 
     // gMapGroup_IndoorOlivine
     MAP_OLIVINE_CITY_POKEMON_CENTER = (0 | (7 << 8)),
@@ -216,6 +218,7 @@ enum
     MAP_LAKE_OF_RAGE_HOUSE1          = (4 | (9 << 8)),
     MAP_LAKE_OF_RAGE_HOUSE2          = (5 | (9 << 8)),
     MAP_TRIO_SILLY_NOISE             = (6 | (9 << 8)),
+    MAP_TRIO_SEASON_FALL             = (7 | (9 << 8)),
 
     // gMapGroup_IndoorBlackthorn
     MAP_BLACKTHORN_CITY_POKEMON_CENTER = (0 | (10 << 8)),
@@ -225,6 +228,7 @@ enum
     MAP_BLACKTHORN_CITY_HOUSE2         = (4 | (10 << 8)),
     MAP_BLACKTHORN_CITY_HOUSE3         = (5 | (10 << 8)),
     MAP_TRIO_SILLY_GREG                = (6 | (10 << 8)),
+    MAP_TRIO_SEASON_THANKSGIVING       = (7 | (10 << 8)),
 
     // gMapGroup_IndoorPallet
     MAP_PALLET_TOWN_REDS_HOUSE_1F = (0 | (11 << 8)),
@@ -300,6 +304,7 @@ enum
     MAP_CELADON_CITY_DEPARTMENT_STORE_ROOF_DAY   = (15 | (17 << 8)),
     MAP_CELADON_CITY_DEPARTMENT_STORE_ROOF_NIGHT = (16 | (17 << 8)),
     MAP_CELADON_CITY_GYM                         = (17 | (17 << 8)),
+    MAP_TRIO_SEASON_CHRISTMAS                    = (18 | (17 << 8)),
 
     // gMapGroup_IndoorSaffron
     MAP_SAFFRON_CITY_POKEMON_CENTER     = (0 | (18 << 8)),
@@ -312,6 +317,7 @@ enum
     MAP_SAFFRON_CITY_COPY_CATS_HOUSE_1F = (7 | (18 << 8)),
     MAP_SAFFRON_CITY_COPY_CATS_HOUSE_2F = (8 | (18 << 8)),
     MAP_SAFFRON_CITY_HOUSE1             = (9 | (18 << 8)),
+    MAP_TRIO_SEASON_NEW_YEAR            = (10 | (18 << 8)),
 
     // gMapGroup_IndoorFuchsia
     MAP_FUCHSIA_CITY_POKEMON_CENTER       = (0 | (19 << 8)),

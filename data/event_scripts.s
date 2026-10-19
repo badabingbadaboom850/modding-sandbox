@@ -2480,3 +2480,5 @@ Common_Text_ReceivedMon:
 	.include "data/maps/TrioSeasonNewYear/scripts.inc"
 
 	.include "data/scripts/trio_scenic.inc"
+
+	.include "data/maps/TrioActionArena/scripts.inc"

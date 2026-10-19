@@ -193,3 +193,5 @@
 - [Permanent seasonal chapters](trio_seasonal_expansion_plan.md)
 
 - [Scenic family photos and weather reactions](trio_scenic_photos.md)
+
+- [Real-time Trio Action Arena](trio_action_arena.md)

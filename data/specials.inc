@@ -683,3 +683,5 @@ gSpecials::
 
 	def_special TakeTrioScenicPhoto
 	def_special ReadTrioScenicPhoto
+
+	def_special StartTrioActionArena
