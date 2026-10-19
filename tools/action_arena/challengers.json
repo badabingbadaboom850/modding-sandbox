@@ -1,0 +1,130 @@
+[
+  {
+    "city": "EcruteakCity",
+    "x": 37,
+    "y": 51,
+    "start": [
+      39,
+      48
+    ],
+    "budget": 16,
+    "center": [
+      39,
+      47
+    ],
+    "local_id": 50,
+    "elevation": 3
+  },
+  {
+    "city": "CianwoodCity",
+    "x": 26,
+    "y": 46,
+    "start": [
+      31,
+      46
+    ],
+    "budget": 12,
+    "center": [
+      31,
+      45
+    ],
+    "local_id": 23,
+    "elevation": 3
+  },
+  {
+    "city": "OlivineCity",
+    "x": 12,
+    "y": 46,
+    "start": [
+      15,
+      44
+    ],
+    "budget": 10,
+    "center": [
+      15,
+      43
+    ],
+    "local_id": 36,
+    "elevation": 3
+  },
+  {
+    "city": "Mahoganytown",
+    "x": 15,
+    "y": 19,
+    "start": [
+      21,
+      20
+    ],
+    "budget": 11,
+    "center": [
+      21,
+      19
+    ],
+    "local_id": 12,
+    "elevation": 3
+  },
+  {
+    "city": "BlackthornCity",
+    "x": 21,
+    "y": 48,
+    "start": [
+      27,
+      49
+    ],
+    "budget": 15,
+    "center": [
+      27,
+      48
+    ],
+    "local_id": 32,
+    "elevation": 3
+  },
+  {
+    "city": "PewterCity",
+    "x": 14,
+    "y": 30,
+    "start": [
+      19,
+      30
+    ],
+    "budget": 9,
+    "center": [
+      19,
+      29
+    ],
+    "local_id": 12,
+    "elevation": 3
+  },
+  {
+    "city": "CeladonCity",
+    "x": 43,
+    "y": 12,
+    "start": [
+      48,
+      12
+    ],
+    "budget": 10,
+    "center": [
+      48,
+      11
+    ],
+    "local_id": 18,
+    "elevation": 3
+  },
+  {
+    "city": "SaffronCity",
+    "x": 11,
+    "y": 39,
+    "start": [
+      16,
+      39
+    ],
+    "budget": 10,
+    "center": [
+      16,
+      38
+    ],
+    "local_id": 17,
+    "elevation": 3
+  }
+]

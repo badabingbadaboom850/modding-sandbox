@@ -476,3 +476,7 @@
 #define VAR_TRIO_SCENIC_ICE_RIKO                 0x4168
 #define VAR_TRIO_SCENIC_ICE_BIJUU                0x4169
 #define VAR_TRIO_SCENIC_ICE_PENNY                0x416A
+
+// Independent one-time action arena victories and delivered prizes.
+#define VAR_TRIO_ARENA_WINS                     0x416B
+#define VAR_TRIO_ARENA_REWARDS                  0x416C

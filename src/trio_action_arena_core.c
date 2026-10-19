@@ -36,7 +36,7 @@ static void HurtEnemy(struct TrioArenaState *a, u8 damage, bool32 frost)
     if (frost) a->slow = 120;
     if (!a->enemyHp)
     {
-        a->status = a->round == 2 ? ARENA_WON : ARENA_ROUND_CLEAR;
+        a->status = a->round + 1 >= a->rounds ? ARENA_WON : ARENA_ROUND_CLEAR;
         memset(a->shots, 0, sizeof(a->shots));
     }
 }
@@ -50,7 +50,7 @@ static bool32 Shoot(struct TrioArenaState *a, bool32 friendly, s16 dx, s16 dy, u
         if (s->life) continue;
         s->x = friendly ? a->x : a->ex;
         s->y = friendly ? a->y : a->ey;
-        Velocity(dx, dy, friendly ? 52 : 32, &s->vx, &s->vy);
+        Velocity(dx, dy, friendly ? 52 : a->challenge ? 38 + a->challenge * 2 : 32, &s->vx, &s->vy);
         s->life = life;
         s->damage = damage;
         s->friendly = friendly;
@@ -65,9 +65,9 @@ static void ResetRound(struct TrioArenaState *a)
     a->x = 56 * 16; a->y = 80 * 16;
     a->ex = 184 * 16; a->ey = 80 * 16;
     a->aimX = 16; a->aimY = 0;
-    a->enemyMaxHp = 90 + a->round * 35;
+    a->enemyMaxHp = a->challenge ? 138 + a->challenge * 13 : 90 + a->round * 35;
     a->enemyHp = a->enemyMaxHp;
-    a->enemyMode = ARENA_SEEK; a->enemyTimer = 90;
+    a->enemyMode = ARENA_SEEK; a->enemyTimer = a->challenge ? 65 : 90;
     a->turns = 0; a->pattern = 0; a->status = ARENA_FIGHT;
     a->primaryCd = a->secondaryCd = a->dodgeCd = 0;
     a->invincible = 60; a->slow = a->dash = a->rush = a->rushHit = 0;
@@ -80,12 +80,23 @@ void TrioArena_Init(struct TrioArenaState *a, u8 girl)
     memset(a, 0, sizeof(*a));
     a->girl = girl < ARENA_GIRLS ? girl : ARENA_RIKO;
     a->hp = 100;
+    a->rounds = 3;
     ResetRound(a);
+}
+
+bool32 TrioArena_InitChallenge(struct TrioArenaState *a, u8 girl, u8 id)
+{
+    if (id >= TRIO_ARENA_CHALLENGES || girl >= ARENA_GIRLS) return FALSE;
+    TrioArena_Init(a, girl);
+    a->challenge = id + 1;
+    a->rounds = 1;
+    ResetRound(a);
+    return TRUE;
 }
 
 void TrioArena_NextRound(struct TrioArenaState *a)
 {
-    if (a->status != ARENA_ROUND_CLEAR || a->round >= 2) return;
+    if (a->status != ARENA_ROUND_CLEAR || a->round + 1 >= a->rounds) return;
     a->round++;
     a->hp = min(100, a->hp + 25);
     ResetRound(a);
@@ -167,13 +178,14 @@ static void Enemy(struct TrioArenaState *a)
     switch (a->enemyMode)
     {
     case ARENA_SEEK:
-        Velocity(a->x - a->ex, a->y - a->ey, a->slow ? 5 : 10 + a->round * 2, &vx, &vy);
-        if (!Near(a->x, a->y, a->ex, a->ey, 36)) { a->ex += vx; a->ey += vy; }
+        Velocity(a->x - a->ex, a->y - a->ey, a->slow ? 5 : a->challenge ? 13 + a->challenge : 10 + a->round * 2, &vx, &vy);
+        if (!Near(a->x, a->y, a->ex, a->ey, a->challenge ? 17 : 36)) { a->ex += vx; a->ey += vy; }
+        if (a->challenge && Near(a->x, a->y, a->ex, a->ey, 18)) HurtPlayer(a, 16 + a->challenge);
         if (!a->enemyTimer)
         {
             a->enemyMode = ARENA_WARN;
-            a->pattern = a->turns++ % (a->round + 1);
-            a->enemyTimer = a->pattern == 2 ? 60 : 45;
+            a->pattern = a->challenge ? gTrioArenaChallenges[a->challenge - 1].patterns[a->turns++ % 3] : a->turns++ % (a->round + 1);
+            a->enemyTimer = a->challenge ? (a->pattern == 2 ? 54 : 46) - a->challenge : a->pattern == 2 ? 60 : 45;
             a->targetX = a->x; a->targetY = a->y;
         }
         break;
@@ -182,7 +194,7 @@ static void Enemy(struct TrioArenaState *a)
         {
             if (a->pattern == 0)
             {
-                Velocity(a->targetX - a->ex, a->targetY - a->ey, 62, &a->targetX, &a->targetY);
+                Velocity(a->targetX - a->ex, a->targetY - a->ey, a->challenge ? 62 + a->challenge * 2 : 62, &a->targetX, &a->targetY);
                 a->enemyMode = ARENA_CHARGE; a->enemyTimer = 24;
             }
             else
@@ -190,22 +202,28 @@ static void Enemy(struct TrioArenaState *a)
                 if (a->pattern == 1)
                 {
                     s16 dx = a->targetX - a->ex, dy = a->targetY - a->ey;
-                    Shoot(a, FALSE, dx, dy, 12, 90, FALSE);
-                    Shoot(a, FALSE, dx * 2 - dy, dy * 2 + dx, 12, 90, FALSE);
-                    Shoot(a, FALSE, dx * 2 + dy, dy * 2 - dx, 12, 90, FALSE);
+                    u8 damage = a->challenge ? 24 + a->challenge * 2 : 12;
+                    Shoot(a, FALSE, dx, dy, damage, 90, FALSE);
+                    Shoot(a, FALSE, dx * 2 - dy, dy * 2 + dx, damage, 90, FALSE);
+                    Shoot(a, FALSE, dx * 2 + dy, dy * 2 - dx, damage, 90, FALSE);
+                    if (a->challenge >= 3)
+                    {
+                        Shoot(a, FALSE, dx - dy, dy + dx, damage, 80, FALSE);
+                        Shoot(a, FALSE, dx + dy, dy - dx, damage, 80, FALSE);
+                    }
                 }
-                else if (Near(a->x, a->y, a->ex, a->ey, 42)) HurtPlayer(a, 22);
-                a->enemyMode = ARENA_RECOVER; a->enemyTimer = 60;
+                else if (Near(a->x, a->y, a->ex, a->ey, 42)) HurtPlayer(a, a->challenge ? 26 + a->challenge : 22);
+                a->enemyMode = ARENA_RECOVER; a->enemyTimer = a->challenge ? 44 - a->challenge * 2 : 60;
             }
         }
         break;
     case ARENA_CHARGE:
         a->ex += a->targetX; a->ey += a->targetY;
-        if (Near(a->x, a->y, a->ex, a->ey, 20)) HurtPlayer(a, 18);
-        if (!a->enemyTimer) { a->enemyMode = ARENA_RECOVER; a->enemyTimer = 65; }
+        if (Near(a->x, a->y, a->ex, a->ey, 20)) HurtPlayer(a, a->challenge ? 24 + a->challenge : 18);
+        if (!a->enemyTimer) { a->enemyMode = ARENA_RECOVER; a->enemyTimer = a->challenge ? 44 - a->challenge * 2 : 65; }
         break;
     case ARENA_RECOVER:
-        if (!a->enemyTimer) { a->enemyMode = ARENA_SEEK; a->enemyTimer = 60; }
+        if (!a->enemyTimer) { a->enemyMode = ARENA_SEEK; a->enemyTimer = a->challenge ? 46 - a->challenge * 2 : 60; }
         break;
     }
     a->ex = Clamp(a->ex, TRIO_ARENA_LEFT * 16, TRIO_ARENA_RIGHT * 16);

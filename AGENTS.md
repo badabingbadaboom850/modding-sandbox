@@ -1599,3 +1599,36 @@ referee. Source/native checks are distinct from rendered confirmation. User's
 existing-save/ManicEMU touch-control and real in-game save/reload pass remains.
 See docs/trio_action_arena.md and tools/action_arena/validate.py. Keep PR2 draft
 and unmerged; publish related changes atomically with an expected-head lease.
+
+## Optional mid/endgame arena circuit (2026-10-19)
+
+Eight appended outdoor NPCs offer direct optional one-boss duels: Ecruteak37,51
+(4 badges/Haunter), Cianwood26,46 (5/Machoke), Olivine12,46 (6/Magneton),
+Mahogany15,19 (7/Piloswine), Blackthorn21,48 (8/Dragonair), Pewter14,30
+(Champion+8/Umbreon), Celadon43,12 (Champion+12/Alakazam), Saffron11,39
+(Champion+16/Tyranitar). Count actual earned badge flags. No sight-triggered
+battles or automatic scripts. All original objects/events/scripts preserved;
+worst conservative viewport budgets with player/follower:16,12,10,11,15,9,10,10.
+Native ordinary human graphics and native enabled species graphics only.
+
+One Riko Puff per challenger, eight total, then optional unrewarded replays.
+Loss/cancel/setup error never records wins; loss offers retry. Full Bag leaves
+an earned prize pending. Mark reward only after real AddBagItem succeeds.
+Audited unused existing-array variables416B wins/416C delivered; independent
+low8bits, upper bits preserved. No save structure changes or old IDs reassigned.
+Derive challenger from actual current map AND LastTalked local ID, revalidate
+at entry/win. Preserve these invariants and the New Bark free practice entrance.
+See src/trio_action_challenges.c, actual scripts/trio_action_circuit.inc,
+metadata tools/action_arena/challengers.json, docs/trio_action_arena.md.
+
+Local production build33041852 linked bytes, EWRAM255440; native focused suite
+31passes+7 intentional harness failures, zero unexpected. Four circuit tests
+cover all gates/context/outcomes, 8independent rewards, real full Bag claims,
+save ABI15444/2864/Pokemon96, native graphics, 24girl/boss terminal scenarios.
+Actual-script interpreter120paths, decoded placement/connectivity/actor budgets,
+font widths and practice regressions pass. ASan/UBSan stress800000circuitframes;
+all3girls have winning movement strategies at every tier. Rendered fixture
+verified Ecruteak NPC gate/prompt, choice, native Haunter fight and field return.
+Fixture grants/warp exist only in a scratch ROM copy, never shipping startup.
+Actual existing-player save/reload and touch controls remain separate checks.
+Keep existing PR2 draft/unmerged; publish atomically with expected-head lease.

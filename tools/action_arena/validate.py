@@ -30,11 +30,12 @@ assert not re.search(r'^\s*(giveitem|removeitem|setflag|clearflag|trainerbattle\
 assert re.findall(r'^\s*setvar (\w+)', script, re.M) == ['VAR_TEMP_A']
 assert 'special StartTrioActionArena\n\tgoto_if_eq VAR_RESULT, FALSE, TrioActionArena_Unavailable\n\twaitstate' in script
 
-for path in ['include/global.h', 'include/constants/vars.h', 'include/constants/flags.h',
+for path in ['include/global.h', 'include/constants/flags.h',
              'include/constants/items.h', 'include/constants/species.h', 'include/constants/opponents.h',
              'data/layouts/layouts.json', 'src/new_game.c', 'src/battle_setup.c',
              'data/maps/NewBarkTown/scripts.inc', 'data/maps/NewBarkTown/scripts.pory']:
     assert (ROOT / path).read_bytes() == old(path), path
+assert (ROOT / 'include/constants/vars.h').read_text().startswith(old('include/constants/vars.h').decode())
 groups = json.loads((ROOT / 'data/maps/map_groups.json').read_text())
 before = json.loads(old('data/maps/map_groups.json'))
 assert groups['group_order'] == before['group_order']

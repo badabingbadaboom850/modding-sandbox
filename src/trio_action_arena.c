@@ -9,6 +9,7 @@
 #include "menu_helpers.h"
 #include "overworld.h"
 #include "palette.h"
+#include "pokemon.h"
 #include "script.h"
 #include "sound.h"
 #include "sprite.h"
@@ -33,6 +34,7 @@ struct ArenaScreen
     u16 timer, tick;
     u8 mode, girls[ARENA_GIRLS], foe, shots[TRIO_ARENA_SHOTS];
     u8 selected, oldHp, oldEnemyHp;
+    u8 challenge, outcome;
     u8 *backdrop;
 };
 static EWRAM_DATA struct ArenaScreen *sArena = NULL;
@@ -70,9 +72,23 @@ static const u8 sLoss[] = _("Good practice! The girls are safe.");
 static const u8 sAgain[] = _("A: retry   B: lobby   LEFT/RIGHT: girl");
 static const u8 sClear[] = _("ROUND CLEAR! +25 TRAINING HP");
 static const u8 sCharge[] = _("CHARGE! Leave the marked line!");
-static const u8 sVolley[] = _("BERRY VOLLEY! Keep moving!");
+static const u8 sVolley[] = _("VOLLEY! Keep moving!");
 static const u8 sStomp[] = _("STOMP! Get outside the ring!");
 static const u8 sReady[] = _("Move to aim. Hold L to aim at foe.");
+static const u8 sChallengePractice[] = _("One tough duel. First win: a Riko Puff!");
+static const u8 sChallengeWin[] = _("CHALLENGE CLEARED!");
+static const u8 sClaimControls[] = _("A / B: return to your challenger");
+static const u16 sFloorColors[TRIO_ARENA_CHALLENGES][2] = {
+    {RGB(12,10,20),RGB(15,12,23)}, {RGB(20,15,10),RGB(22,17,12)},
+    {RGB(7,16,21),RGB(9,18,23)}, {RGB(17,23,25),RGB(20,25,27)},
+    {RGB(13,13,22),RGB(16,16,25)}, {RGB(7,8,15),RGB(10,11,18)},
+    {RGB(17,10,21),RGB(20,12,24)}, {RGB(18,10,10),RGB(22,13,12)},
+};
+
+static const u8 *Title(void)
+{
+    return sArena->challenge < TRIO_ARENA_CHALLENGES ? gTrioArenaChallenges[sArena->challenge].title : sTitle;
+}
 
 // A tiny native orb, shared by the two bounded projectile pools.
 static const u32 sOrb[] = {0x00000000, 0x00222200, 0x02211220, 0x02111120, 0x02111120, 0x02211220, 0x00222200, 0x00000000};
@@ -178,8 +194,13 @@ static void Hud(void)
     u8 label[32];
     ClearHud();
     Text(8, 1, sNames[a->girl], sTextColors);
-    StringCopy(label, sGreedent);
-    ConvertIntToDecimalStringN(label + StringLength(label), a->round + 1, STR_CONV_MODE_LEFT_ALIGN, 1);
+    if (sArena->challenge < TRIO_ARENA_CHALLENGES)
+        StringCopy(label, gSpeciesInfo[gTrioArenaChallenges[sArena->challenge].species].speciesName);
+    else
+    {
+        StringCopy(label, sGreedent);
+        ConvertIntToDecimalStringN(label + StringLength(label), a->round + 1, STR_CONV_MODE_LEFT_ALIGN, 1);
+    }
     Text(124, 1, label, sGoldColors);
     Bar(8, 17, 100, a->hp, 100, a->hp > 30 ? 9 : 8);
     Bar(130, 17, 100, a->enemyHp, a->enemyMaxHp, 8);
@@ -203,7 +224,7 @@ static void Choose(void)
     sArena->mode = SCREEN_CHOOSE;
     AllInvisible(); Floor();
     ClearHud();
-    Center(3, sTitle); Center(31, sPractice);
+    Center(3, Title()); Center(31, sArena->challenge < TRIO_ARENA_CHALLENGES ? sChallengePractice : sPractice);
     for (u32 i = 0; i < ARENA_GIRLS; i++)
     {
         struct Sprite *sprite = &gSprites[sArena->girls[i]];
@@ -221,6 +242,9 @@ static void Choose(void)
 static void BeginFight(void)
 {
     TrioArena_Init(&sArena->game, sArena->selected);
+    if (sArena->challenge < TRIO_ARENA_CHALLENGES)
+        TrioArena_InitChallenge(&sArena->game, sArena->selected, sArena->challenge);
+    sArena->outcome = ARENA_RESULT_CANCEL;
     sArena->mode = SCREEN_PLAY;
     sArena->oldHp = sArena->oldEnemyHp = 255;
     AllInvisible(); Floor(); Hud();
@@ -255,7 +279,7 @@ static void Panel(const u8 *heading, const u8 *controls)
 {
     AllInvisible(); Floor();
     ClearHud();
-    Center(3, sTitle); Center(62, heading); Center(91, controls);
+    Center(3, Title()); Center(62, heading); Center(91, controls);
     CopyWindowToVram(0, COPYWIN_FULL);
 }
 
@@ -267,7 +291,10 @@ static void StartExit(void)
 
 static void FinishExit(void)
 {
-    gSpecialVar_Result = sArena->mode == SCREEN_EXIT;
+    if (sArena->challenge < TRIO_ARENA_CHALLENGES)
+        gSpecialVar_Result = sArena->mode == SCREEN_EXIT ? sArena->outcome : ARENA_RESULT_ERROR;
+    else
+        gSpecialVar_Result = sArena->mode == SCREEN_EXIT;
     SetVBlankCallback(NULL);
     ResetSpriteData(); FreeAllSpritePalettes();
     FreeAllWindowBuffers(); UnsetBgTilemapBuffer(0);
@@ -322,7 +349,10 @@ static void ArenaMain(void)
         }
         else if (a->status == ARENA_WON || a->status == ARENA_LOST)
         {
-            sArena->mode = SCREEN_RESULT; Panel(a->status == ARENA_WON ? sWin : sLoss, sAgain);
+            sArena->outcome = a->status == ARENA_WON ? ARENA_RESULT_WON : ARENA_RESULT_LOST;
+            sArena->mode = SCREEN_RESULT;
+            Panel(a->status == ARENA_WON ? (sArena->challenge < TRIO_ARENA_CHALLENGES ? sChallengeWin : sWin) : sLoss,
+                  sArena->challenge < TRIO_ARENA_CHALLENGES && a->status == ARENA_WON ? sClaimControls : sAgain);
         }
         else if (!(sArena->tick & 7)) { Floor(); Hud(); CopyWindowToVram(0, COPYWIN_GFX); }
         break;
@@ -343,7 +373,8 @@ static void ArenaMain(void)
         }
         break;
     case SCREEN_RESULT:
-        if (ARENA_NEW(B_BUTTON)) StartExit();
+        if (sArena->challenge < TRIO_ARENA_CHALLENGES && a->status == ARENA_WON && ARENA_NEW(A_BUTTON | B_BUTTON)) StartExit();
+        else if (ARENA_NEW(B_BUTTON)) StartExit();
         else if (ARENA_NEW(A_BUTTON)) BeginFight();
         else if (ARENA_NEW(DPAD_LEFT | DPAD_RIGHT)) Choose();
         break;
@@ -368,13 +399,16 @@ static void InitArenaScreen(void)
     if (!sArena->backdrop) { FinishExit(); return; }
     memcpy(sArena->backdrop, gWindows[0].tileData, 30 * 20 * 32);
     LoadPalette(sPalette, BG_PLTT_ID(15), sizeof(sPalette));
+    if (sArena->challenge < TRIO_ARENA_CHALLENGES)
+        LoadPalette(sFloorColors[sArena->challenge], BG_PLTT_ID(15) + 3, sizeof(sFloorColors[0]));
     for (u32 i = 0; i < ARENA_GIRLS; i++)
     {
         sArena->girls[i] = CreateObjectGraphicsSprite(graphics[i], SpriteCallbackDummy, 0, 0, 0);
         if (sArena->girls[i] == MAX_SPRITES) { FinishExit(); return; }
         gSprites[sArena->girls[i]].oam.priority = 0;
     }
-    sArena->foe = CreateObjectGraphicsSprite(OBJ_EVENT_GFX_SPECIES(GREEDENT), SpriteCallbackDummy, 0, 0, 0);
+    sArena->foe = CreateObjectGraphicsSprite(OBJ_EVENT_MON + (sArena->challenge < TRIO_ARENA_CHALLENGES
+        ? gTrioArenaChallenges[sArena->challenge].species : SPECIES_GREEDENT), SpriteCallbackDummy, 0, 0, 0);
     if (sArena->foe == MAX_SPRITES) { FinishExit(); return; }
     gSprites[sArena->foe].oam.priority = 0;
     if (LoadSpriteSheet(&sheet) == 0xFFFF) { FinishExit(); return; }
@@ -394,17 +428,33 @@ static void InitArenaScreen(void)
     SetVBlankCallback(ArenaVBlank); SetMainCallback2(ArenaMain);
 }
 
-void StartTrioActionArena(void)
+static void StartArena(u8 challenge)
 {
     u8 taskId;
     gSpecialVar_Result = FALSE;
-    if (sArena || gSaveBlock1Ptr->location.mapGroup != MAP_GROUP(MAP_TRIO_ACTION_ARENA)
-        || gSaveBlock1Ptr->location.mapNum != MAP_NUM(MAP_TRIO_ACTION_ARENA)) return;
+    if (sArena) return;
     sArena = AllocZeroed(sizeof(*sArena));
     if (!sArena) return;
+    sArena->challenge = challenge;
     taskId = CreateTask(FadeToArena, 0);
     if (taskId == TASK_NONE) { FREE_AND_SET_NULL(sArena); return; }
     gSpecialVar_Result = TRUE;
+}
+
+void StartTrioActionArena(void)
+{
+    gSpecialVar_Result = FALSE;
+    if (gSaveBlock1Ptr->location.mapGroup != MAP_GROUP(MAP_TRIO_ACTION_ARENA)
+        || gSaveBlock1Ptr->location.mapNum != MAP_NUM(MAP_TRIO_ACTION_ARENA)) return;
+    StartArena(TRIO_ARENA_PRACTICE);
+}
+
+void StartTrioActionChallenge(void)
+{
+    u8 id = TrioArena_CurrentChallenge();
+    gSpecialVar_Result = FALSE;
+    if (!TrioArena_CanStartChallenge(id)) return;
+    StartArena(id);
 }
 
 static void FadeToArena(u8 taskId)

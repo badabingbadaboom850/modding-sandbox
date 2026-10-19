@@ -685,3 +685,8 @@ gSpecials::
 	def_special ReadTrioScenicPhoto
 
 	def_special StartTrioActionArena
+
+	def_special StartTrioActionChallenge
+	def_special GetTrioArenaChallengeState
+	def_special RecordTrioArenaChallengeWin
+	def_special ClaimTrioArenaChallengeReward
