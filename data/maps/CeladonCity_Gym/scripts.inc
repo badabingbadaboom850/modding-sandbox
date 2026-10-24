@@ -40,12 +40,21 @@ CeladonCity_Gym_Text_ErikaBeforeBattle:
 	.string "that you wished to challenge me.\p"
 	.string "Very well, but I shall not lose.\p"
 	.string "Even legends should learn\n"
-	.string "to bloom with grace.$"
+	.string "to bloom with grace.\p"
+	.string "Riko is quite radiant.\n"
+	.string "Bijuu studies each flower.\p"
+	.string "Penny has found the\n"
+	.string "warmest spot. They seem\p"
+	.string "very much at home with\n"
+	.string "you.$"
 
 CeladonCity_Gym_Text_ErikaBeaten:
 	.string "Erika: Oh! I concede defeat…\p"
 	.string "You are remarkably strong…\p"
-	.string "I shall give you Rainbowbadge…$"
+	.string "I shall give you Rainbowbadge…\p"
+	.string "Each girl had room to\n"
+	.string "blossom. Your care made a\p"
+	.string "difference.$"
 
 CeladonCity_Gym_Text_PlayerReceivedRainbowBadge:
 	.string "{PLAYER} received Rainbowbadge.$"
@@ -65,7 +74,12 @@ CeladonCity_Gym_Text_ErikaAfterBattle:
 	.string "Erika: Losing leaves a bitter\n"
 	.string "aftertaste…\p"
 	.string "But knowing that there are strong\n"
-	.string "trainers spurs me to do better…$"
+	.string "trainers spurs me to do better…\p"
+	.string "Please bring Penny to the\n"
+	.string "garden again. Riko may\p"
+	.string "admire the flowers, and\n"
+	.string "Bijuu may copy their\p"
+	.string "colors.$"
 
 CeladonCity_Gym_Text_ErikaRematch:
 	.string "Erika: Oh, hello.\p"
@@ -74,13 +88,20 @@ CeladonCity_Gym_Text_ErikaRematch:
 	.string "Your journey must have been so\n"
 	.string "exciting.\p"
 	.string "Even champions enjoy a challenge.\p"
-	.string "Want to have a rematch with me?$"
+	.string "Want to have a rematch with me?\p"
+	.string "The garden has grown since\n"
+	.string "your visit. I hope your\p"
+	.string "girls have too. Shall we\n"
+	.string "see?$"
 
 CeladonCity_Gym_Text_ErikaRematchDefeat:
 	.string "Erika: Losing still leaves a\n"
 	.string "bitter aftertaste…\p"
 	.string "But knowing that there are strong\n"
-	.string "trainers spurs me to do better…$"
+	.string "trainers spurs me to do better…\p"
+	.string "What lovely teamwork.\n"
+	.string "Three different flowers,\p"
+	.string "one garden.$"
 
 CeladonCity_Gym_EventScript_Michelle::
 	trainerbattle_single TRAINER_MICHELLE CeladonCity_Gym_Text_LassMichelleSeen, CeladonCity_Gym_Text_LassMichelleBeaten

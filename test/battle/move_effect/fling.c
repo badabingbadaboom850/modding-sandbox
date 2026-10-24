@@ -429,7 +429,7 @@ SINGLE_BATTLE_TEST("Fling - thrown berry's effect activates for the target even 
         HP_BAR(opponent);
         if (effect == HOLD_EFFECT_RESTORE_HP) {
             if (item == ITEM_ORAN_BERRY) {
-                MESSAGE("The opposing Wobbuffet restored its health using its Oran Berry!");
+                MESSAGE("The opposing Wobbuffet restored its health using its Chicky Fil-A!");
             } else if (item == ITEM_SITRUS_BERRY) {
                 MESSAGE("The opposing Wobbuffet restored its health using its Sitrus Berry!");
             } else {
@@ -450,9 +450,9 @@ SINGLE_BATTLE_TEST("Fling - thrown berry's effect activates for the target even 
             } else if (status1 == STATUS1_FROSTBITE) {
                 MESSAGE("The opposing Wobbuffet's Aspear Berry cured its frostbite!");
             } else if (status1 == STATUS1_PARALYSIS) {
-                MESSAGE("The opposing Wobbuffet's Cheri Berry cured its paralysis!");
+                MESSAGE("The opposing Wobbuffet's Bijuu's Springs cured its paralysis!");
             } else if (status1 == STATUS1_TOXIC_POISON || status1 == STATUS1_POISON) {
-                MESSAGE("The opposing Wobbuffet's Pecha Berry cured its poison!");
+                MESSAGE("The opposing Wobbuffet's Penny's Pup Cup cured its poison!");
             }
             NOT STATUS_ICON(opponent, status1);
         }
@@ -498,8 +498,8 @@ SINGLE_BATTLE_TEST("Fling deals damage based on items fling power")
 
     GIVEN {
         ASSUME(GetMovePower(MOVE_CRUNCH) == 80);
-        ASSUME(gItemsInfo[ITEM_GRASSTITE].flingPower == 80);
-        PLAYER(SPECIES_WOBBUFFET) { Item(ITEM_GRASSTITE); }
+        ASSUME(gItemsInfo[ITEM_DUSK_STONE].flingPower == 80);
+        PLAYER(SPECIES_WOBBUFFET) { Item(ITEM_DUSK_STONE); }
         OPPONENT(SPECIES_REGIROCK);
     } WHEN {
         TURN { MOVE(player, MOVE_FLING); }
@@ -1140,7 +1140,7 @@ SINGLE_BATTLE_TEST("Fling - thrown berry's effect activates for the target even 
         HP_BAR(opponent);
         if (effect == HOLD_EFFECT_RESTORE_HP) {
             if (item == ITEM_ORAN_BERRY) {
-                MESSAGE("The opposing Wobbuffet restored its health using its Oran Berry!");
+                MESSAGE("The opposing Wobbuffet restored its health using its Chicky Fil-A!");
             } else if (item == ITEM_SITRUS_BERRY) {
                 MESSAGE("The opposing Wobbuffet restored its health using its Sitrus Berry!");
             } else {
@@ -1161,9 +1161,9 @@ SINGLE_BATTLE_TEST("Fling - thrown berry's effect activates for the target even 
             } else if (status1 == STATUS1_FROSTBITE) {
                 MESSAGE("The opposing Wobbuffet's Aspear Berry cured its frostbite!");
             } else if (status1 == STATUS1_PARALYSIS) {
-                MESSAGE("The opposing Wobbuffet's Cheri Berry cured its paralysis!");
+                MESSAGE("The opposing Wobbuffet's Bijuu's Springs cured its paralysis!");
             } else if (status1 == STATUS1_TOXIC_POISON || status1 == STATUS1_POISON) {
-                MESSAGE("The opposing Wobbuffet's Pecha Berry cured its poison!");
+                MESSAGE("The opposing Wobbuffet's Penny's Pup Cup cured its poison!");
             }
             NOT STATUS_ICON(opponent, status1);
         }
@@ -1209,8 +1209,8 @@ SINGLE_BATTLE_TEST("Fling deals damage based on items fling power (Items)")
 
     GIVEN {
         ASSUME(GetMovePower(MOVE_CRUNCH) == 80);
-        ASSUME(gItemsInfo[ITEM_GRASSTITE].flingPower == 80);
-        PLAYER(SPECIES_WOBBUFFET) { Items(ITEM_NONE, ITEM_GRASSTITE); }
+        ASSUME(gItemsInfo[ITEM_DUSK_STONE].flingPower == 80);
+        PLAYER(SPECIES_WOBBUFFET) { Items(ITEM_NONE, ITEM_DUSK_STONE); }
         OPPONENT(SPECIES_REGIROCK);
     } WHEN {
         TURN { MOVE(player, MOVE_FLING); }

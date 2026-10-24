@@ -54,7 +54,7 @@ SINGLE_BATTLE_TEST("Bug Bite eats the target's berry and immediately gains its e
         HP_BAR(opponent);
         if (effect == HOLD_EFFECT_RESTORE_HP || effect == HOLD_EFFECT_ENIGMA_BERRY) {
             if (item == ITEM_ORAN_BERRY) {
-                MESSAGE("Wobbuffet restored its health using its Oran Berry!");
+                MESSAGE("Wobbuffet restored its health using its Chicky Fil-A!");
             } else if (item == ITEM_SITRUS_BERRY) {
                 MESSAGE("Wobbuffet restored its health using its Sitrus Berry!");
             } else {
@@ -71,9 +71,9 @@ SINGLE_BATTLE_TEST("Bug Bite eats the target's berry and immediately gains its e
             } else if (status1 == STATUS1_SLEEP) {
                 MESSAGE("Wobbuffet's Chesto Berry woke it up!");
             } else if (status1 == STATUS1_PARALYSIS) {
-                MESSAGE("Wobbuffet's Cheri Berry cured its paralysis!");
+                MESSAGE("Wobbuffet's Bijuu's Springs cured its paralysis!");
             } else if (status1 == STATUS1_TOXIC_POISON || status1 == STATUS1_POISON) {
-                MESSAGE("Wobbuffet's Pecha Berry cured its poison!");
+                MESSAGE("Wobbuffet's Penny's Pup Cup cured its poison!");
             } else if (status1 == STATUS1_FROSTBITE) {
                 MESSAGE("Wobbuffet's Aspear Berry cured its frostbite!");
             }
@@ -216,7 +216,7 @@ SINGLE_BATTLE_TEST("Bug Bite eats the target's berry and immediately gains its e
         HP_BAR(opponent);
         if (effect == HOLD_EFFECT_RESTORE_HP || effect == HOLD_EFFECT_ENIGMA_BERRY) {
             if (item == ITEM_ORAN_BERRY) {
-                MESSAGE("Wobbuffet restored its health using its Oran Berry!");
+                MESSAGE("Wobbuffet restored its health using its Chicky Fil-A!");
             } else if (item == ITEM_SITRUS_BERRY) {
                 MESSAGE("Wobbuffet restored its health using its Sitrus Berry!");
             } else {
@@ -233,9 +233,9 @@ SINGLE_BATTLE_TEST("Bug Bite eats the target's berry and immediately gains its e
             } else if (status1 == STATUS1_SLEEP) {
                 MESSAGE("Wobbuffet's Chesto Berry woke it up!");
             } else if (status1 == STATUS1_PARALYSIS) {
-                MESSAGE("Wobbuffet's Cheri Berry cured its paralysis!");
+                MESSAGE("Wobbuffet's Bijuu's Springs cured its paralysis!");
             } else if (status1 == STATUS1_TOXIC_POISON || status1 == STATUS1_POISON) {
-                MESSAGE("Wobbuffet's Pecha Berry cured its poison!");
+                MESSAGE("Wobbuffet's Penny's Pup Cup cured its poison!");
             } else if (status1 == STATUS1_FROSTBITE) {
                 MESSAGE("Wobbuffet's Aspear Berry cured its frostbite!");
             }

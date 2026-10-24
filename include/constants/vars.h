@@ -310,6 +310,63 @@
 #define VAR_FOLLOWER_MEGA_OFF                           0x411F
 #define VAR_SHINY_RATE                                  0x4120
 #define VAR_ROUTE31_BIJUU_CHASE                       0x4121
+#define VAR_TRIO_RESEARCH_STATE                       0x4122 // Violet 0-3; Azalea 4-6; Goldenrod 7-9 (see docs/trio_world_roadmap.md)
+#define VAR_PENNY_CONFIDENCE_STATE                    0x4123 // 0 not started, 1 first step, 2 reward pending, 3 complete
+
+#define VAR_ECRUTEAK_BIJUU_MYSTERY                    0x4124 // 0 offer, 1-3 clues, 4 toy, 5 reward pending, 6 revealed
+
+// Route 37 snack chase: saved stages and the one removed Bag item.
+#define VAR_TRIO_SNACK_CHASE_STATE                   0x4125 // 0 untouched, 1 grass, 2 grove, 3 return pending, 4 complete
+#define VAR_TRIO_SNACK_STOLEN_ITEM                   0x4126 // ITEM_NONE means the narrative picnic snack
+
+// Escalating Greedent gang: completed waves, active wave and item custody.
+#define VAR_TRIO_GANG_WINS                           0x4127 // 0-6; old completed Route37 chase counts as wave1
+#define VAR_TRIO_GANG_ACTIVE_WAVE                    0x4128 // 1-6 during an ambush, otherwise0
+#define VAR_TRIO_GANG_PHASE                          0x4129 // 0 inactive, 1 battle pending, 2 won/item pending
+
+// Spirit Rift: three opened paths, victory, then successfully claimed gift.
+#define VAR_TRIO_RIFT_BIJUU_STATE                    0x412B // 0-2 clues, 3 real cat, 4 won, 5 charm
+#define VAR_TRIO_RIFT_PENNY_STATE                    0x412C // 0-3 lanterns, 4 won, 5 charm
+#define VAR_TRIO_RIFT_RIKO_STATE                     0x412A // 0-3 echoes, 4 won/gift pending, 5 complete
+
+#define VAR_RIKO_CAVERN_STATE                       0x412E // 0 Mind,1 Body,2 Soul,3 reunion/finale,4 won
+#define VAR_TRIO_GARDEN_STATE                        0x412D // 0 seeds,1/3 growing,2 warm,4 guard,5 bloom pending,6 gift
+
+#define VAR_TRIO_CAFE_TEST_RETURN                   0x412F // Reserved legacy cafe test slot; unused, preserve saved IDs
+#define VAR_TRIO_CAFE_DELIVERY_STATE                0x4130 // 0/2/4 parcel ready,1/3 claimed waiting,5 done
+
+// Optional costume stories: 0 offer,1 accepted,2 found/reward pending,3 claimed.
+#define VAR_TRIO_HUNT_RIKO                           0x4131
+#define VAR_TRIO_HUNT_BIJUU                          0x4132
+#define VAR_TRIO_HUNT_PENNY                          0x4133
+// Bread mystery: 0 rumor,1 accepted,2 clue,3 reveal/reward pending,4 complete.
+#define VAR_TRIO_BREAD_MYSTERY                       0x4134
+// Bits0-8 costume portraits, bit9 Poison bonus. Filled by wearing, not owning.
+#define VAR_TRIO_OUTFIT_PHOTOS                       0x4135
+
+// Optional Trio road trip; historical saved addresses remain fixed.
+#define VAR_TRIO_ROAD_RIKO                          0x4136 // 0 offer,1 tour,2 first sign,3 snack trail,4 lookout
+#define VAR_TRIO_ROAD_BIJUU                         0x4137 // 0 rumor,1 case,2 fisher,3 prints,4 reveal
+#define VAR_TRIO_ROAD_PENNY                         0x4138 // 0 picnic,1 rain,2 shelter found,3 rescued,4 settled
+#define VAR_TRIO_ROAD_COMPLETE                      0x4139 // 0 not yet,1 sunset and scrapbook
+#define VAR_TRIO_ROAD_RETURN                        0x413A // 0 Cianwood,1 Olivine; remains across island save/reload
+#define VAR_TRIO_ROAD_BATTLES                       0x413B // bits0/1/2 beach/forest/Scott wins, isolated from trainer flags
+#define VAR_TRIO_ROAD_SOUVENIR                      0x413C // 0 waiting,1 cabin picnic tin claimed
+#define VAR_TRIO_ROAD_VISITS                        0x413D // 0-3 arrival conversation rotation
+
+// Optional dinner, studio and homecoming; existing saved arrays unchanged.
+#define VAR_TRIO_DINNER_STATE                        0x413E
+#define VAR_TRIO_RADIO_STATE                         0x413F
+#define VAR_TRIO_HOMECOMING_STATE                    0x4140
+#define VAR_TRIO_DINNER_REWARD                       0x4141
+#define VAR_TRIO_HOME_GIFTS                          0x4142
+#define VAR_TRIO_HOME_REWARD                         0x4143
+
+#define VAR_TRIO_PLAYER_HAT                          0x4144 // 0 original, 1 bow, 2 sunhat
+
+#define VAR_TRIO_GREG_WINS                          0x4145 // Twelve independent Greg stops
+
+#define VAR_TRIO_POM_PARADE                         0x4146 // 1 after full parade; replay never resets
 
 #define VARS_END                                         0x42FF
 
@@ -375,3 +432,51 @@
 #endif // TESTING
 
 #endif // GUARD_CONSTANTS_VARS_H
+
+// Halloween trail:0-2 puzzle progress,3 solved/prize pending,4 prize received.
+#define VAR_TRIO_HALLOWEEN_RIKO                     0x4147
+#define VAR_TRIO_HALLOWEEN_BIJUU                    0x4148
+#define VAR_TRIO_HALLOWEEN_PENNY                    0x4149
+
+#define VAR_TRIO_HALLOWEEN_RETURN                   0x414A // 0 Olivine Cafe,1 authorized New Bark test trip
+
+// Append-only seasonal saves: zero is idle/unearned on existing saves.
+#define VAR_TRIO_SEASONAL_PHOTOS                    0x414B
+#define VAR_TRIO_FALL_STATE        0x414C
+#define VAR_TRIO_FALL_ROUND        0x414D
+#define VAR_TRIO_FALL_PROGRESS     0x414E
+#define VAR_TRIO_FALL_GIFTS        0x414F
+#define VAR_TRIO_FALL_SNACK        0x4150
+#define VAR_TRIO_THANKSGIVING_STATE        0x4151
+#define VAR_TRIO_THANKSGIVING_ROUND        0x4152
+#define VAR_TRIO_THANKSGIVING_PROGRESS     0x4153
+#define VAR_TRIO_THANKSGIVING_GIFTS        0x4154
+#define VAR_TRIO_THANKSGIVING_SNACK        0x4155
+#define VAR_TRIO_CHRISTMAS_STATE        0x4156
+#define VAR_TRIO_CHRISTMAS_ROUND        0x4157
+#define VAR_TRIO_CHRISTMAS_PROGRESS     0x4158
+#define VAR_TRIO_CHRISTMAS_GIFTS        0x4159
+#define VAR_TRIO_CHRISTMAS_SNACK        0x415A
+#define VAR_TRIO_NEW_YEAR_STATE        0x415B
+#define VAR_TRIO_NEW_YEAR_ROUND        0x415C
+#define VAR_TRIO_NEW_YEAR_PROGRESS     0x415D
+#define VAR_TRIO_NEW_YEAR_GIFTS        0x415E
+#define VAR_TRIO_NEW_YEAR_SNACK        0x415F
+
+#define VAR_TRIO_SEASONAL_WARDROBE                  0x4160 // twelve safely stored earned costume keys
+
+// Scenic snapshots append to existing vars; original photo masks stay intact.
+#define VAR_TRIO_SCENIC_PHOTOS                   0x4161
+#define VAR_TRIO_SCENIC_LIGHTHOUSE_RIKO          0x4162
+#define VAR_TRIO_SCENIC_LIGHTHOUSE_BIJUU         0x4163
+#define VAR_TRIO_SCENIC_LIGHTHOUSE_PENNY         0x4164
+#define VAR_TRIO_SCENIC_LAKE_RIKO                0x4165
+#define VAR_TRIO_SCENIC_LAKE_BIJUU               0x4166
+#define VAR_TRIO_SCENIC_LAKE_PENNY               0x4167
+#define VAR_TRIO_SCENIC_ICE_RIKO                 0x4168
+#define VAR_TRIO_SCENIC_ICE_BIJUU                0x4169
+#define VAR_TRIO_SCENIC_ICE_PENNY                0x416A
+
+// Independent one-time action arena victories and delivered prizes.
+#define VAR_TRIO_ARENA_WINS                     0x416B
+#define VAR_TRIO_ARENA_REWARDS                  0x416C

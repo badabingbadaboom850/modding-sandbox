@@ -20,6 +20,7 @@
 #include "strings.h"
 #include "string_util.h"
 #include "task.h"
+#include "trio_family_days.h"
 #include "text.h"
 #include "text_window.h"
 #include "window.h"
@@ -56,6 +57,7 @@ enum RadioStation
     RADIO_STATION_BUENAS_PASSWORD,
     RADIO_STATION_UNOWN,
     RADIO_STATION_ROCKET,
+    RADIO_STATION_TRIO,
 };
 
 struct RadioChannel
@@ -116,6 +118,7 @@ static const u8 sText_OaksPokemonTalk[] = _("Oak's Pokémon Talk");
 static const u8 sText_PokemonMusic[] = _("Pokémon Music");
 static const u8 sText_BuenasPassword[] = _("Buena's Password");
 static const u8 sText_UnownStation[] = _("?????");
+static const u8 sText_Trio[] = _("Tails of the Trio");
 static const u8 sText_TeamRocket[] = _("Team Rocket");
 
 static const u8 sText_Music1[] = _("Ben: Pokémon Music Channel!");
@@ -160,6 +163,7 @@ static const struct RadioChannel sRadioChannels[] =
     { 22, RADIO_STATION_POKEMON_MUSIC,   sText_PokemonMusic },
     { 32, RADIO_STATION_BUENAS_PASSWORD, sText_BuenasPassword },
     { 41, RADIO_STATION_UNOWN,           sText_UnownStation },
+    { 52, RADIO_STATION_TRIO,            sText_Trio },
 };
 
 static const struct BgTemplate sRadioBgTemplates[] =
@@ -390,6 +394,8 @@ static u8 FindStation(u8 tuningPos)
             continue;
 
         station = sRadioChannels[i].station;
+        if (station == RADIO_STATION_TRIO && !TrioFamilyRadio_IsUnlocked())
+            return RADIO_STATION_NONE;
         if (station == RADIO_STATION_UNOWN)
         {
             if (gMapHeader.regionMapSectionId != MAPSEC_RUINS_OF_ALPH)
@@ -437,6 +443,8 @@ static u16 GetStationMusic(u8 station)
         return MUS_HG_RADIO_UNOWN;
     case RADIO_STATION_ROCKET:
         return MUS_HG_RADIO_ROCKET;
+    case RADIO_STATION_TRIO:
+        return MUS_HG_RADIO_LULLABY;
     default:
         return 0;
     }
@@ -525,6 +533,9 @@ static void GenerateStationContent(u8 station)
             AddRadioLine(sText_BuenaOffAir1);
             AddRadioLine(sText_BuenaOffAir2);
         }
+        break;
+    case RADIO_STATION_TRIO:
+        AddRadioTopic(TrioFamilyRadio_GetTopic(Random() % 4));
         break;
     case RADIO_STATION_UNOWN:
         AddRadioLine(sText_Unown1);

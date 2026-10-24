@@ -333,7 +333,11 @@ Route32_Text_CooltrainerM_HaveThisSeed:
 
 Route32_Text_CooltrainerM_Experiences:
 	.string "Your experiences in Violet City\n"
-	.string "should be useful for your journey.$"
+	.string "should be useful for your journey.\p"
+	.string "Falkner stood his ground\n"
+	.string "against your girls. That\p"
+	.string "is the kind of match both\n"
+	.string "sides grow from.$"
 
 Route32_Text_SlowpokeTailOffer:
 	.string "How would you like to have this\n"
@@ -352,7 +356,12 @@ Route32_Text_RefusedSlowpokeTail:
 
 Route32_Text_FisherJustin_Seen:
 	.string "Whoa!\p"
-	.string "You made me lose that fish!$"
+	.string "You made me lose that fish!\p"
+	.string "Are those the girls from\n"
+	.string "the Violet stories? Penny\p"
+	.string "can watch the water. Riko\n"
+	.string "had better not scare my\p"
+	.string "fish!$"
 
 Route32_Text_FisherJustin_Beaten:
 	.string "Sploosh!$"

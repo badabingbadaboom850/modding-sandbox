@@ -346,13 +346,14 @@ TEST("Berries are sorted correctly in the bag")
 
     SortItemsInBag(&gBagPockets[POCKET_BERRIES], SORT_ALPHABETICALLY);
 
-    EXPECT_EQ(pocket->itemSlots[0].itemId, ITEM_CHARTI_BERRY);
-    EXPECT_EQ(pocket->itemSlots[1].itemId, ITEM_CHERI_BERRY);
-    EXPECT_EQ(pocket->itemSlots[2].itemId, ITEM_GANLON_BERRY);
-    EXPECT_EQ(pocket->itemSlots[3].itemId, ITEM_KELPSY_BERRY);
-    EXPECT_EQ(pocket->itemSlots[4].itemId, ITEM_MAGOST_BERRY);
-    EXPECT_EQ(pocket->itemSlots[5].itemId, ITEM_MICLE_BERRY);
-    EXPECT_EQ(pocket->itemSlots[6].itemId, ITEM_ORAN_BERRY);
+    // Display names: Bijuu's Springs, Charti Berry, Chicky Fil-A, then G-M.
+    EXPECT_EQ(pocket->itemSlots[0].itemId, ITEM_CHERI_BERRY);
+    EXPECT_EQ(pocket->itemSlots[1].itemId, ITEM_CHARTI_BERRY);
+    EXPECT_EQ(pocket->itemSlots[2].itemId, ITEM_ORAN_BERRY);
+    EXPECT_EQ(pocket->itemSlots[3].itemId, ITEM_GANLON_BERRY);
+    EXPECT_EQ(pocket->itemSlots[4].itemId, ITEM_KELPSY_BERRY);
+    EXPECT_EQ(pocket->itemSlots[5].itemId, ITEM_MAGOST_BERRY);
+    EXPECT_EQ(pocket->itemSlots[6].itemId, ITEM_MICLE_BERRY);
     EXPECT_EQ(pocket->itemSlots[7].itemId, ITEM_POMEG_BERRY);
     EXPECT_EQ(pocket->itemSlots[8].itemId, ITEM_NONE);
 }

@@ -29,6 +29,7 @@
 #include "constants/moves.h"
 #include "constants/items.h"
 #include "constants/trainers.h"
+#include "constants/map_groups.h"
 
 #if TESTING
 #include "test/battle.h"
@@ -204,6 +205,16 @@ static u64 GetWildAiFlags(void)
         flags |= AI_FLAG_TRY_TO_2HKO;
     if (avgLevel >= 80)
         flags |= AI_FLAG_HP_AWARE;
+
+    // Dedicated endgame cavern bosses use deliberate setup, recovery and KO choices.
+    // Ordinary wild encounters and the earlier Rift trials retain their AI.
+    u32 species = GetMonData(&gEnemyParty[0], MON_DATA_SPECIES);
+    if (!RIKO_CAVERN_LEVEL_ONE_TEST
+        && gSaveBlock1Ptr->location.mapGroup == MAP_GROUP(MAP_RIKO_SPIRIT_CAVERN)
+        && gSaveBlock1Ptr->location.mapNum == MAP_NUM(MAP_RIKO_SPIRIT_CAVERN)
+        && (species == SPECIES_RIKO_ASPECT_MIND || species == SPECIES_RIKO_ASPECT_BODY
+            || species == SPECIES_RIKO_ASPECT_SOUL || species == SPECIES_RIKO_SPIRIT))
+        flags |= AI_FLAG_BASIC_TRAINER | AI_FLAG_TRY_TO_2HKO | AI_FLAG_HP_AWARE | AI_FLAG_PP_STALL_PREVENTION;
 
     if (B_VAR_WILD_AI_FLAGS != 0 && VarGet(B_VAR_WILD_AI_FLAGS) != 0)
         flags |= VarGet(B_VAR_WILD_AI_FLAGS);

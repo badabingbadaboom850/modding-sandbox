@@ -1,0 +1,171 @@
+# Focused costume and reusable-item emulator pass
+
+## Baseline and result recording
+
+Use a copied normal in-game .sav, preserving the original. Record the ROM commit,
+emulator/version, save provenance, girl/stage/level, held item, ability, six stats,
+moves/PP and Bag item quantity. Start from an existing pre-update save; also run
+one fresh-save smoke test through normal acquisition. Load the new ROM and its
+in-game save directly, rather than restoring an old-ROM frozen snapshot.
+
+Mark each row below Pending, Pass or Fail for each sequence step. Record observed
+behavior and screenshots; do not infer an emulator pass from native/source tests.
+All rows remain Pending until actually exercised. Existing user confirmations of
+older costume presentation are useful history, not confirmation of this full pass.
+
+| Girl | Costume | Reusable item | Stages |
+| --- | --- | --- | --- |
+| Riko | Balloon | Riko Balloon | ordinary Riko |
+| Riko | Princess | Pom Tiara | ordinary Riko |
+| Riko | Raincoat | Riko Raincoat | ordinary Riko |
+| Riko | Butterfly | Riko Wings | ordinary Riko |
+| Riko | Witch | Riko Witch Hat | ordinary Riko |
+| Bijuu | Box | Bijuu Box | ordinary Bijuu |
+| Bijuu | Bread | Cocoa Toast | ordinary Bijuu |
+| Bijuu | Detective | Detective Kit | ordinary Bijuu |
+| Bijuu | Astronaut | Space Helmet | ordinary Bijuu |
+| Bijuu | Vampire | Vampire Cape | ordinary Bijuu |
+| Penny | Hot Dog | Penny Hot Dog | Fidough and Dachsbun |
+| Penny | Blankey | Penny Cozy Wrap | Fidough and Dachsbun |
+| Penny | Lifeguard | Penny Beach Vest | Fidough and Dachsbun |
+| Penny | Ballerina | Penny Tutu | Fidough and Dachsbun |
+| Penny | Pumpkin | Pumpkin Suit | Fidough and Dachsbun |
+| Bijuu | Poison (elemental control) | Toxic Mouse | ordinary/Box to Poison; reverse ordinary |
+
+## Repeat for every costume and Penny stage
+
+1. Record initial quantity. Cancel party selection and try an unrelated species
+   and an Egg. No quantity decrease, transformation, freeze or party corruption.
+2. Dress the ordinary girl. Confirm unchanged stats/type/ability/moves/level/sex/
+   held item and item quantity. Inspect evolution UI, front/back battle picture,
+   party icon, follower idle/walk down/up/left/right and palette/transparency.
+   Use the same item to revert, then dress again. Repeat at least three cycles.
+3. Save in-game while dressed, completely close/reopen the emulator/ROM, load
+   the save, verify costume and quantity, then reuse that same item to revert.
+   Save/restart once while ordinary and dress again after loading.
+4. Dress, deposit in a PC Box, save/restart with her boxed, inspect stored icon/
+   summary, withdraw and verify form/stats/moves/held item. Revert using the same
+   item and confirm unchanged quantity. Box transfer must not strip a costume.
+5. Dress and faint in an ordinary battle. Finish the battle, revive/heal, confirm
+   costume persists and reuse to revert. Run one full-party blackout control
+   per girl and verify recovery, Bag quantity and form after field return.
+6. Where legitimately unlocked, test normal Riko/Bijuu Mega and Spirit Mega.
+   Check victory/end cleanup and Mega fainting restore the exact starting
+   costume; save/restart afterward and reuse the costume item.
+7. Open the album while dressed, check portrait/reaction/Scott comment, revert,
+   box and restart; the earned photo must persist. Teach one eligible Scott
+   signature and verify its retention through dress/revert and restart.
+8. For each Penny outfit independently: start at25, dress, reach26 normally,
+   confirm dressed Dachsbun, then revert to ordinary Dachsbun. Compare with
+   same-level evolved-stage baseline rather than expecting level25 stats.
+   Re-dress, save/reload and confirm the evolved stage remains.
+
+## Acquisition and existing-save controls
+
+For ordinary costume gift sources: absent matching girl, decline, accept, repeat while owned
+and visit with full Key Item storage (on a separate test-save copy if practical).
+Full storage must leave the gift retryable; repeated successful visits must not
+multiply protected costume items. Original conversations/services and routes
+must remain available. Morgan's Box encounter separately needs decline/loss/
+full-Bag victory recovery without a forced second win.
+
+Use an existing save with all old photos to earn each Halloween portrait. Old
+bits and optional quest progress must remain; the album should show15 costumes
+when complete, excluding the separate Poison bonus. Save/reload with bit15 set
+and check Pumpkin Penny's portrait in both stages. Calendar changes must not
+remove Halloween access.
+
+Poison Bijuu is elemental, so its stats/type differ legitimately. Toxic Mouse
+stays in the ordinary Items pocket. Test forward/reverse quantity, moves learned
+through transformation/Scott, save/Box/faint/reload and form persistence. On
+reversion, equipped moves remain but species returns to ordinary Bijuu.
+
+## Consumption/disappearance findings and failures
+
+Current ItemUseCB_EvolutionStone removes one item only when it is neither in the
+Key Items pocket nor in IsReusableTrioFormItem. All39 personal transformation
+items pass the source classification audit:26 Key Items and13 ordinary Items.
+All15 costume gifts have importance1 and Key Items pocket. Toxic Mouse is an
+ordinary Items-pocket reusable exemption. No inventory pocket migration occurs.
+
+Older builds consumed Wand/Blue Brush/Fish Toy/Cat Nip/Dad's Keys/Chicken.
+Previously consumed copies are not restored by loading the new ROM. Missing
+before the first new-ROM use is therefore distinct from disappearing on use.
+Ordinary Items may also be held: check the girl's held item and PC storage before
+calling a Bag absence consumption. Protected costume Key Items should not be
+holdable, sellable or discardable; any successful destructive option is a failure.
+
+Fail immediately on any family item quantity decrease during use/reversion,
+item lost after save/reload/Box/fainting, costume stripped outside an intended
+reversion, wrong Penny stage, changed ordinary costume stats/type/moves, unusable
+item after restart, corrupt followers/Bag, crash or softlock. Report exact ROM
+commit/save/action and before/after quantities. An ordinary evolution stone
+consuming one is expected control behavior; a family item doing so is not.
+
+## Halloween trail rendered checks
+
+After Chuck's fifth Badge, visit Olivine Cafe (city door8,43), talk to Gastly1,6, decline
+once, then accept. Verify original cafe services still work; before Badge5, the invitation stays locked. No party gate.
+Explore all13 actors and inspect Gastly/Haunter/Duskull/Pumpkaboo followers.
+Try wrong/cancelled memory answers, then BOO/POM/TREAT for Riko's hat.
+Find Fish/Moon/Star treat balls for Bijuu; visit Left/Right/Middle Pumpkaboo
+for Penny. Use host hints, try wrong order/duplicate searches, save/restart
+after one correct find, exit/reenter and resume without resets. Speak to
+Haunter/Duskull for prizes. Test full-Bag solved rewards, then retry claims
+without repeating the game. Repeat host interactions while owning items.
+Both south-arrow exits and the exit Gastly return safely. Save inside/reload
+and leave. Old costume copies/photos stay; earlier direct Halloween gift calls
+are removed. Then run every costume item/storage/faint/reversion check above.
+
+For the authorized fresh-save shortcut, inspect the player's New Bark mailbox
+at17,11 and accept Halloween test travel. Decline once to confirm the original
+house sign, then accept and play normally. Save/restart inside, use Exit Gastly
+and each walk-out exit on separate visits, and confirm return to New Bark18,12.
+No automatic costume gifts, Badges, party additions or story resets should occur.
+Then enter through Olivine's Gastly after Badge5 and confirm the origin changes back to
+Olivine Cafe for every exit. All earned games/items/photos must remain.
+
+## Four seasonal chapters and twelve more toggles
+
+Use an existing save with earned photos and independently verify the gates:
+Mahogany Center Fall after Jasmine6, Blackthorn Thanksgiving after all8Johto,
+Celadon Christmas after Champion, Saffron New Year after all16. All hosts are5,6.
+They remain available outside the named season. Declining keeps normal Center
+services and progress. Both stage exits return safely to the source Center.
+
+For each chapter, accept a round, save after each of its three correct choices,
+reload and consult the saved clue. Test a wrong/repeated choice and Later/B.
+Leave by host and walk exit; return without losing progress or changing pattern.
+Win with a full Key Items pocket, with space for only one/two costume gifts, and
+with a full snack pocket/stack. Clear space and retry the host: received gifts
+must not repeat, missing prizes stay claimable without another win, and one
+snack completes the claim. Save/reload between claims. Pre-owned items must not
+produce duplicate copies. Replay twice: choose varied rounds, earn one small
+snack each time, retain all three keys and all previously earned photos.
+
+Run the earlier toggle lifecycle matrix for all12 seasonal items and both Penny
+stages: use/reuse, cancel, save while dressed, box/withdraw, faint/revive, reversion,
+reload and Mega return. Compare stats/moves/personality/held item before/after.
+Confirm the Key Item remains quantity1 on every successful/cancelled toggle and
+after evolution, boxing, fainting and reload. Sale/toss/hold/PC deposit must not
+remove a protected costume key. Any unexplained vanished/consumed key is a defect, even if
+its costume or photo remains. Do not grow the save's Bag layout to work around a
+full50-slot pocket; keep full-pocket prizes pending for review.
+
+Check front/back, party icon and down/up/left/right idle/step followers for all
+new costumes. Inspect both Penny up poses especially for detached neighboring
+tails, head direction, centering and clipping. Photograph every outfit: old16bits
+must remain intact, new12bits append in the separate mask, ordinary/evolved Penny
+share a page, each girl's four new pages open, locked pages and Back/B close the
+portrait, and full costume count shows27 with Poison still a separate bonus.
+
+For all12 seasonal keys, visit the wardrobe attendant8,8 in any chapter. Test
+Store/Take, both menus' Back/B, No confirmation, missing and unclaimed imported
+copies, and a full50-slot Key Items pocket. A confirmed Store must remove one
+Bag key and preserve it in the wardrobe across saving/reloading and visits to a
+different chapter. Failed/full retrieval must leave it stored; successful Take
+restores exactly one reusable key. Store the first/second partial reward to free
+space, finish the host's pending claims, reload, retrieve, and ensure no costume
+key duplicates. Storage must not change a currently worn/boxed/fainted costume,
+Pokemon data, gift count or photo bits. Explicit wardrobe storage explains a
+key's absence from the Bag; loss from both Bag and wardrobe is a defect.

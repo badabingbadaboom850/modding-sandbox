@@ -815,10 +815,14 @@ static void MoveRelearnerLoadBattleMoveDescription(u32 chosenMove)
     AddTextPrinterParameterized(RELEARNERWIN_DESC_BATTLE, FONT_NARROW, GetMoveDescription(chosenMove), 0, 65, 0, NULL);
 }
 
+static const u8 sTrioElementalMovesTitle[] = _("Elemental moves");
+
 static const u8 *GetMoveRelearnerBattleWindowTitle(void)
 {
     switch (gMoveRelearnerState)
     {
+    case MOVE_RELEARNER_TRIO_ELEMENTAL_MOVES:
+        return sTrioElementalMovesTitle;
     case MOVE_RELEARNER_LEVEL_UP_MOVES:
         return gText_MoveRelearnerLevelUpMoves;
     case MOVE_RELEARNER_EGG_MOVES:

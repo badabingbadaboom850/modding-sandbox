@@ -87,4 +87,8 @@
 // Naming Screen
 #define AUTO_LOWERCASE_KEYBOARD      GEN_LATEST  // Starting in GEN_6, after entering the first uppercase character, the keyboard switches to lowercase letters.
 
+// Optional developer festival testing. Disabled for normal play.
+// Numeric literal is required: script CPP does not define the C TRUE/FALSE macros.
+#define TRIO_FESTIVAL_TEST_MODE 0
+
 #endif // GUARD_CONFIG_GENERAL_H

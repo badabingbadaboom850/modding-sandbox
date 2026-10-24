@@ -688,6 +688,16 @@ void SetWarpDestination(s8 mapGroup, s8 mapNum, s8 warpId, s8 x, s8 y)
 
 void SetWarpDestinationToMapWarp(s8 mapGroup, s8 mapNum, s8 warpId)
 {
+    // The southeast Vermilion house becomes the reformed cartel cafe.
+    if (mapGroup == MAP_GROUP(MAP_VERMILION_CITY_HOUSE3)
+        && mapNum == MAP_NUM(MAP_VERMILION_CITY_HOUSE3)
+        && warpId == 0
+        && (VarGet(VAR_TRIO_GANG_WINS) >= 6
+            || (VarGet(VAR_TRIO_GANG_ACTIVE_WAVE) == 6 && VarGet(VAR_TRIO_GANG_PHASE) == 2)))
+    {
+        SetWarpDestination(MAP_GROUP(MAP_TRIO_GREEDENT_CAFE), MAP_NUM(MAP_TRIO_GREEDENT_CAFE), 0, -1, -1);
+        return;
+    }
     SetWarpDestination(mapGroup, mapNum, warpId, -1, -1);
 }
 

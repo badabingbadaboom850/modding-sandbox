@@ -144,7 +144,11 @@ CianwoodGym_Text_ChuckIntro1:
 	.string "shatter bones!\p"
 	.string "Watch this!\p"
 	.string "Three legends at once!\n"
-	.string "Now this is a real workout!$"
+	.string "Now this is a real workout!\p"
+	.string "Riko has the roar! Bijuu\n"
+	.string "has the moves! Penny has\p"
+	.string "the patience! You had\n"
+	.string "better have a plan!$"
 
 CianwoodGym_Text_ChuckIntro2:
 	.string "Chuck: Urggh!\n"
@@ -161,7 +165,10 @@ CianwoodGym_Text_ChuckIntro3:
 CianwoodGym_Text_ChuckLoss:
 	.string "Wha? Huh? I lost?\p"
 	.string "How about that!\n"
-	.string "You're worthy of Stormbadge!$"
+	.string "You're worthy of Stormbadge!\p"
+	.string "What a team! The girls did\n"
+	.string "not just hit hard. They\p"
+	.string "hit when you asked!$"
 
 CianwoodGym_Text_GetStormBadge:
 	.string "{PLAYER} received Stormbadge.$"
@@ -182,17 +189,28 @@ CianwoodGym_Text_ChuckAfter:
 	.string "Wahahah! I enjoyed battling you!\p"
 	.string "But a loss is a loss!\p"
 	.string "From now on, I'm going to train\n"
-	.string "24 hours a day!$"
+	.string "24 hours a day!\p"
+	.string "Tell Penny she can rest\n"
+	.string "here. Rest is training\p"
+	.string "too! Riko, please stop\n"
+	.string "shouting over my warmups.$"
 
 CianwoodGym_Text_ChuckRematch:
 	.string "Wahahah! Johto Champion!\p"
 	.string "You've come back for more!\p"
 	.string "I see your skills have improved!\p"
-	.string "Ready to see who's stronger?$"
+	.string "Ready to see who's stronger?\p"
+	.string "Ready for another workout?\n"
+	.string "I trained for three girls\p"
+	.string "and one very clever\n"
+	.string "trainer!$"
 
 CianwoodGym_Text_ChuckRematchDefeat:
 	.string "Wha? Huh? I lost?\n"
-	.string "Again?$"
+	.string "Again?\p"
+	.string "Ha! You have gotten\n"
+	.string "stronger together. That is\p"
+	.string "the best kind of stronger!$"
 
 CianwoodGym_EventScript_Yoshi::
 	trainerbattle_single TRAINER_YOSHI CianwoodGym_Text_BlackbeltYoshiSeen, CianwoodGym_Text_BlackbeltYoshiBeaten

@@ -1,0 +1,100 @@
+[
+  [
+    "Fall",
+    "FALL",
+    "Leaf-Pile Picnic",
+    "MahoganyTown_PokemonCenter",
+    "MAP_MAHOGANY_TOWN_POKEMON_CENTER",
+    "gMapGroup_IndoorMahogany",
+    "MAPSEC_MAHOGANY_TOWN",
+    "ITEM_POTION",
+    [
+      "FLAG_BADGE06_GET"
+    ],
+    [
+      "Maple",
+      "Oak",
+      "Gold"
+    ],
+    "Search the leaf piles."
+  ],
+  [
+    "Thanksgiving",
+    "THANKSGIVING",
+    "Thankful Table",
+    "BlackthornCity_PokemonCenter",
+    "MAP_BLACKTHORN_CITY_POKEMON_CENTER",
+    "gMapGroup_IndoorBlackthorn",
+    "MAPSEC_BLACKTHORN_CITY",
+    "ITEM_SUPER_POTION",
+    [
+      "FLAG_BADGE01_GET",
+      "FLAG_BADGE02_GET",
+      "FLAG_BADGE03_GET",
+      "FLAG_BADGE04_GET",
+      "FLAG_BADGE05_GET",
+      "FLAG_BADGE06_GET",
+      "FLAG_BADGE07_GET",
+      "FLAG_BADGE08_GET"
+    ],
+    [
+      "Corn",
+      "Fish",
+      "Yam"
+    ],
+    "Choose each recipe prop."
+  ],
+  [
+    "Christmas",
+    "CHRISTMAS",
+    "Three Little Helpers",
+    "CeladonCity_PokemonCenter",
+    "MAP_CELADON_CITY_POKEMON_CENTER",
+    "gMapGroup_IndoorCeladon",
+    "MAPSEC_CELADON_CITY",
+    "ITEM_SUPER_POTION",
+    [
+      "FLAG_IS_CHAMPION"
+    ],
+    [
+      "Riko",
+      "Bijuu",
+      "Penny"
+    ],
+    "Deliver in the gift order."
+  ],
+  [
+    "NewYear",
+    "NEW_YEAR",
+    "Midnight Pawty",
+    "SaffronCity_PokemonCenter",
+    "MAP_SAFFRON_CITY_POKEMON_CENTER",
+    "gMapGroup_IndoorSaffron",
+    "MAPSEC_SAFFRON_CITY",
+    "ITEM_RIKO_PUFFS",
+    [
+      "FLAG_BADGE01_GET",
+      "FLAG_BADGE02_GET",
+      "FLAG_BADGE03_GET",
+      "FLAG_BADGE04_GET",
+      "FLAG_BADGE05_GET",
+      "FLAG_BADGE06_GET",
+      "FLAG_BADGE07_GET",
+      "FLAG_BADGE08_GET",
+      "FLAG_BADGE09_GET",
+      "FLAG_BADGE10_GET",
+      "FLAG_BADGE11_GET",
+      "FLAG_BADGE12_GET",
+      "FLAG_BADGE13_GET",
+      "FLAG_BADGE14_GET",
+      "FLAG_BADGE15_GET",
+      "FLAG_BADGE16_GET"
+    ],
+    [
+      "Pom",
+      "Meow",
+      "Wag"
+    ],
+    "Repeat the pawty rhythm."
+  ]
+]

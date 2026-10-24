@@ -1760,6 +1760,36 @@ void ItemUseOutOfBattle_PokeFlute(u8 taskId)
     }
 }
 
+static void ItemUseOnFieldCB_TrioMemory(u8 taskId)
+{
+    gSpecialVar_0x8004 = gSpecialVar_ItemId;
+    LockPlayerFieldControls();
+    ScriptContext_SetupScript(EventScript_TrioMemoryItem);
+    DestroyTask(taskId);
+}
+
+void ItemUseOutOfBattle_TrioMemory(u8 taskId)
+{
+    // ITEM_USE_FIELD closes the Bag through the standard field-item callback.
+    // Registered key-item use takes the same script path without opening the Bag.
+    sItemUseOnFieldCB = ItemUseOnFieldCB_TrioMemory;
+    SetUpItemUseOnFieldCallback(taskId);
+}
+
+void ItemUseOutOfBattle_RikosAmulet(u8 taskId)
+{
+    // Restrict travel to ordinary land outdoors; companions cannot be abandoned.
+    if (!CheckFollowerNPCFlag(FOLLOWER_NPC_FLAG_CAN_LEAVE_ROUTE)
+        || (gMapHeader.mapType != MAP_TYPE_TOWN && gMapHeader.mapType != MAP_TYPE_CITY
+            && gMapHeader.mapType != MAP_TYPE_ROUTE)
+        || TestPlayerAvatarFlags(PLAYER_AVATAR_FLAG_SURFING | PLAYER_AVATAR_FLAG_UNDERWATER))
+    {
+        DisplayDadsAdviceCannotUseItemMessage(taskId, gTasks[taskId].tUsingRegisteredKeyItem);
+        return;
+    }
+    ItemUseOutOfBattle_TrioMemory(taskId);
+}
+
 static void ItemUseOnFieldCB_TownMap(u8 taskId)
 {
     LockPlayerFieldControls();

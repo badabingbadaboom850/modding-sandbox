@@ -3520,10 +3520,22 @@ extern const u16 gItemIcon_Palette_Radio[];
 
 extern const u32 gItemIcon_BlackMirror[];
 extern const u16 gItemIconPalette_BlackMirror[];
+extern const u32 gItemIcon_RikosAmulet[];
+extern const u16 gItemIconPalette_RikosAmulet[];
+extern const u32 gItemIcon_RikoPuffs[];
+extern const u16 gItemIconPalette_RikoPuffs[];
+extern const u32 gItemIcon_RikosBloom[];
+extern const u16 gItemIconPalette_RikosBloom[];
+extern const u32 gItemIcon_RikosCourage[];
+extern const u16 gItemIconPalette_RikosCourage[];
 extern const u32 gItemIcon_RikosWand[];
 extern const u16 gItemIconPalette_RikosWand[];
 extern const u32 gItemIcon_BlueBrush[];
 extern const u16 gItemIconPalette_BlueBrush[];
+extern const u32 gItemIcon_BijuusFishToy[];
+extern const u16 gItemIconPalette_BijuusFishToy[];
+extern const u32 gItemIcon_BijuusCatNip[];
+extern const u16 gItemIconPalette_BijuusCatNip[];
 
 extern const u32 gItemIcon_GSBall[];
 extern const u16 gItemIconPalette_GSBall[];
@@ -3541,4 +3553,115 @@ extern const u16 gTitleScreenEmeraldVersionPal[];
 extern const u32 gSummaryPage_Traits_Tilemap[];
 extern const u32 gSummaryLongDescriptionBox_Tilemap[];
 
+extern const u32 gItemIcon_DadsKeys[];
+extern const u16 gItemIconPalette_DadsKeys[];
+extern const u32 gItemIcon_PieceOfChicken[];
+extern const u16 gItemIconPalette_PieceOfChicken[];
+extern const u32 gItemIcon_GreenPepper[];
+extern const u16 gItemIconPalette_GreenPepper[];
+extern const u32 gItemIcon_EelSushi[];
+extern const u16 gItemIconPalette_EelSushi[];
+extern const u32 gItemIcon_FrozenFish[];
+extern const u16 gItemIconPalette_FrozenFish[];
+extern const u32 gItemIcon_MouseToy[];
+extern const u16 gItemIconPalette_MouseToy[];
+extern const u32 gItemIcon_DogBowl[];
+extern const u16 gItemIconPalette_DogBowl[];
+extern const u32 gItemIcon_FetchingStick[];
+extern const u16 gItemIconPalette_FetchingStick[];
+
+
+
+extern const u32 gItemIcon_BijuusFire[];
+extern const u16 gItemIconPalette_BijuusFire[];
+
+extern const u32 gItemIcon_PennysBravery[];
+extern const u16 gItemIconPalette_PennysBravery[];
+
+
+
+extern const u32 gItemIcon_RikoBalloon[];
+extern const u16 gItemIconPalette_RikoBalloon[];
+
+extern const u32 gItemIcon_BijuuBox[];
+extern const u16 gItemIconPalette_BijuuBox[];
+
+extern const u32 gItemIcon_PennyHotdog[];
+extern const u16 gItemIconPalette_PennyHotdog[];
+
+extern const u32 gItemIcon_RikoLeaves[];
+extern const u16 gItemIconPalette_RikoLeaves[];
+extern const u32 gItemIcon_BijuuSweater[];
+extern const u16 gItemIconPalette_BijuuSweater[];
+extern const u32 gItemIcon_PennySweater[];
+extern const u16 gItemIconPalette_PennySweater[];
+extern const u32 gItemIcon_RikoTurkey[];
+extern const u16 gItemIconPalette_RikoTurkey[];
+extern const u32 gItemIcon_BijuuChef[];
+extern const u16 gItemIconPalette_BijuuChef[];
+extern const u32 gItemIcon_PennyYam[];
+extern const u16 gItemIconPalette_PennyYam[];
+extern const u32 gItemIcon_RikoSanta[];
+extern const u16 gItemIconPalette_RikoSanta[];
+extern const u32 gItemIcon_BijuuPresent[];
+extern const u16 gItemIconPalette_BijuuPresent[];
+extern const u32 gItemIcon_PennyReindeer[];
+extern const u16 gItemIconPalette_PennyReindeer[];
+extern const u32 gItemIcon_RikoParty[];
+extern const u16 gItemIconPalette_RikoParty[];
+extern const u32 gItemIcon_BijuuGala[];
+extern const u16 gItemIconPalette_BijuuGala[];
+extern const u32 gItemIcon_PennyStars[];
+extern const u16 gItemIconPalette_PennyStars[];
 #endif //GUARD_GRAPHICS_H
+
+extern const u32 gItemIcon_ToxicMouse[];
+extern const u16 gItemIconPalette_ToxicMouse[];
+
+extern const u32 gItemIcon_RikoPrincess[];
+extern const u16 gItemIconPalette_RikoPrincess[];
+
+extern const u32 gItemIcon_RikoDragonKeepsake[];
+extern const u16 gItemIconPalette_RikoDragonKeepsake[];
+extern const u32 gItemIcon_RikoBugKeepsake[];
+extern const u16 gItemIconPalette_RikoBugKeepsake[];
+extern const u32 gItemIcon_BijuuDarkKeepsake[];
+extern const u16 gItemIconPalette_BijuuDarkKeepsake[];
+extern const u32 gItemIcon_BijuuRockKeepsake[];
+extern const u16 gItemIconPalette_BijuuRockKeepsake[];
+extern const u32 gItemIcon_PennyGroundKeepsake[];
+extern const u16 gItemIconPalette_PennyGroundKeepsake[];
+extern const u32 gItemIcon_PennySteelKeepsake[];
+extern const u16 gItemIconPalette_PennySteelKeepsake[];
+extern const u32 gItemIcon_RikoBlackBelt[];
+extern const u16 gItemIconPalette_RikoBlackBelt[];
+extern const u32 gItemIcon_RikoRaincoat[];
+extern const u16 gItemIconPalette_RikoRaincoat[];
+
+extern const u32 gItemIcon_BijuuBread[];
+extern const u16 gItemIconPalette_BijuuBread[];
+
+extern const u32 gItemIcon_BijuuDetective[];
+extern const u16 gItemIconPalette_BijuuDetective[];
+
+extern const u32 gItemIcon_PennyBlanket[];
+extern const u16 gItemIconPalette_PennyBlanket[];
+
+extern const u32 gItemIcon_PennyLifeguard[];
+extern const u16 gItemIconPalette_PennyLifeguard[];
+
+extern const u32 gItemIcon_RikoButterfly[];
+extern const u16 gItemIconPalette_RikoButterfly[];
+
+extern const u32 gItemIcon_BijuuAstronaut[];
+extern const u16 gItemIconPalette_BijuuAstronaut[];
+
+extern const u32 gItemIcon_PennyBallerina[];
+extern const u16 gItemIconPalette_PennyBallerina[];
+
+extern const u32 gItemIcon_RikoWitch[];
+extern const u16 gItemIconPalette_RikoWitch[];
+extern const u32 gItemIcon_BijuuVampire[];
+extern const u16 gItemIconPalette_BijuuVampire[];
+extern const u32 gItemIcon_PennyPumpkin[];
+extern const u16 gItemIconPalette_PennyPumpkin[];

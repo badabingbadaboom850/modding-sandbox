@@ -87,6 +87,9 @@ enum
     MAP_NEW_BARK_TOWN_HOUSE1           = (3 | (1 << 8)),
     MAP_NEW_BARK_TOWN_PLAYERS_HOUSE_1F = (4 | (1 << 8)),
     MAP_NEW_BARK_TOWN_PLAYERS_HOUSE_2F = (5 | (1 << 8)),
+    MAP_RIKO_SPIRIT_CAVERN             = (6 | (1 << 8)),
+    MAP_TRIO_HOMECOMING                = (7 | (1 << 8)),
+    MAP_TRIO_ACTION_ARENA              = (8 | (1 << 8)),
 
     // gMapGroup_IndoorCherrygrove
     MAP_CHERRYGROVE_CITY_POKEMON_CENTER = (0 | (2 << 8)),
@@ -152,6 +155,13 @@ enum
     MAP_GOLDENROD_BATTLE_ARCADE_HALLWAY          = (33 | (5 << 8)),
     MAP_MAUVILLE_CITY_GAME_CORNER                = (34 | (5 << 8)),
     MAP_GOLDENROD_BATTLE_ARCADE_BATTLE_ROOM      = (35 | (5 << 8)),
+    MAP_GOLDENROD_FESTIVAL                       = (36 | (5 << 8)),
+    MAP_TRIO_ECHO_WOODS                          = (37 | (5 << 8)),
+    MAP_TRIO_MIRROR_HOUSE                        = (38 | (5 << 8)),
+    MAP_TRIO_LANTERN_TRAIL                       = (39 | (5 << 8)),
+    MAP_TRIO_DINNER_DATE                         = (40 | (5 << 8)),
+    MAP_TRIO_RADIO_STUDIO                        = (41 | (5 << 8)),
+    MAP_TRIO_POM_PARADE                          = (42 | (5 << 8)),
 
     // gMapGroup_IndoorEcruteak
     MAP_ECRUTEAK_CITY_POKEMON_CENTER = (0 | (6 << 8)),
@@ -165,6 +175,8 @@ enum
     MAP_ECRUTEAK_CITY_GYM            = (8 | (6 << 8)),
     MAP_ECRUTEAK_CITY_HOUSE3         = (9 | (6 << 8)),
     MAP_ECRUTEAK_CITY_HOUSE4         = (10 | (6 << 8)),
+    MAP_TRIO_SILLY_BOX               = (11 | (6 << 8)),
+    MAP_TRIO_HALLOWEEN_TRAIL         = (12 | (6 << 8)),
 
     // gMapGroup_IndoorOlivine
     MAP_OLIVINE_CITY_POKEMON_CENTER = (0 | (7 << 8)),
@@ -181,6 +193,9 @@ enum
     MAP_ROUTE40_HOUSE4              = (11 | (7 << 8)),
     MAP_ROUTE40_HOUSE5              = (12 | (7 << 8)),
     MAP_OLIVINE_CITY_HOUSE4         = (13 | (7 << 8)),
+    MAP_TRIO_GARDEN                 = (14 | (7 << 8)),
+    MAP_OLIVINE_POM_PARTY           = (15 | (7 << 8)),
+    MAP_TRIO_SILLY_VALET            = (16 | (7 << 8)),
 
     // gMapGroup_IndoorCianwood
     MAP_CIANWOOD_POKECENTER = (0 | (8 << 8)),
@@ -189,6 +204,11 @@ enum
     MAP_CIANWOOD_HOUSE3     = (3 | (8 << 8)),
     MAP_CIANWOOD_SHOP       = (4 | (8 << 8)),
     MAP_CIANWOOD_GYM        = (5 | (8 << 8)),
+    MAP_TRIO_ROAD_ISLAND    = (6 | (8 << 8)),
+    MAP_TRIO_ROAD_WOODS     = (7 | (8 << 8)),
+    MAP_TRIO_ROAD_COVE      = (8 | (8 << 8)),
+    MAP_TRIO_ROAD_CABIN     = (9 | (8 << 8)),
+    MAP_TRIO_SILLY_HOTDOG   = (10 | (8 << 8)),
 
     // gMapGroup_IndoorMahogany
     MAP_MAHOGANY_TOWN_POKEMON_CENTER = (0 | (9 << 8)),
@@ -197,6 +217,8 @@ enum
     MAP_MAHOGANY_TOWN_HOUSE1         = (3 | (9 << 8)),
     MAP_LAKE_OF_RAGE_HOUSE1          = (4 | (9 << 8)),
     MAP_LAKE_OF_RAGE_HOUSE2          = (5 | (9 << 8)),
+    MAP_TRIO_SILLY_NOISE             = (6 | (9 << 8)),
+    MAP_TRIO_SEASON_FALL             = (7 | (9 << 8)),
 
     // gMapGroup_IndoorBlackthorn
     MAP_BLACKTHORN_CITY_POKEMON_CENTER = (0 | (10 << 8)),
@@ -205,6 +227,8 @@ enum
     MAP_BLACKTHORN_CITY_HOUSE1         = (3 | (10 << 8)),
     MAP_BLACKTHORN_CITY_HOUSE2         = (4 | (10 << 8)),
     MAP_BLACKTHORN_CITY_HOUSE3         = (5 | (10 << 8)),
+    MAP_TRIO_SILLY_GREG                = (6 | (10 << 8)),
+    MAP_TRIO_SEASON_THANKSGIVING       = (7 | (10 << 8)),
 
     // gMapGroup_IndoorPallet
     MAP_PALLET_TOWN_REDS_HOUSE_1F = (0 | (11 << 8)),
@@ -228,6 +252,7 @@ enum
     MAP_PEWTER_CITY_GYM            = (4 | (13 << 8)),
     MAP_PEWTER_CITY_MUSEUM_1F      = (5 | (13 << 8)),
     MAP_PEWTER_CITY_MUSEUM_2F      = (6 | (13 << 8)),
+    MAP_TRIO_SILLY_JAM             = (7 | (13 << 8)),
 
     // gMapGroup_IndoorCerulean
     MAP_CERULEAN_CITY_POKEMON_CENTER = (0 | (14 << 8)),
@@ -236,6 +261,7 @@ enum
     MAP_CERULEAN_CITY_HOUSE3         = (3 | (14 << 8)),
     MAP_CERULEAN_CITY_BIKE_SHOP      = (4 | (14 << 8)),
     MAP_CERULEAN_CITY_GYM            = (5 | (14 << 8)),
+    MAP_TRIO_SILLY_FISHING           = (6 | (14 << 8)),
 
     // gMapGroup_IndoorVermilion
     MAP_VERMILION_CITY_POKEMON_CENTER = (0 | (15 << 8)),
@@ -247,6 +273,8 @@ enum
     MAP_VERMILION_CITY_HOUSE1         = (6 | (15 << 8)),
     MAP_VERMILION_CITY_HOUSE2         = (7 | (15 << 8)),
     MAP_VERMILION_CITY_HOUSE3         = (8 | (15 << 8)),
+    MAP_TRIO_GREEDENT_CAFE            = (9 | (15 << 8)),
+    MAP_TRIO_SILLY_APOLOGY            = (10 | (15 << 8)),
 
     // gMapGroup_IndoorLavender
     MAP_LAVENDER_TOWN_POKEMON_CENTER = (0 | (16 << 8)),
@@ -276,6 +304,7 @@ enum
     MAP_CELADON_CITY_DEPARTMENT_STORE_ROOF_DAY   = (15 | (17 << 8)),
     MAP_CELADON_CITY_DEPARTMENT_STORE_ROOF_NIGHT = (16 | (17 << 8)),
     MAP_CELADON_CITY_GYM                         = (17 | (17 << 8)),
+    MAP_TRIO_SEASON_CHRISTMAS                    = (18 | (17 << 8)),
 
     // gMapGroup_IndoorSaffron
     MAP_SAFFRON_CITY_POKEMON_CENTER     = (0 | (18 << 8)),
@@ -288,6 +317,7 @@ enum
     MAP_SAFFRON_CITY_COPY_CATS_HOUSE_1F = (7 | (18 << 8)),
     MAP_SAFFRON_CITY_COPY_CATS_HOUSE_2F = (8 | (18 << 8)),
     MAP_SAFFRON_CITY_HOUSE1             = (9 | (18 << 8)),
+    MAP_TRIO_SEASON_NEW_YEAR            = (10 | (18 << 8)),
 
     // gMapGroup_IndoorFuchsia
     MAP_FUCHSIA_CITY_POKEMON_CENTER       = (0 | (19 << 8)),

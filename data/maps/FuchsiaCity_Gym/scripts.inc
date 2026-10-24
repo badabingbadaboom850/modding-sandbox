@@ -101,12 +101,20 @@ FuchsiaCity_Gym_Text_Janine_DisappointYou:
 	.string "I'm the real deal!\p"
 	.string "Janine of Fuchsia Gym, that's me!\p"
 	.string "If they are legends, they will\n"
-	.string "never see my next move!$"
+	.string "never see my next move!\p"
+	.string "Bijuu spotted my trick!\n"
+	.string "Riko is looking everywhere\p"
+	.string "at once! Penny is watching\n"
+	.string "you. Let us see who moves\p"
+	.string "first!$"
 
 FuchsiaCity_Gym_Text_Janine_ToughOne:
 	.string "Janine: You're a tough one. You\n"
 	.string "definitely won…\p"
-	.string "Here's Soulbadge. Take it.$"
+	.string "Here's Soulbadge. Take it.\p"
+	.string "You kept the girls calm\n"
+	.string "through every trick. That\p"
+	.string "spoiled my whole plan!$"
 
 FuchsiaCity_Gym_Text_ReceivedSoulBadge:
 	.string "{PLAYER} received Soulbadge.$"
@@ -121,7 +129,11 @@ FuchsiaCity_Gym_Text_Janine_ApplyMyself:
 	.string "Janine: I'm going to really apply\n"
 	.string "myself and improve my skills.\p"
 	.string "I want to become better than both\n"
-	.string "Father and you!$"
+	.string "Father and you!\p"
+	.string "I am practicing for next\n"
+	.string "time. Tell Bijuu copying a\p"
+	.string "ninja is cheating! Well,\n"
+	.string "clever cheating.$"
 
 FuchsiaCity_Gym_EventScript_Alice_J::
 	lock

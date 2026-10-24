@@ -14,6 +14,10 @@
 
 static void CreateSaleMon(u8 partyIndex, u16 species, u8 level)
 {
+    // Function tests share party globals; start each fixture with an empty party.
+    if (partyIndex == 0)
+        ZeroPlayerPartyMons();
+
     CreateMonWithIVs(&gPlayerParty[partyIndex], species, level, 0, OTID_STRUCT_PLAYER_ID, 0);
     CalculatePlayerPartyCount();
 }

@@ -1058,9 +1058,9 @@
 #define TRAINER_UNUSED_210                1074
 #define TRAINER_UNUSED_211                1075
 #define TRAINER_UNUSED_212                1076
-#define TRAINER_UNUSED_213                1077
-#define TRAINER_UNUSED_214                1078
-#define TRAINER_UNUSED_215                1079
+#define TRAINER_GREG_ROUTE_29             1077
+#define TRAINER_GREG_ROUTE_30             1078
+#define TRAINER_GREG_CHERRYGROVE          1079
 #define TRAINER_UNUSED_216                1080
 #define TRAINER_UNUSED_217                1081
 #define TRAINER_UNUSED_218                1082
@@ -1133,18 +1133,21 @@
 #define TRAINER_UNUSED_285                1149
 #define TRAINER_UNUSED_286                1150
 #define TRAINER_UNUSED_287                1151
+#define TRAINER_ROAD_BEACH                TRAINER_UNUSED_287
 #define TRAINER_UNUSED_288                1152
+#define TRAINER_ROAD_FOREST                TRAINER_UNUSED_288
 #define TRAINER_UNUSED_289                1153
-#define TRAINER_UNUSED_290                1154
-#define TRAINER_UNUSED_291                1155
-#define TRAINER_UNUSED_292                1156
-#define TRAINER_UNUSED_293                1157
-#define TRAINER_UNUSED_294                1158
-#define TRAINER_UNUSED_295                1159
-#define TRAINER_UNUSED_296                1160
-#define TRAINER_UNUSED_297                1161
-#define TRAINER_UNUSED_298                1162
-#define TRAINER_UNUSED_299                1163
+#define TRAINER_ROAD_SCOTT                TRAINER_UNUSED_289
+#define TRAINER_GREEDENT_GANG_2             1154
+#define TRAINER_GREEDENT_GANG_3             1155
+#define TRAINER_GREEDENT_GANG_4             1156
+#define TRAINER_GREEDENT_GANG_5             1157
+#define TRAINER_GREEDENT_GANG_6             1158
+#define TRAINER_FESTIVAL_SCOTT                1159
+#define TRAINER_FESTIVAL_SNACK_A              1160
+#define TRAINER_FESTIVAL_SNACK_B              1161
+#define TRAINER_ROUTE37_SNACK_THIEF        1162
+#define TRAINER_COSTUME_COURIER           1163
 #define TRAINER_UNUSED_300                1164 // This is out of range, don't touch (it refers to FLAG_SYS_POKEMON_GET)
 
 // NOTE: Because each Trainer uses a flag to determine when they are defeated, there is only space for 9 additional trainers before trainer flag space overflows
@@ -1156,3 +1159,17 @@
 #define TRAINER_PARTNER(partner)           (MAX_TRAINERS_COUNT + partner)
 
 #endif  // GUARD_CONSTANTS_OPPONENTS_H
+
+// Greg uses saved win bits, never these reclaimed trainer flags.
+#define TRAINER_GREG_GOLDENROD_CITY                TRAINER_UNUSED_216
+#define TRAINER_GREG_ROUTE38                       TRAINER_UNUSED_217
+#define TRAINER_GREG_ECRUTEAK_CITY                 TRAINER_UNUSED_218
+#define TRAINER_GREG_CIANWOOD_CITY                 TRAINER_UNUSED_219
+#define TRAINER_GREG_ROUTE42                       TRAINER_UNUSED_220
+#define TRAINER_GREG_BLACKTHORN_CITY               TRAINER_UNUSED_221
+#define TRAINER_GREG_PEWTER_CITY                   TRAINER_UNUSED_222
+#define TRAINER_GREG_CERULEAN_CITY                 TRAINER_UNUSED_223
+#define TRAINER_GREG_VERMILION_CITY                TRAINER_UNUSED_224
+#define TRAINER_GREG_CELADON_CITY                  TRAINER_UNUSED_225
+#define TRAINER_GREG_FUCHSIA_CITY                  TRAINER_UNUSED_226
+#define TRAINER_GREG_SAFFRON_CITY                  TRAINER_UNUSED_227

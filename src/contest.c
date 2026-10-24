@@ -1862,7 +1862,7 @@ static void Task_DoAppeals(u8 taskId)
         {
             ContestClearGeneralTextWindow();
             CopyNicknameToFit(gStringVar1, contestant);
-            if (eContestantStatus[contestant].currMove < MOVES_COUNT)
+            if (IS_STANDARD_MOVE(eContestantStatus[contestant].currMove))
                 StringCopy(gStringVar2, GetMoveName(eContestantStatus[contestant].currMove));
             else
                 StringCopy(gStringVar2, gContestCategoryInfo[eContestantStatus[contestant].moveCategory].generic);
@@ -5300,7 +5300,7 @@ static void Task_WaitForSliderHeartAnim(u8 taskId)
 
 static u16 SanitizeMove(enum Move move)
 {
-    assertf(move < MOVES_COUNT, "invalid move: %d", move)
+    assertf(IS_STANDARD_MOVE(move), "invalid move: %d", move)
     {
         return MOVE_POUND;
     }

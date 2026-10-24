@@ -300,13 +300,21 @@ OlivineCity_Gym_Text_JasmineSteelTypeIntro:
 	.string "discovered.\p"
 	.string "…Um… May I begin?\p"
 	.string "It is an honor to meet three\n"
-	.string "rare and powerful legends.$"
+	.string "rare and powerful legends.\p"
+	.string "Penny can take her time.\n"
+	.string "Riko and Bijuu seem to\p"
+	.string "understand that. I think\n"
+	.string "you do too.$"
 
 OlivineCity_Gym_Text_JasmineBetterTrainer:
 	.string "…You are a better trainer than me,\n"
 	.string "in both skill and kindness.\p"
 	.string "In accordance with League rules,\n"
-	.string "I confer upon you this Badge.$"
+	.string "I confer upon you this Badge.\p"
+	.string "You never asked your girls\n"
+	.string "to become someone else. I\p"
+	.string "admire that kind of\n"
+	.string "strength.$"
 
 OlivineCity_Gym_Text_ReceivedMineralBadge:
 	.string "{PLAYER} received Mineralbadge.$"
@@ -320,18 +328,31 @@ OlivineCity_Gym_Text_JasmineIronTailSpeech:
 
 OlivineCity_Gym_Text_JasmineGoodLuck:
 	.string "Um… I don't know how to say this,\n"
-	.string "but good luck…$"
+	.string "but good luck…\p"
+	.string "The sailors tell your\n"
+	.string "story very loudly. I\p"
+	.string "remember the small things.\n"
+	.string "Penny looking back, and\p"
+	.string "you waiting.$"
 
 OlivineCity_Gym_Text_JasmineRematchText:
 	.string "…Congratulations, Johto Champion.\p"
 	.string "You have become so strong…\p"
 	.string "I wonder if I have improved.\p"
 	.string "Would you like to test that?\p"
-	.string "Want to have a rematch with me?$"
+	.string "Want to have a rematch with me?\p"
+	.string "I have prepared carefully.\n"
+	.string "May I ask the girls and\p"
+	.string "their trainer for another\n"
+	.string "match?$"
 
 OlivineCity_Gym_Text_JasmineRematchDefeatText:
 	.string "…You are a better trainer than me,\n"
-	.string "in both skill and kindness.$"
+	.string "in both skill and kindness.\p"
+	.string "Steel can bend without\n"
+	.string "losing its strength. Your\p"
+	.string "girls taught me something\n"
+	.string "like that.$"
 
 OlivineCity_Gym_EventScript_Statue::
 	lock

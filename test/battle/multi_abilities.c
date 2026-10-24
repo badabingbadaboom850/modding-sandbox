@@ -509,7 +509,7 @@ SINGLE_BATTLE_TEST("Multi - Switch-In abilities display text correctly 2")
         ABILITY_POPUP(opponent, ABILITY_FOREWARN);
         MESSAGE("Forewarn alerted the opposing Yveltal to Xerneas's Dazzling Gleam!");
         ABILITY_POPUP(opponent, ABILITY_FRISK);
-        MESSAGE("The opposing Yveltal frisked Xerneas and found its Oran Berry!");
+        MESSAGE("The opposing Yveltal frisked Xerneas and found its Chicky Fil-A!");
         ABILITY_POPUP(opponent, ABILITY_ANTICIPATION);
         MESSAGE("The opposing Yveltal shuddered!");
     }
@@ -1062,7 +1062,7 @@ SINGLE_BATTLE_TEST("Multi - ABILITYEFFECT_ENDTURN abilities do not conflict")
         ANIMATION(ANIM_TYPE_GENERAL, B_ANIM_HELD_ITEM_EFFECT, player);
         HP_BAR(player);
         ABILITY_POPUP(player, ABILITY_HARVEST);
-        MESSAGE("Blaziken harvested its Oran Berry!");
+        MESSAGE("Blaziken harvested its Chicky Fil-A!");
         ANIMATION(ANIM_TYPE_GENERAL, B_ANIM_HELD_ITEM_EFFECT, player);
         HP_BAR(player);
         ABILITY_POPUP(player, ABILITY_SPEED_BOOST);
@@ -1287,7 +1287,7 @@ SINGLE_BATTLE_TEST("Multi - ABILITYEFFECT_ENDTURN item Harvest and Pickup can wo
         MESSAGE("The opposing Ninetales's Drought intensified the sun's rays!");
         ANIMATION(ANIM_TYPE_MOVE, MOVE_POISON_STING, player);
         ANIMATION(ANIM_TYPE_GENERAL, B_ANIM_HELD_ITEM_EFFECT, opponent);
-        MESSAGE("The opposing Ninetales's Pecha Berry cured its poison!");
+        MESSAGE("The opposing Ninetales's Penny's Pup Cup cured its poison!");
         ANIMATION(ANIM_TYPE_MOVE, MOVE_SCRATCH, opponent);
         ANIMATION(ANIM_TYPE_GENERAL, B_ANIM_HELD_ITEM_EFFECT, player);
         MESSAGE("Exeggutor restored its health using its Sitrus Berry!");
@@ -1295,11 +1295,11 @@ SINGLE_BATTLE_TEST("Multi - ABILITYEFFECT_ENDTURN item Harvest and Pickup can wo
         ABILITY_POPUP(player, ABILITY_HARVEST);
         MESSAGE("Exeggutor harvested its Sitrus Berry!");
         ABILITY_POPUP(player, ABILITY_PICKUP);
-        MESSAGE("Exeggutor found one Pecha Berry!");
+        MESSAGE("Exeggutor found one Penny's Pup Cup!");
         ANIMATION(ANIM_TYPE_MOVE, MOVE_POISON_STING, opponent);
-        MESSAGE("Exeggutor's Pecha Berry cured its poison!");
+        MESSAGE("Exeggutor's Penny's Pup Cup cured its poison!");
         ABILITY_POPUP(player, ABILITY_HARVEST);
-        MESSAGE("Exeggutor harvested its Pecha Berry!");
+        MESSAGE("Exeggutor harvested its Penny's Pup Cup!");
     } THEN {
         EXPECT_EQ(player->items[0], ITEM_PECHA_BERRY);
         EXPECT_EQ(player->items[1], ITEM_SITRUS_BERRY);
@@ -1338,7 +1338,7 @@ WILD_BATTLE_TEST("Multi - ABILITYEFFECT_ENDTURN Ball Fetch does not conflict wit
             MESSAGE("Yamper found one Normal Gem!");
         }
         ABILITY_POPUP(player, ABILITY_BALL_FETCH);
-        MESSAGE("Yamper found a Great Ball!");
+        MESSAGE("Yamper found a Trio Ball!");
     } THEN {
         if (ability == ABILITY_HARVEST)
             EXPECT_EQ(player->items[0], ITEM_SITRUS_BERRY);
@@ -1381,7 +1381,7 @@ WILD_BATTLE_TEST("Multi - ABILITYEFFECT_ENDTURN Harvest and Pickup take priority
         }
         NONE_OF {
             ABILITY_POPUP(player, ABILITY_BALL_FETCH);
-            MESSAGE("Yamper found a Great Ball!");
+            MESSAGE("Yamper found a Trio Ball!");
         }
 
     } THEN {
@@ -1404,7 +1404,7 @@ SINGLE_BATTLE_TEST("Multi - ABILITYEFFECT_ENDTURN item Harvest and Pickup takes 
         MESSAGE("The opposing Ninetales's Drought intensified the sun's rays!");
         ANIMATION(ANIM_TYPE_MOVE, MOVE_POISON_STING, player);
         ANIMATION(ANIM_TYPE_GENERAL, B_ANIM_HELD_ITEM_EFFECT, opponent);
-        MESSAGE("The opposing Ninetales's Pecha Berry cured its poison!");
+        MESSAGE("The opposing Ninetales's Penny's Pup Cup cured its poison!");
         ANIMATION(ANIM_TYPE_MOVE, MOVE_SCRATCH, opponent);
         ANIMATION(ANIM_TYPE_GENERAL, B_ANIM_HELD_ITEM_EFFECT, player);
         MESSAGE("Exeggutor restored its health using its Sitrus Berry!");
@@ -1413,7 +1413,7 @@ SINGLE_BATTLE_TEST("Multi - ABILITYEFFECT_ENDTURN item Harvest and Pickup takes 
         MESSAGE("Exeggutor harvested its Sitrus Berry!");
         NONE_OF {
             ABILITY_POPUP(player, ABILITY_PICKUP);
-            MESSAGE("Exeggutor found one Pecha Berry!");
+            MESSAGE("Exeggutor found one Penny's Pup Cup!");
         }
     } THEN {
         EXPECT_EQ(player->item, ITEM_SITRUS_BERRY);

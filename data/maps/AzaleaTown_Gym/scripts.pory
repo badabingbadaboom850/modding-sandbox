@@ -685,7 +685,12 @@ AzaleaTown_Gym_Text_BugsyIntro:
 	.string "Let me demonstrate all I've\n"
 	.string "learned from my studies.\p"
 	.string "I have studied rare Pokemon.\n"
-	.string "I never expected all three!$"
+	.string "I never expected all three!\p"
+	.string "Bijuu keeps copying my\n"
+	.string "notes. Riko keeps sitting\p"
+	.string "on them. Penny is the only\n"
+	.string "one letting me finish a\p"
+	.string "sentence!$"
 
 AzaleaTown_Gym_Text_BugsyBeaten:
 	.string "Whoa, amazing! You're an\n"
@@ -693,7 +698,10 @@ AzaleaTown_Gym_Text_BugsyBeaten:
 	.string "My research isn't complete\n"
 	.string "yet.\p"
 	.string "Ok, you win. Take this\n"
-	.string "Badge.$"
+	.string "Badge.\p"
+	.string "My notes say teamwork\n"
+	.string "wins. Your trio just\p"
+	.string "supplied the proof.$"
 
 AzaleaTown_Gym_Text_ReceivedHiveBadge:
 	.string "{PLAYER} received Hivebadge.$"
@@ -719,7 +727,11 @@ AzaleaTown_Gym_Text_FuryCutterSpeech:
 AzaleaTown_Gym_Text_BugsyAdvice:
 	.string "Bug Pokémon are deep. There are\n"
 	.string "many mysteries to be explored.\p"
-	.string "Study your favorites thoroughly.$"
+	.string "Study your favorites thoroughly.\p"
+	.string "Penny waits before she\n"
+	.string "acts. That is observation,\p"
+	.string "not hesitation. She would\n"
+	.string "make a good researcher.$"
 
 AzaleaTown_Gym_Text_BugsyRematch:
 	.string "Wow, you're the Johto Champion now!\p"
@@ -727,11 +739,19 @@ AzaleaTown_Gym_Text_BugsyRematch:
 	.string "I've been busy with my research.\p"
 	.string "I'm ready to show you my new\n"
 	.string "findings.\p"
-	.string "Want to have a rematch with me?$"
+	.string "Want to have a rematch with me?\p"
+	.string "I studied our last match.\n"
+	.string "Riko's confidence, Bijuu's\p"
+	.string "timing, Penny's patience.\n"
+	.string "Let us test what I\p"
+	.string "learned!$"
 
 AzaleaTown_Gym_Text_BugsyRematchDefeat:
 	.string "Wow, you must be an expert trainer.\n"
-	.string "My research must not be complete...$"
+	.string "My research must not be complete...\p"
+	.string "You changed the plan\n"
+	.string "again! I need a much\p"
+	.string "bigger notebook.$"
 
 AzaleaTown_Gym_Text_BugCatcherBennySeen:
 	.string "Bug Pokémon evolve young. So they\n"

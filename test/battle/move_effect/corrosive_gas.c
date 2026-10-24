@@ -22,7 +22,7 @@ SINGLE_BATTLE_TEST("Corrosive Gas destroys the target's item or fails if the tar
         MESSAGE("Wobbuffet used Corrosive Gas!");
         if (item == ITEM_POTION) {
             ANIMATION(ANIM_TYPE_MOVE, MOVE_CORROSIVE_GAS, player);
-            MESSAGE("Wobbuffet corroded the opposing Wobbuffet's Potion!");
+            MESSAGE("Wobbuffet corroded the opposing Wobbuffet's McDonalds Wawa S!");
         }
         else {
             MESSAGE("It won't have any effect on the opposing Wobbuffet!");
@@ -42,7 +42,7 @@ SINGLE_BATTLE_TEST("Corrosive Gas doesn't destroy the item of a Pokemon with the
     } SCENE {
         MESSAGE("Wobbuffet used Corrosive Gas!");
         ANIMATION(ANIM_TYPE_MOVE, MOVE_CORROSIVE_GAS, player);
-        NOT MESSAGE("Wobbuffet corroded the opposing Wobbuffet's Potion!");
+        NOT MESSAGE("Wobbuffet corroded the opposing Wobbuffet's McDonalds Wawa S!");
         ABILITY_POPUP(opponent, ABILITY_STICKY_HOLD);
         MESSAGE("The opposing Muk's Sticky Hold made Corrosive Gas ineffective!");
     } THEN {
@@ -61,7 +61,7 @@ SINGLE_BATTLE_TEST("Items lost to Corrosive Gas cannot be restored by Recycle")
     } SCENE {
         MESSAGE("Wobbuffet used Corrosive Gas!");
         ANIMATION(ANIM_TYPE_MOVE, MOVE_CORROSIVE_GAS, player);
-        MESSAGE("Wobbuffet corroded the opposing Wobbuffet's Oran Berry!");
+        MESSAGE("Wobbuffet corroded the opposing Wobbuffet's Chicky Fil-A!");
         MESSAGE("The opposing Wobbuffet used Recycle!");
         MESSAGE("But it failed!");
     } THEN {
@@ -95,12 +95,12 @@ DOUBLE_BATTLE_TEST("Corrosive Gas destroys foes and ally's items if they have on
     } SCENE {
         MESSAGE("Wynaut used Corrosive Gas!");
         if (itemPlayerLeft == ITEM_CHERI_BERRY) {
-            MESSAGE("Wynaut corroded Wobbuffet's Cheri Berry!");
+            MESSAGE("Wynaut corroded Wobbuffet's Bijuu's Springs!");
         } else {
             MESSAGE("It won't have any effect on Wobbuffet!");
         }
         if (itemOpponentLeft == ITEM_ORAN_BERRY) {
-            MESSAGE("Wynaut corroded the opposing Abra's Oran Berry!");
+            MESSAGE("Wynaut corroded the opposing Abra's Chicky Fil-A!");
         } else {
             MESSAGE("It won't have any effect on the opposing Abra!");
         }
@@ -132,7 +132,7 @@ SINGLE_BATTLE_TEST("Corrosive Gas doesn't destroy the item of a Pokemon with the
     } SCENE {
         MESSAGE("Wobbuffet used Corrosive Gas!");
         ANIMATION(ANIM_TYPE_MOVE, MOVE_CORROSIVE_GAS, player);
-        NOT MESSAGE("Wobbuffet corroded the opposing Wobbuffet's Potion!");
+        NOT MESSAGE("Wobbuffet corroded the opposing Wobbuffet's McDonalds Wawa S!");
         ABILITY_POPUP(opponent, ABILITY_STICKY_HOLD);
         MESSAGE("The opposing Muk's Sticky Hold made Corrosive Gas ineffective!");
     } THEN {
@@ -158,7 +158,7 @@ SINGLE_BATTLE_TEST("Corrosive Gas destroys the target's item or fails if the tar
         MESSAGE("Wobbuffet used Corrosive Gas!");
         if (item == ITEM_POTION) {
             ANIMATION(ANIM_TYPE_MOVE, MOVE_CORROSIVE_GAS, player);
-            MESSAGE("Wobbuffet corroded the opposing Wobbuffet's Potion!");
+            MESSAGE("Wobbuffet corroded the opposing Wobbuffet's McDonalds Wawa S!");
         }
         else {
             MESSAGE("It won't have any effect on the opposing Wobbuffet!");
@@ -178,7 +178,7 @@ SINGLE_BATTLE_TEST("Corrosive Gas doesn't destroy the item of a Pokemon with the
     } SCENE {
         MESSAGE("Wobbuffet used Corrosive Gas!");
         ANIMATION(ANIM_TYPE_MOVE, MOVE_CORROSIVE_GAS, player);
-        NOT MESSAGE("Wobbuffet corroded the opposing Wobbuffet's Potion!");
+        NOT MESSAGE("Wobbuffet corroded the opposing Wobbuffet's McDonalds Wawa S!");
         ABILITY_POPUP(opponent, ABILITY_STICKY_HOLD);
         MESSAGE("The opposing Muk's Sticky Hold made Corrosive Gas ineffective!");
     } THEN {
@@ -197,7 +197,7 @@ SINGLE_BATTLE_TEST("Items lost to Corrosive Gas cannot be restored by Recycle (I
     } SCENE {
         MESSAGE("Wobbuffet used Corrosive Gas!");
         ANIMATION(ANIM_TYPE_MOVE, MOVE_CORROSIVE_GAS, player);
-        MESSAGE("Wobbuffet corroded the opposing Wobbuffet's Oran Berry!");
+        MESSAGE("Wobbuffet corroded the opposing Wobbuffet's Chicky Fil-A!");
         MESSAGE("The opposing Wobbuffet used Recycle!");
         MESSAGE("But it failed!");
     } THEN {
@@ -231,12 +231,12 @@ DOUBLE_BATTLE_TEST("Corrosive Gas destroys foes and ally's items if they have on
     } SCENE {
         MESSAGE("Wynaut used Corrosive Gas!");
         if (itemPlayerLeft == ITEM_CHERI_BERRY) {
-            MESSAGE("Wynaut corroded Wobbuffet's Cheri Berry!");
+            MESSAGE("Wynaut corroded Wobbuffet's Bijuu's Springs!");
         } else {
             MESSAGE("It won't have any effect on Wobbuffet!");
         }
         if (itemOpponentLeft == ITEM_ORAN_BERRY) {
-            MESSAGE("Wynaut corroded the opposing Abra's Oran Berry!");
+            MESSAGE("Wynaut corroded the opposing Abra's Chicky Fil-A!");
         } else {
             MESSAGE("It won't have any effect on the opposing Abra!");
         }

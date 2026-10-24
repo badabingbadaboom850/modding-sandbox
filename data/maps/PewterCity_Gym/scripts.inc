@@ -46,13 +46,22 @@ PewterCity_Gym_Text_Brock_Intro:
 	.string "time inflicting any damage.\p"
 	.string "Come on!\p"
 	.string "Legends or not, Rock types\n"
-	.string "will hold the line!$"
+	.string "will hold the line!\p"
+	.string "Riko has presence, Bijuu\n"
+	.string "has focus, and Penny has\p"
+	.string "balance. Let us see what\n"
+	.string "their trainer builds on\p"
+	.string "that foundation.$"
 
 PewterCity_Gym_Text_Brock_WinLoss:
 	.string "Brock: Your Pokémon's powerful attacks\n"
 	.string "overcame my rock-hard defense…\p"
 	.string "You're stronger than I expected…\p"
-	.string "Go ahead--take this Badge.$"
+	.string "Go ahead--take this Badge.\p"
+	.string "You found the cracks\n"
+	.string "together. That was a\p"
+	.string "trainer's victory as much\n"
+	.string "as the trio's.$"
 
 PewterCity_Gym_Text_ReceivedBoulderBadge:
 	.string "{PLAYER} received Boulderbadge.$"
@@ -75,7 +84,12 @@ PewterCity_Gym_Text_Brock_FightDone:
 	.string "Brock: The world is huge. There are\n"
 	.string "still many strong trainers like you.\p"
 	.string "Just wait and see. I'm going to become\n"
-	.string "a lot stronger too.$"
+	.string "a lot stronger too.\p"
+	.string "People ask if fighting\n"
+	.string "legends shook me. It gave\p"
+	.string "me something to build on.\n"
+	.string "Bring the girls by\p"
+	.string "anytime.$"
 
 PewterCity_Gym_Text_CamperJerry_Seen:
 	.string "The trainers of this Gym use rock-type\n"

@@ -1,4 +1,5 @@
 #include "global.h"
+#include "trio_player_hats.h"
 #include "achievements.h"
 #include "decompress.h"
 #include "scanline_effect.h"
@@ -1961,7 +1962,7 @@ static void CreateTrainerCardTrainerPic(void)
     }
     else
     {
-        CreateTrainerCardTrainerPicSprite(FacilityClassToPicIndex(sTrainerPicFacilityClass[sData->cardType][sData->trainerCard.gender]),
+        CreateTrainerCardTrainerPicSprite(sData->isLink ? FacilityClassToPicIndex(sTrainerPicFacilityClass[sData->cardType][sData->trainerCard.gender]) : TrioPlayerHat_FrontPic(gSaveBlock2Ptr->playerGender),
                     TRUE,
                     sTrainerPicOffset[sData->isHoenn][sData->trainerCard.gender][0],
                     sTrainerPicOffset[sData->isHoenn][sData->trainerCard.gender][1],

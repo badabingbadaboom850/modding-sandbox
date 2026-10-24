@@ -388,6 +388,7 @@ static void RestorePrimaryRelearnerPage(void);
 static u32 GetRelearnerLevelUpMoves(struct BoxPokemon *mon, u16 *moves);
 static u32 GetRelearnerTMMoves(struct BoxPokemon *mon, u16 *moves);
 static u32 GetRelearnerTutorMoves(struct BoxPokemon *mon, u16 *moves);
+static bool32 HasTrioElementalMoves(struct BoxPokemon *mon);
 
 static const struct RelearnType sRelearnTypes[MOVE_RELEARNER_COUNT] =
 {
@@ -395,6 +396,7 @@ static const struct RelearnType sRelearnTypes[MOVE_RELEARNER_COUNT] =
     [MOVE_RELEARNER_EGG_MOVES] = {HasRelearnerEggMoves},
     [MOVE_RELEARNER_TM_MOVES] = {HasRelearnerTMMoves},
     [MOVE_RELEARNER_TUTOR_MOVES] = {HasRelearnerTutorMoves},
+    [MOVE_RELEARNER_TRIO_ELEMENTAL_MOVES] = {HasTrioElementalMoves},
 };
 
 static const enum MoveRelearnerStates sExtraRelearnerPages[] =
@@ -971,6 +973,9 @@ static void BufferCurrentRelearnerMoveType(void)
 
     switch (gMoveRelearnerState)
     {
+    case MOVE_RELEARNER_TRIO_ELEMENTAL_MOVES:
+        StringCopy(gStringVar3, COMPOUND_STRING("elemental move"));
+        break;
     case MOVE_RELEARNER_EGG_MOVES:
         StringCopy(gStringVar3, MoveRelearner_Text_EggMoveLWR);
         break;
@@ -1035,6 +1040,9 @@ static bool32 TryGetNextRelearnerPage(s8 direction, enum MoveRelearnerStates *ne
     struct BoxPokemon *boxMon = GetSelectedBoxMonFromPcOrParty();
     u32 count = 0;
     u32 currentIndex = 0;
+
+    if (sMoveRelearnerMenuState.primaryState == MOVE_RELEARNER_TRIO_ELEMENTAL_MOVES)
+        return FALSE; // Scott lessons never expose unrelated TM/tutor pages.
 
     pages[count++] = sMoveRelearnerMenuState.primaryState;
 
@@ -1165,6 +1173,9 @@ static void CreateLearnableMovesList(void)
     struct BoxPokemon *boxmon = GetSelectedBoxMonFromPcOrParty();
     switch (gMoveRelearnerState)
     {
+    case MOVE_RELEARNER_TRIO_ELEMENTAL_MOVES:
+        sMoveRelearnerStruct->numMenuChoices = GetTrioElementalMoves(boxmon, sMoveRelearnerStruct->movesToLearn);
+        break;
     case MOVE_RELEARNER_EGG_MOVES:
         sMoveRelearnerStruct->numMenuChoices = GetBoxMonRelearnableEggMoves(boxmon, sMoveRelearnerStruct->movesToLearn);
         break;
@@ -1449,7 +1460,7 @@ void HasMovesToRelearn(void)
 
 bool32 CanBoxMonRelearnAnyMove(struct BoxPokemon *boxMon)
 {
-    for (u32 i = MOVE_RELEARNER_LEVEL_UP_MOVES; i < MOVE_RELEARNER_COUNT; i++)
+    for (u32 i = MOVE_RELEARNER_LEVEL_UP_MOVES; i < MOVE_RELEARNER_TRIO_ELEMENTAL_MOVES; i++)
     {
         if (sRelearnTypes[i].hasMoveToRelearn(boxMon))
             return TRUE;
@@ -1570,4 +1581,57 @@ static bool32 HasRelearnerTutorMoves(struct BoxPokemon *boxMon)
     }
 
     return FALSE;
+}
+
+// Free Scott lessons use only the selected girl's current learnset and actual level.
+// No form history or save fields are required; teaching uses normal replacement.
+void BeginTrioElementalLessons(void)
+{
+    gMoveRelearnerState = MOVE_RELEARNER_TRIO_ELEMENTAL_MOVES;
+}
+
+void EndTrioElementalLessons(void)
+{
+    gMoveRelearnerState = MOVE_RELEARNER_LEVEL_UP_MOVES;
+}
+
+u32 GetTrioElementalMoves(struct BoxPokemon *mon, u16 *moves)
+{
+    u32 species = GetBoxMonData(mon, MON_DATA_SPECIES_OR_EGG);
+    u32 count = 0;
+    if (!CanLearnTeachableMove(species, MOVE_FLOOF_FURY)
+     && !CanLearnTeachableMove(species, MOVE_BLANKEY_TIME)
+     && !CanLearnTeachableMove(species, MOVE_COCOA_POUNCE))
+        return 0;
+
+    u32 level = GetLevelFromBoxMonExp(mon);
+    const struct LevelUpMove *learnset = GetSpeciesLevelUpLearnset(species);
+    for (u32 i = 0; i < MAX_LEVEL_UP_MOVES && learnset[i].move != LEVEL_UP_MOVE_END; i++)
+    {
+        enum Move move = learnset[i].move;
+        if (learnset[i].level > level)
+            continue;
+        if (gMovesInfo[move].category == DAMAGE_CATEGORY_STATUS || gMovesInfo[move].type == TYPE_NORMAL)
+            continue;
+        if (gMovesInfo[move].type != gSpeciesInfo[species].types[0]
+         && gMovesInfo[move].type != gSpeciesInfo[species].types[1])
+            continue;
+        if (BoxMonKnowsMove(mon, move))
+            continue;
+        bool32 duplicate = FALSE;
+        for (u32 j = 0; j < count; j++)
+            if (moves[j] == move)
+                duplicate = TRUE;
+        if (!duplicate && count < MAX_RELEARNER_MOVES)
+            moves[count++] = move;
+    }
+    if (P_SORT_MOVES)
+        SortMovesAlphabetically(moves, count);
+    return count;
+}
+
+static bool32 HasTrioElementalMoves(struct BoxPokemon *mon)
+{
+    u16 moves[MAX_RELEARNER_MOVES];
+    return GetTrioElementalMoves(mon, moves) != 0;
 }

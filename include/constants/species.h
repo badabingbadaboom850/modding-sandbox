@@ -1715,10 +1715,69 @@
 #define SPECIES_BIJUU_STEEL                            1597
 #define SPECIES_RIKO_SPIRIT                            1598
 #define SPECIES_RIKO_WING                              1599
-#define SPECIES_EGG                                     (SPECIES_RIKO_WING + 1)
+#define SPECIES_BIJUU_PSYCHIC                           1600
+#define SPECIES_PENNY_GUARDIAN                         1601
+#define SPECIES_BIJUU_ICE                              1602
+#define SPECIES_PENNY_WATER                            1603
+#define SPECIES_PENNY_GRASS                            1604
+#define SPECIES_PENNY_SPIRIT                           1605
+#define SPECIES_BIJUU_SPIRIT                           1606
+#define SPECIES_RIKO_ECHO                              1607
+#define SPECIES_BIJUU_EMBER                            1608
+#define SPECIES_PENNY_BRAVE                            1609
+#define SPECIES_RIKO_FLOWER                            1610
+#define SPECIES_RIKO_ASPECT_MIND                       1611
+#define SPECIES_RIKO_ASPECT_BODY                       1612
+#define SPECIES_RIKO_ASPECT_SOUL                       1613
+#define SPECIES_MEGA_RIKO_SPIRIT                       1614
+#define SPECIES_MEGA_PENNY_SPIRIT                      1615
+#define SPECIES_MEGA_BIJUU_SPIRIT                      1616
+#define SPECIES_RIKO_BALLOON                            1617
+#define SPECIES_BIJUU_BOX                               1618
+#define SPECIES_PENNY_HOTDOG                            1619
+#define SPECIES_PENNY_HOTDOG_DACHSBUN                   1620
+#define SPECIES_RIKO_PRINCESS                            1621
+#define SPECIES_RIKO_RAINCOAT                            1622
+#define SPECIES_BIJUU_BREAD                              1623
+#define SPECIES_BIJUU_DETECTIVE                          1624
+#define SPECIES_PENNY_BLANKET                            1625
+#define SPECIES_PENNY_LIFEGUARD                          1626
+#define SPECIES_PENNY_BLANKET_DACHSBUN                   1627
+#define SPECIES_PENNY_LIFEGUARD_DACHSBUN                 1628
+#define SPECIES_RIKO_FIGHTING                            1629
+#define SPECIES_RIKO_BUG                                 1630
+#define SPECIES_PENNY_GROUND                             1631
+#define SPECIES_PENNY_STEEL                              1632
+#define SPECIES_RIKO_BUTTERFLY                                  1633
+#define SPECIES_BIJUU_ASTRONAUT                                 1634
+#define SPECIES_PENNY_BALLERINA                                 1635
+#define SPECIES_PENNY_BALLERINA_DACHSBUN                 1636
+#define SPECIES_RIKO_WITCH                                       1637
+#define SPECIES_BIJUU_VAMPIRE                                    1638
+#define SPECIES_PENNY_PUMPKIN                                    1639
+#define SPECIES_PENNY_PUMPKIN_DACHSBUN                           1640
+#define SPECIES_RIKO_LEAVES                                      1641
+#define SPECIES_BIJUU_SWEATER                                    1642
+#define SPECIES_PENNY_SWEATER                                    1643
+#define SPECIES_PENNY_SWEATER_DACHSBUN                           1644
+#define SPECIES_RIKO_TURKEY                                      1645
+#define SPECIES_BIJUU_CHEF                                       1646
+#define SPECIES_PENNY_YAM                                        1647
+#define SPECIES_PENNY_YAM_DACHSBUN                               1648
+#define SPECIES_RIKO_SANTA                                       1649
+#define SPECIES_BIJUU_PRESENT                                    1650
+#define SPECIES_PENNY_REINDEER                                   1651
+#define SPECIES_PENNY_REINDEER_DACHSBUN                          1652
+#define SPECIES_RIKO_PARTY                                       1653
+#define SPECIES_BIJUU_GALA                                       1654
+#define SPECIES_PENNY_STARS                                      1655
+#define SPECIES_PENNY_STARS_DACHSBUN                             1656
+#define SPECIES_EGG                                     (SPECIES_PENNY_STARS_DACHSBUN + 1)
 
 #define NUM_SPECIES SPECIES_EGG
 
 #define SPECIES_SHINY_TAG 5000
 
 #endif  // GUARD_CONSTANTS_SPECIES_H
+
+

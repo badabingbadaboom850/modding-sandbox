@@ -299,9 +299,9 @@ const struct ItemInfo gItemsInfo[] =
         .name = ITEM_NAME("Trio Ball"),
         .price = 300,
         .description = COMPOUND_STRING(
-            "A custom Ball with a\n"
-            "higher catch rate than\n"
-            "a Poke Ball."),
+            "A special Ball with\n"
+            "a better catch rate\n"
+            "than a Poke Ball."),
         .pocket = POCKET_POKE_BALLS,
         .heldSlot = 0,
         .type = ITEM_USE_BAG_MENU,
@@ -2479,15 +2479,35 @@ const struct ItemInfo gItemsInfo[] =
 
 // Candy
 
+    [ITEM_RIKO_PUFFS] =
+    {
+        .name = ITEM_NAME("Riko Puffs"),
+        .pluralName = ITEM_PLURAL_NAME("Riko Puffs"),
+        .price = 500,
+        .description = COMPOUND_STRING(
+            "Crunchy kibble bits.\n"
+            "Raises a Pokemon's\n"
+            "level by five."),
+        .pocket = POCKET_ITEMS,
+        .sortType = ITEM_TYPE_LEVEL_UP_ITEM,
+        .heldSlot = 0,
+        .type = ITEM_USE_PARTY_MENU,
+        .fieldUseFunc = ItemUseOutOfBattle_RareCandy,
+        .effect = gItemEffect_RareCandy,
+        .flingPower = 30,
+        .iconPic = gItemIcon_RikoPuffs,
+        .iconPalette = gItemIconPalette_RikoPuffs,
+    },
+
     [ITEM_RARE_CANDY] =
     {
         .name = ITEM_NAME("Cat Food Tin"),
         .pluralName = ITEM_PLURAL_NAME("Cat Food Tins"),
         .price = (I_PRICE >= GEN_7) ? 10000 : 4800,
         .description = COMPOUND_STRING(
-            "Cat food everyone loves.\n"
-            "A tin that raises a\n"
-            "Pokémon's level by one."),
+            "A tin of cat food.\n"
+            "Raises a Pokemon's\n"
+            "level by one."),
         .pocket = POCKET_ITEMS,
         .sortType = ITEM_TYPE_LEVEL_UP_ITEM,
         .heldSlot = 0,
@@ -17615,9 +17635,9 @@ const struct ItemInfo gItemsInfo[] =
         .price = 20000,
         .holdEffect = HOLD_EFFECT_CHOICE_SCARF,
         .description = COMPOUND_STRING(
-            "Bouncy poms raise Speed,\n"
-            "but lock the holder into\n"
-            "one move."),
+            "Raises Speed, but\n"
+            "locks the holder\n"
+            "into one move."),
         .pocket = POCKET_BATTLE_ITEMS,
         .sortType = ITEM_TYPE_HELD_ITEM,
         .heldSlot = 0,
@@ -17636,8 +17656,8 @@ const struct ItemInfo gItemsInfo[] =
         .holdEffectParam = 10,
         .description = COMPOUND_STRING(
             "A cozy blanket that\n"
-            "restores HP a little at\n"
-            "the end of each turn."),
+            "restores a little HP\n"
+            "at each turn's end."),
         .pocket = POCKET_BATTLE_ITEMS,
         .sortType = ITEM_TYPE_HELD_ITEM,
         .heldSlot = 0,
@@ -17648,14 +17668,438 @@ const struct ItemInfo gItemsInfo[] =
         .iconPalette = gItemIconPalette_SilkScarf,
     },
 
+    [ITEM_BIJUUS_FIRE] =
+    {
+        .name = ITEM_NAME("Bijuu's Fire"),
+        .price = 0,
+        .description = COMPOUND_STRING("Gives Bijuu a flame.\nReusable. Use again\nto change her back."),
+        .importance = 1,
+        .pocket = POCKET_KEY_ITEMS,
+        .sortType = ITEM_TYPE_EVOLUTION_STONE,
+        .heldSlot = 0,
+        .type = ITEM_USE_PARTY_MENU,
+        .fieldUseFunc = ItemUseOutOfBattle_EvolutionStone,
+        .effect = gItemEffect_EvoItem,
+        .iconPic = gItemIcon_BijuusFire,
+        .iconPalette = gItemIconPalette_BijuusFire,
+    },
+
+    [ITEM_PENNYS_BRAVERY] =
+    {
+        .name = ITEM_NAME("Penny's Bravery"),
+        .price = 0,
+        .description = COMPOUND_STRING("Gives Penny courage.\nReusable. Use again\nto change her back."),
+        .importance = 1,
+        .pocket = POCKET_KEY_ITEMS,
+        .sortType = ITEM_TYPE_EVOLUTION_STONE,
+        .heldSlot = 0,
+        .type = ITEM_USE_PARTY_MENU,
+        .fieldUseFunc = ItemUseOutOfBattle_EvolutionStone,
+        .effect = gItemEffect_EvoItem,
+        .iconPic = gItemIcon_PennysBravery,
+        .iconPalette = gItemIconPalette_PennysBravery,
+    },
+
+    [ITEM_RIKOS_COURAGE] =
+    {
+        .name = ITEM_NAME("Riko's Courage"),
+        .price = 0,
+        .description = COMPOUND_STRING("Reusable. Awakens\nRiko's second voice.\nUse again to revert."),
+        .importance = 1,
+        .pocket = POCKET_KEY_ITEMS,
+        .sortType = ITEM_TYPE_EVOLUTION_STONE,
+        .heldSlot = 0,
+        .type = ITEM_USE_PARTY_MENU,
+        .fieldUseFunc = ItemUseOutOfBattle_EvolutionStone,
+        .effect = gItemEffect_EvoItem,
+        .iconPic = gItemIcon_RikosCourage,
+        .iconPalette = gItemIconPalette_RikosCourage,
+    },
+
+    [ITEM_RIKOS_AMULET] =
+    {
+        .name = ITEM_NAME("Riko's Amulet"),
+        .price = 0,
+        .description = COMPOUND_STRING("Scott's promise.\nTwo sister spirits\nawaken its light.\nUse outside."),
+        .importance = 1,
+        .pocket = POCKET_KEY_ITEMS,
+        .heldSlot = 0,
+        .type = ITEM_USE_FIELD,
+        .fieldUseFunc = ItemUseOutOfBattle_RikosAmulet,
+        .iconPic = gItemIcon_RikosAmulet,
+        .iconPalette = gItemIconPalette_RikosAmulet,
+    },
+
+    [ITEM_RIKOS_BALLOON] =
+    {
+        .name = ITEM_NAME("Riko Balloon"),
+        .price = 0,
+        .description = COMPOUND_STRING("A balloon for Riko.\nReusable costume.\nUse again to revert."),
+        .importance = 1,
+        .pocket = POCKET_KEY_ITEMS,
+        .sortType = ITEM_TYPE_EVOLUTION_STONE,
+        .heldSlot = 0,
+        .type = ITEM_USE_PARTY_MENU,
+        .fieldUseFunc = ItemUseOutOfBattle_EvolutionStone,
+        .effect = gItemEffect_EvoItem,
+        .iconPic = gItemIcon_RikoBalloon,
+        .iconPalette = gItemIconPalette_RikoBalloon,
+    },
+
+    [ITEM_BIJUUS_BOX] =
+    {
+        .name = ITEM_NAME("Bijuu Box"),
+        .price = 0,
+        .description = COMPOUND_STRING("A box for Bijuu.\nReusable costume.\nUse again to revert."),
+        .importance = 1,
+        .pocket = POCKET_KEY_ITEMS,
+        .sortType = ITEM_TYPE_EVOLUTION_STONE,
+        .heldSlot = 0,
+        .type = ITEM_USE_PARTY_MENU,
+        .fieldUseFunc = ItemUseOutOfBattle_EvolutionStone,
+        .effect = gItemEffect_EvoItem,
+        .iconPic = gItemIcon_BijuuBox,
+        .iconPalette = gItemIconPalette_BijuuBox,
+    },
+
+    [ITEM_POM_TIARA] =
+    {
+        .name = ITEM_NAME("Pom Tiara"),
+        .price = 0,
+        .description = COMPOUND_STRING("A tiara for Riko.\nReusable costume.\nUse again to revert."),
+        .importance = 1,
+        .pocket = POCKET_KEY_ITEMS,
+        .sortType = ITEM_TYPE_EVOLUTION_STONE,
+        .heldSlot = 0,
+        .type = ITEM_USE_PARTY_MENU,
+        .fieldUseFunc = ItemUseOutOfBattle_EvolutionStone,
+        .effect = gItemEffect_EvoItem,
+        .iconPic = gItemIcon_RikoPrincess,
+        .iconPalette = gItemIconPalette_RikoPrincess,
+    },
+
+    [ITEM_DADS_TOOLBOX] =
+    {
+        .name = ITEM_NAME("Dad's Toolbox"),
+        .price = 0,
+        .description = COMPOUND_STRING("Changes Penny's form.\nReusable keepsake.\nUse again to revert."),
+        .importance = 1,
+        .pocket = POCKET_KEY_ITEMS,
+        .sortType = ITEM_TYPE_EVOLUTION_STONE,
+        .heldSlot = 0,
+        .type = ITEM_USE_PARTY_MENU,
+        .fieldUseFunc = ItemUseOutOfBattle_EvolutionStone,
+        .effect = gItemEffect_EvoItem,
+        .iconPic = gItemIcon_PennySteelKeepsake,
+        .iconPalette = gItemIconPalette_PennySteelKeepsake,
+    },
+
+    [ITEM_PENNYS_GARDEN_TROWEL] =
+    {
+        .name = ITEM_NAME("Garden Trowel"),
+        .price = 0,
+        .description = COMPOUND_STRING("Changes Penny's form.\nReusable keepsake.\nUse again to revert."),
+        .importance = 1,
+        .pocket = POCKET_KEY_ITEMS,
+        .sortType = ITEM_TYPE_EVOLUTION_STONE,
+        .heldSlot = 0,
+        .type = ITEM_USE_PARTY_MENU,
+        .fieldUseFunc = ItemUseOutOfBattle_EvolutionStone,
+        .effect = gItemEffect_EvoItem,
+        .iconPic = gItemIcon_PennyGroundKeepsake,
+        .iconPalette = gItemIconPalette_PennyGroundKeepsake,
+    },
+
+    [ITEM_COCOAS_SHINY_PEBBLE] =
+    {
+        .name = ITEM_NAME("Shiny Pebble"),
+        .price = 0,
+        .description = COMPOUND_STRING("Changes Bijuu's form.\nReusable keepsake.\nUse again to revert."),
+        .importance = 1,
+        .pocket = POCKET_KEY_ITEMS,
+        .sortType = ITEM_TYPE_EVOLUTION_STONE,
+        .heldSlot = 0,
+        .type = ITEM_USE_PARTY_MENU,
+        .fieldUseFunc = ItemUseOutOfBattle_EvolutionStone,
+        .effect = gItemEffect_EvoItem,
+        .iconPic = gItemIcon_BijuuRockKeepsake,
+        .iconPalette = gItemIconPalette_BijuuRockKeepsake,
+    },
+
+    [ITEM_COCOAS_SNEAKY_CAPE] =
+    {
+        .name = ITEM_NAME("Cocoa Sneaky Cape"),
+        .price = 0,
+        .description = COMPOUND_STRING("Changes Bijuu's form.\nReusable keepsake.\nUse again to revert."),
+        .importance = 1,
+        .pocket = POCKET_KEY_ITEMS,
+        .sortType = ITEM_TYPE_EVOLUTION_STONE,
+        .heldSlot = 0,
+        .type = ITEM_USE_PARTY_MENU,
+        .fieldUseFunc = ItemUseOutOfBattle_EvolutionStone,
+        .effect = gItemEffect_EvoItem,
+        .iconPic = gItemIcon_BijuuDarkKeepsake,
+        .iconPalette = gItemIconPalette_BijuuDarkKeepsake,
+    },
+
+    [ITEM_RIKOS_HONEYCOMB] =
+    {
+        .name = ITEM_NAME("Riko Honeycomb"),
+        .price = 0,
+        .description = COMPOUND_STRING("Changes Riko's form.\nReusable keepsake.\nUse again to revert."),
+        .importance = 1,
+        .pocket = POCKET_KEY_ITEMS,
+        .sortType = ITEM_TYPE_EVOLUTION_STONE,
+        .heldSlot = 0,
+        .type = ITEM_USE_PARTY_MENU,
+        .fieldUseFunc = ItemUseOutOfBattle_EvolutionStone,
+        .effect = gItemEffect_EvoItem,
+        .iconPic = gItemIcon_RikoBugKeepsake,
+        .iconPalette = gItemIconPalette_RikoBugKeepsake,
+    },
+
+    [ITEM_POM_DRAGON_PLUSH] =
+    {
+        .name = ITEM_NAME("Pom Dragon Plush"),
+        .price = 0,
+        .description = COMPOUND_STRING("Changes Riko's form.\nReusable keepsake.\nUse again to revert."),
+        .importance = 1,
+        .pocket = POCKET_KEY_ITEMS,
+        .sortType = ITEM_TYPE_EVOLUTION_STONE,
+        .heldSlot = 0,
+        .type = ITEM_USE_PARTY_MENU,
+        .fieldUseFunc = ItemUseOutOfBattle_EvolutionStone,
+        .effect = gItemEffect_EvoItem,
+        .iconPic = gItemIcon_RikoDragonKeepsake,
+        .iconPalette = gItemIconPalette_RikoDragonKeepsake,
+    },
+
+    [ITEM_RIKOS_BLACK_BELT] =
+    {
+        .name = ITEM_NAME("Riko Black Belt"),
+        .price = 0,
+        .description = COMPOUND_STRING("Teaches Riko Pom Fu.\nReusable black belt.\nUse again to revert."),
+        .importance = 1,
+        .pocket = POCKET_KEY_ITEMS,
+        .sortType = ITEM_TYPE_EVOLUTION_STONE,
+        .heldSlot = 0,
+        .type = ITEM_USE_PARTY_MENU,
+        .fieldUseFunc = ItemUseOutOfBattle_EvolutionStone,
+        .effect = gItemEffect_EvoItem,
+        .iconPic = gItemIcon_RikoBlackBelt,
+        .iconPalette = gItemIconPalette_RikoBlackBelt,
+    },
+
+    [ITEM_RIKOS_BUTTERFLY_WINGS] =
+    {
+        .name = ITEM_NAME("Riko Wings"),
+        .price = 0,
+        .description = COMPOUND_STRING("A costume for Riko.\nReusable costume.\nUse again to revert."),
+        .importance = 1,
+        .pocket = POCKET_KEY_ITEMS,
+        .sortType = ITEM_TYPE_EVOLUTION_STONE,
+        .heldSlot = 0,
+        .type = ITEM_USE_PARTY_MENU,
+        .fieldUseFunc = ItemUseOutOfBattle_EvolutionStone,
+        .effect = gItemEffect_EvoItem,
+        .iconPic = gItemIcon_RikoButterfly,
+        .iconPalette = gItemIconPalette_RikoButterfly,
+    },
+    [ITEM_RIKOS_WITCH_HAT] =
+    {
+        .name = ITEM_NAME("Riko Witch Hat"),
+        .price = 0,
+        .description = COMPOUND_STRING("Reusable costume.\nUse again to revert."),
+        .importance = 1,
+        .pocket = POCKET_KEY_ITEMS,
+        .sortType = ITEM_TYPE_EVOLUTION_STONE,
+        .heldSlot = 0,
+        .type = ITEM_USE_PARTY_MENU,
+        .fieldUseFunc = ItemUseOutOfBattle_EvolutionStone,
+        .effect = gItemEffect_EvoItem,
+        .iconPic = gItemIcon_RikoWitch,
+        .iconPalette = gItemIconPalette_RikoWitch,
+    },
+
+    [ITEM_RIKOS_RAINCOAT] =
+    {
+        .name = ITEM_NAME("Riko Raincoat"),
+        .price = 0,
+        .description = COMPOUND_STRING("A costume for Riko.\nReusable costume.\nUse again to revert."),
+        .importance = 1,
+        .pocket = POCKET_KEY_ITEMS,
+        .sortType = ITEM_TYPE_EVOLUTION_STONE,
+        .heldSlot = 0,
+        .type = ITEM_USE_PARTY_MENU,
+        .fieldUseFunc = ItemUseOutOfBattle_EvolutionStone,
+        .effect = gItemEffect_EvoItem,
+        .iconPic = gItemIcon_RikoRaincoat,
+        .iconPalette = gItemIconPalette_RikoRaincoat,
+    },
+
+    [ITEM_COCOA_TOAST] =
+    {
+        .name = ITEM_NAME("Cocoa Toast"),
+        .price = 0,
+        .description = COMPOUND_STRING("A costume for Bijuu.\nReusable costume.\nUse again to revert."),
+        .importance = 1,
+        .pocket = POCKET_KEY_ITEMS,
+        .sortType = ITEM_TYPE_EVOLUTION_STONE,
+        .heldSlot = 0,
+        .type = ITEM_USE_PARTY_MENU,
+        .fieldUseFunc = ItemUseOutOfBattle_EvolutionStone,
+        .effect = gItemEffect_EvoItem,
+        .iconPic = gItemIcon_BijuuBread,
+        .iconPalette = gItemIconPalette_BijuuBread,
+    },
+
+    [ITEM_BIJUUS_SPACE_HELMET] =
+    {
+        .name = ITEM_NAME("Space Helmet"),
+        .price = 0,
+        .description = COMPOUND_STRING("A costume for Bijuu.\nReusable costume.\nUse again to revert."),
+        .importance = 1,
+        .pocket = POCKET_KEY_ITEMS,
+        .sortType = ITEM_TYPE_EVOLUTION_STONE,
+        .heldSlot = 0,
+        .type = ITEM_USE_PARTY_MENU,
+        .fieldUseFunc = ItemUseOutOfBattle_EvolutionStone,
+        .effect = gItemEffect_EvoItem,
+        .iconPic = gItemIcon_BijuuAstronaut,
+        .iconPalette = gItemIconPalette_BijuuAstronaut,
+    },
+    [ITEM_BIJUUS_VAMPIRE_CAPE] =
+    {
+        .name = ITEM_NAME("Vampire Cape"),
+        .price = 0,
+        .description = COMPOUND_STRING("Reusable costume.\nUse again to revert."),
+        .importance = 1,
+        .pocket = POCKET_KEY_ITEMS,
+        .sortType = ITEM_TYPE_EVOLUTION_STONE,
+        .heldSlot = 0,
+        .type = ITEM_USE_PARTY_MENU,
+        .fieldUseFunc = ItemUseOutOfBattle_EvolutionStone,
+        .effect = gItemEffect_EvoItem,
+        .iconPic = gItemIcon_BijuuVampire,
+        .iconPalette = gItemIconPalette_BijuuVampire,
+    },
+
+    [ITEM_COCOAS_DETECTIVE_KIT] =
+    {
+        .name = ITEM_NAME("Detective Kit"),
+        .price = 0,
+        .description = COMPOUND_STRING("A costume for Bijuu.\nReusable costume.\nUse again to revert."),
+        .importance = 1,
+        .pocket = POCKET_KEY_ITEMS,
+        .sortType = ITEM_TYPE_EVOLUTION_STONE,
+        .heldSlot = 0,
+        .type = ITEM_USE_PARTY_MENU,
+        .fieldUseFunc = ItemUseOutOfBattle_EvolutionStone,
+        .effect = gItemEffect_EvoItem,
+        .iconPic = gItemIcon_BijuuDetective,
+        .iconPalette = gItemIconPalette_BijuuDetective,
+    },
+
+    [ITEM_PENNYS_COZY_WRAP] =
+    {
+        .name = ITEM_NAME("Penny Cozy Wrap"),
+        .price = 0,
+        .description = COMPOUND_STRING("A costume for Penny.\nReusable costume.\nUse again to revert."),
+        .importance = 1,
+        .pocket = POCKET_KEY_ITEMS,
+        .sortType = ITEM_TYPE_EVOLUTION_STONE,
+        .heldSlot = 0,
+        .type = ITEM_USE_PARTY_MENU,
+        .fieldUseFunc = ItemUseOutOfBattle_EvolutionStone,
+        .effect = gItemEffect_EvoItem,
+        .iconPic = gItemIcon_PennyBlanket,
+        .iconPalette = gItemIconPalette_PennyBlanket,
+    },
+
+    [ITEM_PENNYS_BALLET_TUTU] =
+    {
+        .name = ITEM_NAME("Penny Tutu"),
+        .price = 0,
+        .description = COMPOUND_STRING("A costume for Penny.\nReusable costume.\nUse again to revert."),
+        .importance = 1,
+        .pocket = POCKET_KEY_ITEMS,
+        .sortType = ITEM_TYPE_EVOLUTION_STONE,
+        .heldSlot = 0,
+        .type = ITEM_USE_PARTY_MENU,
+        .fieldUseFunc = ItemUseOutOfBattle_EvolutionStone,
+        .effect = gItemEffect_EvoItem,
+        .iconPic = gItemIcon_PennyBallerina,
+        .iconPalette = gItemIconPalette_PennyBallerina,
+    },
+    [ITEM_PENNYS_PUMPKIN_SUIT] =
+    {
+        .name = ITEM_NAME("Pumpkin Suit"),
+        .price = 0,
+        .description = COMPOUND_STRING("Reusable costume.\nUse again to revert."),
+        .importance = 1,
+        .pocket = POCKET_KEY_ITEMS,
+        .sortType = ITEM_TYPE_EVOLUTION_STONE,
+        .heldSlot = 0,
+        .type = ITEM_USE_PARTY_MENU,
+        .fieldUseFunc = ItemUseOutOfBattle_EvolutionStone,
+        .effect = gItemEffect_EvoItem,
+        .iconPic = gItemIcon_PennyPumpkin,
+        .iconPalette = gItemIconPalette_PennyPumpkin,
+    },
+
+    [ITEM_PENNYS_BEACH_VEST] =
+    {
+        .name = ITEM_NAME("Penny Beach Vest"),
+        .price = 0,
+        .description = COMPOUND_STRING("A costume for Penny.\nReusable costume.\nUse again to revert."),
+        .importance = 1,
+        .pocket = POCKET_KEY_ITEMS,
+        .sortType = ITEM_TYPE_EVOLUTION_STONE,
+        .heldSlot = 0,
+        .type = ITEM_USE_PARTY_MENU,
+        .fieldUseFunc = ItemUseOutOfBattle_EvolutionStone,
+        .effect = gItemEffect_EvoItem,
+        .iconPic = gItemIcon_PennyLifeguard,
+        .iconPalette = gItemIconPalette_PennyLifeguard,
+    },
+
+    [ITEM_PENNYS_HOTDOG_BUN] =
+    {
+        .name = ITEM_NAME("Penny Hot Dog"),
+        .price = 0,
+        .description = COMPOUND_STRING("A bun for Penny.\nReusable costume.\nUse again to revert."),
+        .importance = 1,
+        .pocket = POCKET_KEY_ITEMS,
+        .sortType = ITEM_TYPE_EVOLUTION_STONE,
+        .heldSlot = 0,
+        .type = ITEM_USE_PARTY_MENU,
+        .fieldUseFunc = ItemUseOutOfBattle_EvolutionStone,
+        .effect = gItemEffect_EvoItem,
+        .iconPic = gItemIcon_PennyHotdog,
+        .iconPalette = gItemIconPalette_PennyHotdog,
+    },
+
+    [ITEM_RIKOS_BLOOM] =
+    {
+        .name = ITEM_NAME("Riko's Bloom"),
+        .price = 0,
+        .description = COMPOUND_STRING("Flowers for Riko.\nReusable. Use again\nto change her back."),
+        .importance = 1,
+        .pocket = POCKET_KEY_ITEMS,
+        .sortType = ITEM_TYPE_EVOLUTION_STONE,
+        .heldSlot = 0,
+        .type = ITEM_USE_PARTY_MENU,
+        .fieldUseFunc = ItemUseOutOfBattle_EvolutionStone,
+        .effect = gItemEffect_EvoItem,
+        .iconPic = gItemIcon_RikosBloom,
+        .iconPalette = gItemIconPalette_RikosBloom,
+    },
+
     [ITEM_RIKOS_WAND] =
     {
         .name = ITEM_NAME("Riko's Wand"),
-        .price = 3000,
-        .description = COMPOUND_STRING(
-            "A wand woven with fairy\n"
-            "magic. It evolves Riko\n"
-            "into RikoWing."),
+        .price = 500,
+        .description = COMPOUND_STRING("Reusable fairy wand.\nChanges Riko into\nher winged form."),
         .pocket = POCKET_ITEMS,
         .sortType = ITEM_TYPE_EVOLUTION_STONE,
         .heldSlot = 0,
@@ -17669,11 +18113,8 @@ const struct ItemInfo gItemsInfo[] =
     [ITEM_BLUE_BRUSH] =
     {
         .name = ITEM_NAME("Blue Brush"),
-        .price = 3000,
-        .description = COMPOUND_STRING(
-            "A blue brush that gently\n"
-            "restores RikoWing to\n"
-            "her original form."),
+        .price = 500,
+        .description = COMPOUND_STRING("Reusable blue brush.\nReturns winged Riko\nto her ordinary form."),
         .pocket = POCKET_ITEMS,
         .sortType = ITEM_TYPE_EVOLUTION_STONE,
         .heldSlot = 0,
@@ -17685,7 +18126,413 @@ const struct ItemInfo gItemsInfo[] =
         .iconPalette = gItemIconPalette_BlueBrush,
     },
 
+    [ITEM_BIJUUS_FISH_TOY] =
+    {
+        .name = ITEM_NAME("Bijuu's Fish Toy"),
+        .price = 500,
+        .description = COMPOUND_STRING("Reusable fish toy.\nChanges Bijuu into\nher Psychic form."),
+        .pocket = POCKET_ITEMS,
+        .sortType = ITEM_TYPE_EVOLUTION_STONE,
+        .heldSlot = 0,
+        .type = ITEM_USE_PARTY_MENU,
+        .fieldUseFunc = ItemUseOutOfBattle_EvolutionStone,
+        .effect = gItemEffect_EvoItem,
+        .flingPower = 30,
+        .iconPic = gItemIcon_BijuusFishToy,
+        .iconPalette = gItemIconPalette_BijuusFishToy,
+    },
+    [ITEM_BIJUUS_CAT_NIP] =
+    {
+        .name = ITEM_NAME("Bijuu's Cat Nip"),
+        .price = 500,
+        .description = COMPOUND_STRING("Reusable catnip.\nReturns Psychic Bijuu\nto her ordinary form."),
+        .pocket = POCKET_ITEMS,
+        .sortType = ITEM_TYPE_EVOLUTION_STONE,
+        .heldSlot = 0,
+        .type = ITEM_USE_PARTY_MENU,
+        .fieldUseFunc = ItemUseOutOfBattle_EvolutionStone,
+        .effect = gItemEffect_EvoItem,
+        .flingPower = 30,
+        .iconPic = gItemIcon_BijuusCatNip,
+        .iconPalette = gItemIconPalette_BijuusCatNip,
+    },
+
+    [ITEM_DADS_KEYS] =
+    {
+        .name = ITEM_NAME("Dad's Keys"),
+        .price = 500,
+        .description = COMPOUND_STRING("Reusable keys.\nChanges Penny into\nher Guardian form."),
+        .pocket = POCKET_ITEMS,
+        .sortType = ITEM_TYPE_EVOLUTION_STONE,
+        .heldSlot = 0,
+        .type = ITEM_USE_PARTY_MENU,
+        .fieldUseFunc = ItemUseOutOfBattle_EvolutionStone,
+        .effect = gItemEffect_EvoItem,
+        .flingPower = 30,
+        .iconPic = gItemIcon_DadsKeys,
+        .iconPalette = gItemIconPalette_DadsKeys,
+    },
+    [ITEM_PIECE_OF_CHICKEN] =
+    {
+        .name = ITEM_NAME("Piece of Chicken"),
+        .price = 500,
+        .description = COMPOUND_STRING("Reusable. Returns\nGuardian Penny to\nher ordinary form."),
+        .pocket = POCKET_ITEMS,
+        .sortType = ITEM_TYPE_EVOLUTION_STONE,
+        .heldSlot = 0,
+        .type = ITEM_USE_PARTY_MENU,
+        .fieldUseFunc = ItemUseOutOfBattle_EvolutionStone,
+        .effect = gItemEffect_EvoItem,
+        .flingPower = 30,
+        .iconPic = gItemIcon_PieceOfChicken,
+        .iconPalette = gItemIconPalette_PieceOfChicken,
+    },
+
+    [ITEM_GREEN_PEPPER] =
+    {
+        .name = ITEM_NAME("Green Pepper"),
+        .price = 500,
+        .description = COMPOUND_STRING("Reusable. Toggles\nRiko's Fire form.\nUse again to revert."),
+        .pocket = POCKET_ITEMS,
+        .sortType = ITEM_TYPE_EVOLUTION_STONE,
+        .heldSlot = 0,
+        .type = ITEM_USE_PARTY_MENU,
+        .fieldUseFunc = ItemUseOutOfBattle_EvolutionStone,
+        .effect = gItemEffect_EvoItem,
+        .flingPower = 30,
+        .iconPic = gItemIcon_GreenPepper,
+        .iconPalette = gItemIconPalette_GreenPepper,
+    },
+    [ITEM_EEL_SUSHI] =
+    {
+        .name = ITEM_NAME("Eel Sushi"),
+        .price = 500,
+        .description = COMPOUND_STRING("Reusable. Toggles\nRiko's Electric form.\nUse again to revert."),
+        .pocket = POCKET_ITEMS,
+        .sortType = ITEM_TYPE_EVOLUTION_STONE,
+        .heldSlot = 0,
+        .type = ITEM_USE_PARTY_MENU,
+        .fieldUseFunc = ItemUseOutOfBattle_EvolutionStone,
+        .effect = gItemEffect_EvoItem,
+        .flingPower = 30,
+        .iconPic = gItemIcon_EelSushi,
+        .iconPalette = gItemIconPalette_EelSushi,
+    },
+    [ITEM_FROZEN_FISH] =
+    {
+        .name = ITEM_NAME("Frozen Fish"),
+        .price = 500,
+        .description = COMPOUND_STRING("Reusable. Toggles\nBijuu's Ice form.\nUse again to revert."),
+        .pocket = POCKET_ITEMS,
+        .sortType = ITEM_TYPE_EVOLUTION_STONE,
+        .heldSlot = 0,
+        .type = ITEM_USE_PARTY_MENU,
+        .fieldUseFunc = ItemUseOutOfBattle_EvolutionStone,
+        .effect = gItemEffect_EvoItem,
+        .flingPower = 30,
+        .iconPic = gItemIcon_FrozenFish,
+        .iconPalette = gItemIconPalette_FrozenFish,
+    },
+    [ITEM_TOXIC_MOUSE] =
+    {
+        .name = ITEM_NAME("Toxic Mouse"),
+        .price = 500,
+        .description = COMPOUND_STRING("Reusable. Toggles\nBijuu's Poison form.\nUse again to revert."),
+        .pocket = POCKET_ITEMS,
+        .sortType = ITEM_TYPE_EVOLUTION_STONE,
+        .heldSlot = 0,
+        .type = ITEM_USE_PARTY_MENU,
+        .fieldUseFunc = ItemUseOutOfBattle_EvolutionStone,
+        .effect = gItemEffect_EvoItem,
+        .flingPower = 30,
+        .iconPic = gItemIcon_ToxicMouse,
+        .iconPalette = gItemIconPalette_ToxicMouse,
+    },
+    [ITEM_MOUSE_TOY] =
+    {
+        .name = ITEM_NAME("Mouse Toy"),
+        .price = 500,
+        .description = COMPOUND_STRING("Reusable. Toggles\nBijuu's Ghost form.\nUse again to revert."),
+        .pocket = POCKET_ITEMS,
+        .sortType = ITEM_TYPE_EVOLUTION_STONE,
+        .heldSlot = 0,
+        .type = ITEM_USE_PARTY_MENU,
+        .fieldUseFunc = ItemUseOutOfBattle_EvolutionStone,
+        .effect = gItemEffect_EvoItem,
+        .flingPower = 30,
+        .iconPic = gItemIcon_MouseToy,
+        .iconPalette = gItemIconPalette_MouseToy,
+    },
+    [ITEM_DOG_BOWL] =
+    {
+        .name = ITEM_NAME("Dog Bowl"),
+        .price = 500,
+        .description = COMPOUND_STRING("Reusable. Toggles\nPenny's Water form.\nUse again to revert."),
+        .pocket = POCKET_ITEMS,
+        .sortType = ITEM_TYPE_EVOLUTION_STONE,
+        .heldSlot = 0,
+        .type = ITEM_USE_PARTY_MENU,
+        .fieldUseFunc = ItemUseOutOfBattle_EvolutionStone,
+        .effect = gItemEffect_EvoItem,
+        .flingPower = 30,
+        .iconPic = gItemIcon_DogBowl,
+        .iconPalette = gItemIconPalette_DogBowl,
+    },
+    [ITEM_FETCHING_STICK] =
+    {
+        .name = ITEM_NAME("Fetching Stick"),
+        .price = 500,
+        .description = COMPOUND_STRING("Reusable. Toggles\nPenny's Grass form.\nUse again to revert."),
+        .pocket = POCKET_ITEMS,
+        .sortType = ITEM_TYPE_EVOLUTION_STONE,
+        .heldSlot = 0,
+        .type = ITEM_USE_PARTY_MENU,
+        .fieldUseFunc = ItemUseOutOfBattle_EvolutionStone,
+        .effect = gItemEffect_EvoItem,
+        .flingPower = 30,
+        .iconPic = gItemIcon_FetchingStick,
+        .iconPalette = gItemIconPalette_FetchingStick,
+    },
+
+    [ITEM_RIKOS_SPARK] =
+    {
+        .name = ITEM_NAME("Riko's Spark"),
+        .price = 0,
+        .description = COMPOUND_STRING("Riko's Spirit Mega.\nCarry after victory.\nUse for her letter."),
+        .importance = 1,
+        .pocket = POCKET_KEY_ITEMS,
+        .heldSlot = 0,
+        .type = ITEM_USE_FIELD,
+        .fieldUseFunc = ItemUseOutOfBattle_TrioMemory,
+        .iconPic = gItemIcon_FlameOrb,
+        .iconPalette = gItemIconPalette_FlameOrb,
+    },
+
+    [ITEM_PENNYS_SHIELD] =
+    {
+        .name = ITEM_NAME("Penny's Shield"),
+        .price = 0,
+        .description = COMPOUND_STRING("Penny's Spirit Mega.\nCarry after victory.\nUse for her letter."),
+        .importance = 1,
+        .pocket = POCKET_KEY_ITEMS,
+        .heldSlot = 0,
+        .type = ITEM_USE_FIELD,
+        .fieldUseFunc = ItemUseOutOfBattle_TrioMemory,
+        .iconPic = gItemIcon_RustedShield,
+        .iconPalette = gItemIconPalette_RustedWeapons,
+    },
+
+    [ITEM_BIJUUS_LIGHT] =
+    {
+        .name = ITEM_NAME("Bijuu's Light"),
+        .price = 0,
+        .description = COMPOUND_STRING("Bijuu's Spirit Mega.\nCarry after victory.\nUse for her letter."),
+        .importance = 1,
+        .pocket = POCKET_KEY_ITEMS,
+        .heldSlot = 0,
+        .type = ITEM_USE_FIELD,
+        .fieldUseFunc = ItemUseOutOfBattle_TrioMemory,
+        .iconPic = gItemIcon_ShinyCharm,
+        .iconPalette = gItemIconPalette_ShinyCharm,
+    },
+
+    [ITEM_MOMS_SCRAPBOOK] =
+    {
+        .name = ITEM_NAME("Mom's Scrapbook"),
+        .price = 0,
+        .description = COMPOUND_STRING("Memories written\nwith little paws.\nUse to read the\ngirls' journey."),
+        .importance = 1,
+        .pocket = POCKET_KEY_ITEMS,
+        .heldSlot = 0,
+        .type = ITEM_USE_FIELD,
+        .fieldUseFunc = ItemUseOutOfBattle_TrioMemory,
+        .iconPic = gItemIcon_TownMap,
+        .iconPalette = gItemIconPalette_TownMap,
+    },
+
+    [ITEM_RIKOS_LEAF_BUNDLE] =
+    {
+        .name = ITEM_NAME("Riko Leaves"),
+        .price = 0,
+        .description = COMPOUND_STRING("Reusable costume.\nUse again to revert."),
+        .importance = 1,
+        .pocket = POCKET_KEY_ITEMS,
+        .sortType = ITEM_TYPE_EVOLUTION_STONE,
+        .heldSlot = 0,
+        .type = ITEM_USE_PARTY_MENU,
+        .fieldUseFunc = ItemUseOutOfBattle_EvolutionStone,
+        .effect = gItemEffect_EvoItem,
+        .iconPic = gItemIcon_RikoLeaves,
+        .iconPalette = gItemIconPalette_RikoLeaves,
+    },
+    [ITEM_COCOAS_KNIT_SET] =
+    {
+        .name = ITEM_NAME("Cocoa Knit"),
+        .price = 0,
+        .description = COMPOUND_STRING("Reusable costume.\nUse again to revert."),
+        .importance = 1,
+        .pocket = POCKET_KEY_ITEMS,
+        .sortType = ITEM_TYPE_EVOLUTION_STONE,
+        .heldSlot = 0,
+        .type = ITEM_USE_PARTY_MENU,
+        .fieldUseFunc = ItemUseOutOfBattle_EvolutionStone,
+        .effect = gItemEffect_EvoItem,
+        .iconPic = gItemIcon_BijuuSweater,
+        .iconPalette = gItemIconPalette_BijuuSweater,
+    },
+    [ITEM_PENNYS_CARDIGAN] =
+    {
+        .name = ITEM_NAME("Penny Cardigan"),
+        .price = 0,
+        .description = COMPOUND_STRING("Reusable costume.\nUse again to revert."),
+        .importance = 1,
+        .pocket = POCKET_KEY_ITEMS,
+        .sortType = ITEM_TYPE_EVOLUTION_STONE,
+        .heldSlot = 0,
+        .type = ITEM_USE_PARTY_MENU,
+        .fieldUseFunc = ItemUseOutOfBattle_EvolutionStone,
+        .effect = gItemEffect_EvoItem,
+        .iconPic = gItemIcon_PennySweater,
+        .iconPalette = gItemIconPalette_PennySweater,
+    },
+    [ITEM_RIKOS_FEATHER_FAN] =
+    {
+        .name = ITEM_NAME("Riko Feathers"),
+        .price = 0,
+        .description = COMPOUND_STRING("Reusable costume.\nUse again to revert."),
+        .importance = 1,
+        .pocket = POCKET_KEY_ITEMS,
+        .sortType = ITEM_TYPE_EVOLUTION_STONE,
+        .heldSlot = 0,
+        .type = ITEM_USE_PARTY_MENU,
+        .fieldUseFunc = ItemUseOutOfBattle_EvolutionStone,
+        .effect = gItemEffect_EvoItem,
+        .iconPic = gItemIcon_RikoTurkey,
+        .iconPalette = gItemIconPalette_RikoTurkey,
+    },
+    [ITEM_COCOAS_CHEF_HAT] =
+    {
+        .name = ITEM_NAME("Cocoa Chef Hat"),
+        .price = 0,
+        .description = COMPOUND_STRING("Reusable costume.\nUse again to revert."),
+        .importance = 1,
+        .pocket = POCKET_KEY_ITEMS,
+        .sortType = ITEM_TYPE_EVOLUTION_STONE,
+        .heldSlot = 0,
+        .type = ITEM_USE_PARTY_MENU,
+        .fieldUseFunc = ItemUseOutOfBattle_EvolutionStone,
+        .effect = gItemEffect_EvoItem,
+        .iconPic = gItemIcon_BijuuChef,
+        .iconPalette = gItemIconPalette_BijuuChef,
+    },
+    [ITEM_PENNYS_YAM_WRAP] =
+    {
+        .name = ITEM_NAME("Penny Yam Wrap"),
+        .price = 0,
+        .description = COMPOUND_STRING("Reusable costume.\nUse again to revert."),
+        .importance = 1,
+        .pocket = POCKET_KEY_ITEMS,
+        .sortType = ITEM_TYPE_EVOLUTION_STONE,
+        .heldSlot = 0,
+        .type = ITEM_USE_PARTY_MENU,
+        .fieldUseFunc = ItemUseOutOfBattle_EvolutionStone,
+        .effect = gItemEffect_EvoItem,
+        .iconPic = gItemIcon_PennyYam,
+        .iconPalette = gItemIconPalette_PennyYam,
+    },
+    [ITEM_POM_SANTA_HAT] =
+    {
+        .name = ITEM_NAME("Pom Santa Hat"),
+        .price = 0,
+        .description = COMPOUND_STRING("Reusable costume.\nUse again to revert."),
+        .importance = 1,
+        .pocket = POCKET_KEY_ITEMS,
+        .sortType = ITEM_TYPE_EVOLUTION_STONE,
+        .heldSlot = 0,
+        .type = ITEM_USE_PARTY_MENU,
+        .fieldUseFunc = ItemUseOutOfBattle_EvolutionStone,
+        .effect = gItemEffect_EvoItem,
+        .iconPic = gItemIcon_RikoSanta,
+        .iconPalette = gItemIconPalette_RikoSanta,
+    },
+    [ITEM_COCOA_GIFT_BOX] =
+    {
+        .name = ITEM_NAME("Cocoa Gift Box"),
+        .price = 0,
+        .description = COMPOUND_STRING("Reusable costume.\nUse again to revert."),
+        .importance = 1,
+        .pocket = POCKET_KEY_ITEMS,
+        .sortType = ITEM_TYPE_EVOLUTION_STONE,
+        .heldSlot = 0,
+        .type = ITEM_USE_PARTY_MENU,
+        .fieldUseFunc = ItemUseOutOfBattle_EvolutionStone,
+        .effect = gItemEffect_EvoItem,
+        .iconPic = gItemIcon_BijuuPresent,
+        .iconPalette = gItemIconPalette_BijuuPresent,
+    },
+    [ITEM_PENNYS_ANTLERS] =
+    {
+        .name = ITEM_NAME("Penny Antlers"),
+        .price = 0,
+        .description = COMPOUND_STRING("Reusable costume.\nUse again to revert."),
+        .importance = 1,
+        .pocket = POCKET_KEY_ITEMS,
+        .sortType = ITEM_TYPE_EVOLUTION_STONE,
+        .heldSlot = 0,
+        .type = ITEM_USE_PARTY_MENU,
+        .fieldUseFunc = ItemUseOutOfBattle_EvolutionStone,
+        .effect = gItemEffect_EvoItem,
+        .iconPic = gItemIcon_PennyReindeer,
+        .iconPalette = gItemIconPalette_PennyReindeer,
+    },
+    [ITEM_POM_PARTY_HAT] =
+    {
+        .name = ITEM_NAME("Pom Party Hat"),
+        .price = 0,
+        .description = COMPOUND_STRING("Reusable costume.\nUse again to revert."),
+        .importance = 1,
+        .pocket = POCKET_KEY_ITEMS,
+        .sortType = ITEM_TYPE_EVOLUTION_STONE,
+        .heldSlot = 0,
+        .type = ITEM_USE_PARTY_MENU,
+        .fieldUseFunc = ItemUseOutOfBattle_EvolutionStone,
+        .effect = gItemEffect_EvoItem,
+        .iconPic = gItemIcon_RikoParty,
+        .iconPalette = gItemIconPalette_RikoParty,
+    },
+    [ITEM_COCOA_SILVER_BOW] =
+    {
+        .name = ITEM_NAME("Silver Bow"),
+        .price = 0,
+        .description = COMPOUND_STRING("Reusable costume.\nUse again to revert."),
+        .importance = 1,
+        .pocket = POCKET_KEY_ITEMS,
+        .sortType = ITEM_TYPE_EVOLUTION_STONE,
+        .heldSlot = 0,
+        .type = ITEM_USE_PARTY_MENU,
+        .fieldUseFunc = ItemUseOutOfBattle_EvolutionStone,
+        .effect = gItemEffect_EvoItem,
+        .iconPic = gItemIcon_BijuuGala,
+        .iconPalette = gItemIconPalette_BijuuGala,
+    },
+    [ITEM_PENNYS_STAR_DRESS] =
+    {
+        .name = ITEM_NAME("Penny Star Dress"),
+        .price = 0,
+        .description = COMPOUND_STRING("Reusable costume.\nUse again to revert."),
+        .importance = 1,
+        .pocket = POCKET_KEY_ITEMS,
+        .sortType = ITEM_TYPE_EVOLUTION_STONE,
+        .heldSlot = 0,
+        .type = ITEM_USE_PARTY_MENU,
+        .fieldUseFunc = ItemUseOutOfBattle_EvolutionStone,
+        .effect = gItemEffect_EvoItem,
+        .iconPic = gItemIcon_PennyStars,
+        .iconPalette = gItemIconPalette_PennyStars,
+    },
 };
 
 #undef ITEM_NAME
 #undef ITEM_PLURAL_NAME
+
+

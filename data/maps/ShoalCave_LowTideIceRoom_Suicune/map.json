@@ -5,7 +5,7 @@
   "music": "MUS_DP_MT_CORONET",
   "region_map_section": "MAPSEC_SHOAL_CAVE",
   "requires_flash": false,
-  "weather": "WEATHER_SNOW",
+  "weather": "WEATHER_NONE",
   "map_type": "MAP_TYPE_UNDERGROUND",
   "allow_cycling": true,
   "allow_escaping": true,
@@ -139,5 +139,14 @@
       "script": "ShoalCave_LowTideIceRoom_Suicune_EntranceTrigger"
     }
   ],
-  "bg_events": []
+  "bg_events": [
+    {
+      "type": "sign",
+      "x": 4,
+      "y": 4,
+      "elevation": 0,
+      "player_facing_dir": "BG_EVENT_PLAYER_FACING_ANY",
+      "script": "ShoalCave_LowTideIceRoom_Suicune_TestReturn"
+    }
+  ]
 }

@@ -243,12 +243,20 @@ BlackthornGym_Text_ClairIntroText:
     .string "As a Gym Leader, I will use my full\n"
     .string "power against any opponent!\p"
     .string "Three legends? They still face\n"
-    .string "my Dragon Pokemon!$"
+    .string "my Dragon Pokemon!\p"
+	.string "Riko can look as grand as\n"
+	.string "she likes. Bijuu can study\p"
+	.string "my stance. Penny can be\n"
+	.string "perfectly sweet. I still\p"
+	.string "intend to win!$"
 
 BlackthornGym_Text_ClairWinText:
     .string "I lost?\p"
     .string "I don't believe it. There must be\n"
-    .string "some mistake…$"
+    .string "some mistake…\p"
+	.string "Do not let Riko start\n"
+	.string "posing yet. I am still\p"
+	.string "thinking!$"
 
 BlackthornGym_Text_ClairText_GoToDragonsDen:
     .string "I won't admit this.\p"
@@ -289,7 +297,13 @@ BlackthornGym_Text_ClairText_League:
     .string "League!\p"
     .string "If you do, I'll feel even worse\n"
     .string "about having lost to you!\p"
-    .string "Give it everything you've got.$"
+    .string "Give it everything you've got.\p"
+	.string "The clan keeps asking\n"
+	.string "about the trio. I told\p"
+	.string "them your commands\n"
+	.string "mattered as much as their\p"
+	.string "power. Do not make me\n"
+	.string "regret that.$"
 
 BlackthornGym_Text_ClairAfterLeague:
     .string "You did it, huh?\p"
@@ -303,13 +317,21 @@ BlackthornGym_Text_ClairRematchText:
     .string "As a Dragon Master, I won't hold\n"
     .string "back.\p"
     .string "Not this time.\p"
-    .string "Want to have a rematch with me?$"
+    .string "Want to have a rematch with me?\p"
+	.string "I trained for your girls.\n"
+	.string "All three. No excuses, no\p"
+	.string "distractions, and no\n"
+	.string "victory poses before we\p"
+	.string "finish!$"
 
 BlackthornGym_Text_ClairRematchDefeatText:
     .string "I lost?\p"
     .string "Again?\p"
     .string "I don't believe it. There must be\n"
-    .string "some mistake…$"
+    .string "some mistake…\p"
+	.string "Fine! Your teamwork\n"
+	.string "improved. I noticed. That\p"
+	.string "is all.$"
 
 BlackthornGym_Text_CooltrainermCodySeenText:
     .string "I just got access to use Dragon-\n"

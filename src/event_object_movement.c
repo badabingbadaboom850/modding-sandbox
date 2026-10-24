@@ -1,4 +1,6 @@
 #include "global.h"
+#include "trio_player_hats.h"
+#include "trio_scenic.h"
 #include "malloc.h"
 #include "battle_anim.h"
 #include "battle_pyramid.h"
@@ -490,6 +492,7 @@ const u8 gInitialMovementTypeFacingDirections[NUM_MOVEMENT_TYPES] = {
 #include "data/object_events/object_event_subsprites.h"
 #include "data/object_events/object_event_graphics_info.h"
 #include "data/object_events/object_event_graphics_info_followers.h"
+#include "data/object_events/player_hat_graphics.h"
 
 static const struct SpritePalette sObjectEventSpritePalettes[] = {
     {gObjectEventPal_Npc1,                  OBJ_EVENT_PAL_TAG_NPC_1},
@@ -2832,6 +2835,14 @@ void GetFollowerAction(struct ScriptContext *ctx) // Essentially a big switch fo
     // Set the script to the very end; we'll be calling another script dynamically
     ScriptJump(ctx, EventScript_FollowerEnd);
     species = GetMonData(mon, MON_DATA_SPECIES);
+    // Only a requested, healthy follower interaction. Preserve illness reactions.
+    const u8 *weatherText = TrioWeatherReaction(species, GetCurrentWeather());
+    if (weatherText != NULL && mon->status == 0 && mon->hp * 2 >= mon->maxHP)
+    {
+        ctx->data[0] = (u32) weatherText;
+        ScriptCall(ctx, EventScript_FollowerGeneric);
+        return;
+    }
     multi = GetMonData(mon, MON_DATA_FRIENDSHIP);
     if (multi > 80)
     {
@@ -3567,6 +3578,9 @@ const struct ObjectEventGraphicsInfo *GetObjectEventGraphicsInfo(u16 graphicsId)
 
     if (graphicsId & OBJ_EVENT_MON)
         return SpeciesToGraphicsInfo(graphicsId & OBJ_EVENT_MON_SPECIES_MASK, graphicsId & OBJ_EVENT_MON_SHINY, graphicsId & OBJ_EVENT_MON_FEMALE);
+
+    if (graphicsId >= TRIO_PLAYER_HAT_GFX_BASE && graphicsId < TRIO_PLAYER_HAT_GFX_BASE + ARRAY_COUNT(sPlayerHatGraphics))
+        return sPlayerHatGraphics[graphicsId - TRIO_PLAYER_HAT_GFX_BASE];
 
     if (graphicsId >= NUM_OBJ_EVENT_GFX)
         graphicsId = OBJ_EVENT_GFX_NINJA_BOY;
@@ -5479,23 +5493,32 @@ bool8 MoveNextDirectionInSequence(struct ObjectEvent *objectEvent, struct Sprite
 {
     enum Collision collision;
     u8 movementActionId;
+    // Both party rooms share the normal collision-aware route loop.
+    bool8 pomParty = ((objectEvent->mapGroup == MAP_GROUP(MAP_GOLDENROD_CITY_HOUSE2)
+                   && objectEvent->mapNum == MAP_NUM(MAP_GOLDENROD_CITY_HOUSE2))
+                  || (objectEvent->mapGroup == MAP_GROUP(MAP_OLIVINE_POM_PARTY)
+                   && objectEvent->mapNum == MAP_NUM(MAP_OLIVINE_POM_PARTY)))
+                 && objectEvent->graphicsId == OBJ_EVENT_GFX_SPECIES(RIKO);
 
     if (objectEvent->directionSequenceIndex == 3 && objectEvent->initialCoords.x == objectEvent->currentCoords.x && objectEvent->initialCoords.y == objectEvent->currentCoords.y)
         objectEvent->directionSequenceIndex = 0;
 
     SetObjectEventDirection(objectEvent, route[objectEvent->directionSequenceIndex]);
-    movementActionId = GetWalkNormalMovementAction(objectEvent->movementDirection);
+    movementActionId = pomParty ? GetWalkFastMovementAction(objectEvent->movementDirection)
+                                   : GetWalkNormalMovementAction(objectEvent->movementDirection);
     collision = GetCollisionInDirection(objectEvent, objectEvent->movementDirection);
     if (collision == COLLISION_OUTSIDE_RANGE)
     {
         objectEvent->directionSequenceIndex++;
         SetObjectEventDirection(objectEvent, route[objectEvent->directionSequenceIndex]);
-        movementActionId = GetWalkNormalMovementAction(objectEvent->movementDirection);
+        movementActionId = pomParty ? GetWalkFastMovementAction(objectEvent->movementDirection)
+                                   : GetWalkNormalMovementAction(objectEvent->movementDirection);
         collision = GetCollisionInDirection(objectEvent, objectEvent->movementDirection);
     }
 
     if (collision)
-        movementActionId = GetWalkInPlaceNormalMovementAction(objectEvent->facingDirection);
+        movementActionId = pomParty ? GetWalkInPlaceFastMovementAction(objectEvent->facingDirection)
+                                   : GetWalkInPlaceNormalMovementAction(objectEvent->facingDirection);
 
     ObjectEventSetSingleMovement(objectEvent, sprite, movementActionId);
     objectEvent->singleMovementActive = TRUE;

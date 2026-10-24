@@ -297,11 +297,19 @@ VermilionGym_Text_LtSurgeIntro:
 	.string "I'll zap you just like I did my\n"
 	.string "enemies in war!\p"
 	.string "Three legends do not scare me!\n"
-	.string "I have faced worse in battle!$"
+	.string "I have faced worse in battle!\p"
+	.string "Riko has spirit! Bijuu\n"
+	.string "watches the field! Penny\p"
+	.string "keeps her unit close! Let\n"
+	.string "me see their trainer give\p"
+	.string "orders!$"
 
 VermilionGym_Text_LtSurgeWinLoss:
 	.string "Surge: Arrrgh! You are strong!\p"
-	.string "Ok, kid. You get Thunderbadge!$"
+	.string "Ok, kid. You get Thunderbadge!\p"
+	.string "Your girls never lost\n"
+	.string "formation. That takes more\p"
+	.string "than power!$"
 
 VermilionGym_Text_ReceivedThunderBadge:
 	.string "{PLAYER} received Thunderbadge.$"
@@ -325,18 +333,30 @@ VermilionGym_Text_LtSurgeThunderstone:
 VermilionGym_Text_LtSurgePostBattle:
 	.string "Surge: Hey, kid! Still slugging\n"
 	.string "and chugging away?\p"
-	.string "My Pokémon and I are still at it!$"
+	.string "My Pokémon and I are still at it!\p"
+	.string "The port tells stories\n"
+	.string "about our fight. Tell them\p"
+	.string "this! I respect a trainer\n"
+	.string "who brings everybody home\p"
+	.string "together.$"
 
 VermilionGym_Text_SurgeRematch:
 	.string "Surge: So, you're now Kanto\n"
 	.string "Champion!\p"
 	.string "Impressive work, kid!\n"
 	.string "But don't think I'm done!\p"
-	.string "How about we have a go again?$"
+	.string "How about we have a go again?\p"
+	.string "I rebuilt my plan for your\n"
+	.string "trio! Same girls, new\p"
+	.string "battle. Let us see your\n"
+	.string "orders!$"
 
 VermilionGym_Text_SurgeRematchDefeat:
 	.string "Surge: Arrrgh! You're still just\n"
-	.string "as strong!$"
+	.string "as strong!\p"
+	.string "You adapted as a team! I\n"
+	.string "respect that. All four of\p"
+	.string "you!$"
 
 VermilionGym_Text_GentlemanGregorySeen:
 	.string "You're here to defeat Lt.Surge?\p"

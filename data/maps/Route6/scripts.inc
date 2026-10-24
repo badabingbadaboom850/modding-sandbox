@@ -1,10 +1,12 @@
 Route6_MapScripts::
+	map_script MAP_SCRIPT_ON_FRAME_TABLE, TrioGang_OnFrame
 	map_script MAP_SCRIPT_ON_TRANSITION, Route6_OnTransition
 	map_script MAP_SCRIPT_ON_RESUME, SetTimeEncounters
 	.byte 0
 
 Route6_OnTransition:
 	callnative SetTimeBasedEncounters
+	special TrioGang_PrepareAmbush
 	end
 
 Route6_EventScript_Rex::

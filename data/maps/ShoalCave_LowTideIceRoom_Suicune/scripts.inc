@@ -3,8 +3,7 @@
 .set LOCALID_RIKO_SPIRIT_2, 8
 
 ShoalCave_LowTideIceRoom_Suicune_MapScripts::
-	map_script MAP_SCRIPT_ON_TRANSITION, ShoalCave_LowTideIceRoom_Suicune_OnTransition
-	map_script MAP_SCRIPT_ON_RESUME, SetTimeEncounters
+	@ Temporary diagnosis: do not run the time-based entry/resume callbacks.
 	.byte 0
 
 ShoalCave_LowTideIceRoom_Suicune_OnTransition::
@@ -43,19 +42,7 @@ ShoalCave_LowTideIceRoom_Suicune_EntranceTriggerMovement:
 ShoalCave_LowTideIceRoom_Suicune_RikoSpiritBattle1::
 	lockall
 	faceplayer
-	waitse
-	playmoncry SPECIES_RIKO_SPIRIT, CRY_MODE_ENCOUNTER
-	delay 40
-	waitmoncry
-	setwildbattle SPECIES_RIKO_SPIRIT, 90
-	setflag FLAG_GARBAGEFLAG
-	setflag FLAG_SYS_NO_CATCHING
-	setflag FLAG_SYS_SET_BATTLE_BGM
-	setvar VAR_TEMP_F, MUS_RG_VS_LEGEND
-	call_if_set FLAG_GARBAGEFLAG, ShoalCave_LowTideIceRoom_Suicune_RikoSpiritBattle1_Stats
-	dowildbattle
-	clearflag FLAG_GARBAGEFLAG
-	specialvar VAR_RESULT, GetBattleOutcome
+	call TrioSpiritTrials_StartRiko1
 	goto_if_eq VAR_RESULT, B_OUTCOME_WON, ShoalCave_LowTideIceRoom_Suicune_RikoSpiritBattle1_Won
 	goto_if_eq VAR_RESULT, B_OUTCOME_RAN, ShoalCave_LowTideIceRoom_Suicune_Ran
 	goto_if_eq VAR_RESULT, B_OUTCOME_PLAYER_TELEPORTED, ShoalCave_LowTideIceRoom_Suicune_Ran
@@ -104,19 +91,7 @@ ShoalCave_LowTideIceRoom_Suicune_RikoSpiritBattle1_Text:
 ShoalCave_LowTideIceRoom_Suicune_RikoSpiritBattle2::
 	lockall
 	faceplayer
-	waitse
-	playmoncry SPECIES_RIKO_SPIRIT, CRY_MODE_ENCOUNTER
-	delay 40
-	waitmoncry
-	setwildbattle SPECIES_RIKO_SPIRIT, 80
-	setflag FLAG_GARBAGEFLAG
-	setflag FLAG_SYS_NO_CATCHING
-	setflag FLAG_SYS_SET_BATTLE_BGM
-	setvar VAR_TEMP_F, MUS_C_VS_LEGEND_BEAST
-	call_if_set FLAG_GARBAGEFLAG, ShoalCave_LowTideIceRoom_Suicune_RikoSpiritBattle2_Stats
-	dowildbattle
-	clearflag FLAG_GARBAGEFLAG
-	specialvar VAR_RESULT, GetBattleOutcome
+	call TrioSpiritTrials_StartRiko2
 	goto_if_eq VAR_RESULT, B_OUTCOME_WON, ShoalCave_LowTideIceRoom_Suicune_RikoSpiritBattle2_Won
 	goto_if_eq VAR_RESULT, B_OUTCOME_RAN, ShoalCave_LowTideIceRoom_Suicune_Ran
 	goto_if_eq VAR_RESULT, B_OUTCOME_PLAYER_TELEPORTED, ShoalCave_LowTideIceRoom_Suicune_Ran
@@ -164,20 +139,7 @@ ShoalCave_LowTideIceRoom_Suicune_RikoSpiritBattle2_Text:
 ShoalCave_LowTideIceRoom_Suicune_RikoSpiritFinalBattle::
 	lockall
 	faceplayer
-	waitse
-	playmoncry SPECIES_RIKO_SPIRIT, CRY_MODE_ENCOUNTER
-	delay 40
-	waitmoncry
-	msgbox ShoalCave_LowTideIceRoom_Suicune_RikoSpiritFinalBattle_Text, MSGBOX_DEFAULT
-	closemessage
-	setwildbattle SPECIES_RIKO_SPIRIT, 70, ITEM_CHARCOAL
-	setflag FLAG_GARBAGEFLAG
-	call_if_set FLAG_GARBAGEFLAG, ShoalCave_LowTideIceRoom_Suicune_RikoSpiritBattle3_Stats
-	special BattleSetup_StartLegendaryBattle
-	waitstate
-	clearflag FLAG_GARBAGEFLAG
-	calculatemonstats
-	specialvar VAR_RESULT, GetBattleOutcome
+	call TrioSpiritTrials_StartFinal
 	goto_if_eq VAR_RESULT, B_OUTCOME_WON, ShoalCave_LowTideIceRoom_Suicune_RikoSpiritFinalBattle_Won
 	goto_if_eq VAR_RESULT, B_OUTCOME_CAUGHT, ShoalCave_LowTideIceRoom_Suicune_RikoSpiritFinalBattle_Won
 	goto_if_eq VAR_RESULT, B_OUTCOME_RAN, ShoalCave_LowTideIceRoom_Suicune_Ran
@@ -192,7 +154,7 @@ ShoalCave_LowTideIceRoom_Suicune_RikoSpiritBattle3_Stats::
 	@special SetSpDefStat
 	return
 
-ShoalCave_LowTideIceRoom_Suicune_RikoSpiritFinalBattle_Text:
+ShoalCave_LowTideIceRoom_Suicune_RikoSpiritFinalBattle_Text::
 	.string "The Spirit of Riko stands its\n"
 	.string "ground. Its three heads lower.\p"
 	.string "The guardian challenge is over.\p"
@@ -200,6 +162,7 @@ ShoalCave_LowTideIceRoom_Suicune_RikoSpiritFinalBattle_Text:
 
 ShoalCave_LowTideIceRoom_Suicune_RikoSpiritFinalBattle_Won::
 	setflag FLAG_DEFEATED_SUICUNE
+	call TrioKeepsakes_TryRiko
 	clearflag FLAG_GARBAGEFLAG
 	clearflag FLAG_SYS_NO_CATCHING
 	callnative UpdateFollowingPokemon
@@ -211,3 +174,22 @@ ShoalCave_LowTideIceRoom_Suicune_Ran::
 	clearflag FLAG_SYS_NO_CATCHING
 	releaseall
 	end
+
+
+ShoalCave_LowTideIceRoom_Suicune_TestReturn::
+	lockall
+	msgbox ShoalCave_LowTideIceRoom_Suicune_TestReturn_Text, MSGBOX_YESNO
+	goto_if_eq VAR_RESULT, YES, ShoalCave_LowTideIceRoom_Suicune_TestReturn_Yes
+	closemessage
+	releaseall
+	end
+
+ShoalCave_LowTideIceRoom_Suicune_TestReturn_Yes::
+	closemessage
+	warp MAP_NEW_BARK_TOWN, 20, 12
+	waitstate
+	releaseall
+	end
+
+ShoalCave_LowTideIceRoom_Suicune_TestReturn_Text:
+	.string "Return to New Bark Town?$"

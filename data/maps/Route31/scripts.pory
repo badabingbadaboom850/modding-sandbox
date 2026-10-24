@@ -1,11 +1,8 @@
+raw `
 Route31_MapScripts::
 	map_script MAP_SCRIPT_ON_TRANSITION, Route31_OnTransition
 	map_script MAP_SCRIPT_ON_RESUME, SetTimeEncounters
 	.byte 0
-
-Route31_OnTransition: 
-	callnative SetTimeBasedEncounters
-	end
 
 Route31_EventScript_BijuuEncounter::
 	lock
@@ -66,6 +63,28 @@ Route31_EventScript_BijuuCaught::
 	setflag FLAG_CAUGHT_BIJUU
 	msgbox Route31_Text_BijuuCaught, MSGBOX_DEFAULT
 	release
+	end
+
+Route31_Text_BijuuAppears:
+	.string "The shy cat copies your steps.\p"
+	.string "She steps close, watching you\n"
+	.string "with bright, curious eyes.$"
+
+Route31_Text_BijuuTooShy:
+	.string "A shy cat watches from the\n"
+	.string "grass.\p"
+	.string "It copies your movements, then\n"
+	.string "hides.\p"
+	.string "You should come back with\n"
+	.string "Poke Balls.$"
+
+Route31_Text_BijuuCaught:
+	.string "Bijuu trusts you enough to stay.\p"
+	.string "She was sent to a PC Box if your\n"
+	.string "party was full.$"
+
+Route31_OnTransition: 
+	callnative SetTimeBasedEncounters
 	end
 
 Route31_EventScript_Bugcatcher_Wade::
@@ -146,24 +165,6 @@ Route31_EventScript_ItemPokeBall::
 Route31_EventScript_ItemAntidote::
 	finditem ITEM_ANTIDOTE
 	end
-
-Route31_Text_BijuuAppears:
-	.string "The shy cat copies your steps.\p"
-	.string "She steps close, watching you\n"
-	.string "with bright, curious eyes.$"
-
-Route31_Text_BijuuTooShy:
-	.string "A shy cat watches from the\n"
-	.string "grass.\p"
-	.string "It copies your movements, then\n"
-	.string "hides.\p"
-	.string "You should come back with\n"
-	.string "Poke Balls.$"
-
-Route31_Text_BijuuCaught:
-	.string "Bijuu trusts you enough to stay.\p"
-	.string "She was sent to a PC Box if your\n"
-	.string "party was full.$"
 
 Route31_Text_CooltrainerM:
 	.string "Dark Cave…\p"
@@ -253,6 +254,86 @@ Route31_Text_Sign:
 
 Route31_Text_DarkCaveSign:
 	.string "Dark Cave$"
+
+Route31_Expert::
+	lock
+	faceplayer
+	goto_if_set FLAG_ROUTE31_EXPERT, Route31_Expert_2
+	msgbox Route31_Expert_Text_1
+	goto_if_set FLAG_ROUTE31_EXPERT_QUALIFIED, Route31_Expert_5
+	checktrainerflag TRAINER_WADE
+	goto_if 1, Route31_Expert_9
+Route31_Expert_4:
+	release
+	end
+
+Route31_Expert_2:
+	setflag FLAG_ROUTE31_EXPERT_QUALIFIED
+	msgbox Route31_Expert_Text_0
+	release
+	end
+
+Route31_Expert_5:
+	setflag FLAG_ROUTE31_EXPERT_QUALIFIED
+	msgbox Route31_Expert_Text_2
+	trainerbattle_no_intro TRAINER_ROUTE_31_EXPERT, Route31_Expert_Text_3
+	createfieldmugshot MUGSHOT_COOLTRAINER_M
+	msgbox Route31_Expert_Text_4
+	giveitem ITEM_AIR_BALLOON
+	setflag FLAG_ROUTE31_EXPERT
+	addvar VAR_ROUTE_EXPERTS_DEFEATED, 1
+	special Achievement_CheckAll
+	createfieldmugshot MUGSHOT_COOLTRAINER_M
+	msgbox Route31_Expert_Text_0
+	goto Route31_Expert_4
+
+Route31_Expert_8:
+	checktrainerflag TRAINER_MIKEY
+	goto_if 1, Route31_Expert_12
+	goto Route31_Expert_4
+
+Route31_Expert_9:
+	checktrainerflag TRAINER_JOEY
+	goto_if 1, Route31_Expert_8
+	goto Route31_Expert_4
+
+Route31_Expert_12:
+	checktrainerflag TRAINER_DON
+	goto_if 1, Route31_Expert_5
+	goto Route31_Expert_4
+
+
+Route31_Expert_Text_0:
+	.string "Air Balloon lets a Pokémon avoid \n"
+	.string "Ground-type moves until it \l"
+	.string "takes a hit.\p"
+	.string "It might prove useful in the \n"
+	.string "coming battles.\p"
+	.string "Held items similar to this can\n"
+	.string "be activated once per battle.\p"
+	.string "They will be restored after the\n"
+	.string "battle is over.$"
+
+Route31_Expert_Text_1:
+	.string "I'm what they call a route expert. \p"
+	.string "If you manage to beat every trainer on \n"
+	.string "Route 30 and 31, come find me again \l"
+	.string "and we will have a battle.\p"
+	.string "I'll make it worth your while,\n"
+	.string "if you manage to win.$"
+
+Route31_Expert_Text_2:
+	.string "Oh, you have indeed defeated \n"
+	.string "all the trainers on this route.\p"
+	.string "I will battle you as promised.$"
+
+Route31_Expert_Text_3:
+	.string "Popped off...$"
+
+Route31_Expert_Text_4:
+	.string "You are better than I had assumed. \p"
+	.string "Take this for your victory.$"
+
 Route31_Text_BijuuSpotted:
 	.string "Wait... is that Bijuu?\p"
 	.string "She darts away!$"
@@ -283,5 +364,4 @@ Route31_Movement_BijuuRun2:
 	walk_fast_right
 	walk_fast_right
 	step_end
-
-
+`

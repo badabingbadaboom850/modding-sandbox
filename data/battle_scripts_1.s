@@ -388,6 +388,27 @@ BattleScript_CorrosiveGasFail:
 	waitmessage B_WAIT_TIME_LONG
 	goto BattleScript_MoveEnd
 
+BattleScript_EffectSafeWithYou::
+	attackcanceler
+	curestatuswithmove BattleScript_SafeWithYouTryRaise
+	attackanimation
+	waitanimation
+	updatestatusicon BS_ATTACKER
+	printstring STRINGID_PKMNSTATUSNORMAL
+	waitmessage B_WAIT_TIME_LONG
+	goto BattleScript_SafeWithYouRaise
+BattleScript_SafeWithYouTryRaise:
+	jumpifstat BS_ATTACKER, CMP_EQUAL, STAT_SPDEF, MAX_STAT_STAGE, BattleScript_CantRaiseMultipleStats
+	attackanimation
+	waitanimation
+BattleScript_SafeWithYouRaise:
+	beginstatbuffbatch
+	setstatchanger STAT_SPDEF, 1, FALSE
+	statbuffchange BS_ATTACKER, STAT_CHANGE_ALLOW_PTR, BattleScript_SafeWithYouEnd
+BattleScript_SafeWithYouEnd:
+	flushstatbuffbatch
+	goto BattleScript_MoveEnd
+
 BattleScript_EffectTakeHeart::
 	attackcanceler
 	curestatuswithmove BattleScript_CalmMindTryToRaiseStats

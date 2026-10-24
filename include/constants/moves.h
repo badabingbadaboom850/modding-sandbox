@@ -905,7 +905,7 @@ enum __attribute__((packed)) Move
     MOVE_MALIGNANT_CHAIN = 847,
     MOVES_COUNT_GEN9,
 
-    // Add any custom moves here, not further down!
+    // Legacy custom moves: preserve these IDs. New family moves append after Max moves.
     MOVE_DARK_AERO = MOVES_COUNT_GEN9,
     MOVE_FLOOF_FURY,
     MOVE_MEGA_RIKO,
@@ -1011,8 +1011,30 @@ enum __attribute__((packed)) Move
     MOVE_G_MAX_RAPID_FLOW,
     LAST_MAX_MOVE = MOVE_G_MAX_RAPID_FLOW,
     MOVES_COUNT_DYNAMAX,
-    MOVES_COUNT_ALL = MOVES_COUNT_DYNAMAX,
+    // Family signature moves append AFTER historical Z/Max IDs for save compatibility.
+    MOVE_BLANKEY_TIME = MOVES_COUNT_DYNAMAX,
+    MOVE_GOOD_GIRL_GUARD,
+    MOVE_PENNY_PATIENCE,
+    MOVE_TINY_NIBBLES,
+    MOVE_LONG_GAME,
+    MOVE_SAFE_WITH_YOU,
+    MOVE_COCOA_POUNCE,
+    MOVE_BACKYARD_BLITZ,
+    MOVE_MIDNIGHT_ZOOM,
+    MOVE_CLAW_ENFORCEMENT,
+    MOVE_COCOA_CHAOS,
+    MOVE_ABSOLUTELY_FERAL,
+    MOVE_POM_TANTRUM,
+    MOVE_EXCUSE_YOU,
+    MOVE_SIDE_EYE,
+    MOVE_MAIN_CHARACTER,
+    MOVE_LAST_WORD,
+    MOVE_DRAMA_QUEEN,
+    MOVES_COUNT_ALL,
 };
+
+// Ordinary moves include appended family signatures; Z/Max ranges remain excluded.
+#define IS_STANDARD_MOVE(move) ((move) < MOVES_COUNT || ((move) >= MOVE_BLANKEY_TIME && (move) < MOVES_COUNT_ALL))
 
 #define MOVE_DEFAULT     0x3FFF // Used when creating a mon to be replaced by a level-up move (needs to be less than that 0x4000 because of VarGet)
 #define MOVE_UNAVAILABLE 0xFFFF // Used for checks for moves affected by Disable, Mimic, etc.

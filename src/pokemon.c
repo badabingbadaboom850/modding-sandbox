@@ -1,4 +1,5 @@
 #include "global.h"
+#include "trio_runoff.h"
 #include "achievements.h"
 #include "malloc.h"
 #include "apprentice.h"
@@ -690,6 +691,7 @@ const struct NatureInfo gNaturesInfo[NUM_NATURES] =
 
 #include "data/pokemon/custom_species.h"
 
+#include "data/pokemon/trio_elemental_learnsets.h"
 #include "data/pokemon/species_info.h"
 
 #define PP_UP_SHIFTS(val)           val,        (val) << 2,        (val) << 4,        (val) << 6
@@ -3507,11 +3509,20 @@ bool8 PokemonUseItemEffects(struct Pokemon *mon, enum Item item, u8 partyIndex, 
     bool8 didLevelUp = FALSE;
     bool8 isLevelUpItem;
 
+    if (TrioRunoff_IsAway(mon))
+        return TRUE;
+
     // Determine the EV cap to use
     u32 maxAllowedEVs = !B_EV_ITEMS_CAP ? MAX_TOTAL_EVS : GetCurrentEVCap();
 
     // Skip using the item if it won't do anything
     if (GetItemEffect(item) == NULL && item != ITEM_ENIGMA_BERRY_E_READER)
+        return TRUE;
+
+    // Puffs follow the candy UI, but never affect eggs, empty slots or zero uses.
+    if (item == ITEM_RIKO_PUFFS
+        && (itemCount == 0 || GetMonData(mon, MON_DATA_IS_EGG)
+            || GetMonData(mon, MON_DATA_SPECIES) == SPECIES_NONE))
         return TRUE;
 
     // Get item effect
@@ -3601,7 +3612,7 @@ bool8 PokemonUseItemEffects(struct Pokemon *mon, enum Item item, u8 partyIndex, 
                     u16 species = GetMonData(mon, MON_DATA_SPECIES);
                     u32 currentExp = GetMonData(mon, MON_DATA_EXP);
                     u32 level = GetMonData(mon, MON_DATA_LEVEL, NULL);
-                    u32 targetLevel = level + itemCount;
+                    u32 targetLevel = level + (u32)itemCount * (item == ITEM_RIKO_PUFFS ? 5 : 1);
                     u32 maxLevel = MAX_LEVEL;
 
                     if (B_RARE_CANDY_CAP && GetCurrentExpCapType() != EXP_CAP_NONE)
@@ -5331,8 +5342,35 @@ bool8 TryDecrementMonLevel(struct Pokemon *mon)
     return TRUE;
 }
 
+static bool32 CanLearnFamilySignature(u16 species, enum Move move)
+{
+    if (species == SPECIES_NONE || species >= NUM_SPECIES || species == SPECIES_EGG)
+        return FALSE;
+    const u16 *forms = gSpeciesInfo[species].formSpeciesIdTable;
+    if (move >= MOVE_BLANKEY_TIME && move <= MOVE_SAFE_WITH_YOU)
+#if P_FAMILY_FIDOUGH
+        return forms == sPennySpiritFormSpeciesIdTable;
+#else
+        return FALSE;
+#endif
+    if (move >= MOVE_COCOA_POUNCE && move <= MOVE_ABSOLUTELY_FERAL)
+#if P_FAMILY_BIJUU
+        return forms == sBijuuFormSpeciesIdTable;
+#else
+        return FALSE;
+#endif
+#if P_FAMILY_RIKO
+    return forms == sRikoFormSpeciesIdTable;
+#else
+    return FALSE;
+#endif
+}
+
 u8 CanLearnTeachableMove(u16 species, enum Move move)
 {
+    if ((move >= MOVE_BLANKEY_TIME && move <= MOVE_DRAMA_QUEEN)
+        || move == MOVE_FLOOF_FURY || move == MOVE_MEGA_RIKO)
+        return CanLearnFamilySignature(species, move);
     const u16 *teachableLearnset = GetSpeciesTeachableLearnset(species);
     if (species == SPECIES_EGG)
         return FALSE;
@@ -5381,6 +5419,20 @@ bool32 IsSpeciesInHoennDex(u16 species)
 
 u16 GetBattleBGM(void)
 {
+    // The dedicated cave's four voices have their own battle themes.
+    if (!(gBattleTypeFlags & BATTLE_TYPE_TRAINER)
+     && gSaveBlock1Ptr->location.mapGroup == MAP_GROUP(MAP_RIKO_SPIRIT_CAVERN)
+     && gSaveBlock1Ptr->location.mapNum == MAP_NUM(MAP_RIKO_SPIRIT_CAVERN))
+    {
+        switch (GetMonData(&gEnemyParty[0], MON_DATA_SPECIES))
+        {
+        case SPECIES_RIKO_ASPECT_MIND: return MUS_HG_VS_LUGIA;
+        case SPECIES_RIKO_ASPECT_BODY: return MUS_HG_VS_ENTEI;
+        case SPECIES_RIKO_ASPECT_SOUL: return MUS_HG_VS_HO_OH;
+        case SPECIES_RIKO_SPIRIT: return MUS_HG_VS_CHAMPION;
+        }
+    }
+
     // Pyramid and Pike wild encounters are also marked as Frontier battles,
     // but the player's facility BGM choice is only for trainer battles.
     if ((gBattleTypeFlags & BATTLE_TYPE_FRONTIER)
@@ -7884,3 +7936,4 @@ u32 SwitchInCandidateHeldItemWithEffect(struct BattlePokemon switchinCandidate, 
     }
     return ITEM_NONE;
 }
+
