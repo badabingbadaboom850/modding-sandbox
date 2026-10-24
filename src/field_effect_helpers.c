@@ -702,12 +702,33 @@ void UpdateShortGrassFieldEffect(struct Sprite *sprite)
 #define sTimer   data[1]
 #define sFldEff  data[7]
 
+// Tracks are cosmetic. Leave room for actors, weather and cutscene effects.
+// A player and follower can otherwise fill the pool before old tracks fade.
+static u32 CreateTrackSprite(u32 templateId, u32 effectId)
+{
+    u32 freeSlots = 0, tracks = 0;
+    for (u32 i = 0; i < MAX_SPRITES; i++)
+    {
+        if (!gSprites[i].inUse)
+            freeSlots++;
+        else if (gSprites[i].callback == UpdateFootprintsTireTracksFieldEffect)
+            tracks++;
+    }
+    u32 spriteId = MAX_SPRITES;
+    if (tracks < 12 && freeSlots > 8)
+        spriteId = CreateSpriteAtEndUnchecked(gFieldEffectObjectTemplatePointers[templateId],
+            gFieldEffectArguments[0], gFieldEffectArguments[1], gFieldEffectArguments[2]);
+    if (spriteId == MAX_SPRITES)
+        FieldEffectActiveListRemove(effectId);
+    return spriteId;
+}
+
 u32 FldEff_SandFootprints(void)
 {
     u8 spriteId;
 
     SetSpritePosToOffsetMapCoords((s16 *)&gFieldEffectArguments[0], (s16 *)&gFieldEffectArguments[1], 8, 8);
-    spriteId = CreateSpriteAtEnd(gFieldEffectObjectTemplatePointers[FLDEFFOBJ_SAND_FOOTPRINTS], gFieldEffectArguments[0], gFieldEffectArguments[1], gFieldEffectArguments[2]);
+    spriteId = CreateTrackSprite(FLDEFFOBJ_SAND_FOOTPRINTS, FLDEFF_SAND_FOOTPRINTS);
     if (spriteId != MAX_SPRITES)
     {
         struct Sprite *sprite = &gSprites[spriteId];
@@ -724,7 +745,7 @@ u32 FldEff_DeepSandFootprints(void)
     u8 spriteId;
 
     SetSpritePosToOffsetMapCoords((s16 *)&gFieldEffectArguments[0], (s16 *)&gFieldEffectArguments[1], 8, 8);
-    spriteId = CreateSpriteAtEnd(gFieldEffectObjectTemplatePointers[FLDEFFOBJ_DEEP_SAND_FOOTPRINTS], gFieldEffectArguments[0], gFieldEffectArguments[1], gFieldEffectArguments[2]);
+    spriteId = CreateTrackSprite(FLDEFFOBJ_DEEP_SAND_FOOTPRINTS, FLDEFF_DEEP_SAND_FOOTPRINTS);
     if (spriteId != MAX_SPRITES)
     {
         struct Sprite *sprite = &gSprites[spriteId];
@@ -742,7 +763,7 @@ u32 FldEff_TracksBug(void)
     struct Sprite *sprite;
 
     SetSpritePosToOffsetMapCoords((s16 *)&gFieldEffectArguments[0], (s16 *)&gFieldEffectArguments[1], 8, 8);
-    spriteId = CreateSpriteAtEnd(gFieldEffectObjectTemplatePointers[FLDEFFOBJ_TRACKS_BUG], gFieldEffectArguments[0], gFieldEffectArguments[1], gFieldEffectArguments[2]);
+    spriteId = CreateTrackSprite(FLDEFFOBJ_TRACKS_BUG, FLDEFF_TRACKS_BUG);
     if (spriteId != MAX_SPRITES)
     {
         sprite = &gSprites[spriteId];
@@ -760,7 +781,7 @@ u32 FldEff_TracksSpot(void)
     struct Sprite *sprite;
 
     SetSpritePosToOffsetMapCoords((s16 *)&gFieldEffectArguments[0], (s16 *)&gFieldEffectArguments[1], 8, 8);
-    spriteId = CreateSpriteAtEnd(gFieldEffectObjectTemplatePointers[FLDEFFOBJ_TRACKS_SPOT], gFieldEffectArguments[0], gFieldEffectArguments[1], gFieldEffectArguments[2]);
+    spriteId = CreateTrackSprite(FLDEFFOBJ_TRACKS_SPOT, FLDEFF_TRACKS_SPOT);
     if (spriteId != MAX_SPRITES)
     {
         sprite = &gSprites[spriteId];
@@ -777,7 +798,7 @@ u32 FldEff_BikeTireTracks(void)
     u8 spriteId;
 
     SetSpritePosToOffsetMapCoords((s16 *)&gFieldEffectArguments[0], (s16 *)&gFieldEffectArguments[1], 8, 8);
-    spriteId = CreateSpriteAtEnd(gFieldEffectObjectTemplatePointers[FLDEFFOBJ_BIKE_TIRE_TRACKS], gFieldEffectArguments[0], gFieldEffectArguments[1], gFieldEffectArguments[2]);
+    spriteId = CreateTrackSprite(FLDEFFOBJ_BIKE_TIRE_TRACKS, FLDEFF_BIKE_TIRE_TRACKS);
     if (spriteId != MAX_SPRITES)
     {
         struct Sprite *sprite = &gSprites[spriteId];
@@ -795,7 +816,7 @@ u32 FldEff_TracksSlither(void)
     struct Sprite *sprite;
 
     SetSpritePosToOffsetMapCoords((s16 *)&gFieldEffectArguments[0], (s16 *)&gFieldEffectArguments[1], 8, 8);
-    spriteId = CreateSpriteAtEnd(gFieldEffectObjectTemplatePointers[FLDEFFOBJ_TRACKS_SLITHER], gFieldEffectArguments[0], gFieldEffectArguments[1], gFieldEffectArguments[2]);
+    spriteId = CreateTrackSprite(FLDEFFOBJ_TRACKS_SLITHER, FLDEFF_TRACKS_SLITHER);
     if (spriteId != MAX_SPRITES)
     {
         sprite = &gSprites[spriteId];

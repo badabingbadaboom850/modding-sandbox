@@ -1632,3 +1632,21 @@ verified Ecruteak NPC gate/prompt, choice, native Haunter fight and field return
 Fixture grants/warp exist only in a scratch ROM copy, never shipping startup.
 Actual existing-player save/reload and touch controls remain separate checks.
 Keep existing PR2 draft/unmerged; publish atomically with expected-head lease.
+
+## Cianwood cosmetic track sprite exhaustion (2026-10-24)
+
+User supplied an existing Scenic Family Photos save at Cianwood (22,54),
+VAR_SUICUNE_ENCOUNTERS=1 and VAR_CIANWOOD_CITY_STATE=1. Released Scenic ROM
+reproduced a fatal src/sprite.c:544 Out of sprite slots while walking north in
+rain: caller0815ED0B, template0852F0D4, callback0815EFE9. ROM disassembly confirms
+FldEff_SandFootprints (template index11). Trace shows dozens of live footprints
+plus weather and actors. This reproduction is distinct from proving the reported
+post-Eusine crash has no additional cause. It is unrelated to Scott's amulet.
+
+All six footprint/tire/follower-track creators now share a maximum12 tracks,
+reserve8 free sprite slots and use the fallible allocator. Skipped cosmetic
+tracks remove their active-list entry. Existing fade behavior and gameplay
+scripts/save layouts/quest gates are unchanged. Four focused native field-effect
+tests pass, including full-pool/headroom and shared-family-limit regressions.
+Production ROM compiles; original-save walking route that previously crashed
+passes in libmGBA. Report post-battle replay separately. Keep PR2 draft/unmerged.
