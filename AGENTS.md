@@ -1650,3 +1650,25 @@ scripts/save layouts/quest gates are unchanged. Four focused native field-effect
 tests pass, including full-pool/headroom and shared-family-limit regressions.
 Production ROM compiles; original-save walking route that previously crashed
 passes in libmGBA. Report post-battle replay separately. Keep PR2 draft/unmerged.
+
+## Echo trial catch-up guides (2026-10-24)
+
+Existing supplied Cianwood save has festival picnic complete, all three Rift
+states0 and no Courage/Fire/Bravery receipt flags. Add permanent Old Man guides
+at Cianwood Center5,6 and Mahogany Center10,6; Olivine's existing10,6 guide now
+uses the same catch-up entry instead of requiring Bijuu's charm first. No
+original local IDs move. Shared trio_echo_catchup.inc is explicitly included;
+it explains the trials, then delegates to the original TrioRift_Entrance and
+NextOffer selector. Picnic/trio gates, saved puzzle states, pending rewards,
+claim flags, guardian scaling, optional Yes/No and completed revisits remain.
+Exits retain their original Goldenrod Center return, stated in the new dialogue.
+No new saved flags/vars, direct reward grants, battles, resets or item changes.
+
+validate_catchup.py passes13824 actual-guide/selector paths plus all three
+Center placement/approach/original-service/event/actor-budget checks. Sixteen
+existing Rift/sister flow/asset checks pass; the two old geometry assertions
+still fail because they predate already-released appended maps (Homecoming,
+Action Arena, seasonal maps), not because this change alters map/layout IDs.
+Production ROM compiles. Rendered libmGBA with a scratch-only warp fixture and
+copy of user's save verifies the Cianwood guide, dialogue and accepted travel to Echo Woods. Original
+uploaded save remains untouched. Keep PR2 draft and unmerged.

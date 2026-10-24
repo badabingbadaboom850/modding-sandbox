@@ -2484,3 +2484,5 @@ Common_Text_ReceivedMon:
 	.include "data/maps/TrioActionArena/scripts.inc"
 
 	.include "data/scripts/trio_action_circuit.inc"
+
+	.include "data/scripts/trio_echo_catchup.inc"
